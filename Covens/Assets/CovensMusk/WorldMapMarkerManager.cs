@@ -76,6 +76,7 @@ public class WorldMapMarkerManager : MonoBehaviour
     private SimplePool<WorldMapMarker> m_MarkerPool;
 
     private float m_MarkerScale;
+    private float m_LastScaleTime;
     private float m_LastRequestTime;
     private Vector2 m_LastMarkerPosition;
 
@@ -84,6 +85,7 @@ public class WorldMapMarkerManager : MonoBehaviour
 
     private Coroutine m_SpawnCoroutine;
     private Coroutine m_DespawnCoroutine;
+    private Coroutine m_ScaleCoroutine;
     private Coroutine m_RequestCoroutine;
 
     private int m_BatchIndex;
@@ -172,6 +174,11 @@ public class WorldMapMarkerManager : MonoBehaviour
             m_RequestCoroutine = null;
         }
 
+        if (m_ScaleCoroutine != null)
+        {
+            StopCoroutine(m_ScaleCoroutine);
+            m_ScaleCoroutine = null;
+        }
 
         //despawn all markers
         foreach (WorldMapMarker _item in m_MarkersList)
@@ -190,7 +197,6 @@ public class WorldMapMarkerManager : MonoBehaviour
             return;
 
         double distanceFromLastRequest = MapsAPI.Instance.DistanceBetweenPointsD(MapsAPI.Instance.position, m_LastMarkerPosition) * 1000;
-
         if (distanceFromLastRequest > m_Range)
         {
             float range;
@@ -205,7 +211,9 @@ public class WorldMapMarkerManager : MonoBehaviour
 
     public void RequestMarkers(int distance)
     {
-        m_Range = distance * 0.8f;
+        m_Range = distance;
+        distance = (int)(distance * 1.5f);
+
         m_LastMarkerPosition = MapsAPI.Instance.position;
         m_LastRequestTime = Time.time;
 
@@ -230,6 +238,20 @@ public class WorldMapMarkerManager : MonoBehaviour
                 if (result == 200)
                 {
                     MarkerItem[] markers = JsonConvert.DeserializeObject<MarkerItem[]>(response);
+                    
+                    //stop spawning
+                    if (m_SpawnCoroutine != null)
+                    {
+                        StopCoroutine(m_SpawnCoroutine);
+                        m_SpawnCoroutine = null;
+                    }
+
+                    //stop scaling the old markers
+                    if (m_ScaleCoroutine != null)
+                    {
+                        StopCoroutine(m_ScaleCoroutine);
+                        m_ScaleCoroutine = null;
+                    }
 
                     //despawn old
                     if (m_DespawnCoroutine != null)
@@ -239,13 +261,8 @@ public class WorldMapMarkerManager : MonoBehaviour
                     }
                     m_DespawnCoroutine = StartCoroutine(DespawnCoroutine(m_MarkersList.ToArray()));
                     m_MarkersList.Clear();
-
-                    //spawn new
-                    if (m_SpawnCoroutine != null)
-                    {
-                        StopCoroutine(m_SpawnCoroutine);
-                        m_SpawnCoroutine = null;
-                    }
+                    
+                    //spawn new markers
                     m_SpawnCoroutine = StartCoroutine(SpawnCoroutine(markers));
                 }
                 else
@@ -253,6 +270,33 @@ public class WorldMapMarkerManager : MonoBehaviour
                     Debug.LogError("failed to retrieve markers\n" + result + " " + response);
                 }
             }));
+    }
+    
+    private void OnMapChangeZoom()
+    {
+        m_MarkerScale = LeanTween.easeOutCubic(m_MinScale, m_MaxScale, MapsAPI.Instance.normalizedZoom);
+        m_DetailedMarkers = MapsAPI.Instance.normalizedZoom > m_MarkerDetailedThreshold;
+        m_VisibleMarkers = MapsAPI.Instance.normalizedZoom > m_MarkerVisibleThreshoold;
+
+        if (Time.time - m_LastScaleTime < 0.2f)
+            return;
+
+        m_LastScaleTime = Time.time;
+
+        if (m_ScaleCoroutine != null)
+        {
+            StopCoroutine(m_ScaleCoroutine);
+            m_ScaleCoroutine = null;
+        }
+        m_ScaleCoroutine = StartCoroutine(UpdateScaleCoroutine());
+    }
+
+    private void ScaleMarker(WorldMapMarker marker)
+    {
+        marker.gameObject.SetActive(m_VisibleMarkers);
+        marker.nearRenderer.enabled = m_DetailedMarkers;
+        marker.farRenderer.enabled = !m_DetailedMarkers;
+        marker.transform.localScale = new Vector3(m_MarkerScale, m_MarkerScale, m_MarkerScale);
     }
 
     private IEnumerator SpawnCoroutine(MarkerItem[] markers)
@@ -302,22 +346,21 @@ public class WorldMapMarkerManager : MonoBehaviour
         m_DespawnCoroutine = null;
     }
 
-    private void OnMapChangeZoom()
+    private IEnumerator UpdateScaleCoroutine()
     {
-        m_MarkerScale = LeanTween.easeOutCubic(m_MinScale, m_MaxScale, MapsAPI.Instance.normalizedZoom);
-        m_DetailedMarkers = MapsAPI.Instance.normalizedZoom > m_MarkerDetailedThreshold;
-        m_VisibleMarkers = MapsAPI.Instance.normalizedZoom > m_MarkerVisibleThreshoold;
+        int batchSize = 250;
+        int from = 0;
+        int to = Mathf.Min(from + batchSize, m_MarkersList.Count);
 
-        foreach (var item in m_MarkersList)
-            ScaleMarker(item);
-    }
+        while (from < m_MarkersList.Count)
+        {
+            for (int i = from; i < to; i++)
+                ScaleMarker(m_MarkersList[i]);
 
-    private void ScaleMarker(WorldMapMarker marker)
-    {
-        marker.gameObject.SetActive(m_VisibleMarkers);
-        marker.nearRenderer.enabled = m_DetailedMarkers;
-        marker.farRenderer.enabled = !m_DetailedMarkers;
-        marker.transform.localScale = new Vector3(m_MarkerScale, m_MarkerScale, m_MarkerScale);
+            yield return 0;
+        }
+
+        m_ScaleCoroutine = null;
     }
 
     [ContextMenu("Start Flying")]
