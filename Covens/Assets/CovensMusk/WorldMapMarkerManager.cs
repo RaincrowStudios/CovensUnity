@@ -2,6 +2,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using static WorldMapMarker;
 
 public class WorldMapMarkerManager : MonoBehaviour
 {
@@ -13,12 +14,12 @@ public class WorldMapMarkerManager : MonoBehaviour
         character3 = 3,
         character4 = 4,
         character5 = 5,
-        spiritguardian = 6, 
-        spiritharvester = 7, 
-        spiritforbidden = 8, 
-        spirithealer = 9, 
-        spiritwarrior = 10, 
-        spirittrickster = 11, 
+        spiritguardian = 6,
+        spiritharvester = 7,
+        spiritforbidden = 8,
+        spirithealer = 9,
+        spiritwarrior = 10,
+        spirittrickster = 11,
         spiritfamiliar = 12,
         itemherb = 13,
         itemgem = 14,
@@ -30,10 +31,24 @@ public class WorldMapMarkerManager : MonoBehaviour
     [SerializeField] private MapCameraController m_Controller;
 
     [Header("Sprites")]
-    [SerializeField] private Sprite m_WitchSprite;
-    [SerializeField] private Sprite m_SpiritSprite;
-    [SerializeField] private Sprite m_Pop;
-    [SerializeField] private Sprite[] m_CollectableSprite;
+    [SerializeField] private Sprite m_WitchFemaleAfrican;
+    [SerializeField] private Sprite m_WitchFemaleCaucasian;
+    [SerializeField] private Sprite m_WitchFemaleAsian;
+    [SerializeField] private Sprite m_WitchMaleAfrican;
+    [SerializeField] private Sprite m_WitchMaleCaucasian;
+    [SerializeField] private Sprite m_WitchMaleAsian;
+
+    [SerializeField] private Sprite m_SpiritGuardian;
+    [SerializeField] private Sprite m_SpiritHarvester;
+    [SerializeField] private Sprite m_SpiritForbidden;
+    [SerializeField] private Sprite m_SpiritHealer;
+    [SerializeField] private Sprite m_SpiritWarrior;
+    [SerializeField] private Sprite m_SpiritTrickster;
+    [SerializeField] private Sprite m_SpiritFamiliar;
+
+    [SerializeField] private Sprite m_CollectableHerb;
+    [SerializeField] private Sprite m_CollectableGem;
+    [SerializeField] private Sprite m_CollectableTool;
 
     [Header("Colors")]
     [SerializeField] private Color m_WitchColor;
@@ -53,321 +68,238 @@ public class WorldMapMarkerManager : MonoBehaviour
     [Space(5)]
     [SerializeField] private float m_MinScale = 150;
     [SerializeField] private float m_MaxScale = 5;
-    [SerializeField] private float m_CollectableScaleModifier;
-    [Space(5)]
-    [SerializeField] private int m_BatchSize = 50;
+    
+    private Sprite[] m_MarkerSpriteMap;
+    private Color[] m_MarkerColorMap;
 
-    [Space(10)]
-    [SerializeField] private bool m_Log;
-
-
-    private struct MarkerItem
-    {
-        public string type;
-        public string id;
-        public float latitude;
-        public float longitude;
-        public string collectibleType;
-        public WorldMapMarker instance;
-    }
-
-    private struct WSCommand
-    {
-        public string command;
-        public MarkerItem[] labels;
-    }
-
-
-    public static event System.Action<string> OnRequest;
-    public static event System.Action<string> OnResponse;
-
-    private WebSocket m_Client;
-    private bool m_Connected;
-
-    //MARKERS
-    private Dictionary<string, MarkerItem> m_MarkersDictionary = new Dictionary<string, MarkerItem>();
-    private List<MarkerItem> m_MarkersList = new List<MarkerItem>();
+    private List<WorldMapMarker> m_MarkersList = new List<WorldMapMarker>();
     private SimplePool<WorldMapMarker> m_MarkerPool;
 
     private float m_MarkerScale;
     private float m_LastRequestTime;
-    private float m_LastRemoveTime;
-    private Vector3 m_LastMarkerPosition;
+    private Vector2 m_LastMarkerPosition;
 
-    private bool m_IsFlying;
-    private int m_RequestCount;
     private bool m_DetailedMarkers;
     private bool m_VisibleMarkers;
 
     private Coroutine m_SpawnCoroutine;
+    private Coroutine m_DespawnCoroutine;
+    private Coroutine m_RequestCoroutine;
 
     private int m_BatchIndex;
-    private float m_LastZoomValue;
     private float m_Range;
-    private int m_LastItemCount;
-    private bool m_CanRequest = true;
 
-    //private void Awake()
-    //{
-    //    m_MarkerPool = new SimplePool<WorldMapMarker>(m_MarkerPrefab, 200);
-    //}
+    private void Awake()
+    {
+        m_MarkerPool = new SimplePool<WorldMapMarker>(m_MarkerPrefab, 200);
+        m_MarkerSpriteMap = new Sprite[]
+        {
+            m_WitchFemaleAfrican,
+            m_WitchFemaleCaucasian,
+            m_WitchFemaleAsian,
+            m_WitchMaleAfrican,
+            m_WitchMaleCaucasian,
+            m_WitchMaleAsian,
 
-    //private void Start()
-    //{
-    //    MapsAPI.Instance.OnExitStreetLevel += OnStartFlying;
-    //    MapsAPI.Instance.OnEnterStreetLevel += OnStopFlying;
-    //}
+            m_SpiritGuardian,
+            m_SpiritHarvester,
+            m_SpiritForbidden,
+            m_SpiritHealer,
+            m_SpiritWarrior,
+            m_SpiritTrickster,
+            m_SpiritFamiliar,
 
-    //private void OnEnable()
-    //{
-    //    StartCoroutine(Connect());
-    //}
+            m_CollectableHerb,
+            m_CollectableGem,
+            m_CollectableTool,
+        };
 
+        m_MarkerColorMap = new Color[]
+        {
+            m_WitchColor,
+            m_WitchColor,
+            m_WitchColor,
+            m_WitchColor,
+            m_WitchColor,
+            m_WitchColor,
+
+            m_SpiritColor,
+            m_SpiritColor,
+            m_SpiritColor,
+            m_SpiritColor,
+            m_SpiritColor,
+            m_SpiritColor,
+            m_SpiritColor,
+
+            m_CollectableColor,
+            m_CollectableColor,
+            m_CollectableColor,
+        };
+    }
+
+    private void Start()
+    {
+        MapsAPI.Instance.OnExitStreetLevel += OnStartFlying;
+        MapsAPI.Instance.OnEnterStreetLevel += OnStopFlying;
+    }
+    
     private void OnStartFlying()
     {
-        gameObject.SetActive(true);
+        if (LoginAPIManager.characterLoggedIn == false)
+            return;
 
-        //MapsAPI.Instance.OnChangePosition += OnMapChangePosition;
         MapsAPI.Instance.OnChangeZoom += OnMapChangeZoom;
-
-        //get all surrounding markerson starting flight
-        RequestMarkers((int)m_Controller.maxDistanceFromCenter);
-
         OnMapChangeZoom();
-        //OnMapChangePosition();
 
-        m_RequestCount = 0;
-        m_IsFlying = true;
+        //get all surrounding markers on starting flight
+        RequestMarkers((int)m_Controller.maxDistanceFromCenter);
     }
 
     private void OnStopFlying()
     {
-        //MapsAPI.Instance.OnChangePosition -= OnMapChangePosition;
         MapsAPI.Instance.OnChangeZoom -= OnMapChangeZoom;
 
-        m_IsFlying = false;
-
+        //stop spawning markers
         if (m_SpawnCoroutine != null)
         {
             StopCoroutine(m_SpawnCoroutine);
             m_SpawnCoroutine = null;
         }
 
+        if (m_RequestCoroutine != null)
+        {
+            StopCoroutine(m_RequestCoroutine);
+            m_RequestCoroutine = null;
+        }
+
+
         //despawn all markers
-        foreach (MarkerItem _item in m_MarkersDictionary.Values)
-            m_MarkerPool.Despawn(_item.instance);
-
-        m_MarkersDictionary.Clear();
+        foreach (WorldMapMarker _item in m_MarkersList)
+            m_MarkerPool.Despawn(_item);
         m_MarkersList.Clear();
-    }
-
-    private IEnumerator Connect()
-    {
-        if (m_Connected)
-            yield break;
-
-        m_Client = new WebSocket(new System.Uri(CovenConstants.wsMapServer));
-        yield return m_Client.Connect();
-
-        if (string.IsNullOrEmpty(m_Client.error))
-        {
-            Debug.Log("connected to mapserver");
-            m_Connected = true;
-        }
-        else
-        {
-            Debug.LogError("error connecting to map server: " + m_Client.error);
-            m_Connected = false;
-
-            yield return new WaitForSeconds(1);
-            StartCoroutine(Connect());
-        }
     }
 
     private void Update()
     {
-        if (!m_Connected)
-            return;
-
-        string reply = m_Client.RecvString();
-
-        if (m_Client.error != null)
-        {
-            Debug.LogError("map server error: " + m_Client.error);
-            m_Connected = false;
-            StartCoroutine(Connect());
-        }
-        else if (reply != null)
-        {
-            OnResponse?.Invoke(reply);
-
-#if UNITY_EDITOR
-            if (m_Log)
-                Debug.Log("[WorldMarkerManager]\n" + reply);
-#endif
-
-            var data = JsonConvert.DeserializeObject<WSCommand>(reply);
-            if (data.command == "markers")
-            {
-                m_CanRequest = data.labels.Length != m_LastItemCount;
-                if (m_SpawnCoroutine != null)
-                {
-                    StopCoroutine(m_SpawnCoroutine);
-                    m_SpawnCoroutine = null;
-                }
-                m_SpawnCoroutine = StartCoroutine(HandleMarkers(data.labels));
-                m_LastItemCount = data.labels.Length;
-
-            }
-        }
-
         //ignore if items are not showing
-        if (m_VisibleMarkers == false)
+        if (!m_VisibleMarkers)
             return;
 
         float timeSinceLastRequest = Time.time - m_LastRequestTime;
-        float distanceFromLastRequest = Vector2.Distance(m_Controller.CenterPoint.position, m_LastMarkerPosition);
-        m_Range = LeanTween.easeOutQuint(m_MinMarkerRange, m_MaxMarkerRange, m_Map.normalizedZoom);
-        int count = (int)LeanTween.easeOutCubic(m_MinMarkerCount, m_MaxMarkerCount, m_Map.normalizedZoom);
+        if (timeSinceLastRequest < 2f)
+            return;
 
-        m_MarkerCount = m_MarkersList.Count;
+        double distanceFromLastRequest = MapsAPI.Instance.DistanceBetweenPointsD(MapsAPI.Instance.position, m_LastMarkerPosition) * 1000;
 
-        //get all markers in the area
-        if (m_Map.normalizedZoom > 0.855f)
+        if (distanceFromLastRequest > m_Range)
         {
-            if (distanceFromLastRequest > m_Controller.maxDistanceFromCenter * 0.6f)
-                RequestMarkers((int)m_Controller.maxDistanceFromCenter);
-        }
-        else //get few random markers in the area
-        {
-            // if (timeSinceLastRequest > 1f)
-            // {
-            //     if (m_CanRequest)
-            //         RequestMarkers((int)m_Range, count);
-            // }
-            if (distanceFromLastRequest > m_Range / 10f && timeSinceLastRequest > 0.2f)
-            {
-                m_CanRequest = true;
-                RequestMarkers((int)m_Range, count);
-            }
+            float range;
+            if (m_Map.normalizedZoom > 0.855f)
+                range = m_Controller.maxDistanceFromCenter;
+            else
+                range = LeanTween.easeOutQuint(m_MinMarkerRange, m_MaxMarkerRange, m_Map.normalizedZoom);
+
+            RequestMarkers((int)range);
         }
     }
 
-    [SerializeField] private int m_MarkerCount;
-
-    public void RequestMarkers(int distance, int count = -1)
+    public void RequestMarkers(int distance)
     {
-        m_RequestCount++;
-
-        m_LastMarkerPosition = MapsAPI.Instance.mapCenter.position;
+        m_Range = distance * 0.8f;
+        m_LastMarkerPosition = MapsAPI.Instance.position;
         m_LastRequestTime = Time.time;
 
         double lng, lat;
         MapsAPI.Instance.GetPosition(out lng, out lat);
 
-        var req = new
+        if (m_RequestCoroutine != null)
         {
-            latitude = lat,
-            longitude = lng,
-            type = "markers",
-            count,
-            distance
-        };
+            StopCoroutine(m_RequestCoroutine);
+            m_RequestCoroutine = null;
+        }
 
-        string k = JsonConvert.SerializeObject(req);
-        m_Client.Send(System.Text.Encoding.UTF8.GetBytes(k));
+        m_RequestCoroutine = StartCoroutine(APIManagerServer.RequestCoroutine(
+            CovenConstants.wsMapServer + "?latitude=" + lat.ToString().Replace(',', '.') + "&longitude=" + lng.ToString().Replace(',', '.') + "&radius=" + distance,
+            "",
+            "GET",
+            false,
+            false,
+            (response, result) =>
+            {
+                m_RequestCoroutine = null;
+                if (result == 200)
+                {
+                    MarkerItem[] markers = JsonConvert.DeserializeObject<MarkerItem[]>(response);
 
-        OnRequest?.Invoke(k);
+                    //despawn old
+                    if (m_DespawnCoroutine != null)
+                    {
+                        StopCoroutine(m_DespawnCoroutine);
+                        m_DespawnCoroutine = null;
+                    }
+                    m_DespawnCoroutine = StartCoroutine(DespawnCoroutine(m_MarkersList.ToArray()));
+                    m_MarkersList.Clear();
 
-
-#if UNITY_EDITOR
-        if (m_Log)
-            Debug.Log("[WorldMarkerManager" + m_RequestCount + "] requesting markers\n" + k);
-#endif
+                    //spawn new
+                    if (m_SpawnCoroutine != null)
+                    {
+                        StopCoroutine(m_SpawnCoroutine);
+                        m_SpawnCoroutine = null;
+                    }
+                    m_SpawnCoroutine = StartCoroutine(SpawnCoroutine(markers));
+                }
+                else
+                {
+                    Debug.LogError("failed to retrieve markers\n" + result + " " + response);
+                }
+            }));
     }
 
-    private IEnumerator HandleMarkers(MarkerItem[] markers)
+    private IEnumerator SpawnCoroutine(MarkerItem[] markers)
     {
-        if (markers == null)
-            yield break;
+        int batchSize = 100;
+        int from = 0;
+        int to = Mathf.Min(from + batchSize, markers.Length);
 
-        bool streetLevel = MapsAPI.Instance.streetLevel;
-        float normalizedMapZoom = MapsAPI.Instance.normalizedZoom;
-        List<SpriteRenderer> newMarkers = new List<SpriteRenderer>();
-        WorldMapMarker marker;
-        SpriteRenderer renderer;
-
-        int batch = 0;
-
-        for (int i = 0; i < markers.Length; i++)
+        WorldMapMarker item;
+        while (from < markers.Length)
         {
-            batch++;
-            if (batch > 20)
+            for (int i = from; i < to; i++)
             {
-                batch = 0;
-                yield return 0;
+                item = m_MarkerPool.Spawn(MapsAPI.Instance.trackedContainer);
+                item.transform.position = MapsAPI.Instance.GetWorldPosition(markers[i].longitude, markers[i].latitude);
+
+                item.farRenderer.color = m_MarkerColorMap[markers[i].type];
+                item.nearRenderer.sprite = m_MarkerSpriteMap[markers[i].type];
+
+                m_MarkersList.Add(item);
+                ScaleMarker(item);
             }
 
-            if (m_MarkerCount > 2000)
-                yield break;
-
-            if (m_IsFlying && !m_MarkersDictionary.ContainsKey(markers[i].id))
-            {
-                marker = m_MarkerPool.Spawn();
-                marker.name = "[WorldMarker]" + markers[i].id + markers[i].type;
-                markers[i].instance = marker;
-
-                if (normalizedMapZoom < m_MarkerDetailedThreshold)
-                    renderer = marker.farRenderer;
-                else
-                    renderer = marker.nearRenderer;
-
-                if (markers[i].type[0] == 'c') //collectable
-                {
-                    if (markers[i].collectibleType == "gem")
-                        marker.nearRenderer.sprite = m_CollectableSprite[0];
-                    else if (markers[i].collectibleType == "tool")
-                        marker.nearRenderer.sprite = m_CollectableSprite[1];
-                    else
-                        marker.nearRenderer.sprite = m_CollectableSprite[2];
-
-                    marker.farRenderer.color = m_CollectableColor;
-                    marker.nearRenderer.transform.localScale = new Vector3(m_CollectableScaleModifier, m_CollectableScaleModifier, m_CollectableScaleModifier);
-                }
-                else if (markers[i].type[0] == 'w') //witch
-                {
-                    marker.nearRenderer.sprite = m_WitchSprite;
-                    marker.farRenderer.color = m_WitchColor;
-                    marker.nearRenderer.transform.localScale = Vector3.one;
-                }
-                else if (markers[i].type[0] == 's') //spirit
-                {
-                    marker.nearRenderer.sprite = m_SpiritSprite;
-                    marker.farRenderer.color = m_SpiritColor;
-                    marker.nearRenderer.transform.localScale = Vector3.one;
-                }
-                else if (markers[i].type[0] == 'l') //location
-                {
-                    marker.nearRenderer.sprite = m_Pop;
-                    marker.farRenderer.color = m_PopColor;
-                    marker.nearRenderer.transform.localScale = Vector3.one;
-                }
-                else
-                {
-                    marker.nearRenderer.sprite = null;
-                    marker.farRenderer.color = new Color(0, 0, 0, 0);
-                }
-
-                marker.transform.position = MapsAPI.Instance.GetWorldPosition(markers[i].longitude, markers[i].latitude);
-                marker.transform.SetParent(MapsAPI.Instance.trackedContainer);
-                m_MarkersDictionary.Add(markers[i].id, markers[i]);
-                m_MarkersList.Add(markers[i]);
-
-                ScaleMarker(markers[i]);
-
-                newMarkers.Add(renderer);
-            }
+            yield return 0;
+            from += batchSize;
+            to = Mathf.Min(from + batchSize, markers.Length);
         }
+
+        m_SpawnCoroutine = null;
+    }
+
+    private IEnumerator DespawnCoroutine(WorldMapMarker[] markers)
+    {
+        int batchSize = 100;
+        int from = 0;
+        int to = Mathf.Min(from + batchSize, markers.Length);
+
+        while (from < markers.Length)
+        {
+            for (int i = from; i < to; i++)
+                m_MarkerPool.Despawn(markers[i]);
+
+            from += batchSize;
+            to = Mathf.Min(from + batchSize, markers.Length);
+            yield return 0;
+        }
+        m_DespawnCoroutine = null;
     }
 
     private void OnMapChangeZoom()
@@ -376,50 +308,16 @@ public class WorldMapMarkerManager : MonoBehaviour
         m_DetailedMarkers = MapsAPI.Instance.normalizedZoom > m_MarkerDetailedThreshold;
         m_VisibleMarkers = MapsAPI.Instance.normalizedZoom > m_MarkerVisibleThreshoold;
 
-        //if entered low flight, request all markers
-        if (m_Map.normalizedZoom >= 0.85 && m_LastZoomValue < 0.85)
-            RequestMarkers((int)m_Controller.maxDistanceFromCenter, -1);
-
-        m_LastZoomValue = m_Map.normalizedZoom;
+        foreach (var item in m_MarkersList)
+            ScaleMarker(item);
     }
 
-    private void LateUpdate()
+    private void ScaleMarker(WorldMapMarker marker)
     {
-        //calculate range to iterate
-        int from = m_BatchIndex;
-        int to = Mathf.Min(m_BatchIndex + m_BatchSize, m_MarkersDictionary.Count - 1);
-
-        m_BatchIndex = m_BatchIndex + m_BatchSize;
-        if (m_BatchIndex >= m_MarkersList.Count)
-            m_BatchIndex = 0;
-
-        //range to expand the map bounds when checking if the point in inside the bounds
-        float range = m_Range / 10;
-        MarkerItem aux;
-
-
-        for (int i = to; i >= from; i--)
-        {
-            aux = m_MarkersList[i];
-            if (!m_Map.IsPointInsideView(aux.instance.transform.position, range))
-            {
-                m_MarkersDictionary.Remove(aux.id);
-                m_MarkerPool.Despawn(aux.instance);
-                m_MarkersList.RemoveAt(i);
-            }
-            else
-            {
-                ScaleMarker(aux);
-            }
-        }
-    }
-
-    private void ScaleMarker(MarkerItem marker)
-    {
-        marker.instance.gameObject.SetActive(m_VisibleMarkers);
-        marker.instance.nearRenderer.enabled = m_DetailedMarkers;
-        marker.instance.farRenderer.enabled = !m_DetailedMarkers;
-        marker.instance.transform.localScale = new Vector3(m_MarkerScale, m_MarkerScale, m_MarkerScale);
+        marker.gameObject.SetActive(m_VisibleMarkers);
+        marker.nearRenderer.enabled = m_DetailedMarkers;
+        marker.farRenderer.enabled = !m_DetailedMarkers;
+        marker.transform.localScale = new Vector3(m_MarkerScale, m_MarkerScale, m_MarkerScale);
     }
 
     [ContextMenu("Start Flying")]

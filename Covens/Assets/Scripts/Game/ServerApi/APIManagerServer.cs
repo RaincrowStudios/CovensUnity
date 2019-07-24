@@ -18,6 +18,11 @@ public class APIManagerServer
     public static IEnumerator RequestServerRoutine(string endpoint, string data, string sMethod, bool bRequiresToken, bool bRequiresWssToken, Action<string, int> CallBack)
     {
         string url = string.Concat(CovenConstants.hostAddress + endpoint);
+        yield return RequestCoroutine(url, data, sMethod, bRequiresToken, bRequiresWssToken, CallBack);
+    }
+
+    public static IEnumerator RequestCoroutine(string url, string data, string sMethod, bool bRequiresToken, bool bRequiresWssToken, Action<string, int> CallBack)
+    {
         bool retry = true;
         int retryCount = 0;
         //int badGatewayErrorsCount = 0;
@@ -32,7 +37,7 @@ public class APIManagerServer
 
             retry = www.isNetworkError || (www.isHttpError && www.responseCode > 500);
             retryCount += 1;
-            
+
             if (www.isHttpError && (www.responseCode == 401 || www.downloadHandler.text == "1001"))
             {
                 //refresh auth tokens and repeat the request
@@ -129,6 +134,7 @@ public class APIManagerServer
                 break;
             }
         }
+
         CallBack(fail ? www.error : www.downloadHandler.text, Convert.ToInt32(www.responseCode));
     }
 

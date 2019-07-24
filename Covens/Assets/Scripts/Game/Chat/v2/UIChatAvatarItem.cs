@@ -75,13 +75,8 @@ namespace Raincrow.Chat.UI
         {
             OnRequestChatLoading?.Invoke(true);
             TeamPlayerView.ViewCharacter(_chatPlayer.name,
-                     (character, resultCode) =>
+                     (character, error) =>
                      {
-                         if (resultCode == 200)
-                         {
-                             TeamPlayerView.Instance.Setup(character);
-                         }
-
                          OnRequestChatLoading?.Invoke(false);
                      });
         }

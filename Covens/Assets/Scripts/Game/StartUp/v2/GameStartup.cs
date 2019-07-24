@@ -273,7 +273,7 @@ public class GameStartup : MonoBehaviour
             
             if (SplashManager.Instance.IsShowingHints)
             {
-                SplashManager.Instance.HideHints(() => LoginUIManager.Open(startingScreen));
+                SplashManager.Instance.HideHints(1, () => LoginUIManager.Open(startingScreen));
             }
             else
             {

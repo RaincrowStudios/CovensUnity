@@ -311,11 +311,16 @@ public class MarkerSpawner : MarkerManager
             if (PlaceOfPower.IsInsideLocation)
                 APIManager.Instance.Post("location/select", JsonConvert.SerializeObject(data), (response, result) => GetResponse(m, instanceID, response, result));
             else
-                APIManager.Instance.Get(
-                    "character/select/"+Data.instance+"?selection=map",
-                    "",
-                    (response, result) => GetResponse(m, instanceID, response, result));
+                GetMarkerDetails(Data.instance, (result, response) => GetResponse(m, instanceID, response, result));
         }
+    }
+
+    public static void GetMarkerDetails(string id, System.Action<int, string> callback)
+    {
+        APIManager.Instance.Get(
+                    "character/select/" + id + "?selection=map",
+                    "",
+                    (response, result) => callback(result, response));
     }
 
     public void GetResponse(IMarker marker, string instance, string response, int code)

@@ -28,8 +28,6 @@ namespace Oktagon.Network
             APIManager.OnRequestEvt += APIManager_OnRequestEvt;
             APIManager.OnResponseEvt += APIManager_OnResponseEvt;
             SocketClient.OnResponseParsedEvent += WebSocketClient_OnResponseEvt;
-            WorldMapMarkerManager.OnRequest += Wordmap_OnRequest;
-            WorldMapMarkerManager.OnResponse += Wordmap_Onresponse;
         }
 
         public void Destroy()
@@ -38,41 +36,8 @@ namespace Oktagon.Network
             APIManager.OnRequestEvt -= APIManager_OnRequestEvt;
             APIManager.OnResponseEvt -= APIManager_OnResponseEvt;
             SocketClient.OnResponseParsedEvent -= WebSocketClient_OnResponseEvt;
-            WorldMapMarkerManager.OnRequest -= Wordmap_OnRequest;
-            WorldMapMarkerManager.OnResponse -= Wordmap_Onresponse;
         }
-
-        private void Wordmap_OnRequest(string request)
-        {
-            OktNetworkMonitor.RecordData pData = new OktNetworkMonitor.RecordData();
-
-            pData.Table = "WebSocketClient";
-            pData.Request = request;
-            pData.RequestType = "";
-            pData.Response = "";
-            pData.SizeResponse = request != null ? request.Length : 0;
-
-#if UNITY_EDITOR
-            pData.Stack = UnityEngine.StackTraceUtility.ExtractStackTrace();
-#endif
-            m_pMonitor.AddDataResponse(pData);
-        }
-
-        private void Wordmap_Onresponse(string response)
-        {
-            OktNetworkMonitor.RecordData pData = new OktNetworkMonitor.RecordData();
-
-            pData.Table = "WebSocketClient";
-            pData.RequestType = "";
-            pData.Response = response;
-            pData.SizeResponse = response != null ? response.Length : 0;
-
-#if UNITY_EDITOR
-            pData.Stack = UnityEngine.StackTraceUtility.ExtractStackTrace();
-#endif
-            m_pMonitor.AddDataResponse(pData);
-        }
-
+        
 
         private void APIManager_OnRequestEvt(UnityEngine.Networking.UnityWebRequest obj, string sRequest)
         {

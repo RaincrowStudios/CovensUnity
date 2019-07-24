@@ -6,28 +6,35 @@ using TMPro;
 public class TeamPlayerView : MonoBehaviour
 {
     public static TeamPlayerView Instance { get; set; }
-    public GameObject WitchCard;
+
+    [SerializeField] private Canvas m_Canvas;
+    [SerializeField] private GraphicRaycaster m_InputRaycaster;
+
+    [SerializeField] private CanvasGroup m_CanvasGroup;
     [SerializeField] private TextMeshProUGUI _displayName;
     [SerializeField] private TextMeshProUGUI _level;
     [SerializeField] private TextMeshProUGUI _degree;
     [SerializeField] private TextMeshProUGUI _coven;
-    [SerializeField] private TextMeshProUGUI _state;
+    //[SerializeField] private TextMeshProUGUI _state;
     [SerializeField] private TextMeshProUGUI _dominion;
     [SerializeField] private TextMeshProUGUI _dominionRank;
     [SerializeField] private TextMeshProUGUI _worldRank;
+    [SerializeField] private TextMeshProUGUI _energy;
+    [SerializeField] private TextMeshProUGUI _power;
+    [SerializeField] private TextMeshProUGUI _resilience;
+
     public Image schoolSigil;
+    public ApparelView male;
+    public ApparelView female;
+    public Button flyToPlayerBtn;
+    public Button btnBack;
+
     public Sprite whiteSchool;
     public Sprite shadowSchool;
     public Sprite greySchool;
-    [SerializeField] private TextMeshProUGUI _energy;
-    public Button flyToPlayerBtn;
-    public ApparelView male;
-    public ApparelView female;
-    Vector2 playerPos = Vector2.zero;
-    public CanvasGroup canvasGroup;
-    public Button btnBack;
 
-
+    private int m_TweenId;
+    private Vector2 playerPos = Vector2.zero;
     private System.Action m_OnFly;
     private System.Action m_OnCoven;
     private System.Action m_OnClose;
@@ -35,18 +42,18 @@ public class TeamPlayerView : MonoBehaviour
     void Awake()
     {
         Instance = this;
+
         btnBack.onClick.AddListener(OnClickClose);
         flyToPlayerBtn.onClick.AddListener(FlyToPlayer);
+
+        m_Canvas.enabled = false;
+        m_InputRaycaster.enabled = false;
+        m_CanvasGroup.alpha = 0;
     }
 
-    public void Setup(WitchMarkerData data, System.Action onFly = null, System.Action onCoven = null, System.Action onClose = null)
+    public void Show(WitchMarkerData data, System.Action onFly = null, System.Action onCoven = null, System.Action onClose = null)
     {
-        flyToPlayerBtn.gameObject.SetActive(data.covenId == PlayerDataManager.playerData.covenId);
-        canvasGroup.alpha = 0;
-        WitchCard.SetActive(true);
-        WitchCard.GetComponent<RectTransform>().localScale = Vector2.zero;
-        LTDescr descrAlpha = LeanTween.alphaCanvas(canvasGroup, 1, .28f).setEase(LeanTweenType.easeInOutSine);
-        LTDescr descrScale = LeanTween.scale(WitchCard.GetComponent<RectTransform>(), Vector3.one, .4f).setEase(LeanTweenType.easeInOutSine);
+        flyToPlayerBtn.interactable = data.covenId == PlayerDataManager.playerData.covenId;
 
         playerPos.x = data.longitude;
         playerPos.y = data.latitude;
@@ -64,25 +71,60 @@ public class TeamPlayerView : MonoBehaviour
         }
         ChangeDegree(data.degree);
         _displayName.text = data.name;
-        //_level.text = "Level: " + data.level.ToString();
         _level.text = LocalizeLookUp.GetText("lt_level") + " " + data.level.ToString();
-        // _dominion.text = "Dominion: " + data.dominion;
         _dominion.text = LocalizeLookUp.GetText("lt_dominion") + " " + data.dominion;
-        //_dominionRank.text = "Dominion Rank: " + data.dominionRank;
         _dominionRank.text = LocalizeLookUp.GetText("lt_dominion_rank") + " " + data.dominionRank;
-        //_worldRank.text = "World Rank: " + data.worldRank;
         _worldRank.text = LocalizeLookUp.GetText("lt_world_rank") + " " + data.worldRank;
-        //	_coven.text = (data.covenName == "" ? "Coven: None" : "Coven: " + data.covenName);
-        _coven.text = (data.covenId == "" ? LocalizeLookUp.GetText("lt_coven_none") : LocalizeLookUp.GetText("lt_coven") + " " + data.covenId);
-        //	_state.text = (data.state == "" ? "State: Normal" : "State: " + data.state);
-        _state.text = (data.state == "" ? LocalizeLookUp.GetText("lt_state_normal") : LocalizeLookUp.GetText("lt_state") + " " + data.state);
-        //	_energy.text = "Energy: " + data.energy.ToString();
-        _energy.text = LocalizeLookUp.GetText("lt_energy") + " " + data.energy.ToString();
-
-
+        _coven.text = (string.IsNullOrEmpty(data.covenId) ? LocalizeLookUp.GetText("lt_coven_none") : LocalizeLookUp.GetText("lt_coven") + " " + data.covenId);
+        //_state.text = (data.state == "" ? LocalizeLookUp.GetText("lt_state_normal") : LocalizeLookUp.GetText("lt_state") + " " + data.state);
+        _power.text = "<Power>: " + data.power;
+        _resilience.text = "<Resilience>: " + data.resilience;
+        _energy.text = LocalizeLookUp.GetText("lt_energy") + " " + data.energy.ToString() + "/" + data.baseEnergy.ToString();
+        
         m_OnFly = onFly;
         m_OnCoven = onCoven;
         m_OnClose = onClose;
+
+        LeanTween.cancel(m_TweenId);
+        m_TweenId = LeanTween.value(m_CanvasGroup.alpha, 1, 0.75f)
+            .setEaseOutCubic()
+            .setOnStart(() =>
+            {
+                m_Canvas.enabled = true;
+                m_InputRaycaster.enabled = true;
+            })
+            .setOnUpdate((float v) =>
+            {
+                m_CanvasGroup.alpha = v;
+                m_CanvasGroup.transform.localScale = Vector3.Lerp(Vector3.one * 0.5f, Vector3.one, v);
+            })
+            .uniqueId;
+
+        //LTDescr descrAlpha = LeanTween.alphaCanvas(m_CanvasGroup, 1, .28f).setEase(LeanTweenType.easeInOutSine);
+        //LTDescr descrScale = LeanTween.scale(m_CanvasGroup.gameObject.GetComponent<RectTransform>(), Vector3.one, .4f).setEase(LeanTweenType.easeInOutSine);
+    }
+    
+    public void Close()
+    {
+        m_OnFly = null;
+        m_OnCoven = null;
+        m_OnClose = null;
+
+        m_InputRaycaster.enabled = false;
+
+        LeanTween.cancel(m_TweenId);
+        m_TweenId = LeanTween.value(m_CanvasGroup.alpha, 0, 0.5f)
+            .setEaseOutCubic()
+            .setOnUpdate((float v) =>
+            {
+                m_CanvasGroup.alpha = v;
+                m_CanvasGroup.transform.localScale = Vector3.Lerp(Vector3.one * 0.5f, Vector3.one, v);
+            })
+            .setOnComplete(() =>
+            {
+                m_Canvas.enabled = false;
+            })
+            .uniqueId;
     }
 
     private void ChangeDegree(int Degree)
@@ -122,29 +164,21 @@ public class TeamPlayerView : MonoBehaviour
         Close();
     }
 
-    public void Close()
-    {
-        LTDescr descrAlpha = LeanTween.alphaCanvas(canvasGroup, 0, .28f).setEase(LeanTweenType.easeInOutSine);
-        LTDescr descrScale = LeanTween.scale(WitchCard.GetComponent<RectTransform>(), Vector3.zero, .4f).setEase(LeanTweenType.easeInOutSine);
-        descrScale.setOnComplete(() => { WitchCard.SetActive(false); });
-    }
 
-    public static void ViewCharacter(string id, System.Action<WitchMarkerData, int> callback)
+    public static void ViewCharacter(string id, System.Action<WitchMarkerData, string> callback)
     {
-        var data = new { target = id };
-        APIManager.Instance.Post(
-            endpoint: "chat/select",
-            data: JsonConvert.SerializeObject(data),
-            CallBack: (response, result) =>
+        MarkerSpawner.GetMarkerDetails(id, (result, response) =>
+        {
+            if (result == 200)
             {
-                if (result == 200)
-                {
-                    callback?.Invoke(JsonConvert.DeserializeObject<WitchMarkerData>(response), result);
-                }
-                else
-                {
-                    callback?.Invoke(null, result);
-                }
-            });
+                WitchMarkerData character = JsonConvert.DeserializeObject<WitchMarkerData>(response);
+                Instance.Show(character);
+                callback?.Invoke(character, null);
+            }
+            else
+            {
+                callback?.Invoke(null, response);
+            }
+        });
     }
 }

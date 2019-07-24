@@ -28,6 +28,7 @@ public class UIPlayerInfo : UIInfoPanel
     [Header("Buttons")]
     [SerializeField] private Button m_BackButton;
     [SerializeField] private Button m_CloseButton;
+    [SerializeField] private Button m_PlayerButton;
     [SerializeField] private Button m_CovenButton;
     [SerializeField] private Button m_CastButton;
     [SerializeField] private Button m_QuickBless;
@@ -71,6 +72,7 @@ public class UIPlayerInfo : UIInfoPanel
 
         m_BackButton.onClick.AddListener(OnClickBack);
         m_CloseButton.onClick.AddListener(OnClickClose);
+        m_PlayerButton.onClick.AddListener(OnClickPlayer);
         m_CovenButton.onClick.AddListener(OnClickCoven);
         m_CastButton.onClick.AddListener(OnClickCast);
 
@@ -207,7 +209,12 @@ public class UIPlayerInfo : UIInfoPanel
 
     private void OnClickCoven()
     {
-        Debug.Log("TODO: Open coven");
+        UIGlobalErrorPopup.ShowError(null, "NOT IMPLEMENTED");
+    }
+
+    private void OnClickPlayer()
+    {
+        TeamPlayerView.Instance.Show(m_WitchDetails);
     }
 
     private void OnClickCast()

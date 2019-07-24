@@ -183,12 +183,8 @@ public class Leaderboards : UIAnimationManager
     {
         loadingFullscreen.SetActive(true);
         TeamPlayerView.ViewCharacter(playerName,
-            (character, resultCode) =>
+            (character, error) =>
             {
-                if (resultCode == 200)
-                {
-                    TeamPlayerView.Instance.Setup(character, Hide);
-                }
                 loadingFullscreen.SetActive(false);
             });
     }

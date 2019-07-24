@@ -232,14 +232,14 @@ public class SplashManager : MonoBehaviour
         m_HintsCoroutine = StartCoroutine(HintsCoroutine(onStart));
     }
 
-    public void HideHints(System.Action onComplete)
+    public void HideHints(float time, System.Action onComplete)
     {
         IsShowingHints = false;
 
         if (m_HintsCoroutine == null)
             return;
 
-        m_HintTweenId = LeanTween.alphaCanvas(m_HintScreen, 1f, 0f)
+        m_HintTweenId = LeanTween.alphaCanvas(m_HintScreen, time, 0f)
             .setOnComplete(() =>
             {
                 m_HintScreen.gameObject.SetActive(false);
@@ -267,7 +267,7 @@ public class SplashManager : MonoBehaviour
         while (true)
         {
             if (Input.GetMouseButtonDown(0))
-                ShowNewHint();
+                HideHints(0.5f, ShowNewHint);
 
             yield return 0;
         }

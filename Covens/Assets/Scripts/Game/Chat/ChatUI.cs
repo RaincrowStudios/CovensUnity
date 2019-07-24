@@ -643,12 +643,8 @@ public class ChatUI : UIAnimationManager
     {
 
         TeamPlayerView.ViewCharacter(playerID,
-                 (character, resultCode) =>
+                 (character, error) =>
                  {
-                     if (resultCode == 200)
-                     {
-                         TeamPlayerView.Instance.Setup(character);
-                     }
                      loadingFullscreen.SetActive(false);
                  });
 

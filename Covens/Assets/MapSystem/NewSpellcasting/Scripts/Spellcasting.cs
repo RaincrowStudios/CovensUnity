@@ -63,7 +63,7 @@ public class Spellcasting
     private static Dictionary <string, System.Action<SpellData, IMarker, List<spellIngredientsData>, System.Action<Raincrow.GameEventResponses.SpellCastHandler.Result>, System.Action>> m_SpecialSpells = 
         new Dictionary<string, System.Action<SpellData, IMarker, List<spellIngredientsData>, System.Action<Raincrow.GameEventResponses.SpellCastHandler.Result>, System.Action>>
         {
-            { "spell_channeling", SpellChanneling.CastSpell }
+            //{ "spell_channeling", SpellChanneling.CastSpell }
         };
 
 

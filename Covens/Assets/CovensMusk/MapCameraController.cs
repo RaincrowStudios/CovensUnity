@@ -441,6 +441,8 @@ public class MapCameraController : MonoBehaviour
         if (fingers.Count != 2)
             return;
 #else
+        if (UnityEngine.EventSystems.EventSystem.current.IsPointerOverGameObject())
+            return;
         if (Input.GetAxis("Mouse ScrollWheel") == 0 && fingers.Count != 2)
             return;
 #endif

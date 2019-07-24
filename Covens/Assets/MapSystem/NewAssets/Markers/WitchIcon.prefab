@@ -753,7 +753,6 @@ GameObject:
   m_Component:
   - component: {fileID: 4540036959984130}
   - component: {fileID: 212512098840904110}
-  - component: {fileID: 114294763719119170}
   m_Layer: 20
   m_Name: EnergyRing_Fill
   m_TagString: Untagged
@@ -821,21 +820,8 @@ SpriteRenderer:
   m_AdaptiveModeThreshold: 0.5
   m_SpriteTileMode: 0
   m_WasSpriteAssigned: 1
-  m_MaskInteraction: 2
+  m_MaskInteraction: 0
   m_SpriteSortPoint: 0
---- !u!114 &114294763719119170
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1717220890867890}
-  m_Enabled: 0
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: cacb71b3937655a469dba793bc7c2964, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  frequency: 1
 --- !u!1 &1849702601450360
 GameObject:
   m_ObjectHideFlags: 0
@@ -1098,7 +1084,6 @@ GameObject:
   m_Component:
   - component: {fileID: 5102972010094575307}
   - component: {fileID: 176596696117358692}
-  - component: {fileID: 2394141047602074771}
   m_Layer: 20
   m_Name: EnergyRing_Empty
   m_TagString: Untagged
@@ -1166,21 +1151,8 @@ SpriteRenderer:
   m_AdaptiveModeThreshold: 0.5
   m_SpriteTileMode: 0
   m_WasSpriteAssigned: 1
-  m_MaskInteraction: 2
+  m_MaskInteraction: 0
   m_SpriteSortPoint: 0
---- !u!114 &2394141047602074771
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 974173773737846181}
-  m_Enabled: 0
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: cacb71b3937655a469dba793bc7c2964, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  frequency: 1
 --- !u!1 &1439377358484679715
 GameObject:
   m_ObjectHideFlags: 0
