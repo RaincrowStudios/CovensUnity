@@ -82,7 +82,7 @@ public class DownloadManager : MonoBehaviour
         Debug.Log("Requesting asset list from server");
         SplashManager.Instance.SetDownloadMessage("Getting asset list from server", "");
 
-        APIManagerServer.EnableAutoRetry = false;
+        //APIManagerServer.EnableAutoRetry = false;
 
         int retryCount = 0;
         System.Action getAssets = () => { };
@@ -93,27 +93,32 @@ public class DownloadManager : MonoBehaviour
             {
                 if (responseCode == 200 && !string.IsNullOrEmpty(s))
                 {
-                    APIManagerServer.EnableAutoRetry = true;
+                    //APIManagerServer.EnableAutoRetry = true;
                     Debug.Log("Assets to download:\n" + s);
                     var d = JsonConvert.DeserializeObject<AssetResponse>(s);
                     Instance.StartCoroutine(StartDownloads(d));
                 }
                 else
                 {
-                    if (retryCount >= APIManagerServer.MaxRetries)
-                    {
-                            Debug.LogError("Failed to request asset list from server.\n[" + responseCode.ToString() + "] " + s);
-                            OnServerError?.Invoke(responseCode, s);
-                    }
-                    else
-                    {
-                        SplashManager.Instance.SetDownloadMessage("Retrying connection to servers . . .", $"Attempt {retryCount}/{APIManagerServer.MaxRetries} ");
-
-                        Debug.Log("Assets request failed. Retrying[" + retryCount + "]");
-                        retryCount += 1;
-                        LeanTween.value(0, 0, 2f).setOnComplete(getAssets);
-                    }
+                    Debug.LogError("Failed to request asset list from server.\n[" + responseCode.ToString() + "] " + s);
+                    OnServerError?.Invoke(responseCode, s);
                 }
+                //else
+                //{
+                //    if (retryCount >= APIManagerServer.MaxRetries)
+                //    {
+                //            Debug.LogError("Failed to request asset list from server.\n[" + responseCode.ToString() + "] " + s);
+                //            OnServerError?.Invoke(responseCode, s);
+                //    }
+                //    else
+                //    {
+                //        SplashManager.Instance.SetDownloadMessage("Retrying connection to servers . . .", $"Attempt {retryCount}/{APIManagerServer.MaxRetries} ");
+
+                //        Debug.Log("Assets request failed. Retrying[" + retryCount + "]");
+                //        retryCount += 1;
+                //        LeanTween.value(0, 0, 2f).setOnComplete(getAssets);
+                //    }
+                //}
             });
         };
 

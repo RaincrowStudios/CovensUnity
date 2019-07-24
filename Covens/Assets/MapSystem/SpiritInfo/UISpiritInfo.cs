@@ -81,40 +81,23 @@ public class UISpiritInfo : UIInfoPanel
         m_Token = token as SpiritToken;
         m_SpiritData = DownloadedAssets.spiritDict[m_Token.spiritId];
         m_Details = null;
-
-        m_SpiritName.text = m_SpiritData.Name;
-
         m_DescButton.onClick.RemoveAllListeners();
 
-        if (string.IsNullOrEmpty(m_Token.owner))
+        m_SpiritName.text = m_SpiritData.Name;
+        m_Energy.text = LocalizeLookUp.GetText("cast_energy").ToUpper() + " <color=black>" + m_Token.energy.ToString() + " / " + m_Token.baseEnergy.ToString() + "</color>";
+        m_Desc.text = LocalizeLookUp.GetText("location_owned").Replace("{{Controller}}", "[" + LocalizeLookUp.GetText("loading") + "]");//"Belongs to [Loading...]";
+
+        string tier;
+        switch (m_SpiritData.tier)
         {
-            if (m_SpiritData.tier == 1)
-                m_Tier.text = LocalizeLookUp.GetText("ftf_wild_spirit") + " (" + LocalizeLookUp.GetText("cast_spirit_lesser") + ")";//"Wild Spirit (Lesser)";
-            else if (m_SpiritData.tier == 2)
-                m_Tier.text = LocalizeLookUp.GetText("ftf_wild_spirit") + " (" + LocalizeLookUp.GetText("cast_spirit_greater") + ")";//"Wild Spirit (Greater)";
-            else if (m_SpiritData.tier == 3)
-                m_Tier.text = LocalizeLookUp.GetText("ftf_wild_spirit") + " (" + LocalizeLookUp.GetText("cast_spirit_superior") + ")";//"Wild Spirit (Superior)";
-            else
-                m_Tier.text = LocalizeLookUp.GetText("ftf_wild_spirit") + " (" + LocalizeLookUp.GetText("cast_spirit_legendary") + ")";//"Wild Spirit (Legendary)";
-
-            m_Desc.text = LocalizeLookUp.GetText("cast_spirit_knowledge");// "Defeating this spirit will give you the power to summon it.";
-        }
-        else
-        {
-            if (m_SpiritData.tier == 1)
-                m_Tier.text = LocalizeLookUp.GetText("cast_spirit_lesser") + " " + LocalizeLookUp.GetText("attacked_spirit");//"Lesser Spirit";
-            else if (m_SpiritData.tier == 2)
-                m_Tier.text = LocalizeLookUp.GetText("cast_spirit_greater") + " " + LocalizeLookUp.GetText("attacked_spirit");//"Greater Spirit";
-            else if (m_SpiritData.tier == 3)
-                m_Tier.text = LocalizeLookUp.GetText("cast_spirit_superior") + " " + LocalizeLookUp.GetText("attacked_spirit");//"Superior Spirit";
-            else
-                m_Tier.text = LocalizeLookUp.GetText("cast_spirit_legendary") + " " + LocalizeLookUp.GetText("attacked_spirit");//"Legendary Spirit";
-
-            m_Desc.text = LocalizeLookUp.GetText("location_owned").Replace("{{Controller}}", "[" + LocalizeLookUp.GetText("loading") + "]");//"Belongs to [Loading...]";
-        }
-
-        m_Energy.text = LocalizeLookUp.GetText("cast_energy").ToUpper() + " <color=black>" + m_Token.energy.ToString() + "</color>";
-
+            case 1: tier = LocalizeLookUp.GetText("cast_spirit_lesser"); break;
+            case 2: tier = LocalizeLookUp.GetText("cast_spirit_greater"); break;
+            case 3: tier = LocalizeLookUp.GetText("cast_spirit_superior"); break;
+            case 4: tier = LocalizeLookUp.GetText("cast_spirit_legendary"); break;
+            default: tier = "?"; break;
+        };
+        m_Tier.text = tier;
+                        
         previousMapPosition = MapsAPI.Instance.GetWorldPosition();
         m_PreviousMapZoom = MapsAPI.Instance.normalizedZoom;
 
@@ -178,17 +161,30 @@ public class UISpiritInfo : UIInfoPanel
     public void SetupDetails(MapSpiritData details)
     {
         m_Details = details;
-
-        if (string.IsNullOrEmpty(m_Token.owner) == false)
+        
+        if (string.IsNullOrEmpty(m_Details.owner))
         {
-            if (string.IsNullOrEmpty(details.covenId))
+            if (m_SpiritData.tier == 1)
+                m_Tier.text = LocalizeLookUp.GetText("ftf_wild_spirit") + " (" + LocalizeLookUp.GetText("cast_spirit_lesser") + ")";//"Wild Spirit (Lesser)";
+            else if (m_SpiritData.tier == 2)
+                m_Tier.text = LocalizeLookUp.GetText("ftf_wild_spirit") + " (" + LocalizeLookUp.GetText("cast_spirit_greater") + ")";//"Wild Spirit (Greater)";
+            else if (m_SpiritData.tier == 3)
+                m_Tier.text = LocalizeLookUp.GetText("ftf_wild_spirit") + " (" + LocalizeLookUp.GetText("cast_spirit_superior") + ")";//"Wild Spirit (Superior)";
+            else
+                m_Tier.text = LocalizeLookUp.GetText("ftf_wild_spirit") + " (" + LocalizeLookUp.GetText("cast_spirit_legendary") + ")";//"Wild Spirit (Legendary)";
+
+            m_Desc.text = LocalizeLookUp.GetText("cast_spirit_knowledge");// "Defeating this spirit will give you the power to summon it.";
+        }
+        else
+        {
+            if (string.IsNullOrEmpty(details.coven))
             {
                 m_Desc.text = LocalizeLookUp.GetText("location_owned").Replace("{{Controller}}", "<color=black>" + details.owner + "</color>");
                 m_DescButton.onClick.AddListener(OnClickOwner);
             }
             else
             {
-                m_Desc.text = LocalizeLookUp.GetText("location_owned").Replace("{{Controller}}", LocalizeLookUp.GetText("leaderboard_coven") + " <color=black>" + details.covenId + "</color>");
+                m_Desc.text = LocalizeLookUp.GetText("location_owned").Replace("{{Controller}}", LocalizeLookUp.GetText("leaderboard_coven") + " <color=black>" + details.coven + "</color>");
                 m_DescButton.onClick.AddListener(OnClickCoven);
             }
         }

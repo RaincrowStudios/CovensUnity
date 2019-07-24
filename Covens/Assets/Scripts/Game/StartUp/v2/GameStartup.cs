@@ -87,7 +87,6 @@ public class GameStartup : MonoBehaviour
         //wait for the gps/network
         GetGPS.OnInitialized += OnGPSReady;
 
-        Debug.Log("Instantiating the musk map");
         MapsAPI.Instance.InstantiateMap();
     }
 

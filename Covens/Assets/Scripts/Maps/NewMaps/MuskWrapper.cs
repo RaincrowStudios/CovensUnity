@@ -17,6 +17,8 @@ namespace Raincrow.Maps
             if (m_Map != null)
                 return;
 
+            Debug.Log("Instantiating the musk map");
+
             m_Map = GameObject.FindObjectOfType<CovensMuskMap>();
             if (m_Map == null)
                 m_Map = GameObject.Instantiate(Resources.Load<CovensMuskMap>("CovensMuskMap"));

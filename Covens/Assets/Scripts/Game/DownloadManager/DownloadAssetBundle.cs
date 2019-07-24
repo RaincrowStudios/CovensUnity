@@ -45,7 +45,7 @@ public struct SpiritData
     public int[] zones;
 
     public string Name { get => LocalizeLookUp.GetSpiritName(id); }
-    public string Location { get => LocalizeLookUp.GetText(legend); }
+    public string Location { get => string.IsNullOrEmpty(legend) ? LocalizeLookUp.GetText("chat_world") : LocalizeLookUp.GetText(legend); }
     public string Type { get => LocalizeLookUp.GetText(type); }
     public string Behavior { get => LocalizeLookUp.GetSpiritBehavior(id); }
     public string Description { get => LocalizeLookUp.GetSpiritDesc(id); }
