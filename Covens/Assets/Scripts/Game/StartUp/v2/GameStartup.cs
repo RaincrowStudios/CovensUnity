@@ -203,8 +203,8 @@ public class GameStartup : MonoBehaviour
                 m_GameConfigReady = true;
             });
 
-        //cache the leaderboard
-        Leaderboards.GetLeaderboards(null, null, false);
+        ////cache the leaderboard
+        //Leaderboards.GetLeaderboards(null, null, false);
     }
 
     private void OnSplashLogosFinished()

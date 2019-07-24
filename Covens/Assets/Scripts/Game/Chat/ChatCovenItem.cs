@@ -30,19 +30,20 @@ public class ChatCovenItem : MonoBehaviour
 		founder.text = LocalizeLookUp.GetText("coven_founder") + "<b><color=white>" + CD.founder.ToString();
         sendRequest.onClick.AddListener(() =>
         {
-            sendRequest.interactable = false;
-            TeamManager.SendRequest(
-                CD.name,
-                (int r, string s) =>  {
-                    if (r == 200)
-                    {
-						sendRequestText.text = LocalizeLookUp.GetText("coven_request_success");// "Sent";
-                    }
-                    else
-                    {
-						sendRequestText.text = LocalizeLookUp.GetText("lt_failed");// "Failed";
-                    }
-                });
+            Debug.LogError("TODO: SEND REQUEST");
+      //      sendRequest.interactable = false;
+      //      TeamManager.SendRequest(
+      //          CD.name,
+      //          (int r, string s) =>  {
+      //              if (r == 200)
+      //              {
+						//sendRequestText.text = LocalizeLookUp.GetText("coven_request_success");// "Sent";
+      //              }
+      //              else
+      //              {
+						//sendRequestText.text = LocalizeLookUp.GetText("lt_failed");// "Failed";
+      //              }
+      //          });
         });
     }
 }

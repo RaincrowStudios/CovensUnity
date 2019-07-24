@@ -62,20 +62,21 @@ namespace Raincrow.Chat.UI
 
         private void SendJoinCovenRequest()
         {
-            TeamManager.SendRequest(_covenName, (int response, string responseBody) =>
+            TeamManager.SendRequest(_covenName, (response, responseBody) =>
             {
-                if (response == 200)
-                {
-                    _sendRequestLabel.text = LocalizeLookUp.GetText("coven_request_success"); // "Sent";
-                }
-                else if (response == 4805)
-                {
-                    _sendRequestLabel.text = LocalizeLookUp.GetText("coven_already_requested"); // "already requested invite";
-                }
-                else
-                {
-                    _sendRequestLabel.text = LocalizeLookUp.GetText("lt_failed"); // "Failed";
-                }
+                Debug.LogError("TODO: SEND REQUEST");
+                //if (response == 200)
+                //{
+                //    _sendRequestLabel.text = LocalizeLookUp.GetText("coven_request_success"); // "Sent";
+                //}
+                //else if (response == 4805)
+                //{
+                //    _sendRequestLabel.text = LocalizeLookUp.GetText("coven_already_requested"); // "already requested invite";
+                //}
+                //else
+                //{
+                //    _sendRequestLabel.text = LocalizeLookUp.GetText("lt_failed"); // "Failed";
+                //}
             });
         }
     }

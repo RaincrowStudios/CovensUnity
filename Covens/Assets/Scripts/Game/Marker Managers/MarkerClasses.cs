@@ -66,13 +66,12 @@ public class LocationMarkerData : MarkerData
 public abstract class CharacterMarkerData : MarkerData
 {
     public virtual string state { get; set; }
-    public virtual List<Condition> conditions { get; set; }
     public virtual int energy { get; set; }
     public virtual int degree { get; set; }
     public virtual int level { get; set; }
     public virtual int power { get; set; }
     public virtual int resilience { get; set; }
-
+    
     [JsonProperty("coven")]
     public virtual string covenId { get; set; }
 
@@ -85,6 +84,9 @@ public abstract class CharacterMarkerData : MarkerData
             return energy;
         }
     }
+
+    [JsonIgnore]
+    public virtual List<Condition> conditions { get { return new List<Condition>(); } }
 }
 
 public class WitchMarkerData : CharacterMarkerData
@@ -94,12 +96,13 @@ public class WitchMarkerData : CharacterMarkerData
     public virtual string dominion { get; set; }
     public virtual string name { get; set; }
     public virtual int bodyType { get; set; }
-    public virtual List<EquippedApparel> equipped { get; set; }
     public virtual float latitude { get; set; }
     public virtual float longitude { get; set; }
     public virtual int worldRank { get; set; }
     public virtual int dominionRank { get; set; }
 
+    public virtual List<EquippedApparel> equipped { get; set; }
+    
     [JsonIgnore]
     public virtual bool male { get => bodyType >= 3; }
 }
@@ -122,31 +125,32 @@ public struct CovenInfo
     public long joinedOn;
 }
 
+public class CovenRequest
+{
+    public double date;
+    public string coven;
+    public string name => coven;
+}
+
+public class CovenInvite
+{
+    public double date;
+    public string coven;
+    public string name => coven;
+    public int level;
+}
+
 public class PlayerData : WitchMarkerData
 {
-    public HashSet<string> immunities;
+    [JsonProperty("_id")] public string instance;
     public string account;
-    public List<string> spirits;
     public string physicalDominion;
     public ulong xp;
     public int alignment;
-    [JsonProperty("_id")]
-    public string instance;
     public bool whiteMastery;
     public bool shadowMastery;
     public bool greyMastery;
-    public CovenInfo covenInfo;
-    public List<KnownSpirits> knownSpirits;
-
-    [JsonProperty("tools")]
-    private List<CollectableItem> m_Tools;
-    [JsonProperty("herbs")]
-    private List<CollectableItem> m_Herbs;
-    [JsonProperty("gems")]
-    private List<CollectableItem> m_Gems;
-    [JsonProperty("cosmetics")]
-    private List<string> m_Cosmetics;
-
+        
     public int silver;
     public int gold;
     public int foxus;
@@ -154,7 +158,6 @@ public class PlayerData : WitchMarkerData
     public int favor;
     public int aptitude;
     public int wisdom;
-    public List<StatusEffect> effects;
     public bool tutorial;
 
     public string favoriteSpell;
@@ -162,7 +165,25 @@ public class PlayerData : WitchMarkerData
     public bool dailyBlessing;
     public string benefactor;
     public string nemesis;
-       
+
+    public CovenInfo covenInfo;
+
+    [JsonProperty("tools")] private List<CollectableItem> m_Tools;
+    [JsonProperty("herbs")] private List<CollectableItem> m_Herbs;
+    [JsonProperty("gems")] private List<CollectableItem> m_Gems;
+
+    [JsonIgnore] private Dictionary<string, int> m_HerbsDict = null;
+    [JsonIgnore] private Dictionary<string, int> m_ToolsDict = null;
+    [JsonIgnore] private Dictionary<string, int> m_GemsDict = null;
+
+    [JsonProperty("cosmetics")] private List<string> m_Cosmetics;
+    public List<string> spirits;
+    public List<KnownSpirits> knownSpirits;
+    public List<StatusEffect> effects;
+    public List<CovenInvite> covenInvites;
+    public List<CovenRequest> covenRequests;
+    public HashSet<string> immunities;
+
     [JsonIgnore]
     public ulong xpToLevelUp
     {
@@ -174,15 +195,7 @@ public class PlayerData : WitchMarkerData
             return 0;
         }
     }
-
-    //new ingredients inventory
-    [JsonIgnore]
-    private Dictionary<string, int> m_HerbsDict = null;
-    [JsonIgnore]
-    private Dictionary<string, int> m_ToolsDict = null;
-    [JsonIgnore]
-    private Dictionary<string, int> m_GemsDict = null;
-
+    
     public void Setup()
     {
         m_HerbsDict = new Dictionary<string, int>();

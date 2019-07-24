@@ -25,68 +25,158 @@ public class TeamMemberItemUI : MonoBehaviour
     [SerializeField] private Button m_PromoteButton;
     [SerializeField] private InputField m_TitleField;
 
-    private TeamMemberData m_Data;
-    private System.Action m_OnClick;
+    public TeamData Coven { get; private set; }
+    public TeamMemberData MemberData { get; private set; }
+
+    private System.Action<TeamMemberItemUI> m_OnSelect;
+    private System.Action<string> m_OnKick;
+    private System.Action<string, CovenRole> m_OnPromote;
+    private System.Action<string, CovenRole> m_OnDemote;
+    private System.Action<string, string> m_OnChangeTitle;
 
     public void Awake()
     {
-        m_Button.onClick.AddListener(() => m_OnClick?.Invoke());
+        m_Button.onClick.AddListener(OnClick);
+        m_DemoteButton.onClick.AddListener(OnClickDemote);
+        m_PromoteButton.onClick.AddListener(OnClickPromote);
+        m_KickButton.onClick.AddListener(OnClickKick);
+        m_TitleField.onEndEdit.AddListener(OnFinishEditingTitle);
     }
 
-    public void Setup(TeamMemberData data, bool showEdit, System.Action<TeamMemberData> onClick)
+    public void Setup(
+        TeamData coven,
+        TeamMemberData member,
+        System.Action<TeamMemberItemUI> onSelect,
+        System.Action<string> onKick,
+        System.Action<string, CovenRole> onPromote,
+        System.Action<string, CovenRole> onDemote,
+        System.Action<string, string> onChangeTitle)
     {
         transform.localScale = Vector3.one;
 
-        m_Data = data;
-        m_OnClick = () => onClick?.Invoke(m_Data);
+        Coven = coven;
+        MemberData = member;
+        m_OnSelect = onSelect;
+        m_OnKick = onKick;
+        m_OnPromote = onPromote;
+        m_OnDemote = onDemote;
+        m_OnChangeTitle = onChangeTitle;
 
         //setup data
-        m_Level.text = data.Level.ToString();
-        m_PlayerName.text = data.Name;
-        m_Title.text = data.Title;
-        m_TitleField.text = data.Title;
-        m_AdminIcon.SetActive(data.Role == CovenRole.ADMIN);
-        m_ModIcon.SetActive(data.Role == CovenRole.MODERATOR);
-        m_LastActive.text = GetlastActive(data.LastActiveOn);
-        m_State.text = data.State == "" ? "Normal" : data.State;
+        Refresh();
+    }
+
+    public void Refresh()
+    {
+        m_Level.text = MemberData.Level.ToString();
+        m_PlayerName.text = MemberData.Name;
+        m_Title.text = MemberData.Title;
+        m_TitleField.text = MemberData.Title;
+        m_AdminIcon.SetActive(MemberData.Role == CovenRole.ADMIN);
+        m_ModIcon.SetActive(MemberData.Role == CovenRole.MODERATOR);
+        m_LastActive.text = GetlastActive(MemberData.LastActiveOn);
+        m_State.text = MemberData.State == "" ? "Normal" : MemberData.State;
 
         //edit options
-        m_TitleField.gameObject.SetActive(showEdit && TeamManager.MyRole > data.Role);
-        m_KickButton.gameObject.SetActive(showEdit && TeamManager.MyRole > data.Role);
-        m_PromoteButton.gameObject.SetActive(showEdit && TeamManager.MyRole > data.Role);
-        m_DemoteButton.gameObject.SetActive(showEdit && TeamManager.MyRole > data.Role);
+        // m_TitleField.gameObject.SetActive(showEdit && TeamManager.MyRole > MemberData.Role);
+        m_TitleField.gameObject.SetActive(false);
+        m_KickButton.gameObject.SetActive(Coven.IsMember && TeamManager.MyRole > MemberData.Role);
+        m_PromoteButton.gameObject.SetActive(Coven.IsMember && TeamManager.MyRole > MemberData.Role);
+        m_DemoteButton.gameObject.SetActive(Coven.IsMember && TeamManager.MyRole > MemberData.Role);
 
-        m_PromoteButton.interactable = data.Role < CovenRole.ADMIN;
-        m_DemoteButton.interactable = data.Role > CovenRole.MEMBER;
+        m_PromoteButton.interactable = MemberData.Role < CovenRole.ADMIN;
+        m_DemoteButton.interactable = MemberData.Role > CovenRole.MEMBER;
 
         m_Background.SetActive(transform.GetSiblingIndex() % 2 == 0);
     }
 
     private void OnClick()
     {
-        m_OnClick?.Invoke();
-        //TeamPlayerView.ViewCharacter(
-        //    m_Data.displayName, 
-        //    (character, result) =>
-        //    {
-        //        if (character != null)
-        //            TeamPlayerView.Instance.Setup(character);
-        //    });
+        m_OnSelect?.Invoke(this);
     }
 
     private void OnClickKick()
     {
-        Debug.LogError("TODO: KICK");
+        UIGlobalErrorPopup.ShowPopUp(
+            confirmAction: () =>
+            {
+                TeamManager.KickMember(MemberData, (error) =>
+                {
+                    if (string.IsNullOrEmpty(error))
+                        m_OnKick?.Invoke(MemberData.Id);
+                    else
+                        UIGlobalErrorPopup.ShowError(null, error);
+                });
+            },
+            cancelAction: () => {},
+            LocalizeLookUp.GetText("coven_member_remove").Replace("{{name}}", MemberData.Name));
     }
 
     private void OnClickDemote()
     {
-        Debug.LogError("TODO: DEMOTE");
+        CovenRole role = MemberData.Role - 1;
+        string roleName;
+
+        if (role == CovenRole.MODERATOR)
+            roleName = LocalizeLookUp.GetText("team_member_moderator_role");
+        else
+            roleName = LocalizeLookUp.GetText("team_member_member_role");
+
+        UIGlobalErrorPopup.ShowPopUp(
+            confirmAction: () =>
+            {
+                TeamManager.DemoteMember(MemberData, (error) =>
+                {
+                    if (string.IsNullOrEmpty(error))
+                        m_OnDemote?.Invoke(MemberData.Id, role);
+                    else
+                        UIGlobalErrorPopup.ShowError(null, error);
+                });
+            },
+            cancelAction: () => {},
+            LocalizeLookUp.GetText("coven_member_demote").Replace("{{name}}", MemberData.Name).Replace("{{role}}", roleName));
     }
 
     private void OnClickPromote()
     {
-        Debug.LogError("TODO: PROMOTE");
+        CovenRole role = MemberData.Role + 1;
+        string roleName;
+
+        if (role == CovenRole.MODERATOR)
+            roleName = LocalizeLookUp.GetText("team_member_moderator_role");
+        else
+            roleName = LocalizeLookUp.GetText("team_member_admin_role");
+
+        UIGlobalErrorPopup.ShowPopUp(
+            confirmAction: () =>
+            {
+                TeamManager.DemoteMember(MemberData, (error) =>
+                {
+                    if (string.IsNullOrEmpty(error))
+                        m_OnPromote?.Invoke(MemberData.Id, role);
+                    else
+                        UIGlobalErrorPopup.ShowError(null, error);
+                });
+            },
+            cancelAction: () => {},
+            LocalizeLookUp.GetText("coven_member_promote").Replace("{{name}}", MemberData.Name).Replace("{{role}}", roleName));
+    }
+
+    private void OnFinishEditingTitle(string text)
+    {
+        UIGlobalErrorPopup.ShowPopUp(
+               confirmAction: () =>
+               {
+                   TeamManager.ChangeMemberTitle(MemberData, text, (error) =>
+                   {
+                       if (string.IsNullOrEmpty(error))
+                           m_OnChangeTitle?.Invoke(MemberData.Id, text);
+                       else
+                           UIGlobalErrorPopup.ShowError(null, error);
+                   });
+               },
+               cancelAction: () => { },
+               LocalizeLookUp.GetText("coven_member_settitle").Replace("{{name}}", MemberData.Name).Replace("{{title}}", text));
     }
 
     private static string GetlastActive(double javaTimeStamp)

@@ -1,4 +1,5 @@
 ﻿using Newtonsoft.Json;
+using System.Collections.Generic;
 using UnityEngine;
 
 namespace Raincrow.Team
@@ -23,10 +24,9 @@ namespace Raincrow.Team
         [SerializeField] private int worldRank;
         [SerializeField] private int dominionRank;
         [SerializeField] private string createdBy;
-        //[SerializeField] private int totalSilver;
-        //[SerializeField] private int totalGold;
-        //[SerializeField] private int totalEnergy;
-        [SerializeField] private TeamMemberData[] members;
+        [SerializeField] private List<TeamMemberData> members;
+        [SerializeField] private List<PendingRequest> pendingRequests;
+        [SerializeField] private List<PendingInvite> pendingInvites;
 
         public string Id { get => _id; }
         public long CreatedOn { get => createdOn; }
@@ -37,10 +37,9 @@ namespace Raincrow.Team
         public int WorldRank { get => worldRank; }
         public int DominionRank { get => dominionRank; }
         public string CreatedBy { get => createdBy; }
-        //public int TotalSilver { get => totalSilver; }
-        //public int TotalGold { get => totalGold; }
-        //public int TotalEnergy { get => totalEnergy; }
-        public TeamMemberData[] Members { get => members; }
+        public List<TeamMemberData> Members { get => members; }
+        public List<PendingRequest> PendingRequests { get => pendingRequests; }
+        public List<PendingInvite> PendingInvites { get => pendingInvites; }
 
         [JsonIgnore]
         private TeamMemberData m_Founder = null;
@@ -52,9 +51,9 @@ namespace Raincrow.Team
             {
                 if (m_Founder == null)
                 {
-                    foreach (var member in Members)
+                    foreach (var member in members)
                     {
-                        if (member.Id == CreatedBy)
+                        if (member.Id == createdBy)
                         {
                             m_Founder = member;
                             break;
@@ -71,7 +70,7 @@ namespace Raincrow.Team
     }
 
     [System.Serializable]
-    public class TeamMemberData : System.IComparable
+    public class TeamMemberData
     {
         [SerializeField] private string _id;
         [SerializeField] private string state;
@@ -91,49 +90,36 @@ namespace Raincrow.Team
         public int Level { get => level; }
         public int School { get => school; }
         public int Degree { get => degree; }
-        public CovenRole Role { get => (CovenRole)role; }
+        public CovenRole Role { get => (CovenRole)role; set => role = (int)value; }
         public long JoinedOn { get => joinedOn; }
         public long LastActiveOn { get => lastActiveOn; }
-
-        public int CompareTo(object obj)
-        {
-            if (obj is TeamMemberData teamMemberData)
-            {
-                return teamMemberData.role.CompareTo(role);
-            }
-            return -1;
-        }
     }
 
     [System.Serializable]
-    public class TeamInviteRequest
+    public class PendingRequest
     {
+        [SerializeField] private string character;
         [SerializeField] private string name;
         [SerializeField] private int level;
-        [SerializeField] private int degree;
-        [SerializeField] private string requestMessage;
-        [SerializeField] private long requestedOn;
+        [SerializeField] private long date;
 
         public string Name { get => name; }
         public int Level { get => level; }
-        public int Degree { get => degree; }
-        public string RequestMessage { get => requestMessage; }
-        public long RequestedOn { get => requestedOn; }
+        public string Character{ get => character; }
+        public long RequestedOn { get => date; }
     }
 
     [System.Serializable]
-    public class TeamInvite
+    public class PendingInvite
     {
-        [SerializeField] private string covenId;
-        [SerializeField] private string displayName;
-        [SerializeField] private string covenName;
-        [SerializeField] private long invitedOn;
-        [SerializeField] private string inviteToken;
+        [SerializeField] private string character;
+        [SerializeField] private string name;
+        [SerializeField] private int level;
+        [SerializeField] private long date;
 
-        public string CovenId { get => covenId; }
-        public string DisplayName { get => displayName; }
-        public string CovenName { get => covenName; }
-        public long InvitedOn { get => invitedOn; }
-        public string InviteToken { get => inviteToken; }
+        public string Name { get => name; }
+        public int Level { get => level; }
+        public string Character { get => character; }
+        public long RequestedOn { get => date; }
     }
 }

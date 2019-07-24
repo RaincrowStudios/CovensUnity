@@ -1331,7 +1331,7 @@ public class FTFManager : MonoBehaviour
         PlayerDataManager.playerData.tutorial = true;
 
         SocketClient.Instance.InitiateSocketConnection();
-
+        
         LoadingOverlay.Show();
         APIManager.Instance.Post(
             "character/finishTutorial",
@@ -1362,6 +1362,7 @@ public class FTFManager : MonoBehaviour
 
                     AppsFlyerAPI.CompletedFTUE();
                     Utilities.allowMapControl(true);
+
 
                     //get the markers at the current position
                     MarkerManagerAPI.GetMarkers(

@@ -202,7 +202,7 @@ namespace Raincrow.Chat
                 }
                 TeamManager.OnCovenCreated += OnJoinCoven;
                 TeamManager.OnJoinCoven += OnJoinCoven;
-                TeamManager.OnLeaveCovenRequested += LeaveCovenChatRequested;
+                TeamManager.OnLeaveCoven += LeaveCovenChatRequested;
             }            
 
             if (DominionSocket == null)

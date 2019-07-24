@@ -561,10 +561,6 @@ public class CovenOverview
     public long invitedOn { get; set; }
     public long date { get { return alliedOn > 0 ? alliedOn : invitedOn; } }
 }
-public class CovenInvite
-{
-    public CovenOverview[] invites;
-}
 
 public class FindUserRequest
 {

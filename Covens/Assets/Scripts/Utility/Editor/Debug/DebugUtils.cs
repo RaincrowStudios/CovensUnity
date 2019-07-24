@@ -44,7 +44,7 @@ namespace Raincrow.Test
                         break;
                     case 3:
                         // Check DebugUtilsCovenManagement file
-                        ShowCovenDebug();
+                        //ShowCovenDebug();
                         break;
                 }
             }

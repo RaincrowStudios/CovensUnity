@@ -118,15 +118,18 @@ public class Utilities : MonoBehaviour
         string s = "";
         if (lp < 0)
         {
-            s = string.Concat(s, "(", LocalizeLookUp.GetText("generic_shadow"), ")");//"(Shadow)";)
+            //s = string.Concat(s, "(", LocalizeLookUp.GetText("generic_shadow"), ")");//"(Shadow)";)
+            s = LocalizeLookUp.GetText("coven_shadow");
         }
         else if (lp > 0)
         {
-            s = string.Concat(s, "(", LocalizeLookUp.GetText("generic_white"), ")");
+            //s = string.Concat(s, "(", LocalizeLookUp.GetText("generic_white"), ")");
+            s = LocalizeLookUp.GetText("coven_white");
         }
         else
         {
-            s = string.Concat("(", LocalizeLookUp.GetText("generic_grey"), ")");//"(Grey)";
+            //s = string.Concat("(", LocalizeLookUp.GetText("generic_grey"), ")");//"(Grey)";
+            s = LocalizeLookUp.GetText("coven_grey");
         }
         return s;
     }
