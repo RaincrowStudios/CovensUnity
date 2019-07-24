@@ -84,7 +84,6 @@ public class WorldMapMarkerManager : MonoBehaviour
     private bool m_VisibleMarkers;
 
     private Coroutine m_SpawnCoroutine;
-    private Coroutine m_DespawnCoroutine;
     private Coroutine m_ScaleCoroutine;
     private Coroutine m_RequestCoroutine;
 
@@ -254,12 +253,7 @@ public class WorldMapMarkerManager : MonoBehaviour
                     }
 
                     //despawn old
-                    if (m_DespawnCoroutine != null)
-                    {
-                        StopCoroutine(m_DespawnCoroutine);
-                        m_DespawnCoroutine = null;
-                    }
-                    m_DespawnCoroutine = StartCoroutine(DespawnCoroutine(m_MarkersList.ToArray()));
+                    StartCoroutine(DespawnCoroutine(m_MarkersList.ToArray()));
                     m_MarkersList.Clear();
                     
                     //spawn new markers
@@ -343,7 +337,6 @@ public class WorldMapMarkerManager : MonoBehaviour
             to = Mathf.Min(from + batchSize, markers.Length);
             yield return 0;
         }
-        m_DespawnCoroutine = null;
     }
 
     private IEnumerator UpdateScaleCoroutine()
