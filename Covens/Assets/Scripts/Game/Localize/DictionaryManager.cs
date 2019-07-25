@@ -26,7 +26,6 @@ public class DictionaryManager
         FILE_NOT_FOUND,
     }
 
-    public const string DictionaryVersionPlayerPrefsKey = "DictionaryVersion";
     public const string LanguageIndexPlayerPrefsKey = "LanguageIndex";
     public static readonly string[] Languages = new string[] { "English", "Portuguese", "Spanish", "Japanese", "German", "Russian" };
     public static readonly string[] Cultures = new string[] { "en", "pt", "es", "jp", "de", "ru" };

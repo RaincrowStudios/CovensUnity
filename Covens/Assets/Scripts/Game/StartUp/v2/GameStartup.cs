@@ -54,8 +54,7 @@ public class GameStartup : MonoBehaviour
 
     void Awake()
     {
-        // if (Application.isEditor) return;
-        var t = Application.systemLanguage.ToString();
+        var t = PlayerManager.SystemLanguage;
 
         for (int i = 0; i < DictionaryManager.Languages.Length; i++)
         {
@@ -65,7 +64,6 @@ public class GameStartup : MonoBehaviour
                 return;
             }
         }
-        DictionaryManager.languageIndex = 0;
     }
 
     private void Start()

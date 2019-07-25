@@ -35,24 +35,11 @@ public class PlayerManager : MonoBehaviour
     
     [SerializeField] private GameObject selectionRing;
 
-    public static bool inSpiritForm
-    {
-        get { return MarkerManagerAPI.IsSpiritForm; }
-    }
+    public static bool inSpiritForm { get => MarkerManagerAPI.IsSpiritForm; }
 
-    public static bool isFlying
-    {
-        get
-        {
-            return !MapsAPI.Instance.streetLevel;
-        }
-    }
+    public static bool isFlying { get => !MapsAPI.Instance.streetLevel; }
 
-    public static string SystemLanguage
-    {
-        get => PlayerPrefs.GetString("GameLanguage", Application.systemLanguage.ToString());
-        set => PlayerPrefs.SetString("GameLanguage", value);
-    }
+    public static string SystemLanguage { get => DictionaryManager.Languages[DictionaryManager.languageIndex]; }
 
     public float playerScale = 15;
     public float playerPhysicalScale = 15;
@@ -93,7 +80,6 @@ public class PlayerManager : MonoBehaviour
         CreatePlayerStart();
     }
 
-    float deltaTime = 0.0f;
     public Color m_Color;
 
     public static event System.Action OnResyncStart;
@@ -131,10 +117,6 @@ public class PlayerManager : MonoBehaviour
 
     void OnApplicationFocus(bool pause)
     {
-        return;
-//#if UNITY_EDITOR
-//        return;
-//#endif
         if (!pause)
         {
             applicationBG = DateTime.Now;
