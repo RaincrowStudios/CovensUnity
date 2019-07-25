@@ -308,13 +308,13 @@ public class SpellData
     public int cost;
     public int xp;
 
-    public string[] ingredients = new string[] { };
-    public string[] states = new string[] { };
+    public string[] ingredients;
+    public string[] states;
     public Target target;
     public int align;
     public bool pop;
     public bool hidden;
-    
+
     [JsonIgnore]
     public string Name => LocalizeLookUp.GetSpellName(id);
     [JsonIgnore]

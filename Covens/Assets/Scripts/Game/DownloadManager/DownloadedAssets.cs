@@ -255,7 +255,12 @@ public class DownloadedAssets : MonoBehaviour
 
         if (spellDictData.ContainsKey(id))
         {
-            return spellDictData[id];
+            SpellData res = spellDictData[id];
+            if (res.states == null)
+                res.states = new string[0];
+            if (res.ingredients == null)
+                res.ingredients = new string[0];
+            return res;
         }
         else
         {
