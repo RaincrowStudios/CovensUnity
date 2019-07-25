@@ -187,9 +187,6 @@ public class SocketClient : MonoBehaviour
             Debug.LogFormat("Socket Error: {0}", errorMessage);
         }
 
-        if (IsConnected())
-            DisconnectFromSocket();
-
         if (!LoginAPIManager.accountLoggedIn)
         {
             UnityMainThreadDispatcher.Instance().Enqueue(LoginAPIManager.initiateLogin);
@@ -244,9 +241,9 @@ public class SocketClient : MonoBehaviour
         int batchIndex = 0;
         int batchSize = 50;
 
-        while (_socketManager.Socket.IsOpen)
+        while (true)
         {
-            while (!SocketPaused && responsesQueue.Count > 0)
+            while (_socketManager.Socket.IsOpen && !SocketPaused && responsesQueue.Count > 0)
             {
                 CommandResponse response = responsesQueue.Dequeue();
 
