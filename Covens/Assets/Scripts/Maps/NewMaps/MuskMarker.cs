@@ -53,6 +53,7 @@ namespace Raincrow.Maps
                 t.Value.Despawn(t.Key);
 
             m_ParentedObjects.Clear();
+            m_OnClick = null;
 
             gameObject.SetActive(false);
         }
@@ -81,7 +82,7 @@ namespace Raincrow.Maps
         [SerializeField] protected SpriteRenderer m_AvatarRenderer;
         [SerializeField] protected SpriteRenderer m_NameBanner;
         [SerializeField] protected Transform m_StatsContainer;
-        [SerializeField] private SpriteRenderer m_EnergyRing;
+        [SerializeField] protected SpriteRenderer m_EnergyRing;
         [SerializeField] protected SpriteRenderer[] m_Shadows;
 
         protected List<SpriteRenderer> m_Renderers;

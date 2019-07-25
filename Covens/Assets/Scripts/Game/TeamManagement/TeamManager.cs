@@ -85,6 +85,8 @@ public static class TeamManager
                     role =  (int)covenData.Members[0].Role,
                     joinedOn = covenData.CreatedOn
                 };
+
+                //OnJoinCoven?.Invoke(covenData.Id)
                 callback(covenData, null);
             }
             else
@@ -144,7 +146,7 @@ public static class TeamManager
         {
             if (result == 200)
             {
-                TeamMemberData member = JsonConvert.DeserializeObject<TeamMemberData>(response);
+                TeamMemberData member = JsonUtility.FromJson<TeamMemberData>(response);
 
                 //updat the coven's members
                 MyCovenData.Members.Add(member);
@@ -187,7 +189,7 @@ public static class TeamManager
         {
             if (result == 200)
             {
-                PendingInvite pendingInvite = JsonConvert.DeserializeObject<PendingInvite>(response);
+                PendingInvite pendingInvite = JsonUtility.FromJson<PendingInvite>(response);
                 MyCovenData.PendingInvites.Add(pendingInvite);
                 callback?.Invoke(pendingInvite, null);
             }

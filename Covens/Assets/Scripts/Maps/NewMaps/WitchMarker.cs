@@ -189,7 +189,8 @@ public class WitchMarker : MuskMarker
         else
             color = new Color(0.97f, 0.67f, 0.18f, 1f);// Utilities.Orange;
 
-        color.a = characterAlpha * alpha;
+        color.a = m_EnergyRing.color.a;
+        m_EnergyRing.color = color;
     }
 
     public override void OnDespawn()

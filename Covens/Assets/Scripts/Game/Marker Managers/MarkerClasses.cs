@@ -129,15 +129,16 @@ public class CovenRequest
 {
     public double date;
     public string coven;
-    public string name => coven;
+    public string name;
+    public int worldRank;
 }
 
 public class CovenInvite
 {
     public double date;
     public string coven;
-    public string name => coven;
-    public int level;
+    public string name;
+    public int worldRank;
 }
 
 public class PlayerData : WitchMarkerData

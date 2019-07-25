@@ -155,7 +155,7 @@ public class TeamInviteItemUI : MonoBehaviour
         m_Background.SetActive(transform.GetSiblingIndex() % 2 == 0);
         Disable(false);
 
-        m_Level.text = data.level.ToString();
+        m_Level.text = data.worldRank.ToString();
         m_Title.text = data.name;
 
         m_ConfirmButton.gameObject.SetActive(true);
@@ -220,7 +220,7 @@ public class TeamInviteItemUI : MonoBehaviour
         m_Background.SetActive(transform.GetSiblingIndex() % 2 == 0);
         Disable(false);
 
-        m_Level.text = "";// data.level.ToString();
+        m_Level.text = data.worldRank.ToString();
         m_Title.text = data.name;
 
         m_ConfirmButton.gameObject.SetActive(false);

@@ -709,7 +709,21 @@ namespace Raincrow.Test
         }
 
         private string m_DebugRequest;
+        private string m_DebugData = "{}";
         private string m_DebugResponse;
+        private string m_RequestType = "GET";
+        private bool m_RequireAuth = true;
+        private static List<string> m_RequestTypeOptions = new List<string>
+        {
+            "GET",
+            "POST",
+            "PUT",
+            "DELETE",
+            "PATCH",
+        };
+
+        private Vector2 m_DataScroll;
+        private Vector2 m_ResponseScroll;
         private bool m_ShowRequestDebug
         {
             get { return EditorPrefs.GetBool("DebugUtils.RequestDebug", false); }
@@ -723,7 +737,45 @@ namespace Raincrow.Test
             {
                 using (new BoxScope())
                 {
-                    //m_DebugRequest = EditorGUILayout.field
+                    using (new GUILayout.HorizontalScope())
+                    {
+                        GUILayout.Label($"Request:", m_LabelWidth);
+                        m_DebugRequest = EditorGUILayout.TextField(m_DebugRequest);
+                    }
+                    using (new GUILayout.HorizontalScope())
+                    {
+                        GUILayout.Label($"Method:", m_LabelWidth);
+                        int indexOf = m_RequestTypeOptions.IndexOf(m_RequestType);
+                        indexOf = EditorGUILayout.Popup(indexOf, m_RequestTypeOptions.ToArray());
+                        m_RequestType = m_RequestTypeOptions[indexOf];
+                    }
+                    using (new GUILayout.HorizontalScope())
+                    {
+                        GUILayout.Label($"Authorization:", m_LabelWidth);
+                        m_RequireAuth = EditorGUILayout.Toggle(m_RequireAuth);
+                    }
+
+                    GUILayout.Label($"Data:");
+                    using (var scroll = new EditorGUILayout.ScrollViewScope(m_DataScroll, GUILayout.Height(100)))
+                    {
+                        m_DataScroll = scroll.scrollPosition;
+                        m_DebugData = EditorGUILayout.TextArea(m_DebugData, GUILayout.ExpandHeight(true));
+                    }
+
+                    GUILayout.Label($"Response:");
+                    using (var scroll = new EditorGUILayout.ScrollViewScope(m_ResponseScroll, GUILayout.Height(100)))
+                    {
+                        m_ResponseScroll = scroll.scrollPosition;
+                        m_DebugResponse = EditorGUILayout.TextArea(m_DebugResponse, GUILayout.ExpandHeight(true));
+                    }
+
+                    if (GUILayout.Button("Send"))
+                    {
+                        APIManager.Instance.StartCoroutine(APIManagerServer.RequestServerRoutine(m_DebugRequest, m_DebugData, m_RequestType, m_RequireAuth, false, (response, result) =>
+                        {
+                            m_DebugResponse = response;
+                        }));
+                    }
                 }
             }
         }

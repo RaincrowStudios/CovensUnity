@@ -358,7 +358,7 @@ public class LoginUIManager : MonoBehaviour
             else
             {
                 ShowLoading(false);
-                m_LoginError.text = LocalizeLookUp.GetText(APIManager.ParseError(response));
+                m_LoginError.text = APIManager.ParseError(response);
             }
         });
     }
@@ -407,7 +407,7 @@ public class LoginUIManager : MonoBehaviour
             else
             {
                 //show error
-                createAccountError.text = LocalizeLookUp.GetText(APIManager.ParseError(response));
+                createAccountError.text = APIManager.ParseError(response);
                 ShowLoading(false);
             }
         });
@@ -454,7 +454,7 @@ public class LoginUIManager : MonoBehaviour
             }
             else
             {
-                createCharacterError.text = LocalizeLookUp.GetText(APIManager.ParseError(response));
+                createCharacterError.text = APIManager.ParseError(response);
                 ShowLoading(false);
             }
         });
