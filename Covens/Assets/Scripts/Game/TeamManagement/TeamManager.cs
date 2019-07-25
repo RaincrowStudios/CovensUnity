@@ -323,4 +323,26 @@ public static class TeamManager
 
         callback("NOT IMPLEMENTED");
     }
+
+    public static void LeaveCoven(System.Action<string> callback)
+    {
+        APIManager.Instance.Put("coven/leave", "{}", (response, result) =>
+        {
+            if (result == 200)
+            {
+                MyCovenData = null;
+                PlayerDataManager.playerData.covenInfo = new CovenInfo
+                {
+                    coven = null,
+                    joinedOn = 0,
+                    role = 0
+                };
+                callback?.Invoke(null);
+            }
+            else
+            {
+                callback(APIManager.ParseError(response));
+            }
+        });
+    }
 }

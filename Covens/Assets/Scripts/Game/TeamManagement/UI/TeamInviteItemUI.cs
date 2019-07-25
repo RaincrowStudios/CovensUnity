@@ -197,7 +197,7 @@ public class TeamInviteItemUI : MonoBehaviour
                 confirmAction: () =>
                 {
                     //make the request
-                    TeamManager.RejectRequest(data.coven, (error) =>
+                    TeamManager.DeclineInvite(data.coven, (error) =>
                     {
                         if (string.IsNullOrEmpty(error))
                         {

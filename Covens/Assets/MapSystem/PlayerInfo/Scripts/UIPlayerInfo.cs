@@ -104,7 +104,7 @@ public class UIPlayerInfo : UIInfoPanel
         m_DisplayNameText.text = m_WitchData.displayName;
         m_DegreeSchoolText.text = Utilities.WitchTypeControlSmallCaps(m_WitchData.degree);
         m_LevelText.text = LocalizeLookUp.GetText("card_witch_level").ToUpper() + " <color=black>" + m_WitchData.level.ToString() + "</color>";
-        m_EnergyText.text = LocalizeLookUp.GetText("card_witch_energy").ToUpper() + " <color=black>" + m_WitchData.energy.ToString() + "</color>";
+        _OnEnergyChange(m_WitchData.instance, m_WitchData.energy);
 
         //sprite and color
         if (m_WitchData.degree < 0)
@@ -120,7 +120,6 @@ public class UIPlayerInfo : UIInfoPanel
             m_Sigil.sprite = m_GreySigilSprite;
         }
 
-        m_CovenButton.interactable = false;
         m_CovenText.text = LocalizeLookUp.GetText("chat_coven").ToUpper() + " <color=black>" + LocalizeLookUp.GetText("loading") + "</color>";
 
         previousMapPosition = MapsAPI.Instance.GetWorldPosition();
@@ -190,8 +189,12 @@ public class UIPlayerInfo : UIInfoPanel
     {
         m_WitchDetails = details;
 
-        m_CovenButton.interactable = !string.IsNullOrEmpty(m_WitchDetails.coven);
-        m_CovenText.text = m_CovenButton.interactable ? LocalizeLookUp.GetText("chat_coven").ToUpper() + " <color=black>" + details.coven + "</color>" : LocalizeLookUp.GetText("chat_screen_no_coven");
+        if (string.IsNullOrEmpty(details.coven) == false)
+            m_CovenText.text = LocalizeLookUp.GetText("chat_coven").ToUpper() + " <color=black>" + details.coven + "</color>";
+        else if (string.IsNullOrEmpty(TeamManager.MyCovenId) == false)
+            m_CovenText.text = LocalizeLookUp.GetText("invite_coven").ToUpper();
+        else
+            m_CovenText.text = LocalizeLookUp.GetText("chat_screen_no_coven");
 
         UpdateCanCast();
         //m_ConditionsList.Setup(m_WitchData, m_WitchDetails);
@@ -209,7 +212,28 @@ public class UIPlayerInfo : UIInfoPanel
 
     private void OnClickCoven()
     {
-        UIGlobalErrorPopup.ShowError(null, "NOT IMPLEMENTED");
+        //show the witche's coven
+        if (string.IsNullOrEmpty(m_WitchDetails.coven) == false)
+        {
+            TeamManagerUI.Open(m_WitchDetails.covenId);
+        }
+        //invite to my coven
+        else if (string.IsNullOrEmpty(TeamManager.MyCovenId) == false)
+        {
+            LoadingOverlay.Show();
+            TeamManager.SendInvite(m_WitchData.Id, (invite, error) =>
+            {
+                LoadingOverlay.Hide();
+                if (string.IsNullOrEmpty(error))
+                {
+                    UIGlobalErrorPopup.ShowPopUp(null, LocalizeLookUp.GetText("coven_invite_success"));
+                }
+                else
+                {
+                    UIGlobalErrorPopup.ShowError(null, error);
+                }
+            });
+        }
     }
 
     private void OnClickPlayer()
@@ -300,7 +324,7 @@ public class UIPlayerInfo : UIInfoPanel
     {
         if (instance == m_WitchData.instance)
         {
-            m_EnergyText.text = LocalizeLookUp.GetText("card_witch_energy").ToUpper() + " <color=black>" + newEnergy + "</color>";
+            m_EnergyText.text = LocalizeLookUp.GetText("card_witch_energy").ToUpper() + " <color=black>" + m_WitchData.energy + " / " + m_WitchData.baseEnergy + "</color>";
             UpdateCanCast();
         }
     }

@@ -71,7 +71,6 @@ public class TeamManagerUI : MonoBehaviour
     [SerializeField] private GraphicRaycaster m_InputRaycaster;
     [SerializeField] private CanvasGroup m_MainCanvasGroup;
     [SerializeField] private TeamInputPopup m_InputPopup;
-    [SerializeField] private GameObject m_LoadingObj;
 
     [Header("Header")]
     [SerializeField] private TextMeshProUGUI m_CovenName;
@@ -147,8 +146,6 @@ public class TeamManagerUI : MonoBehaviour
         m_Canvas.enabled = false;
         m_InputRaycaster.enabled = false;
 
-        m_LoadingObj.SetActive(false);
-
         CanvasGroup emptyCg = new GameObject().AddComponent<CanvasGroup>();
         emptyCg.transform.SetParent(this.transform);
         emptyCg.alpha = 1;
@@ -187,8 +184,9 @@ public class TeamManagerUI : MonoBehaviour
 
         m_CreateCovenButton.onClick.AddListener(OnClickCreate);
         m_SendRequestButton.onClick.AddListener(OnClickSendRequest);
-        m_SendInviteButton.onClick.AddListener(OnClickSendInvite);
+        //m_SendInviteButton.onClick.AddListener(OnClickSendInvite);
         m_DisbandCovenButton.onClick.AddListener(OnClickDisband);
+        m_LeaveCovenButton.onClick.AddListener(OnClickLeave);
 
         m_BackButton.onClick.AddListener(() => SetScreen(Screen.HOME));
         m_ViewMembersButton.onClick.AddListener(() =>
@@ -255,9 +253,10 @@ public class TeamManagerUI : MonoBehaviour
         }
         else
         {
-            m_LoadingObj.SetActive(true);
+            LoadingOverlay.Show();
             TeamManager.GetCoven(covenId, (covenData, error) =>
             {
+                LoadingOverlay.Hide();
                 if (string.IsNullOrEmpty(error))
                 {
                     //show home
@@ -270,7 +269,6 @@ public class TeamManagerUI : MonoBehaviour
                     UIGlobalErrorPopup.ShowError(null, error);
                     Hide();
                 }
-                m_LoadingObj.SetActive(false);
             });
         }
     }
@@ -398,12 +396,13 @@ public class TeamManagerUI : MonoBehaviour
 
                 if (string.IsNullOrEmpty(nameError))
                 {
-                    m_LoadingObj.SetActive(true);
+                    LoadingOverlay.Show();
                     //send the coven request
                     TeamManager.CreateCoven(
                         covenName,
                         (coven, error) =>
                         {
+                            LoadingOverlay.Hide();
                             if (string.IsNullOrEmpty(error))
                             {
                                 m_InputPopup.Close();
@@ -413,7 +412,6 @@ public class TeamManagerUI : MonoBehaviour
                             {
                                 m_InputPopup.Error(error);
                             }
-                            m_LoadingObj.SetActive(false);
                         });
                 }
                 else
@@ -471,12 +469,37 @@ public class TeamManagerUI : MonoBehaviour
             m_Home.m_CreatorSigil.sprite = m_Home.greySchool;
     }
     
+    private void OnClickLeave()
+    {
+        UIGlobalErrorPopup.ShowPopUp(
+           confirmAction: () =>
+           {
+               LoadingOverlay.Show();
+               TeamManager.LeaveCoven((error) =>
+               {
+                   LoadingOverlay.Hide();
+                   if (string.IsNullOrEmpty(error))
+                   {
+                       UIGlobalErrorPopup.ShowPopUp(() => Show(null), LocalizeLookUp.GetText("coven_leave_success"));
+                   }
+                   else
+                   {
+                       UIGlobalErrorPopup.ShowError(null, error);
+                   }
+               });
+           },
+           cancelAction: () =>
+           {
+           },
+           LocalizeLookUp.GetText("coven_leave"));
+    }
+
     private void OnClickDisband()
     {
         UIGlobalErrorPopup.ShowPopUp(
             confirmAction: () =>
             {
-                m_LoadingObj.SetActive(true);
+                LoadingOverlay.Show();
                 TeamManager.DisbandCoven((result, response) =>
                 {
                     if (result == 200)
@@ -487,7 +510,7 @@ public class TeamManagerUI : MonoBehaviour
                     {
                         UIGlobalErrorPopup.ShowError(null, APIManager.ParseError(response));
                     }
-                    m_LoadingObj.SetActive(false);
+                    LoadingOverlay.Hide();
                 });
             },
             cancelAction: () =>
@@ -628,7 +651,7 @@ public class TeamManagerUI : MonoBehaviour
         else //shoe the coven's sent invitation
         {
             m_BackButton.gameObject.SetActive(true);
-            m_SendInviteButton.gameObject.SetActive(true);    
+            //m_SendInviteButton.gameObject.SetActive(true);    
 
             m_CovenName.text = LocalizeLookUp.GetText("header_invites_players");
             m_SubTitle.text = m_CovenData.Name;
@@ -659,10 +682,10 @@ public class TeamManagerUI : MonoBehaviour
                if (string.IsNullOrEmpty(nameError))
                {
                    //send the invite
-                   m_LoadingObj.SetActive(true);
+                   LoadingOverlay.Show();
                    TeamManager.SendInvite(characterName, (invite, error) =>
                    {
-                       m_LoadingObj.SetActive(false);
+                       LoadingOverlay.Hide();
                        if (string.IsNullOrEmpty(error))
                        {
                            m_InputPopup.Close();

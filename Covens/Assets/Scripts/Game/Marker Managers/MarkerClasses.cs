@@ -72,9 +72,10 @@ public abstract class CharacterMarkerData : MarkerData
     public virtual int power { get; set; }
     public virtual int resilience { get; set; }
     
-    [JsonProperty("coven")]
-    public virtual string covenId { get; set; }
+    [JsonIgnore]
+    public virtual string covenId { get; }
 
+    [JsonIgnore]
     public int baseEnergy
     {
         get
@@ -410,7 +411,6 @@ public class PortalMarkerData : MarkerData
     public override MarkerSpawner.MarkerType Type => MarkerSpawner.MarkerType.PORTAL;
 
     public string owner;
-    public string coven;
     public int degree;
     public int energy;
     public double createdOn;
@@ -466,6 +466,9 @@ public class MapWitchData : WitchMarkerData
 
     [JsonIgnore]
     public override bool male => bodyType >= 3;
+
+    [JsonIgnore]
+    public override string covenId => coven;
 }
 
 public class MapSpiritData : SpiritMarkerData
