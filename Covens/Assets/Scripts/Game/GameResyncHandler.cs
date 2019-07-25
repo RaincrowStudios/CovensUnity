@@ -33,32 +33,27 @@ public class GameResyncHandler : MonoBehaviour
         m_Canvas.enabled = false;
         m_InputRaycaster.enabled = false;
         m_CanvasGroup.alpha = 0;
-
-        Debug.Log("Resync disabled");
-        this.enabled = false;
     }
+    
+    //private void OnApplicationFocus(bool hasFocus)
+    //{
+    //    IsBackground = !hasFocus;
 
- 
+    //    if (hasFocus)
+    //    {
+    //        float timeInBg = Time.unscaledTime - m_LostFocusTime;
+    //        Debug.Log("Game was in background for " + timeInBg.ToString() + " seconds");
 
-    private void OnApplicationFocus(bool hasFocus)
-    {
-        IsBackground = !hasFocus;
-
-        if (hasFocus)
-        {
-            float timeInBg = Time.unscaledTime - m_LostFocusTime;
-            Debug.Log("Game was in background for " + timeInBg.ToString() + " seconds");
-
-            if (timeInBg > MAX_BG_TIME)
-            {
-                ResyncGame();
-            }
-        }
-        else
-        {
-            m_LostFocusTime = Time.unscaledTime;
-        }
-    }
+    //        if (timeInBg > MAX_BG_TIME)
+    //        {
+    //            ResyncGame();
+    //        }
+    //    }
+    //    else
+    //    {
+    //        m_LostFocusTime = Time.unscaledTime;
+    //    }
+    //}
 
     private void ShowScreen(string title)
     {
