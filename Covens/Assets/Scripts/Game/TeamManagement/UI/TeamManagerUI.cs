@@ -209,6 +209,8 @@ public class TeamManagerUI : MonoBehaviour
         m_Members.m_Pool = new SimplePool<TeamMemberItemUI>(m_Members.m_ItemPrefab, 5);
         m_Requests.m_Pool = new SimplePool<TeamInviteItemUI>(m_Requests.m_ItemPrefab, 5);
         m_Invites.m_Pool = new SimplePool<TeamInviteItemUI>(m_Invites.m_ItemPrefab, 5);
+
+        GameResyncHandler.OnResyncStart += Hide;
     }
 
     private void Show(string covenId)

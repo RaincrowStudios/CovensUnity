@@ -80,7 +80,7 @@ public class ManageCreatrixGift : MonoBehaviour
         p.GetChild(7).GetComponent<Button>().onClick.AddListener(() =>
         {
             Debug.Log("reseting stuff");
-            PlayerManager.Instance.initStart();
+            GameResyncHandler.ResyncGame();
             Destroy(k);
         });
     }

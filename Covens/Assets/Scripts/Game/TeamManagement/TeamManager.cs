@@ -26,7 +26,7 @@ public static class TeamManager
         }
     }
 
-    public static TeamData MyCovenData { get; private set; }
+    public static TeamData MyCovenData { get; set; }
 
 
     //public static void GetCoven(System.Action callback)

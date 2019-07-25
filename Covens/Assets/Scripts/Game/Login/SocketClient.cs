@@ -187,13 +187,16 @@ public class SocketClient : MonoBehaviour
             Debug.LogFormat("Socket Error: {0}", errorMessage);
         }
 
+        if (IsConnected())
+            DisconnectFromSocket();
+
         if (!LoginAPIManager.accountLoggedIn)
         {
             UnityMainThreadDispatcher.Instance().Enqueue(LoginAPIManager.initiateLogin);
         }
         else
         {
-            UnityMainThreadDispatcher.Instance().Enqueue(PlayerManager.Instance.initStart);
+            UnityMainThreadDispatcher.Instance().Enqueue(GameResyncHandler.ResyncGame);
         }
     }
 
@@ -212,6 +215,8 @@ public class SocketClient : MonoBehaviour
     {
         Debug.Log("Disconnecting from socket");
 
+        StopAllCoroutines();
+
         if (_socketManager != null)
         {
             _socketManager.Socket.Off(SocketIOEventTypes.Connect, OnConnect);
@@ -220,9 +225,8 @@ public class SocketClient : MonoBehaviour
             _socketManager.Socket.Off("game.event", OnGameEvent);
 
             _socketManager.Socket.Disconnect();
+            _socketManager = null;
         }
-
-        StopCoroutine(ReadFromQueue());
     }
 
     protected virtual void OnDestroy()

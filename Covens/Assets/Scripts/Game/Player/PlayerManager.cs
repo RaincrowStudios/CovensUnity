@@ -50,15 +50,7 @@ public class PlayerManager : MonoBehaviour
     Vector2 currentPos;
 
     public bool SnapMapToPosition = true;
-
-    DateTime applicationBG;
-
-    public GameObject reinitObject;
-    public Image spririt;
-    public Text spiritName;
-    public Text syncingServer;
-    bool CheckFocus = false;
-
+        
     GameObject atLocationObject;
 
     public static event Action onStartFlight;
@@ -72,70 +64,11 @@ public class PlayerManager : MonoBehaviour
 
     void Start()
     {
-        StartCoroutine(CheckInternetConnection());
-
         MapsAPI.Instance.OnEnterStreetLevel += OnFinishFlying;
         MapsAPI.Instance.OnExitStreetLevel += OnStartFlying;
 
         CreatePlayerStart();
-    }
-
-    public Color m_Color;
-
-    public static event System.Action OnResyncStart;
-
-    public void initStart()
-    {
-        OnResyncStart?.Invoke();
-        Debug.LogError("TODO: LISTEN TO THE RESYNC EVENT TO CLOSE OTHER UIS, LIKE THE SPELLCASTING UI");
-        Debug.LogError("TODO: REINIT");
-        //LoginAPIManager.GetCharacterReInit();
-
-        if (SummoningManager.isOpen)
-            SummoningController.Instance.Close();
-
-        reinitObject.SetActive(true);
-        try
-        {
-            var d = DownloadedAssets.spiritDict.ElementAt(UnityEngine.Random.Range(0, DownloadedAssets.spiritDict.Count));
-            spiritName.text = d.Value.Name;
-            DownloadedAssets.GetSprite(d.Key, spririt);
-
-        }
-        catch
-        {
-
-        }
-        syncingServer.text = LocalizeLookUp.GetText("server_syncing");// "Syncing with server . . .";
-    }
-
-    public void InitFinished()
-    {
-        reinitObject.SetActive(false);
-        //		Debug.Log ("Reinit Done");
-    }
-
-    void OnApplicationFocus(bool pause)
-    {
-        if (!pause)
-        {
-            applicationBG = DateTime.Now;
-            CheckFocus = true;
-        }
-        else
-        {
-
-            if (CheckFocus && !PlayerDataManager.IsFTF)
-            {
-                TimeSpan ts = DateTime.Now.Subtract(applicationBG);
-                if (ts.TotalSeconds > reinitTime && LoginAPIManager.characterLoggedIn)
-                {
-                    initStart();
-                    CheckFocus = false;
-                }
-            }
-        }
-    }
+    }           
 
     private void CreatePlayerStart()
     {
@@ -322,33 +255,6 @@ public class PlayerManager : MonoBehaviour
         }
         //AttackRing = Utilities.InstantiateObject(AttackRingPrefab, marker.instance.transform);
         //AttackRing.transform.position += Vector3.up * 0.15f;
-    }
-
-    IEnumerator CheckInternetConnection()
-    {
-        while (true)
-        {
-
-            if (Application.internetReachability == NetworkReachability.NotReachable)
-            {
-                reinitObject.SetActive(true);
-
-                var d = DownloadedAssets.spiritDict.ElementAt(UnityEngine.Random.Range(0, DownloadedAssets.spiritDict.Count));
-                spiritName.text = d.Value.Name;
-
-                DownloadedAssets.GetSprite(d.Key, spririt);
-
-                syncingServer.text = LocalizeLookUp.GetText("server_connect");// "Trying to connect . . .";
-                connectionFailed = true;
-            }
-            else if (connectionFailed)
-            {
-                initStart();
-                connectionFailed = false;
-            }
-            PlayerManagerUI.Instance.checkTime();
-            yield return new WaitForSeconds(5);
-        }
     }
 
     public void OnUpdateEquips(System.Action callback = null)
