@@ -9,10 +9,6 @@ public static class OnCharacterSpiritBanished
     {
         
         OnSpiritBanished?.Invoke(data.instance, data.killer);
-		Debug.Log ("banishing");
-        if (!PlaceOfPower.IsInsideLocation)
-            UISpiritBanished.Instance.Show(data.spirit);
-        else
-            UISpiritBanished.Instance.Show(data.spirit, true);
+        UISpiritBanished.Instance.Show(data.spirit);
     }
 }

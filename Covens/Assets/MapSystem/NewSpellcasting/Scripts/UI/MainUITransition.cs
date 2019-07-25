@@ -24,21 +24,10 @@ public class MainUITransition : MonoBehaviour
     public static MainUITransition Instance { get; set; }
 
     private int m_TweenId;
-
-    public bool CanShowUI
-    {
-        get
-        {
-            return PlaceOfPower.IsInsideLocation == false;
-        }
-    }
-
+    
     void Awake()
     {
         Instance = this;
-
-        PlaceOfPower.OnLeavePlaceOfPower += () => ShowMainUI(true);
-        PlaceOfPower.OnEnterPlaceOfPower += () => HideMainUI(false);
     }
 
     public void OnLocationClick()
@@ -91,9 +80,6 @@ public class MainUITransition : MonoBehaviour
 
     public void ShowMainUI(bool moveEnergy = true)
     {
-        if (CanShowUI == false)
-            return;
-
         LeanTween.cancel(m_TweenId);
 
         float leftBar_Start = leftBar.anchoredPosition.x;

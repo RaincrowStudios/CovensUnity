@@ -21,8 +21,8 @@ public class MapView : MonoBehaviour
         m_Instance = this;
         OnLeavePoP();
 
-        PlaceOfPower.OnEnterPlaceOfPower += OnEnterPoP;
-        PlaceOfPower.OnLeavePlaceOfPower += OnLeavePoP;
+        //PlaceOfPower.OnEnterPlaceOfPower += OnEnterPoP;
+        //PlaceOfPower.OnLeavePlaceOfPower += OnLeavePoP;
 
         //get the markers at the current position
         MarkerManagerAPI.GetMarkers(

@@ -33,21 +33,21 @@ public class BanishManager : MonoBehaviour
 
     IEnumerator BanishHelper(string caster, double lng, double lat)
     {
-        if (PlaceOfPower.IsInsideLocation)
-        {
-            //dont send the leave request (server already removed the player from the pop)
-            PlaceOfPower.LeavePoP(false);
-            yield return new WaitForSeconds(1f);
+        //if (PlaceOfPower.IsInsideLocation)
+        //{
+        //    //dont send the leave request (server already removed the player from the pop)
+        //    PlaceOfPower.LeavePoP(false);
+        //    yield return new WaitForSeconds(1f);
 
-            OnBanished?.Invoke();
-            UIPlayerBanished.Show(caster);
-            yield return 1;
-            yield return new WaitForSeconds(2f);
+        //    OnBanished?.Invoke();
+        //    UIPlayerBanished.Show(caster);
+        //    yield return 1;
+        //    yield return new WaitForSeconds(2f);
 
-            //load the map at the new position
-            MapsAPI.Instance.InitMap(lng, lat, MapsAPI.Instance.normalizedZoom, null, true);
-        }
-        else
+        //    //load the map at the new position
+        //    MapsAPI.Instance.InitMap(lng, lat, MapsAPI.Instance.normalizedZoom, null, true);
+        //}
+        //else
         {
             OnBanished?.Invoke();
             UIPlayerBanished.Show(caster);

@@ -50,7 +50,7 @@ public static class OnMapEnergyChange
                     OnPlayerDead?.Invoke();
                     DeathState.Instance.ShowDeath();
                 }
-                else if (data.newState == "vulnerable" && !PlaceOfPower.IsInsideLocation)
+                else if (data.newState == "vulnerable")
                 {
                     if (LowEnergyPopup.Instance == null)
                     {

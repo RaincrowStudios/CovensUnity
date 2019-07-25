@@ -176,10 +176,6 @@ public class SummoningManager : MonoBehaviour
         isOpen = false;
         SD.canSwipe = false;
         Hide(summonObject);
-        if (UIPOPOptions.Instance != null)
-        {
-            UIPOPOptions.Instance.ShowUI();
-        }
         // Destroy(gameObject, 2f);
     }
 

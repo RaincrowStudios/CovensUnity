@@ -249,14 +249,6 @@ public class MarkerSpawner : MarkerManager
         {
             UISpiritInfo.Instance.Show(m, Data);
         }
-        else if (Data.Type == MarkerType.PORTAL)
-        {
-            UIPortalInfo.Instance.Show(m, Data);
-        }
-        else if (Data.Type == MarkerType.PLACE_OF_POWER)
-        {
-            UIPopInfoNew.Instance.Show(m, Data);
-        }
         else if (Data.Type == MarkerType.HERB || Data.Type == MarkerType.TOOL || Data.Type == MarkerType.GEM)
         {
             PickUpCollectibleAPI.PickUpCollectable(m as CollectableMarker);
@@ -307,11 +299,7 @@ public class MarkerSpawner : MarkerManager
         else
         {
             SoundManagerOneShot.Instance.PlayWhisperFX();
-
-            if (PlaceOfPower.IsInsideLocation)
-                APIManager.Instance.Post("location/select", JsonConvert.SerializeObject(data), (response, result) => GetResponse(m, instanceID, response, result));
-            else
-                GetMarkerDetails(Data.instance, (result, response) => GetResponse(m, instanceID, response, result));
+            GetMarkerDetails(Data.instance, (result, response) => GetResponse(m, instanceID, response, result));
         }
     }
 
@@ -352,25 +340,6 @@ public class MarkerSpawner : MarkerManager
 
                     break;
 
-                case MarkerType.PLACE_OF_POWER:
-                    LocationMarkerData location = JsonConvert.DeserializeObject<LocationMarkerData>(response);
-                    UIPopInfoNew.SetupDetails(location, instance);
-                    break;
-                case MarkerType.PORTAL:
-                    PortalMarkerData portal = JsonConvert.DeserializeObject<PortalMarkerData>(response);
-
-                    if (UIPortalInfo.isOpen && UIPortalInfo.Instance.token.instance == instance)
-                        UIPortalInfo.Instance.SetupDetails(portal);
-                    break;
-                //case MarkerType.herb:
-                //case MarkerType.gem:
-                //case MarkerType.tool:
-                //    CollectableMarkerDetail collectable = JsonConvert.DeserializeObject<CollectableMarkerDetail>(response);
-
-                //    if (UICollectableInfo.IsOpen && UICollectableInfo.Instance.token.instance == instance)
-                //        UICollectableInfo.Instance.SetupDetails(collectable);
-                //    break;
-
 
                 default:
                     Debug.LogError("Token selection not implemented for " + marker.type);
@@ -401,9 +370,6 @@ public class MarkerSpawner : MarkerManager
     /// </summary>
     public static bool IsTargetImmune(WitchToken token)
     {
-        if (PlaceOfPower.IsInsideLocation)
-            return false;
-
         return PlayerDataManager.playerData.immunities.Contains(token.instance);
     }
 
@@ -529,7 +495,7 @@ public class MarkerSpawner : MarkerManager
 
     public static void HighlightMarker(List<IMarker> targets, bool highlight)
     {
-        if (highlight && PlaceOfPower.IsInsideLocation)
+        if (highlight)
             return;
 
         m_Highlighting = highlight;

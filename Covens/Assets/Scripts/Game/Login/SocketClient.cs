@@ -32,11 +32,7 @@ public class SocketClient : MonoBehaviour
         { LevelUpHandler.EventName,             new LevelUpHandler()        },
         { ChangeDegreeHandler.EventName,        new ChangeDegreeHandler()   },
 
-        //{ "map_immunity_add",           OnMapImmunityChange.OnAddImmunity },
-        //{ "map_immunity_remove",        OnMapImmunityChange.OnRemoveImmunity },
         //{ "map_energy_change",          OnMapEnergyChange.HandleEvent },
-        //{ "map_portal_summon",          OnMapPortalSummon.HandleEvent },
-        //{ "map_token_add",              OnMapTokenAdd.HandleEvent },
         //{ "map_token_move",             OnMapTokenMove.HandleEvent },
         //{ "map_token_remove",           OnMapTokenRemove.HandleEvent },
         //{ "map_location_lost",          OnMapLocationLost.HandleEvent },
@@ -184,7 +180,7 @@ public class SocketClient : MonoBehaviour
         if (args != null && args.Length > 0)
         {
             string errorMessage = args[0].ToString();
-            Debug.LogFormat("Socket Error: {0}", errorMessage);
+            Debug.LogErrorFormat("Socket Error: {0}", errorMessage);
         }
 
         if (!LoginAPIManager.accountLoggedIn)

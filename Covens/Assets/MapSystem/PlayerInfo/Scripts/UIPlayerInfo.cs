@@ -139,7 +139,6 @@ public class UIPlayerInfo : UIInfoPanel
         OnMapConditionRemove.OnConditionRemoved += _OnConditionRemove;
         MarkerSpawner.OnImmunityChange += _OnImmunityChange;
         BanishManager.OnBanished += Abort;
-        PlaceOfPower.OnLeavePlaceOfPower += AbortHard;
 
         Show();
         //m_ConditionsList.show = false;
@@ -181,7 +180,6 @@ public class UIPlayerInfo : UIInfoPanel
         OnMapConditionAdd.OnConditionAdded -= _OnConditionAdd;
         OnMapConditionRemove.OnConditionRemoved -= _OnConditionRemove;
         MarkerSpawner.OnImmunityChange -= _OnImmunityChange;
-        PlaceOfPower.OnLeavePlaceOfPower -= AbortHard;
         BanishManager.OnBanished -= Abort;
     }
 
@@ -387,19 +385,7 @@ public class UIPlayerInfo : UIInfoPanel
             UpdateCanCast();
         }
     }
-    private void AbortHard()
-    {
-        if (UISpellcasting.isOpen)
-            UISpellcasting.Instance.Close();
-        else if (UIPlayerInfo.isShowing)
-            UIPlayerInfo.Instance.Close();
-        else if (UIWaitingCastResult.isOpen)
-            UIWaitingCastResult.Instance.Close();
-        else if (UISpiritInfo.isOpen)
-            UISpiritInfo.Instance.Close();
-        else
-            Close();
-    }
+
     private void Abort()
     {
         //wait for the result screen (UIspellcasting  will call OnFinishFlow)

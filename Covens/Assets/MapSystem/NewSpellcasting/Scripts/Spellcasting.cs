@@ -104,13 +104,14 @@ public class Spellcasting
             }
             else
             {
-                if (token.Type == MarkerSpawner.MarkerType.SPIRIT)
-                {
-                    //temp fix: disable banish of spirits on pop
-                    if (PlaceOfPower.IsInsideLocation && spell != null && spell.id == "spell_banish")
-                        return SpellState.InvalidState;
-                }
-                else if (token.Type == MarkerSpawner.MarkerType.WITCH)
+                //if (token.Type == MarkerSpawner.MarkerType.SPIRIT)
+                //{
+                //    //temp fix: disable banish of spirits on pop
+                //    if (PlaceOfPower.IsInsideLocation && spell != null && spell.id == "spell_banish")
+                //        return SpellState.InvalidState;
+                //}
+                //else 
+                if (token.Type == MarkerSpawner.MarkerType.WITCH)
                 {
                     //immunity
                     if (MarkerSpawner.IsTargetImmune(token as WitchToken))
@@ -126,8 +127,8 @@ public class Spellcasting
             //unlocked?
 
             //is pop only?
-            if (spell.pop && PlaceOfPower.IsInsideLocation == false)
-                return SpellState.NotInPop;
+            //if (spell.pop && PlaceOfPower.IsInsideLocation == false)
+            //    return SpellState.NotInPop;
 
             //in cooldown?
             if (CooldownManager.GetCooldown(spell.id) != null)

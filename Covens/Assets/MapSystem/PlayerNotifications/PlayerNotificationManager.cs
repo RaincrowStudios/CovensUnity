@@ -70,7 +70,7 @@ public class PlayerNotificationManager : MonoBehaviour
             return;
 
         Anchoring targetAnchor = Anchoring.DEFAULT;
-        if (UIPlayerInfo.isShowing || UISpiritInfo.isOpen || UIPortalInfo.isOpen)
+        if (UIPlayerInfo.isShowing || UISpiritInfo.isOpen)
             targetAnchor = Anchoring.LEFT;
 
         if (targetAnchor == Anchoring.LEFT)
@@ -80,7 +80,7 @@ public class PlayerNotificationManager : MonoBehaviour
 
         m_Canvas.enabled = true;
         m_InputRaycaster.enabled = true;
-        if (PlaceOfPower.IsInsideLocation) icon = popIcon;
+        //if (PlaceOfPower.IsInsideLocation) icon = popIcon;
         m_NotificationItemPrefab.Show(message, icon,
             () =>
             {
@@ -90,7 +90,7 @@ public class PlayerNotificationManager : MonoBehaviour
             () =>
             {
                 targetAnchor = Anchoring.DEFAULT;
-                if (UIPlayerInfo.isShowing || UISpiritInfo.isOpen || UIPortalInfo.isOpen)
+                if (UIPlayerInfo.isShowing || UISpiritInfo.isOpen)
                     targetAnchor = Anchoring.LEFT;
 
                 if (targetAnchor == Anchoring.LEFT)

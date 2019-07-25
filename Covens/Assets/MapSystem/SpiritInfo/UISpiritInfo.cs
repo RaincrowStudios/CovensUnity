@@ -113,7 +113,6 @@ public class UISpiritInfo : UIInfoPanel
         MarkerSpawner.OnImmunityChange += _OnImmunityChange;
         RemoveTokenHandler.OnTokenRemove += _OnMapTokenRemove;
         BanishManager.OnBanished += Abort;
-        PlaceOfPower.OnLeavePlaceOfPower += AbortHard;
 
         Show();
         //m_ConditionList.show = false;
@@ -149,7 +148,6 @@ public class UISpiritInfo : UIInfoPanel
         MarkerSpawner.OnImmunityChange -= _OnImmunityChange;
         RemoveTokenHandler.OnTokenRemove -= _OnMapTokenRemove;
         BanishManager.OnBanished -= Abort;
-        PlaceOfPower.OnLeavePlaceOfPower -= AbortHard;
 
         MapsAPI.Instance.allowControl = true;
         MapCameraUtils.FocusOnPosition(previousMapPosition, m_PreviousMapZoom, true);
@@ -275,22 +273,7 @@ public class UISpiritInfo : UIInfoPanel
     {
         Debug.Log("TODO: Open coven");
     }
-
-
-    private void AbortHard()
-    {
-        if (UISpellcasting.isOpen)
-            UISpellcasting.Instance.Close();
-        else if (UIPlayerInfo.isShowing)
-            UIPlayerInfo.Instance.Close();
-        else if (UIWaitingCastResult.isOpen)
-            UIWaitingCastResult.Instance.Close();
-        else if (UISpiritInfo.isOpen)
-            UISpiritInfo.Instance.Close();
-        else
-            Close();
-    }
-
+    
     private void Abort()
     {
         //wait for the result screen (UIspellcasting  will call OnFinishFlow)
