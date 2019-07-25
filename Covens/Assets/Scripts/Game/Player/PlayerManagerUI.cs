@@ -14,6 +14,7 @@ public class PlayerManagerUI : UIAnimationManager
     public Text Level;
     public TextMeshProUGUI Energy;
     public Slider EnergySlider;
+    public ParticleSystem EnergyBarFX;
     public GameObject overFlowEn;
     public TextMeshProUGUI silverDrachs;
     public TextMeshProUGUI goldDrachs;
@@ -70,6 +71,7 @@ public class PlayerManagerUI : UIAnimationManager
         FVM = GetComponent<FlightVisualManager>();
         physicalForm.SetActive(false);
         spiritForm.SetActive(false);
+        EnergyBarFX = EnergySlider.transform.GetChild(1).transform.GetChild(0).transform.GetChild(0).GetComponent<ParticleSystem>();
 
         if (PlayerPrefs.GetString("LastDailyTimeStamp") == string.Empty)
         {
@@ -181,18 +183,24 @@ public class PlayerManagerUI : UIAnimationManager
             Energy.text = pData.energy.ToString() + "/" + pData.baseEnergy;
             EnergySlider.maxValue = pData.baseEnergy;
             EnergySlider.value = pData.energy;
-            overFlowEn.SetActive(false);
+            //overFlowEn.SetActive(false);
 
         }
         else
         {
-            overFlowEn.SetActive(true);
+            //overFlowEn.SetActive(true);
             EnergySlider.maxValue = pData.baseEnergy;
             EnergySlider.value = pData.baseEnergy;
             Energy.text = "<b>" + pData.energy.ToString() + "</b>/" + pData.baseEnergy;
         }
+        SetupEnergyFX();
     }
-
+    void SetupEnergyFX()
+    {
+        var e = MapUtils.scale(0f, 41.29f, 0f, EnergySlider.maxValue, EnergySlider.value);
+        var l = EnergyBarFX.shape;
+        l.radius = e;
+    }
     public void setupXP()
     {
         xpSlider.maxValue = PlayerDataManager.playerData.xpToLevelUp;
