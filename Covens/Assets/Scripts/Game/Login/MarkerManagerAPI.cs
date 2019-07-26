@@ -46,7 +46,10 @@ public class MarkerManagerAPI : MonoBehaviour
         double dist = MapsAPI.Instance.DistanceBetweenPointsD(new Vector2(longitude, latitude), GetGPS.coordinates);
         bool physical = dist < PlayerDataManager.DisplayRadius;
         IsSpiritForm = !physical;
-                
+
+        if (PlayerDataManager.IsFTF)
+            return;
+
         var data = new
         {
             physical,
