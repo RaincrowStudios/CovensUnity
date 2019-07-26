@@ -158,7 +158,7 @@ public class TeamManagerUI : MonoBehaviour
 
             if (string.IsNullOrEmpty(covenId) || covenId == TeamManager.MyCovenId) //show the player's coven
             {
-                if (string.IsNullOrEmpty(covenId)) //player has no coven
+                if (string.IsNullOrEmpty(TeamManager.MyCovenId)) //player has no coven
                 {
                     m_Instance.Show(null);
                 }
@@ -166,7 +166,7 @@ public class TeamManagerUI : MonoBehaviour
                 {
                     if (TeamManager.MyCovenData == null)//try to request coven data from server
                     {
-                        TeamManager.GetCoven(covenId, false, (covenData, error) =>
+                        TeamManager.GetCoven(TeamManager.MyCovenId, false, (covenData, error) =>
                         {
                             if (string.IsNullOrEmpty(error))
                                 m_Instance.Show(covenData);
