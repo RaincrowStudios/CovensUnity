@@ -77,7 +77,6 @@ namespace Raincrow.Team
         [SerializeField] private string name;
         [SerializeField] private string title;
         [SerializeField] private int level;
-        [SerializeField] private int school;
         [SerializeField] private int degree;
         [SerializeField] private int role;
         [SerializeField] private long joinedOn;
@@ -88,12 +87,24 @@ namespace Raincrow.Team
         public string Name { get => name; }
         public string Title { get => title; }
         public int Level { get => level; }
-        public int School { get => school; }
         public int Degree { get => degree; }
         public CovenRole Role { get => (CovenRole)role; set => role = (int)value; }
         public long JoinedOn { get => joinedOn; }
         public long LastActiveOn { get => lastActiveOn; }
-    }
+
+
+        public int School
+        {
+            get
+            {
+                if (degree < 0)
+                    return -1;
+                if (degree > 0)
+                    return 1;
+                return 0;
+            }
+        }
+}
 
     [System.Serializable]
     public class PendingRequest

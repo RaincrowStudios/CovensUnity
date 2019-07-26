@@ -100,6 +100,7 @@ public class TeamMemberItemUI : MonoBehaviour
         UIGlobalErrorPopup.ShowPopUp(
             confirmAction: () =>
             {
+                UIGlobalErrorPopup.Close();
                 TeamManager.KickMember(MemberData, (error) =>
                 {
                     if (string.IsNullOrEmpty(error))
@@ -125,6 +126,7 @@ public class TeamMemberItemUI : MonoBehaviour
         UIGlobalErrorPopup.ShowPopUp(
             confirmAction: () =>
             {
+                UIGlobalErrorPopup.Close();
                 TeamManager.DemoteMember(MemberData, (error) =>
                 {
                     if (string.IsNullOrEmpty(error))
@@ -150,7 +152,8 @@ public class TeamMemberItemUI : MonoBehaviour
         UIGlobalErrorPopup.ShowPopUp(
             confirmAction: () =>
             {
-                TeamManager.DemoteMember(MemberData, (error) =>
+                UIGlobalErrorPopup.Close();
+                TeamManager.PromoteMember(MemberData, (error) =>
                 {
                     if (string.IsNullOrEmpty(error))
                         m_OnPromote?.Invoke(MemberData.Id, role);
@@ -167,6 +170,7 @@ public class TeamMemberItemUI : MonoBehaviour
         UIGlobalErrorPopup.ShowPopUp(
                confirmAction: () =>
                {
+                   UIGlobalErrorPopup.Close();
                    TeamManager.ChangeMemberTitle(MemberData, text, (error) =>
                    {
                        if (string.IsNullOrEmpty(error))
