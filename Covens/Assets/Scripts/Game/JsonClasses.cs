@@ -362,11 +362,11 @@ public class spellIngredientsData
 
     public spellIngredientsData(string id, int amount)
     {
-        this.id = id;
+        this.collectible = id;
         this.count = amount;
     }
 
-    public string id { get; set; }
+    public string collectible { get; set; }
     public int count { get; set; }
 }
 

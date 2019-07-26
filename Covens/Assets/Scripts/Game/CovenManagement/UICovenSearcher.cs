@@ -131,8 +131,6 @@ public class UICovenSearcher : MonoBehaviour
     [ContextMenu("Show")]
     private void Show()
     {
-        m_OnClose = null;
-
         //update the list
         RequestAvailableCovens(m_SearchField.text, m_RecentTab);
         m_HighlightObj.transform.localPosition = m_RecentTab ? m_RecentCovensButton.transform.localPosition : m_TopCovensButton.transform.localPosition;

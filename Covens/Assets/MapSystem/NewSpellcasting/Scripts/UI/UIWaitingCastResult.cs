@@ -116,7 +116,7 @@ public class UIWaitingCastResult : UIInfoPanel
             if (ingredients[i].count <= 0)
                 continue;
 
-            IngredientData ingredientData = DownloadedAssets.GetCollectable(ingredients[i].id);
+            IngredientData ingredientData = DownloadedAssets.GetCollectable(ingredients[i].collectible);
 
             if (ingredientData.type == "tool")
             {

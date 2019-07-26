@@ -745,7 +745,7 @@ public class UISpellcasting : UIInfoPanel
         {
             ingredients.Add(new spellIngredientsData
             {
-                id = m_SelectedHerb,
+                collectible = m_SelectedHerb,
                 count = m_SelectedHerbAmount
             });
         }
@@ -754,7 +754,7 @@ public class UISpellcasting : UIInfoPanel
         {
             ingredients.Add(new spellIngredientsData
             {
-                id = m_SelectedTool,
+                collectible = m_SelectedTool,
                 count = m_SelectedToolAmount
             });
         }
@@ -763,7 +763,7 @@ public class UISpellcasting : UIInfoPanel
         {
             ingredients.Add(new spellIngredientsData
             {
-                id = m_SelectedGem,
+                collectible = m_SelectedGem,
                 count = m_SelectedGemAmount
             });
         }

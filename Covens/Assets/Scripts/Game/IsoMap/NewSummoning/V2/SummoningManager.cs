@@ -508,16 +508,16 @@ public class SummoningManager : MonoBehaviour
 
         if (SummoningIngredientManager.addedTool != "")
         {
-            data.ingredients.Add(new spellIngredientsData { id = SummoningIngredientManager.addedTool, count = SummoningIngredientManager.addedToolCount });
+            data.ingredients.Add(new spellIngredientsData { collectible = SummoningIngredientManager.addedTool, count = SummoningIngredientManager.addedToolCount });
         }
 
         if (SummoningIngredientManager.addedHerb != "")
         {
-            data.ingredients.Add(new spellIngredientsData { id = SummoningIngredientManager.addedHerb, count = SummoningIngredientManager.addedHerbCount });
+            data.ingredients.Add(new spellIngredientsData { collectible = SummoningIngredientManager.addedHerb, count = SummoningIngredientManager.addedHerbCount });
         }
         if (SummoningIngredientManager.addedGem != "")
         {
-            data.ingredients.Add(new spellIngredientsData { id = SummoningIngredientManager.addedGem, count = SummoningIngredientManager.addedGemCount });
+            data.ingredients.Add(new spellIngredientsData { collectible = SummoningIngredientManager.addedGem, count = SummoningIngredientManager.addedGemCount });
         }
         return data.ingredients;
     }

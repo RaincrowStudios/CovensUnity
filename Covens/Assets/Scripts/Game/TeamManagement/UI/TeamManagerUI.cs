@@ -251,6 +251,7 @@ public class TeamManagerUI : MonoBehaviour
         m_CloseButton.onClick.AddListener(() =>
         {
             m_OnClose?.Invoke();
+            m_OnClose = null;
             Hide();
         });
         m_LeaderboardButton.gameObject.SetActive(false);
