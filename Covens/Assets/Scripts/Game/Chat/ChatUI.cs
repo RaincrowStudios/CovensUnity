@@ -656,7 +656,6 @@ public class ChatUI : UIAnimationManager
 
 public class ChatCovenData
 {
-    public string instance { get; set; }
     public string name { get; set; }
     public string dominion { get; set; }
     public int members { get; set; }

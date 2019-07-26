@@ -48,7 +48,6 @@ namespace Raincrow.Chat.UI
         [SerializeField] private UIChatItem _chatHelpPlayerPrefab;
         [SerializeField] private UIChatItem _chatHelpCrowPrefab;
         [SerializeField] private UIChatItem _chatImagePrefab;
-        [SerializeField] private UIChatCoven _chatCovenPrefab;
 
         [Header("Unread Messages UI")]
         [SerializeField] private TMPro.TextMeshProUGUI _newsUnreadText;
@@ -66,8 +65,6 @@ namespace Raincrow.Chat.UI
         private SimplePool<UIChatItem> _chatHelpPlayerPool;
         private SimplePool<UIChatItem> _chatHelpCrowPool;
         private SimplePool<UIChatItem> _chatImagePool;
-        private SimplePool<UIChatCoven> _chatCovenPool;
-        private List<ChatCovenData> _chatCovenDatas = new List<ChatCovenData>();
 
         private List<ChatMessage> _messages;
         private List<UIChatItem> _items = new List<UIChatItem>();
@@ -78,7 +75,9 @@ namespace Raincrow.Chat.UI
         private bool _isOpen;
         private float _lastMessageSentTime = 0f;
 
-
+        private Coroutine m_SpawnCoroutine;
+        private Coroutine m_UpdateTimestampCoroutine;
+        private Coroutine m_WaitInputCooldownCoroutine;
 
         public void Show()
         {
@@ -132,11 +131,13 @@ namespace Raincrow.Chat.UI
             _helpButton.onClick.RemoveListener(_OnClickSupport);
             _helpButton.onClick.AddListener(_OnClickSupport);
 
-            StopCoroutine(UpdateTimestamps());
-            StartCoroutine(UpdateTimestamps());
+            if (m_UpdateTimestampCoroutine != null)
+                StopCoroutine(m_UpdateTimestampCoroutine);
+            m_UpdateTimestampCoroutine = StartCoroutine(UpdateTimestamps());
 
-            StopCoroutine(WaitCooldownInput());
-            StartCoroutine(WaitCooldownInput());
+            if (m_WaitInputCooldownCoroutine != null)
+                StopCoroutine(m_WaitInputCooldownCoroutine);
+            m_WaitInputCooldownCoroutine = StartCoroutine(WaitCooldownInput());
         }
 
         private bool isReconnecting = false;
@@ -392,7 +393,6 @@ namespace Raincrow.Chat.UI
             _chatHelpPlayerPool = new SimplePool<UIChatItem>(_chatHelpPlayerPrefab, 1);
             _chatHelpCrowPool = new SimplePool<UIChatItem>(_chatHelpCrowPrefab, 1);
             _chatImagePool = new SimplePool<UIChatItem>(_chatImagePrefab, 1);
-            _chatCovenPool = new SimplePool<UIChatCoven>(_chatCovenPrefab, 1);
 
             //button listeners            
             _closeButton.onClick.AddListener(_OnClickClose);
@@ -429,8 +429,6 @@ namespace Raincrow.Chat.UI
 
             _isOpen = true;
             onComplete?.Invoke();
-
-            StartCoroutine(UpdateCovensSearchChange());
         }
 
         private void AnimateHide()
@@ -479,27 +477,13 @@ namespace Raincrow.Chat.UI
 
             //despawn previous items
             ClearItems();
-
-            Text placeholderText = _inputField.placeholder as Text;
-            if (!ChatManager.IsConnected(category) && category == ChatCategory.COVEN)
-            {
-                placeholderText.text = LocalizeLookUp.GetText("coven_search");
-
-                _enableInputUI.gameObject.SetActive(true);
-
-                RequestAvailableCovens(_inputField.text);
-            }
-            else
-            {
-                placeholderText.text = LocalizeLookUp.GetText("coven_invite_enter_text");
-            }
-
+            
             if (ChatManager.IsConnected(category) && ChatManager.HasJoinedChat(category))
             {
                 //setup the UI with the available messages
                 _messages = new List<ChatMessage>();
                 _messages.AddRange(ChatManager.GetMessages(category));
-                StartCoroutine("SpawnChatItems");
+                m_SpawnCoroutine = StartCoroutine(SpawnChatItems());
 
                 LeanTween.alphaCanvas(_containerCanvasGroup, 1, 0.5f).setEaseOutCubic();
 
@@ -530,96 +514,14 @@ namespace Raincrow.Chat.UI
                 ShowLoading(true);
             }
         }
-
-        private IEnumerator UpdateCovensSearchChange()
-        {
-            string searchQuery = string.Empty;
-            while (enabled)
-            {
-                bool inputFieldChanged = searchQuery != _inputField.text;
-                if (_currentCategory == ChatCategory.COVEN && !ChatManager.IsConnected(ChatCategory.COVEN) && inputFieldChanged && _chatCovenDatas.Count > 0)
-                {
-                    searchQuery = _inputField.text;
-                    StopCoroutine("ShowAvailableCovensCoroutine");                    
-
-                    ChatCovenDataSearchQuery chatCovenDataQuery = new ChatCovenDataSearchQuery(_chatCovenDatas, searchQuery, _maxCovensAvailable);
-                    StartCoroutine("ShowAvailableCovensCoroutine", chatCovenDataQuery);
-                }
-                yield return null;
-            }
-        }
-
-        private class ChatCovenDataSearchQuery
-        {
-            private IEnumerable<ChatCovenData> _covens { get; set; }
-            private string _searchQuery { get; set; }
-            private int _maxCovensQuery { get; set; }
-
-            public ChatCovenDataSearchQuery(List<ChatCovenData> covens, string searchQuery = "", int maxCovens = 10)
-            {
-                _covens = covens;
-                _searchQuery = searchQuery;
-                _maxCovensQuery = maxCovens;
-            }
-
-            public IEnumerable<ChatCovenData> GetCovens()
-            {
-                IEnumerable<ChatCovenData> covensToRetrieve = _covens.OrderBy((coven1) => coven1.worldRank);
-
-                if (!string.IsNullOrWhiteSpace(_searchQuery))
-                {
-                    //covensToRetrieve = covensToRetrieve.Where(coven => coven.name.StartsWith(_searchQuery, System.StringComparison.OrdinalIgnoreCase));
-                    covensToRetrieve = covensToRetrieve.Where(coven => coven.name.IndexOf(_searchQuery, System.StringComparison.OrdinalIgnoreCase) >= 0);
-                }      
-
-                return covensToRetrieve.Take(_maxCovensQuery);
-            }
-        }
-
-        private void RequestAvailableCovens(string searchQuery)
-        {
-            APIManager.Instance.Get("coven/all", (string payload, int response) =>
-            {
-                if (response == 200)
-                {
-                    StopCoroutine("ShowAvailableCovensCoroutine");
-
-                    _chatCovenDatas.Clear();
-                    _chatCovenDatas.AddRange(JsonConvert.DeserializeObject<List<ChatCovenData>>(payload));
-
-                    ChatCovenDataSearchQuery chatCovenDataQuery = new ChatCovenDataSearchQuery(_chatCovenDatas, searchQuery, _maxCovensAvailable);
-                    StartCoroutine("ShowAvailableCovensCoroutine", chatCovenDataQuery);
-                }
-            });
-        }
-
-        private IEnumerator ShowAvailableCovensCoroutine(ChatCovenDataSearchQuery chatCovenDataQuery)
-        {
-            _chatCovenPool.DespawnAll();
-            _items.Clear();
-            _messages = new List<ChatMessage>();
-
-            float startTime = Time.realtimeSinceStartup;
-            IEnumerable<ChatCovenData> chatCovenDatas = chatCovenDataQuery.GetCovens();
-            foreach (var chatCovenData in chatCovenDatas)
-            {
-                UIChatCoven uiChatCoven = _chatCovenPool.Spawn();
-                uiChatCoven.SetupCoven(chatCovenData, onRequestChatClose: _OnClickClose);
-                uiChatCoven.transform.SetParent(_itemContainer);
-                uiChatCoven.transform.localScale = Vector3.one;
-                yield return null;
-            }
-            float elapsedTime = Time.realtimeSinceStartup - startTime;
-            Debug.LogFormat("Query Total Time: {0}", elapsedTime);
-
-            ShowLoading(false);
-        }
-
+               
         private void ClearItems()
         {
-            StopCoroutine("SpawnChatItems");
-            StopCoroutine("ShowAvailableCovensCoroutine");
-            _chatCovenPool.DespawnAll();
+            if (m_SpawnCoroutine != null)
+            {
+                StopCoroutine(m_SpawnCoroutine);
+                m_SpawnCoroutine = null;
+            }
             _chatLocationPool.DespawnAll();
             _chatImagePool.DespawnAll();
             _chatMessagePool.DespawnAll();
@@ -802,7 +704,7 @@ namespace Raincrow.Chat.UI
                     _lastMessageSentTime = Time.realtimeSinceStartup;
                     _enableInputUI.enabled = false;
 
-                    StartCoroutine(WaitCooldownInput());
+                    m_WaitInputCooldownCoroutine = StartCoroutine(WaitCooldownInput());
                 }                
             }
         }
@@ -832,7 +734,7 @@ namespace Raincrow.Chat.UI
                 _lastMessageSentTime = Time.realtimeSinceStartup;
                 _enableInputUI.enabled = false;
 
-                StartCoroutine(WaitCooldownInput());
+                m_WaitInputCooldownCoroutine = StartCoroutine(WaitCooldownInput());
             }
         }
 

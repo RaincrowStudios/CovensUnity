@@ -10353,7 +10353,6 @@ MonoBehaviour:
   m_InputRaycaster: {fileID: 114969582688282848}
   m_MainCanvasGroup: {fileID: 225736245566399876}
   m_InputPopup: {fileID: 114101838987959968}
-  m_LoadingObj: {fileID: 1216339690665270}
   m_CovenName: {fileID: 114480534897254900}
   m_SubTitle: {fileID: 114252984497297908}
   m_Home:
@@ -17857,7 +17856,7 @@ Canvas:
   m_GameObject: {fileID: 1537984667605840}
   m_Enabled: 1
   serializedVersion: 3
-  m_RenderMode: 1
+  m_RenderMode: 0
   m_Camera: {fileID: 0}
   m_PlaneDistance: 50
   m_PixelPerfect: 0

@@ -27,25 +27,12 @@ public static class TeamManager
     }
 
     public static TeamData MyCovenData { get; set; }
-
-
-    //public static void GetCoven(System.Action callback)
-    //{
-    //    if (string.IsNullOrEmpty(MyCovenId))
-    //        return;
-
-    //    GetCoven(MyCovenId, (covenData, error) =>
-    //    {
-    //        MyCovenData = covenData;
-    //        callback?.Invoke();
-    //    });
-    //}
-
-    public static void GetCoven(string covenId, System.Action<TeamData, string> callback)
+    
+    public static void GetCoven(string coven, bool isName, System.Action<TeamData, string> callback)
     {
-        Debug.Log("retriving coven " + covenId);
+        Debug.Log("retriving coven " + coven);
 
-        string endpoint = string.Concat("coven/", covenId);
+        string endpoint = "coven/" + coven + "?name=" + isName.ToString().ToLowerInvariant();
         APIManager.Instance.Get(endpoint, (response, result) =>
         {
             if (result == 200)
@@ -119,11 +106,11 @@ public static class TeamManager
             });
     }
 
-    public static void SendRequest(string covenId, System.Action<CovenRequest, string> callback)
+    public static void SendRequest(string covenId, bool isName, System.Action<CovenRequest, string> callback)
     {
         Debug.Log("sending request to join the coven " + covenId);
 
-        APIManager.Instance.Put("coven/sendRequest/" + covenId, "{}", (response, result) =>
+        APIManager.Instance.Put("coven/sendRequest/" + covenId + "?name=" + isName.ToString().ToLowerInvariant(), "{}", (response, result) =>
         {
             if (result == 200)
             {
@@ -181,11 +168,11 @@ public static class TeamManager
         });
     }
     
-    public static void SendInvite(string playerId, System.Action<PendingInvite, string> callback)
+    public static void SendInvite(string player, bool isName, System.Action<PendingInvite, string> callback)
     {
-        Debug.Log("sending coven invitation to " + playerId);
+        Debug.Log("sending coven invitation to " + player);
 
-        APIManager.Instance.Put("coven/invite/" + playerId, "{}", (response, result) =>
+        APIManager.Instance.Put("coven/invite/" + player + "?name=" + isName.ToString().ToLowerInvariant(), "{}", (response, result) =>
         {
             if (result == 200)
             {

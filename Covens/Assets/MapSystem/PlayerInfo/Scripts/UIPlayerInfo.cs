@@ -219,7 +219,7 @@ public class UIPlayerInfo : UIInfoPanel
         else if (string.IsNullOrEmpty(TeamManager.MyCovenId) == false)
         {
             LoadingOverlay.Show();
-            TeamManager.SendInvite(m_WitchData.Id, (invite, error) =>
+            TeamManager.SendInvite(m_WitchData.Id, false, (invite, error) =>
             {
                 LoadingOverlay.Hide();
                 if (string.IsNullOrEmpty(error))

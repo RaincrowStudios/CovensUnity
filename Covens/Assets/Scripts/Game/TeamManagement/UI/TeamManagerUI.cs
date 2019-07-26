@@ -114,12 +114,79 @@ public class TeamManagerUI : MonoBehaviour
     private int m_TweenId;
     private int m_ScreenTweenId;
 
+    public static void OpenName(string covenName)
+    {
+        if (string.IsNullOrEmpty(covenName))
+        {
+            Debug.LogError("NULL NAME");
+            return;
+        }
 
+        LoadScene(() =>
+        {
+            if (TeamManager.MyCovenData != null && covenName == TeamManager.MyCovenData.Name) //show the player's coven
+            {
+                Open(TeamManager.MyCovenData.Id);
+            }
+            else //get the coven from server
+            {
+                TeamManager.GetCoven(covenName, true, (covenData, error) =>
+                {
+                    if (string.IsNullOrEmpty(error))
+                        m_Instance.Show(covenData);
+                    else
+                        UIGlobalErrorPopup.ShowError(null, error);
+                });
+            }
+        });
+    }
+    
     public static void Open(string covenId)
+    {
+        LoadScene(() =>
+        {
+            if (string.IsNullOrEmpty(covenId) || covenId == TeamManager.MyCovenId) //show the player's coven
+            {
+                if (string.IsNullOrEmpty(covenId)) //player has no coven
+                {
+                    m_Instance.Show(null);
+                }
+                else
+                {
+                    if (TeamManager.MyCovenData == null)//try to request coven data from server
+                    {
+                        TeamManager.GetCoven(covenId, false, (covenData, error) =>
+                        {
+                            if (string.IsNullOrEmpty(error))
+                                m_Instance.Show(covenData);
+                            else
+                                UIGlobalErrorPopup.ShowError(null, error);
+                        });
+                    }
+                    else //show the cached coven
+                    {
+                        m_Instance.Show(TeamManager.MyCovenData);
+                    }
+                }
+            }
+            else //get the coven from server
+            {
+                TeamManager.GetCoven(covenId, false, (covenData, error) =>
+                {
+                    if (string.IsNullOrEmpty(error))
+                        m_Instance.Show(covenData);
+                    else
+                        UIGlobalErrorPopup.ShowError(null, error);
+                });
+            }
+        });
+    }
+
+    private static void LoadScene(System.Action onComplete)
     {
         if (m_Instance != null)
         {
-            m_Instance.Show(covenId);
+            onComplete?.Invoke();
         }
         else
         {
@@ -133,7 +200,7 @@ public class TeamManagerUI : MonoBehaviour
                 },
                 () =>
                 {
-                    m_Instance.Show(covenId);
+                    onComplete?.Invoke();
                     LoadingOverlay.Hide();
                 });
         }
@@ -213,7 +280,7 @@ public class TeamManagerUI : MonoBehaviour
         GameResyncHandler.OnResyncStart += Hide;
     }
 
-    private void Show(string covenId)
+    private void Show(TeamData coven)
     {
         m_Canvas.enabled = true;
         m_InputRaycaster.enabled = true;
@@ -223,56 +290,12 @@ public class TeamManagerUI : MonoBehaviour
             .setOnComplete(() => MapsAPI.Instance.HideMap(true))
             .uniqueId;
 
-        m_CovenData = null;
+        m_CovenData = coven;
 
-        if (string.IsNullOrEmpty(covenId) || covenId == TeamManager.MyCovenId)
-        {
-            //player has no coven
-            if (string.IsNullOrEmpty(TeamManager.MyCovenInfo.coven))
-            {
-                SetScreen(Screen.INVITES);
-            }
-            else
-            {
-                //get the players coven data
-                if (TeamManager.MyCovenData == null)
-                {
-                    LoadingOverlay.Show();
-                    TeamManager.GetCoven(TeamManager.MyCovenInfo.coven, (covenData, error) =>
-                    {
-                        LoadingOverlay.Hide();
-                        m_CovenData = covenData;
-                        SetScreen(Screen.HOME);
-                    });
-                }
-                //just show the ui
-                else
-                {
-                    m_CovenData = TeamManager.MyCovenData;
-                    SetScreen(Screen.HOME);
-                }
-            }
-        }
+        if (coven == null)
+            SetScreen(Screen.INVITES);
         else
-        {
-            LoadingOverlay.Show();
-            TeamManager.GetCoven(covenId, (covenData, error) =>
-            {
-                LoadingOverlay.Hide();
-                if (string.IsNullOrEmpty(error))
-                {
-                    //show home
-                    m_CovenData = covenData;
-                    SetScreen(Screen.HOME);
-                }
-                else
-                {
-                    //close the ui and show error
-                    UIGlobalErrorPopup.ShowError(null, error);
-                    Hide();
-                }
-            });
-        }
+            SetScreen(Screen.HOME);
     }
 
     private void Hide()
@@ -408,7 +431,7 @@ public class TeamManagerUI : MonoBehaviour
                             if (string.IsNullOrEmpty(error))
                             {
                                 m_InputPopup.Close();
-                                Show(coven.Id);
+                                Open(null);
                             }
                             else
                             {
@@ -642,7 +665,7 @@ public class TeamManagerUI : MonoBehaviour
                     onAccept: () =>
                     {
                         //reopen the coven management screen
-                        Show(PlayerDataManager.playerData.covenInfo.coven);
+                        Open(null);
                     },
                     onReject: () =>
                     {
@@ -685,7 +708,7 @@ public class TeamManagerUI : MonoBehaviour
                {
                    //send the invite
                    LoadingOverlay.Show();
-                   TeamManager.SendInvite(characterName, (invite, error) =>
+                   TeamManager.SendInvite(characterName, true, (invite, error) =>
                    {
                        LoadingOverlay.Hide();
                        if (string.IsNullOrEmpty(error))
@@ -774,27 +797,7 @@ public class TeamManagerUI : MonoBehaviour
 
     private void OnClickSendRequest()
     {
-        UIGlobalErrorPopup.ShowError(null, "TODO: SHOW AVAILABLE COVENS");
+        UICovenSearcher.Instance.Show(() => Open(PlayerDataManager.playerData.covenId));
     }
     #endregion
-    
-
-#if UNITY_EDITOR
-    [Header("Debug")]
-    [SerializeField] private string m_DebugString;
-    
-    [ContextMenu("Get Coven")]
-    private void DebugGet()
-    {
-        if (IsOpen)
-        {
-            Hide();
-            LeanTween.value(0, 0, 0.5f).setOnComplete(() => Show(m_DebugString));
-        }
-        else
-        {
-            Show(m_DebugString);
-        }
-    }
-#endif
 }

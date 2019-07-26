@@ -31,6 +31,7 @@ public class SocketClient : MonoBehaviour
         { SummonSpiritHandler.EventName,        new SummonSpiritHandler()   },
         { LevelUpHandler.EventName,             new LevelUpHandler()        },
         { ChangeDegreeHandler.EventName,        new ChangeDegreeHandler()   },
+        { ShoutHandler.EventName,               new ShoutHandler()          }
 
         //{ "map_energy_change",          OnMapEnergyChange.HandleEvent },
         //{ "map_token_move",             OnMapTokenMove.HandleEvent },
@@ -41,7 +42,6 @@ public class SocketClient : MonoBehaviour
         //{ "map_condition_remove",       OnMapConditionRemove.HandleEvent },
         //{ "map_condition_trigger",      OnMapConditionTrigger.HandleEvent },
         //{ "map_degree_change",          OnMapDegreeChange.HandleEvent },
-        //{ "map_shout",                  OnMapShout.HandleEvent },
         //{ "map_level_up",               OnMapLevelUp.HandleEvent },
         //{ "map_channel_start",          SpellChanneling.OnMapChannelingStart },
         //{ "map_channel_end",            SpellChanneling.OnMapChannelingFinish },

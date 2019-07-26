@@ -94,7 +94,6 @@ public class Spellcraft
 
 public class Gather
 {
-    public string id { get; set; }
     public string type { get; set; }
     public int amount { get; set; }
     public string location { get; set; }

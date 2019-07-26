@@ -38,8 +38,8 @@ public class Leaderboards : UIAnimationManager
         Instance = this;
         transform.localScale = Vector3.zero;
 
-        //cache the leaderboard as soon as the scene initializes
-        GetLeaderboards(null, null, false);
+        ////cache the leaderboard as soon as the scene initializes
+        //GetLeaderboards(null, null, false);
 
     }
 

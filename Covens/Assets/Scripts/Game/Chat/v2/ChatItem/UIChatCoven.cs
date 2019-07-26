@@ -14,29 +14,43 @@ namespace Raincrow.Chat.UI
         [SerializeField] private TextMeshProUGUI _covenXP;
         [SerializeField] private TextMeshProUGUI _worldRank;
         [SerializeField] private TextMeshProUGUI _sendRequestLabel;
-        [SerializeField] private Button _sendRequestButton;
+        [SerializeField] private Button _button;
         [SerializeField] private Image _covenLogo;
 
         private string _covenName;
+        private ChatCovenData _covenData;
+        private System.Action _onClick;
 
-        protected virtual void OnEnable()
+        private void Awake()
         {
-            _sendRequestButton.onClick.AddListener(SendJoinCovenRequest);
+            _button.onClick.AddListener(OnClick);
         }
 
-        protected virtual void OnDisable()
+        public void Clear()
         {
-            _sendRequestButton.onClick.RemoveListener(SendJoinCovenRequest);
+            _covenTitle.text = "";
+            _worldRank.text = "";
+            _covenXP.text = "";
+            _covenLevel.text = "";
+            _numMembers.text = "";
+            _founderName.text = "";
+            _sendRequestLabel.text = "";
+            _covenLogo.color = Color.white;
+
+            _covenData = null;
         }
 
-        public virtual void SetupCoven(ChatCovenData coven, UnityAction<bool> onRequestChatLoading = null, UnityAction onRequestChatClose = null)
+        public void SetupCoven(ChatCovenData coven, System.Action onClick)
         {
+            _onClick = onClick;
+            _covenData = coven;
+
             // covens color
             _covenLogo.color = Utilities.GetSchoolColor(coven.alignment);
 
             // covens title text
             _covenName = coven.name;
-            _covenTitle.text = string.Concat(_covenName, " ", Utilities.GetSchoolCoven(coven.alignment));
+            _covenTitle.text = _covenName;// string.Concat(_covenName, " ", Utilities.GetSchoolCoven(coven.alignment));
 
             // World Rank text
             _worldRank.text = string.Concat(LocalizeLookUp.GetText("lt_world_rank"), "<b><color=white>", coven.worldRank.ToString());
@@ -62,7 +76,7 @@ namespace Raincrow.Chat.UI
 
         private void SendJoinCovenRequest()
         {
-            TeamManager.SendRequest(_covenName, (response, responseBody) =>
+            TeamManager.SendRequest(_covenName, true, (response, responseBody) =>
             {
                 Debug.LogError("TODO: SEND REQUEST");
                 //if (response == 200)
@@ -78,6 +92,15 @@ namespace Raincrow.Chat.UI
                 //    _sendRequestLabel.text = LocalizeLookUp.GetText("lt_failed"); // "Failed";
                 //}
             });
+        }
+
+        private void OnClick()
+        {
+            if (_covenData == null)
+                return;
+
+            _onClick?.Invoke();
+            TeamManagerUI.OpenName(_covenData.name);
         }
     }
 }
