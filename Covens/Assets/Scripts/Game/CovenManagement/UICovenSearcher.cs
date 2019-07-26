@@ -9,6 +9,34 @@ using Newtonsoft.Json;
 
 public class UICovenSearcher : MonoBehaviour
 {
+    private class ChatCovenDataSearchQuery
+    {
+        private IEnumerable<ChatCovenData> _covens { get; set; }
+        private string _searchQuery { get; set; }
+        private int _maxCovensQuery { get; set; }
+
+        public ChatCovenDataSearchQuery(List<ChatCovenData> covens, string searchQuery = "", int maxCovens = 10)
+        {
+            _covens = covens;
+            _searchQuery = searchQuery;
+            _maxCovensQuery = maxCovens;
+        }
+
+        public IEnumerable<ChatCovenData> GetCovens()
+        {
+            IEnumerable<ChatCovenData> covensToRetrieve = _covens.OrderBy((coven1) => coven1.worldRank);
+
+            if (!string.IsNullOrWhiteSpace(_searchQuery))
+            {
+                //covensToRetrieve = covensToRetrieve.Where(coven => coven.name.StartsWith(_searchQuery, System.StringComparison.OrdinalIgnoreCase));
+                covensToRetrieve = covensToRetrieve.Where(coven => coven.name.IndexOf(_searchQuery, System.StringComparison.OrdinalIgnoreCase) >= 0);
+            }
+
+            return covensToRetrieve.Take(_maxCovensQuery);
+        }
+    }
+
+
     [SerializeField] private Canvas m_Canvas;
     [SerializeField] private GraphicRaycaster m_InputRaycaster;
     [SerializeField] private CanvasGroup m_CanvasGroup;
@@ -55,6 +83,7 @@ public class UICovenSearcher : MonoBehaviour
         m_Canvas.enabled = false;
         m_InputRaycaster.enabled = false;
         m_CanvasGroup.alpha = 0;
+        m_Canvas.transform.localScale = Vector3.zero;
         m_ContainerCanvasGroup.alpha = 0;
         m_LoadingOverlay.SetActive(false);
         m_ItemPool = new SimplePool<UIChatCoven>(m_ItemPrefab, m_MaxCovensAvailable);
@@ -70,6 +99,7 @@ public class UICovenSearcher : MonoBehaviour
 
             m_RecentTab = true;
             RequestAvailableCovens(m_SearchField.text, m_RecentTab);
+            m_HighlightObj.transform.localPosition = m_RecentCovensButton.transform.localPosition;
         });
 
         m_TopCovensButton.onClick.AddListener(() =>
@@ -79,38 +109,41 @@ public class UICovenSearcher : MonoBehaviour
 
             m_RecentTab = false;
             RequestAvailableCovens(m_SearchField.text, m_RecentTab);
+            m_HighlightObj.transform.localPosition = m_TopCovensButton.transform.localPosition;
         });
 
-        m_CloseButton.onClick.AddListener(Close);
+        m_CloseButton.onClick.AddListener(() =>
+        {
+            Close();
+            m_OnClose?.Invoke();
+            m_OnClose = null;
+        });
 
         m_SearchField.onValueChanged.AddListener(OnSearchStringChange);
     }
     
     public void Show(System.Action onClose)
     {
-        m_OnClose = onClose;
         Show();
+        m_OnClose = onClose;
     }
 
     [ContextMenu("Show")]
-    public void Show()
+    private void Show()
     {
+        m_OnClose = null;
+
         //update the list
         RequestAvailableCovens(m_SearchField.text, m_RecentTab);
+        m_HighlightObj.transform.localPosition = m_RecentTab ? m_RecentCovensButton.transform.localPosition : m_TopCovensButton.transform.localPosition;
 
         m_Canvas.enabled = true;
         m_InputRaycaster.enabled = true;
-
-        m_HighlightObj.transform.localPosition = m_RecentTab ? m_RecentCovensButton.transform.localPosition : m_TopCovensButton.transform.localPosition;
-
+        
         //animate the ui
         LeanTween.cancel(m_TweenId);
-        m_TweenId = LeanTween.alphaCanvas(m_CanvasGroup, 1, 0.25f)
+        m_TweenId = LeanTween.alphaCanvas(m_CanvasGroup, 1, 0.5f)
             .setEaseOutCubic()
-            .setOnUpdate((float t) =>
-            {
-                m_Window.localScale = Vector3.Lerp(Vector3.one * 0.8f, Vector3.one, m_CanvasGroup.alpha);
-            })
             .uniqueId;
     }
 
@@ -120,18 +153,13 @@ public class UICovenSearcher : MonoBehaviour
         //animat ethe ui
         m_InputRaycaster.enabled = false;
         LeanTween.cancel(m_TweenId);
-        m_TweenId = LeanTween.alphaCanvas(m_CanvasGroup, 0, 0.5f)
+        m_TweenId = LeanTween.alphaCanvas(m_CanvasGroup, 0, .5f)
             .setEaseOutCubic()
-            .setOnUpdate((float t) =>
-            {
-                m_Window.localScale = Vector3.Lerp(Vector3.one * 0.8f, Vector3.one, m_CanvasGroup.alpha);
-            })
-            .setOnComplete(() =>
-            {
-                m_Canvas.enabled = false;
-                m_OnClose?.Invoke();
-            })
+            .setOnComplete(() => m_Canvas.enabled = false)
             .uniqueId;
+
+        LeanTween.cancel(m_ContainerTweenId);
+        m_ContainerTweenId = LeanTween.alphaCanvas(m_ContainerCanvasGroup, 0, 1).uniqueId;
     }
 
     private void OnSearchStringChange(string searchQuery)
@@ -149,38 +177,10 @@ public class UICovenSearcher : MonoBehaviour
         }
     }
 
-    private class ChatCovenDataSearchQuery
-    {
-        private IEnumerable<ChatCovenData> _covens { get; set; }
-        private string _searchQuery { get; set; }
-        private int _maxCovensQuery { get; set; }
-
-        public ChatCovenDataSearchQuery(List<ChatCovenData> covens, string searchQuery = "", int maxCovens = 10)
-        {
-            _covens = covens;
-            _searchQuery = searchQuery;
-            _maxCovensQuery = maxCovens;
-        }
-
-        public IEnumerable<ChatCovenData> GetCovens()
-        {
-            IEnumerable<ChatCovenData> covensToRetrieve = _covens.OrderBy((coven1) => coven1.worldRank);
-
-            if (!string.IsNullOrWhiteSpace(_searchQuery))
-            {
-                //covensToRetrieve = covensToRetrieve.Where(coven => coven.name.StartsWith(_searchQuery, System.StringComparison.OrdinalIgnoreCase));
-                covensToRetrieve = covensToRetrieve.Where(coven => coven.name.IndexOf(_searchQuery, System.StringComparison.OrdinalIgnoreCase) >= 0);
-            }
-
-            return covensToRetrieve.Take(_maxCovensQuery);
-        }
-    }
-
     private void RequestAvailableCovens(string searchQuery, bool recentCovens)
     {
         float lastRequestTime = recentCovens ? m_LastRecentCovensRequestTime : m_LastTopCovensRequestTime;
-
-
+        
         //setup the cached list
         if (Time.realtimeSinceStartup - lastRequestTime < m_RequestCovensCooldown)
         {
@@ -196,9 +196,9 @@ public class UICovenSearcher : MonoBehaviour
 
         Debug.Log($"request {(recentCovens ? "recent" : "top")} covens list");
 
-        //hide the container
-        LeanTween.cancel(m_ContainerTweenId);
-        m_ContainerTweenId = LeanTween.alphaCanvas(m_ContainerCanvasGroup, 0, m_ContainerCanvasGroup.alpha / 3f).uniqueId;
+        //disable container while waiting the list form the server
+        m_ContainerCanvasGroup.alpha = 0;
+        m_ContainerCanvasGroup.interactable = false;
 
         //request new list
         m_LoadingOverlay.SetActive(true);
@@ -238,6 +238,8 @@ public class UICovenSearcher : MonoBehaviour
         //hide the container
         LeanTween.cancel(m_ContainerTweenId);
         m_ContainerTweenId = LeanTween.alphaCanvas(m_ContainerCanvasGroup, 0, m_ContainerCanvasGroup.alpha / 5f).uniqueId;
+        m_ContainerCanvasGroup.interactable = false;
+
 
         yield return new WaitForSeconds(m_ContainerCanvasGroup.alpha / 5f);
 
@@ -250,12 +252,18 @@ public class UICovenSearcher : MonoBehaviour
         List<UIChatCoven> items = new List<UIChatCoven>();
         for (int i = 0; i < chatCovenDatas.Count(); i++)
         {
+            ChatCovenData data = chatCovenDatas.ElementAt(i);
             UIChatCoven uiChatCoven = m_ItemPool.Spawn();
+
             uiChatCoven.transform.SetParent(m_Container.transform);
             uiChatCoven.transform.localScale = Vector3.one;
             uiChatCoven.SetupCoven(
-                chatCovenDatas.ElementAt(i), 
-                Close
+                data, 
+                () =>
+                {
+                    Close();
+                    TeamManagerUI.OpenName(data.name, () => Show(m_OnClose));
+                }
             );
             items.Add(uiChatCoven);
         }
@@ -267,5 +275,6 @@ public class UICovenSearcher : MonoBehaviour
             .setEaseOutCubic()
             .uniqueId;
 
+        m_ContainerCanvasGroup.interactable = true;
     }
 }

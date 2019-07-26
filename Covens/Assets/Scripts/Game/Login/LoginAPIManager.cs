@@ -215,11 +215,29 @@ public static class LoginAPIManager
             {
                 if (result == 200)
                 {
-                    PlayerDataManager.playerData = ParsePlayerData(response);
-                    OnCharacterReceived?.Invoke();
+                    //PlayerDataManager.playerData = ParsePlayerData(response);
+                    //OnCharacterReceived?.Invoke();
+                    //callback?.Invoke(result, response);
+                    Debug.LogError("TEMP FIX - SOCKET NOT WORKING AFTER CREATING A NEW ACCOUNT/CHARACTER");
+
+                    loginToken = null;
+                    wssToken = null;
+
+                    LoginAPIManager.Login((_loginCode, _loginResponse) =>
+                    {
+                        if (_loginCode == 200)
+                        {
+                            PlayerDataManager.playerData = ParsePlayerData(response);
+                            OnCharacterReceived?.Invoke();
+                        }
+                        callback?.Invoke(_loginCode, _loginResponse);
+                    });
+                }
+                else
+                {
+                    callback?.Invoke(result, response);
                 }
 
-                callback?.Invoke(result, response);
             });
     }
 

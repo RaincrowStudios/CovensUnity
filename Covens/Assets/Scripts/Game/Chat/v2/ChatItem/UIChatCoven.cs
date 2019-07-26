@@ -100,7 +100,6 @@ namespace Raincrow.Chat.UI
                 return;
 
             _onClick?.Invoke();
-            TeamManagerUI.OpenName(_covenData.name);
         }
     }
 }

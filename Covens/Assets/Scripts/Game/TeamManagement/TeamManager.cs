@@ -106,11 +106,11 @@ public static class TeamManager
             });
     }
 
-    public static void SendRequest(string covenId, bool isName, System.Action<CovenRequest, string> callback)
+    public static void SendRequest(string coven, bool isName, System.Action<CovenRequest, string> callback)
     {
-        Debug.Log("sending request to join the coven " + covenId);
+        Debug.Log("sending request to join the coven " + coven);
 
-        APIManager.Instance.Put("coven/sendRequest/" + covenId + "?name=" + isName.ToString().ToLowerInvariant(), "{}", (response, result) =>
+        APIManager.Instance.Put("coven/sendRequest/" + coven + "?name=" + isName.ToString().ToLowerInvariant(), "{}", (response, result) =>
         {
             if (result == 200)
             {

@@ -59,7 +59,7 @@ public class TeamInviteItemUI : MonoBehaviour
 
         m_OnSelect = () =>
         {
-            Debug.LogError("TODO: SHOW PLAYER");
+            TeamPlayerView.ViewCharacter(data.Character, null);
         };
         m_OnConfirm = null;
         m_OnCancel = () =>
