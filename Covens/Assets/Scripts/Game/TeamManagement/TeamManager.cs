@@ -40,9 +40,12 @@ public static class TeamManager
                 //return the TeamData
                 TeamData teamData = JsonUtility.FromJson<TeamData>(response);
 
-                //cache the players coven data
-                if (string.IsNullOrEmpty(MyCovenId) == false && teamData.Id == MyCovenId)
-                    MyCovenData = teamData;
+                if (MyCovenData != null)
+                {
+                    //cache the players coven data
+                    if (string.IsNullOrEmpty(MyCovenId) == false && teamData.Id == MyCovenId)
+                        MyCovenData = teamData;
+                }
 
                 callback?.Invoke(teamData, null);
             }
@@ -135,11 +138,13 @@ public static class TeamManager
             {
                 TeamMemberData member = JsonUtility.FromJson<TeamMemberData>(response);
 
-                //updat the coven's members
-                MyCovenData.Members.Add(member);
-
-                //update the requests
-                MyCovenData.PendingRequests.RemoveAll(req => req.Character == playerId);
+                if (MyCovenData != null)
+                {
+                    //updat the coven's members
+                    MyCovenData.Members.Add(member);
+                    //update the requests
+                    MyCovenData.PendingRequests.RemoveAll(req => req.Character == playerId);
+                }
 
                 callback?.Invoke(member, null);
             }
@@ -158,7 +163,8 @@ public static class TeamManager
         {
             if (result == 200)
             {
-                MyCovenData.PendingRequests.RemoveAll(req => req.Name == playerId);
+                if (MyCovenData != null)
+                    MyCovenData.PendingRequests.RemoveAll(req => req.Name == playerId);
                 callback?.Invoke(null);
             }
             else
@@ -177,7 +183,8 @@ public static class TeamManager
             if (result == 200)
             {
                 PendingInvite pendingInvite = JsonUtility.FromJson<PendingInvite>(response);
-                MyCovenData.PendingInvites.Add(pendingInvite);
+                if (MyCovenData != null)
+                    MyCovenData.PendingInvites.Add(pendingInvite);
                 callback?.Invoke(pendingInvite, null);
             }
             else
@@ -195,7 +202,8 @@ public static class TeamManager
         {
             if (result == 200)
             {
-                MyCovenData.PendingInvites.RemoveAll(inv => inv.Character == playerId);
+                if (MyCovenData != null)
+                    MyCovenData.PendingInvites.RemoveAll(inv => inv.Character == playerId);
                 callback?.Invoke(null);
             }
             else
