@@ -1,12 +1,13 @@
 {
-    "dictionary": "Dictionary28.json",
+    "dictionary": "107",
     "assets": [
-        "spirits-2",
-        "spells-1",
-        "apparel-2",
-        "icon-2"
+    	"apparel-6",
+    	"icon-6",
+    	"icon-8",
+    	"spells-2",
+    	"spirits-3"
     ],
-    "version": 29,
-    "android": 38,
-    "apple": 29
+    "version": 250,
+    "android": 250,
+    "apple": 250
 }

@@ -21,36 +21,37 @@ public static class SpellcastingFX
 
     private static SimplePool<Transform> m_TextPopupPool = new SimplePool<Transform>("SpellFX/TextPopup");
 
+    public static SimplePool<Transform> m_TickFxPool = new SimplePool<Transform>("SpellFX/SpellTickDamage");
 
     public static SimplePool<Transform> DeathIconPool = new SimplePool<Transform>("SpellFX/DeathIcon");
     public static SimplePool<Transform> ImmunityIconPool = new SimplePool<Transform>("SpellFX/ImmunityIcon");
 
     private static bool m_QueueGlyphs = false;
 
-    public static void SpawnBackfire(IMarker target, int damage, float delay, bool shake = true)
-    {
-        LeanTween.value(0, 1, delay).setOnComplete(() =>
-        {
-            target.SpawnFX(m_BackfireGlyph, true, 3f, m_QueueGlyphs, (glyph) =>
-            {
-                glyph.GetChild(5).GetComponent<TextMeshProUGUI>().text = damage.ToString();
-                glyph.position = target.gameObject.transform.position + glyph.transform.up * 21.7f - target.characterTransform.forward;
-            });
+    //public static void SpawnBackfire(IMarker target, int damage, float delay, bool shake = true)
+    //{
+    //    LeanTween.value(0, 1, delay).setOnComplete(() =>
+    //    {
+    //        target.SpawnFX(m_BackfireGlyph, true, 3f, m_QueueGlyphs, (glyph) =>
+    //        {
+    //            glyph.GetChild(5).GetComponent<TextMeshProUGUI>().text = damage.ToString();
+    //            glyph.position = target.gameObject.transform.position + glyph.transform.up * 21.7f - target.characterTransform.forward;
+    //        });
 
-            target.SpawnFX(m_BackfireAura, false, 3f, m_QueueGlyphs, null);
+    //        target.SpawnFX(m_BackfireAura, false, 3f, m_QueueGlyphs, null);
 
-            if (shake)
-            {
-                //shake a little more than normal on backfire
-                MapCameraUtils.ShakeCamera(
-                    new Vector3(1, -5, 5),
-                    0.3f,
-                    0.3f,
-                    1f
-                );
-            }
-        });
-    }
+    //        if (shake)
+    //        {
+    //            //shake a little more than normal on backfire
+    //            MapCameraUtils.ShakeCamera(
+    //                new Vector3(1, -5, 5),
+    //                0.3f,
+    //                0.3f,
+    //                1f
+    //            );
+    //        }
+    //    });
+    //}
 
     public static void SpawnBanish(IMarker target, float delay)
     {
@@ -77,24 +78,24 @@ public static class SpellcastingFX
         });
     }
 
-    public static void SpawnFail(IMarker target, float delay, bool shake = true)
+    public static void SpawnFail(IMarker target, bool shake = true)
     {
-        LeanTween.value(0, 1, delay).setOnComplete(() =>
+        Transform aura = m_BackfireAura.Spawn(target.gameObject.transform, 3f);
+        aura.localPosition = new Vector3(0, 0, 0f);
+        aura.localScale = Vector3.one;
+        aura.localRotation = Quaternion.identity;
+
+        if (shake)
         {
-            target.SpawnFX(m_BackfireAura, false, 3f, m_QueueGlyphs, null);
+            MapCameraUtils.ShakeCamera(
+                new Vector3(1, -5, 5),
+                0.1f,
+                0.3f,
+                1f
+            );
+        }
 
-            if (shake)
-            {
-                MapCameraUtils.ShakeCamera(
-                    new Vector3(1, -5, 5),
-                    0.1f,
-                    0.3f,
-                    1f
-                );
-            }
-
-            SpawnText(target, "Spell failed!", m_QueueGlyphs);
-        });
+        SpawnText(target, "Spell failed!", m_QueueGlyphs);
     }
 
     public static void SpawnGlyph(IMarker target, SpellData spell, string baseSpell)
@@ -119,18 +120,22 @@ public static class SpellcastingFX
             glyphPool = m_GreyGlyph;
         }
 
-        target.SpawnFX(glyphPool, true, 3f, m_QueueGlyphs, (glyph) =>
-        {
-            glyph.position = target.gameObject.transform.position + glyph.transform.up * 40.7f - target.characterTransform.forward;
+        //spawn n setup glyph
+        Transform glyph = glyphPool.Spawn(target.characterTransform, 3f);
+        glyph.localScale = Vector3.one;
+        glyph.localRotation = Quaternion.identity;
+        glyph.position = target.characterTransform.position + new Vector3(0, 0, -0.5f) + glyph.up * 40.7f;
+        glyph.GetChild(0).GetChild(6).GetComponent<TextMeshProUGUI>().text = LocalizeLookUp.GetSpellName(spell.id);
 
-            glyph.GetChild(0).GetChild(6).GetComponent<TextMeshProUGUI>().text = LocalizeLookUp.GetSpellName(spell.id);
-
-            if (string.IsNullOrEmpty(baseSpell))
-                baseSpell = spell.id;
-            DownloadedAssets.GetSprite(baseSpell, (spr) => { glyph.GetChild(0).GetChild(5).GetComponent<UnityEngine.UI.Image>().overrideSprite = spr; });
-        });
-
-        target.SpawnFX(auraPool, false, 3f, m_QueueGlyphs, null);
+        if (string.IsNullOrEmpty(baseSpell))
+            baseSpell = spell.id;
+        DownloadedAssets.GetSprite(baseSpell, (spr) => { glyph.GetChild(0).GetChild(5).GetComponent<UnityEngine.UI.Image>().overrideSprite = spr; });
+        
+        //spawn aura
+        Transform aura = auraPool.Spawn(target.gameObject.transform, 3f);
+        aura.localPosition = new Vector3(0, 0, 0f);
+        aura.localScale = Vector3.one;
+        aura.localRotation = Quaternion.identity;
     }
 
     public static void SpawnDamage(IMarker target, int amount, string color = null)
@@ -150,21 +155,20 @@ public static class SpellcastingFX
 
     public static void SpawnText(IMarker target, string text, bool queued)
     {
-        target.SpawnFX(m_TextPopupPool, true, 3f, queued, (textTransform) =>
-        {
-            TextMeshPro textObject = textTransform.GetComponent<TextMeshPro>();
-            textObject.text = text;
+        TextMeshPro textObj = m_TextPopupPool.Spawn(target.characterTransform, 3f).GetComponent<TextMeshPro>();
+        textObj.text = text;
+        textObj.transform.localScale = Vector3.one;
+        textObj.transform.localRotation = Quaternion.identity;
 
-            Vector3 pos = textObject.transform.localPosition;
-
-            LeanTween.value(0, 1, 2f)
-                .setEaseOutCubic()
-                .setOnUpdate((float t) =>
-                {
-                    textObject.alpha = (1 - t) * 2f;
-                    pos.y = 20 + t * 10;
-                    textTransform.localPosition = pos;
-                });
-        });
+        //animate the text
+        Vector3 pos;
+        LeanTween.value(0, 1, 2f)
+            .setEaseOutCubic()
+            .setOnUpdate((float t) =>
+            {
+                textObj.alpha = (1 - t) * 2f;
+                pos = textObj.transform.up * (40 + t * 10);
+                textObj.transform.position = target.characterTransform.position + pos;
+            });
     }
 }

@@ -9,10 +9,12 @@ public class APIManagerLocal
 {
     public const float WaitDelay = 0.5f;
 
-    public static IEnumerator RequestRoutine(string endpoint, string data, string sMethod, bool bRequiresToken, bool bRequiresWssToken, Action<string, int> CallBack)
+    public static IEnumerator RequestServerRoutine(string endpoint, string data, string sMethod, bool bRequiresToken, bool bRequiresWssToken, Action<string, int> CallBack)
     {
         endpoint = "LocalApi/" + endpoint;
         endpoint = endpoint.Replace($"{'/'}{'/'}", "/");
+        endpoint = endpoint.Replace("?", "{63}");
+        endpoint = endpoint.Replace(GetGPS.longitude.ToString(), "{physLon}").Replace(GetGPS.latitude.ToString(), "{physLat}");
 
         // just to log in monitor
         UnityWebRequest www = BakeRequest(endpoint, data, sMethod);
@@ -32,69 +34,29 @@ public class APIManagerLocal
         APIManager.CallOnResponseEvent(www, data, sContent);
     }
 
-
-
-    public static IEnumerator postHelper(string endpoint, string data, Action<string, int> CallBack)
-    {
-        endpoint = "LocalApi/" + endpoint;
-        // just to log in monitor
-        UnityWebRequest www = BakeRequest(endpoint, data, "POST");
-        APIManager.CallRequestEvent(www, data);
-        yield return new WaitForSeconds(WaitDelay);
-
-        string sContent = LoadFile(endpoint);
-        if(sContent != null)
-        {
-            CallBack(sContent, 200);
-        }
-        else
-        {
-            CallBack("File not found", 400);
-        }
-        sContent = ParseCommand(sContent);
-        APIManager.CallOnResponseEvent(www, data, sContent);
-    }
-
-
-    public static IEnumerator RequestCovenHelper(string endpoint, string data, string sMethod, Action<string, int> CallBack)
+    public static IEnumerator RequestAnalyticsRoutine(string endpoint, string data, string sMethod, bool bRequiresToken, bool bRequiresWssToken, Action<string, int> CallBack)
     {
         yield return null;
-        endpoint = "LocalApi/" + endpoint;
-        // just to log in monitor
-        UnityWebRequest www = BakeRequest(endpoint, data, sMethod);
-        APIManager.CallRequestEvent(www, data);
-        yield return new WaitForSeconds(WaitDelay);
-
-        string sContent = LoadFile(endpoint);
-        if (sContent != null)
-        {
-            CallBack(sContent, 200);
-        }
-        else
-        {
-            CallBack("File not found", 400);
-        }
-        sContent = ParseCommand(sContent);
-        APIManager.CallOnResponseEvent(www, data, sContent);
     }
 
-    static  UnityWebRequest BakeRequest(string endpoint, string data, string method)
+    private static UnityWebRequest BakeRequest(string endpoint, string data, string sMethod)
     {
         UnityWebRequest www;
-        if (method == "PUT")
-            www = UnityWebRequest.Put(endpoint, data);
-        else if (method == "POST")
-            www = UnityWebRequest.Post(endpoint, data);
-        else if (method == "DELETE")
-            www = UnityWebRequest.Delete(endpoint);
-        else
+        if (sMethod == "GET")
+        {
             www = UnityWebRequest.Get(endpoint);
-        Debug.Log(endpoint);
-        www.method = method;
-        string bearer = "Bearer " + LoginAPIManager.loginToken;
+        }
+        else
+        {
+            www = UnityWebRequest.Put(endpoint, data);
+            www.method = sMethod;
+        }
+
+        www.timeout = 20;
         www.SetRequestHeader("Content-Type", "application/json");
-        www.SetRequestHeader("Authorization", bearer);
-        Debug.Log("Sending Data : " + data);
+        www.SetRequestHeader("Authorization", LoginAPIManager.loginToken);
+        www.SetRequestHeader("Authorization", LoginAPIManager.wssToken);
+
         return www;
     }
 

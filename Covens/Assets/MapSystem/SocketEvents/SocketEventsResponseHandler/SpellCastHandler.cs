@@ -6,7 +6,7 @@ namespace Raincrow.GameEventResponses
 {
     public class SpellCastHandler : IGameEventHandler
     {
-        public struct Character
+        public struct SpellCastCharacter
         {
             public string id;
             public string type;
@@ -26,8 +26,8 @@ namespace Raincrow.GameEventResponses
         public struct SpellCastEventData
         {
             public string spell;
-            public Character caster;
-            public Character target;
+            public SpellCastCharacter caster;
+            public SpellCastCharacter target;
             public Result result;
             public double timestamp;
             public bool immunity;
@@ -141,7 +141,7 @@ namespace Raincrow.GameEventResponses
                         }
                         else
                         {
-                            SpellcastingFX.SpawnFail(target, 0);
+                            SpellcastingFX.SpawnFail(target);
                         }
                     }
 

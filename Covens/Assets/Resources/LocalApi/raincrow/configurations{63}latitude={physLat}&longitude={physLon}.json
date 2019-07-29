@@ -1,0 +1,18 @@
+{
+	"displayRadius":1000,
+	"tribunal":2,
+	"daysRemaining":0,
+	"sun": {
+		"sunRise":0,
+		"sunSet":0
+	},
+	"moon":{
+		"phase": 0,
+	    "luminosity": 0,
+	    "zenith": 0,
+	    "moonRise": 0,
+	    "moonSet": 0,
+	    "alwaysUp": false,
+	    "alwaysDown": false
+	}
+}

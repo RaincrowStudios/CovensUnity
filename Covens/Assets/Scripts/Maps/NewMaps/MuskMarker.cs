@@ -338,7 +338,7 @@ namespace Raincrow.Maps
             }
         }
 
-        protected virtual void UpdateRenderers()
+        public void UpdateRenderers()
         {
             m_TextMeshes = GetComponentsInChildren<TextMeshPro>(true);
             m_Renderers = new List<SpriteRenderer>(GetComponentsInChildren<SpriteRenderer>(true));

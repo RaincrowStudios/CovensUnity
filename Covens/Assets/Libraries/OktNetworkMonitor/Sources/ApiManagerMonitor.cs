@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -85,7 +86,7 @@ namespace Oktagon.Network
             }
             pData.RequestType = obj.method;
             pData.SizeRequest = 0;// System.Text.ASCIIEncoding.ASCII.GetByteCount(sJsonRequest);
-#if SERVER_FAKE
+#if LOCAL_API
             pData.Response = sResponse;
 #else
             pData.Response = sResponse.Replace("{", "{\n").Replace("}", "\n}").Replace(",", ",\n");

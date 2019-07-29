@@ -29,10 +29,11 @@ namespace Raincrow.Maps
         void SetWorldPosition(Vector3 worldPos, float time = 0, System.Action onComplete = null);
         Transform characterTransform { get; }
 
-        void AddChild(Transform t, Transform parent, SimplePool<Transform> pool);
-        void RemoveChild(Transform t);
-        void SpawnFX(SimplePool<Transform> fxPool, bool character, float duration, bool queued, System.Action<Transform> onSpawn);
+        //void AddChild(Transform t, Transform parent, SimplePool<Transform> pool);
+        //void RemoveChild(Transform t);
+        //void SpawnFX(SimplePool<Transform> fxPool, bool character, float duration, bool queued, System.Action<Transform> onSpawn);
         bool isNull { get; }
         void OnDespawn();
+        void UpdateRenderers();
     }
 }

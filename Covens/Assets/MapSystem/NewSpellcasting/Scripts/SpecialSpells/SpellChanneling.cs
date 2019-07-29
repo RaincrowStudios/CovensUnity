@@ -136,25 +136,25 @@ public static class SpellChanneling
         };
         OnChannelingFinish += onFinish;
 
-        Transform newFx;
-        //spawn fx
-        if (PlayerDataManager.playerData.degree > 0)
-        {
-            newFx = m_WhiteFx.Spawn();
-        }
-        else if (PlayerDataManager.playerData.degree < 0)
-        {
-            newFx = m_ShadowFx.Spawn();
-        }
-        else
-        {
-            newFx = m_GreyFx.Spawn();
-        }
-        marker.AddChild(newFx, marker.characterTransform, m_GreyFx);
-        ParticleSystem[] particles = newFx.GetComponentsInChildren<ParticleSystem>();
+        //Transform newFx;
+        ////spawn fx
+        //if (PlayerDataManager.playerData.degree > 0)
+        //{
+        //    newFx = m_WhiteFx.Spawn();
+        //}
+        //else if (PlayerDataManager.playerData.degree < 0)
+        //{
+        //    newFx = m_ShadowFx.Spawn();
+        //}
+        //else
+        //{
+        //    newFx = m_GreyFx.Spawn();
+        //}
+        //marker.AddChild(newFx, marker.characterTransform, m_GreyFx);
+        //ParticleSystem[] particles = newFx.GetComponentsInChildren<ParticleSystem>();
 
-        foreach (ParticleSystem _ps in particles)
-            _ps.Play(false);
+        //foreach (ParticleSystem _ps in particles)
+        //    _ps.Play(false);
 
         int tweenId = 0;
         float totalTime = 0;
@@ -163,39 +163,39 @@ public static class SpellChanneling
         {
             yield return new WaitForSeconds(timePerTick);
             totalTime += timePerTick;
-            var p = newFx.transform.GetChild(0).GetComponent<ParticleSystem>();
-            var main = p.main;
+            //var p = newFx.transform.GetChild(0).GetComponent<ParticleSystem>();
+            //var main = p.main;
 
-            if (totalTime <= maxTime)
-            {
-                main.loop = true;
-                //animate pulse fx
-                //newFx.localScale = Vector3.one * 1.2f;
-                //tweenId = LeanTween.scale(newFx.gameObject, Vector3.one, timePerTick / 2).setEaseOutCubic().uniqueId;
-            }
-            else
-            {
-                main.loop = false;
-                //animate max reached fx
-                //tweenId = LeanTween.scale(newFx.gameObject, Vector3.one * 1.05f, timePerTick / 4f).setLoopPingPong().uniqueId;
-                yield return new WaitUntil(() => !channeling || marker.isNull);
-            }
+            //if (totalTime <= maxTime)
+            //{
+            //    main.loop = true;
+            //    //animate pulse fx
+            //    //newFx.localScale = Vector3.one * 1.2f;
+            //    //tweenId = LeanTween.scale(newFx.gameObject, Vector3.one, timePerTick / 2).setEaseOutCubic().uniqueId;
+            //}
+            //else
+            //{
+            //    main.loop = false;
+            //    //animate max reached fx
+            //    //tweenId = LeanTween.scale(newFx.gameObject, Vector3.one * 1.05f, timePerTick / 4f).setLoopPingPong().uniqueId;
+            //    yield return new WaitUntil(() => !channeling || marker.isNull);
+            //}
         }
 
         OnChannelingFinish -= onFinish;
 
         LeanTween.cancel(tweenId);
 
-        //stop particles
-        foreach (ParticleSystem _ps in particles)
-            _ps.Stop(false, ParticleSystemStopBehavior.StopEmitting);
+        ////stop particles
+        //foreach (ParticleSystem _ps in particles)
+        //    _ps.Stop(false, ParticleSystemStopBehavior.StopEmitting);
 
-        //animate channelign complete
-        tweenId = LeanTween.scale(newFx.gameObject, Vector3.one * 1.5f, timePerTick).uniqueId;
+        ////animate channelign complete
+        //tweenId = LeanTween.scale(newFx.gameObject, Vector3.one * 1.5f, timePerTick).uniqueId;
 
         //desapwn fx
         yield return new WaitForSeconds(5f);
-        marker.RemoveChild(newFx);
-        m_GreyFx.Despawn(newFx);
+        //marker.RemoveChild(newFx);
+        //m_GreyFx.Despawn(newFx);
     }
 }
