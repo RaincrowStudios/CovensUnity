@@ -25,7 +25,6 @@ public class MapLineraScale : MonoBehaviour
         }
         catch (System.Exception)
         {
-            Debug.Log($"Index = {index}, map zoom = {map.normalizedZoom}");
             // throw;
         }
     }

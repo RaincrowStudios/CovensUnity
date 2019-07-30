@@ -32,7 +32,7 @@ namespace Raincrow.DynamicPlacesOfPower
         public bool zoomEnabled { get; private set; }
         public bool panEnabled { get; set; }
         public bool twistEnabled { get; private set; }
-        
+
         /// <summary>
         /// position, zoom, rotation
         /// </summary>
@@ -65,6 +65,7 @@ namespace Raincrow.DynamicPlacesOfPower
             panEnabled = true;
             zoomEnabled = true;
             twistEnabled = true;
+            SetCameraBounds(Vector3.zero, 360);
         }
 
         private void OnFingerUp(LeanFinger finger)
@@ -103,7 +104,7 @@ namespace Raincrow.DynamicPlacesOfPower
         {
             if (!panEnabled)
                 return;
-            
+
             var fingers = LeanSelectable.GetFingers(true, true, 1);
             if (fingers.Count != 1)
                 return;
@@ -166,7 +167,7 @@ namespace Raincrow.DynamicPlacesOfPower
 
             if (fingers.Count != 2)
                 return;
-            
+
             float newValue = m_TargetTwist + LeanGesture.GetTwistDegrees(fingers) * m_RotateSensivity;
             if (m_TargetTwist != newValue)
             {
@@ -234,7 +235,7 @@ namespace Raincrow.DynamicPlacesOfPower
                 onUpdate?.Invoke(m_PositionChanged, m_ZoomChanged, m_RotationChanged);
             }
         }
-        
+
         public void SetCameraBounds(Vector3 center, float radius)
         {
             m_CenterPosition = center;
