@@ -239,6 +239,9 @@ public class SplashManager : MonoBehaviour
         if (m_HintsCoroutine == null)
             return;
 
+        StopCoroutine(m_HintsCoroutine);
+        m_HintsCoroutine = null;
+
         m_HintTweenId = LeanTween.alphaCanvas(m_HintScreen, time, 0f)
             .setOnComplete(() =>
             {

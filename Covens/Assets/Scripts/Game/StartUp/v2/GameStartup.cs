@@ -260,6 +260,7 @@ public class GameStartup : MonoBehaviour
         }
         else
         {
+            SplashManager.Instance.HideHints(1, null);
             LoginAPIManager.OnCharacterReceived += StartGame;
             LoginUIManager.Screen startingScreen;
 

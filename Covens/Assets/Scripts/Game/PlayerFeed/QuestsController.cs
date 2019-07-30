@@ -8,8 +8,37 @@ public class QuestsController : MonoBehaviour
     public GameObject Notification;
     public Transform NotificationTransform;
     [SerializeField] private Sprite m_NotificationIcon;
-    // public Text notiTitle;
-    // public Text notiProgress;
+
+    public struct SpellcraftDaily
+    {
+        public int amount;
+        public string country;
+        public int? degree;
+
+    }
+
+    public struct GatherDaily
+    {
+
+    }
+
+    public struct ExploreDaily
+    {
+
+    }
+
+    public struct CovensDailies
+    {
+        public bool active;
+        public double startDate;
+        public double endDate;
+        //public double createdOn;
+        //public double modifiedOn;
+
+        public SpellcraftDaily spellcraft;
+        public GatherDaily gather;
+        public ExploreDaily explore;
+    }
 
     public GameObject ExploreQuestObject;
 
@@ -36,15 +65,8 @@ public class QuestsController : MonoBehaviour
 
     IEnumerator OnProgressHelper(string quest, int count, int silver)
     {
-        //		Debug.Log (quest);
-        //		Debug.Log (count);
-        //		Debug.Log (silver);
         yield return new WaitForSeconds(3.5f);
         var pQuest = PlayerDataManager.playerData.dailies;
-        //var g = Utilities.InstantiateObject(Notification, NotificationTransform);
-        //g.GetComponent<RectTransform>().anchoredPosition = new Vector2(0, -1209);
-        //Text notiTitle = g.transform.GetChild(0).GetChild(4).GetComponent<Text>();
-        //Text notiProgress = g.transform.GetChild(0).GetChild(5).GetComponent<Text>();
 
         string message = null;
 
@@ -120,7 +142,6 @@ public class QuestsController : MonoBehaviour
         APIManager.Instance.Get("daily/get",
             (string result, int response) =>
             {
-                Debug.Log(response);
                 if (response == 200)
                     PlayerDataManager.playerData.dailies = Newtonsoft.Json.JsonConvert.DeserializeObject<Dailies>(result);
                 else
