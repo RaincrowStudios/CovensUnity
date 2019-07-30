@@ -44,6 +44,11 @@ public class APIManager : Patterns.SingletonComponent<APIManager>
         base.Awake();
     }
 
+    private void OnDestroy()
+    {
+        StopAllCoroutines();
+    }
+
 
     public static void CallRequestEvent(UnityWebRequest pReq, string sRequestData)
     {

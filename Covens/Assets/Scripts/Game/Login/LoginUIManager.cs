@@ -211,11 +211,13 @@ public class LoginUIManager : MonoBehaviour
                         //show the gameobject and enable interaction
                         m_Screens[i].gameObject.SetActive(true);
                         m_Screens[i].interactable = true;
+                        m_Screens[i].blocksRaycasts = true;
                     }
                     else
                     {
                         //disable interaction with the other uis
                         m_Screens[i].interactable = false;
+                        m_Screens[i].blocksRaycasts = false;
                     }
                 }
             })
