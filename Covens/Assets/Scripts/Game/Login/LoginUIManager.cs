@@ -63,6 +63,16 @@ public class LoginUIManager : MonoBehaviour
     [SerializeField] private Button createAccountButton;
     [SerializeField] private Button m_CreatAccBackButton;
 
+    [Header("Age gate")]
+    public InputField dateYear;
+    public InputField dateMonth;
+    public InputField dateDay;
+    [SerializeField] private CanvasGroup AgeGateCG;
+    [SerializeField] private GameObject AgeGate;
+    [SerializeField] private Button CheckAge;
+    [SerializeField] private GameObject AgeError;
+
+
     [Header("Create character")]
     [SerializeField] private CanvasGroup createCharacter;
     public InputField createCharacterName;
@@ -88,7 +98,7 @@ public class LoginUIManager : MonoBehaviour
         CREATE_CHARACTER,
         CHOOSE_CHARACTER,
     }
-    
+
     private CanvasGroup[] m_Screens;
     private int m_AlphaTweenId;
     private Screen m_CurrentScreen;
@@ -112,7 +122,7 @@ public class LoginUIManager : MonoBehaviour
             createCharacter,
             CharSelectWindow
         };
-        
+
         //set initial alpha for all screens
         mainCanvasGroup.alpha = 0;
 
@@ -146,10 +156,13 @@ public class LoginUIManager : MonoBehaviour
         m_ForgotPassButton.onClick.AddListener(() => SetScreen(Screen.RESET_A));
         loginButton.onClick.AddListener(OnClickLogin);
 
+        //age gate
+        CheckAge.onClick.AddListener(() => AgeGateCheck());
+
         //create acc
         m_CreatAccBackButton.onClick.AddListener(() => SetScreen(Screen.WELCOME));
         createAccountButton.onClick.AddListener(OnClickCreateAccount);
-        
+
         //choose char
         m_ChooseCharConfirmButton.onClick.AddListener(OnConfirmCharacterBody);
         for (int i = 0; i < toggles.Length; i++)
@@ -200,7 +213,7 @@ public class LoginUIManager : MonoBehaviour
         int idx = (int)screen;
         float start = m_Screens[idx].alpha;
         float end = 1f;
-        
+
         m_AlphaTweenId = LeanTween.value(0, 1, 1f)
             .setOnStart(() =>
             {
@@ -249,18 +262,21 @@ public class LoginUIManager : MonoBehaviour
 
         switch (previousScreen)
         {
-            
-        } 
+
+        }
 
         switch (screen)
         {
             case Screen.SIGN_IN:
                 {
                     m_LoginError.text = "";
+                    animSavannah.SetBool("Leave", true);
                     break;
                 }
             case Screen.CREATE_ACCOUNT:
                 {
+                    AgeGateStart();
+                    animSavannah.SetBool("Leave", true);
                     createAccountError.text = "";
                     break;
                 }
@@ -289,8 +305,8 @@ public class LoginUIManager : MonoBehaviour
 
         SceneManager.LoadSceneAsync(
             SceneManager.Scene.LOGIN,
-            UnityEngine.SceneManagement.LoadSceneMode.Additive, 
-            (progress) => SplashManager.Instance.ShowLoading(progress), 
+            UnityEngine.SceneManagement.LoadSceneMode.Additive,
+            (progress) => SplashManager.Instance.ShowLoading(progress),
             () => m_Instance.SetScreen(startScreen));
     }
 
@@ -323,7 +339,7 @@ public class LoginUIManager : MonoBehaviour
     {
         //check input fields
         //send login request to server
-        
+
         m_LoginError.text = "";
 
         string username = accountName.text;
@@ -355,7 +371,7 @@ public class LoginUIManager : MonoBehaviour
                         Close();
                     else
                         SetScreen(Screen.CHOOSE_CHARACTER);
-                });                
+                });
             }
             else
             {
@@ -367,9 +383,10 @@ public class LoginUIManager : MonoBehaviour
 
     private void OnClickCreateAccount()
     {
+
         //check fields
         //send create account request
-        
+
         createAccountError.text = "";
 
         string username = createAccountName.text;
@@ -414,7 +431,41 @@ public class LoginUIManager : MonoBehaviour
             }
         });
     }
+    private void AgeGateStart()
+    {
+        Debug.Log("ageGateStart");
+        AgeGate.SetActive(true);
+        LeanTween.alphaCanvas(AgeGateCG, 1f, 0.7f).setEase(LeanTweenType.easeInCubic);
+    }
+    private void AgeGateCheck()
+    {
+        var dYear = int.Parse(dateYear.text);
+        var dMonth = int.Parse(dateMonth.text);
+        var dDay = int.Parse(dateDay.text);
+        var today = System.DateTime.Today;
+        var dob = (dYear * 10000) + (dMonth * 100) + dDay;
+        var todayInt = (today.Year * 10000) + (today.Month * 100) + today.Day;
+        var Age = (todayInt - dob) / 10000;
+        Debug.Log(Age);
 
+        if (Age < 13)
+        {
+            Debug.Log("too young");
+            AgeError.SetActive(true);
+        }
+        else
+        {
+            Debug.Log("old enough");
+            CheckAge.interactable = false;
+            LeanTween.alphaCanvas(AgeGateCG, 0f, 0.5f).setEase(LeanTweenType.easeInCubic).setOnComplete(() =>
+            {
+                AgeGate.SetActive(false);
+                CheckAge.interactable = true;
+                AgeError.SetActive(false);
+            });
+        }
+
+    }
     private void OnConfirmCharacterBody()
     {
         SetScreen(Screen.CREATE_CHARACTER);
