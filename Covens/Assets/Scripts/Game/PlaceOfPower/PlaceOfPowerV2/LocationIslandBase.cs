@@ -36,7 +36,7 @@ public class LocationIslandBase : MonoBehaviour
         List<Transform> markers = new List<Transform>();
         foreach (var item in tokens)
         {
-            markers.Add(spots[item.Key].GetChild(1));
+            markers.Add(spots[item.Key].GetChild(2));
         }
         return markers;
     }
