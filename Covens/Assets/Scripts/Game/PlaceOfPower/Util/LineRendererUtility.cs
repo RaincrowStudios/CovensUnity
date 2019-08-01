@@ -16,8 +16,8 @@ public class LineRendererUtility : MonoBehaviour
 
     private void Awake()
     {
-        if (Application.isPlaying)
-            enabled = false;
+        // if (Application.isPlaying)
+        //     enabled = false;
     }
 
     void Update()
