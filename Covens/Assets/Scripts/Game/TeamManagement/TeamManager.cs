@@ -5,11 +5,8 @@ using UnityEngine;
 
 public static class TeamManager
 {    
-    public static event System.Action<string, string> OnJoinCoven;
-    public static event System.Action OnLeaveCoven;
-    public static event System.Action OnKicked;
-    public static event System.Action<string, string> OnCovenCreated;
-    public static event System.Action OnCovenDisbanded;
+    public static System.Action<string, string> OnJoinCoven;
+    public static System.Action OnLeaveCoven;
 
     public static string MyCovenId { get { return PlayerDataManager.playerData.covenInfo.coven; } }
     
@@ -25,7 +22,7 @@ public static class TeamManager
                 return (CovenRole)PlayerDataManager.playerData.covenInfo.role;
         }
     }
-
+    
     public static TeamData MyCovenData { get; set; }
     
     public static void GetCoven(string coven, bool isName, System.Action<TeamData, string> callback)
@@ -40,7 +37,7 @@ public static class TeamManager
                 //return the TeamData
                 TeamData teamData = JsonUtility.FromJson<TeamData>(response);
 
-                if (MyCovenData != null)
+                if (MyCovenData == null)
                 {
                     //cache the players coven data
                     if (string.IsNullOrEmpty(MyCovenId) == false && teamData.Id == MyCovenId)
@@ -63,20 +60,22 @@ public static class TeamManager
 
         string data = $"{{\"name\":\"{covenName}\"}}";
         
-        APIManager.Instance.Post("coven/", data, (response, responseCode) =>
+        APIManager.Instance.Post("coven", data, (response, responseCode) =>
         {
             if (responseCode == 200)
             {
                 TeamData covenData = JsonUtility.FromJson<TeamData>(response);
-                //MyCovenData = covenData; //dont cache this data, its missing some attributes
+
+                MyCovenData = covenData;
                 PlayerDataManager.playerData.covenInfo = new CovenInfo
                 {
                     coven = covenData.Id,
+                    name = covenData.Name,
                     role =  (int)covenData.Members[0].Role,
                     joinedOn = covenData.CreatedOn
                 };
 
-                //OnJoinCoven?.Invoke(covenData.Id)
+                OnJoinCoven?.Invoke(covenData.Id, covenData.Name);
                 callback(covenData, null);
             }
             else
@@ -98,13 +97,9 @@ public static class TeamManager
                 if (result == 200)
                 {
                     MyCovenData = null;
-                    PlayerDataManager.playerData.covenInfo = new CovenInfo
-                    {
-                        coven = null,
-                        joinedOn = 0,
-                        role = 0,
-                    };
+                    PlayerDataManager.playerData.covenInfo = new CovenInfo();
                 }
+                OnLeaveCoven?.Invoke();
                 callback(result, response);
             });
     }
@@ -128,7 +123,7 @@ public static class TeamManager
         });
     }
 
-    public static void AcceptRequest(string playerId, System.Action<TeamMemberData, string> callback)
+    public static void AcceptRequest(string playerId, System.Action<string> callback)
     {
         Debug.Log("accepting " + playerId + " into the coven");
 
@@ -136,21 +131,22 @@ public static class TeamManager
         {
             if (result == 200)
             {
-                TeamMemberData member = JsonUtility.FromJson<TeamMemberData>(response);
+                TeamMemberData newMember = JsonUtility.FromJson<TeamMemberData>(response);
 
                 if (MyCovenData != null)
                 {
                     //updat the coven's members
-                    MyCovenData.Members.Add(member);
+                    MyCovenData.Members.RemoveAll(member => member.Id == newMember.Id);
+                    MyCovenData.Members.Add(newMember);
                     //update the requests
                     MyCovenData.PendingRequests.RemoveAll(req => req.Character == playerId);
                 }
 
-                callback?.Invoke(member, null);
+                callback?.Invoke(null);
             }
             else
             {
-                callback?.Invoke(null, APIManager.ParseError(response));
+                callback?.Invoke(APIManager.ParseError(response));
             }
         });
     }
@@ -164,7 +160,7 @@ public static class TeamManager
             if (result == 200)
             {
                 if (MyCovenData != null)
-                    MyCovenData.PendingRequests.RemoveAll(req => req.Name == playerId);
+                    MyCovenData.PendingRequests.RemoveAll(req => req.Character == playerId);
                 callback?.Invoke(null);
             }
             else
@@ -229,6 +225,7 @@ public static class TeamManager
                 //remove from invites
                 PlayerDataManager.playerData.covenInvites.RemoveAll((invite) => invite.coven == covenId);
 
+                OnJoinCoven?.Invoke(coven.coven, coven.name);
                 callback?.Invoke(coven, null);
             }
             else
@@ -314,9 +311,27 @@ public static class TeamManager
 
     public static void ChangeMemberTitle(TeamMemberData member, string title, System.Action<string> callback)
     {
-        Debug.Log("giving the title \"" + title  + "\" to " + member.Id);
+        Debug.Log("changing " + member.Name + "'s title to \"" + title + "\"");
 
-        callback("NOT IMPLEMENTED");
+        if (title == member.Title)
+        {
+            callback?.Invoke(null);
+            return;
+        }
+
+        string data = $"{{\"targetId\":\"{member.Id}\",\"title\":\"{title}\"}}";
+        APIManager.Instance.Patch("coven/title", data, (response, result) =>
+        {
+            if (result == 200)
+            {
+                member.Title = title;
+                callback?.Invoke(null);
+            }
+            else
+            {
+                callback?.Invoke(APIManager.ParseError(response));
+            }
+        });
     }
 
     public static void LeaveCoven(System.Action<string> callback)
@@ -326,17 +341,33 @@ public static class TeamManager
             if (result == 200)
             {
                 MyCovenData = null;
-                PlayerDataManager.playerData.covenInfo = new CovenInfo
-                {
-                    coven = null,
-                    joinedOn = 0,
-                    role = 0
-                };
+                PlayerDataManager.playerData.covenInfo = new CovenInfo();
+                OnLeaveCoven?.Invoke();
                 callback?.Invoke(null);
             }
             else
             {
                 callback(APIManager.ParseError(response));
+            }
+        });
+    }
+
+    public static void ChangeMotto(string motto, System.Action<string> callback)
+    {
+        Debug.Log("changing motto to \"" + motto + "\"");
+        string data = $"{{\"motto\":\"{motto}\"}}";
+        APIManager.Instance.Patch("coven/motto", data, (response, result) =>
+        {
+            if (result == 200)
+            {
+                if (MyCovenData != null)
+                    MyCovenData.Motto = motto;
+
+                callback?.Invoke(null);
+            }
+            else
+            {
+                callback?.Invoke(APIManager.ParseError(response));
             }
         });
     }

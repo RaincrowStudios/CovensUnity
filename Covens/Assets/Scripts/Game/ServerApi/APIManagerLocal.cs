@@ -11,7 +11,7 @@ public class APIManagerLocal
 
     public static IEnumerator RequestServerRoutine(string endpoint, string data, string sMethod, bool bRequiresToken, bool bRequiresWssToken, Action<string, int> CallBack)
     {
-        endpoint = "LocalApi/" + endpoint;
+        endpoint = "LocalApi/" + sMethod + "/" + endpoint;
         endpoint = endpoint.Replace($"{'/'}{'/'}", "/");
         endpoint = endpoint.Replace("?", "{63}");
         endpoint = endpoint.Replace(GetGPS.longitude.ToString(), "{physLon}").Replace(GetGPS.latitude.ToString(), "{physLat}");
@@ -19,12 +19,12 @@ public class APIManagerLocal
         // just to log in monitor
         UnityWebRequest www = BakeRequest(endpoint, data, sMethod);
         APIManager.CallRequestEvent(www, data);
-        yield return new WaitForSeconds(WaitDelay);
+        yield return new WaitForSeconds(UnityEngine.Random.Range(0.1f, 1f));
 
         string sContent = LoadFile(endpoint);
         if (sContent != null)
         {
-            CallBack(sContent, 200);
+            CallBack(sContent, sContent.Contains("errorcode") ? 412 : 200);
         }
         else
         {
@@ -102,23 +102,15 @@ public class APIManagerLocal
 
     public static string LoadFile(string sPath)
     {
-        TextAsset pText = Resources.Load<TextAsset>(sPath);
+        string fullPath = Application.dataPath + "/Editor/Resources/" + sPath + ".json";
 
-        string sResponse = null;
-        if (pText != null)
+        if (System.IO.File.Exists(fullPath) == false)
         {
-            sResponse = pText.text;
+            Debug.LogError("File not found: \"" + fullPath + "\"");
+            return null;
         }
-        else
-        {
-            Debug.LogError("File not found: " + sPath);
-        }
-
-        // so we can save and use the text again
-        Resources.UnloadAsset(pText);
-
-
-        return sResponse;
+        
+        return System.IO.File.ReadAllText(fullPath);
     }
 
 }

@@ -158,6 +158,12 @@ public class UISpiritInfo : UIInfoPanel
 
     public void SetupDetails(MapSpiritData details)
     {
+        if (details == null)
+        {
+            Abort();
+            return;
+        }
+
         m_Details = details;
         
         if (string.IsNullOrEmpty(m_Details.owner))

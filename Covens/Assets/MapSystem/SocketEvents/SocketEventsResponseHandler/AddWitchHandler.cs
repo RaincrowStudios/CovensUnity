@@ -6,7 +6,7 @@ namespace Raincrow.GameEventResponses
 {
     public class AddWitchHandler : AddTokenHandler
     {
-        public const string EventName = "add.token.character";
+        public override string EventName => "add.token.character";
 
         public override void HandleResponse(string eventData)
         {

@@ -1,0 +1,29 @@
+{
+"_id":"otherCovenId",
+"name":"other coven name",
+"dominion":"Washington",
+"worldRank":1,
+"dominionRank":1,
+"createdBy":"id",
+"pendingInvites":[],
+"pendingRequests":[],
+"members":[{
+	"_id":"id",
+	"state":"",
+	"name":"founder name",
+	"title":"",
+	"degree":0,
+	"school":0,
+	"level":1,
+	"role":2,
+	"alignment":0,
+	"lastActiveOn":1564493792831,
+	"joinedOn":1564495546698
+	}],
+"alignment":0,
+"school":0,
+"createdOn":1564495546696,
+"totalEnergy":0,
+"totalGold":0,
+"totalSilver":0
+}

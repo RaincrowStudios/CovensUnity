@@ -6,7 +6,7 @@ namespace Raincrow.GameEventResponses
 {
     public class ShoutHandler : IGameEventHandler
     {
-        public const string EventName = "shout";
+        public string EventName => "shout";
 
         public struct ShoutEventData
         {

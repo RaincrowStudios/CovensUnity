@@ -343,19 +343,30 @@ public class MarkerSpawner : MarkerManager
 
                 default:
                     Debug.LogError("Token selection not implemented for " + marker.type);
-                    //MarkerDetail data = JsonConvert.DeserializeObject<MarkerDetail>(response);
                     break;
             }
         }
         else
         {
-            if (response == "4704")
+            switch (marker.type)
             {
-                UIGlobalErrorPopup.ShowPopUp(() => { }, "Move closer to the target.");
-            }
-            else
-            {
-                Debug.LogError("select marker error [" + code + "] " + response);
+                case MarkerType.WITCH:
+                    if (UIPlayerInfo.isShowing && UIPlayerInfo.Instance.Witch.instance == instance)
+                    {
+                        UIGlobalErrorPopup.ShowError(() => UIPlayerInfo.Instance.SetupDetails(null), APIManager.ParseError(response));
+                    }
+                    break;
+
+                case MarkerType.SPIRIT:
+                    if (UISpiritInfo.isOpen && UISpiritInfo.Instance.Spirit.instance == instance)
+                    {
+                        UIGlobalErrorPopup.ShowError(() => UISpiritInfo.Instance.SetupDetails(null), APIManager.ParseError(response));
+                    }
+                    break;
+
+                default:
+                    Debug.LogError("Token selection not implemented for " + marker.type);
+                    break;
             }
         }
     }

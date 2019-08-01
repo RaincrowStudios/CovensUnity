@@ -122,8 +122,10 @@ public class SpiritMarkerData : CharacterMarkerData
 public struct CovenInfo
 {
     public string coven;
+    public string name;
     public int role;
     public long joinedOn;
+    public string title;
 }
 
 public class CovenRequest

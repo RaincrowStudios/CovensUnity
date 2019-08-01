@@ -1,0 +1,44 @@
+{
+  "_id": "joinedCovenId",
+  "name": "joined oven",
+  "dominion": "Washington",
+  "worldRank": 1,
+  "dominionRank": 1,
+  "createdBy": "id",
+  "pendingInvites": [],
+  "pendingRequests": [],
+  "members": [
+    {
+      "_id": "id",
+      "state": "",
+      "name": "founder name",
+      "title": "",
+      "degree": 0,
+      "school": 0,
+      "level": 1,
+      "role": 2,
+      "alignment": 0,
+      "lastActiveOn": 1564493792831,
+      "joinedOn": 1564495546698
+    },
+    {
+      "_id": "myId",
+      "state": "",
+      "name": "lucas 032",
+      "title": "",
+      "degree": 0,
+      "school": 0,
+      "level": 1,
+      "role": 0,
+      "alignment": 0,
+      "lastActiveOn": 1564493792831,
+      "joinedOn": 1564495546698
+    }
+  ],
+  "alignment": 0,
+  "school": 0,
+  "createdOn": 1564495546696,
+  "totalEnergy": 0,
+  "totalGold": 0,
+  "totalSilver": 0
+}

@@ -7,7 +7,7 @@ namespace Raincrow.GameEventResponses
 {
     public class TickSpellHandler : IGameEventHandler
     {
-        public const string EventName = "tick.spell";
+        public string EventName => "tick.spell";
         
         public void HandleResponse(string eventData)
         {
