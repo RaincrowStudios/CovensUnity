@@ -365,6 +365,16 @@ public class UIPlayerInfo : UIInfoPanel
         if (character != this.m_WitchData.instance)
             return;
 
+        foreach (StatusEffect item in m_WitchDetails.effects)
+        {
+            if (item.spell == statusEffect.spell)
+            {
+                m_WitchDetails.effects.Remove(item);
+                break;
+            }
+        }
+        m_WitchDetails.effects.Add(statusEffect);
+
         m_ConditionsList.AddCondition(statusEffect);
     }
 

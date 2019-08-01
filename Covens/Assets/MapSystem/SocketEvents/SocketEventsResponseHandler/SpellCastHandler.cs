@@ -106,7 +106,18 @@ namespace Raincrow.GameEventResponses
                         OnApplyStatusEffect?.Invoke(data.target.id, data.result.statusEffect);
 
                         if (playerIsTarget)
+                        {
+                            foreach (StatusEffect item in PlayerDataManager.playerData.effects)
+                            {
+                                if (item.spell == data.result.statusEffect.spell)
+                                {
+                                    PlayerDataManager.playerData.effects.Remove(item);
+                                    break;
+                                }
+                            }
+                            PlayerDataManager.playerData.effects.Add(data.result.statusEffect);
                             OnPlayerApplyStatusEffect?.Invoke(data.result.statusEffect);
+                        }
                     }
 
                     if (target != null)

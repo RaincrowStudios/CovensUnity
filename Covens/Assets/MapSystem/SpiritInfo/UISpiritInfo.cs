@@ -354,6 +354,16 @@ public class UISpiritInfo : UIInfoPanel
         if (character != this.m_Token.instance)
             return;
 
+        foreach(StatusEffect item in m_Details.effects)
+        {
+            if (item.spell == statusEffect.spell)
+            {
+                m_Details.effects.Remove(item);
+                break;
+            }
+        }
+        m_Details.effects.Add(statusEffect);
+
         m_ConditionList.AddCondition(statusEffect);
     }
 

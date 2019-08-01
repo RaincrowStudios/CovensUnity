@@ -22,6 +22,17 @@ public class UIConditionItem : MonoBehaviour
         m_Button.onClick.AddListener(OnClick);
     }
 
+    private void OnEnable()
+    {
+        StopAllCoroutines();
+        StartCoroutine(UpdateTimerCoroutine());
+    }
+
+    private void OnDisable()
+    {
+        StopAllCoroutines();
+    }
+
     public void Setup(StatusEffect condition, System.Action onclick)
     {
         Setup(condition);
@@ -45,9 +56,6 @@ public class UIConditionItem : MonoBehaviour
         m_Count.text = condition.stack.ToString();
         // added this to try to enable the gameobject - wasnt here before
         gameObject.SetActive(true);
-
-        StopAllCoroutines();
-        StartCoroutine(UpdateTimerCoroutine());
     }
 
     private void OnClick()
@@ -55,37 +63,36 @@ public class UIConditionItem : MonoBehaviour
         m_OnClick?.Invoke();
     }
 
-    private void OnDisable()
-    {
-        StopAllCoroutines();
-    }
-
     private IEnumerator UpdateTimerCoroutine()
     {
-        if (this.condition.expiresOn == 0)
-        {
-            m_TimerText.text = "-";
-            yield break;
-        }
-
         while (true)
         {
-            System.TimeSpan timespan = Utilities.TimespanFromJavaTime(this.condition.expiresOn);
 
-            if (timespan.TotalSeconds <= 0)
+            if (this.condition.expiresOn == 0)
             {
-                m_TimerText.text = "00:00";
-                OnTimerFinish?.Invoke();
-                break;
+                m_TimerText.text = "-";
             }
-
-            if (timespan.TotalHours >= 1)
-                m_TimerText.text = string.Format("{0:D2}:{1:D2}:{2:D2}", timespan.Hours, timespan.Minutes, timespan.Seconds);
-            else if (timespan.TotalMinutes >= 1)
-                m_TimerText.text = string.Format("{0:D2}:{1:D2}", timespan.Minutes, timespan.Seconds);
             else
-                m_TimerText.text = string.Format("{0:D2}:{1:D2}", 0, timespan.Seconds);
+            {
+                System.TimeSpan timespan = Utilities.TimespanFromJavaTime(this.condition.expiresOn);
 
+                if (timespan.TotalSeconds <= 0)
+                {
+                    m_TimerText.text = "00:00";
+                    OnTimerFinish?.Invoke();
+                    OnTimerFinish = null;
+                }
+                else
+                {
+
+                    if (timespan.TotalHours >= 1)
+                        m_TimerText.text = string.Format("{0:D2}:{1:D2}:{2:D2}", timespan.Hours, timespan.Minutes, timespan.Seconds);
+                    else if (timespan.TotalMinutes >= 1)
+                        m_TimerText.text = string.Format("{0:D2}:{1:D2}", timespan.Minutes, timespan.Seconds);
+                    else
+                        m_TimerText.text = string.Format("{0:D2}:{1:D2}", 0, timespan.Seconds);
+                }
+            }
             yield return new WaitForSeconds(1f);
         }
     }

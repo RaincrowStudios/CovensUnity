@@ -122,6 +122,7 @@ public class UIPlayerConditions : MonoBehaviour
         {
             if (_item.condition.spell == condition.spell)
             {
+                _item.OnTimerFinish = () => RemoveCondition(condition.spell);
                 _item.Setup(
                     condition,
                     () => UIConditionInfo.Instance.Show(condition.spell, _item.GetComponent<RectTransform>(), new Vector2(0, 1), true));
@@ -138,6 +139,23 @@ public class UIPlayerConditions : MonoBehaviour
         item.Setup(
             condition, 
             () => UIConditionInfo.Instance.Show(condition.spell, item.GetComponent<RectTransform>(), new Vector2(0, 1), true));
+
+        SetupCounter();
+    }
+
+    private void RemoveCondition(string condition)
+    {
+        List<UIConditionItem> active = m_ItemPool.GetInstances();
+        foreach (UIConditionItem _item in active)
+        {
+            if (_item.condition.spell == condition)
+            {
+                m_ItemPool.Despawn(_item);
+                break;
+            }
+        }
+
+        SetupCounter();
     }
 
     private void SetupCounter()
@@ -197,52 +215,4 @@ public class UIPlayerConditions : MonoBehaviour
     {
         Close();
     }
-
-    //private void OnPlayerConditionUpdate(Condition condition)
-    //{
-    //    SetupCounter();
-
-    //    if (m_IsOpen)
-    //    {
-    //        int indexOf = -1;
-
-    //        for (int i = 0; i < m_ConditionItems.Count; i++)
-    //        {
-    //            if (m_ConditionItems[i].condition.baseSpell == condition.baseSpell)
-    //            {
-    //                indexOf = i;
-    //                break;
-    //            }
-    //        }
-
-    //        if (indexOf >= 0) //condition is on UI
-    //        {
-    //            //update it
-    //            if (ConditionsManager.IsConditionActive(condition.baseSpell))
-    //            {
-    //                m_ConditionItems[indexOf].Setup(condition);
-    //            }
-    //            //remove it
-    //            else
-    //            {
-    //                DespawnConditionItem(indexOf);
-    //            }
-    //        }
-    //        else //condition is not on the ui
-    //        {
-    //            //add it
-    //            if (ConditionsManager.IsConditionActive(condition.baseSpell))
-    //            {
-    //                SpawnConditionItem(condition);
-    //            }
-    //        }
-
-    //        if (ConditionsManager.conditions.Count == 0)
-    //        {
-    //            if (UIConditionInfo.IsOpen)
-    //                UIConditionInfo.Instance.Close();
-    //            Close();
-    //        }
-    //    }
-    //}
 }
