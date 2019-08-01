@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
+using Raincrow.GameEventResponses;
 
 public class UIPlayerConditions : MonoBehaviour
 {
@@ -25,7 +26,6 @@ public class UIPlayerConditions : MonoBehaviour
     private int m_CounterTweenId;
     private int m_TweenId;
     private SimplePool<UIConditionItem> m_ItemPool;
-    private List<UIConditionItem> m_ConditionItems = new List<UIConditionItem>();
 
     private void Awake()
     {
@@ -45,17 +45,10 @@ public class UIPlayerConditions : MonoBehaviour
         m_InputRaycaster.enabled = false;
     }
 
-    private void OnEnable()
+    private void Start()
     {
         SetupCounter();
-        OnMapConditionAdd.OnPlayerConditionAdded += OnPlayerConditionUpdate;
-        OnMapConditionRemove.OnPlayerConditionRemoved += OnPlayerConditionUpdate;
-    }
-
-    private void OnDisable()
-    {
-        OnMapConditionAdd.OnPlayerConditionAdded -= OnPlayerConditionUpdate;
-        OnMapConditionRemove.OnPlayerConditionRemoved -= OnPlayerConditionUpdate;
+        SpellCastHandler.OnPlayerApplyStatusEffect += AddCondition;
     }
 
     public void Open()
@@ -83,11 +76,8 @@ public class UIPlayerConditions : MonoBehaviour
         m_MainUIAnimator.Play("in");
 
         //setup the conditions
-        List<Condition> conditions = ConditionsManager.conditions;
-        for (int i = 0; i < conditions.Count; i++)
-        {
-            SpawnConditionItem(conditions[i]);
-        }
+        foreach(StatusEffect condition in PlayerDataManager.playerData.effects)
+            AddCondition(condition);
     }
 
     public void Close()
@@ -114,10 +104,7 @@ public class UIPlayerConditions : MonoBehaviour
                 m_Container.gameObject.SetActive(false);
 
                 //despawn active condition items
-                for (int i = 0; i < m_ConditionItems.Count; i++)
-                    m_ItemPool.Despawn(m_ConditionItems[i]);
-
-                m_ConditionItems.Clear();
+                m_ItemPool.DespawnAll();
 
                 m_Canvas.enabled = false;
             })
@@ -127,26 +114,30 @@ public class UIPlayerConditions : MonoBehaviour
         m_MainUIAnimator.Play("out");
     }
 
-    private void SpawnConditionItem(Condition condition)
+    private void AddCondition(StatusEffect condition)
     {
+        //chek if existing
+        List<UIConditionItem> active = m_ItemPool.GetInstances();
+        foreach (UIConditionItem _item in active)
+        {
+            if (_item.condition.spell == condition.spell)
+            {
+                _item.Setup(
+                    condition,
+                    () => UIConditionInfo.Instance.Show(condition.spell, _item.GetComponent<RectTransform>(), new Vector2(0, 1), true));
+                return;
+            }
+        }
+
         UIConditionItem item = m_ItemPool.Spawn();
-        m_ConditionItems.Add(item);
         item.transform.SetParent(m_Container.transform);
         item.transform.localPosition = Vector3.zero;
         item.transform.localRotation = Quaternion.identity;
         item.transform.localScale = Vector3.one;
 
-        item.Setup(condition, () =>
-        {
-            Debug.Log(condition.baseSpell);
-            UIConditionInfo.Instance.Show(condition.baseSpell, item.GetComponent<RectTransform>(), new Vector2(0, 1), true);
-        });
-    }
-
-    private void DespawnConditionItem(int index)
-    {
-        m_ItemPool.Despawn(m_ConditionItems[index]);
-        m_ConditionItems.RemoveAt(index);
+        item.Setup(
+            condition, 
+            () => UIConditionInfo.Instance.Show(condition.spell, item.GetComponent<RectTransform>(), new Vector2(0, 1), true));
     }
 
     private void SetupCounter()
@@ -154,7 +145,8 @@ public class UIPlayerConditions : MonoBehaviour
         if (PlayerDataManager.playerData == null)
             return;
 
-        List<Condition> conditions = ConditionsManager.conditions;
+        List<UIConditionItem> conditions = m_ItemPool.GetInstances();
+
         if (conditions.Count == 0)
             HideConditionCounter();
         else
@@ -206,51 +198,51 @@ public class UIPlayerConditions : MonoBehaviour
         Close();
     }
 
-    private void OnPlayerConditionUpdate(Condition condition)
-    {
-        SetupCounter();
+    //private void OnPlayerConditionUpdate(Condition condition)
+    //{
+    //    SetupCounter();
 
-        if (m_IsOpen)
-        {
-            int indexOf = -1;
+    //    if (m_IsOpen)
+    //    {
+    //        int indexOf = -1;
 
-            for (int i = 0; i < m_ConditionItems.Count; i++)
-            {
-                if (m_ConditionItems[i].condition.baseSpell == condition.baseSpell)
-                {
-                    indexOf = i;
-                    break;
-                }
-            }
+    //        for (int i = 0; i < m_ConditionItems.Count; i++)
+    //        {
+    //            if (m_ConditionItems[i].condition.baseSpell == condition.baseSpell)
+    //            {
+    //                indexOf = i;
+    //                break;
+    //            }
+    //        }
 
-            if (indexOf >= 0) //condition is on UI
-            {
-                //update it
-                if (ConditionsManager.IsConditionActive(condition.baseSpell))
-                {
-                    m_ConditionItems[indexOf].Setup(condition);
-                }
-                //remove it
-                else
-                {
-                    DespawnConditionItem(indexOf);
-                }
-            }
-            else //condition is not on the ui
-            {
-                //add it
-                if (ConditionsManager.IsConditionActive(condition.baseSpell))
-                {
-                    SpawnConditionItem(condition);
-                }
-            }
+    //        if (indexOf >= 0) //condition is on UI
+    //        {
+    //            //update it
+    //            if (ConditionsManager.IsConditionActive(condition.baseSpell))
+    //            {
+    //                m_ConditionItems[indexOf].Setup(condition);
+    //            }
+    //            //remove it
+    //            else
+    //            {
+    //                DespawnConditionItem(indexOf);
+    //            }
+    //        }
+    //        else //condition is not on the ui
+    //        {
+    //            //add it
+    //            if (ConditionsManager.IsConditionActive(condition.baseSpell))
+    //            {
+    //                SpawnConditionItem(condition);
+    //            }
+    //        }
 
-            if (ConditionsManager.conditions.Count == 0)
-            {
-                if (UIConditionInfo.IsOpen)
-                    UIConditionInfo.Instance.Close();
-                Close();
-            }
-        }
-    }
+    //        if (ConditionsManager.conditions.Count == 0)
+    //        {
+    //            if (UIConditionInfo.IsOpen)
+    //                UIConditionInfo.Instance.Close();
+    //            Close();
+    //        }
+    //    }
+    //}
 }

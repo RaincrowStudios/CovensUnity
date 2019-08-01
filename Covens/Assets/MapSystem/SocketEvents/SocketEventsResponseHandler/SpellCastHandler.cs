@@ -21,6 +21,9 @@ namespace Raincrow.GameEventResponses
             public int damage;
             public bool isCritical;
             public bool isSuccess;
+
+            [JsonProperty("appliedEffect")]
+            public StatusEffect statusEffect;
         }
 
         public struct SpellCastEventData
@@ -34,8 +37,11 @@ namespace Raincrow.GameEventResponses
         }
 
         public string EventName => "cast.spell";
-        public static System.Action<string, SpellData, SpellCastHandler.Result> OnPlayerTargeted;
-        public static System.Action<string, string, SpellData, SpellCastHandler.Result> OnSpellCast;
+        public static event System.Action<string, SpellData, Result> OnPlayerTargeted;
+        public static event System.Action<StatusEffect> OnPlayerApplyStatusEffect;
+
+        public static event System.Action<string, string, SpellData, Result> OnSpellCast;
+        public static event System.Action<string, StatusEffect> OnApplyStatusEffect;
 
         public void HandleResponse(string eventData)
         {
@@ -93,8 +99,14 @@ namespace Raincrow.GameEventResponses
 
                     //add the immunity
                     if (data.immunity)
-                    {
                         MarkerSpawner.AddImmunity(data.caster.id, data.target.id);
+
+                    if (string.IsNullOrEmpty(data.result.statusEffect.spell) == false)
+                    {
+                        OnApplyStatusEffect?.Invoke(data.target.id, data.result.statusEffect);
+
+                        if (playerIsTarget)
+                            OnPlayerApplyStatusEffect?.Invoke(data.result.statusEffect);
                     }
 
                     if (target != null)

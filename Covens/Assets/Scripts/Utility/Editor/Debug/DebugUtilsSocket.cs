@@ -5,6 +5,7 @@ using UnityEditor;
 using UnityEditor.Callbacks;
 using System.IO;
 using Newtonsoft.Json;
+using System;
 
 [System.Serializable]
 public class DebugUtilsSocket
@@ -156,12 +157,7 @@ public class DebugUtilsSocket
                 {
                     if (GUILayout.Button("Trigger event"))
                     {
-                        CommandResponse data = new CommandResponse
-                        {
-                            Command = eventName,
-                            Data = m_TempEvents[idx]
-                        };
-                        SocketClient.Instance.ManageData(data);
+                        TriggerEvent(eventName, m_TempEvents[idx]);
                     }
                 }
             }
@@ -192,14 +188,28 @@ public class DebugUtilsSocket
 
                 if (GUILayout.Button("Trigger custom event"))
                 {
-                    CommandResponse response = new CommandResponse()
-                    {
-                        Command = m_CustomEventName,
-                        Data = m_CustomEventMessage
-                    };
-                    SocketClient.Instance.ManageData(response);
+                    TriggerEvent(m_CustomEventName, m_CustomEventMessage);
                 }
             }
         }
+    }
+
+    private void TriggerEvent(string command, string data)
+    {
+        while(data.Contains("<1minfromnow>"))
+        {
+            data.Replace("<1minfromnow>", GetUnixTimestamp(DateTime.Now.Add(new TimeSpan(0, 1, 0))).ToString());
+        }
+        CommandResponse response = new CommandResponse()
+        {
+            Command = command,
+            Data = data
+        };
+        SocketClient.Instance.ManageData(response);
+    }
+
+    private static double GetUnixTimestamp(DateTime dateTime)
+    {
+        return dateTime.Subtract(new DateTime(1970, 1, 1)).TotalSeconds;
     }
 }

@@ -60,7 +60,7 @@ public class UIPlayerInfo : UIInfoPanel
 
     private WitchMarker m_Witch;
     private WitchToken m_WitchData;
-    private MapWitchData m_WitchDetails;
+    private SelectWitchData_Map m_WitchDetails;
     private float m_PreviousMapZoom;
     private string previousMarker = "";
     public WitchToken Witch { get { return m_WitchData; } }
@@ -132,16 +132,14 @@ public class UIPlayerInfo : UIInfoPanel
         OnMapEnergyChange.OnEnergyChange += _OnEnergyChange;
         SpellCastHandler.OnPlayerTargeted += _OnPlayerAttacked;
         MoveTokenHandler.OnTokenMove += _OnMapTokenMove;
-        //OnMapTokenMove.OnTokenEscaped += _OnMapTokenEscape;
+        SpellCastHandler.OnApplyStatusEffect += _OnStatusEffectApplied;
         RemoveTokenHandler.OnTokenRemove += _OnMapTokenRemove;
         OnMapEnergyChange.OnPlayerDead += _OnCharacterDead;
-        OnMapConditionAdd.OnConditionAdded += _OnConditionAdd;
-        OnMapConditionRemove.OnConditionRemoved += _OnConditionRemove;
         MarkerSpawner.OnImmunityChange += _OnImmunityChange;
         BanishManager.OnBanished += Abort;
 
         Show();
-        //m_ConditionsList.show = false;
+        m_ConditionsList.show = false;
     }
 
     public override void ReOpen()
@@ -174,16 +172,14 @@ public class UIPlayerInfo : UIInfoPanel
         OnMapEnergyChange.OnEnergyChange -= _OnEnergyChange;
         SpellCastHandler.OnPlayerTargeted -= _OnPlayerAttacked;
         MoveTokenHandler.OnTokenMove -= _OnMapTokenMove;
-        //OnMapTokenMove.OnTokenEscaped -= _OnMapTokenEscape;
+        SpellCastHandler.OnApplyStatusEffect -= _OnStatusEffectApplied;
         RemoveTokenHandler.OnTokenRemove -= _OnMapTokenRemove;
         OnMapEnergyChange.OnPlayerDead -= _OnCharacterDead;
-        OnMapConditionAdd.OnConditionAdded -= _OnConditionAdd;
-        OnMapConditionRemove.OnConditionRemoved -= _OnConditionRemove;
         MarkerSpawner.OnImmunityChange -= _OnImmunityChange;
         BanishManager.OnBanished -= Abort;
     }
 
-    public void SetupDetails(MapWitchData details)
+    public void SetupDetails(SelectWitchData_Map details)
     {
         if (details == null)
         {
@@ -201,7 +197,7 @@ public class UIPlayerInfo : UIInfoPanel
             m_CovenText.text = LocalizeLookUp.GetText("chat_screen_no_coven");
 
         UpdateCanCast();
-        //m_ConditionsList.Setup(m_WitchData, m_WitchDetails);
+        m_ConditionsList.Setup(m_WitchDetails.effects);
     }
 
     private void OnClickBack()
@@ -364,20 +360,12 @@ public class UIPlayerInfo : UIInfoPanel
         Abort();
     }
 
-    private void _OnConditionAdd(Condition condition)
+    private void _OnStatusEffectApplied(string character, StatusEffect statusEffect)
     {
-        if (condition.bearer != this.m_WitchData.instance)
+        if (character != this.m_WitchData.instance)
             return;
 
-        //m_ConditionsList.AddCondition(condition);
-    }
-
-    private void _OnConditionRemove(Condition condition)
-    {
-        if (condition.bearer != this.m_WitchData.instance)
-            return;
-
-        //m_ConditionsList.RemoveCondition(condition);
+        m_ConditionsList.AddCondition(statusEffect);
     }
 
     private void _OnImmunityChange(string caster, string target, bool immune)

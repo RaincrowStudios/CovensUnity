@@ -320,7 +320,7 @@ public class MarkerSpawner : MarkerManager
                 case MarkerType.WITCH:
                     FirstTapVideoManager.Instance.CheckSpellCasting();
 
-                    MapWitchData witch = JsonConvert.DeserializeObject<MapWitchData>(response);
+                    SelectWitchData_Map witch = JsonConvert.DeserializeObject<SelectWitchData_Map>(response);
                     witch.token = marker.token as WitchToken;
 
                     if (UIPlayerInfo.isShowing && UIPlayerInfo.Instance.Witch.instance == instance)
@@ -329,7 +329,7 @@ public class MarkerSpawner : MarkerManager
 
                 case MarkerType.SPIRIT:
                     FirstTapVideoManager.Instance.CheckSpellCasting();
-                    MapSpiritData spirit = JsonConvert.DeserializeObject<MapSpiritData>(response);
+                    SelectSpiritData_Map spirit = JsonConvert.DeserializeObject<SelectSpiritData_Map>(response);
                     spirit.token = marker.token as SpiritToken;
 
                     if (UISpiritInfo.isOpen && UISpiritInfo.Instance.Spirit.instance == instance)

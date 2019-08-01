@@ -52,7 +52,7 @@ public class UISpiritInfo : UIInfoPanel
     private SpiritMarker m_Spirit;
     private SpiritToken m_Token;
     private SpiritData m_SpiritData;
-    private MapSpiritData m_Details;
+    private SelectSpiritData_Map m_Details;
 
     private float m_PreviousMapZoom;
 
@@ -107,15 +107,14 @@ public class UISpiritInfo : UIInfoPanel
 
         OnMapEnergyChange.OnPlayerDead += _OnCharacterDead;
         OnMapEnergyChange.OnEnergyChange += _OnMapEnergyChange;
-        OnMapConditionAdd.OnConditionAdded += _OnConditionAdd;
-        OnMapConditionRemove.OnConditionRemoved += _OnConditionRemove;
         MoveTokenHandler.OnTokenMove += _OnMapTokenMove;
+        SpellCastHandler.OnApplyStatusEffect += _OnStatusEffectApplied;
         MarkerSpawner.OnImmunityChange += _OnImmunityChange;
         RemoveTokenHandler.OnTokenRemove += _OnMapTokenRemove;
         BanishManager.OnBanished += Abort;
 
         Show();
-        //m_ConditionList.show = false;
+        m_ConditionList.show = false;
         SoundManagerOneShot.Instance.PlaySpiritSelectedSpellbook();
     }
 
@@ -142,10 +141,9 @@ public class UISpiritInfo : UIInfoPanel
 
         OnMapEnergyChange.OnPlayerDead -= _OnCharacterDead;
         OnMapEnergyChange.OnEnergyChange -= _OnMapEnergyChange;
-        OnMapConditionAdd.OnConditionAdded -= _OnConditionAdd;
-        OnMapConditionRemove.OnConditionRemoved -= _OnConditionRemove;
         MoveTokenHandler.OnTokenMove -= _OnMapTokenMove;
         MarkerSpawner.OnImmunityChange -= _OnImmunityChange;
+        SpellCastHandler.OnApplyStatusEffect -= _OnStatusEffectApplied;
         RemoveTokenHandler.OnTokenRemove -= _OnMapTokenRemove;
         BanishManager.OnBanished -= Abort;
 
@@ -156,7 +154,7 @@ public class UISpiritInfo : UIInfoPanel
         MarkerSpawner.HighlightMarker(new List<IMarker> { PlayerManager.marker, m_Spirit }, false);
     }
 
-    public void SetupDetails(MapSpiritData details)
+    public void SetupDetails(SelectSpiritData_Map details)
     {
         if (details == null)
         {
@@ -194,7 +192,7 @@ public class UISpiritInfo : UIInfoPanel
         }
 
         UpdateCanCast();
-        //m_ConditionList.Setup(m_Token, m_Details);
+        m_ConditionList.Setup(m_Details.effects);
     }
 
     private void UpdateCanCast()
@@ -351,20 +349,12 @@ public class UISpiritInfo : UIInfoPanel
         }
     }
 
-    private void _OnConditionAdd(Condition condition)
+    private void _OnStatusEffectApplied(string character, StatusEffect statusEffect)
     {
-        if (condition.bearer != this.m_Token.instance)
+        if (character != this.m_Token.instance)
             return;
 
-        //m_ConditionList.AddCondition(condition);
-    }
-
-    private void _OnConditionRemove(Condition condition)
-    {
-        if (condition.bearer != this.m_Token.instance)
-            return;
-
-        //m_ConditionList.RemoveCondition(condition);
+        m_ConditionList.AddCondition(statusEffect);
     }
 
     private void _OnMapTokenRemove(string instance)
@@ -375,18 +365,4 @@ public class UISpiritInfo : UIInfoPanel
             //UIGlobalErrorPopup.ShowPopUp(null, LocalizeLookUp.GetText("spellbook_witch_is_gone").Replace("{{witch name}}", m_SpiritData.spiritName));// + " is gone.");
         }
     }
-
-    //private void _OnSpiritBanished(string instance, string killerName)
-    //{
-    //    Debug.Log("_onspiritbanished: " + instance + " < " + killerName + " > " + m_Token.instance + " : " + UIWaitingCastResult.isOpen);
-    //    if (instance == m_Token.instance)
-    //    {
-    //        //let the player see the result of his spellcasting
-    //        if (UIWaitingCastResult.isOpen)
-    //            return;
-
-    //        //if he is not waiting for the result, just close the ui
-    //        Abort();
-    //    }
-    //}
 }

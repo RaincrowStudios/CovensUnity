@@ -12,9 +12,8 @@ public class UIConditionItem : MonoBehaviour
     [SerializeField] private TextMeshProUGUI m_Count;
     [SerializeField] private GameObject m_CountObject;
 
-    private Condition m_Condition;
     private System.Action m_OnClick;
-    public Condition condition { get; private set; }
+    public StatusEffect condition { get; private set; }
 
     public System.Action OnTimerFinish;
 
@@ -23,26 +22,27 @@ public class UIConditionItem : MonoBehaviour
         m_Button.onClick.AddListener(OnClick);
     }
 
-    public void Setup(Condition condition, System.Action onclick)
+    public void Setup(StatusEffect condition, System.Action onclick)
     {
-        m_OnClick = onclick;
         Setup(condition);
+        m_OnClick = onclick;
     }
 
-    public void Setup(Condition condition)
+    public void Setup(StatusEffect condition)
     {
+        m_OnClick = null;
         this.condition = condition;
 
         m_ConditionIcon.gameObject.SetActive(false);
-        DownloadedAssets.GetSprite(condition.baseSpell,
+        DownloadedAssets.GetSprite(condition.spell,
             (spr) =>
             {
                 m_ConditionIcon.overrideSprite = spr;
                 m_ConditionIcon.gameObject.SetActive(true);
             });
 
-        m_CountObject.SetActive(condition.stacked > 1);
-        m_Count.text = condition.stacked.ToString();
+        m_CountObject.SetActive(condition.stack > 1);
+        m_Count.text = condition.stack.ToString();
         // added this to try to enable the gameobject - wasnt here before
         gameObject.SetActive(true);
 
@@ -62,15 +62,9 @@ public class UIConditionItem : MonoBehaviour
 
     private IEnumerator UpdateTimerCoroutine()
     {
-        if (this.condition.constant)
+        if (this.condition.expiresOn == 0)
         {
             m_TimerText.text = "-";
-            yield break;
-        }
-
-        if (this.condition.baseSpell == "spell_invisibility")
-        {
-            m_TimerText.text = LocalizeLookUp.GetText("condition_invisible");
             yield break;
         }
 

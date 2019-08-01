@@ -11,9 +11,7 @@ public class UIConditionList : MonoBehaviour
 
     private SimplePool<UIConditionItem> m_ItemPool;
     private int m_TweenId;
-    private Token m_Token;
-    private CharacterMarkerData m_MarkerData;
-    private List<UIConditionItem> m_ActiveConditions = new List<UIConditionItem>();
+    private Coroutine m_SetupCoroutine;
 
     private bool m_Show;
     public bool show
@@ -28,31 +26,33 @@ public class UIConditionList : MonoBehaviour
         show = false;
     }
 
-    public void Setup(Token token, CharacterMarkerData data)
+    public void Setup(List<StatusEffect> effects)
     {
-        m_Token = token;
-        m_MarkerData = data;
+        if (m_SetupCoroutine != null)
+        {
+            StopCoroutine(m_SetupCoroutine);
+            m_SetupCoroutine = null;
+        }
 
-        for (int i = 0; i < m_ActiveConditions.Count; i++)
-            m_ItemPool.Despawn(m_ActiveConditions[i]);
-        m_ActiveConditions.Clear();
+        m_ItemPool.DespawnAll();
         
-        if (data.conditions.Count == 0)
+        if (effects.Count == 0)
             return;
 
-        StartCoroutine(SetupCoroutine());
+        m_SetupCoroutine = StartCoroutine(SetupCoroutine(effects));
     }
 
-    private IEnumerator SetupCoroutine()
+    private IEnumerator SetupCoroutine(List<StatusEffect> statusEffects)
     {
-        for (int i = 0; i < m_MarkerData.conditions.Count; i++)
+        for (int i = 0; i < statusEffects.Count; i++)
         {
-            AddCondition(m_MarkerData.conditions[i]);
+            AddCondition(statusEffects[i]);
             yield return 1;
         }
 
         yield return 1;
-        show = m_ActiveConditions.Count > 0;
+        show = m_ItemPool.GetInstances().Count > 0;
+        m_SetupCoroutine = null;
     }
 
 
@@ -68,58 +68,45 @@ public class UIConditionList : MonoBehaviour
         }
     }
 
-    public void AddCondition(Condition condition)
+    public void AddCondition(StatusEffect condition)
     {
-        ////ignore conditions with expireOn:0
-        //if (condition.constant == false)
-        //{
-        //    System.TimeSpan timespan = Utilities.TimespanFromJavaTime(condition.expiresOn);
-        //    if (timespan.TotalSeconds <= 0)
-        //        return;
-        //}
+        List<UIConditionItem> active = m_ItemPool.GetInstances();
 
         //check if already on list
-        foreach (UIConditionItem _conditionItem in m_ActiveConditions)
+        foreach (UIConditionItem _conditionItem in active)
         {
-            if (_conditionItem.condition.baseSpell == condition.baseSpell)
+            if (_conditionItem.condition.spell == condition.spell)
             {
                 _conditionItem.OnTimerFinish = () => RemoveCondition(condition);
-                _conditionItem.Setup(condition, () =>
-                {
-                    UIConditionInfo.Instance.Show(condition.baseSpell, _conditionItem.GetComponent<RectTransform>(), new Vector2(1, 1));
-                });
+                _conditionItem.Setup(condition, () => UIConditionInfo.Instance.Show(condition.spell, _conditionItem.GetComponent<RectTransform>(), new Vector2(1, 1)));
                 return;
             }
         }
 
         //spawn new condition item
-        string spellId = condition.baseSpell;
 
         UIConditionItem instance = m_ItemPool.Spawn(m_Container.transform);
         instance.transform.localScale = Vector3.one;
-
         instance.OnTimerFinish = () => RemoveCondition(condition);
-        instance.Setup(condition, () =>
-        {
-            UIConditionInfo.Instance.Show(spellId, instance.GetComponent<RectTransform>(), new Vector2(1, 1));
-        });
+        instance.Setup(condition, () => UIConditionInfo.Instance.Show(condition.spell, instance.GetComponent<RectTransform>(), new Vector2(1, 1)));
 
-        m_ActiveConditions.Add(instance);
         show = true;
     }
 
-    public void RemoveCondition(Condition condition)
+    public void RemoveCondition(StatusEffect condition)
     {
-        for (int i = 0; i < m_ActiveConditions.Count; i++)
-        {
-            if (m_ActiveConditions[i].condition.baseSpell == condition.baseSpell || m_ActiveConditions[i].condition.instance == condition.instance)
-            {
-                m_ItemPool.Despawn(m_ActiveConditions[i]);
-                m_ActiveConditions.RemoveAt(i);
+        List<UIConditionItem> active = m_ItemPool.GetInstances();
 
-                if (m_ActiveConditions.Count == 0)
+        foreach (UIConditionItem item in active)
+        {
+            if ( item.condition.spell == condition.spell)
+            {
+                m_ItemPool.Despawn(item);
+
+                if (active.Count == 1)
                     show = false;
-                return;
+
+                break;
             }
         }
     }

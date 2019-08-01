@@ -50,7 +50,7 @@ public class DeathState : MonoBehaviour
         PlayerManager.marker.gameObject.transform.GetChild(0).GetChild(0).GetChild(1).gameObject.SetActive(true);
         PlayerManager.marker.SetCharacterAlpha(.56f);
 
-        PlayerDataManager.playerData.conditions.Clear();
+        PlayerDataManager.playerData.effects.Clear();
 
         if (BanishManager.isBind)
         {
