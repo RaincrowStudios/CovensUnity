@@ -14,7 +14,7 @@ namespace Raincrow.GameEventResponses
             public double timestamp;
         }
 
-        public const string EventName = "level.up";
+        public string EventName => "level.up";
         
         public void HandleResponse(string eventData)
         {

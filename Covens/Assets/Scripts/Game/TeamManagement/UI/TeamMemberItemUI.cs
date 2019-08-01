@@ -11,6 +11,7 @@ public class TeamMemberItemUI : MonoBehaviour
 
     [Header("Base")]
     [SerializeField] private GameObject m_Background;
+    [SerializeField] private GameObject m_DisableOverlay;
     [SerializeField] private Text m_Level;
     [SerializeField] private Text m_PlayerName;
     [SerializeField] private GameObject m_AdminIcon;
@@ -23,6 +24,7 @@ public class TeamMemberItemUI : MonoBehaviour
     [SerializeField] private Button m_KickButton;
     [SerializeField] private Button m_DemoteButton;
     [SerializeField] private Button m_PromoteButton;
+    [SerializeField] private Button m_TitleButton;
     [SerializeField] private InputField m_TitleField;
 
     public TeamData Coven { get; private set; }
@@ -32,7 +34,7 @@ public class TeamMemberItemUI : MonoBehaviour
     private System.Action<string> m_OnKick;
     private System.Action<string, CovenRole> m_OnPromote;
     private System.Action<string, CovenRole> m_OnDemote;
-    private System.Action<string, string> m_OnChangeTitle;
+    private System.Action<TeamMemberItemUI> m_OnClickTitle;
 
     public void Awake()
     {
@@ -40,7 +42,10 @@ public class TeamMemberItemUI : MonoBehaviour
         m_DemoteButton.onClick.AddListener(OnClickDemote);
         m_PromoteButton.onClick.AddListener(OnClickPromote);
         m_KickButton.onClick.AddListener(OnClickKick);
-        m_TitleField.onEndEdit.AddListener(OnFinishEditingTitle);
+        m_TitleButton.onClick.AddListener(OnClickTitle);
+        //m_TitleField.onEndEdit.AddListener(OnFinishEditingTitle);
+
+        m_TitleField.gameObject.SetActive(false);
     }
 
     public void Setup(
@@ -50,8 +55,9 @@ public class TeamMemberItemUI : MonoBehaviour
         System.Action<string> onKick,
         System.Action<string, CovenRole> onPromote,
         System.Action<string, CovenRole> onDemote,
-        System.Action<string, string> onChangeTitle)
+        System.Action<TeamMemberItemUI> onClickTitle)
     {
+        Disable(false);
         transform.localScale = Vector3.one;
 
         Coven = coven;
@@ -60,7 +66,7 @@ public class TeamMemberItemUI : MonoBehaviour
         m_OnKick = onKick;
         m_OnPromote = onPromote;
         m_OnDemote = onDemote;
-        m_OnChangeTitle = onChangeTitle;
+        m_OnClickTitle = onClickTitle;
 
         //setup data
         Refresh();
@@ -70,22 +76,25 @@ public class TeamMemberItemUI : MonoBehaviour
     {
         m_Level.text = MemberData.Level.ToString();
         m_PlayerName.text = MemberData.Name;
-        m_Title.text = MemberData.Title;
-        m_TitleField.text = MemberData.Title;
+        m_Title.text = string.IsNullOrEmpty(MemberData.Title) ? LocalizeLookUp.GetText("team_member_member_role") : MemberData.Title;
+        //m_TitleField.text = MemberData.Title;
         m_AdminIcon.SetActive(MemberData.Role == CovenRole.ADMIN);
         m_ModIcon.SetActive(MemberData.Role == CovenRole.MODERATOR);
         m_LastActive.text = GetlastActive(MemberData.LastActiveOn);
         m_State.text = MemberData.State == "" ? "Normal" : MemberData.State;
 
-        //edit options
-        // m_TitleField.gameObject.SetActive(showEdit && TeamManager.MyRole > MemberData.Role);
-        m_TitleField.gameObject.SetActive(false);
-        m_KickButton.gameObject.SetActive(Coven.IsMember && TeamManager.MyRole > MemberData.Role);
-        m_PromoteButton.gameObject.SetActive(Coven.IsMember && TeamManager.MyRole > MemberData.Role);
-        m_DemoteButton.gameObject.SetActive(Coven.IsMember && TeamManager.MyRole > MemberData.Role);
+        bool isFounder = TeamManager.MyCovenData != null && TeamManager.MyCovenData.CreatedBy == PlayerDataManager.playerData.instance;
+        bool isMe = MemberData.Id == PlayerDataManager.playerData.instance;
 
-        m_PromoteButton.interactable = MemberData.Role < CovenRole.ADMIN;
-        m_DemoteButton.interactable = MemberData.Role > CovenRole.MEMBER;
+        //edit options
+        //m_TitleField.gameObject.SetActive(isFounder || (Coven.IsMember && TeamManager.MyRole > MemberData.Role));
+        m_KickButton.gameObject.SetActive(isFounder || (Coven.IsMember && TeamManager.MyRole > MemberData.Role));
+        m_PromoteButton.gameObject.SetActive(isFounder || (Coven.IsMember && TeamManager.MyRole > MemberData.Role));
+        m_DemoteButton.gameObject.SetActive(isFounder || (Coven.IsMember && TeamManager.MyRole > MemberData.Role));
+
+        m_PromoteButton.interactable = isMe == false && MemberData.Role < CovenRole.ADMIN;
+        m_DemoteButton.interactable = isMe == false && MemberData.Role > CovenRole.MEMBER;
+        m_KickButton.interactable = isMe == false;
 
         m_Background.SetActive(transform.GetSiblingIndex() % 2 == 0);
     }
@@ -100,9 +109,12 @@ public class TeamMemberItemUI : MonoBehaviour
         UIGlobalErrorPopup.ShowPopUp(
             confirmAction: () =>
             {
+                LoadingOverlay.Show();
                 UIGlobalErrorPopup.Close();
+
                 TeamManager.KickMember(MemberData, (error) =>
                 {
+                    LoadingOverlay.Hide();
                     if (string.IsNullOrEmpty(error))
                         m_OnKick?.Invoke(MemberData.Id);
                     else
@@ -126,9 +138,12 @@ public class TeamMemberItemUI : MonoBehaviour
         UIGlobalErrorPopup.ShowPopUp(
             confirmAction: () =>
             {
+                LoadingOverlay.Show();
                 UIGlobalErrorPopup.Close();
+
                 TeamManager.DemoteMember(MemberData, (error) =>
                 {
+                    LoadingOverlay.Hide();
                     if (string.IsNullOrEmpty(error))
                         m_OnDemote?.Invoke(MemberData.Id, role);
                     else
@@ -152,9 +167,12 @@ public class TeamMemberItemUI : MonoBehaviour
         UIGlobalErrorPopup.ShowPopUp(
             confirmAction: () =>
             {
+                LoadingOverlay.Show();
                 UIGlobalErrorPopup.Close();
+
                 TeamManager.PromoteMember(MemberData, (error) =>
                 {
+                    LoadingOverlay.Hide();
                     if (string.IsNullOrEmpty(error))
                         m_OnPromote?.Invoke(MemberData.Id, role);
                     else
@@ -165,22 +183,9 @@ public class TeamMemberItemUI : MonoBehaviour
             LocalizeLookUp.GetText("coven_member_promote").Replace("{{name}}", MemberData.Name).Replace("{{role}}", roleName));
     }
 
-    private void OnFinishEditingTitle(string text)
+    private void OnClickTitle()
     {
-        UIGlobalErrorPopup.ShowPopUp(
-               confirmAction: () =>
-               {
-                   UIGlobalErrorPopup.Close();
-                   TeamManager.ChangeMemberTitle(MemberData, text, (error) =>
-                   {
-                       if (string.IsNullOrEmpty(error))
-                           m_OnChangeTitle?.Invoke(MemberData.Id, text);
-                       else
-                           UIGlobalErrorPopup.ShowError(null, error);
-                   });
-               },
-               cancelAction: () => { },
-               LocalizeLookUp.GetText("coven_member_settitle").Replace("{{name}}", MemberData.Name).Replace("{{title}}", text));
+        m_OnClickTitle?.Invoke(this);
     }
 
     private static string GetlastActive(double javaTimeStamp)
@@ -219,5 +224,10 @@ public class TeamMemberItemUI : MonoBehaviour
         System.DateTime dtDateTime = new System.DateTime(1970, 1, 1, 0, 0, 0, 0, System.DateTimeKind.Utc);
         dtDateTime = dtDateTime.AddMilliseconds(javaTimestamp).ToUniversalTime();
         return System.DateTime.UtcNow.Subtract(dtDateTime);
+    }
+
+    public void Disable(bool disable)
+    {
+        m_DisableOverlay.SetActive(disable);
     }
 }

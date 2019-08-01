@@ -6,7 +6,7 @@ namespace Raincrow.GameEventResponses
 {
     public class RemoveImmunityHandler : IGameEventHandler
     {
-        public const string EventName = "expire.immunity";
+        public string EventName => "expire.immunity";
         public static System.Action<string, string, bool> OnImmunityChange;
 
         public struct RemoveImmunityEventData

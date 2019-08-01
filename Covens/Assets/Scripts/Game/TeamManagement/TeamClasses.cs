@@ -30,7 +30,7 @@ namespace Raincrow.Team
 
         public string Id { get => _id; }
         public long CreatedOn { get => createdOn; }
-        public string Motto { get => motto; }
+        public string Motto { get => motto; set => motto = value; }
         public string Name { get => name; }
         public int School { get => school; }
         public string Dominion { get => dominion; }
@@ -72,20 +72,20 @@ namespace Raincrow.Team
     [System.Serializable]
     public class TeamMemberData
     {
-        [SerializeField] private string _id;
-        [SerializeField] private string state;
-        [SerializeField] private string name;
-        [SerializeField] private string title;
-        [SerializeField] private int level;
-        [SerializeField] private int degree;
-        [SerializeField] private int role;
-        [SerializeField] private long joinedOn;
-        [SerializeField] private long lastActiveOn;
+        [SerializeField, JsonProperty("_id")] private string _id;
+        [SerializeField, JsonProperty("state")] private string state;
+        [SerializeField, JsonProperty("name")] private string name;
+        [SerializeField, JsonProperty("title")] private string title;
+        [SerializeField, JsonProperty("level")] private int level;
+        [SerializeField, JsonProperty("degree")] private int degree;
+        [SerializeField, JsonProperty("role")] private int role;
+        [SerializeField, JsonProperty("joinedOn")] private long joinedOn;
+        [SerializeField, JsonProperty("lastActiveOn")] private long lastActiveOn;
 
         public string Id { get => _id; }
         public string State { get => state; }
         public string Name { get => name; }
-        public string Title { get => title; }
+        public string Title { get => title; set => title = value; }
         public int Level { get => level; }
         public int Degree { get => degree; }
         public CovenRole Role { get => (CovenRole)role; set => role = (int)value; }
@@ -109,10 +109,10 @@ namespace Raincrow.Team
     [System.Serializable]
     public class PendingRequest
     {
-        [SerializeField] private string character;
-        [SerializeField] private string name;
-        [SerializeField] private int level;
-        [SerializeField] private long date;
+        [SerializeField, JsonProperty("character")] private string character;
+        [SerializeField, JsonProperty("name")] private string name;
+        [SerializeField, JsonProperty("level")] private int level;
+        [SerializeField, JsonProperty("date")] private long date;
 
         public string Name { get => name; }
         public int Level { get => level; }
@@ -123,10 +123,10 @@ namespace Raincrow.Team
     [System.Serializable]
     public class PendingInvite
     {
-        [SerializeField] private string character;
-        [SerializeField] private string name;
-        [SerializeField] private int level;
-        [SerializeField] private long date;
+        [SerializeField, JsonProperty("character")] private string character;
+        [SerializeField, JsonProperty("name")] private string name;
+        [SerializeField, JsonProperty("level")] private int level;
+        [SerializeField, JsonProperty("date")] private long date;
 
         public string Name { get => name; }
         public int Level { get => level; }

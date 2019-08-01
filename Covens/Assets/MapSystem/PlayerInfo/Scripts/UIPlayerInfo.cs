@@ -185,6 +185,12 @@ public class UIPlayerInfo : UIInfoPanel
 
     public void SetupDetails(MapWitchData details)
     {
+        if (details == null)
+        {
+            Abort();
+            return;
+        }
+
         m_WitchDetails = details;
 
         if (string.IsNullOrEmpty(details.coven) == false)

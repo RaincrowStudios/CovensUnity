@@ -3,6 +3,7 @@ using UnityEngine.UI;
 using TMPro;
 using Raincrow;
 using Raincrow.Team;
+using Raincrow.GameEventResponses;
 
 public class TeamManagerUI : MonoBehaviour
 {
@@ -29,6 +30,7 @@ public class TeamManagerUI : MonoBehaviour
         public TextMeshProUGUI m_CreatorDegree;
         public Image m_CovenSigil;
         public Image m_CreatorSigil;
+        public Button m_MottoButton;
 
         public Sprite whiteSchool;
         public Sprite shadowSchool;
@@ -109,6 +111,17 @@ public class TeamManagerUI : MonoBehaviour
         }
     }
 
+    public static Screen CurrentScreen
+    {
+        get
+        {
+            if (IsOpen == false)
+                return Screen.NONE;
+            else
+                return m_Instance.m_CurrentScreen;
+        }
+    }
+
     private TeamData m_CovenData = null;
     private CanvasGroup[] m_Screens;
     private Screen m_CurrentScreen;
@@ -132,16 +145,18 @@ public class TeamManagerUI : MonoBehaviour
 
             if (TeamManager.MyCovenData != null && covenName == TeamManager.MyCovenData.Name) //show the player's coven
             {
-                Open(TeamManager.MyCovenData.Id);
+                Open(TeamManager.MyCovenData.Id, onClose);
             }
             else //get the coven from server
             {
+                LoadingOverlay.Show();
                 TeamManager.GetCoven(covenName, true, (covenData, error) =>
                 {
+                    LoadingOverlay.Hide();
                     if (string.IsNullOrEmpty(error))
                         m_Instance.Show(covenData);
                     else
-                        UIGlobalErrorPopup.ShowError(null, error);
+                        UIGlobalErrorPopup.ShowError(m_Instance.OnClickClose, error);
                 });
             }
         });
@@ -166,12 +181,14 @@ public class TeamManagerUI : MonoBehaviour
                 {
                     if (TeamManager.MyCovenData == null)//try to request coven data from server
                     {
+                        LoadingOverlay.Show();
                         TeamManager.GetCoven(TeamManager.MyCovenId, false, (covenData, error) =>
                         {
+                            LoadingOverlay.Hide();
                             if (string.IsNullOrEmpty(error))
                                 m_Instance.Show(covenData);
                             else
-                                UIGlobalErrorPopup.ShowError(null, error);
+                                UIGlobalErrorPopup.ShowError(m_Instance.OnClickClose, error);
                         });
                     }
                     else //show the cached coven
@@ -182,17 +199,19 @@ public class TeamManagerUI : MonoBehaviour
             }
             else //get the coven from server
             {
+                LoadingOverlay.Show();
                 TeamManager.GetCoven(covenId, false, (covenData, error) =>
                 {
+                    LoadingOverlay.Hide();
                     if (string.IsNullOrEmpty(error))
                         m_Instance.Show(covenData);
                     else
-                        UIGlobalErrorPopup.ShowError(null, error);
+                        UIGlobalErrorPopup.ShowError(m_Instance.OnClickClose, error);
                 });
             }
         });
     }
-
+    
     private static void LoadScene(System.Action onComplete)
     {
         if (m_Instance != null)
@@ -211,8 +230,8 @@ public class TeamManagerUI : MonoBehaviour
                 },
                 () =>
                 {
-                    onComplete?.Invoke();
                     LoadingOverlay.Hide();
+                    onComplete?.Invoke();
                 });
         }
     }
@@ -248,12 +267,7 @@ public class TeamManagerUI : MonoBehaviour
         HideButtons();
 
         //listeners
-        m_CloseButton.onClick.AddListener(() =>
-        {
-            m_OnClose?.Invoke();
-            m_OnClose = null;
-            Hide();
-        });
+        m_CloseButton.onClick.AddListener(OnClickClose);
         m_LeaderboardButton.gameObject.SetActive(false);
 
         m_CreateCovenButton.onClick.AddListener(OnClickCreate);
@@ -280,6 +294,8 @@ public class TeamManagerUI : MonoBehaviour
                 SetScreen(Screen.REQUESTS);
         });
 
+        m_Home.m_MottoButton.onClick.AddListener(OnClickMotto);
+
         //setup pools
         m_Members.m_Pool = new SimplePool<TeamMemberItemUI>(m_Members.m_ItemPrefab, 5);
         m_Requests.m_Pool = new SimplePool<TeamInviteItemUI>(m_Requests.m_ItemPrefab, 5);
@@ -301,9 +317,14 @@ public class TeamManagerUI : MonoBehaviour
 
     private void Show(TeamData coven)
     {
-        Show();
-
         m_CovenData = coven;
+        if (coven == null || coven == TeamManager.MyCovenData)
+        {
+            EnableEventListeners(false);
+            EnableEventListeners(true);
+        }
+
+        Show();
 
         if (coven == null)
             SetScreen(Screen.INVITES);
@@ -313,6 +334,7 @@ public class TeamManagerUI : MonoBehaviour
 
     private void Hide()
     {
+        EnableEventListeners(false);
         SetScreen(Screen.NONE);
 
         LeanTween.cancel(m_TweenId);
@@ -333,15 +355,7 @@ public class TeamManagerUI : MonoBehaviour
         Screen previousScreen = m_CurrentScreen;
         m_CurrentScreen = screen;
         
-        switch (previousScreen)
-        {
-            case Screen.MEMBERS:
-                foreach (Transform item in m_Members.m_Container.transform)
-                    m_Members.m_Pool.Despawn(item.GetComponent<TeamMemberItemUI>());
-                break;
-        }
-
-        LeanTween.cancel(m_ScreenTweenId);
+        LeanTween.cancel(m_ScreenTweenId, true);
         int idx = (int)screen;
         float start = m_Screens[idx].alpha;
         float end = 1f;
@@ -425,6 +439,161 @@ public class TeamManagerUI : MonoBehaviour
         m_DisbandCovenButton.transform.GetChild(0).gameObject.SetActive(false);
     }
 
+    private void EnableEventListeners(bool enable)
+    {
+        if (enable)
+        {
+            CovenDisbandHandler.OnCovenDisband += OnDisband;
+            CovenInviteCancelHandler.OnCovenInviteCancel += OnInviteRemove;
+            CovenInviteCancelMembersHandler.OnPlayerInviteCancel += OnInviteRemove;
+            CovenInviteDeclineHandler.OnPlayerInviteDecline += OnInviteRemove;
+            CovenInviteHandler.OnCovenInviteReceive += OnCovenInviteReceive;
+            CovenInviteMembersHandler.OnInviteSent += OnCovenInviteSent;
+            CovenJoinHandler.OnCovenJoin += OnJoinCoven;
+            CovenJoinMembersHandler.OnNewMember += OnMemberAdd;
+            CovenKickHandler.OnMemberKick += OnMemberRemove;
+            CovenLeaveHandler.OnMemberLeave += OnMemberRemove;
+            CovenMottoHandler.OnMottoChange += OnMottoChange;
+            CovenRequestMembers.OnReceiveRequest += OnCovenRequestReceive;
+            CovenRequestRejectHandler.OnRequestReject += OnRequestRemove;
+            CovenRequestRejectMembersHandler.OnRequestReject += OnRequestRemove;
+            CovenTitleHandler.OnTitleChange += OnMemberRefresh;
+            CovenRoleHandler.OnRoleChange += OnMemberRefresh;
+        }
+        else
+        {
+            CovenDisbandHandler.OnCovenDisband -= OnDisband;
+            CovenInviteCancelHandler.OnCovenInviteCancel -= OnInviteRemove;
+            CovenInviteCancelMembersHandler.OnPlayerInviteCancel -= OnInviteRemove;
+            CovenInviteDeclineHandler.OnPlayerInviteDecline -= OnInviteRemove;
+            CovenInviteHandler.OnCovenInviteReceive -= OnCovenInviteReceive;
+            CovenInviteMembersHandler.OnInviteSent -= OnCovenInviteSent;
+            CovenJoinHandler.OnCovenJoin -= OnJoinCoven;
+            CovenJoinMembersHandler.OnNewMember -= OnMemberAdd;
+            CovenKickHandler.OnMemberKick -= OnMemberRemove;
+            CovenLeaveHandler.OnMemberLeave -= OnMemberRemove;
+            CovenMottoHandler.OnMottoChange -= OnMottoChange;
+            CovenRequestMembers.OnReceiveRequest -= OnCovenRequestReceive;
+            CovenRequestRejectHandler.OnRequestReject -= OnRequestRemove;
+            CovenRequestRejectMembersHandler.OnRequestReject -= OnRequestRemove;
+            CovenTitleHandler.OnTitleChange -= OnMemberRefresh;
+            CovenRoleHandler.OnRoleChange -= OnMemberRefresh;
+        }
+    }
+       
+    private void OnJoinCoven(string covenName)
+    {
+        //reopen the UI
+        if (m_CovenData == null)
+            UIGlobalErrorPopup.ShowPopUp(() => Open(null), LocalizeLookUp.GetText("coven_invite_join_success"));
+    }
+    private void OnDisband()
+    {
+        //reopen the UI
+        if (m_CovenData != null)
+            UIGlobalErrorPopup.ShowError(() => Open(null), LocalizeLookUp.GetText("coven_disbanded"));
+    }
+    private void OnInviteRemove(string id)
+    {
+        if (m_CurrentScreen != Screen.INVITES)
+            return;
+
+        //disable the invite interaction
+        var invites = m_Invites.m_Pool.GetInstances();
+        foreach(TeamInviteItemUI item in invites)
+        {
+            if (item.ItemId == id)
+            {
+                item.Disable(true);
+                break;
+            }
+        }
+    }
+    private void OnCovenInviteReceive(CovenInvite covenInvite)
+    {
+        if (m_CurrentScreen != Screen.INVITES)
+            return;
+
+        SpawnInvite(covenInvite);
+    }
+    private void OnCovenInviteSent(PendingInvite pendingInvite)
+    {
+        if (m_CurrentScreen != Screen.INVITES)
+            return;
+
+        SpawnInvite(pendingInvite);
+    }
+    private void OnMemberAdd(TeamMemberData member)
+    {
+        if (m_CurrentScreen != Screen.MEMBERS)
+            return;
+
+        SpawnMember(member);
+    }
+    private void OnMemberRemove(string name)
+    {
+        if (name == PlayerDataManager.playerData.name)
+        {
+            UIGlobalErrorPopup.ShowError(() => Open(null), LocalizeLookUp.GetText("coven_member_remove_success").Replace("{{name}}", name));
+            return;
+        }
+
+        if (m_CurrentScreen != Screen.MEMBERS)
+            return;
+
+        var members = m_Members.m_Pool.GetInstances();
+        foreach(TeamMemberItemUI member in members)
+        {
+            if (member.MemberData.Name == name)
+            {
+                member.Disable(true);
+                break;
+            }
+        }
+    }
+    private void OnMottoChange(string motto)
+    {
+        if (m_CurrentScreen != Screen.HOME)
+            return;
+
+        if (m_CovenData == null)
+            return;
+
+        SetupHome();
+    }
+    private void OnCovenRequestReceive(PendingRequest pendingRequest)
+    {
+        if (m_CurrentScreen != Screen.REQUESTS)
+            return;
+
+        SpawnRequest(pendingRequest);
+    }
+    private void OnRequestRemove(string id)
+    {
+        if (m_CurrentScreen != Screen.REQUESTS)
+            return;
+
+        //disable the invite interaction
+        var requests = m_Requests.m_Pool.GetInstances();
+        foreach (TeamInviteItemUI item in requests)
+        {
+            if (item.ItemId == id)
+            {
+                item.Disable(true);
+                break;
+            }
+        }
+    }
+    private void OnMemberRefresh(string id)
+    {
+        //refresh everything in case something important changed (like my role)
+        if (id == PlayerDataManager.playerData.instance)
+            RefreshMembers(null);
+        //update the view for that player only
+        else
+            RefreshMembers(id);
+    }
+
     private void OnClickCreate()
     {
         //show popup with the name inptu field
@@ -465,7 +634,15 @@ public class TeamManagerUI : MonoBehaviour
             txt: LocalizeLookUp.GetText("coven_invite_choose"));
     }
 
+    private void OnClickClose()
+    {
+        m_OnClose?.Invoke();
+        m_OnClose = null;
+        Hide();
+    }
+
     #region COVEN HOME
+
     private void SetupHome()
     {
         if (m_CovenData == null)
@@ -545,7 +722,7 @@ public class TeamManagerUI : MonoBehaviour
                 {
                     if (result == 200)
                     {
-                        UIGlobalErrorPopup.ShowPopUp(Hide, LocalizeLookUp.GetText("coven_disband_success"));
+                        UIGlobalErrorPopup.ShowPopUp(() => Show(null), LocalizeLookUp.GetText("coven_disband_success"));
                     }
                     else
                     {
@@ -591,9 +768,45 @@ public class TeamManagerUI : MonoBehaviour
             LocalizeLookUp.GetText("invite_request").Replace("{{Coven}}", m_CovenData.Name));
     }
 
+    private void OnClickMotto()
+    {
+        m_InputPopup.ShowPopUp(
+            txt: LocalizeLookUp.GetText("coven_motto"),
+            confirmAction: (motto) =>
+            {
+                m_InputPopup.error.text = "";
+
+                LoadingOverlay.Show();
+                TeamManager.ChangeMotto(motto, (error) =>
+                {
+                    LoadingOverlay.Hide();
+                    if (string.IsNullOrEmpty(error))
+                    {
+                        m_InputPopup.Close();
+                        UIGlobalErrorPopup.ShowPopUp(
+                            () =>
+                            {
+                                if (m_CurrentScreen == Screen.HOME)
+                                    SetupHome();
+                            }, 
+                            LocalizeLookUp.GetText("coven_motto_set"));
+                    }
+                    else
+                    {
+                        m_InputPopup.Error(error);
+                    }
+                });
+            },
+            cancelAction: () =>
+            {
+            });
+    }
+
     #endregion
 
+
     #region MEMBERS SCREEN
+
     private void SetupMembers()
     {
         HideButtons();
@@ -603,25 +816,56 @@ public class TeamManagerUI : MonoBehaviour
 
         m_SubTitle.text = m_CovenData.Name;
         m_CovenName.text = LocalizeLookUp.GetText("invite_member").Replace("{{member}}", "");
-        
+
         //setup members
-        foreach (TeamMemberData member in m_CovenData.Members)
-        {
-            TeamMemberItemUI item = m_Members.m_Pool.Spawn(m_Members.m_Container.transform);
-            item.Setup(
-                m_CovenData,
-                member,
-                OnSelectMember,
-                OnKickMember,
-                OnPromoteMember,
-                OnDemoteMember,
-                OnChangeMemberTitle);
-        }
+        m_Members.m_Pool.DespawnAll();
+        foreach (TeamMemberData data in m_CovenData.Members)
+            SpawnMember(data);
+    }
+
+    private TeamMemberItemUI SpawnMember(TeamMemberData member)
+    {
+        TeamMemberItemUI item = m_Members.m_Pool.Spawn(m_Members.m_Container.transform);
+        item.name = "[covenMember] " + member.Name;
+        item.Setup(
+            m_CovenData,
+            member,
+            OnSelectMember,
+            OnKickMember,
+            OnPromoteMember,
+            OnDemoteMember,
+            OnClickMemberTitle);
+        return item;
     }
 
     private void OnSelectMember(TeamMemberItemUI member)
     {
-        Debug.LogError("TODO: SHOW PLAYER VIEW");
+        LoadingOverlay.Show();
+        TeamPlayerView.ViewCharacter(member.MemberData.Id, (m, s) => LoadingOverlay.Hide());
+    }
+
+    private void OnClickMemberTitle(TeamMemberItemUI member)
+    {
+        m_InputPopup.ShowPopUp(
+            (title) =>
+            {
+                LoadingOverlay.Show();
+                TeamManager.ChangeMemberTitle(member.MemberData, title, (error) =>
+                {
+                    LoadingOverlay.Hide();
+                    if (string.IsNullOrEmpty(error))
+                    {
+                        m_InputPopup.Close();
+                        member.Refresh();
+                    }
+                    else
+                    {
+                        m_InputPopup.Error(error);
+                    }
+                });
+            },
+            () => { },
+            LocalizeLookUp.GetText("coven_set_title"));
     }
 
     private void RefreshMembers(string id)
@@ -650,9 +894,9 @@ public class TeamManagerUI : MonoBehaviour
         if (m_CurrentScreen != Screen.MEMBERS)
             return;
 
-        foreach (Transform child in m_Members.m_Container.transform)
+        for (int i = 0; i < m_Members.m_Container.transform.childCount; i++)
         {
-            TeamMemberItemUI item = child.GetComponent<TeamMemberItemUI>();
+            TeamMemberItemUI item = m_Members.m_Container.transform.GetChild(i).GetComponent<TeamMemberItemUI>();
 
             if (item.MemberData == null)
                 continue;
@@ -678,18 +922,16 @@ public class TeamManagerUI : MonoBehaviour
     {
         RefreshMembers(id);
     }
+
     #endregion
 
+
     #region INVITES SCREEN
+
     private void SetupInvites()
     {
-        //despawn previous list
-        foreach (Transform item in m_Invites.m_Container.transform)
-        {
-            m_Invites.m_Pool.Despawn(item.GetComponent<TeamInviteItemUI>());
-        }
-
         HideButtons();
+        m_Invites.m_Pool.DespawnAll();
 
         if (m_CovenData == null) //show the player's received invitations
         {
@@ -705,21 +947,8 @@ public class TeamManagerUI : MonoBehaviour
             m_Invites.m_HeaderLevel.text = LocalizeLookUp.GetText("generic_rank");
             m_Invites.m_HeaderName.text = LocalizeLookUp.GetText("chat_coven");
 
-            foreach (var invitation in PlayerDataManager.playerData.covenInvites)
-            {
-                TeamInviteItemUI item = m_Invites.m_Pool.Spawn(m_Invites.m_Container.transform);
-                item.Setup(
-                    invitation,
-                    onAccept: () =>
-                    {
-                        //reopen the coven management screen
-                        Open(null);
-                    },
-                    onReject: () =>
-                    {
-                        item.Disable(true);
-                    });
-            }
+            foreach (var covenInvite in PlayerDataManager.playerData.covenInvites)
+                SpawnInvite(covenInvite);
         }
         else //shoe the coven's sent invitation
         {
@@ -731,17 +960,29 @@ public class TeamManagerUI : MonoBehaviour
             m_Invites.m_HeaderLevel.text = LocalizeLookUp.GetText("card_witch_level");
             m_Invites.m_HeaderName.text = LocalizeLookUp.GetText("name");
 
-            foreach (var invitation in m_CovenData.PendingInvites)
-            {
-                TeamInviteItemUI item = m_Invites.m_Pool.Spawn(m_Invites.m_Container.transform);
-                item.Setup(
-                    invitation,
-                    onCancel: () =>
-                    {
-                        item.Disable(true);
-                    });
-            }
+            foreach (var pendingInvite in m_CovenData.PendingInvites)
+                SpawnInvite(pendingInvite);
         }
+    }
+
+    private TeamInviteItemUI SpawnInvite(CovenInvite covenInvite)
+    {
+        TeamInviteItemUI item = m_Invites.m_Pool.Spawn(m_Invites.m_Container.transform);
+        item.Setup(
+            covenInvite,
+            onAccept: () => Open(null),
+            onReject: () => item.Disable(true)
+        );
+        return item;
+    }
+
+    private TeamInviteItemUI SpawnInvite(PendingInvite pendingInvite)
+    {
+        TeamInviteItemUI item = m_Invites.m_Pool.Spawn(m_Invites.m_Container.transform);
+        item.Setup(
+            pendingInvite,
+            onCancel: () => item.Disable(true));
+        return item;
     }
 
     private void OnClickSendInvite()
@@ -751,7 +992,7 @@ public class TeamManagerUI : MonoBehaviour
            {
                m_InputPopup.Error("");
                string nameError = LoginUtilities.ValidateCharacterName(characterName);
-
+               
                if (string.IsNullOrEmpty(nameError))
                {
                    //send the invite
@@ -782,18 +1023,16 @@ public class TeamManagerUI : MonoBehaviour
            },
            txt: LocalizeLookUp.GetText("coven_invite"));
     }
+
     #endregion
 
+
     #region REQUESTS SCREEN
+
     private void SetupRequests()
     {
-        //despawn old items
-        foreach (Transform item in m_Requests.m_Container.transform)
-        {
-            m_Requests.m_Pool.Despawn(item.GetComponent<TeamInviteItemUI>());
-        }
-
         HideButtons();
+        m_Requests.m_Pool.DespawnAll();
 
         if (m_CovenData == null)
         {
@@ -811,10 +1050,7 @@ public class TeamManagerUI : MonoBehaviour
 
             //show the player's sent requests
             foreach (var request in PlayerDataManager.playerData.covenRequests)
-            {
-                TeamInviteItemUI item = m_Requests.m_Pool.Spawn(m_Requests.m_Container.transform);
-                item.Setup(request);
-            }
+                SpawnRequest(request);
         }
         else
         {
@@ -827,25 +1063,32 @@ public class TeamManagerUI : MonoBehaviour
 
             //show the coven's received requests
             foreach (var request in m_CovenData.PendingRequests)
-            {
-                TeamInviteItemUI item = m_Requests.m_Pool.Spawn(m_Requests.m_Container.transform);
-                item.Setup(
-                    request,
-                    onAccept: () =>
-                    {
-                        item.Disable(true);
-                    },
-                    onReject: () =>
-                    {
-                        item.Disable(true);
-                    });
-            }
+                SpawnRequest(request);
         }
+    }
+
+    private TeamInviteItemUI SpawnRequest(CovenRequest covenRequest)
+    {
+        TeamInviteItemUI item = m_Requests.m_Pool.Spawn(m_Requests.m_Container.transform);
+        item.Setup(covenRequest);
+        return item;
+    }
+
+    private TeamInviteItemUI SpawnRequest(PendingRequest pendingRequest)
+    {
+        TeamInviteItemUI item = m_Requests.m_Pool.Spawn(m_Requests.m_Container.transform);
+        item.Setup(
+            pendingRequest,
+            onAccept: () => item.Disable(true),
+            onReject: () => item.Disable(true)
+        );
+        return item;
     }
 
     private void OnClickSendRequest()
     {
         UICovenSearcher.Instance.Show(() => Open(TeamManager.MyCovenId));
     }
+
     #endregion
 }

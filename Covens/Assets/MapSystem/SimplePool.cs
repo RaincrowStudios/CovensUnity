@@ -108,4 +108,9 @@ public class SimplePool<T> where T : Component
         }
         m_UnavailablePool.Clear();
     }
+
+    public List<T> GetInstances()
+    {
+        return new List<T>(m_UnavailablePool);
+    }
 }
