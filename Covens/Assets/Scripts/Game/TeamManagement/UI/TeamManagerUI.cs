@@ -535,10 +535,11 @@ public class TeamManagerUI : MonoBehaviour
     }
     private void OnMemberAdd(TeamMemberData member)
     {
-        if (m_CurrentScreen != Screen.MEMBERS)
-            return;
+        if (m_CurrentScreen == Screen.MEMBERS)
+            SpawnMember(member);
 
-        SpawnMember(member);
+        OnInviteRemove(member.Id);
+        OnRequestRemove(member.Id);
     }
     private void OnMemberRemove(string name)
     {
