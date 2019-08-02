@@ -65,7 +65,7 @@ public class TeamInviteItemUI : MonoBehaviour
 
         m_ConfirmButton.interactable = false;
         m_DeclineButton.interactable = false;
-        m_CancelButton.interactable = TeamManager.MyRole > CovenRole.MODERATOR;
+        m_CancelButton.interactable = TeamManager.MyRole >= CovenRole.MODERATOR;
 
         m_OnSelect = () =>
         {
@@ -117,8 +117,8 @@ public class TeamInviteItemUI : MonoBehaviour
         m_DeclineButton.gameObject.SetActive(true);
         m_CancelButton.gameObject.SetActive(false);
 
-        m_ConfirmButton.interactable = TeamManager.MyRole > CovenRole.MODERATOR;
-        m_DeclineButton.interactable = TeamManager.MyRole > CovenRole.MODERATOR;
+        m_ConfirmButton.interactable = TeamManager.MyRole >= CovenRole.MODERATOR;
+        m_DeclineButton.interactable = TeamManager.MyRole >= CovenRole.MODERATOR;
         m_CancelButton.interactable = false;
 
         m_OnSelect = () =>
