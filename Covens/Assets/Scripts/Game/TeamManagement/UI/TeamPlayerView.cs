@@ -57,7 +57,8 @@ public class TeamPlayerView : MonoBehaviour
 
         playerPos.x = data.longitude;
         playerPos.y = data.latitude;
-        if (data.equipped[0].id.Contains("_m_"))
+
+        if (data.male)
         {
             female.gameObject.SetActive(false);
             male.gameObject.SetActive(true);
@@ -69,6 +70,7 @@ public class TeamPlayerView : MonoBehaviour
             male.gameObject.SetActive(false);
             female.InitializeChar(data.equipped);
         }
+
         ChangeDegree(data.degree);
         _displayName.text = data.name;
         _level.text = LocalizeLookUp.GetText("lt_level") + " " + data.level.ToString();

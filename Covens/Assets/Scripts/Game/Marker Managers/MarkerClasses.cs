@@ -129,6 +129,21 @@ public struct CovenInfo
     public string title;
 }
 
+public struct QuestStatus
+{
+    public struct QuestProgress
+    {
+        public int count;
+        public bool completed;
+    }
+
+    public QuestsController.CovenDaily daily;
+    public bool completed;
+    public QuestProgress spell;
+    public QuestProgress gather;
+    public QuestProgress explore;
+}
+
 public class CovenRequest
 {
     public double date;
@@ -172,6 +187,7 @@ public class PlayerData : WitchMarkerData
     public string nemesis;
 
     public CovenInfo covenInfo;
+    public QuestStatus quest;
 
     [JsonProperty("tools")] private List<CollectableItem> m_Tools;
     [JsonProperty("herbs")] private List<CollectableItem> m_Herbs;
@@ -213,14 +229,6 @@ public class PlayerData : WitchMarkerData
         foreach (var item in m_Gems)
             m_GemsDict[item.collectible] = item.count;
         
-        Debug.LogError("TODO: GET DAILIES");
-        dailies = new Dailies
-        {
-            explore = new Explore { },
-            gather = new Gather { },
-            spellcraft = new Spellcraft { }
-        };
-
         Debug.LogError("TODO: GET BLESSINGS");
         blessing = new Blessing { };
 
@@ -345,10 +353,7 @@ public class PlayerData : WitchMarkerData
             return inv;
         }
     }
-
-    [JsonIgnore]
-    public Dailies dailies;
-
+    
     [JsonIgnore]
     public Blessing blessing;
     

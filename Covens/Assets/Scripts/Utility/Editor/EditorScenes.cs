@@ -5,41 +5,47 @@ using UnityEngine.UI;
 using TMPro;
 using UnityEditor.SceneManagement;
 
-public class Scenes : MonoBehaviour
+public class EditorScenes : MonoBehaviour
 {
-    [MenuItem("Scenes/Start Scene")]
+    [MenuItem("Scenes/Start Scene",false,0)]
     static void StartScene()
     {
         if (EditorSceneManager.SaveCurrentModifiedScenesIfUserWantsTo())
             EditorSceneManager.OpenScene("Assets/Scenes/StartScene.unity");
     }
 
-    [MenuItem("Scenes/Login Scene")]
+    [MenuItem("Scenes/Main Scene", false, 1)]
+    static void MainScene()
+    {
+        if (EditorSceneManager.SaveCurrentModifiedScenesIfUserWantsTo())
+            EditorSceneManager.OpenScene("Assets/Scenes/MainScene.unity");
+    }
+
+    [MenuItem("Scenes/Place of Power", false, 2)]
+    static void PopScene()
+    {
+        if (EditorSceneManager.SaveCurrentModifiedScenesIfUserWantsTo())
+            EditorSceneManager.OpenScene("Assets/Scenes/PlaceOfPower.unity");
+    }
+
+    [MenuItem("Scenes/Screens/Login")]
     static void LoginScene()
     {
         if (EditorSceneManager.SaveCurrentModifiedScenesIfUserWantsTo())
             EditorSceneManager.OpenScene("Assets/Scenes/LoginScene.unity");
     }
 
-    [MenuItem("Scenes/Main Scene")]
-	static void MainScene()
-	{
-        if (EditorSceneManager.SaveCurrentModifiedScenesIfUserWantsTo())
-            EditorSceneManager.OpenScene("Assets/Scenes/MainScene.unity");
-	}
-
-    [MenuItem("Scenes/Coven Scene")]
+    [MenuItem("Scenes/Screens/Coven Managment")]
     static void CovenScene()
     {
         if (EditorSceneManager.SaveCurrentModifiedScenesIfUserWantsTo())
             EditorSceneManager.OpenScene("Assets/Scenes/CovenManagement.unity");
     }
-
-    [MenuItem("Scenes/Place of Power")]
-    static void PopScene()
+    [MenuItem("Scenes/Screens/Daily Quests")]
+    static void DailiesScene()
     {
         if (EditorSceneManager.SaveCurrentModifiedScenesIfUserWantsTo())
-            EditorSceneManager.OpenScene("Assets/Scenes/PlaceOfPower.unity");
+            EditorSceneManager.OpenScene("Assets/Scenes/DailyQuests.unity");
     }
 
     [MenuItem("Tools/Play")]

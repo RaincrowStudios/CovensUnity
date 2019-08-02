@@ -302,6 +302,16 @@ public class TeamManagerUI : MonoBehaviour
         m_Invites.m_Pool = new SimplePool<TeamInviteItemUI>(m_Invites.m_ItemPrefab, 5);
 
         GameResyncHandler.OnResyncStart += Hide;
+        DownloadedAssets.OnWillUnloadAssets += DownloadedAssets_OnWillUnloadAssets;
+    }
+
+    private void DownloadedAssets_OnWillUnloadAssets()
+    {
+        if (IsOpen)
+            return;
+
+        DownloadedAssets.OnWillUnloadAssets -= DownloadedAssets_OnWillUnloadAssets;
+        SceneManager.UnloadScene(SceneManager.Scene.COVEN_MANAGEMENT, null, null);
     }
 
     private void Show()

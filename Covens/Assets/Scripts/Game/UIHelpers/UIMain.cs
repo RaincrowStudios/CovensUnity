@@ -31,8 +31,6 @@ public class UIMain : MonoBehaviour
     [SerializeField] private Transform m_bosTransform;
     [SerializeField] private GameObject m_leaderBoards;
     [SerializeField] private Transform m_leaderboardTransform;
-    [SerializeField] private GameObject m_playerFeed;
-    [SerializeField] private Transform m_playerFeedTransform;
 
     private void Awake()
     {
@@ -74,7 +72,7 @@ public class UIMain : MonoBehaviour
 
     private void OnClickQuests()
     {
-        Utilities.InstantiateUI(m_playerFeed, m_playerFeedTransform);
+        QuestLogUI.Open();
     }
 
     private void OnClickInventory()
