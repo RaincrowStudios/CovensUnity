@@ -200,7 +200,7 @@ public class QuestLogUI : UIAnimationManager
             }
             else
             {
-                UIGlobalErrorPopup.ShowError(Hide, error);
+                UIGlobalPopup.ShowError(Hide, error);
             }
         });
     }

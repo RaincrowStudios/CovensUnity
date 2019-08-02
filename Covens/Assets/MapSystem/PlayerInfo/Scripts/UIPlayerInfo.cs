@@ -226,11 +226,11 @@ public class UIPlayerInfo : UIInfoPanel
                 LoadingOverlay.Hide();
                 if (string.IsNullOrEmpty(error))
                 {
-                    UIGlobalErrorPopup.ShowPopUp(null, LocalizeLookUp.GetText("coven_invite_success"));
+                    UIGlobalPopup.ShowPopUp(null, LocalizeLookUp.GetText("coven_invite_success"));
                 }
                 else
                 {
-                    UIGlobalErrorPopup.ShowError(null, error);
+                    UIGlobalPopup.ShowError(null, error);
                 }
             });
         }
@@ -351,7 +351,7 @@ public class UIPlayerInfo : UIInfoPanel
         if (instance == m_WitchData.instance)
         {
             Abort();
-            UIGlobalErrorPopup.ShowPopUp(null, LocalizeLookUp.GetText("spellbook_witch_is_gone").Replace("{{witch name}}", m_WitchData.displayName));// + " is gone.");
+            UIGlobalPopup.ShowPopUp(null, LocalizeLookUp.GetText("spellbook_witch_is_gone").Replace("{{witch name}}", m_WitchData.displayName));// + " is gone.");
         }
     }
 

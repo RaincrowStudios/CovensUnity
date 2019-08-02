@@ -76,23 +76,22 @@ public class TeamInviteItemUI : MonoBehaviour
         m_OnCancel = () =>
         {
             //show confirm popup
-            UIGlobalErrorPopup.ShowPopUp(
+            UIGlobalPopup.ShowPopUp(
                 confirmAction: () =>
                 {
                     //make the request
                     LoadingOverlay.Show();
-                    UIGlobalErrorPopup.Close();
 
                     TeamManager.CancelInvite(data.Character, (error) =>
                     {
                         LoadingOverlay.Hide();
                         if (string.IsNullOrEmpty(error))
                         {
-                            UIGlobalErrorPopup.ShowPopUp(onCancel, LocalizeLookUp.GetText("coven_invite_cancel_success"));
+                            UIGlobalPopup.ShowPopUp(onCancel, LocalizeLookUp.GetText("coven_invite_cancel_success"));
                         }
                         else
                         {
-                            UIGlobalErrorPopup.ShowError(null, error);
+                            UIGlobalPopup.ShowError(null, error);
                         }
                     });
                 },
@@ -129,11 +128,10 @@ public class TeamInviteItemUI : MonoBehaviour
         m_OnConfirm = () =>
         {
             //show confirm popup
-            UIGlobalErrorPopup.ShowPopUp(
+            UIGlobalPopup.ShowPopUp(
                 confirmAction: () =>
                 {
                     LoadingOverlay.Show();
-                    UIGlobalErrorPopup.Close();
 
                     //make the request
                     TeamManager.AcceptRequest(data.Character, (error) =>
@@ -141,11 +139,11 @@ public class TeamInviteItemUI : MonoBehaviour
                         LoadingOverlay.Hide();
                         if (string.IsNullOrEmpty(error))
                         {
-                            UIGlobalErrorPopup.ShowPopUp(onAccept, LocalizeLookUp.GetText("coven_request_accept_success"));
+                            UIGlobalPopup.ShowPopUp(onAccept, LocalizeLookUp.GetText("coven_request_accept_success"));
                         }
                         else
                         {
-                            UIGlobalErrorPopup.ShowError(null, error);
+                            UIGlobalPopup.ShowError(null, error);
                         }
                     });
                 },
@@ -155,11 +153,10 @@ public class TeamInviteItemUI : MonoBehaviour
         m_OnCancel = () =>
         {
             //show confirm popup
-            UIGlobalErrorPopup.ShowPopUp(
+            UIGlobalPopup.ShowPopUp(
                 confirmAction: () =>
                 {
                     LoadingOverlay.Show();
-                    UIGlobalErrorPopup.Close();
 
                     //make the request
                     TeamManager.RejectRequest(data.Character, (error) =>
@@ -167,11 +164,11 @@ public class TeamInviteItemUI : MonoBehaviour
                         LoadingOverlay.Hide();
                         if (string.IsNullOrEmpty(error))
                         {
-                            UIGlobalErrorPopup.ShowPopUp(onReject, LocalizeLookUp.GetText("coven_request_reject_success"));
+                            UIGlobalPopup.ShowPopUp(onReject, LocalizeLookUp.GetText("coven_request_reject_success"));
                         }
                         else
                         {
-                            UIGlobalErrorPopup.ShowError(null, error);
+                            UIGlobalPopup.ShowError(null, error);
                         }
                     });
                 },
@@ -204,11 +201,10 @@ public class TeamInviteItemUI : MonoBehaviour
         m_OnConfirm = () =>
         {
             //show confirm popup
-            UIGlobalErrorPopup.ShowPopUp(
+            UIGlobalPopup.ShowPopUp(
                 confirmAction: () =>
                 {
                     LoadingOverlay.Show();
-                    UIGlobalErrorPopup.Close();
 
                     //make the request
                     TeamManager.AcceptInvite(data.coven, (coven, error) =>
@@ -216,11 +212,11 @@ public class TeamInviteItemUI : MonoBehaviour
                         LoadingOverlay.Hide();
                         if (string.IsNullOrEmpty(error))
                         {
-                            UIGlobalErrorPopup.ShowPopUp(onAccept, LocalizeLookUp.GetText("coven_invite_join_success"));
+                            UIGlobalPopup.ShowPopUp(onAccept, LocalizeLookUp.GetText("coven_invite_join_success"));
                         }
                         else
                         {
-                            UIGlobalErrorPopup.ShowError(null, error);
+                            UIGlobalPopup.ShowError(null, error);
                         }
                     });
                 },
@@ -231,11 +227,10 @@ public class TeamInviteItemUI : MonoBehaviour
         m_OnCancel = () =>
         {
             //show confirm popup
-            UIGlobalErrorPopup.ShowPopUp(
+            UIGlobalPopup.ShowPopUp(
                 confirmAction: () =>
                 {
                     LoadingOverlay.Show();
-                    UIGlobalErrorPopup.Close();
 
                     //make the request
                     TeamManager.DeclineInvite(data.coven, (error) =>
@@ -243,11 +238,11 @@ public class TeamInviteItemUI : MonoBehaviour
                         LoadingOverlay.Hide();
                         if (string.IsNullOrEmpty(error))
                         {
-                            UIGlobalErrorPopup.ShowPopUp(onReject, LocalizeLookUp.GetText("coven_decline_invite_success"));
+                            UIGlobalPopup.ShowPopUp(onReject, LocalizeLookUp.GetText("coven_decline_invite_success"));
                         }
                         else
                         {
-                            UIGlobalErrorPopup.ShowError(null, error);
+                            UIGlobalPopup.ShowError(null, error);
                         }
                     });
                 },

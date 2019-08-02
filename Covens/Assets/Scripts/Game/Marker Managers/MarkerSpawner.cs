@@ -262,7 +262,7 @@ public class MarkerSpawner : MarkerManager
         {
             if (PlayerDataManager.playerData.energy >= (PlayerDataManager.playerData.baseEnergy * 2))
             {
-                UIGlobalErrorPopup.ShowPopUp(null, LocalizeLookUp.GetText("energy_full"));
+                UIGlobalPopup.ShowPopUp(null, LocalizeLookUp.GetText("energy_full"));
                 return;
             }
 
@@ -353,14 +353,14 @@ public class MarkerSpawner : MarkerManager
                 case MarkerType.WITCH:
                     if (UIPlayerInfo.isShowing && UIPlayerInfo.Instance.Witch.instance == instance)
                     {
-                        UIGlobalErrorPopup.ShowError(() => UIPlayerInfo.Instance.SetupDetails(null), APIManager.ParseError(response));
+                        UIGlobalPopup.ShowError(() => UIPlayerInfo.Instance.SetupDetails(null), APIManager.ParseError(response));
                     }
                     break;
 
                 case MarkerType.SPIRIT:
                     if (UISpiritInfo.isOpen && UISpiritInfo.Instance.Spirit.instance == instance)
                     {
-                        UIGlobalErrorPopup.ShowError(() => UISpiritInfo.Instance.SetupDetails(null), APIManager.ParseError(response));
+                        UIGlobalPopup.ShowError(() => UISpiritInfo.Instance.SetupDetails(null), APIManager.ParseError(response));
                     }
                     break;
 

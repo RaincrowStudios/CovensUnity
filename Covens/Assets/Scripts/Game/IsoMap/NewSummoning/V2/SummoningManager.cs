@@ -409,7 +409,7 @@ public class SummoningManager : MonoBehaviour
             }
             else
             {
-                UIGlobalErrorPopup.ShowError(SummoningController.Instance.Close, APIManager.ParseError(s));
+                UIGlobalPopup.ShowError(SummoningController.Instance.Close, APIManager.ParseError(s));
             }
 
             //if (r == 200)

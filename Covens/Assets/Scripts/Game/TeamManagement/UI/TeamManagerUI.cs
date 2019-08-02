@@ -156,7 +156,7 @@ public class TeamManagerUI : MonoBehaviour
                     if (string.IsNullOrEmpty(error))
                         m_Instance.Show(covenData);
                     else
-                        UIGlobalErrorPopup.ShowError(m_Instance.OnClickClose, error);
+                        UIGlobalPopup.ShowError(m_Instance.OnClickClose, error);
                 });
             }
         });
@@ -188,7 +188,7 @@ public class TeamManagerUI : MonoBehaviour
                             if (string.IsNullOrEmpty(error))
                                 m_Instance.Show(covenData);
                             else
-                                UIGlobalErrorPopup.ShowError(m_Instance.OnClickClose, error);
+                                UIGlobalPopup.ShowError(m_Instance.OnClickClose, error);
                         });
                     }
                     else //show the cached coven
@@ -206,7 +206,7 @@ public class TeamManagerUI : MonoBehaviour
                     if (string.IsNullOrEmpty(error))
                         m_Instance.Show(covenData);
                     else
-                        UIGlobalErrorPopup.ShowError(m_Instance.OnClickClose, error);
+                        UIGlobalPopup.ShowError(m_Instance.OnClickClose, error);
                 });
             }
         });
@@ -495,13 +495,13 @@ public class TeamManagerUI : MonoBehaviour
     {
         //reopen the UI
         if (m_CovenData == null)
-            UIGlobalErrorPopup.ShowPopUp(() => Open(null), LocalizeLookUp.GetText("coven_invite_join_success"));
+            UIGlobalPopup.ShowPopUp(() => Open(null), LocalizeLookUp.GetText("coven_invite_join_success"));
     }
     private void OnDisband()
     {
         //reopen the UI
         if (m_CovenData != null)
-            UIGlobalErrorPopup.ShowError(() => Open(null), LocalizeLookUp.GetText("coven_disbanded"));
+            UIGlobalPopup.ShowError(() => Open(null), LocalizeLookUp.GetText("coven_disbanded"));
     }
     private void OnInviteRemove(string id)
     {
@@ -545,7 +545,7 @@ public class TeamManagerUI : MonoBehaviour
     {
         if (name == PlayerDataManager.playerData.name)
         {
-            UIGlobalErrorPopup.ShowError(() => Open(null), LocalizeLookUp.GetText("coven_member_remove_success").Replace("{{name}}", name));
+            UIGlobalPopup.ShowError(() => Open(null), LocalizeLookUp.GetText("coven_member_remove_success").Replace("{{name}}", name));
             return;
         }
 
@@ -700,7 +700,7 @@ public class TeamManagerUI : MonoBehaviour
     
     private void OnClickLeave()
     {
-        UIGlobalErrorPopup.ShowPopUp(
+        UIGlobalPopup.ShowPopUp(
            confirmAction: () =>
            {
                LoadingOverlay.Show();
@@ -709,11 +709,11 @@ public class TeamManagerUI : MonoBehaviour
                    LoadingOverlay.Hide();
                    if (string.IsNullOrEmpty(error))
                    {
-                       UIGlobalErrorPopup.ShowPopUp(() => Show(null), LocalizeLookUp.GetText("coven_leave_success"));
+                       UIGlobalPopup.ShowPopUp(() => Show(null), LocalizeLookUp.GetText("coven_leave_success"));
                    }
                    else
                    {
-                       UIGlobalErrorPopup.ShowError(null, error);
+                       UIGlobalPopup.ShowError(null, error);
                    }
                });
            },
@@ -725,7 +725,7 @@ public class TeamManagerUI : MonoBehaviour
 
     private void OnClickDisband()
     {
-        UIGlobalErrorPopup.ShowPopUp(
+        UIGlobalPopup.ShowPopUp(
             confirmAction: () =>
             {
                 LoadingOverlay.Show();
@@ -733,11 +733,11 @@ public class TeamManagerUI : MonoBehaviour
                 {
                     if (result == 200)
                     {
-                        UIGlobalErrorPopup.ShowPopUp(() => Show(null), LocalizeLookUp.GetText("coven_disband_success"));
+                        UIGlobalPopup.ShowPopUp(() => Show(null), LocalizeLookUp.GetText("coven_disband_success"));
                     }
                     else
                     {
-                        UIGlobalErrorPopup.ShowError(null, APIManager.ParseError(response));
+                        UIGlobalPopup.ShowError(null, APIManager.ParseError(response));
                     }
                     LoadingOverlay.Hide();
                 });
@@ -752,11 +752,11 @@ public class TeamManagerUI : MonoBehaviour
     {
         if (PlayerDataManager.playerData.covenRequests.Exists(req => req.coven == m_CovenData.Id))
         {
-            UIGlobalErrorPopup.ShowError(null, LocalizeLookUp.GetText("coven_request_sent"));
+            UIGlobalPopup.ShowError(null, LocalizeLookUp.GetText("coven_request_sent"));
             return;
         }
 
-        UIGlobalErrorPopup.ShowPopUp(
+        UIGlobalPopup.ShowPopUp(
             confirmAction: () =>
             {
                 LoadingOverlay.Show();
@@ -765,11 +765,11 @@ public class TeamManagerUI : MonoBehaviour
                     LoadingOverlay.Hide();
                     if (string.IsNullOrEmpty(error))
                     {
-                        UIGlobalErrorPopup.ShowPopUp(null, LocalizeLookUp.GetText("coven_request_success"));
+                        UIGlobalPopup.ShowPopUp(null, LocalizeLookUp.GetText("coven_request_success"));
                     }
                     else
                     {
-                        UIGlobalErrorPopup.ShowError(null, error);
+                        UIGlobalPopup.ShowError(null, error);
                     }
                 });
             },
@@ -794,7 +794,7 @@ public class TeamManagerUI : MonoBehaviour
                     if (string.IsNullOrEmpty(error))
                     {
                         m_InputPopup.Close();
-                        UIGlobalErrorPopup.ShowPopUp(
+                        UIGlobalPopup.ShowPopUp(
                             () =>
                             {
                                 if (m_CurrentScreen == Screen.HOME)
@@ -1015,7 +1015,7 @@ public class TeamManagerUI : MonoBehaviour
                        {
                            m_InputPopup.Close();
                            //reopen the UI
-                           UIGlobalErrorPopup.ShowPopUp(() => SetScreen(Screen.INVITES), LocalizeLookUp.GetText("coven_invite_success"));
+                           UIGlobalPopup.ShowPopUp(() => SetScreen(Screen.INVITES), LocalizeLookUp.GetText("coven_invite_success"));
                        }
                        else
                        {

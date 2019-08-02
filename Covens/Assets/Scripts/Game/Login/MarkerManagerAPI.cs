@@ -137,7 +137,7 @@ public class MarkerManagerAPI : MonoBehaviour
         //go back to previous position and show error
         if (loadMap)
         {
-            UIGlobalErrorPopup.ShowError(null, LocalizeLookUp.GetText(APIManager.ParseError(result)));
+            UIGlobalPopup.ShowError(null, LocalizeLookUp.GetText(APIManager.ParseError(result)));
             MapsAPI.Instance.InitMap(
                PlayerDataManager.playerData.longitude,
                PlayerDataManager.playerData.latitude,

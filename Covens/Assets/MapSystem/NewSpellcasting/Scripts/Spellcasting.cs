@@ -247,7 +247,7 @@ public class Spellcasting
                     {
                         UIWaitingCastResult.Instance.Close();
                            onContinue?.Invoke(new Raincrow.GameEventResponses.SpellCastHandler.Result());
-                        UIGlobalErrorPopup.ShowError(null, APIManager.ParseError(response));
+                        UIGlobalPopup.ShowError(null, APIManager.ParseError(response));
                     }
                 }
             );

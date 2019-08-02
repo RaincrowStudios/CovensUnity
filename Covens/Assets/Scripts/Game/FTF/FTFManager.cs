@@ -1378,7 +1378,7 @@ public class FTFManager : MonoBehaviour
                 {
                     //LoginAPIManager.GetCharacter(null);
                     Debug.LogError("ftf failed\n" + result + ": " + response);
-                    UIGlobalErrorPopup.ShowError(() => Application.Quit(), "finishTutorial\n" + response);
+                    UIGlobalPopup.ShowError(() => Application.Quit(), "finishTutorial\n" + response);
                 }
             });
     }

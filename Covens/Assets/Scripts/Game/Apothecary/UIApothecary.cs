@@ -233,7 +233,7 @@ public class UIApothecary : MonoBehaviour
     {
         m_pConsumeButton.interactable = false;
 
-        UIGlobalErrorPopup.ShowPopUp(
+        UIGlobalPopup.ShowPopUp(
             confirmAction: (System.Action)(() =>
             {
                 var data = new { consumable = Items[m_pWheel.SelectedIndex].Consumable.id };
@@ -252,7 +252,7 @@ public class UIApothecary : MonoBehaviour
     {
         if (result == 200)
         {
-            UIGlobalErrorPopup.ShowPopUp(
+            UIGlobalPopup.ShowPopUp(
                 () => {
                     Items[m_pWheel.SelectedIndex].Consumable.count -= 1;
                     m_pConsumeText.text = LocalizeLookUp.GetText("consume_amount").Replace("{{Count}}", Items[m_pWheel.SelectedIndex].Consumable.count.ToString());// + ")";
@@ -263,7 +263,7 @@ public class UIApothecary : MonoBehaviour
         else
         {
             string sError = "code " + result;
-            UIGlobalErrorPopup.Error(sError);
+            UIGlobalPopup.Error(sError);
         }
 
         m_pConsumeButton.interactable = Items[m_pWheel.SelectedIndex].Consumable.count > 0;

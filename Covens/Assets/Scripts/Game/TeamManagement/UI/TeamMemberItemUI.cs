@@ -106,11 +106,10 @@ public class TeamMemberItemUI : MonoBehaviour
 
     private void OnClickKick()
     {
-        UIGlobalErrorPopup.ShowPopUp(
+        UIGlobalPopup.ShowPopUp(
             confirmAction: () =>
             {
                 LoadingOverlay.Show();
-                UIGlobalErrorPopup.Close();
 
                 TeamManager.KickMember(MemberData, (error) =>
                 {
@@ -118,7 +117,7 @@ public class TeamMemberItemUI : MonoBehaviour
                     if (string.IsNullOrEmpty(error))
                         m_OnKick?.Invoke(MemberData.Id);
                     else
-                        UIGlobalErrorPopup.ShowError(null, error);
+                        UIGlobalPopup.ShowError(null, error);
                 });
             },
             cancelAction: () => {},
@@ -135,11 +134,10 @@ public class TeamMemberItemUI : MonoBehaviour
         else
             roleName = LocalizeLookUp.GetText("team_member_member_role");
 
-        UIGlobalErrorPopup.ShowPopUp(
+        UIGlobalPopup.ShowPopUp(
             confirmAction: () =>
             {
                 LoadingOverlay.Show();
-                UIGlobalErrorPopup.Close();
 
                 TeamManager.DemoteMember(MemberData, (error) =>
                 {
@@ -147,7 +145,7 @@ public class TeamMemberItemUI : MonoBehaviour
                     if (string.IsNullOrEmpty(error))
                         m_OnDemote?.Invoke(MemberData.Id, role);
                     else
-                        UIGlobalErrorPopup.ShowError(null, error);
+                        UIGlobalPopup.ShowError(null, error);
                 });
             },
             cancelAction: () => {},
@@ -164,11 +162,10 @@ public class TeamMemberItemUI : MonoBehaviour
         else
             roleName = LocalizeLookUp.GetText("team_member_admin_role");
 
-        UIGlobalErrorPopup.ShowPopUp(
+        UIGlobalPopup.ShowPopUp(
             confirmAction: () =>
             {
                 LoadingOverlay.Show();
-                UIGlobalErrorPopup.Close();
 
                 TeamManager.PromoteMember(MemberData, (error) =>
                 {
@@ -176,7 +173,7 @@ public class TeamMemberItemUI : MonoBehaviour
                     if (string.IsNullOrEmpty(error))
                         m_OnPromote?.Invoke(MemberData.Id, role);
                     else
-                        UIGlobalErrorPopup.ShowError(null, error);
+                        UIGlobalPopup.ShowError(null, error);
                 });
             },
             cancelAction: () => {},
