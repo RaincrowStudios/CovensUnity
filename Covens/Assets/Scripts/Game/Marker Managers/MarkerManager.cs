@@ -23,7 +23,6 @@ public class MarkerManager : MonoBehaviour
     }
 
     public static Dictionary<string, List<IMarker>> Markers = new Dictionary<string, List<IMarker>>();
-    public static Dictionary<string, bool> StanceDict = new Dictionary<string, bool>();
     
     public static IMarker GetMarker(string instance)
     {

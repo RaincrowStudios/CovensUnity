@@ -55,22 +55,17 @@ namespace Raincrow.GameEventResponses
             SpellData spell = DownloadedAssets.GetSpell(data.spell);
             bool playerIsCaster = data.caster.id == player.instance;
             bool playerIsTarget = data.target.id == player.instance;
-
-            OnSpellCast?.Invoke(data.caster.id, data.target.id, spell, data.result);
-
-            if (playerIsTarget)
-            {
-                OnPlayerTargeted?.Invoke(data.caster.id, spell, data.result);
-            }
-
+                            
             IMarker caster = playerIsCaster ? PlayerManager.marker : MarkerManager.GetMarker(data.caster.id);
             IMarker target = playerIsTarget ? PlayerManager.marker : MarkerManager.GetMarker(data.target.id);
             int damage = data.result.damage;
             int casterNewEnergy = data.caster.energy;
             int targetNewEnergy = data.target.energy;
+            
+            OnSpellCast?.Invoke(data.caster.id, data.target.id, spell, data.result);
 
             SpellcastingTrailFX.SpawnTrail(spell.school, caster, target,
-                () =>
+                onStart: () =>
                 {
                     onTrailStart?.Invoke();
 
@@ -89,18 +84,25 @@ namespace Raincrow.GameEventResponses
                     {
                         SpellcastingFX.SpawnDamage(caster, -spell.cost);
                     }
+
+                    //localy remove the immunity so you may attack again
+                    if (playerIsTarget)
+                    {
+                        MarkerSpawner.RemoveImmunity(data.caster.id, data.target.id);
+                        if (caster != null && caster is WitchMarker)
+                            (caster as WitchMarker).RemoveImmunityFX();
+
+                        OnPlayerTargeted?.Invoke(data.caster.id, spell, data.result);
+                    }
                 },
-                () =>
+                onComplete: () =>
                 {
                     onTrailEnd?.Invoke();
 
                     //trigger a map_energy_change event for the target
                     LeanTween.value(0, 0, 0.25f).setOnComplete(() => OnMapEnergyChange.ForceEvent(target, targetNewEnergy, data.timestamp));
-
-                    //add the immunity
-                    if (data.immunity)
-                        MarkerSpawner.AddImmunity(data.caster.id, data.target.id);
-
+                    
+                    //add status effects to PlayerDataManager.playerData
                     if (string.IsNullOrEmpty(data.result.statusEffect.spell) == false)
                     {
                         OnApplyStatusEffect?.Invoke(data.target.id, data.result.statusEffect);
@@ -120,14 +122,20 @@ namespace Raincrow.GameEventResponses
                         }
                     }
 
+                    //add the immunity if the server said so
+                    if (data.immunity && !playerIsTarget) 
+                    {
+                        MarkerSpawner.AddImmunity(data.caster.id, data.target.id);
+                        if (target != null && target is WitchMarker)
+                            (target as WitchMarker).AddImmunityFX();
+                    }
+
                     if (target != null)
                     {
-                        //add immunity fx
-                        if (data.immunity && target is WitchMarker)
-                            (target as WitchMarker).AddImmunityFX();
-
                         if (data.result.isSuccess)
                         {
+                            Debug.LogError("todo: move spell specific behavior to its own classes");
+
                             if (playerIsTarget)
                             {
                                 if (data.spell == "spell_banish")
@@ -168,9 +176,9 @@ namespace Raincrow.GameEventResponses
                         }
                     }
 
+                    //screen shake
                     if (playerIsTarget || playerIsCaster)
                     {
-                        //shake slightly if being healed
                         if (damage > 0) //healed
                         {
                             MapCameraUtils.ShakeCamera(
@@ -180,7 +188,6 @@ namespace Raincrow.GameEventResponses
                                 2f
                             );
                         }
-                        //shake more if taking damage
                         else if (damage < 0) //dealt damage
                         {
                             MapCameraUtils.ShakeCamera(
@@ -191,22 +198,35 @@ namespace Raincrow.GameEventResponses
                             );
                         }
                     }
+
+                    //show notification
                     if (playerIsTarget && !playerIsCaster)
                     {
-                        if (caster is WitchMarker)
+                        if (caster != null && target != null)
                         {
-                            (caster as WitchMarker).GetPortrait(spr =>
+                            if (caster is WitchMarker)
                             {
-                                PlayerNotificationManager.Instance.ShowNotification(SpellcastingTextFeedback.CreateSpellFeedback(caster, target, data), spr);
-                            });
-                        }
-                        else if (caster is SpiritMarker)
-                        {
-                            PlayerNotificationManager.Instance.ShowNotification(SpellcastingTextFeedback.CreateSpellFeedback(caster, target, data));
+                                (caster as WitchMarker).GetPortrait(spr =>
+                                {
+                                    PlayerNotificationManager.Instance.ShowNotification(SpellcastingTextFeedback.CreateSpellFeedback(caster, target, data), spr);
+                                });
+                            }
+                            else if (caster is SpiritMarker)
+                            {
+
+                                PlayerNotificationManager.Instance.ShowNotification(SpellcastingTextFeedback.CreateSpellFeedback(caster, target, data));
+                            }
+                            else
+                            {
+                                Debug.LogError("something went wrong");
+                            }
                         }
                         else
                         {
-                            Debug.LogError("something went wrong");
+                            MarkerSpawner.MarkerType casterType = data.caster.Type;
+                            MarkerSpawner.MarkerType targetType = data.target.Type;
+                            string msg = "todo: generic attack notification";
+                            PlayerNotificationManager.Instance.ShowNotification(msg);
                         }
                     }
                 });

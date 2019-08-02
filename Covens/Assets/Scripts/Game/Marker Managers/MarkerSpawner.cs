@@ -400,10 +400,10 @@ public class MarkerSpawner : MarkerManager
 
     public static void RemoveImmunity(string caster, string target)
     {
-        if (caster == PlayerDataManager.playerData.instance)
+        if (target == PlayerDataManager.playerData.instance)
         {
-            if (PlayerDataManager.playerData.immunities.Contains(target))
-                PlayerDataManager.playerData.immunities.Remove(target);
+            if (PlayerDataManager.playerData.immunities.Contains(caster))
+                PlayerDataManager.playerData.immunities.Remove(caster);
         }
         else
         {

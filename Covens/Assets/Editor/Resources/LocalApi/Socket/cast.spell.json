@@ -1,0 +1,31 @@
+{
+  "target": {
+    "id": "5d43269a280ac2321c1230c6",
+    "energy": 9648,
+    "type": "character"
+  },
+  "caster": {
+    "id": "5d434674e613e70d24238189",
+    "energy": 6846,
+    "type": "character"
+  },
+  "spell": "spell_hex",
+  "result": {
+    "damage": -15,
+    "isCritical": false,
+    "isSuccess": true,
+    "appliedEffect": {
+      "spell": "spell_hex",
+      "duration": 60,
+      "buff": false,
+      "modifiers": {
+        "beCrit": 0
+      },
+      "stack": 1,
+      "stackable": 3,
+      "expiresOn": 1564746903513
+    }
+  },
+  "immunity": true,
+  "timestamp": 1564746843527
+}

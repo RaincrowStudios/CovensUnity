@@ -232,12 +232,10 @@ public class WitchMarker : MuskMarker
         if (m_ImmunityIcon == null)
         {
             m_ImmunityIcon = SpellcastingFX.ImmunityIconPool.Spawn();
-            LeanTween.alpha(m_ImmunityIcon.GetChild(0).gameObject, 0f, 0.01f);
             m_ImmunityIcon.SetParent(characterTransform);
             m_ImmunityIcon.localPosition = new Vector3(0, 0, -0.5f);
             m_ImmunityIcon.localScale = Vector3.one;
             m_ImmunityIcon.localRotation = Quaternion.identity;
-            LeanTween.alpha(m_ImmunityIcon.GetChild(0).gameObject, 1f, 0.5f);
             UpdateRenderers();
         }
         UpdateCharacterAlphaMul();
@@ -270,19 +268,20 @@ public class WitchMarker : MuskMarker
         }
 
         SpellcastingFX.ImmunityIconPool.Despawn(m_ImmunityIcon);
+        m_ImmunityIcon = null;
+
         UpdateRenderers();
         UpdateCharacterAlphaMul();
     }
 
     public void RemoveDeathFX()
     {
-        if (m_DeathIcon == null)
+        if (m_DeathIcon != null)
         {
-            UpdateCharacterAlphaMul();
+            SpellcastingFX.DeathIconPool.Despawn(m_DeathIcon);
             return;
         }
 
-        SpellcastingFX.DeathIconPool.Despawn(m_DeathIcon);
         UpdateRenderers();
         UpdateCharacterAlphaMul();
     }
