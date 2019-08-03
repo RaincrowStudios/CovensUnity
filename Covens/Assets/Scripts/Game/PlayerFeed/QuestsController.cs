@@ -5,7 +5,7 @@ using UnityEngine.UI;
 
 public static class QuestsController
 {
-    public struct CovenDaily
+    public class CovenDaily
     {
         public struct Spellcraft
         {
