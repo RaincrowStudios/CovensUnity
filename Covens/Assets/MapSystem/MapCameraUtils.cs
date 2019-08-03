@@ -51,11 +51,11 @@ public class MapCameraUtils : MonoBehaviour
         if (marker == null)
             return;
 
-        if (marker.gameObject == null)
+        if (marker.GameObject == null)
             return;
 
         FocusOnPosition(
-            marker.gameObject.transform.position + m_Instance.m_Controller.CenterPoint.forward * 10.5f,
+            marker.GameObject.transform.position + m_Instance.m_Controller.CenterPoint.forward * 10.5f,
             1f,
             false,
             time

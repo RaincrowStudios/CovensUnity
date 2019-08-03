@@ -45,7 +45,7 @@ namespace Raincrow.GameEventResponses
             if (marker == null)
                 return;
             
-            Transform fx = SpellcastingFX.m_TickFxPool.Spawn(marker.characterTransform, 3f);
+            Transform fx = SpellcastingFX.m_TickFxPool.Spawn(marker.AvatarTransform, 3f);
             fx.localScale = Vector3.one;
             fx.localRotation = Quaternion.identity;
             fx.localPosition = Vector3.zero;

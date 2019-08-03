@@ -156,7 +156,7 @@ namespace Raincrow.GameEventResponses
                                 //spawn the banish fx and remove the marker
                                 if (data.spell == "spell_banish")
                                 {
-                                    target.interactable = false;
+                                    target.Interactable = false;
                                     SpellcastingFX.SpawnBanish(target, 0);
                                     //make sure marker is removed in case the server doesnt send the map_token_remove
                                     RemoveTokenHandler.ForceEvent(data.target.id);

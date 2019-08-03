@@ -12,7 +12,7 @@ public class LocationMarker : MuskMarker
     [SerializeField] private Transform m_IconTransform;
     [SerializeField] private Transform m_particleSystem;
 
-    public override Transform characterTransform
+    public override Transform AvatarTransform
     {
         get
         {

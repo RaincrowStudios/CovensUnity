@@ -17,15 +17,15 @@ namespace Raincrow.DynamicPlacesOfPower
         {
             LocalPosition = LerpPosition = Vector3.zero;
             Marker = marker;
-            marker.gameObject.transform.position = this.transform.position;
-            marker.gameObject.transform.SetParent(this.transform);
+            marker.GameObject.transform.position = this.transform.position;
+            marker.GameObject.transform.SetParent(this.transform);
             FaceCamera(camera);
         }
 
         public void FaceCamera(Camera camera)
         {
             if (Marker != null && !Marker.isNull)
-                Marker.characterTransform.rotation = camera.transform.rotation;
+                Marker.AvatarTransform.rotation = camera.transform.rotation;
         }
     }
 }

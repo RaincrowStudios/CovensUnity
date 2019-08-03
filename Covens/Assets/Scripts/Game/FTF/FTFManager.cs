@@ -315,7 +315,7 @@ public class FTFManager : MonoBehaviour
             //StopRotation();
             //StartCoroutine (FadeOutFocus (highlight1));
 
-            Transform trans = PlayerManager.marker.gameObject.transform;
+            Transform trans = PlayerManager.marker.GameObject.transform;
             wildBarghestInstance = Utilities.InstantiateObject(wildBarghest, trans, 0);
             PlayFTFSound(barghestHowl);
             wildBarghestInstance.transform.Translate(new Vector3((trans.position.x - 70f), trans.position.y, (trans.position.z + 70f)));
@@ -450,7 +450,7 @@ public class FTFManager : MonoBehaviour
                 energy2.text = LocalizeLookUp.GetText(LocalizationManager.lt_energy) + " <color=black>" + f.ToString();
             });
             StartCoroutine(BarghestWildDefeat());
-            moveCamera(PlayerManager.marker.gameObject.transform.position, 2f);
+            moveCamera(PlayerManager.marker.GameObject.transform.position, 2f);
             yield return new WaitForSeconds(1f);
             //StartRotation();
             SpiritDiscoveredBarghest.SetActive(true);
@@ -527,7 +527,7 @@ public class FTFManager : MonoBehaviour
             gypsyHandInstance.position = pointerArray[4].position;
 
             //SummoningManager.Instance.Close ();
-            Transform trans = PlayerManager.marker.gameObject.transform;
+            Transform trans = PlayerManager.marker.GameObject.transform;
             ownedBarghestInstance = Utilities.InstantiateObject(ownedBarghest, trans);
             ownedBarghestInstance.transform.Translate(new Vector3((trans.position.x - 56f), trans.position.y, (trans.position.z - 56f)));
             moveCamera(ownedBarghestInstance.transform.position, 2f);
@@ -557,7 +557,7 @@ public class FTFManager : MonoBehaviour
             //      Debug.Log(dialogueText.text);
             //brigidPrefab.SetActive (true);
             //continueButton.SetActive(false);
-            Transform trans = PlayerManager.marker.gameObject.transform;
+            Transform trans = PlayerManager.marker.GameObject.transform;
             Vector3 brigPos = new Vector3((trans.position.x + 30f), (trans.position.y + 20f), (trans.position.z - 10f));
 
             //moveCamera(brigPos, 2f);
@@ -718,7 +718,7 @@ public class FTFManager : MonoBehaviour
         }
         else if (curIndex == 25)
         {
-            Transform trans = PlayerManager.marker.gameObject.transform;
+            Transform trans = PlayerManager.marker.GameObject.transform;
             Vector3 brigPos = new Vector3((trans.position.x + 52f), trans.position.y, (trans.position.z - 10f));
             //moveCamera(new Vector3((brigPos.x - 40), brigPos.y + 10, brigPos.z + 20), 2f);
             MapCameraUtils.FocusOnTargetCenter(PlayerManager.marker, 2f);
@@ -755,7 +755,7 @@ public class FTFManager : MonoBehaviour
             // not dialogue on this one
             StartCoroutine(FadeOutFocus(dialogueCG));
             StartCoroutine(FadeOutFocus(brigidCG));
-            var temp = Instantiate(silenceGlyph, PlayerManager.marker.gameObject.transform);
+            var temp = Instantiate(silenceGlyph, PlayerManager.marker.GameObject.transform);
             temp.transform.Translate(new Vector3(temp.transform.position.x, temp.transform.position.y + 50f, temp.transform.position.z));
             Destroy(temp, 3.5f);
             yield return new WaitForSeconds(2.5f);
@@ -801,7 +801,7 @@ public class FTFManager : MonoBehaviour
             //no dialogue on this one
             StartCoroutine(FadeOutFocus(brigidCG));
             StartCoroutine(FadeOutFocus(dialogueCG));
-            var temp = Instantiate(dispelGlyph, PlayerManager.marker.gameObject.transform);
+            var temp = Instantiate(dispelGlyph, PlayerManager.marker.GameObject.transform);
             temp.transform.GetChild(0).GetChild(5).GetComponent<TextMeshProUGUI>().text = LocalizeLookUp.GetSpellName("spell_dispel");
             Destroy(temp, 3.5f);
             temp.transform.Translate(new Vector3(temp.transform.position.x, temp.transform.position.y + 50f, temp.transform.position.z));
@@ -825,7 +825,7 @@ public class FTFManager : MonoBehaviour
         {
             continueButton.SetActive(false);
             StartCoroutine(FadeOutFocus(savannahCG));
-            moveCamera(PlayerManager.marker.gameObject.transform.position, 1f);
+            moveCamera(PlayerManager.marker.GameObject.transform.position, 1f);
             //rotSpeed = 50;
             //StartRotation();
             brigidPrefabAnim.SetBool("fade", true);
@@ -892,7 +892,7 @@ public class FTFManager : MonoBehaviour
         else if (curIndex == 36)
         {
             continueButton.SetActive(false);
-            ownedBarghestInstance.transform.GetChild(3).position = PlayerManager.marker.gameObject.transform.position;
+            ownedBarghestInstance.transform.GetChild(3).position = PlayerManager.marker.GameObject.transform.position;
             ownedBarghestInstance.transform.GetChild(3).gameObject.SetActive(true);
             zoomCamera(-250f, 5f);
             MapCameraUtils.SetRotation(180f, 5f, true, () => { });
@@ -925,7 +925,7 @@ public class FTFManager : MonoBehaviour
         {
             //StartRotation();
             StartCoroutine(DestroyMirrors());
-            var td = Instantiate(twilightDusk, PlayerManager.marker.gameObject.transform);
+            var td = Instantiate(twilightDusk, PlayerManager.marker.GameObject.transform);
             Destroy(td, 5f);
             //slide savannah out here, or do it somewhere in the coroutine
             StartCoroutine(FadeOutFocus(savannahCG));
@@ -961,7 +961,7 @@ public class FTFManager : MonoBehaviour
             Blessing bs = new Blessing();
             bs.daily = PlayerDataManager.playerData.baseEnergy;
             PlayerDataManager.playerData.blessing = bs;
-            var bless = Instantiate(blessingParticle, PlayerManager.marker.gameObject.transform);
+            var bless = Instantiate(blessingParticle, PlayerManager.marker.GameObject.transform);
             Destroy(bless, 3f);
             yield return new WaitForSeconds(3f);
             PlayerManagerUI.Instance.ShowBlessing();
@@ -1206,7 +1206,7 @@ public class FTFManager : MonoBehaviour
 
     IEnumerator SpawnMirrors()
     {
-        mirrorsInstance = Utilities.InstantiateObject(mirrors, PlayerManager.marker.gameObject.transform);
+        mirrorsInstance = Utilities.InstantiateObject(mirrors, PlayerManager.marker.GameObject.transform);
         var mT = mirrorsInstance.transform;
         var mPrefab = mT.GetChild(0).gameObject;
         for (int i = 0; i < 12; i++)

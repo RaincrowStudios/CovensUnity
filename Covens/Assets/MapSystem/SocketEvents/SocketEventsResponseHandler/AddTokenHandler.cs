@@ -39,7 +39,7 @@ namespace Raincrow.GameEventResponses
 
             if (isNew)
             {
-                marker.gameObject.SetActive(false);
+                marker.GameObject.SetActive(false);
                 marker.SetAlpha(0);
             }
 

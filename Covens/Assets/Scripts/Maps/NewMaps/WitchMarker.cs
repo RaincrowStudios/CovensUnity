@@ -21,13 +21,13 @@ public class WitchMarker : MuskMarker
     [SerializeField] private double m_latitude;
     [SerializeField] private double m_longitude;
 
-    public WitchToken witchToken { get => m_Data as WitchToken; }
+    public WitchToken witchToken { get => Token as WitchToken; }
 
     private int m_TweenId;
     private Transform m_DeathIcon;
     private Transform m_ImmunityIcon;
 
-    public override Transform characterTransform
+    public override Transform AvatarTransform
     {
         get
         {
@@ -69,7 +69,7 @@ public class WitchMarker : MuskMarker
         m_DisplayName.text = witchToken.displayName;
         SetStats();
         UpdateNameplate(m_DisplayName.preferredWidth);
-        SetRingAmount();
+        SetRingColor();
         UpdateEnergy();
 
         //set immunity icon
@@ -179,18 +179,17 @@ public class WitchMarker : MuskMarker
         });
     }
 
-    public void SetRingAmount()
+    public void SetRingColor()
     {
-        Color color;
         if (witchToken.degree < 0)
-            color = Utilities.Purple;
+            m_SchoolColor = Utilities.Purple;
         else if (witchToken.degree == 0)
-            color = Utilities.Blue;
+            m_SchoolColor = Utilities.Blue;
         else
-            color = new Color(0.97f, 0.67f, 0.18f, 1f);// Utilities.Orange;
+            m_SchoolColor = new Color(0.97f, 0.67f, 0.18f, 1f);// Utilities.Orange;
 
-        color.a = m_EnergyRing.color.a;
-        m_EnergyRing.color = color;
+        m_SchoolColor.a = m_EnergyRing.color.a;
+        m_EnergyRing.color = m_SchoolColor;
     }
 
     public override void OnDespawn()
@@ -232,7 +231,7 @@ public class WitchMarker : MuskMarker
         if (m_ImmunityIcon == null)
         {
             m_ImmunityIcon = SpellcastingFX.ImmunityIconPool.Spawn();
-            m_ImmunityIcon.SetParent(characterTransform);
+            m_ImmunityIcon.SetParent(AvatarTransform);
             m_ImmunityIcon.localPosition = new Vector3(0, 0, -0.5f);
             m_ImmunityIcon.localScale = Vector3.one;
             m_ImmunityIcon.localRotation = Quaternion.identity;
@@ -250,7 +249,7 @@ public class WitchMarker : MuskMarker
         }
 
         m_DeathIcon = SpellcastingFX.DeathIconPool.Spawn();
-        m_DeathIcon.SetParent(characterTransform);
+        m_DeathIcon.SetParent(AvatarTransform);
         m_DeathIcon.localPosition = new Vector3(0, 0, -0.5f);
         m_DeathIcon.localScale = Vector3.one;
         m_DeathIcon.localRotation = Quaternion.identity;
@@ -288,7 +287,7 @@ public class WitchMarker : MuskMarker
 
     private void UpdateCharacterAlphaMul()
     {
-        if (m_Data == null)
+        if (Token == null)
             return;
 
         float prevValue = m_CharacterAlphaMul;
@@ -301,7 +300,7 @@ public class WitchMarker : MuskMarker
             m_CharacterAlphaMul = 1f;
         
         if (m_CharacterAlphaMul != prevValue)
-            SetCharacterAlpha(characterAlpha, 1f);
+            SetCharacterAlpha(AvatarAlpha, 1f);
     }
     
 #if UNITY_EDITOR

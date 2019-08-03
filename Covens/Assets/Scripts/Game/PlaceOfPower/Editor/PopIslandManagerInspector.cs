@@ -70,17 +70,17 @@ namespace Raincrow.DynamicPlacesOfPower
             
             SpiritMarker guardian = GameObject.Instantiate(islandManager.m_DebugGuardian);
             guardian.transform.gameObject.SetActive(true);
-            guardian.m_Data = new SpiritToken
-            {
+            //guardian.m_Data = new SpiritToken
+            //{
 
-            };
+            //};
 
             List<IMarker> witches = new List<IMarker>();
             for (int i = 0; i < islandManager.m_DebugWitchesAmount; i++)
             {
                 WitchMarker witch = GameObject.Instantiate(islandManager.m_DebugWitch);
                 witch.transform.gameObject.SetActive(true);
-                witch.m_Data = new WitchToken();
+                //witch.m_Data = new WitchToken();
                 if (islandManager.m_DebugCovensAmount > 0)
                 {
                     witch.witchToken.coven = Random.Range(0, 2) == 0 ? "coven" + Random.Range(0, islandManager.m_DebugCovensAmount) : "";
@@ -95,7 +95,7 @@ namespace Raincrow.DynamicPlacesOfPower
         {
             PopIslandManager islandManager = this.target as PopIslandManager;
             WitchMarker witch = GameObject.Instantiate(islandManager.m_DebugWitch);
-            witch.m_Data = new WitchToken();
+            //witch.m_Data = new WitchToken();
             witch.transform.gameObject.SetActive(true);
             islandManager.AddWitch(witch);
             islandManager.UpdateIslands();
@@ -105,7 +105,7 @@ namespace Raincrow.DynamicPlacesOfPower
         {
             PopIslandManager islandManager = this.target as PopIslandManager;
             WitchMarker witch = GameObject.Instantiate(islandManager.m_DebugWitch);
-            witch.m_Data = new WitchToken();
+            //witch.m_Data = new WitchToken();
             if (islandManager.m_DebugCovensAmount == 0)
                 islandManager.m_DebugCovensAmount = 1;
             witch.witchToken.coven = "coven" + Random.Range(0, islandManager.m_DebugCovensAmount);

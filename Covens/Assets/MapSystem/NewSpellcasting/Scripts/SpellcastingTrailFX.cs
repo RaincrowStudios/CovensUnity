@@ -31,7 +31,7 @@ public class SpellcastingTrailFX : MonoBehaviour
         else
         {
             LeanTween.value(0, 0, 0.15f).setOnComplete(onStart);
-            SpawnTrail(degree, caster.characterTransform, target.characterTransform, onComplete);
+            SpawnTrail(degree, caster.AvatarTransform, target.AvatarTransform, onComplete);
         }
     }
 

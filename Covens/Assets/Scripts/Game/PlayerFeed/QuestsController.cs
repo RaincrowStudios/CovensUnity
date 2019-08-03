@@ -129,6 +129,12 @@ public static class QuestsController
 
     public static void GetQuests(System.Action<string> callback)
     {
+        if (PlayerDataManager.playerData.quest.daily == null)
+        {
+            callback?.Invoke("no_dailies");
+            return;
+        }
+
         System.TimeSpan timeRemaing = Utilities.TimespanFromJavaTime(PlayerDataManager.playerData.quest.daily.endDate);
         if (timeRemaing.TotalSeconds > 0)
         {

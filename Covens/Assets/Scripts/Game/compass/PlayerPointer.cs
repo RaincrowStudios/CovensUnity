@@ -25,7 +25,7 @@ public class PlayerPointer : MonoBehaviour
     // Update is called once per frame
     void UpdateRotation()
     {
-        var marker = PlayerManager.marker.gameObject.transform;
+        var marker = PlayerManager.marker.GameObject.transform;
         var m_Distance = Vector2.Distance(
                    new Vector2(centerPointTransform.position.x, centerPointTransform.position.z), new Vector2(marker.position.x, marker.position.z));
 

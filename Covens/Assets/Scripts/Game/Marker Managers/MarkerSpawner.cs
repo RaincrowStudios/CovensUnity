@@ -103,7 +103,7 @@ public class MarkerSpawner : MarkerManager
         {
             //Debug.Log("<color=magenta>despawning " + entry.Item2.gameObject.name + "</color>");
             entry.Item2.OnDespawn();
-            entry.Item1.Despawn(entry.Item2.gameObject.transform);
+            entry.Item1.Despawn(entry.Item2.GameObject.transform);
         }
         m_ToDespawn.Clear();
 
@@ -125,8 +125,7 @@ public class MarkerSpawner : MarkerManager
         {
             foreach (var item in Markers[Data.instance])
             {
-                item.coords = new Vector2(Data.longitude, Data.latitude);
-                item.customData = Data;
+                item.Coords = new Vector2(Data.longitude, Data.latitude);
                 item.Setup(Data);
                 UpdateMarker(item);
             }
@@ -168,8 +167,7 @@ public class MarkerSpawner : MarkerManager
 
         var pos = new Vector2(Data.longitude, Data.latitude);
         IMarker marker = MapsAPI.Instance.AddMarker(pos, go);
-        marker.gameObject.SetActive(false);
-        marker.customData = Data;
+        marker.GameObject.SetActive(false);
         marker.Setup(Data);
         marker.OnClick += onClickMarker;
 
@@ -186,21 +184,21 @@ public class MarkerSpawner : MarkerManager
         {
             IMarker marker = Markers[ID][0];
             marker.inMapView = false;
-            marker.interactable = false;
+            marker.Interactable = false;
 
             //remove from dictionary
             Markers.Remove(ID);
 
             //despawn
-            if (marker.type == MarkerType.WITCH)
+            if (marker.Type == MarkerType.WITCH)
                 Instance.m_ToDespawn.Add((m_WitchPool, marker));
-            else if (marker.type == MarkerType.SPIRIT)
+            else if (marker.Type == MarkerType.SPIRIT)
                 Instance.m_ToDespawn.Add((m_SpiritPool, marker));
-            else if (marker.type == MarkerType.HERB)
+            else if (marker.Type == MarkerType.HERB)
                 Instance.m_ToDespawn.Add((m_HerbPool, marker));
-            else if (marker.type == MarkerType.GEM)
+            else if (marker.Type == MarkerType.GEM)
                 Instance.m_ToDespawn.Add((m_GemPool, marker));
-            else if (marker.type == MarkerType.TOOL)
+            else if (marker.Type == MarkerType.TOOL)
                 Instance.m_ToDespawn.Add((m_ToolPool, marker));
 
             if (Instance.m_DespawnTimer < despawnDelay)
@@ -220,7 +218,7 @@ public class MarkerSpawner : MarkerManager
             marker.Setup(data);
 
             //todo: setup stance (friend/enemy/coven)
-            SetupStance(marker.gameObject.transform, data);
+            SetupStance(marker.GameObject.transform, data);
         }
     }
 
@@ -234,8 +232,8 @@ public class MarkerSpawner : MarkerManager
             return;
         }
 
-        var Data = m.customData as Token;
-        SelectedMarker3DT = m.gameObject.transform;
+        var Data = m.Token;
+        SelectedMarker3DT = m.GameObject.transform;
         instanceID = Data.instance;
         selectedType = Data.Type;
 
@@ -315,13 +313,13 @@ public class MarkerSpawner : MarkerManager
     {
         if (code == 200)
         {
-            switch (marker.type)
+            switch (marker.Type)
             {
                 case MarkerType.WITCH:
                     FirstTapVideoManager.Instance.CheckSpellCasting();
 
                     SelectWitchData_Map witch = JsonConvert.DeserializeObject<SelectWitchData_Map>(response);
-                    witch.token = marker.token as WitchToken;
+                    witch.token = marker.Token as WitchToken;
 
                     if (UIPlayerInfo.isShowing && UIPlayerInfo.Instance.Witch.instance == instance)
                         UIPlayerInfo.Instance.SetupDetails(witch);
@@ -330,7 +328,7 @@ public class MarkerSpawner : MarkerManager
                 case MarkerType.SPIRIT:
                     FirstTapVideoManager.Instance.CheckSpellCasting();
                     SelectSpiritData_Map spirit = JsonConvert.DeserializeObject<SelectSpiritData_Map>(response);
-                    spirit.token = marker.token as SpiritToken;
+                    spirit.token = marker.Token as SpiritToken;
 
                     if (UISpiritInfo.isOpen && UISpiritInfo.Instance.Spirit.instance == instance)
                         UISpiritInfo.Instance.SetupDetails(spirit);
@@ -342,13 +340,13 @@ public class MarkerSpawner : MarkerManager
 
 
                 default:
-                    Debug.LogError("Token selection not implemented for " + marker.type);
+                    Debug.LogError("Token selection not implemented for " + marker.Type);
                     break;
             }
         }
         else
         {
-            switch (marker.type)
+            switch (marker.Type)
             {
                 case MarkerType.WITCH:
                     if (UIPlayerInfo.isShowing && UIPlayerInfo.Instance.Witch.instance == instance)
@@ -365,7 +363,7 @@ public class MarkerSpawner : MarkerManager
                     break;
 
                 default:
-                    Debug.LogError("Token selection not implemented for " + marker.type);
+                    Debug.LogError("Token selection not implemented for " + marker.Type);
                     break;
             }
         }
@@ -441,17 +439,17 @@ public class MarkerSpawner : MarkerManager
     {
         if (PlayerManager.marker != null)
         {
-            PlayerManager.marker.gameObject.SetActive(m_StreetLevel);
+            PlayerManager.marker.GameObject.SetActive(m_StreetLevel);
             //  Debug.Log("setting playerMarker");
-            PlayerManager.marker.gameObject.transform.localScale = new Vector3(m_MarkerScale, m_MarkerScale, m_MarkerScale);
-            PlayerManager.marker.characterTransform.rotation = MapsAPI.Instance.camera.transform.rotation;
+            PlayerManager.marker.GameObject.transform.localScale = new Vector3(m_MarkerScale, m_MarkerScale, m_MarkerScale);
+            PlayerManager.marker.AvatarTransform.rotation = MapsAPI.Instance.camera.transform.rotation;
         }
 
         if (m_Highlighting)
         {
             foreach (IMarker _marker in m_HighlightedMarkers)
             {
-                if (_marker != null && _marker.gameObject != null && _marker != PlayerManager.marker)
+                if (_marker != null && _marker.GameObject != null && _marker != PlayerManager.marker)
                     UpdateMarker(_marker);
             }
         }
@@ -472,7 +470,7 @@ public class MarkerSpawner : MarkerManager
 
     public static void UpdateMarker(IMarker marker, bool portraitMode, bool streetLevel, float scale)
     {
-        if (streetLevel && MapsAPI.Instance.IsPointInsideView(marker.gameObject.transform.position))
+        if (streetLevel && MapsAPI.Instance.IsPointInsideView(marker.GameObject.transform.position))
         {
             if (portraitMode)
                 marker.EnablePortait();
@@ -483,7 +481,7 @@ public class MarkerSpawner : MarkerManager
             {
                 marker.SetAlpha(0);
                 marker.SetAlpha(1, 1f);
-                marker.gameObject.SetActive(true);
+                marker.GameObject.SetActive(true);
                 marker.inMapView = true;
             }
             UpdateMarker(marker, scale);
@@ -491,14 +489,14 @@ public class MarkerSpawner : MarkerManager
         else if (marker.inMapView)
         {
             marker.inMapView = false;
-            marker.SetAlpha(0, 1f, () => marker.gameObject.SetActive(false));
+            marker.SetAlpha(0, 1f, () => marker.GameObject.SetActive(false));
         }
     }
 
     public static void UpdateMarker(IMarker marker, float scale)
     {
-        marker.gameObject.transform.localScale = new Vector3(scale, scale, scale);
-        marker.characterTransform.rotation = MapsAPI.Instance.camera.transform.rotation;
+        marker.GameObject.transform.localScale = new Vector3(scale, scale, scale);
+        marker.AvatarTransform.rotation = MapsAPI.Instance.camera.transform.rotation;
     }
 
     private static bool m_Highlighting = false;
@@ -540,7 +538,7 @@ public class MarkerSpawner : MarkerManager
                 marker.inMapView = false; //so it wont be detected by MarkerSpawner.HighlightMarker
                 marker.SetAlpha(0, time, () =>
                 {
-                    marker.gameObject.SetActive(false);
+                    marker.GameObject.SetActive(false);
                 });
             }
         }

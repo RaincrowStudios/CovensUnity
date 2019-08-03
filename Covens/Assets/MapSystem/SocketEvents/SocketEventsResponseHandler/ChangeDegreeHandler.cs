@@ -35,11 +35,11 @@ namespace Raincrow.GameEventResponses
                 WitchMarker marker = MarkerManager.GetMarker(data.instance) as WitchMarker;
                 if (marker != null)
                 {
-                    WitchToken token = marker.customData as WitchToken;
+                    WitchToken token = marker.witchToken;
                     if (token != null)
                     {
                         token.degree = data.degree;
-                        marker.SetRingAmount();
+                        marker.SetRingColor();
                     }
                 }
             }

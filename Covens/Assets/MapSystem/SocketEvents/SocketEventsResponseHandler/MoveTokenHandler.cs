@@ -33,10 +33,10 @@ namespace Raincrow.GameEventResponses
                 IMarker marker = MarkerSpawner.GetMarker(data.instance);
 
                 if (marker == null)
-                    marker.coords = new Vector2(data.longitude, data.latitude);
+                    marker.Coords = new Vector2(data.longitude, data.latitude);
 
                 Vector3 targetPos = MapsAPI.Instance.GetWorldPosition(data.longitude, data.latitude);
-                double distance = MapsAPI.Instance.DistanceBetweenPointsD(PlayerManager.marker.coords, new Vector2(data.longitude, data.latitude));
+                double distance = MapsAPI.Instance.DistanceBetweenPointsD(PlayerManager.marker.Coords, new Vector2(data.longitude, data.latitude));
 
                 //triger the move events
                 if (distance < PlayerDataManager.DisplayRadius)
@@ -54,10 +54,10 @@ namespace Raincrow.GameEventResponses
                     //animate it 
                     if (marker.inMapView)
                     {
-                        marker.interactable = false;
+                        marker.Interactable = false;
 
-                        Vector3 direction = (targetPos - marker.gameObject.transform.position).normalized * 100;
-                        targetPos = marker.gameObject.transform.position + direction;
+                        Vector3 direction = (targetPos - marker.GameObject.transform.position).normalized * 100;
+                        targetPos = marker.GameObject.transform.position + direction;
 
                         marker.SetWorldPosition(targetPos, 2f);
                         marker.SetAlpha(0, 1);

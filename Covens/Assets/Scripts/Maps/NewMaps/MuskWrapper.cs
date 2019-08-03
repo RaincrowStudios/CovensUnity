@@ -87,9 +87,9 @@ namespace Raincrow.Maps
             if (marker == null)
                 marker = markerObj.AddComponent<MuskMarker>();
             
-            marker.coords = position;
+            marker.Coords = position;
             marker.transform.position = MapsAPI.Instance.GetWorldPosition(position.x, position.y);
-            marker.interactable = true;
+            marker.Interactable = true;
 
             m_Markers.Add(marker);
 
@@ -290,7 +290,7 @@ namespace Raincrow.Maps
                 return;
 
             //the player was in spirit form
-            if (MapsAPI.Instance.DistanceBetweenPointsD(PlayerManager.marker.coords, m_LastGPS) > 0.05f)
+            if (MapsAPI.Instance.DistanceBetweenPointsD(PlayerManager.marker.Coords, m_LastGPS) > 0.05f)
             {
                 m_LastGPS = physPosition;
                 return;
@@ -309,7 +309,7 @@ namespace Raincrow.Maps
 
                 //animate the marker to the new position
                 LeanTween.cancel(m_PlayerGPSTweenId);
-                m_PlayerGPSTweenId = LeanTween.move(PlayerManager.marker.gameObject, worldPos, 1f).setEaseOutCubic().uniqueId;
+                m_PlayerGPSTweenId = LeanTween.move(PlayerManager.marker.GameObject, worldPos, 1f).setEaseOutCubic().uniqueId;
 
                 //animate the camera to the new position
                 if (m_DidPanSinceLand == false)

@@ -405,7 +405,7 @@ namespace Raincrow.Test
                         {
                             if (Spellcasting.CanCast(spell, markers[0]) == Spellcasting.SpellState.CanCast)
                             {
-                                if (markers[0].type == MarkerSpawner.MarkerType.SPIRIT || markers[0].type == MarkerSpawner.MarkerType.WITCH)
+                                if (markers[0].Type == MarkerSpawner.MarkerType.SPIRIT || markers[0].Type == MarkerSpawner.MarkerType.WITCH)
                                     LeanTween.value(0, 0, 0.05f).setOnComplete(() => Spellcasting.CastSpell(spell, markers[0], new List<spellIngredientsData>(), null, null));
                             }
                         }

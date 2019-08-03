@@ -152,7 +152,7 @@ public class UIPlayerInfo : UIInfoPanel
 
         IMarker marker = MarkerManager.GetMarker(m_WitchData.instance);
         if (marker != null)
-            MapCameraUtils.FocusOnMarker(marker.gameObject.transform.position);
+            MapCameraUtils.FocusOnMarker(marker.GameObject.transform.position);
         else
             Close();
     }

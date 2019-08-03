@@ -6,14 +6,13 @@ namespace Raincrow.Maps
 {
     public interface IMarker
     {
-        GameObject gameObject { get; }
-        object customData { get; set; }
-        Vector2 coords { get; set; }
+        GameObject GameObject { get; }
+        Vector2 Coords { get; set; }
         bool inMapView { get; set; }
-        bool interactable { get; set; }
+        bool Interactable { get; set; }
         System.Action<IMarker> OnClick { get; set; }
-        MarkerSpawner.MarkerType type { get; }
-        Token token { get; }
+        MarkerSpawner.MarkerType Type { get; }
+        Token Token { get; }
         bool IsPlayer { get; }
 
         bool IsShowingIcon { get; }
@@ -27,7 +26,7 @@ namespace Raincrow.Maps
         void SetTextAlpha(float a);
         void SetAlpha(float a, float time = 0, System.Action onComplete = null);
         void SetWorldPosition(Vector3 worldPos, float time = 0, System.Action onComplete = null);
-        Transform characterTransform { get; }
+        Transform AvatarTransform { get; }
 
         //void AddChild(Transform t, Transform parent, SimplePool<Transform> pool);
         //void RemoveChild(Transform t);

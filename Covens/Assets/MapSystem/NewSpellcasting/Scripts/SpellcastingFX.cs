@@ -60,12 +60,12 @@ public static class SpellcastingFX
             Transform glyph = m_BanishGlyph.Spawn();
             Transform aura = m_BanishAura.Spawn();
 
-            glyph.localScale = target.characterTransform.lossyScale;
-            glyph.rotation = target.characterTransform.rotation;
-            glyph.position = target.gameObject.transform.position + target.characterTransform.up * 37.30935f - target.characterTransform.forward;
+            glyph.localScale = target.AvatarTransform.lossyScale;
+            glyph.rotation = target.AvatarTransform.rotation;
+            glyph.position = target.GameObject.transform.position + target.AvatarTransform.up * 37.30935f - target.AvatarTransform.forward;
 
-            aura.position = target.gameObject.transform.position;
-            aura.localScale = target.gameObject.transform.lossyScale;
+            aura.position = target.GameObject.transform.position;
+            aura.localScale = target.GameObject.transform.lossyScale;
 
             glyph.gameObject.SetActive(true);
             aura.gameObject.SetActive(true);
@@ -80,7 +80,7 @@ public static class SpellcastingFX
 
     public static void SpawnFail(IMarker target, bool shake = true)
     {
-        Transform aura = m_BackfireAura.Spawn(target.gameObject.transform, 3f);
+        Transform aura = m_BackfireAura.Spawn(target.GameObject.transform, 3f);
         aura.localPosition = new Vector3(0, 0, 0f);
         aura.localScale = Vector3.one;
         aura.localRotation = Quaternion.identity;
@@ -100,7 +100,7 @@ public static class SpellcastingFX
 
     public static void SpawnGlyph(IMarker target, SpellData spell, string baseSpell)
     {
-        Token token = target.customData as Token;
+        Token token = target.Token;
         SimplePool<Transform> glyphPool;
         SimplePool<Transform> auraPool;
 
@@ -121,10 +121,10 @@ public static class SpellcastingFX
         }
 
         //spawn n setup glyph
-        Transform glyph = glyphPool.Spawn(target.characterTransform, 3f);
+        Transform glyph = glyphPool.Spawn(target.AvatarTransform, 3f);
         glyph.localScale = Vector3.one;
         glyph.localRotation = Quaternion.identity;
-        glyph.position = target.characterTransform.position + new Vector3(0, 0, -0.5f) + glyph.up * 40.7f;
+        glyph.position = target.AvatarTransform.position + new Vector3(0, 0, -0.5f) + glyph.up * 40.7f;
         glyph.GetChild(0).GetChild(6).GetComponent<TextMeshProUGUI>().text = LocalizeLookUp.GetSpellName(spell.id);
 
         if (string.IsNullOrEmpty(baseSpell))
@@ -132,7 +132,7 @@ public static class SpellcastingFX
         DownloadedAssets.GetSprite(baseSpell, (spr) => { glyph.GetChild(0).GetChild(5).GetComponent<UnityEngine.UI.Image>().overrideSprite = spr; });
         
         //spawn aura
-        Transform aura = auraPool.Spawn(target.gameObject.transform, 3f);
+        Transform aura = auraPool.Spawn(target.GameObject.transform, 3f);
         aura.localPosition = new Vector3(0, 0, 0f);
         aura.localScale = Vector3.one;
         aura.localRotation = Quaternion.identity;
@@ -155,7 +155,7 @@ public static class SpellcastingFX
 
     public static void SpawnText(IMarker target, string text, bool queued)
     {
-        TextMeshPro textObj = m_TextPopupPool.Spawn(target.characterTransform, 3f).GetComponent<TextMeshPro>();
+        TextMeshPro textObj = m_TextPopupPool.Spawn(target.AvatarTransform, 3f).GetComponent<TextMeshPro>();
         textObj.text = text;
         textObj.transform.localScale = Vector3.one;
         textObj.transform.localRotation = Quaternion.identity;
@@ -168,7 +168,7 @@ public static class SpellcastingFX
             {
                 textObj.alpha = (1 - t) * 2f;
                 pos = textObj.transform.up * (40 + t * 10);
-                textObj.transform.position = target.characterTransform.position + pos;
+                textObj.transform.position = target.AvatarTransform.position + pos;
             });
     }
 }

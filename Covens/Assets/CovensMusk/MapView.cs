@@ -39,7 +39,7 @@ public class MapView : MonoBehaviour
 
     private void _OnMapTokenAdd(IMarker marker)
     {
-        Token token = marker.customData as Token;
+        Token token = marker.Token;
 
         //token is in PoP
         if (token.position != 0)
@@ -50,27 +50,27 @@ public class MapView : MonoBehaviour
         //if (marker.type == MarkerSpawner.MarkerType.portal && token.owner == PlayerDataManager.playerData.instance)
         //    MapCameraUtils.FocusOnPosition(marker.gameObject.transform.position, true, 2f);
 
-        marker.interactable = true;
+        marker.Interactable = true;
         if (marker.inMapView)
         {
-            marker.gameObject.SetActive(true);
+            marker.GameObject.SetActive(true);
             marker.SetAlpha(1, 1);
         }
     }
 
     private void _OnMapTokenRemove(IMarker marker)
     {
-        Token token = marker.customData as Token;
+        Token token = marker.Token;
         if (token.position != 0)
             return;
 
         //disable interaction wit hit
-        if (marker.interactable)
-            marker.interactable = false;
+        if (marker.Interactable)
+            marker.Interactable = false;
 
         //animate the marken
         marker.SetAlpha(0, 1);
-        MarkerSpawner.DeleteMarker(marker.token.instance);
+        MarkerSpawner.DeleteMarker(marker.Token.instance);
     }
 
     private void _OnMapTokenMove(IMarker marker, Vector3 position)

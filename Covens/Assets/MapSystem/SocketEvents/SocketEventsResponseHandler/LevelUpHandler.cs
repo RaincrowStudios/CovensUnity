@@ -46,7 +46,7 @@ namespace Raincrow.GameEventResponses
 
                 if (marker != null)
                 {
-                    WitchToken token = marker.customData as WitchToken;
+                    WitchToken token = marker.Token as WitchToken;
                     if (token != null)
                     {
                         //update token data

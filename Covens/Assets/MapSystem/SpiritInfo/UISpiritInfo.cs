@@ -130,7 +130,7 @@ public class UISpiritInfo : UIInfoPanel
 
         //if the spirit was destroyed, close the ui
         if (spirit != null)
-            MapCameraUtils.FocusOnMarker(spirit.gameObject.transform.position);
+            MapCameraUtils.FocusOnMarker(spirit.GameObject.transform.position);
         else
             Close();
     }

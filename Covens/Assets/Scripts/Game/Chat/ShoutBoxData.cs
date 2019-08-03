@@ -20,7 +20,7 @@ public class ShoutBoxData : MonoBehaviour
         Content.text = content;
 
         transform.localScale = Vector3.zero;
-        transform.rotation = marker.characterTransform.rotation;
+        transform.rotation = marker.AvatarTransform.rotation;
 
         LeanTween.scale(gameObject, Vector3.one, 0.55f).setEaseOutCubic();
         LeanTween.value(0, 1, 5).setOnComplete(() => Close());

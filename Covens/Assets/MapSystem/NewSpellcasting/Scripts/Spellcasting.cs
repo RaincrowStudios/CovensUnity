@@ -96,7 +96,7 @@ public class Spellcasting
         //TARGET
         if (target != null)
         {
-            Token token = target.customData as Token;
+            Token token = target.Token;
 
             if (target == PlayerManager.marker)
             {
@@ -180,7 +180,7 @@ public class Spellcasting
                                  System.Action<Raincrow.GameEventResponses.SpellCastHandler.Result> onContinue, 
                                  System.Action onClose)
     {
-        string targetId = target == PlayerManager.marker ? PlayerDataManager.playerData.instance : target.token.instance;
+        string targetId = target == PlayerManager.marker ? PlayerDataManager.playerData.instance : target.Token.instance;
 
         var data = new
         {
