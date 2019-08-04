@@ -204,6 +204,8 @@ public class PlayerData : WitchMarkerData
     public List<CovenRequest> covenRequests;
     public HashSet<string> immunities;
 
+    private List<SpellData> m_Spells = null;
+
     [JsonIgnore]
     public ulong xpToLevelUp
     {
@@ -234,6 +236,18 @@ public class PlayerData : WitchMarkerData
 
         Debug.LogError("TODO: WATCHED VIDEOS");
         firsts = new Firsts { };
+
+        m_Spells = new List<SpellData>();
+        var allSpells = new List<SpellData>(DownloadedAssets.spellDictData.Values);
+        allSpells.Sort(new System.Comparison<SpellData> ((a,b) => a.Name.CompareTo(b.Name)));
+
+        foreach (var spellData in allSpells)
+        {
+            if (spellData.hidden)
+                continue;
+
+            m_Spells.Add(spellData);
+        }
     }
 
     public int GetIngredient(string id)
@@ -367,21 +381,7 @@ public class PlayerData : WitchMarkerData
     public int avatar => bodyType;
 
     [JsonIgnore]
-    public List<SpellData> Spells
-    {
-        get
-        {
-            List<SpellData> spells = new List<SpellData>();
-            var allSpells = DownloadedAssets.spellDictData.Values;
-            foreach (var spellData in allSpells)
-            {
-                if (spellData.hidden)
-                    continue;
-                spells.Add(spellData);
-            }
-            return spells;
-        }
-    }
+    public List<SpellData> Spells => m_Spells;
 
     [JsonIgnore]
     public long minAlignment

@@ -47,6 +47,12 @@ public class EditorScenes : MonoBehaviour
         if (EditorSceneManager.SaveCurrentModifiedScenesIfUserWantsTo())
             EditorSceneManager.OpenScene("Assets/Scenes/DailyQuests.unity");
     }
+    [MenuItem("Scenes/Screens/Spellcast Book")]
+    static void SpellcastingScene()
+    {
+        if (EditorSceneManager.SaveCurrentModifiedScenesIfUserWantsTo())
+            EditorSceneManager.OpenScene("Assets/Scenes/SpellcastBook.unity");
+    }
 
     [MenuItem("Tools/Play")]
 	static void PlayTest()

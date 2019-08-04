@@ -58,12 +58,12 @@ public class UIPlayerInfo : UIInfoPanel
         }
     }
 
-    private WitchMarker m_Witch;
-    private WitchToken m_WitchData;
+    private WitchMarker m_WitchMarker;
+    private WitchToken m_WitchToken;
     private SelectWitchData_Map m_WitchDetails;
     private float m_PreviousMapZoom;
     private string previousMarker = "";
-    public WitchToken Witch { get { return m_WitchData; } }
+    public WitchToken WitchToken { get { return m_WitchToken; } }
 
 
     protected override void Awake()
@@ -96,22 +96,22 @@ public class UIPlayerInfo : UIInfoPanel
 
         MainUITransition.Instance.HideMainUI();
 
-        m_Witch = witch;
-        m_WitchData = data;
+        m_WitchMarker = witch;
+        m_WitchToken = data;
         m_WitchDetails = null;
 
         //setup the ui
-        m_DisplayNameText.text = m_WitchData.displayName;
-        m_DegreeSchoolText.text = Utilities.WitchTypeControlSmallCaps(m_WitchData.degree);
-        m_LevelText.text = LocalizeLookUp.GetText("card_witch_level").ToUpper() + " <color=black>" + m_WitchData.level.ToString() + "</color>";
-        _OnEnergyChange(m_WitchData.instance, m_WitchData.energy);
+        m_DisplayNameText.text = m_WitchToken.displayName;
+        m_DegreeSchoolText.text = Utilities.WitchTypeControlSmallCaps(m_WitchToken.degree);
+        m_LevelText.text = LocalizeLookUp.GetText("card_witch_level").ToUpper() + " <color=black>" + m_WitchToken.level.ToString() + "</color>";
+        _OnEnergyChange(m_WitchToken.instance, m_WitchToken.energy);
 
         //sprite and color
-        if (m_WitchData.degree < 0)
+        if (m_WitchToken.degree < 0)
         {
             m_Sigil.sprite = m_ShadowSigilSprite;
         }
-        else if (m_WitchData.degree > 0)
+        else if (m_WitchToken.degree > 0)
         {
             m_Sigil.sprite = m_WhiteSigilSprite;
         }
@@ -125,7 +125,7 @@ public class UIPlayerInfo : UIInfoPanel
         previousMapPosition = MapsAPI.Instance.GetWorldPosition();
         m_PreviousMapZoom = MapsAPI.Instance.normalizedZoom;
 
-        MarkerSpawner.HighlightMarker(new List<IMarker> { PlayerManager.marker, m_Witch }, true);
+        MarkerSpawner.HighlightMarker(new List<IMarker> { PlayerManager.marker, m_WitchMarker }, true);
 
         //witch.SetTextAlpha(NewMapsMarker.highlightTextAlpha);
 
@@ -150,7 +150,7 @@ public class UIPlayerInfo : UIInfoPanel
 
         MapsAPI.Instance.allowControl = false;
 
-        IMarker marker = MarkerManager.GetMarker(m_WitchData.instance);
+        IMarker marker = MarkerManager.GetMarker(m_WitchToken.instance);
         if (marker != null)
             MapCameraUtils.FocusOnMarker(marker.GameObject.transform.position);
         else
@@ -167,7 +167,7 @@ public class UIPlayerInfo : UIInfoPanel
 
         //m_Witch.SetTextAlpha(NewMapsMarker.defaultTextAlpha);
 
-        MarkerSpawner.HighlightMarker(new List<IMarker> { PlayerManager.marker, m_Witch }, false);
+        MarkerSpawner.HighlightMarker(new List<IMarker> { PlayerManager.marker, m_WitchMarker }, false);
 
         OnMapEnergyChange.OnEnergyChange -= _OnEnergyChange;
         SpellCastHandler.OnPlayerTargeted -= _OnPlayerAttacked;
@@ -221,7 +221,7 @@ public class UIPlayerInfo : UIInfoPanel
         else if (string.IsNullOrEmpty(TeamManager.MyCovenId) == false)
         {
             LoadingOverlay.Show();
-            TeamManager.SendInvite(m_WitchData.Id, false, (invite, error) =>
+            TeamManager.SendInvite(m_WitchToken.Id, false, (invite, error) =>
             {
                 LoadingOverlay.Hide();
                 if (string.IsNullOrEmpty(error))
@@ -245,13 +245,27 @@ public class UIPlayerInfo : UIInfoPanel
     {
         this.Hide();
 
-        UISpellcasting.Instance.Show(
+        UISpellcastBook.Open(
             m_WitchDetails,
-            m_Witch,
+            m_WitchMarker,
             PlayerDataManager.playerData.Spells,
-            UISpellcasting_OnCastResult,
-            ReOpen,
-            UISpellcasting_OnClickClose);
+            (spell, ingredients) =>
+            {
+                UIGlobalPopup.ShowError(this.ReOpen, "not implemented");
+            },
+            () => 
+            {
+                this.ReOpen();
+            }
+        );
+
+        //UISpellcasting.Instance.Show(
+        //    m_WitchDetails,
+        //    m_Witch,
+        //    PlayerDataManager.playerData.Spells,
+        //    UISpellcasting_OnCastResult,
+        //    ReOpen,
+        //    UISpellcasting_OnClickClose);
     }
 
     private void QuickCast(string spellId)
@@ -264,7 +278,7 @@ public class UIPlayerInfo : UIInfoPanel
         Hide();
 
         //send the cast
-        Spellcasting.CastSpell(spell, m_Witch, new List<spellIngredientsData>(), (result) =>
+        Spellcasting.CastSpell(spell, m_WitchMarker, new List<spellIngredientsData>(), (result) =>
         {
             ReOpen();
         },
@@ -284,12 +298,12 @@ public class UIPlayerInfo : UIInfoPanel
             return;
         }
 
-        Spellcasting.SpellState canCast = Spellcasting.CanCast((SpellData)null, m_Witch, m_WitchDetails);
+        Spellcasting.SpellState canCast = Spellcasting.CanCast((SpellData)null, m_WitchMarker, m_WitchDetails);
 
         m_CastButton.interactable = canCast == Spellcasting.SpellState.CanCast;
-        m_QuickHex.interactable = Spellcasting.CanCast("spell_hex", m_Witch, m_WitchDetails) == Spellcasting.SpellState.CanCast;
-        m_QuickSeal.interactable = Spellcasting.CanCast("spell_seal", m_Witch, m_WitchDetails) == Spellcasting.SpellState.CanCast;
-        m_QuickBless.interactable = Spellcasting.CanCast("spell_bless", m_Witch, m_WitchDetails) == Spellcasting.SpellState.CanCast;
+        m_QuickHex.interactable = Spellcasting.CanCast("spell_hex", m_WitchMarker, m_WitchDetails) == Spellcasting.SpellState.CanCast;
+        m_QuickSeal.interactable = Spellcasting.CanCast("spell_seal", m_WitchMarker, m_WitchDetails) == Spellcasting.SpellState.CanCast;
+        m_QuickBless.interactable = Spellcasting.CanCast("spell_bless", m_WitchMarker, m_WitchDetails) == Spellcasting.SpellState.CanCast;
 
         if (canCast == Spellcasting.SpellState.TargetImmune)
         {
@@ -307,14 +321,14 @@ public class UIPlayerInfo : UIInfoPanel
             m_CastText.text = LocalizeLookUp.GetText("spellbook_more_spells");
         }
 
-        if (UISpellcasting.isOpen)
-            UISpellcasting.Instance.UpdateCanCast();
+        //if (UISpellcasting.isOpen)
+        //    UISpellcasting.Instance.UpdateCanCast();
     }
 
 
     private void _OnPlayerAttacked(string caster, SpellData spell, Raincrow.GameEventResponses.SpellCastHandler.Result result)
     {
-        if (caster == m_WitchData.instance)
+        if (caster == m_WitchToken.instance)
         {
             UpdateCanCast();
         }
@@ -322,16 +336,16 @@ public class UIPlayerInfo : UIInfoPanel
 
     private void _OnEnergyChange(string instance, int newEnergy)
     {
-        if (instance == m_WitchData.instance)
+        if (instance == m_WitchToken.instance)
         {
-            m_EnergyText.text = LocalizeLookUp.GetText("card_witch_energy").ToUpper() + " <color=black>" + m_WitchData.energy + " / " + m_WitchData.baseEnergy + "</color>";
+            m_EnergyText.text = LocalizeLookUp.GetText("card_witch_energy").ToUpper() + " <color=black>" + m_WitchToken.energy + " / " + m_WitchToken.baseEnergy + "</color>";
             UpdateCanCast();
         }
     }
 
     private void _OnMapTokenMove(string instance, Vector3 position)
     {
-        if (m_WitchData.instance == instance)
+        if (m_WitchToken.instance == instance)
         {
             MapCameraUtils.FocusOnMarker(position);
         }
@@ -348,10 +362,10 @@ public class UIPlayerInfo : UIInfoPanel
 
     private void _OnMapTokenRemove(string instance)
     {
-        if (instance == m_WitchData.instance)
+        if (instance == m_WitchToken.instance)
         {
             Abort();
-            UIGlobalPopup.ShowPopUp(null, LocalizeLookUp.GetText("spellbook_witch_is_gone").Replace("{{witch name}}", m_WitchData.displayName));// + " is gone.");
+            UIGlobalPopup.ShowPopUp(null, LocalizeLookUp.GetText("spellbook_witch_is_gone").Replace("{{witch name}}", m_WitchToken.displayName));// + " is gone.");
         }
     }
 
@@ -362,7 +376,7 @@ public class UIPlayerInfo : UIInfoPanel
 
     private void _OnStatusEffectApplied(string character, StatusEffect statusEffect)
     {
-        if (character != this.m_WitchData.instance)
+        if (character != this.m_WitchToken.instance)
             return;
 
         foreach (StatusEffect item in m_WitchDetails.effects)
@@ -380,11 +394,11 @@ public class UIPlayerInfo : UIInfoPanel
 
     private void _OnImmunityChange(string caster, string target, bool immune)
     {
-        if (caster == PlayerDataManager.playerData.instance && target == this.m_WitchData.instance)
+        if (caster == PlayerDataManager.playerData.instance && target == this.m_WitchToken.instance)
         {
             UpdateCanCast();
         }
-        else if (target == PlayerDataManager.playerData.instance && caster == this.m_WitchData.instance)
+        else if (target == PlayerDataManager.playerData.instance && caster == this.m_WitchToken.instance)
         {
             UpdateCanCast();
         }
@@ -396,8 +410,8 @@ public class UIPlayerInfo : UIInfoPanel
         if (UIWaitingCastResult.isOpen)
             return;
 
-        if (UISpellcasting.isOpen)
-            UISpellcasting.Instance.Close();
+        //if (UISpellcasting.isOpen)
+        //    UISpellcasting.Instance.Close();
 
         Close();
     }
@@ -405,10 +419,10 @@ public class UIPlayerInfo : UIInfoPanel
     private void UISpellcasting_OnCastResult()
     {
         //if token is gone
-        if (MarkerSpawner.GetMarker(m_WitchData.instance) == null)
+        if (MarkerSpawner.GetMarker(m_WitchToken.instance) == null)
         {
             Close();
-            UISpellcasting.Instance.Close();
+            //UISpellcasting.Instance.Close();
         }
         //else stays at the spellcasting list
     }

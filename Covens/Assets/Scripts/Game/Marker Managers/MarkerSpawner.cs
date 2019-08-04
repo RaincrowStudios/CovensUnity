@@ -321,7 +321,7 @@ public class MarkerSpawner : MarkerManager
                     SelectWitchData_Map witch = JsonConvert.DeserializeObject<SelectWitchData_Map>(response);
                     witch.token = marker.Token as WitchToken;
 
-                    if (UIPlayerInfo.isShowing && UIPlayerInfo.Instance.Witch.instance == instance)
+                    if (UIPlayerInfo.isShowing && UIPlayerInfo.Instance.WitchToken.instance == instance)
                         UIPlayerInfo.Instance.SetupDetails(witch);
                     break;
 
@@ -330,7 +330,7 @@ public class MarkerSpawner : MarkerManager
                     SelectSpiritData_Map spirit = JsonConvert.DeserializeObject<SelectSpiritData_Map>(response);
                     spirit.token = marker.Token as SpiritToken;
 
-                    if (UISpiritInfo.isOpen && UISpiritInfo.Instance.Spirit.instance == instance)
+                    if (UISpiritInfo.isOpen && UISpiritInfo.Instance.SpiritToken.instance == instance)
                         UISpiritInfo.Instance.SetupDetails(spirit);
 
                     if (spirit.state == "dead")
@@ -349,14 +349,14 @@ public class MarkerSpawner : MarkerManager
             switch (marker.Type)
             {
                 case MarkerType.WITCH:
-                    if (UIPlayerInfo.isShowing && UIPlayerInfo.Instance.Witch.instance == instance)
+                    if (UIPlayerInfo.isShowing && UIPlayerInfo.Instance.WitchToken.instance == instance)
                     {
                         UIGlobalPopup.ShowError(() => UIPlayerInfo.Instance.SetupDetails(null), APIManager.ParseError(response));
                     }
                     break;
 
                 case MarkerType.SPIRIT:
-                    if (UISpiritInfo.isOpen && UISpiritInfo.Instance.Spirit.instance == instance)
+                    if (UISpiritInfo.isOpen && UISpiritInfo.Instance.SpiritToken.instance == instance)
                     {
                         UIGlobalPopup.ShowError(() => UISpiritInfo.Instance.SetupDetails(null), APIManager.ParseError(response));
                     }

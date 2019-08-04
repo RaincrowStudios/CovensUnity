@@ -125,11 +125,6 @@ public class BanishManager : MonoBehaviour
     {
         isSilenced = true;
 
-        if (UISpellcasting.isOpen)
-        {
-            UISpellcasting.Instance.UpdateCanCast();
-        }
-
         string casterId = string.Empty;
         if (response.caster.Type == MarkerSpawner.MarkerType.WITCH)
         {

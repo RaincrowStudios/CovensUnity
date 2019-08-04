@@ -274,7 +274,7 @@ public class SpellData
     public int align;
     public bool pop;
     public bool hidden;
-
+    
     [JsonIgnore]
     public string Name => LocalizeLookUp.GetSpellName(id);
     [JsonIgnore]

@@ -316,6 +316,7 @@ public class PlayerManager : MonoBehaviour
 
     private void OnClickSelf()
     {
+        return;
         Debug.LogError("TODO: FILTER SPELLS");
 
         MapCameraUtils.FocusOnMarker(witchMarker.transform.position);
@@ -323,17 +324,17 @@ public class PlayerManager : MonoBehaviour
         float previousZoom = MapsAPI.Instance.normalizedZoom;
 
         List<SpellData> spells = PlayerDataManager.playerData.Spells;
-        UISpellcasting.Instance.Show(null, marker, spells,
-            () => { //on closed the cast results
+        //UISpellcasting.Instance.Show(null, marker, spells,
+        //    () => { //on closed the cast results
 
-            },
-            () => { //on click return (X)
-                UISpellcasting.Instance.Close();
-                MapCameraUtils.FocusOnPosition(previousPosition, previousZoom, true);
-            },
-            () => { //on click close (outside the book)
-                UISpellcasting.Instance.Close();
-                MapCameraUtils.FocusOnPosition(previousPosition, previousZoom, true);
-            });
+        //    },
+        //    () => { //on click return (X)
+        //        UISpellcasting.Instance.Close();
+        //        MapCameraUtils.FocusOnPosition(previousPosition, previousZoom, true);
+        //    },
+        //    () => { //on click close (outside the book)
+        //        UISpellcasting.Instance.Close();
+        //        MapCameraUtils.FocusOnPosition(previousPosition, previousZoom, true);
+        //    });
     }
 }

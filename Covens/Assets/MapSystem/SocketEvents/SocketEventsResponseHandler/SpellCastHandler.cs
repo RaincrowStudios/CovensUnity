@@ -138,11 +138,7 @@ namespace Raincrow.GameEventResponses
 
                             if (playerIsTarget)
                             {
-                                if (data.spell == "spell_banish")
-                                {
-                                    UISpellcasting.Instance.Hide();
-                                }
-                                else if (data.spell == "spell_bind")
+                                if (data.spell == "spell_bind")
                                 {
                                     BanishManager.Instance.ShowBindScreen(data);
                                 }
