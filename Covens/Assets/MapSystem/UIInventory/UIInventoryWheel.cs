@@ -265,6 +265,10 @@ public class UIInventoryWheel : MonoBehaviour
     {
         m_IsDragging = false;
         LeanTween.cancel(m_IntertiaTween);
+
+        if (m_IngredientLocked && wheelItem.inventoryItemId != m_PickerItemRef)
+            return;
+
         m_OnSelectItem?.Invoke(wheelItem);
     }
 

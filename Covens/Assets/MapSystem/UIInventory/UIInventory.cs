@@ -50,7 +50,6 @@ public class UIInventory : MonoBehaviour
     public UIInventoryWheel toolsWheel { get { return m_ToolsWheel; } }
     public UIInventoryWheel gemsWheel { get { return m_GemsWheel; } }
 
-    private System.Action<UIInventoryWheelItem> m_OnSelectItem;
     private System.Action m_OnClickClose;
 
     private void Awake()
@@ -75,7 +74,6 @@ public class UIInventory : MonoBehaviour
 
     public void Show(System.Action<UIInventoryWheelItem> onSelectItem, System.Action onClickClose, bool showApothecary, bool enableCloseButton, bool resetIngredientPicker)
     {
-        m_OnSelectItem = onSelectItem;
         m_OnClickClose = onClickClose;
 
         m_HerbsWheel.Setup("herb", PlayerDataManager.playerData.GetAllIngredients(IngredientType.herb), onSelectItem);

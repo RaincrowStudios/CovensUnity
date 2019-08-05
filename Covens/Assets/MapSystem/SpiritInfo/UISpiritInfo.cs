@@ -228,7 +228,10 @@ public class UISpiritInfo : UIInfoPanel
             PlayerDataManager.playerData.Spells,
             (spell, ingredients) =>
             {
-                UIGlobalPopup.ShowError(this.ReOpen, "not implemented");
+                Spellcasting.CastSpell(spell, m_SpiritMarker, ingredients,
+                    (result) => ReOpen(),
+                    () => OnClickClose()
+                );
             },
             () =>
             {

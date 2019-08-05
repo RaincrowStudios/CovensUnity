@@ -251,21 +251,16 @@ public class UIPlayerInfo : UIInfoPanel
             PlayerDataManager.playerData.Spells,
             (spell, ingredients) =>
             {
-                UIGlobalPopup.ShowError(this.ReOpen, "not implemented");
+                Spellcasting.CastSpell(spell, m_WitchMarker, ingredients,
+                    (result) => ReOpen(),
+                    () =>  OnClickClose()
+                );
             },
             () => 
             {
                 this.ReOpen();
             }
         );
-
-        //UISpellcasting.Instance.Show(
-        //    m_WitchDetails,
-        //    m_Witch,
-        //    PlayerDataManager.playerData.Spells,
-        //    UISpellcasting_OnCastResult,
-        //    ReOpen,
-        //    UISpellcasting_OnClickClose);
     }
 
     private void QuickCast(string spellId)

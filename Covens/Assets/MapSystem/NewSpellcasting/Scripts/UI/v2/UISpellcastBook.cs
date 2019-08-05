@@ -14,15 +14,14 @@ public class UISpellcastBook : MonoBehaviour, IEnhancedScrollerDelegate
     [SerializeField] private EnhancedScroller m_Scroller;
     [SerializeField] private CanvasGroup m_ScrollerCanvasGroup;
     [SerializeField] private UISpellcard m_CardPrefab;
-
-    [Header("Buttons")]
-    [SerializeField] private Button m_PortraitButton;
-    [SerializeField] private Button m_InventoryButton;
-
-    [Header("Portrait")]
+    
     [SerializeField] private Image m_TargetPortrait;
     [SerializeField] private TextMeshProUGUI m_TargetName;
     [SerializeField] private Image m_TargetEnergy;
+    [SerializeField] private Image m_InventoryGlow;
+
+    [SerializeField] private Button m_PortraitButton;
+    [SerializeField] private Button m_InventoryButton;
 
     private static UISpellcastBook m_Instance;
 
@@ -68,6 +67,7 @@ public class UISpellcastBook : MonoBehaviour, IEnhancedScrollerDelegate
     {
         m_Instance = this;
         m_InventoryButton.gameObject.SetActive(false);
+        m_InventoryGlow.gameObject.SetActive(false);
         m_Scroller.Delegate = this;
 
         m_Canvas.enabled = false;
@@ -105,6 +105,7 @@ public class UISpellcastBook : MonoBehaviour, IEnhancedScrollerDelegate
 
         m_PlayerSpells = spells;
         SetSchool(m_SelectedSchool);
+        SetupTarget(marker, target);
 
         m_Canvas.enabled = true;
         m_InputRaycaster.enabled = true;
@@ -119,6 +120,45 @@ public class UISpellcastBook : MonoBehaviour, IEnhancedScrollerDelegate
         m_OnBack = null;
 
         OnSelectCard(null);
+    }
+
+    private void SetupTarget(IMarker marker, CharacterMarkerData data)
+    {
+        m_TargetEnergy.fillAmount = (float)data.energy / data.baseEnergy;
+        m_TargetName.text = "";
+
+        m_TargetPortrait.overrideSprite = null;
+        m_TargetPortrait.transform.localScale = Vector3.one;
+        if (marker.Type == MarkerManager.MarkerType.WITCH)
+        {
+            WitchMarker witch = marker as WitchMarker;
+
+            m_TargetName.text = witch.witchToken.displayName;
+            if (witch.witchToken.degree < 0)
+                m_TargetEnergy.color = Utilities.Purple;
+            else if (witch.witchToken.degree > 0)
+                m_TargetEnergy.color = Utilities.Orange;
+            else
+                m_TargetEnergy.color = Utilities.Blue;
+
+            witch.GetPortrait(spr =>
+            {
+                m_TargetPortrait.overrideSprite = spr;
+            });
+        }
+        else if (marker.Type == MarkerManager.MarkerType.SPIRIT)
+        {
+            SpiritMarker spirit = marker as SpiritMarker;
+
+            m_TargetName.text = spirit.spiritData.Name;
+            m_TargetEnergy.color = Color.white;
+
+            DownloadedAssets.GetSprite(spirit.spiritData.id, spr =>
+            {
+                m_TargetPortrait.transform.localScale = Vector3.one * 2;
+                m_TargetPortrait.overrideSprite = spr;
+            });
+        }
     }
 
     private void SetSchool(int? school)
@@ -167,7 +207,7 @@ public class UISpellcastBook : MonoBehaviour, IEnhancedScrollerDelegate
             }
         }
 
-        SetIngredients(m_SelectedSpell == null ? null : m_SelectedSpell.ingredients);
+        LockIngredients(m_SelectedSpell == null ? null : m_SelectedSpell.ingredients);
         EnableInventoryButton(m_SelectedSpell != null);
 
         m_Scroller.ScrollRect.enabled = true;
@@ -192,7 +232,21 @@ public class UISpellcastBook : MonoBehaviour, IEnhancedScrollerDelegate
 
     private void OnClickCast(UISpellcard card)
     {
-        m_OnConfirmSpell?.Invoke(card.Spell, new List<spellIngredientsData>());
+        if (m_SelectedSpell == null || m_SelectedSpell.id != card.Spell.id)
+        {
+            LockIngredients(card.Spell.ingredients);
+        }
+
+        List<spellIngredientsData> ingredients = new List<spellIngredientsData>();
+
+        if (string.IsNullOrEmpty(m_Herb.id) == false)
+            ingredients.Add(new spellIngredientsData(m_Herb.id, m_Herb.count));
+        if (string.IsNullOrEmpty(m_Tool.id) == false)
+            ingredients.Add(new spellIngredientsData(m_Tool.id, m_Tool.count));
+        if (string.IsNullOrEmpty(m_Gem.id) == false)
+            ingredients.Add(new spellIngredientsData(m_Gem.id, m_Gem.count));
+
+        m_OnConfirmSpell?.Invoke(card.Spell, ingredients);
         Hide();
     }
 
@@ -223,6 +277,7 @@ public class UISpellcastBook : MonoBehaviour, IEnhancedScrollerDelegate
     private void EnableInventoryButton(bool enabled)
     {
         m_InventoryButton.gameObject.SetActive(enabled);
+        m_InventoryGlow.gameObject.SetActive(m_Herb.id != null || m_Tool.id != null || m_Gem.id != null);
     }
 
     private void OpenInventory()
@@ -255,6 +310,8 @@ public class UISpellcastBook : MonoBehaviour, IEnhancedScrollerDelegate
 
     private void OnCloseInventory()
     {
+        EnableInventoryButton(true);
+
         //unlock scroller
         m_ScrollerCanvasGroup.interactable = true;
 
@@ -270,23 +327,99 @@ public class UISpellcastBook : MonoBehaviour, IEnhancedScrollerDelegate
 
     private void OnClickInventoryItem(UIInventoryWheelItem item)
     {
-        ////just resets if clicking on an empty inventory item
-        //if (item.inventoryItemId == null)
-        //{
-        //    //resets the picker
-        //    item.SetIngredientPicker(0);
-        //    if (item.type == "herb")
-        //        m_Herb = new CollectableItem();
-        //    else if (item.type == "tool")
-        //        m_Tool = new CollectableItem();
-        //    else if (item.type == "gem")
-        //        m_Gem = new CollectableItem();
+        //just resets if clicking on an empty inventory item
+        if (item.inventoryItemId == null)
+        {
+            //resets the picker
+            item.SetIngredientPicker(0);
+            if (item.type == "herb")
+                m_Herb = new CollectableItem();
+            else if (item.type == "tool")
+                m_Tool = new CollectableItem();
+            else if (item.type == "gem")
+                m_Gem = new CollectableItem();
+            return;
+        }
 
-        //    return;
-        //}
+        //List<string> required = m_SelectedSpell.ingredients == null ? new List<string>() : new List<string>(m_SelectedSpell.ingredients);
+        IngredientData itemData = item.itemData;
+        int maxAmount = Mathf.Min(5, PlayerDataManager.playerData.GetIngredient(item.inventoryItemId));
+
+        if (itemData.Type == IngredientType.herb)
+        {
+            if (string.IsNullOrEmpty(m_Herb.id))
+            {
+                //select the ingredient
+                m_Herb = new CollectableItem
+                {
+                    id = item.inventoryItemId,
+                    count = Mathf.Min(1, maxAmount)
+                };
+                item.SetIngredientPicker(m_Herb.count);
+            }
+            else if (m_Herb.id != item.inventoryItemId)
+            {
+                //unselect the previous ingredient
+                m_Herb = new CollectableItem();
+                UIInventory.Instance.herbsWheel.ResetPicker();
+            }
+            else
+            {
+                //increment the selected ingredient
+                m_Herb.count = (int)Mathf.Repeat(m_Herb.count + 1, maxAmount + 1);
+                m_Herb.count = Mathf.Clamp(m_Herb.count, 1, maxAmount);
+                item.SetIngredientPicker(m_Herb.count);
+            }
+        }
+        else if (itemData.Type == IngredientType.tool)
+        {
+            if (string.IsNullOrEmpty(m_Tool.id))
+            {
+                m_Tool = new CollectableItem
+                {
+                    id = item.inventoryItemId,
+                    count = Mathf.Min(1, maxAmount)
+                };
+                item.SetIngredientPicker(m_Tool.count);
+            }
+            else if (m_Tool.id != item.inventoryItemId)
+            {
+                m_Tool = new CollectableItem();
+                UIInventory.Instance.toolsWheel.ResetPicker();
+            }
+            else
+            {
+                m_Tool.count = (int)Mathf.Repeat(m_Tool.count + 1, maxAmount + 1);
+                m_Tool.count = Mathf.Clamp(m_Tool.count, 1, maxAmount);
+                item.SetIngredientPicker(m_Tool.count);
+            }
+        }
+        else if (itemData.Type == IngredientType.gem)
+        {
+            if (string.IsNullOrEmpty(m_Gem.id))
+            {
+                m_Gem = new CollectableItem
+                {
+                    id = item.inventoryItemId,
+                    count = Mathf.Min(1, maxAmount)
+                };
+                item.SetIngredientPicker(m_Gem.count);
+            }
+            else if (m_Gem.id != item.inventoryItemId)
+            {
+                m_Gem = new CollectableItem();
+                UIInventory.Instance.gemsWheel.ResetPicker();
+            }
+            else
+            {
+                m_Gem.count = (int)Mathf.Repeat(m_Gem.count + 1, maxAmount + 1);
+                m_Gem.count = Mathf.Clamp(m_Gem.count, 1, maxAmount);
+                item.SetIngredientPicker(m_Gem.count);
+            }
+        }
     }
 
-    private void SetIngredients(string[] ingredients)
+    private void LockIngredients(string[] ingredients)
     {
         m_Herb.id = m_Tool.id = m_Gem.id = null;
         m_Herb.count = m_Tool.count = m_Gem.count = 0;
