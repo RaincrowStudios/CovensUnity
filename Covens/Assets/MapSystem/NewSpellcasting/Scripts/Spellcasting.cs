@@ -182,10 +182,23 @@ public class Spellcasting
     {
         string targetId = target == PlayerManager.marker ? PlayerDataManager.playerData.instance : target.Token.instance;
 
+        List<spellIngredientsData> toRemove = new List<spellIngredientsData>();
+        List<spellIngredientsData> auxIngr = new List<spellIngredientsData>();
+
+        foreach (spellIngredientsData _ing in ingredients)
+        {
+            toRemove.Add(new spellIngredientsData(_ing.collectible, _ing.count));
+
+            if (spell.ingredients.Contains(_ing.collectible))
+                _ing.count -= 1;
+            if (_ing.count > 0)
+                auxIngr.Add(_ing);
+        }
+
         var data = new
         {
             spell = spell.id,
-            ingredients = ingredients
+            ingredients = auxIngr
         };
 
         //slowly shake the screen while waiting for the cast response
@@ -195,7 +208,7 @@ public class Spellcasting
             1f,
             10f
         );
-        
+                       
         /// SPECIAL FLOW (SPELLS THAT HAVE THEIR OWN REQUESTS
         if (m_SpecialSpells.ContainsKey(spell.id))
         {
@@ -237,6 +250,9 @@ public class Spellcasting
                 {
                     if (result == 200)
                     {
+                        foreach (spellIngredientsData _ing in toRemove)
+                            PlayerDataManager.playerData.SubIngredient(_ing.collectible, _ing.count);
+
                         Raincrow.GameEventResponses.SpellCastHandler.SpellCastEventData eventData = JsonConvert.DeserializeObject<Raincrow.GameEventResponses.SpellCastHandler.SpellCastEventData>(response);
                         SpellCastHandler.HandleEvent(
                             eventData,

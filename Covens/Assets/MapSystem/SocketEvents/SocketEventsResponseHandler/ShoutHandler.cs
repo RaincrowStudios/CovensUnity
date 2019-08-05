@@ -7,9 +7,11 @@ namespace Raincrow.GameEventResponses
     public class ShoutHandler : IGameEventHandler
     {
         public string EventName => "shout";
+        public static SimplePool<ShoutBoxData> m_ShoutPool = new SimplePool<ShoutBoxData>("UI/Shoutbox");
 
         public struct ShoutEventData
         {
+            public string id;
             public string message;
             public double timestamp;
         }
@@ -17,31 +19,37 @@ namespace Raincrow.GameEventResponses
         public void HandleResponse(string eventData)
         {
             ShoutEventData data = JsonConvert.DeserializeObject<ShoutEventData>(eventData);
-            throw new System.Exception("TODO/IS ID STILL MISSING?");
+            SpawnShoutbox(data.id, data.message);
+        }
 
-            //if (data.instance == PlayerDataManager.playerData.instance)
-            //{
-            //    ShoutBoxData shoutBox = m_ShoutPool.Spawn().GetComponent<ShoutBoxData>();
-            //    PlayerManager.marker.AddChild(shoutBox.transform, PlayerManager.marker.characterTransform, m_ShoutPool);
-            //    shoutBox.Setup(PlayerManager.marker, data.displayName, data.shout, () => PlayerManager.marker.RemoveChild(shoutBox.transform));
-            //    shoutBox.transform.localPosition = new Vector3(0, 32, 0);
-            //}
-            //else
-            //{
-            //    if (MarkerManager.Markers.ContainsKey(data.instance))
-            //    {
-            //        IMarker marker = MarkerManager.GetMarker(data.instance);
-            //        if (marker != null)
-            //        {
-            //            marker.SpawnFX(m_ShoutPool, true, 5, false, (boxTransform) =>
-            //            {
-            //                ShoutBoxData shoutBox = boxTransform.GetComponent<ShoutBoxData>();
-            //                shoutBox.Setup(marker, data.displayName, data.shout, null);
-            //                shoutBox.transform.localPosition = new Vector3(0, 32, 0);
-            //            });
-            //        }
-            //    }
-            //}
+        public static void SpawnShoutbox(string character, string message)
+        {
+            IMarker marker = null;
+            string name = "";
+
+            if (character == PlayerDataManager.playerData.instance)
+            {
+                marker = PlayerManager.marker;
+                name = PlayerDataManager.playerData.name;
+            }
+            else
+            {
+                if (MarkerManager.Markers.ContainsKey(character))
+                {
+                    marker = MarkerManager.GetMarker(character);
+                    if (marker is WitchMarker)
+                        name = (marker as WitchMarker).witchToken.displayName;
+                    else if (marker is SpiritMarker)
+                        name = (marker as SpiritMarker).spiritData.Name;
+                }
+            }
+
+            if (marker != null)
+            {
+                ShoutBoxData shoutBox = m_ShoutPool.Spawn(marker.AvatarTransform).GetComponent<ShoutBoxData>();
+                shoutBox.Setup(marker, name, message, () => m_ShoutPool.Despawn(shoutBox));
+                shoutBox.transform.localPosition = new Vector3(0, 32, 0);
+            }
         }
     }
 }

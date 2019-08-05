@@ -2,6 +2,7 @@
 using UnityEngine.UI;
 using System.Collections;
 using Newtonsoft.Json;
+using Raincrow.GameEventResponses;
 
 public class ShoutBox : MonoBehaviour
 {
@@ -34,13 +35,14 @@ public class ShoutBox : MonoBehaviour
         inputField.gameObject.SetActive(false);
         sendButton.SetActive(false);
 
-        string data = $"{{\"message\":\"{inputField.text}\"}}";
+        string message = inputField.text;
+        string data = $"{{\"message\":\"{message}\"}}";
 
         APIManager.Instance.Post("character/shout", data, (response, result) =>
         {
             if (result == 200)
             {
-
+                ShoutHandler.SpawnShoutbox(PlayerDataManager.playerData.instance, message);
             }
             else
             {

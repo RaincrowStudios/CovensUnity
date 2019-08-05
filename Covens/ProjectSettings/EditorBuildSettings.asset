@@ -26,6 +26,9 @@ EditorBuildSettings:
   - enabled: 1
     path: Assets/Scenes/SpellcastBook.unity
     guid: fc6b1ef0efdf1ca4882a43ec0d39784c
+  - enabled: 1
+    path: Assets/Scenes/Chat.unity
+    guid: a8d8eaf92d29ccf4eab17e1996dc905f
   - enabled: 0
     path: Assets/CovensMusk/testscene.unity
     guid: c7255549eac8cba49a3ef710473b6c6e
