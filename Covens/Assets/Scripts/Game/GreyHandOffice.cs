@@ -116,7 +116,7 @@ public class GreyHandOffice : MonoBehaviour {
         List<CollectableItem> tools = PlayerDataManager.playerData.GetAllIngredients(IngredientType.tool);
         foreach (var item in tools)
         {
-            IngredientData data = DownloadedAssets.GetCollectable(item.collectible);
+            IngredientData data = DownloadedAssets.GetCollectable(item.id);
             if (data.forbidden)
             {
                 inventoryItems.Add(item);
@@ -166,7 +166,7 @@ public class GreyHandOffice : MonoBehaviour {
             Debug.Log("turn in was a success");
             accept.SetActive(true);
             foreach (CollectableItem tool in inventoryItems)
-                PlayerDataManager.playerData.SetIngredient(tool.collectible, 0);
+                PlayerDataManager.playerData.SetIngredient(tool.id, 0);
             PlayerDataManager.playerData.silver += forbidToolValue;
             PlayerManagerUI.Instance.UpdateDrachs();
         }

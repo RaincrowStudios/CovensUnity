@@ -163,7 +163,8 @@ public class Item
 
 public struct CollectableItem
 {
-    public string collectible;
+    [JsonProperty("collectible")]
+    public string id;
     public int count;
 }
 

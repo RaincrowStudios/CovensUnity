@@ -129,22 +129,19 @@ public static class QuestsController
 
     public static void GetQuests(System.Action<string> callback)
     {
-        if (PlayerDataManager.playerData.quest.daily == null)
+        if (PlayerDataManager.playerData.quest.daily != null)
         {
-            callback?.Invoke("no_dailies");
-            return;
+            System.TimeSpan timeRemaing = Utilities.TimespanFromJavaTime(PlayerDataManager.playerData.quest.daily.endDate);
+            if (timeRemaing.TotalSeconds > 0)
+            {
+                callback?.Invoke(null);
+                return;
+            }
         }
 
-        System.TimeSpan timeRemaing = Utilities.TimespanFromJavaTime(PlayerDataManager.playerData.quest.daily.endDate);
-        if (timeRemaing.TotalSeconds > 0)
-        {
-            callback?.Invoke(null);
-            return;
-        }
+        Debug.Log("quests expired or null, retrieving new quests");
 
-        Debug.Log("quests expired, retrieving new quests");
-
-        APIManager.Instance.Get("daily/get",
+        APIManager.Instance.Get("dailies/quest",
             (string result, int response) =>
             {
                 if (response == 200)

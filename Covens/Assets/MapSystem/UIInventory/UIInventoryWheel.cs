@@ -161,13 +161,13 @@ public class UIInventoryWheel : MonoBehaviour
             int ingrIndex = (int)Mathf.Repeat(nextIndex, m_Inventory.Count < m_Items.Count ? m_Items.Count : m_Inventory.Count);
             aux.transform.localEulerAngles = new Vector3(0, 0, nextIndex * m_Spacing);
             if (ingrIndex < m_Inventory.Count)
-                aux.Setup(m_Inventory[ingrIndex].collectible, this, nextIndex);
+                aux.Setup(m_Inventory[ingrIndex].id, this, nextIndex);
             else
                 aux.Setup(null, this, nextIndex);
 
-            if (aux.inventoryItem != null && aux.inventoryItem == m_PickerItemRef)
+            if (aux.inventoryItemId != null && aux.inventoryItemId == m_PickerItemRef)
             {
-                aux.SetAmount(PlayerDataManager.playerData.GetIngredient(aux.inventoryItem) - m_PickerAmountRef);
+                aux.SetAmount(PlayerDataManager.playerData.GetIngredient(aux.inventoryItemId) - m_PickerAmountRef);
 
                 UIInventoryItemPicker picker = m_PickerPool.Spawn();
                 picker.Setup(aux, m_PickerAmountRef);
@@ -205,13 +205,13 @@ public class UIInventoryWheel : MonoBehaviour
             aux.transform.localEulerAngles = new Vector3(0, 0, previousIndex * m_Spacing);
 
             if (ingrIndex < m_Inventory.Count)
-                aux.Setup(m_Inventory[ingrIndex].collectible, this, previousIndex);
+                aux.Setup(m_Inventory[ingrIndex].id, this, previousIndex);
             else
                 aux.Setup(null, this, previousIndex);
 
-            if (aux.inventoryItem != null && aux.inventoryItem == m_PickerItemRef)
+            if (aux.inventoryItemId != null && aux.inventoryItemId == m_PickerItemRef)
             {
-                aux.SetAmount(PlayerDataManager.playerData.GetIngredient(aux.inventoryItem) - m_PickerAmountRef);
+                aux.SetAmount(PlayerDataManager.playerData.GetIngredient(aux.inventoryItemId) - m_PickerAmountRef);
 
                 UIInventoryItemPicker picker = m_PickerPool.Spawn();
                 picker.Setup(aux, m_PickerAmountRef);
@@ -240,7 +240,7 @@ public class UIInventoryWheel : MonoBehaviour
         {
             if (i < items.Count)
             {
-                m_Items[i].Setup(items[i].collectible, this, i);
+                m_Items[i].Setup(items[i].id, this, i);
             }
             else
             {
@@ -304,10 +304,10 @@ public class UIInventoryWheel : MonoBehaviour
         if (amount > 0)
         {
             //selected a different item, so reset the previous
-            if (reference.inventoryItem != m_PickerItemRef)
+            if (reference.inventoryItemId != m_PickerItemRef)
                 ResetPicker();
 
-            m_PickerItemRef = reference.inventoryItem;
+            m_PickerItemRef = reference.inventoryItemId;
             m_PickerAmountRef = amount;
 
             if (m_Pickers.Count == 0)
@@ -346,7 +346,7 @@ public class UIInventoryWheel : MonoBehaviour
 
         for (int j = 0; j < m_Inventory.Count; j++)
         {
-            if (m_Inventory[j].collectible == item)
+            if (m_Inventory[j].id == item)
             {
                 m_PickerItemRef = item;
 
@@ -355,7 +355,7 @@ public class UIInventoryWheel : MonoBehaviour
                 {
                     for (int i = 0; i < m_Items.Count; i++)
                     {
-                        if (m_PickerItemRef != null && m_Items[i].inventoryItem == m_PickerItemRef)
+                        if (m_PickerItemRef != null && m_Items[i].inventoryItemId == m_PickerItemRef)
                         {
                             Focus(i, animDuration, null);
                             m_Items[i].SetIngredientPicker(1);
@@ -369,7 +369,7 @@ public class UIInventoryWheel : MonoBehaviour
                     {
                         for (int i = 0; i < m_Items.Count; i++)
                         {
-                            if (m_PickerItemRef != null && m_Items[i].inventoryItem == m_PickerItemRef)
+                            if (m_PickerItemRef != null && m_Items[i].inventoryItemId == m_PickerItemRef)
                             {
                                 m_Items[i].SetIngredientPicker(1);
                                 return;

@@ -18,7 +18,7 @@ public class UIInventoryWheelItem : MonoBehaviour
     public Transform iconReference { get { return m_IconReference; } }
 
     private UIInventoryWheel m_Wheel;
-    public string inventoryItem { get; private set; }
+    public string inventoryItemId { get; private set; }
     public IngredientData itemData { get; private set; }
     public int index { get; private set; }
     public string type { get { return m_Wheel.type; } }
@@ -31,7 +31,7 @@ public class UIInventoryWheelItem : MonoBehaviour
     public void Setup(string item, UIInventoryWheel wheel, int index)
     {
         this.m_Wheel = wheel;
-        this.inventoryItem = item;
+        this.inventoryItemId = item;
         this.index = index;
 
         if (item != null)
@@ -44,7 +44,7 @@ public class UIInventoryWheelItem : MonoBehaviour
 
     public void Refresh()
     {
-        if (inventoryItem == null)
+        if (inventoryItemId == null)
         {
 			if (m_Title)
 				m_Title.text = LocalizeLookUp.GetText("inventory_empty");// "Empty";
@@ -57,13 +57,13 @@ public class UIInventoryWheelItem : MonoBehaviour
             m_AmountObject.SetActive(true);
 
             if (m_Title)
-                m_Title.text = LocalizeLookUp.GetCollectableName(inventoryItem);
+                m_Title.text = LocalizeLookUp.GetCollectableName(inventoryItemId);
             if (m_Desc)
             {
 				m_Desc.text = LocalizeLookUp.GetText ("rarity_num").Replace ("{{Rarity}}",/* "Rarity (" + */itemData.rarity.ToString ());// + ")";
                 m_Desc.gameObject.SetActive(true);
             }
-            m_Amount.text = PlayerDataManager.playerData.GetIngredient(inventoryItem).ToString();
+            m_Amount.text = PlayerDataManager.playerData.GetIngredient(inventoryItemId).ToString();
         }
     }
 
@@ -76,14 +76,14 @@ public class UIInventoryWheelItem : MonoBehaviour
     {
         m_Wheel.SetPicker(this, amount);
 
-        if (inventoryItem != null)
-            SetAmount(PlayerDataManager.playerData.GetIngredient(inventoryItem) - amount);
+        if (inventoryItemId != null)
+            SetAmount(PlayerDataManager.playerData.GetIngredient(inventoryItemId) - amount);
     }
 
     public void ResetAmount()
     {
-        if (inventoryItem != null)
-            m_Amount.text = PlayerDataManager.playerData.GetIngredient(inventoryItem).ToString();
+        if (inventoryItemId != null)
+            m_Amount.text = PlayerDataManager.playerData.GetIngredient(inventoryItemId).ToString();
         else
             m_Amount.text = "";
     }
