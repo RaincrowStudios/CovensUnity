@@ -80,15 +80,7 @@ public abstract class CharacterMarkerData : MarkerData
     public virtual string covenId { get; }
 
     [JsonIgnore]
-    public int baseEnergy
-    {
-        get
-        {
-            if (level < PlayerDataManager.baseEnergyPerLevel.Length)
-                return PlayerDataManager.baseEnergyPerLevel[level];
-            return energy;
-        }
-    }
+    public virtual int baseEnergy { get; set; }
 }
 
 public class WitchMarkerData : CharacterMarkerData
@@ -104,9 +96,21 @@ public class WitchMarkerData : CharacterMarkerData
     public virtual int dominionRank { get; set; }
 
     public virtual List<EquippedApparel> equipped { get; set; }
-    
+
     [JsonIgnore]
     public virtual bool male { get => bodyType >= 3; }
+
+    [JsonIgnore]
+    public override int baseEnergy
+    {
+        get
+        {
+            if (level < PlayerDataManager.baseEnergyPerLevel.Length)
+                return PlayerDataManager.baseEnergyPerLevel[level];
+            return energy;
+        }
+        set { }
+    }
 }
 
 public class SpiritMarkerData : CharacterMarkerData
@@ -481,8 +485,8 @@ public class SelectSpiritData_Map : SpiritMarkerData
 
     [JsonIgnore]
     public override int energy => token.energy;
-    //[JsonIgnore]
-    //public override int baseEnergy => token.baseEnergy;
+    [JsonIgnore]
+    public override int baseEnergy => token.baseEnergy;
     [JsonIgnore]
     public override int degree => token.degree;
     [JsonIgnore]

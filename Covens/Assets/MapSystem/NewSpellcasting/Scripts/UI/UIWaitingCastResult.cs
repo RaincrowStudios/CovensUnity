@@ -214,11 +214,11 @@ public class UIWaitingCastResult : UIInfoPanel
         }
 
         //only enable continue after few moments
-        m_ResultGroup.interactable = false;
-        m_ButtonTweenId = LeanTween.value(0, 0, 0).setDelay(0.2f).setOnStart(() =>
-            {
+        //m_ResultGroup.interactable = false;
+        //m_ButtonTweenId = LeanTween.value(0, 0, 0).setDelay(0.2f).setOnStart(() =>
+        //    {
                 m_ResultGroup.interactable = true;
-            }).uniqueId;
+            //}).uniqueId;
 
         m_ResultGroup.gameObject.SetActive(true);
         m_ResultsTweenId = LeanTween.alphaCanvas(m_ResultGroup, 1f, 1f)
