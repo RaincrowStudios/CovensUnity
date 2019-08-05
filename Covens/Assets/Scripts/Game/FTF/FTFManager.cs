@@ -5,6 +5,7 @@ using UnityEngine.UI;
 using Newtonsoft.Json;
 using TMPro;
 using Raincrow.Maps;
+using Raincrow.Chat;
 
 public class FTFManager : MonoBehaviour
 {
@@ -1373,6 +1374,9 @@ public class FTFManager : MonoBehaviour
                         false,
                         false
                     );
+
+                    //
+                    ChatManager.InitChat();
                 }
                 else
                 {

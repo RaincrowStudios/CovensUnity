@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
+using Raincrow.Chat;
+using Raincrow.Chat.UI;
 
 public class UIMain : MonoBehaviour
 {
@@ -24,6 +26,7 @@ public class UIMain : MonoBehaviour
     [SerializeField] private Button m_SummonButton;
     [SerializeField] private Button m_StoreButton;
     [SerializeField] private Button m_LeaderboardButton;
+    [SerializeField] private Button m_ChatButton;
 
 
     [Header("Screens")]
@@ -48,6 +51,7 @@ public class UIMain : MonoBehaviour
         m_SummonButton.onClick.AddListener(OnClickSummoning);
         m_StoreButton.onClick.AddListener(OnClickStore);
         m_LeaderboardButton.onClick.AddListener(OnClickLeaderboards);
+        m_ChatButton.onClick.AddListener(OnClickChat);
     }
 
     private void OnClickLeaderboards()
@@ -119,5 +123,11 @@ public class UIMain : MonoBehaviour
     private void OnClickStore()
     {
         ShopManager.Instance.Open();
+    }
+
+    private void OnClickChat()
+    {
+        UIGlobalPopup.ShowError(null, "not implemented");
+        //UIChat.Open();
     }
 }

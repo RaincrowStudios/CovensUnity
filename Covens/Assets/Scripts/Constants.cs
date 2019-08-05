@@ -115,7 +115,7 @@ public class CovenConstants : MonoBehaviour
             }
             else if (UnityEditor.EditorPrefs.GetString("chat") == "Release")
             {
-                return "http://35.227.88.204:8083/socket.io/";
+                return "http://35.227.88.204:8083/socket.io/?";
             }
             else if (UnityEditor.EditorPrefs.GetString("chat") == "Gustavo")
             {
@@ -123,10 +123,10 @@ public class CovenConstants : MonoBehaviour
             }
             else
             {
-                return "http://35.196.97.86:8083/socket.io/";
+                return "http://35.196.97.86:8083/socket.io/?";
             }
 #elif PRODUCTION
-            return "http://35.227.88.204:8083/socket.io/";
+            return "http://35.227.88.204:8083/socket.io/?";
 #else
             return "http://35.196.97.86:8083/socket.io/";
 #endif

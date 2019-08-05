@@ -1,4 +1,5 @@
 ﻿using Raincrow;
+using Raincrow.Chat;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -31,7 +32,6 @@ public class GameStartup : MonoBehaviour
         DownloadManager.OnDownloadError += OnAssetDownloadError;
         DownloadManager.OnDownloadFinish += OnAssetDownloadFinish;
         DownloadManager.OnDownloadsComplete += OnAllDownloadsCompleted;
-
     }
 
     private void OnDisable()
@@ -340,6 +340,7 @@ public class GameStartup : MonoBehaviour
         else
         {
             SocketClient.Instance.InitiateSocketConnection();
+            ChatManager.InitChat();
         }
     }
 }

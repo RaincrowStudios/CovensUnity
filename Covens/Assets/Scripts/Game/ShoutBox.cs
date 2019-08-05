@@ -31,20 +31,23 @@ public class ShoutBox : MonoBehaviour
 
     public void OnSend()
     {
-        //		shoutButton.gameObject.SetActive (true);
         inputField.gameObject.SetActive(false);
         sendButton.SetActive(false);
-        var data = new { shout = inputField.text };
-        APIManager.Instance.Post("/map/shout", JsonConvert.SerializeObject(data), ReceiveData);
-        StartCoroutine(ReEnableSendButton());
-    }
 
-    public void ReceiveData(string response, int code)
-    {
-        if (code == 200)
+        string data = $"{{\"message\":\"{inputField.text}\"}}";
+
+        APIManager.Instance.Post("character/shout", data, (response, result) =>
         {
-            Debug.Log("success");
-        }
+            if (result == 200)
+            {
+
+            }
+            else
+            {
+                Debug.LogError("shout error\n" + response);
+            }
+        });
+        StartCoroutine(ReEnableSendButton());
     }
 
     IEnumerator ReEnableSendButton()

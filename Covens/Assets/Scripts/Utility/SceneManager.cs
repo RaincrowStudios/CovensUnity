@@ -18,6 +18,7 @@ namespace Raincrow
             COVEN_MANAGEMENT,
             DAILY_QUESTS,
             SPELLCAST_BOOK,
+            CHAT,
         }
 
         private static Dictionary<Scene, string> m_SceneNames = new Dictionary<Scene, string>
@@ -28,7 +29,8 @@ namespace Raincrow
             {Scene.PLACE_OF_POWER,      "PlaceOfPower"},
             {Scene.COVEN_MANAGEMENT,    "CovenManagement" },
             {Scene.DAILY_QUESTS,        "DailyQuests" },
-            {Scene.SPELLCAST_BOOK,      "SpellcastBook" }
+            {Scene.SPELLCAST_BOOK,      "SpellcastBook" },
+            {Scene.CHAT,                "Chat" }
         };
 
         private static SceneManager m_Instance;

@@ -4,7 +4,6 @@ using UnityEngine.UI;
 using Newtonsoft.Json;
 using System;
 using TMPro;
-using Raincrow.Chat.UI;
 
 public class PlayerManagerUI : UIAnimationManager
 {
@@ -43,10 +42,7 @@ public class PlayerManagerUI : UIAnimationManager
     public GameObject DeathReason;
     public Text deathDesc;
     public Text deathblessing;
-    public Button ChatButton;
-
-    [SerializeField] private UIChat uiChat;
-
+    
     bool isDay = true;
     bool cancheck = true;
 
@@ -87,11 +83,6 @@ public class PlayerManagerUI : UIAnimationManager
         SetupUI();
     }
 
-    public void SetupChatAction()
-    {
-        Debug.Log("ADDED CHAT ACTION");
-        ChatButton.onClick.AddListener(() => uiChat.Show());
-    }
     // ___________________________________________ Main Player UI ________________________________________________________________________________________________
 
     private void SetupUI()

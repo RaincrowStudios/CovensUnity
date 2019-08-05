@@ -79,6 +79,30 @@ namespace Raincrow.Chat.UI
         private Coroutine m_UpdateTimestampCoroutine;
         private Coroutine m_WaitInputCooldownCoroutine;
 
+        private static UIChat m_Instance;
+
+        public static void Open()
+        {
+            if (m_Instance != null)
+            {
+                m_Instance.Show();
+            }
+            else
+            {
+                //load the coven scene
+                LoadingOverlay.Show();
+                SceneManager.LoadSceneAsync(
+                    SceneManager.Scene.CHAT,
+                    UnityEngine.SceneManagement.LoadSceneMode.Additive,
+                    (progress) => { },
+                    () =>
+                    {
+                        LoadingOverlay.Hide();
+                        m_Instance.Show();
+                    });
+            }
+        }
+
         public void Show()
         {
             AnimateShow(() => MapsAPI.Instance.HideMap(true));
@@ -95,7 +119,6 @@ namespace Raincrow.Chat.UI
 
         private void RefreshView(bool repopulateChatItems = false)
         {
-
             isReconnecting = false;
             EnableReconnectOverlay(false);
             ShowLoading(false);
@@ -182,20 +205,7 @@ namespace Raincrow.Chat.UI
 
             isReconnecting = true;
 
-            string covenId = string.Empty;
-            if (TeamManager.MyCovenId != null)
-            {
-                covenId = TeamManager.MyCovenId;
-            }
-
-            ChatManager.InitChat(new ChatPlayer
-            {
-                id = PlayerDataManager.playerData.instance,
-                degree = PlayerDataManager.playerData.degree,
-                level = PlayerDataManager.playerData.level,
-                name = PlayerDataManager.playerData.name,
-                avatar = PlayerDataManager.playerData.avatar,
-            }, covenId, PlayerDataManager.playerData.covenId);
+            ChatManager.InitChat();
         }
 
         private IEnumerator WaitCooldownInput()
@@ -375,7 +385,7 @@ namespace Raincrow.Chat.UI
 
         private void Awake()
         {
-            //DontDestroyOnLoad(this.gameObject);
+            m_Instance = this;
 
             //setup UI to default disabled state
             _loading.gameObject.SetActive(false);
@@ -416,6 +426,18 @@ namespace Raincrow.Chat.UI
             ChatManager.OnDisconnected += ShowReconnectOverlay;
             ChatManager.OnLeaveChatRequested += OnLeaveChatRequested;
             ChatManager.OnEnterCovenChat += OnEnterCovenChat;
+
+            DownloadedAssets.OnWillUnloadAssets += DownloadedAssets_OnWillUnloadAssets;
+        }
+
+        private void DownloadedAssets_OnWillUnloadAssets()
+        {
+            if (_isOpen)
+                return;
+
+            DownloadedAssets.OnWillUnloadAssets -= DownloadedAssets_OnWillUnloadAssets;
+            SceneManager.UnloadScene(SceneManager.Scene.CHAT, null, null);
+
         }
 
         private void AnimateShow(System.Action onComplete)

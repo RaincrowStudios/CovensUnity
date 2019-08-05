@@ -8,7 +8,6 @@ namespace Raincrow.Chat
 {
     public static class ChatManager
     {
-        private static UIChat ChatInstance;
         private static SocketManager SocketManager;
         private static Socket WorldSocket;
         private static Socket CovenSocket;
@@ -34,7 +33,7 @@ namespace Raincrow.Chat
         };
         private static Dictionary<ChatCategory, List<ChatMessage>> m_Messages = new Dictionary<ChatCategory, List<ChatMessage>>
         {
-            //{ ChatCategory.NONE, new List<ChatMessage>() },
+           // { ChatCategory.NONE, new List<ChatMessage>() },
             { ChatCategory.SUPPORT, new List<ChatMessage>() },
             { ChatCategory.WORLD, new List<ChatMessage>() },
             { ChatCategory.COVEN, new List<ChatMessage>() },
@@ -51,15 +50,35 @@ namespace Raincrow.Chat
         public static event System.Action<ChatCategory> OnLeaveChatSuccess;
         public static event System.Action<string, string> OnEnterCovenChat;
 
+        public static void InitChat()
+        {
+            Debug.LogError("TODO: CHAT");
+            return;
+
+            string covenId = string.Empty;
+            if (string.IsNullOrEmpty(TeamManager.MyCovenId) == false)
+            {
+                covenId = TeamManager.MyCovenId;
+            }
+
+            InitChat(
+                new ChatPlayer
+                {
+                    id = PlayerDataManager.playerData.instance,
+                    degree = PlayerDataManager.playerData.degree,
+                    level = PlayerDataManager.playerData.level,
+                    name = PlayerDataManager.playerData.name,
+                    avatar = PlayerDataManager.playerData.bodyType,
+                }, 
+                covenId, 
+                TeamManager.MyCovenInfo.name
+            );
+        }
+
         public static void InitChat(ChatPlayer player, string covenId = null, string covenName = null)
         {
             if (!Connected)
             {
-                if (ChatInstance == null)
-                {
-                    ChatInstance = Object.FindObjectOfType<UIChat>();
-                }
-
                 Player = player;
                 CovenName = covenName;
                 CovenId = covenId;
@@ -73,7 +92,7 @@ namespace Raincrow.Chat
                     {
                         Encoder = new JsonDotNetEncoder()
                     };
-                    SocketManager.Socket.On(SocketIOEventTypes.Error, (a, b, c) => OnError(ChatCategory.WORLD, a, b, c));
+                    SocketManager.Socket.On(SocketIOEventTypes.Error, (a, b, c) => OnError(ChatCategory.NONE, a, b, c));
                     SocketManager.Socket.On(SocketIOEventTypes.Connect, OnConnect);
                     SocketManager.Socket.On(SocketIOEventTypes.Disconnect, OnDisconnect);
                 }                

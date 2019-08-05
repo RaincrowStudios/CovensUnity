@@ -53,6 +53,12 @@ public class EditorScenes : MonoBehaviour
         if (EditorSceneManager.SaveCurrentModifiedScenesIfUserWantsTo())
             EditorSceneManager.OpenScene("Assets/Scenes/SpellcastBook.unity");
     }
+    [MenuItem("Scenes/Screens/Chat")]
+    static void ChatScene()
+    {
+        if (EditorSceneManager.SaveCurrentModifiedScenesIfUserWantsTo())
+            EditorSceneManager.OpenScene("Assets/Scenes/Chat.unity");
+    }
 
     [MenuItem("Tools/Play")]
 	static void PlayTest()
