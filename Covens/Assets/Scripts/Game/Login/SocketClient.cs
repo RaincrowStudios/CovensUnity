@@ -16,7 +16,7 @@ public class SocketClient : MonoBehaviour
     private SocketManager _socketManager;
     private bool _isRefreshingConnection = false;
 
-    public Queue<CommandResponse> responsesQueue = new Queue<CommandResponse>();    
+    public Queue<CommandResponse> responsesQueue = new Queue<CommandResponse>();
 
     private static Dictionary<string, IGameEventHandler> m_EventActionDictionary = new Dictionary<string, IGameEventHandler>
     {
@@ -33,6 +33,11 @@ public class SocketClient : MonoBehaviour
         { ChangeDegreeHandler.EventName,        new ChangeDegreeHandler()   },
         { ShoutHandler.EventName,               new ShoutHandler()          },
         { TickSpellHandler.EventName,           new TickSpellHandler()      },
+        { MoveTokenHandlerPOP.EventName,        new MoveTokenHandlerPOP()   },
+        { AddWitchHandlerPOP.EventName,         new AddWitchHandlerPOP()    },
+        { AddSpiritHandlerPOP.EventName,        new AddSpiritHandlerPOP()   },
+        { RemoveTokenHandlerPOP.EventName,      new RemoveTokenHandlerPOP() },
+        
 
         //{ "map_energy_change",          OnMapEnergyChange.HandleEvent },
         //{ "map_token_move",             OnMapTokenMove.HandleEvent },
@@ -47,7 +52,7 @@ public class SocketClient : MonoBehaviour
         //{ "map_channel_start",          SpellChanneling.OnMapChannelingStart },
         //{ "map_channel_end",            SpellChanneling.OnMapChannelingFinish },
 
-        ////{ "character_new_signature",  OnSignatureDiscovered.HandleEvent },
+        //{ "character_new_signature",  OnSignatureDiscovered.HandleEvent },
         //{ "character_death",            OnCharacterDeath.HandleEvent },
         //{ "character_silver_add",       OnCharacterGainSilver.HandleEvent },
         //{ "character_xp_gain",          OnCharacterXpGain.HandleEvent },
@@ -64,7 +69,7 @@ public class SocketClient : MonoBehaviour
 
         //{ "character_daily_progress",   OnCharacterDailyProgress.HandleEvent },
         //{ "character_alignment_change", OnCharacterAlignmentChange.HandleEvent},
-        ////{ "character_spirit_expire",  OnCharacterSpiritExpired.HandleEvent },
+        //{ "character_spirit_expire",  OnCharacterSpiritExpired.HandleEvent },
         //{ "character_spirit_sentinel",  OnCharacterSpiritSentinel.HandleEvent },
         //{ "character_spirit_summoned",  OnCharacterSpiritSummoned.HandleEvent },
         //{ "character_creatrix_add",     OnCreatrixGift.HandleEvent },
@@ -144,7 +149,7 @@ public class SocketClient : MonoBehaviour
 #else
         _socketManager.Open();
 #endif
-    }    
+    }
 
     #region Socket 
 
@@ -173,7 +178,7 @@ public class SocketClient : MonoBehaviour
                 Data = data
             };
             responsesQueue.Enqueue(response);
-        }   
+        }
     }
 
     private void OnError(Socket socket, Packet packet, object[] args)
@@ -203,7 +208,7 @@ public class SocketClient : MonoBehaviour
         }
     }
 
-#endregion
+    #endregion
 
     private void DisconnectFromSocket()
     {

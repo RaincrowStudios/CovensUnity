@@ -40,7 +40,7 @@ namespace Raincrow.Maps
         public bool inMapView { get; set; }
 
         public bool isNull { get { return this == null || this.gameObject == null; } }
-        
+
         public virtual void OnDespawn()
         {
             LeanTween.cancel(m_AlphaTweenId);
@@ -74,7 +74,7 @@ namespace Raincrow.Maps
         protected const string m_ShadowColor = "#C100C8";
         protected const string m_GreyColor = "#00AFE4";
         protected const string m_WhiteColor = "#F48D00";
-        
+
         public float characterAlpha { get; protected set; }
         public float textAlpha { get; protected set; }
         public float alpha { get; protected set; }
@@ -164,7 +164,7 @@ namespace Raincrow.Maps
         {
             if (m_NameBanner == null)
                 return;
-            
+
             Vector2 bannerSize = new Vector2(MapUtils.scale(2.2f, 9.5f, .86f, 8f, preferredWidth), m_NameBanner.size.y);
             m_NameBanner.size = bannerSize;
 
@@ -402,6 +402,13 @@ namespace Raincrow.Maps
                 .uniqueId;
         }
 
+        /// <summary>
+        /// Set the world position of marker (inside pops).
+        /// </summary>
+        public void SetWorldPosition(Vector3 worldPos)
+        {
+            transform.position = worldPos;
+        }
         private struct FXQueueItem
         {
             public SimplePool<Transform> pool;
@@ -510,7 +517,7 @@ namespace Raincrow.Maps
 
 #if UNITY_EDITOR
         [Header("Base Debug")]
-        [SerializeField, Range(0,1)] private float m_DebugFloat;
+        [SerializeField, Range(0, 1)] private float m_DebugFloat;
 
         [ContextMenu("Update energy")]
         private void DebugEnergy()

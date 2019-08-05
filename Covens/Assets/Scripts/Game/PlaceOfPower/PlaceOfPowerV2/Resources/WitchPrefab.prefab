@@ -592,6 +592,7 @@ GameObject:
   m_Component:
   - component: {fileID: 4773263229242675293}
   - component: {fileID: 4880172829232011631}
+  - component: {fileID: -3288868146537212061}
   m_Layer: 20
   m_Name: WitchPrefab
   m_TagString: Untagged
@@ -643,6 +644,18 @@ MonoBehaviour:
   m_IconRenderer: {fileID: 4673837177157030881}
   m_latitude: 0
   m_longitude: 0
+--- !u!114 &-3288868146537212061
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4767689075213191803}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d07daf2749f04884c8e24d932943a4f3, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &4767855693768863817
 GameObject:
   m_ObjectHideFlags: 0

@@ -1,24 +1,38 @@
+using System.Collections;
 using System.Collections.Generic;
 using Raincrow.DynamicPlacesOfPower;
+using Raincrow.Maps;
 using UnityEngine;
+using Raincrow.GameEventResponses;
 
 public class LocationIslandController : MonoBehaviour
 {
     public static LocationIslandController instance { get; private set; }
-    [SerializeField] private LocationData m_LocationData;
-    public static Dictionary<int, LocationIsland> m_islands = new Dictionary<int, LocationIsland>();
-    public int totalIslands = 6;
-    public float distance = 50;
-    [SerializeField] private LineRenderer m_LineRenderer;
+    public static bool inLocation { get; private set; }
+    public static List<Transform> unitPositions { get; private set; }
 
-    public PopCameraController popCameraController { get; private set; }
+    [SerializeField] private LocationData m_LocationData;
+
+    [Header("Debug Parameters")]
+    [SerializeField] private int totalIslands = 6;
+    [SerializeField] private float distance = 50;
+
+    [Header("Prefabs")]
+    [SerializeField] private LineRenderer m_LinePrefab;
+
+    [Header("Scripts")]
+    [SerializeField] private PopCameraController popCameraController;
+    [SerializeField] private LocationUnitSpawner locationUnitSpawner;
 
     void Awake()
     {
         instance = this;
+        GenerateFakeData();
+    }
+
+    private void GenerateFakeData()
+    {
         m_LocationData = new LocationData();
-        popCameraController = GameObject.FindObjectOfType<PopCameraController>().GetComponent<PopCameraController>();
-        // Setup fake data
         for (int i = 0; i < totalIslands; i++)
         {
             int range = Random.Range(0, 3);
@@ -33,7 +47,37 @@ public class LocationIslandController : MonoBehaviour
         }
     }
 
-    void Start()
+    IEnumerator Start()
+    {
+        yield return new WaitForSeconds(1.5f);
+        CreateIslands(m_LocationData);
+    }
+
+    private void CreateIslands(LocationData locationData)
+    {
+        CreateGuardianSpirit();
+
+        float angleStep = 360 / locationData.islands.Count;
+        float previousAngle = 0;
+        unitPositions = new List<Transform>();
+        foreach (var item in locationData.islands)
+        {
+            LocationIsland island = SpawnIsland(previousAngle);
+            unitPositions.AddRange(island.Setup(distance));
+            previousAngle += angleStep;
+        }
+        m_LinePrefab.positionCount = locationData.islands.Count;
+        LeanTween.value(0, 1, 1).setOnUpdate((float value) =>
+        {
+            transform.localEulerAngles = new Vector3(0, Mathf.Lerp(0, 30, value));
+            for (int i = 0; i < transform.childCount; i++)
+            {
+                m_LinePrefab.SetPosition(i, transform.GetChild(i).GetChild(0).position);
+            }
+        }).setEase(LeanTweenType.easeInOutQuad);
+    }
+
+    private void CreateGuardianSpirit()
     {
         var spirit = Instantiate(Resources.Load<Transform>("SpiritPrefab"));
         popCameraController.onUpdate += (x, y, z) =>
@@ -42,45 +86,45 @@ public class LocationIslandController : MonoBehaviour
         };
     }
 
-    void OnGUI()
+    private LocationIsland SpawnIsland(float previousAngle)
     {
-        if (GUI.Button(new Rect(10, 70, 50, 30), "Create"))
+        LocationIsland island = Instantiate(Resources.Load<LocationIsland>("LocationIsland"));
+        island.transform.parent = transform;
+        island.transform.position = Vector3.zero;
+        island.transform.Rotate(0, previousAngle, 0);
+        return island;
+    }
+
+    public static void EnterPOP(LocationData locationData)
+    {
+        MoveTokenHandlerPOP.OnMarkerMovePOP += instance.locationUnitSpawner.MoveMarker;
+        MoveTokenHandlerPOP.OnMarkerMovePOP += instance.locationUnitSpawner.MoveMarker;
+        AddWitchHandlerPOP.OnWitchAddPOP += instance.locationUnitSpawner.AddMarker;
+        AddSpiritHandlerPOP.OnSpiritAddPOP += instance.locationUnitSpawner.AddMarker;
+        instance.popCameraController.onUpdate += UpdateMarkers;
+        instance.CreateIslands(locationData);
+    }
+
+    private static void UpdateMarkers(bool arg1, bool arg2, bool arg3)
+    {
+        if (arg3)
         {
-            foreach (Transform item in transform)
+            foreach (var item in LocationUnitSpawner.Markers)
             {
-                Destroy(item.gameObject);
+                item.Value.characterTransform.rotation = instance.popCameraController.camera.transform.rotation;
             }
-            m_islands.Clear();
-            CreateIslands(m_LocationData);
+
         }
     }
 
-    public void CreateIslands(LocationData locationData)
+    public static void ExitPOP()
     {
-        float angleStep = 360 / locationData.islands.Count;
-        float previousAngle = 0;
-        foreach (var item in locationData.islands)
-        {
-            LocationIsland island = Instantiate(Resources.Load<LocationIsland>("LocationIsland"));
-            island.transform.parent = transform;
-            island.transform.position = Vector3.zero;
-            island.transform.Rotate(0, previousAngle, 0);
-            island.Setup(item.Value.tokenData, distance, popCameraController.camera);
-            previousAngle += angleStep;
-            m_islands.Add(item.Key, island);
-        }
-        m_LineRenderer.positionCount = locationData.islands.Count;
-        LeanTween.value(0, 1, 1).setOnUpdate((float value) =>
-        {
-            transform.localEulerAngles = new Vector3(0, Mathf.Lerp(0, 30, value));
-            for (int i = 0; i < transform.childCount; i++)
-            {
-                m_LineRenderer.SetPosition(i, transform.GetChild(i).GetChild(0).position);
-            }
-        }).setEase(LeanTweenType.easeInOutQuad);
+        MoveTokenHandlerPOP.OnMarkerMovePOP -= instance.locationUnitSpawner.MoveMarker;
+        MoveTokenHandlerPOP.OnMarkerMovePOP -= instance.locationUnitSpawner.MoveMarker;
+        AddWitchHandlerPOP.OnWitchAddPOP -= instance.locationUnitSpawner.AddMarker;
+        AddSpiritHandlerPOP.OnSpiritAddPOP -= instance.locationUnitSpawner.AddMarker;
+        instance.popCameraController.onUpdate -= UpdateMarkers;
     }
-
-
 }
 
 public class LocationData
@@ -92,3 +136,4 @@ public class LocationIslandData
 {
     public Dictionary<int, string> tokenData = new Dictionary<int, string>();
 }
+
