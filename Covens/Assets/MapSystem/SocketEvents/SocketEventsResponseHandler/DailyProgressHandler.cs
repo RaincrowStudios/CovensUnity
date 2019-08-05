@@ -32,13 +32,16 @@ namespace Raincrow.GameEventResponses
             switch (data.daily)
             {
                 case "gather":
-                    PlayerDataManager.playerData.quest.gather.count += data.count;
+                    PlayerDataManager.playerData.quest.gather.count = data.count;
+                    PlayerDataManager.playerData.quest.gather.completed = data.completed;
                     break;
                 case "explore":
-                    PlayerDataManager.playerData.quest.explore.count += data.count;
+                    PlayerDataManager.playerData.quest.explore.count = data.count;
+                    PlayerDataManager.playerData.quest.explore.completed = data.completed;
                     break;
                 case "spellcraft":
-                    PlayerDataManager.playerData.quest.spell.count += data.count;
+                    PlayerDataManager.playerData.quest.spell.count = data.count;
+                    PlayerDataManager.playerData.quest.spell.completed = data.completed;
                     break;
             }
 
