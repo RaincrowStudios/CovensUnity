@@ -1,5 +1,4 @@
-﻿
-using Newtonsoft.Json;
+﻿using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using UnityEngine;
@@ -71,7 +70,9 @@ public abstract class Token
     [JsonIgnore]
     public string Id => instance;
     [JsonIgnore]
-    public int position => 0;
+    public int position;
+    [JsonIgnore]
+    public int island;
 }
 
 public class CollectableToken : Token

@@ -10,7 +10,6 @@ namespace Raincrow.GameEventResponses
         {
             [JsonProperty("_id")]
             public string instance;
-
             public float longitude;
             public float latitude;
             public double timestamp;

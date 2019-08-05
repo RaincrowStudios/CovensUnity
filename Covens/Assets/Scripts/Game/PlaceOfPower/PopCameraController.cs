@@ -222,14 +222,6 @@ namespace Raincrow.DynamicPlacesOfPower
             m_Camera.fieldOfView = Mathf.Lerp(m_MinFOV, m_MaxFOV, m_CurrentZoom);
             m_AnglePivot.localEulerAngles = new Vector3(Mathf.Lerp(m_MinAngle, m_MaxAngle, m_CurrentZoom), 0, 0);
 
-
-            //if (m_PositionChanged)
-            //    onChangePosition?.Invoke();
-            //if (m_ZoomChanged)
-            //    onChangeZoom?.Invoke();
-            //if (m_RotationChanged)
-            //    onChangeRotation?.Invoke();
-
             if (m_PositionChanged || m_ZoomChanged || m_RotationChanged)
             {
                 onUpdate?.Invoke(m_PositionChanged, m_ZoomChanged, m_RotationChanged);
