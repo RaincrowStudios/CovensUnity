@@ -349,9 +349,9 @@ public class QuestLogUI : UIAnimationManager
         var progress = PlayerDataManager.playerData.quest.spell;
 
         Desc.text = LocalizeLookUp.GetText("daily_casting_upon");
-        if (spellcraft.type != "")
+        if (string.IsNullOrEmpty(spellcraft.type) == false)
         {
-            if (spellcraft.relation != "")
+            if (string.IsNullOrEmpty(spellcraft.relation) == false)
             {
                 if (spellcraft.relation == "ally")
                 {
@@ -388,7 +388,7 @@ public class QuestLogUI : UIAnimationManager
         {
             Desc.text += " " + LocalizeLookUp.GetText("daily_casting_location").Replace("{{Location}}", " " + LocalizeLookUp.GetCountryName(spellcraft.country));
         }
-        if (spellcraft.ingredient != "")
+        if (string.IsNullOrEmpty(spellcraft.ingredient) == false)
         {
             Desc.text += " " + LocalizeLookUp.GetText("daily_casting_using").Replace("{{ingredient}}", " " + spellcraft.ingredient);
         }
