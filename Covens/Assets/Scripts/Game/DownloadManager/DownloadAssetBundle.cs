@@ -79,7 +79,8 @@ public struct IngredientData
 {
     private static readonly Dictionary<string, IngredientType> m_CollectableTypeMap = new Dictionary<string, IngredientType>
     {
-        { "", IngredientType.none },
+        { null, IngredientType.none  },
+        { "",   IngredientType.none },
         { "herb", IngredientType.herb },
         { "tool", IngredientType.tool },
         { "gem", IngredientType.gem}

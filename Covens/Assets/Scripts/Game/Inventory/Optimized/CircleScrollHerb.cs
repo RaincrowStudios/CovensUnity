@@ -119,7 +119,7 @@ public class CircleScrollHerb : MonoBehaviour
                     {
                         k = length + k;
                     }
-                    iData.Setup(invItems[k].count, invItems[k].collectible, k);
+                    iData.Setup(invItems[k].count, invItems[k].id, k);
                 }
             }
             if (movementSpeed > 0 && canRotate)
@@ -134,7 +134,7 @@ public class CircleScrollHerb : MonoBehaviour
                     {
                         k = k - length;
                     }
-                    iData.Setup(invItems[k].count, invItems[k].collectible, k);
+                    iData.Setup(invItems[k].count, invItems[k].id, k);
                 }
             }
         }
@@ -160,7 +160,7 @@ public class CircleScrollHerb : MonoBehaviour
             g.transform.localEulerAngles = new Vector3(0, 0, i * offset);
             g.transform.transform.localScale = Vector3.one;
             items[i] = g.transform;
-            g.GetComponent<InventoryItemManager>().Setup(invItems[i].count, invItems[i].collectible, i);
+            g.GetComponent<InventoryItemManager>().Setup(invItems[i].count, invItems[i].id, i);
         }
         transform.Rotate(0, 0, -40);
     }

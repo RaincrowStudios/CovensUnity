@@ -569,7 +569,7 @@ public class UISpellcasting : UIInfoPanel
 
     private void OnSelectInventoryItem(UIInventoryWheelItem item)
     {
-        if (item.itemData.type != "?" || item.inventoryItem == null)
+        if (item.itemData.type != "" || item.inventoryItemId == null)
         {
             //resets the picker
             item.SetIngredientPicker(0);
@@ -596,19 +596,19 @@ public class UISpellcasting : UIInfoPanel
 
         List<string> requiredIngredients = m_SelectedSpell.ingredients == null ? new List<string>() : new List<string>(m_SelectedSpell.ingredients);
 
-        int maxAmount = Mathf.Min(5, PlayerDataManager.playerData.GetIngredient(item.inventoryItem));
+        int maxAmount = Mathf.Min(5, PlayerDataManager.playerData.GetIngredient(item.inventoryItemId));
 
         if (item.itemData.type == "herb")
         {
-            if (m_HerbRequired && requiredIngredients.Contains(item.inventoryItem) == false)
+            if (m_HerbRequired && requiredIngredients.Contains(item.inventoryItemId) == false)
                 return;
 
             //set the new selected ingredient
-            if (item.inventoryItem != m_SelectedHerb)
+            if (item.inventoryItemId != m_SelectedHerb)
             {
                 if (m_SelectedHerb == null)
                 {
-                    m_SelectedHerb = item.inventoryItem;
+                    m_SelectedHerb = item.inventoryItemId;
                     m_SelectedHerbAmount = Mathf.Min(1, maxAmount);
                     item.SetIngredientPicker(m_SelectedHerbAmount);
                 }
@@ -633,15 +633,15 @@ public class UISpellcasting : UIInfoPanel
         }
         else if (item.itemData.type == "tool")
         {
-            if (m_ToolRequired && requiredIngredients.Contains(item.inventoryItem) == false)
+            if (m_ToolRequired && requiredIngredients.Contains(item.inventoryItemId) == false)
                 return;
 
-            if (item.inventoryItem != m_SelectedTool)
+            if (item.inventoryItemId != m_SelectedTool)
             {
                 if (m_SelectedTool == null)
                 {
                     //m_LastToolItem = item;
-                    m_SelectedTool = item.inventoryItem;
+                    m_SelectedTool = item.inventoryItemId;
                     m_SelectedToolAmount = Mathf.Min(1, maxAmount);
                     item.SetIngredientPicker(m_SelectedToolAmount);
                 }
@@ -666,15 +666,15 @@ public class UISpellcasting : UIInfoPanel
         }
         else if (item.itemData.type == "gem")
         {
-            if (m_GemRequired && requiredIngredients.Contains(item.inventoryItem) == false)
+            if (m_GemRequired && requiredIngredients.Contains(item.inventoryItemId) == false)
                 return;
 
-            if (item.inventoryItem != m_SelectedGem)
+            if (item.inventoryItemId != m_SelectedGem)
             {
                 if (m_SelectedGem == null)
                 {
                     //m_LastGemItem = item;
-                    m_SelectedGem = item.inventoryItem;
+                    m_SelectedGem = item.inventoryItemId;
                     m_SelectedGemAmount = Mathf.Min(1, maxAmount);
                     item.SetIngredientPicker(m_SelectedGemAmount);
                 }

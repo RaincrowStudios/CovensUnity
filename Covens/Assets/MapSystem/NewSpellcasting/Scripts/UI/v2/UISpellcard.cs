@@ -28,6 +28,7 @@ public class UISpellcard : EnhancedScrollerCellView
     [SerializeField] private Sprite m_WhiteCrest;
     
     public SpellData Spell { get; private set; }
+
     private System.Action<int> m_OnClickSchool;
     private System.Action<UISpellcard> m_OnClickCard;
     private System.Action<UISpellcard> m_OnClickGlyph;
@@ -81,7 +82,17 @@ public class UISpellcard : EnhancedScrollerCellView
 
     public void UpdateCancast(CharacterMarkerData targetData, IMarker targetMarker)
     {
-
+        Spellcasting.SpellState canCast = Spellcasting.CanCast(Spell, targetMarker, targetData);
+        if (canCast == Spellcasting.SpellState.CanCast)
+        {
+            m_SpellFrame.gameObject.SetActive(true);
+            m_SpellButton.interactable = true;
+        }
+        else
+        {
+            m_SpellFrame.gameObject.SetActive(false);
+            m_SpellButton.interactable = false;
+        }
     }
 
     private void OnClickSchool()
@@ -110,5 +121,10 @@ public class UISpellcard : EnhancedScrollerCellView
         }
         
         m_TweenId = LeanTween.alphaCanvas(m_CanvasGroup, a, time).setEaseOutCubic().uniqueId;
+    }
+
+    public void SetInteractable(bool interactable)
+    {
+        m_CanvasGroup.interactable = interactable;
     }
 }

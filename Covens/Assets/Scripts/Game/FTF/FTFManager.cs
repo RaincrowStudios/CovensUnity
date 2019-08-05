@@ -1351,11 +1351,11 @@ public class FTFManager : MonoBehaviour
                     List<CollectableItem> gems = update.GetAllIngredients(IngredientType.gem);
                     
                     foreach (var item in herbs)
-                        PlayerDataManager.playerData.SetIngredient(item.collectible, item.count);
+                        PlayerDataManager.playerData.SetIngredient(item.id, item.count);
                     foreach (var item in tools)
-                        PlayerDataManager.playerData.SetIngredient(item.collectible, item.count);
+                        PlayerDataManager.playerData.SetIngredient(item.id, item.count);
                     foreach (var item in gems)
-                        PlayerDataManager.playerData.SetIngredient(item.collectible, item.count);
+                        PlayerDataManager.playerData.SetIngredient(item.id, item.count);
 
                     PlayerDataManager.playerData.xp = update.xp;
                     PlayerDataManager.playerData.spirits = update.spirits;

@@ -162,6 +162,8 @@ public class UIInventory : MonoBehaviour
 
     private void OnClickClose()
     {
+        Close();
+
         if (m_OnClickClose != null)
             m_OnClickClose?.Invoke();
     }
@@ -186,7 +188,6 @@ public class UIInventory : MonoBehaviour
         m_GemsWheel.LockIngredient(null, 0);
 
         IngredientType type;
-
         for (int i = 0; i < ingredients.Length; i++)
         {
             type = DownloadedAssets.GetCollectable(ingredients[i]).Type;

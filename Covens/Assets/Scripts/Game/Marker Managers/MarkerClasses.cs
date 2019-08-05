@@ -225,11 +225,11 @@ public class PlayerData : WitchMarkerData
         m_GemsDict = new Dictionary<string, int>();
 
         foreach (var item in m_Herbs)
-            m_HerbsDict[item.collectible] = item.count;
+            m_HerbsDict[item.id] = item.count;
         foreach (var item in m_Tools)
-            m_ToolsDict[item.collectible] = item.count;
+            m_ToolsDict[item.id] = item.count;
         foreach (var item in m_Gems)
-            m_GemsDict[item.collectible] = item.count;
+            m_GemsDict[item.id] = item.count;
         
         Debug.LogError("TODO: GET BLESSINGS");
         blessing = new Blessing { };
@@ -332,7 +332,7 @@ public class PlayerData : WitchMarkerData
 
             result.Add(new CollectableItem
             {
-                collectible = pair.Key,
+                id = pair.Key,
                 count = pair.Value
             });
         }

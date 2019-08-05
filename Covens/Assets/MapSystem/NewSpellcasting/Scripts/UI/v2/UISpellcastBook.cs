@@ -12,6 +12,7 @@ public class UISpellcastBook : MonoBehaviour, IEnhancedScrollerDelegate
     [SerializeField] private Canvas m_Canvas;
     [SerializeField] private GraphicRaycaster m_InputRaycaster;
     [SerializeField] private EnhancedScroller m_Scroller;
+    [SerializeField] private CanvasGroup m_ScrollerCanvasGroup;
     [SerializeField] private UISpellcard m_CardPrefab;
 
     [Header("Buttons")]
@@ -25,8 +26,8 @@ public class UISpellcastBook : MonoBehaviour, IEnhancedScrollerDelegate
 
     private static UISpellcastBook m_Instance;
 
-    private List<SpellData> m_Spells;
-    private List<SpellData> m_ScrollerSpells = new List<SpellData>();    private int? m_SelectedSchool = null;    private SpellData m_SelectedSpell = null;    private System.Action<SpellData, List<spellIngredientsData>> m_OnConfirmSpell;    private System.Action m_OnBack;        public static bool IsOpen
+    private List<SpellData> m_PlayerSpells;
+    private List<SpellData> m_ScrollerSpells = new List<SpellData>();    private IMarker m_TargetMarker;    private CharacterMarkerData m_TargetData;    private int? m_SelectedSchool = null;    private SpellData m_SelectedSpell = null;    private int m_SelectedSpellIndex = 0;    private CollectableItem m_Herb;    private CollectableItem m_Tool;    private CollectableItem m_Gem;    private System.Action<SpellData, List<spellIngredientsData>> m_OnConfirmSpell;    private System.Action m_OnBack;        public static bool IsOpen
     {
         get
         {
@@ -96,10 +97,13 @@ public class UISpellcastBook : MonoBehaviour, IEnhancedScrollerDelegate
         System.Action<SpellData, List<spellIngredientsData>> onConfirm, 
         System.Action onBack = null)
     {
+        m_TargetMarker = marker;
+        m_TargetData = target;
+
         m_OnConfirmSpell = onConfirm;
         m_OnBack = onBack;
 
-        m_Spells = spells;
+        m_PlayerSpells = spells;
         SetSchool(m_SelectedSchool);
 
         m_Canvas.enabled = true;
@@ -113,6 +117,8 @@ public class UISpellcastBook : MonoBehaviour, IEnhancedScrollerDelegate
 
         m_OnConfirmSpell = null;
         m_OnBack = null;
+
+        OnSelectCard(null);
     }
 
     private void SetSchool(int? school)
@@ -123,7 +129,7 @@ public class UISpellcastBook : MonoBehaviour, IEnhancedScrollerDelegate
         m_SelectedSchool = school;
 
         m_ScrollerSpells.Clear();
-        foreach(SpellData spell in m_Spells)
+        foreach(SpellData spell in m_PlayerSpells)
         {
             if (school == null || school == spell.school)
                 m_ScrollerSpells.Add(spell);
@@ -134,24 +140,58 @@ public class UISpellcastBook : MonoBehaviour, IEnhancedScrollerDelegate
 
     private void OnSelectCard(UISpellcard card)
     {
-        if (m_SelectedSpell == null || m_SelectedSpell.id != card.Spell.id)
-            m_SelectedSpell = card.Spell;
-        else
-            m_SelectedSpell = null;
+        //if (card != null && m_SelectedSpell != null && m_SelectedSpell.id == card.Spell.id)
+        //    return;
 
+        if (card == null || m_SelectedSpell != null)
+        {
+            m_SelectedSpell = null;
+        }
+        else
+        {
+            m_SelectedSpell = card.Spell;
+            m_SelectedSpellIndex = card.dataIndex;
+        }
+
+        //disable unselected cards
         UISpellcard[] cards = m_Scroller.GetComponentsInChildren<UISpellcard>();
         foreach (UISpellcard _card in cards)
         {
             if (m_SelectedSpell == null || _card.Spell.id == m_SelectedSpell.id)
+            {
                 _card.SetAlpha(1, 1);
+            }
             else
-                _card.SetAlpha(0.65f, 1);
+            {
+                _card.SetAlpha(0.15f, 1);
+            }
+        }
+
+        SetIngredients(m_SelectedSpell == null ? null : m_SelectedSpell.ingredients);
+        EnableInventoryButton(m_SelectedSpell != null);
+
+        m_Scroller.ScrollRect.enabled = true;
+        m_Scroller.JumpToDataIndex(
+            dataIndex: m_SelectedSpellIndex,
+            scrollerOffset: 0.5f,
+            cellOffset: 0.5f,
+            tweenType: EnhancedScroller.TweenType.easeOutCubic,
+            tweenTime: 0.5f,
+            jumpComplete: () => m_Scroller.ScrollRect.enabled = m_SelectedSpell == null
+        );
+    }
+
+    private void UpdateCanCast()
+    {
+        UISpellcard[] cards = m_Scroller.GetComponentsInChildren<UISpellcard>();
+        foreach (UISpellcard card in cards)
+        {
+            card.UpdateCancast(m_TargetData, m_TargetMarker);
         }
     }
 
     private void OnClickCast(UISpellcard card)
     {
-        Debug.LogError("cast " + card.Spell.Name);
         m_OnConfirmSpell?.Invoke(card.Spell, new List<spellIngredientsData>());
         Hide();
     }
@@ -164,16 +204,131 @@ public class UISpellcastBook : MonoBehaviour, IEnhancedScrollerDelegate
             SetSchool(null);
     }
 
-    private void OnClickInventory()
-    {
-        UIGlobalPopup.ShowError(null, "not implemented");
-    }
-
     private void OnClickPortrait()
     {
         m_OnBack?.Invoke();
         Hide();
     }
+
+    #region INVENTORY
+
+    private void OnClickInventory()
+    {
+        if (UIInventory.isOpen)
+            CloseInventory();
+        else
+            OpenInventory();
+    }
+
+    private void EnableInventoryButton(bool enabled)
+    {
+        m_InventoryButton.gameObject.SetActive(enabled);
+    }
+
+    private void OpenInventory()
+    {
+        UIInventory.Instance.Show(OnClickInventoryItem, OnCloseInventory, false, true, false);
+        UIInventory.Instance.LockIngredients(m_SelectedSpell.ingredients, 0);
+        OnOpenInventory();
+    }
+
+    private void CloseInventory()
+    {
+        UIInventory.Instance.Close();
+        OnCloseInventory();
+    }
+
+    private void OnOpenInventory()
+    {
+        //lock scroller
+        m_ScrollerCanvasGroup.interactable = false;
+
+        //move scroller to the right
+        m_Scroller.JumpToDataIndex(
+            dataIndex: m_SelectedSpellIndex,
+            scrollerOffset: 0.75f,
+            cellOffset: 0.5f,
+            tweenType: EnhancedScroller.TweenType.easeOutCubic,
+            tweenTime: 0.5f
+        );        
+    }
+
+    private void OnCloseInventory()
+    {
+        //unlock scroller
+        m_ScrollerCanvasGroup.interactable = true;
+
+        //move scroller to center
+        m_Scroller.JumpToDataIndex(
+            dataIndex: m_SelectedSpellIndex,
+            scrollerOffset: 0.5f,
+            cellOffset: 0.5f,
+            tweenType: EnhancedScroller.TweenType.easeOutCubic,
+            tweenTime: 0.5f
+        );
+    }
+
+    private void OnClickInventoryItem(UIInventoryWheelItem item)
+    {
+        ////just resets if clicking on an empty inventory item
+        //if (item.inventoryItemId == null)
+        //{
+        //    //resets the picker
+        //    item.SetIngredientPicker(0);
+        //    if (item.type == "herb")
+        //        m_Herb = new CollectableItem();
+        //    else if (item.type == "tool")
+        //        m_Tool = new CollectableItem();
+        //    else if (item.type == "gem")
+        //        m_Gem = new CollectableItem();
+
+        //    return;
+        //}
+    }
+
+    private void SetIngredients(string[] ingredients)
+    {
+        m_Herb.id = m_Tool.id = m_Gem.id = null;
+        m_Herb.count = m_Tool.count = m_Gem.count = 0;
+
+        if (ingredients != null)
+        {
+            for (int i = 0; i < ingredients.Length; i++)
+            {
+                IngredientType ingrType = DownloadedAssets.GetCollectable(ingredients[i]).Type;
+
+                if (ingrType == IngredientType.herb)
+                {
+                    m_Herb = new CollectableItem
+                    {
+                        id = ingredients[i],
+                        count = 1
+                    };
+                }
+                else if (ingrType == IngredientType.tool)
+                {
+                    m_Tool = new CollectableItem
+                    {
+                        id = ingredients[i],
+                        count = 1
+                    };
+                }
+                else if (ingrType == IngredientType.gem)
+                {
+                    m_Gem = new CollectableItem
+                    {
+                        id = ingredients[i],
+                        count = 1
+                    };
+                }
+            }
+        }
+
+        if (UIInventory.isOpen)
+            UIInventory.Instance.LockIngredients(ingredients, 0.5f);
+    }
+
+    #endregion
 
     #region ENHANCED SCROLLER
 
@@ -182,10 +337,15 @@ public class UISpellcastBook : MonoBehaviour, IEnhancedScrollerDelegate
         UISpellcard cellView = scroller.GetCellView(m_CardPrefab) as UISpellcard;
         cellView.SetData(m_ScrollerSpells[dataIndex], OnSelectSchool, OnSelectCard, OnClickCast);
 
+        cellView.UpdateCancast(m_TargetData, m_TargetMarker);
         if (m_SelectedSpell == null || m_ScrollerSpells[dataIndex].id == m_SelectedSpell.id)
+        {
             cellView.SetAlpha(1);
+        }
         else
-            cellView.SetAlpha(0.5f);
+        {
+            cellView.SetAlpha(0.15f);
+        }
 
         return cellView;
     }

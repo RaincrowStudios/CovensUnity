@@ -215,6 +215,7 @@ MonoBehaviour:
   m_Canvas: {fileID: 521979827}
   m_InputRaycaster: {fileID: 521979825}
   m_Scroller: {fileID: 1944592249}
+  m_ScrollerCanvasGroup: {fileID: 1944592254}
   m_CardPrefab: {fileID: 4487739848272070082, guid: 04c65750aeab2d54691993bcdfdaca1a,
     type: 3}
   m_PortraitButton: {fileID: 7444550121358189081}
@@ -317,7 +318,7 @@ RectTransform:
   m_AnchorMax: {x: 1, y: 0.5}
   m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 0, y: 532.3}
-  m_Pivot: {x: 0.5, y: 0.5}
+  m_Pivot: {x: 0, y: 0.5}
 --- !u!1 &1144483286
 GameObject:
   m_ObjectHideFlags: 0
@@ -451,6 +452,7 @@ GameObject:
   - component: {fileID: 1944592249}
   - component: {fileID: 1944592251}
   - component: {fileID: 1944592250}
+  - component: {fileID: 1944592254}
   m_Layer: 0
   m_Name: EnhancedScroller
   m_TagString: Untagged
@@ -477,7 +479,7 @@ MonoBehaviour:
     m_Right: 0
     m_Top: 0
     m_Bottom: 0
-  loop: 0
+  loop: 1
   scrollbarVisibility: 2
   snapping: 0
   snapVelocityThreshold: 0
@@ -576,6 +578,18 @@ RectTransform:
   m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
+--- !u!225 &1944592254
+CanvasGroup:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1944592248}
+  m_Enabled: 1
+  m_Alpha: 1
+  m_Interactable: 1
+  m_BlocksRaycasts: 1
+  m_IgnoreParentGroups: 0
 --- !u!1 &2055442588
 GameObject:
   m_ObjectHideFlags: 0
@@ -1348,7 +1362,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   m_Material: {fileID: 10754, guid: 0000000000000000f000000000000000, type: 0}
   m_Color: {r: 0, g: 0, b: 0, a: 0.6627451}
-  m_RaycastTarget: 1
+  m_RaycastTarget: 0
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
@@ -1454,7 +1468,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
-  m_RaycastTarget: 1
+  m_RaycastTarget: 0
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
