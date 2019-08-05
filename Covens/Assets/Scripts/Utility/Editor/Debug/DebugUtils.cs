@@ -3,25 +3,29 @@ using UnityEngine;
 using UnityEditor;
 using Newtonsoft.Json;
 using Raincrow.Chat.UI;
+using UnityEditor.Callbacks;
 
 namespace Raincrow.Test
 {
     public partial class DebugUtils : EditorWindow
     {
+        private static DebugUtils m_Window;
+
         [MenuItem("Tools/DebugUtils")]
         static void Init()
         {
-            DebugUtils window = (DebugUtils)GetWindow(typeof(DebugUtils), false, "Debug Utils");
+            m_Window = (DebugUtils)GetWindow(typeof(DebugUtils), false, "Debug Utils");
         }
 
         private int m_CurrentTab = 0;
-        private string[] m_TabOptions = new string[] { "Users", "Others", "Chat", "Coven" };
+        private string[] m_TabOptions = new string[] { "Users", "Socket", "Others", "Chat", "Coven" };
         private Vector2 m_ScrollPosition = Vector2.zero;
         private Vector3 m_Vector3;
         private float m_Float1;
         private float m_Float2;
         private float m_Float3;
         private string m_SpellId = "spell_hex";
+        DebugUtilsSocket socketDebug = null;
 
         private void OnGUI()
         {
@@ -37,15 +41,21 @@ namespace Raincrow.Test
                         Users();
                         break;
                     case 1:
-                        Others();
+                        if (socketDebug == null)
+                            socketDebug = new DebugUtilsSocket();
+                        socketDebug.Draw();
                         break;
                     case 2:
-                        Chat();
+                        Others();
                         break;
                     case 3:
+                        Chat();
+                        break;
+                    case 4:
                         // Check DebugUtilsCovenManagement file
                         //ShowCovenDebug();
                         break;
+
                 }
             }
         }
@@ -315,60 +325,7 @@ namespace Raincrow.Test
             GUILayout.Space(10);
 
             DrawRequestDebug();
-
-            using (new EditorGUI.DisabledGroupScope(SocketClient.Instance == null || !SocketClient.Instance.IsConnected()))
-            {
-                using (new BoxScope())
-                {
-                    CentralizedLabel("Socket");
-
-                    using (new GUILayout.HorizontalScope())
-                    {
-                        GUILayout.Label("Command Reponse:", GUILayout.Width(40));
-                        m_sCommandResponse = EditorGUILayout.TextField(m_sCommandResponse);
-                    }
-
-                    using (new GUILayout.HorizontalScope())
-                    {
-                        GUILayout.Label("Command Reponse Data:", GUILayout.Width(40));
-                        m_sCommandResponseData = EditorGUILayout.TextField(m_sCommandResponseData);
-                    }
-
-                    if (GUILayout.Button("Send Fake Command Response"))
-                    {
-                        //WSData data = JsonConvert.DeserializeObject<WSData>(m_sCommandResponse);
-                        //data.timestamp = System.DateTime.UtcNow.Subtract(new System.DateTime(1970, 1, 1, 0, 0, 0, 0, System.DateTimeKind.Utc)).TotalMilliseconds;
-                        CommandResponse response = new CommandResponse()
-                        {
-                            Command = m_sCommandResponse,
-                            Data = m_sCommandResponseData
-                        };
-                        SocketClient.Instance.ManageData(response);
-                    }
-                }
-
-                GUILayout.Space(10);
-
-                using (new BoxScope())
-                {
-                    //CentralizedLabel("Items");
-
-                    //using (new GUILayout.HorizontalScope())
-                    //{
-                    //    GUILayout.Label("data:", GUILayout.Width(40));
-                    //    m_sItemData = EditorGUILayout.TextField(m_sItemData);
-                    //}
-
-                    GUILayout.Space(5);
-
-                    if (GUILayout.Button("Add cosmetic"))
-                    {
-                        CosmeticData data = JsonConvert.DeserializeObject<CosmeticData>(m_sItemData);
-                        PlayerDataManager.playerData.inventory.cosmetics.Add(data);
-                    }
-                }
-            }
-
+            
             using (new BoxScope())
             {
                 CentralizedLabel("DateTime");
@@ -448,7 +405,7 @@ namespace Raincrow.Test
                         {
                             if (Spellcasting.CanCast(spell, markers[0]) == Spellcasting.SpellState.CanCast)
                             {
-                                if (markers[0].type == MarkerSpawner.MarkerType.SPIRIT || markers[0].type == MarkerSpawner.MarkerType.WITCH)
+                                if (markers[0].Type == MarkerSpawner.MarkerType.SPIRIT || markers[0].Type == MarkerSpawner.MarkerType.WITCH)
                                     LeanTween.value(0, 0, 0.05f).setOnComplete(() => Spellcasting.CastSpell(spell, markers[0], new List<spellIngredientsData>(), null, null));
                             }
                         }
@@ -459,129 +416,6 @@ namespace Raincrow.Test
                     }
                 }
                 EditorGUI.EndDisabledGroup();
-
-                GUILayout.Space(10);
-                if (GUILayout.Button("Create 30 player"))
-                {
-                    Debug.LogError("DISABLED!");
-                    //if (EditorApplication.isPlaying == false)
-                    //{
-                    //    Debug.LogError("not in playmode");
-                    //    return;
-                    //}
-
-
-                    //int start = 60;
-                    //int end = 150;
-
-
-                    //System.Action<int> createAcc = (idx) => { };
-
-                    //System.Action<int, double, double> createChar = (idx, lng, lat) =>
-                    //{
-                    //    var crateCharacterData = new PlayerCharacterCreateAPI();
-                    //    crateCharacterData.displayName = "fake " + idx.ToString("000");
-                    //    crateCharacterData.latitude = lat;
-                    //    crateCharacterData.longitude = lng;
-                    //    crateCharacterData.male = Random.Range(0, 2) == 0 ? true : false;
-                    //    crateCharacterData.characterSelection = (new string[] 
-                    //    {
-                    //        "femaleAfrican",
-                    //        "femaleEuropean",
-                    //        "femaleOriental",
-                    //        "maleAfrican",
-                    //        "maleEuropean",
-                    //        "maleOriental"
-                    //    })[Random.Range(0,6)];
-
-                    //    APIManager.Instance.Put("create-character",
-                    //        JsonConvert.SerializeObject(crateCharacterData),
-                    //        (_response, _result) =>
-                    //        {
-                    //            if (_result == 200)
-                    //            {
-                    //                Debug.Log("character \"" + crateCharacterData.displayName + "\" created");
-                    //            }
-                    //            else
-                    //            {
-                    //                Debug.Log("failed creating character \"" + crateCharacterData.displayName + $"\". error[{_result}] " + _response);
-                    //            }
-
-                    //            if (idx < end)
-                    //                createAcc(idx + 1);
-
-                    //        }, true, false);
-                    //};
-
-                    //createAcc = (idx) =>
-                    //{
-                    //    float range = 1f / 300f;
-                    //    float lng = GetGPS.longitude + Random.Range(-range, range);
-                    //    range = 1f / 450f;
-                    //    float lat = GetGPS.latitude + Random.Range(-range, range);
-
-                    //    var createAccountdata = new PlayerLoginAPI();
-                    //    createAccountdata.username = "fake" + idx.ToString("000");
-                    //    createAccountdata.password = "password";
-                    //    createAccountdata.game = "covens";
-                    //    createAccountdata.language = Application.systemLanguage.ToString();
-                    //    createAccountdata.latitude = lat;
-                    //    createAccountdata.longitude = lng;
-                    //    createAccountdata.UID = SystemInfo.deviceUniqueIdentifier;
-
-                    //    APIManager.Instance.Put(
-                    //        "create-account",
-                    //        JsonConvert.SerializeObject(createAccountdata),
-                    //        (response, result) =>
-                    //        {
-                    //            if (result == 200)
-                    //            {
-                    //                Debug.Log("account " + createAccountdata.username + " created");
-                    //                var responseData = JsonConvert.DeserializeObject<PlayerLoginCallback>(response);
-                    //                LoginAPIManager.loginToken = responseData.token;
-                    //                LoginAPIManager.wssToken = responseData.wsToken;
-
-                    //                createChar(idx, createAccountdata.longitude, createAccountdata.latitude);
-                    //            }
-                    //            else
-                    //            {
-                    //                Debug.Log("failed creating account " + createAccountdata.username + ". error " + response);
-
-                    //                APIManager.Instance.Post("login", 
-                    //                    JsonConvert.SerializeObject(createAccountdata), (_response, _result) =>
-                    //                    {
-                    //                        if (_result == 200)
-                    //                        {
-                    //                            Debug.Log("logged in as " + createAccountdata.username);
-                    //                            var responseData = JsonConvert.DeserializeObject<PlayerLoginCallback>(_response);
-                    //                            LoginAPIManager.loginToken = responseData.token;
-                    //                            LoginAPIManager.wssToken = responseData.wsToken;
-                    //                            createChar(idx, createAccountdata.longitude, createAccountdata.latitude);
-                    //                        }
-                    //                        else
-                    //                        {
-                    //                            Debug.Log("failed logging in to account " + createAccountdata.username + ". error " + _response);
-                    //                        }
-                    //                    }, false, false);
-
-                    //            }
-                    //        }, false, false);
-                    //};
-                    
-                    ////start creating
-                    //createAcc(start);
-                }
-
-                GUILayout.Space(5);
-                if (GUILayout.Button("get playerdata from server"))
-                {
-                    APIManager.Instance.Get("character/me", (result, response) =>
-                    {
-                        if (response == 200)
-                            result = Newtonsoft.Json.JsonConvert.SerializeObject(Newtonsoft.Json.JsonConvert.DeserializeObject<PlayerData>(result), Formatting.Indented);
-                        Debug.LogError(result);
-                    });
-                }
             }
         }
 
@@ -689,7 +523,7 @@ namespace Raincrow.Test
             return JsonConvert.SerializeObject(obj, Formatting.Indented);
         }
 
-        private bool Foldout(bool value, string content)
+        public static bool Foldout(bool value, string content)
         {
             using (new BoxScope())
             {

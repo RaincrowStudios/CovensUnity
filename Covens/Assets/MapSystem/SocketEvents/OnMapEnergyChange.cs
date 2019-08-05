@@ -73,10 +73,10 @@ public static class OnMapEnergyChange
             if (marker == null)
                 return;
 
-            if (marker.token.lastEnergyUpdate > data.timestamp)
+            if (marker.Token.lastEnergyUpdate > data.timestamp)
                 return;
             
-            CharacterToken token = marker.customData as CharacterToken;
+            CharacterToken token = marker.Token as CharacterToken;
             token.lastEnergyUpdate = data.timestamp;
             energy = token.energy = data.newEnergy;
             marker.UpdateEnergy();
@@ -88,7 +88,7 @@ public static class OnMapEnergyChange
 
                 if (token.Type == MarkerSpawner.MarkerType.WITCH)
                     (marker as WitchMarker).AddDeathFX();
-                else if (marker.type == MarkerSpawner.MarkerType.SPIRIT)
+                else if (marker.Type == MarkerSpawner.MarkerType.SPIRIT)
                     RemoveTokenHandler.ForceEvent(data.instance);
             }
             else
@@ -121,8 +121,8 @@ public static class OnMapEnergyChange
         }
         else
         {
-            instance = (marker.token as CharacterToken).instance;
-            baseEnergy = (marker.token as CharacterToken).baseEnergy;
+            instance = (marker.Token as CharacterToken).instance;
+            baseEnergy = (marker.Token as CharacterToken).baseEnergy;
         }
 
         string newState;

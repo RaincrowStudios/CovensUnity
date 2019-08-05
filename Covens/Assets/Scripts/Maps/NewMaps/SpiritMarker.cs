@@ -16,10 +16,10 @@ public class SpiritMarker : MuskMarker
     [SerializeField] private SpriteRenderer m_IconRenderer;
 
     public SpiritData spiritData { get; private set; }
-    public SpiritToken spiritToken { get => m_Data as SpiritToken; }
+    public SpiritToken spiritToken { get => Token as SpiritToken; }
     private int m_TweenId;
 
-    public override Transform characterTransform
+    public override Transform AvatarTransform
     {
         get
         {
@@ -127,7 +127,7 @@ public class SpiritMarker : MuskMarker
     {
         //setup spirit sprite
         if (string.IsNullOrEmpty(spiritToken.spiritId))
-            Debug.LogError("spritid not sent [" + m_Data.instance + "]");
+            Debug.LogError("spritid not sent [" + Token.instance + "]");
         else
         {
             DownloadedAssets.GetSprite(spiritToken.spiritId, (sprite) =>
@@ -146,7 +146,7 @@ public class SpiritMarker : MuskMarker
     {
         if (string.IsNullOrEmpty(spiritToken.spiritId))
         {
-            Debug.LogError("spritid not sent [" + m_Data.instance + "]");
+            Debug.LogError("spritid not sent [" + Token.instance + "]");
         }
         else
         {

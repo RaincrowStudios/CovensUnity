@@ -6,7 +6,7 @@ namespace Raincrow.GameEventResponses
 {
     public class AddSpiritHandler : AddTokenHandler
     {
-        public const string EventName = "add.token.spirit";
+        public override string EventName => "add.token.spirit";
 
         public override void HandleResponse(string eventData)
         {

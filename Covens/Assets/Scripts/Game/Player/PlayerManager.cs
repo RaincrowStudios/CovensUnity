@@ -100,10 +100,10 @@ public class PlayerManager : MonoBehaviour
         Vector2 pos = new Vector2(x, y);
         GameObject markerGo = GameObject.Instantiate(markerPrefab);
         marker = MapsAPI.Instance.AddMarker(pos, markerGo);
-        marker.gameObject.name += "_MyMarker";
+        marker.GameObject.name += "_MyMarker";
         marker.inMapView = true;
-        marker.coords = pos;
-        marker.characterTransform.rotation = MapsAPI.Instance.camera.transform.rotation;
+        marker.Coords = pos;
+        marker.AvatarTransform.rotation = MapsAPI.Instance.camera.transform.rotation;
         witchMarker = marker as WitchMarker;
 
         OnUpdateEquips(() => witchMarker.EnableAvatar());
@@ -119,7 +119,7 @@ public class PlayerManager : MonoBehaviour
         #region compare coordinates
         double x1, y1, x2, y2;
         //marker.GetPosition(out x1, out y1);
-        Vector2 aux = marker.coords;
+        Vector2 aux = marker.Coords;
         x1 = aux.x;
         y1 = aux.y;
 
@@ -164,12 +164,12 @@ public class PlayerManager : MonoBehaviour
     {
         if (isFlying)
         {
-            MapCameraUtils.SetPosition(marker.coords, 1f, false);
+            MapCameraUtils.SetPosition(marker.Coords, 1f, false);
             LeanTween.value(0, 0, 1.1f).setOnComplete(() => MapCameraUtils.SetZoom(0.925f, 1.5f, false));
         }
         else //just recenter the map
         {
-            MapCameraUtils.SetPosition(marker.gameObject.transform.position, 1f, false);
+            MapCameraUtils.SetPosition(marker.GameObject.transform.position, 1f, false);
         }
     }
 
@@ -187,7 +187,7 @@ public class PlayerManager : MonoBehaviour
 
 
         Vector2 p = new Vector2((float)longitude + rand.x, (float)latitude + rand.y);
-        Vector2 playerPos = PlayerManager.marker.coords;
+        Vector2 playerPos = PlayerManager.marker.Coords;
 
         if (MapsAPI.Instance.DistanceBetweenPointsD(p, playerPos) > 0.1f)
         {
@@ -206,7 +206,7 @@ public class PlayerManager : MonoBehaviour
 
     public void RecallHome()
     {
-        double dist = MapsAPI.Instance.DistanceBetweenPointsD(PlayerManager.marker.coords, GetGPS.coordinates);
+        double dist = MapsAPI.Instance.DistanceBetweenPointsD(PlayerManager.marker.Coords, GetGPS.coordinates);
 
         if (dist < 0.1f)
         {
@@ -224,7 +224,7 @@ public class PlayerManager : MonoBehaviour
     {
         double x, y;
         //marker.GetPosition(out x, out y);
-        Vector2 aux = marker.coords;
+        Vector2 aux = marker.Coords;
         x = aux.x;
         y = aux.y;
 
@@ -233,7 +233,7 @@ public class PlayerManager : MonoBehaviour
 
     public void AddAttackRing()
     {
-        selectionRing = marker.gameObject.transform.GetChild(0).GetChild(2).gameObject;
+        selectionRing = marker.GameObject.transform.GetChild(0).GetChild(2).gameObject;
 
         if (PlayerDataManager.playerData.degree < 0)
         {
@@ -265,7 +265,7 @@ public class PlayerManager : MonoBehaviour
 
     private void OnStartFlying()
     {
-        currentPos = marker.coords;
+        currentPos = marker.Coords;
 
         MainUITransition.Instance.EnableSummonButton(false);
         MainUITransition.Instance.EnableShoutButton(false);
@@ -316,6 +316,7 @@ public class PlayerManager : MonoBehaviour
 
     private void OnClickSelf()
     {
+        return;
         Debug.LogError("TODO: FILTER SPELLS");
 
         MapCameraUtils.FocusOnMarker(witchMarker.transform.position);
@@ -323,17 +324,17 @@ public class PlayerManager : MonoBehaviour
         float previousZoom = MapsAPI.Instance.normalizedZoom;
 
         List<SpellData> spells = PlayerDataManager.playerData.Spells;
-        UISpellcasting.Instance.Show(null, marker, spells,
-            () => { //on closed the cast results
+        //UISpellcasting.Instance.Show(null, marker, spells,
+        //    () => { //on closed the cast results
 
-            },
-            () => { //on click return (X)
-                UISpellcasting.Instance.Close();
-                MapCameraUtils.FocusOnPosition(previousPosition, previousZoom, true);
-            },
-            () => { //on click close (outside the book)
-                UISpellcasting.Instance.Close();
-                MapCameraUtils.FocusOnPosition(previousPosition, previousZoom, true);
-            });
+        //    },
+        //    () => { //on click return (X)
+        //        UISpellcasting.Instance.Close();
+        //        MapCameraUtils.FocusOnPosition(previousPosition, previousZoom, true);
+        //    },
+        //    () => { //on click close (outside the book)
+        //        UISpellcasting.Instance.Close();
+        //        MapCameraUtils.FocusOnPosition(previousPosition, previousZoom, true);
+        //    });
     }
 }

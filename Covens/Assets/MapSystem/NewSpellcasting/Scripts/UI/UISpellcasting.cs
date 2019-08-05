@@ -486,11 +486,11 @@ public class UISpellcasting : UIInfoPanel
                 {
                     ReOpen();
 
-                    if (m_Marker.token != null)
+                    if (m_Marker.Token != null)
                     {
-                        IMarker marker = MarkerManager.GetMarker(m_Marker.token.instance);
+                        IMarker marker = MarkerManager.GetMarker(m_Marker.Token.instance);
                         if (marker != null)
-                            MapCameraUtils.FocusOnMarker(marker.gameObject.transform.position);
+                            MapCameraUtils.FocusOnMarker(marker.GameObject.transform.position);
                         else
                             OnClickClose();
                     }

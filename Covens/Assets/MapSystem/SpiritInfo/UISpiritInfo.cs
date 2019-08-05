@@ -49,14 +49,14 @@ public class UISpiritInfo : UIInfoPanel
         }
     }
 
-    private SpiritMarker m_Spirit;
-    private SpiritToken m_Token;
+    private SpiritMarker m_SpiritMarker;
+    private SpiritToken m_SpiritToken;
     private SpiritData m_SpiritData;
-    private MapSpiritData m_Details;
+    private SelectSpiritData_Map m_SpiritDetails;
 
     private float m_PreviousMapZoom;
 
-    public SpiritToken Spirit { get { return m_Token; } }
+    public SpiritToken SpiritToken { get { return m_SpiritToken; } }
 
     protected override void Awake()
     {
@@ -77,14 +77,14 @@ public class UISpiritInfo : UIInfoPanel
         if (isOpen)
             return;
 
-        m_Spirit = spirit as SpiritMarker;
-        m_Token = token as SpiritToken;
-        m_SpiritData = DownloadedAssets.spiritDict[m_Token.spiritId];
-        m_Details = null;
+        m_SpiritMarker = spirit as SpiritMarker;
+        m_SpiritToken = token as SpiritToken;
+        m_SpiritData = DownloadedAssets.spiritDict[m_SpiritToken.spiritId];
+        m_SpiritDetails = null;
         m_DescButton.onClick.RemoveAllListeners();
 
         m_SpiritName.text = m_SpiritData.Name;
-        m_Energy.text = LocalizeLookUp.GetText("cast_energy").ToUpper() + " <color=black>" + m_Token.energy.ToString() + " / " + m_Token.baseEnergy.ToString() + "</color>";
+        m_Energy.text = LocalizeLookUp.GetText("cast_energy").ToUpper() + " <color=black>" + m_SpiritToken.energy.ToString() + " / " + m_SpiritToken.baseEnergy.ToString() + "</color>";
         m_Desc.text = LocalizeLookUp.GetText("location_owned").Replace("{{Controller}}", "[" + LocalizeLookUp.GetText("loading") + "]");//"Belongs to [Loading...]";
 
         string tier;
@@ -103,19 +103,18 @@ public class UISpiritInfo : UIInfoPanel
 
         MainUITransition.Instance.HideMainUI();
 
-        MarkerSpawner.HighlightMarker(new List<IMarker> { PlayerManager.marker, m_Spirit }, true);
+        MarkerSpawner.HighlightMarker(new List<IMarker> { PlayerManager.marker, m_SpiritMarker }, true);
 
         OnMapEnergyChange.OnPlayerDead += _OnCharacterDead;
         OnMapEnergyChange.OnEnergyChange += _OnMapEnergyChange;
-        OnMapConditionAdd.OnConditionAdded += _OnConditionAdd;
-        OnMapConditionRemove.OnConditionRemoved += _OnConditionRemove;
         MoveTokenHandler.OnTokenMove += _OnMapTokenMove;
+        SpellCastHandler.OnApplyStatusEffect += _OnStatusEffectApplied;
         MarkerSpawner.OnImmunityChange += _OnImmunityChange;
         RemoveTokenHandler.OnTokenRemove += _OnMapTokenRemove;
         BanishManager.OnBanished += Abort;
 
         Show();
-        //m_ConditionList.show = false;
+        m_ConditionList.show = false;
         SoundManagerOneShot.Instance.PlaySpiritSelectedSpellbook();
     }
 
@@ -127,11 +126,11 @@ public class UISpiritInfo : UIInfoPanel
 
         MapsAPI.Instance.allowControl = false;
 
-        IMarker spirit = MarkerManager.GetMarker(m_Token.instance);
+        IMarker spirit = MarkerManager.GetMarker(m_SpiritToken.instance);
 
         //if the spirit was destroyed, close the ui
         if (spirit != null)
-            MapCameraUtils.FocusOnMarker(spirit.gameObject.transform.position);
+            MapCameraUtils.FocusOnMarker(spirit.GameObject.transform.position);
         else
             Close();
     }
@@ -142,10 +141,9 @@ public class UISpiritInfo : UIInfoPanel
 
         OnMapEnergyChange.OnPlayerDead -= _OnCharacterDead;
         OnMapEnergyChange.OnEnergyChange -= _OnMapEnergyChange;
-        OnMapConditionAdd.OnConditionAdded -= _OnConditionAdd;
-        OnMapConditionRemove.OnConditionRemoved -= _OnConditionRemove;
         MoveTokenHandler.OnTokenMove -= _OnMapTokenMove;
         MarkerSpawner.OnImmunityChange -= _OnImmunityChange;
+        SpellCastHandler.OnApplyStatusEffect -= _OnStatusEffectApplied;
         RemoveTokenHandler.OnTokenRemove -= _OnMapTokenRemove;
         BanishManager.OnBanished -= Abort;
 
@@ -153,14 +151,20 @@ public class UISpiritInfo : UIInfoPanel
         MapCameraUtils.FocusOnPosition(previousMapPosition, m_PreviousMapZoom, true);
         MainUITransition.Instance.ShowMainUI();
 
-        MarkerSpawner.HighlightMarker(new List<IMarker> { PlayerManager.marker, m_Spirit }, false);
+        MarkerSpawner.HighlightMarker(new List<IMarker> { PlayerManager.marker, m_SpiritMarker }, false);
     }
 
-    public void SetupDetails(MapSpiritData details)
+    public void SetupDetails(SelectSpiritData_Map details)
     {
-        m_Details = details;
+        if (details == null)
+        {
+            Abort();
+            return;
+        }
+
+        m_SpiritDetails = details;
         
-        if (string.IsNullOrEmpty(m_Details.owner))
+        if (string.IsNullOrEmpty(m_SpiritDetails.owner))
         {
             if (m_SpiritData.tier == 1)
                 m_Tier.text = LocalizeLookUp.GetText("ftf_wild_spirit") + " (" + LocalizeLookUp.GetText("cast_spirit_lesser") + ")";//"Wild Spirit (Lesser)";
@@ -188,19 +192,19 @@ public class UISpiritInfo : UIInfoPanel
         }
 
         UpdateCanCast();
-        //m_ConditionList.Setup(m_Token, m_Details);
+        m_ConditionList.Setup(m_SpiritDetails.effects);
     }
 
     private void UpdateCanCast()
     {
-        if (m_Details == null)
+        if (m_SpiritDetails == null)
         {
             m_QuickBless.interactable = m_QuickHex.interactable = m_QuickSeal.interactable = m_CastButton.interactable = false;
             m_CastText.text = LocalizeLookUp.GetText("spellbook_more_spells") + " (" + LocalizeLookUp.GetText("loading") + ")";
             return;
         }
 
-        Spellcasting.SpellState canCast = Spellcasting.CanCast((SpellData)null, m_Spirit, m_Details);
+        Spellcasting.SpellState canCast = Spellcasting.CanCast((SpellData)null, m_SpiritMarker, m_SpiritDetails);
 
 
         if (canCast == Spellcasting.SpellState.TargetImmune)
@@ -212,18 +216,25 @@ public class UISpiritInfo : UIInfoPanel
 
         m_QuickBless.interactable = m_QuickHex.interactable = m_QuickSeal.interactable = m_CastButton.interactable = canCast == Spellcasting.SpellState.CanCast;
 
-        if (UISpellcasting.isOpen)
-            UISpellcasting.Instance.UpdateCanCast();
     }
 
     private void OnClickCast()
     {
         this.Hide();
 
-        UISpellcasting.Instance.Show(m_Details, m_Spirit, PlayerDataManager.playerData.Spells,
-            UISpellcasting_OnCastResult,
-            ReOpen,
-            UISpellcasting_OnClickClose);
+        UISpellcastBook.Open(
+            m_SpiritDetails,
+            m_SpiritMarker,
+            PlayerDataManager.playerData.Spells,
+            (spell, ingredients) =>
+            {
+                UIGlobalPopup.ShowError(this.ReOpen, "not implemented");
+            },
+            () =>
+            {
+                this.ReOpen();
+            }
+        );
     }
 
     private void QuickCast(string spellId)
@@ -238,7 +249,7 @@ public class UISpiritInfo : UIInfoPanel
         Hide();
 
         //send the cast
-        Spellcasting.CastSpell(spell, m_Spirit, new List<spellIngredientsData>(), (result) =>
+        Spellcasting.CastSpell(spell, m_SpiritMarker, new List<spellIngredientsData>(), (result) =>
         {
             //return to the spirit UI no matter the result
             ReOpen();
@@ -261,7 +272,7 @@ public class UISpiritInfo : UIInfoPanel
 
     private void OnClickInfo()
     {
-        UIDetailedSpiritInfo.Instance.Show(m_SpiritData, m_Token);
+        UIDetailedSpiritInfo.Instance.Show(m_SpiritData, m_SpiritToken);
     }
 
     private void OnClickOwner()
@@ -279,20 +290,16 @@ public class UISpiritInfo : UIInfoPanel
         //wait for the result screen (UIspellcasting  will call OnFinishFlow)
         if (UIWaitingCastResult.isOpen)
             return;
-
-        if (UISpellcasting.isOpen)
-            UISpellcasting.Instance.Close();
-
+        
         Close();
     }
 
     private void UISpellcasting_OnCastResult()
     {
         //if token is gone
-        if (MarkerSpawner.GetMarker(m_Token.instance) == null)
+        if (MarkerSpawner.GetMarker(m_SpiritToken.instance) == null)
         {
             Close();
-            UISpellcasting.Instance.Close();
         }
     }
 
@@ -309,7 +316,7 @@ public class UISpiritInfo : UIInfoPanel
 
     private void _OnMapTokenMove(string instance, Vector3 position)
     {
-        if (m_Token.instance == instance)
+        if (m_SpiritToken.instance == instance)
         {
             MapCameraUtils.FocusOnMarker(position);
         }
@@ -317,7 +324,7 @@ public class UISpiritInfo : UIInfoPanel
 
     private void _OnMapEnergyChange(string instance, int newEnergy)
     {
-        if (instance == m_Token.instance)
+        if (instance == m_SpiritToken.instance)
         {
             m_Energy.text = LocalizeLookUp.GetText("card_witch_energy").ToUpper() + " <color=black>" + newEnergy.ToString() + "</color>";
 
@@ -335,52 +342,40 @@ public class UISpiritInfo : UIInfoPanel
 
     private void _OnImmunityChange(string caster, string target, bool immune)
     {
-        if (caster == PlayerDataManager.playerData.instance && target == this.m_Token.instance)
+        if (caster == PlayerDataManager.playerData.instance && target == this.m_SpiritToken.instance)
         {
             UpdateCanCast();
         }
-        else if (target == PlayerDataManager.playerData.instance && caster == this.m_Token.instance)
+        else if (target == PlayerDataManager.playerData.instance && caster == this.m_SpiritToken.instance)
         {
             UpdateCanCast();
         }
     }
 
-    private void _OnConditionAdd(Condition condition)
+    private void _OnStatusEffectApplied(string character, StatusEffect statusEffect)
     {
-        if (condition.bearer != this.m_Token.instance)
+        if (character != this.m_SpiritToken.instance)
             return;
 
-        //m_ConditionList.AddCondition(condition);
-    }
+        foreach(StatusEffect item in m_SpiritDetails.effects)
+        {
+            if (item.spell == statusEffect.spell)
+            {
+                m_SpiritDetails.effects.Remove(item);
+                break;
+            }
+        }
+        m_SpiritDetails.effects.Add(statusEffect);
 
-    private void _OnConditionRemove(Condition condition)
-    {
-        if (condition.bearer != this.m_Token.instance)
-            return;
-
-        //m_ConditionList.RemoveCondition(condition);
+        m_ConditionList.AddCondition(statusEffect);
     }
 
     private void _OnMapTokenRemove(string instance)
     {
-        if (instance == Spirit.instance)
+        if (instance == SpiritToken.instance)
         {
             Abort();
             //UIGlobalErrorPopup.ShowPopUp(null, LocalizeLookUp.GetText("spellbook_witch_is_gone").Replace("{{witch name}}", m_SpiritData.spiritName));// + " is gone.");
         }
     }
-
-    //private void _OnSpiritBanished(string instance, string killerName)
-    //{
-    //    Debug.Log("_onspiritbanished: " + instance + " < " + killerName + " > " + m_Token.instance + " : " + UIWaitingCastResult.isOpen);
-    //    if (instance == m_Token.instance)
-    //    {
-    //        //let the player see the result of his spellcasting
-    //        if (UIWaitingCastResult.isOpen)
-    //            return;
-
-    //        //if he is not waiting for the result, just close the ui
-    //        Abort();
-    //    }
-    //}
 }

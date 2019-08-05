@@ -1,0 +1,277 @@
+{
+  "immunities": [
+    "5d43212505ed65460c49df7f",
+    "5d4047e0daf070189c074ca8",
+    "5d39d1d5cf3e8b37480ed3f3",
+    "5d360638fc9a782804908774",
+    "5d3602b6fc79250708866c17",
+    "5d372b8a7740c109e061a517",
+    "5d31af8f585e3a6890ee0ca8",
+    "5d3732622e043a3dcc92c549",
+    "5d3211e31822763f9c1da4d9",
+    "5d31a87fefc4f67aa8ecb1fe"
+  ],
+  "spirits": [
+    "5d4326a5280ac2321c12313c"
+  ],
+  "equipped": [
+    {
+      "position": "baseBody",
+      "id": "cosmetic_f_A_B",
+      "assets": [
+        "f_A_B"
+      ]
+    },
+    {
+      "position": "baseHand",
+      "id": "cosmetic_f_A_H",
+      "assets": [
+        "f_A_H_Relaxed"
+      ]
+    },
+    {
+      "position": "hair",
+      "id": "cosmetic_f_HA_DWO",
+      "assets": [
+        "f_HA_W_DWO_Front",
+        "f_HA_W_DWO_Back"
+      ]
+    },
+    {
+      "position": "legs",
+      "id": "cosmetic_f_L_KSO",
+      "assets": [
+        "f_L_G_KSO"
+      ]
+    },
+    {
+      "position": "feet",
+      "id": "cosmetic_f_F_KSO",
+      "assets": [
+        "f_F_S_KSO"
+      ]
+    }
+  ],
+  "cooldowns": [],
+  "bot": false,
+  "level": 1,
+  "xp": 178,
+  "alignment": -2,
+  "degree": 0,
+  "physical": false,
+  "insidePlaceOfPower": false,
+  "baseEnergy": 10000,
+  "energy": 6846,
+  "power": 0,
+  "resilience": 0,
+  "whiteMastery": false,
+  "shadowMastery": false,
+  "greyMastery": false,
+  "cosmetics": [
+    "cosmetic_f_A_B",
+    "cosmetic_f_A_H",
+    "cosmetic_f_HA_DWO",
+    "cosmetic_f_C_KSO",
+    "cosmetic_f_L_KSO",
+    "cosmetic_f_F_KSO"
+  ],
+  "silver": 500,
+  "gold": 0,
+  "ward": 0,
+  "favor": 0,
+  "aptitude": 0,
+  "wisdom": 0,
+  "tutorial": true,
+  "type": "character",
+  "model": "Character",
+  "_id": "myId",
+  "covenInfo": {
+    "role": 0,
+    "coven": null,
+    "joinedOn": 0,
+    "title": ""
+  },
+  "covenInvites": [],
+  "covenRequests": [],
+  "consumables": [],
+  "placeOfPower": null,
+  "state": "",
+  "tools": [
+    {
+      "collectible": "coll_ironCollar",
+      "count": 0
+    },
+    {
+      "collectible": "coll_onyxCirclet",
+      "count": 50
+    },
+    {
+      "collectible": "coll_friedTofu",
+      "count": 50
+    },
+    {
+      "collectible": "coll_hourglass",
+      "count": 10
+    },
+    {
+      "collectible": "coll_onyxRing",
+      "count": 50
+    },
+    {
+      "collectible": "coll_silverComb",
+      "count": 50
+    },
+    {
+      "collectible": "coll_fishOil",
+      "count": 50
+    },
+    {
+      "collectible": "coll_onyxAmulet",
+      "count": 50
+    },
+    {
+      "collectible": "coll_whiteFur",
+      "count": 50
+    },
+    {
+      "collectible": "coll_rocksGlass",
+      "count": 50
+    }
+  ],
+  "herbs": [
+    {
+      "collectible": "coll_betony",
+      "count": 50
+    },
+    {
+      "collectible": "coll_pennyRoyal",
+      "count": 50
+    },
+    {
+      "collectible": "coll_hyssop",
+      "count": 5
+    },
+    {
+      "collectible": "coll_borage",
+      "count": 50
+    },
+    {
+      "collectible": "coll_lobelia",
+      "count": 50
+    },
+    {
+      "collectible": "coll_cockComb",
+      "count": 50
+    },
+    {
+      "collectible": "coll_fennel",
+      "count": 50
+    },
+    {
+      "collectible": "coll_birch",
+      "count": 50
+    },
+    {
+      "collectible": "coll_frankincense",
+      "count": 50
+    }
+  ],
+  "gems": [
+    {
+      "collectible": "coll_motherTear",
+      "count": 150
+    },
+    {
+      "collectible": "coll_bloodAgate",
+      "count": 150
+    },
+    {
+      "collectible": "coll_malachite",
+      "count": 150
+    }
+  ],
+  "lastBlessing": 0,
+  "quest": {
+    "completed": false,
+    "spell": {
+      "count": 0,
+      "completed": false
+    },
+    "gather": {
+      "count": 0,
+      "completed": false
+    },
+    "explore": {
+      "count": 0,
+      "completed": false
+    },
+    "daily": {
+      "active": true,
+      "_id": "5d4422f026e12f3e00d65e4a",
+      "startDate": 1564746480870,
+      "endDate": 1564832880870,
+      "spellcraft": {
+        "amount": 2,
+        "country": null,
+        "degree": 0,
+        "ingredient": "gem",
+        "relation": "higher",
+        "spell": "spell_silence",
+        "type": "character"
+      },
+      "gather": {
+        "country": null,
+        "type": "herb",
+        "amount": 18
+      },
+      "explore": {
+        "amount": 1,
+        "type": "lore_27",
+        "location": {
+          "type": "Point",
+          "coordinates": [
+            32.751233,
+            129.870334
+          ],
+          "_id": "5d4422f026e12f3e00d65e4b"
+        }
+      },
+      "createdOn": "2019-08-02T11:48:00.873Z",
+      "modifiedOn": "2019-08-02T11:48:00.873Z",
+      "__v": 0
+    }
+  },
+  "effects": [],
+  "latitude": 47.67603,
+  "longitude": -122.407913,
+  "male": false,
+  "bodyType": 0,
+  "name": "lucas 051",
+  "account": "5d432693280ac2321c12308b",
+  "dominion": "Washington",
+  "physicalDominion": "5caf95e12e62b25248fd6291",
+  "knownSpirits": [
+    {
+      "spirit": "spirit_barghest",
+      "banishedOn": 1564681882879,
+      "dominion": "Washington"
+    }
+  ],
+  "createdOn": 1564681882882,
+  "modifiedOn": 1564750865112,
+  "__v": 133,
+  "physicalLatitude": 47.7027,
+  "physicalLongitude": -122.320045,
+  "attacking": "5d434674e613e70d24238189",
+  "lastTarget": {
+    "_id": "5d4446aa94fa743d00f05db7",
+    "entity": "5d434674e613e70d24238189",
+    "type": "Character"
+  },
+  "lastAttackedBy": {
+    "_id": "5d4446aa94fa743d00f05db8",
+    "entity": "5d4341e24952ea4458c6be0c",
+    "type": "Spirit"
+  },
+  "healing": "5d4341e24952ea4458c6be0c"
+}

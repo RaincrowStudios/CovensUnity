@@ -80,7 +80,7 @@ namespace Raincrow.DynamicPlacesOfPower
         public PopIsland AddWitch(IMarker marker)
         {
             PopIslandUnit newUnit;
-            string newMarkerCoven = marker.IsPlayer ? PlayerDataManager.playerData.covenId : (marker.token as CharacterToken).coven;
+            string newMarkerCoven = marker.IsPlayer ? PlayerDataManager.playerData.covenId : (marker.Token as CharacterToken).coven;
 
             //search an island of the same coven
             if (string.IsNullOrEmpty(newMarkerCoven) == false)
@@ -99,7 +99,7 @@ namespace Raincrow.DynamicPlacesOfPower
                         if (aux == null || aux.isNull)
                             continue;
 
-                        auxCoven = aux.IsPlayer ? PlayerDataManager.playerData.covenId : (aux.token as CharacterToken).coven;
+                        auxCoven = aux.IsPlayer ? PlayerDataManager.playerData.covenId : (aux.Token as CharacterToken).coven;
                         if (auxCoven == newMarkerCoven)
                         {
                             covenIsland = m_Islands[i];
@@ -235,8 +235,8 @@ namespace Raincrow.DynamicPlacesOfPower
             {
                 foreach (PopIslandUnit _unit in _island.Units)
                 {
-                    if (_unit.Marker.gameObject != null)
-                        Destroy(_unit.Marker.gameObject);
+                    if (_unit.Marker.GameObject != null)
+                        Destroy(_unit.Marker.GameObject);
                     m_UnitsPool.Despawn(_unit);
                 }
                 _island.Units.Clear();
@@ -250,8 +250,8 @@ namespace Raincrow.DynamicPlacesOfPower
             {
                 foreach (PopIslandUnit _unit in m_GuardianIsland.Units)
                 {
-                    if (_unit.Marker.gameObject != null)
-                        Destroy(_unit.Marker.gameObject);
+                    if (_unit.Marker.GameObject != null)
+                        Destroy(_unit.Marker.GameObject);
                     m_UnitsPool.Despawn(_unit);
                 }
             }

@@ -16,15 +16,19 @@ namespace Raincrow
             GAME,
             PLACE_OF_POWER,
             COVEN_MANAGEMENT,
+            DAILY_QUESTS,
+            SPELLCAST_BOOK,
         }
 
         private static Dictionary<Scene, string> m_SceneNames = new Dictionary<Scene, string>
         {
-            {Scene.START, "StartScene" },
-            {Scene.LOGIN, "LoginScene" },
-            {Scene.GAME, "MainScene"},
-            {Scene.PLACE_OF_POWER, "PlaceOfPower"},
-            {Scene.COVEN_MANAGEMENT, "CovenManagement" }
+            {Scene.START,               "StartScene" },
+            {Scene.LOGIN,               "LoginScene" },
+            {Scene.GAME,                "MainScene"},
+            {Scene.PLACE_OF_POWER,      "PlaceOfPower"},
+            {Scene.COVEN_MANAGEMENT,    "CovenManagement" },
+            {Scene.DAILY_QUESTS,        "DailyQuests" },
+            {Scene.SPELLCAST_BOOK,      "SpellcastBook" }
         };
 
         private static SceneManager m_Instance;
@@ -63,8 +67,9 @@ namespace Raincrow
 
             if (unityScene.isLoaded)
             {
-                Debug.LogError(scene.ToString() + " already loaded");
+                Debug.Log(scene.ToString() + " already loaded");
                 onProgress?.Invoke(1);
+                onComplete?.Invoke();
                 return null;
             }
 

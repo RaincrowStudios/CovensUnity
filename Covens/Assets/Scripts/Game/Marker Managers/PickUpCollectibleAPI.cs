@@ -10,17 +10,17 @@ public static class PickUpCollectibleAPI
     
     public static void PickUpCollectable(CollectableMarker marker)
     {
-        string instance = marker.token.instance;
-        string type = marker.token.type;
+        string instance = marker.Token.instance;
+        string type = marker.Token.type;
         string collectable = marker.collectableToken.collectible;
         int amount = marker.collectableToken.amount;
-        MarkerManager.MarkerType eType = marker.token.Type;
+        MarkerManager.MarkerType eType = marker.Token.Type;
 
-        marker.interactable = false;
+        marker.Interactable = false;
 
         //spawn particle fx over item
         Transform fx = m_CollectFxPool.Spawn();
-        fx.position = marker.characterTransform.position;
+        fx.position = marker.AvatarTransform.position;
 
         //spawn particle on inventory button
         if (UIStateManager.Instance.DisableButtons.Length >= 2)

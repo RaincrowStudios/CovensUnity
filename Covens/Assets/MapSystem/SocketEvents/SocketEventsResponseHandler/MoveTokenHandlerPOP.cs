@@ -15,7 +15,7 @@ namespace Raincrow.GameEventResponses
             public int position;
         }
 
-        public const string EventName = "move.pop";
+        public string EventName => "move.pop";
         public static event System.Action<MoveEventDataPOP> OnMarkerMovePOP;
 
         public void HandleResponse(string eventData)

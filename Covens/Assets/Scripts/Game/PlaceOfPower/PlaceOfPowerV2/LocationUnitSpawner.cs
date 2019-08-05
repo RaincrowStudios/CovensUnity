@@ -70,10 +70,9 @@ public class LocationUnitSpawner : MonoBehaviour
             }
 
             IMarker marker = go.GetComponent<MuskMarker>();
-            marker.interactable = true;
-            marker.customData = token;
-            marker.gameObject.SetActive(true);
+            marker.Interactable = true;
             marker.Setup(token);
+            marker.GameObject.SetActive(true);
             marker.OnClick += onClickMarker;
         }
 
@@ -81,7 +80,7 @@ public class LocationUnitSpawner : MonoBehaviour
 
     private void onClickMarker(IMarker m)
     {
-        var token = m.customData as Token;
+        var token = m.Token as Token;
         if (token.Type == MarkerType.WITCH)
         {
             UIPlayerInfo.Instance.Show(m as WitchMarker, token as WitchToken);
@@ -94,20 +93,20 @@ public class LocationUnitSpawner : MonoBehaviour
         {
             if (result == 200)
             {
-                if (m.type == MarkerType.WITCH)
+                if (m.Type == MarkerType.WITCH)
                 {
-                    MapWitchData witch = JsonConvert.DeserializeObject<MapWitchData>(response);
+                    SelectWitchData_Map witch = JsonConvert.DeserializeObject<SelectWitchData_Map>(response);
                     witch.token = token as WitchToken;
 
-                    if (UIPlayerInfo.isShowing && UIPlayerInfo.Instance.Witch.instance == token.instance)
+                    if (UIPlayerInfo.isShowing && UIPlayerInfo.Instance.WitchToken.instance == token.instance)
                         UIPlayerInfo.Instance.SetupDetails(witch);
                 }
-                else if (m.type == MarkerType.SPIRIT)
+                else if (m.Type == MarkerType.SPIRIT)
                 {
-                    MapSpiritData spirit = JsonConvert.DeserializeObject<MapSpiritData>(response);
+                    SelectSpiritData_Map spirit = JsonConvert.DeserializeObject<SelectSpiritData_Map>(response);
                     spirit.token = token as SpiritToken;
 
-                    if (UISpiritInfo.isOpen && UISpiritInfo.Instance.Spirit.instance == token.instance)
+                    if (UISpiritInfo.isOpen && UISpiritInfo.Instance.SpiritToken.instance == token.instance)
                         UISpiritInfo.Instance.SetupDetails(spirit);
 
                     if (spirit.state == "dead")
@@ -130,13 +129,13 @@ public class LocationUnitSpawner : MonoBehaviour
         {
             var marker = Markers[instance];
             marker.SetAlpha(0, 1);
-            marker.interactable = false;
+            marker.Interactable = false;
             Markers.Remove(instance);
             await Task.Delay(2000);
             marker.OnDespawn();
-            if (marker.type == MarkerType.WITCH) m_WitchPool.Despawn(marker.gameObject.transform);
-            else if (marker.type == MarkerType.SPIRIT) m_SpiritPool.Despawn(marker.gameObject.transform);
-            else throw new NotImplementedException("Unhandled Marker Type: " + marker.type);
+            if (marker.Type == MarkerType.WITCH) m_WitchPool.Despawn(marker.GameObject.transform);
+            else if (marker.Type == MarkerType.SPIRIT) m_SpiritPool.Despawn(marker.GameObject.transform);
+            else throw new NotImplementedException("Unhandled Marker Type: " + marker.Type);
         }
     }
 
@@ -148,7 +147,7 @@ public class LocationUnitSpawner : MonoBehaviour
             marker.SetAlpha(0, 1, () =>
             {
                 // TODO add fx
-                var mToken = marker.customData as Token;
+                var mToken = marker.Token as Token;
                 mToken.position = data.position;
                 mToken.island = data.island;
                 AddMarker(mToken);
@@ -195,7 +194,7 @@ public class LocationUnitSpawner : MonoBehaviour
     {
         if (isPositionOccupied(index))
         {
-            return LocationIslandController.unitPositions[index].GetChild(0).GetComponent<MuskMarker>().m_Data;
+            return LocationIslandController.unitPositions[index].GetChild(0).GetComponent<MuskMarker>().Token;
         }
         return null;
     }

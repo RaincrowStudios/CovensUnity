@@ -5,6 +5,7 @@ using System.Collections.Generic;
 using BestHTTP.SocketIO;
 using BestHTTP.SocketIO.JsonEncoders;
 using Raincrow.GameEventResponses;
+using System.Linq;
 
 public class SocketClient : MonoBehaviour
 {
@@ -18,82 +19,7 @@ public class SocketClient : MonoBehaviour
 
     public Queue<CommandResponse> responsesQueue = new Queue<CommandResponse>();
 
-    private static Dictionary<string, IGameEventHandler> m_EventActionDictionary = new Dictionary<string, IGameEventHandler>
-    {
-        { SpellCastHandler.EventName,           new SpellCastHandler()      },
-        { MoveTokenHandler.EventName,           new MoveTokenHandler()      },
-        { AddImmunityHandler.EventName,         new AddImmunityHandler()    },
-        { RemoveImmunityHandler.EventName,      new RemoveImmunityHandler() },
-        { AddWitchHandler.EventName,            new AddWitchHandler()       },
-        { AddSpiritHandler.EventName,           new AddSpiritHandler()      },
-        { AddCollectableHandler.EventName,      new AddCollectableHandler() },
-        { RemoveTokenHandler.EventName,         new RemoveTokenHandler()    },
-        { SummonSpiritHandler.EventName,        new SummonSpiritHandler()   },
-        { LevelUpHandler.EventName,             new LevelUpHandler()        },
-        { ChangeDegreeHandler.EventName,        new ChangeDegreeHandler()   },
-        { ShoutHandler.EventName,               new ShoutHandler()          },
-        { TickSpellHandler.EventName,           new TickSpellHandler()      },
-        { MoveTokenHandlerPOP.EventName,        new MoveTokenHandlerPOP()   },
-        { AddWitchHandlerPOP.EventName,         new AddWitchHandlerPOP()    },
-        { AddSpiritHandlerPOP.EventName,        new AddSpiritHandlerPOP()   },
-        { RemoveTokenHandlerPOP.EventName,      new RemoveTokenHandlerPOP() },
-        
-
-        //{ "map_energy_change",          OnMapEnergyChange.HandleEvent },
-        //{ "map_token_move",             OnMapTokenMove.HandleEvent },
-        //{ "map_token_remove",           OnMapTokenRemove.HandleEvent },
-        //{ "map_location_lost",          OnMapLocationLost.HandleEvent },
-        //{ "map_location_gained",        OnMapLocationGained.HandleEvent },
-        //{ "map_condition_add",          OnMapConditionAdd.HandleEvent },
-        //{ "map_condition_remove",       OnMapConditionRemove.HandleEvent },
-        //{ "map_condition_trigger",      OnMapConditionTrigger.HandleEvent },
-        //{ "map_degree_change",          OnMapDegreeChange.HandleEvent },
-        //{ "map_level_up",               OnMapLevelUp.HandleEvent },
-        //{ "map_channel_start",          SpellChanneling.OnMapChannelingStart },
-        //{ "map_channel_end",            SpellChanneling.OnMapChannelingFinish },
-
-        //{ "character_new_signature",  OnSignatureDiscovered.HandleEvent },
-        //{ "character_death",            OnCharacterDeath.HandleEvent },
-        //{ "character_silver_add",       OnCharacterGainSilver.HandleEvent },
-        //{ "character_xp_gain",          OnCharacterXpGain.HandleEvent },
-        //{ "character_location_gained",  OnCharacterLocationGained.HandleEvent },
-        //{ "character_location_lost",    OnCharacterLocationLost.HandleEvent },
-        //{ "character_location_boot",    OnCharacterLocationBoot.HandleEvent },
-        //{ "character_location_reward",  OnCharacterLocationReward.HandleEvent },
-        //{ "character_new_spirit",       OnCharacterNewSpirit.HandleEvent },
-        //{ "character_spell_move",       OnCharacterSpellMove.HandleEvent },
-        //{ "character_cooldown_start",   CooldownManager.OnCooldownStart },
-        //{ "character_cooldown_end",     CooldownManager.OnCooldownFinish },
-
-        //{ "character_spirit_banished",  OnCharacterSpiritBanished.HandleEvent },
-
-        //{ "character_daily_progress",   OnCharacterDailyProgress.HandleEvent },
-        //{ "character_alignment_change", OnCharacterAlignmentChange.HandleEvent},
-        //{ "character_spirit_expire",  OnCharacterSpiritExpired.HandleEvent },
-        //{ "character_spirit_sentinel",  OnCharacterSpiritSentinel.HandleEvent },
-        //{ "character_spirit_summoned",  OnCharacterSpiritSummoned.HandleEvent },
-        //{ "character_creatrix_add",     OnCreatrixGift.HandleEvent },
-        //{ "character_creatrix_shop",    OnCreatrixGift.HandleEvent },
-
-        //{ "coven_was_allied",           TeamManager.OnReceiveCovenAlly },
-        //{ "coven_was_unallied",         TeamManager.OnReceiveCovenUnally },
-        //{ "coven_allied",               TeamManager.OnReceiveCovenMemberAlly },
-        //{ "coven_member_unally",        TeamManager.OnReceiveCovenMemberUnally },
-        //{ "character_coven_kick",       TeamManager.OnReceiveCovenMemberKick },
-        //{ "coven_invite_requested",     TeamManager.OnReceiveCovenMemberRequest },
-        //{ "coven_member_promoted",      TeamManager.OnReceiveCovenMemberPromote },
-        //{ "coven_member_titled",        TeamManager.OnReceiveCovenMemberTitleChange },
-        //{ "coven_member_join",          TeamManager.OnReceiveCovenMemberJoin },
-        //{ "coven_request_invite",       TeamManager.OnReceiveRequestInvite },
-        //{ "coven_member_left",          TeamManager.OnReceiveCovenMemberLeave },
-        //{ "coven_disbanded",            TeamManager.OnReceiveCovenDisbanded },
-        //{ "character_coven_invite",     TeamManager.OnReceivedCovenInvite },
-        //{ "coven_member_invited",       TeamManager.OnReceivedPlayerInvited },
-        //{ "character_coven_reject",     TeamManager.OnReceiveRequestRejected },
-        //{ "coven_created",              TeamManager.OnCovenCreated_Websocket },
-
-        //{ "location_spirit_summon",     PlaceOfPower.OnLocationSpiritSummon },
-    };
+    private static Dictionary<string, IGameEventHandler> m_EventActionDictionary;
 
     void Awake()
     {
@@ -104,6 +30,26 @@ public class SocketClient : MonoBehaviour
 #if DISABLE_LOG
         Debug.unityLogger.logEnabled = false;
 #endif
+
+        //setup the dictionary through reflection
+        System.Type type = typeof(IGameEventHandler);
+        List<System.Type> types = System.AppDomain.CurrentDomain.GetAssemblies()
+            .SelectMany(s => s.GetTypes())
+            .Where(p => !p.IsAbstract && type.IsAssignableFrom(p)).ToList();
+
+        m_EventActionDictionary = new Dictionary<string, IGameEventHandler>();
+        foreach (System.Type _type in types)
+        {
+            IGameEventHandler instance = (IGameEventHandler)System.Activator.CreateInstance(_type);
+
+            if (string.IsNullOrEmpty(instance.EventName))
+            {
+                Debug.LogError(_type.ToString() + " improper Eventname");
+                continue;
+            }
+
+            m_EventActionDictionary.Add(instance.EventName, instance);
+        }
     }
 
     public void InitiateSocketConnection(bool isRefresh = false)
@@ -149,7 +95,7 @@ public class SocketClient : MonoBehaviour
 #else
         _socketManager.Open();
 #endif
-    }
+    }    
 
     #region Socket 
 
@@ -178,7 +124,7 @@ public class SocketClient : MonoBehaviour
                 Data = data
             };
             responsesQueue.Enqueue(response);
-        }
+        }   
     }
 
     private void OnError(Socket socket, Packet packet, object[] args)
@@ -208,7 +154,7 @@ public class SocketClient : MonoBehaviour
         }
     }
 
-    #endregion
+#endregion
 
     private void DisconnectFromSocket()
     {

@@ -21,34 +21,34 @@ public static class SpellcastingTextFeedback
         {
             casterName = casterColor = casterDegree = "";
         }
-        else if (caster.type == MarkerSpawner.MarkerType.SPIRIT)
+        else if (caster.Type == MarkerSpawner.MarkerType.SPIRIT)
         {
-            casterName = LocalizeLookUp.GetSpiritName((caster.token as SpiritToken).spiritId);
+            casterName = LocalizeLookUp.GetSpiritName((caster.Token as SpiritToken).spiritId);
             casterColor = "spirit";
             casterDegree = "";
         }
         else
         {
-            casterName = (caster.token as WitchToken).displayName;
-            casterColor = Utilities.GetSchool((caster.token as CharacterToken).degree).ToUpper();
-            casterDegree = Utilities.GetDegree((caster.token as CharacterToken).degree);
+            casterName = (caster.Token as WitchToken).displayName;
+            casterColor = Utilities.GetSchool((caster.Token as CharacterToken).degree).ToUpper();
+            casterDegree = Utilities.GetDegree((caster.Token as CharacterToken).degree);
         }
 
         if (target == PlayerManager.marker)
         {
             targetName = targetColor = targetDegree = "";
         }
-        else if (target.type == MarkerSpawner.MarkerType.SPIRIT)
+        else if (target.Type == MarkerSpawner.MarkerType.SPIRIT)
         {
-            targetName = LocalizeLookUp.GetSpiritName((target.token as SpiritToken).spiritId);
+            targetName = LocalizeLookUp.GetSpiritName((target.Token as SpiritToken).spiritId);
 			targetColor = LocalizeLookUp.GetText ("lt_spirit_s");//"spirit";
             targetDegree = "";
         }
         else
         {
-            targetName = (target.token as WitchToken).displayName;
-            targetColor = Utilities.GetSchool((target.token as WitchToken).degree).ToUpper();
-            targetDegree = Utilities.GetDegree((target.token as WitchToken).degree).ToUpper();
+            targetName = (target.Token as WitchToken).displayName;
+            targetColor = Utilities.GetSchool((target.Token as WitchToken).degree).ToUpper();
+            targetDegree = Utilities.GetDegree((target.Token as WitchToken).degree).ToUpper();
         }
 
         if (response.result.isSuccess == false)
@@ -83,7 +83,7 @@ public static class SpellcastingTextFeedback
 
         if (str != null)
         {
-            if (target == PlayerManager.marker && caster.type != MarkerSpawner.MarkerType.SPIRIT)
+            if (target == PlayerManager.marker && caster.Type != MarkerSpawner.MarkerType.SPIRIT)
             {
                 str = str.Insert(7, "{1}");
             }
@@ -91,7 +91,7 @@ public static class SpellcastingTextFeedback
             {
                 str = str.Insert(21, "{1} ");
             }
-            else if (caster.type == MarkerSpawner.MarkerType.SPIRIT)
+            else if (caster.Type == MarkerSpawner.MarkerType.SPIRIT)
             {
                 str = str.Replace("{2}", "{1}");
             }

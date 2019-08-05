@@ -10,7 +10,7 @@ public class RemoveTokenHandlerPOP : IGameEventHandler
         public string instance;
         public double timestamp;
     }
-    public const string EventName = "remove.pop.token";
+    public string EventName => "remove.pop.token";
 
     public static event System.Action<string> OnRemoveTokenPOP;
 

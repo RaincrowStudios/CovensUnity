@@ -89,10 +89,10 @@ public class MarkerManagerAPI : MonoBehaviour
                 {
                     LeanTween.cancel(m_MoveTweenId);
                     Vector3 targetPosition = MapsAPI.Instance.GetWorldPosition(longitude, latitude);
-                    if (Vector3.Distance(targetPosition, PlayerManager.marker.gameObject.transform.position) < 200)
-                        m_MoveTweenId = LeanTween.move(PlayerManager.marker.gameObject, targetPosition, 1f).setEaseOutCubic().uniqueId;
+                    if (Vector3.Distance(targetPosition, PlayerManager.marker.GameObject.transform.position) < 200)
+                        m_MoveTweenId = LeanTween.move(PlayerManager.marker.GameObject, targetPosition, 1f).setEaseOutCubic().uniqueId;
                     else
-                        PlayerManager.marker.gameObject.transform.position = targetPosition;
+                        PlayerManager.marker.GameObject.transform.position = targetPosition;
 
                     requestMarkers();
                 },
@@ -119,7 +119,7 @@ public class MarkerManagerAPI : MonoBehaviour
             }
             else
             {
-                GetMarkers(PlayerManager.marker.coords.x, PlayerManager.marker.coords.y, callback, animateMap, showLoading, false);
+                GetMarkers(PlayerManager.marker.Coords.x, PlayerManager.marker.Coords.y, callback, animateMap, showLoading, false);
             }
         }
     }
@@ -129,15 +129,15 @@ public class MarkerManagerAPI : MonoBehaviour
         //move back to previous position
         LeanTween.cancel(m_MoveTweenId);
         Vector3 targetPosition = MapsAPI.Instance.GetWorldPosition(PlayerDataManager.playerData.longitude, PlayerDataManager.playerData.latitude);
-        if (Vector3.Distance(targetPosition, PlayerManager.marker.gameObject.transform.position) < 200)
-            m_MoveTweenId = LeanTween.move(PlayerManager.marker.gameObject, targetPosition, 1f).setEaseOutCubic().uniqueId;
+        if (Vector3.Distance(targetPosition, PlayerManager.marker.GameObject.transform.position) < 200)
+            m_MoveTweenId = LeanTween.move(PlayerManager.marker.GameObject, targetPosition, 1f).setEaseOutCubic().uniqueId;
         else
-            PlayerManager.marker.gameObject.transform.position = targetPosition;
+            PlayerManager.marker.GameObject.transform.position = targetPosition;
 
         //go back to previous position and show error
         if (loadMap)
         {
-            UIGlobalErrorPopup.ShowError(null, LocalizeLookUp.GetText(APIManager.ParseError(result)));
+            UIGlobalPopup.ShowError(null, LocalizeLookUp.GetText(APIManager.ParseError(result)));
             MapsAPI.Instance.InitMap(
                PlayerDataManager.playerData.longitude,
                PlayerDataManager.playerData.latitude,
@@ -149,7 +149,7 @@ public class MarkerManagerAPI : MonoBehaviour
 
     private static void GetMarkersCallback(float longitude, float latitude, string result, int response)
     {
-        PlayerManager.marker.coords = new Vector2(longitude, latitude);
+        PlayerManager.marker.Coords = new Vector2(longitude, latitude);
         PlayerDataManager.playerData.longitude = longitude;
         PlayerDataManager.playerData.latitude = latitude;
         
@@ -228,7 +228,7 @@ public class MarkerManagerAPI : MonoBehaviour
                 continue;
 
             //Debug.Log("<color=magenta>removing " + marker[0].gameObject.name + "</color>");
-            toRemove.Add(marker[0].token.Id);
+            toRemove.Add(marker[0].Token.Id);
         }
 
         foreach (string id in toRemove)

@@ -28,7 +28,6 @@ public class PlayerDataManager : MonoBehaviour
     public static int zone = 0;
     
     private ConsumableItemModel[] m_ConsumableItemModel;
-    public static Dailies currentQuests { get { return playerData.dailies; } }
     public static StoreApiObject StoreData;
     public static int soundTrack = 0;
 

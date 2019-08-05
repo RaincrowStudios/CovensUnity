@@ -9,22 +9,24 @@ public struct PlayerRank
     public int dominion;
 }
 
-public struct StatusEffectModifier
-{
-    public int resilience;
-    public int power;
-    public int aptitude;
-    public int wisdom;
-    public int beCrit;
-}
-
 public struct StatusEffect
 {
+    public struct Modifier
+    {
+        public string status;
+        public int resilience;
+        public int power;
+        public int aptitude;
+        public int wisdom;
+        public int beCrit;
+    }
+    
     public string spell;
     public float duration;
     public bool buff;
-    public StatusEffectModifier modifiers;
+    public Modifier modifiers;
     public int stack;
+    public int stackable;
     public double expiresOn;
 }
 
@@ -71,6 +73,8 @@ public abstract class CharacterMarkerData : MarkerData
     public virtual int level { get; set; }
     public virtual int power { get; set; }
     public virtual int resilience { get; set; }
+
+    public List<StatusEffect> effects;
     
     [JsonIgnore]
     public virtual string covenId { get; }
@@ -85,9 +89,6 @@ public abstract class CharacterMarkerData : MarkerData
             return energy;
         }
     }
-
-    [JsonIgnore]
-    public virtual List<Condition> conditions { get { return new List<Condition>(); } }
 }
 
 public class WitchMarkerData : CharacterMarkerData
@@ -122,8 +123,25 @@ public class SpiritMarkerData : CharacterMarkerData
 public struct CovenInfo
 {
     public string coven;
+    public string name;
     public int role;
     public long joinedOn;
+    public string title;
+}
+
+public struct QuestStatus
+{
+    public struct QuestProgress
+    {
+        public int count;
+        public bool completed;
+    }
+
+    public QuestsController.CovenDaily daily;
+    public bool completed;
+    public QuestProgress spell;
+    public QuestProgress gather;
+    public QuestProgress explore;
 }
 
 public class CovenRequest
@@ -169,6 +187,7 @@ public class PlayerData : WitchMarkerData
     public string nemesis;
 
     public CovenInfo covenInfo;
+    public QuestStatus quest;
 
     [JsonProperty("tools")] private List<CollectableItem> m_Tools;
     [JsonProperty("herbs")] private List<CollectableItem> m_Herbs;
@@ -181,10 +200,11 @@ public class PlayerData : WitchMarkerData
     [JsonProperty("cosmetics")] private List<string> m_Cosmetics;
     public List<string> spirits;
     public List<KnownSpirits> knownSpirits;
-    public List<StatusEffect> effects;
     public List<CovenInvite> covenInvites;
     public List<CovenRequest> covenRequests;
     public HashSet<string> immunities;
+
+    private List<SpellData> m_Spells = null;
 
     [JsonIgnore]
     public ulong xpToLevelUp
@@ -211,19 +231,23 @@ public class PlayerData : WitchMarkerData
         foreach (var item in m_Gems)
             m_GemsDict[item.collectible] = item.count;
         
-        Debug.LogError("TODO: GET DAILIES");
-        dailies = new Dailies
-        {
-            explore = new Explore { },
-            gather = new Gather { },
-            spellcraft = new Spellcraft { }
-        };
-
         Debug.LogError("TODO: GET BLESSINGS");
         blessing = new Blessing { };
 
         Debug.LogError("TODO: WATCHED VIDEOS");
         firsts = new Firsts { };
+
+        m_Spells = new List<SpellData>();
+        var allSpells = new List<SpellData>(DownloadedAssets.spellDictData.Values);
+        allSpells.Sort(new System.Comparison<SpellData> ((a,b) => a.Name.CompareTo(b.Name)));
+
+        foreach (var spellData in allSpells)
+        {
+            if (spellData.hidden)
+                continue;
+
+            m_Spells.Add(spellData);
+        }
     }
 
     public int GetIngredient(string id)
@@ -343,10 +367,7 @@ public class PlayerData : WitchMarkerData
             return inv;
         }
     }
-
-    [JsonIgnore]
-    public Dailies dailies;
-
+    
     [JsonIgnore]
     public Blessing blessing;
     
@@ -360,21 +381,7 @@ public class PlayerData : WitchMarkerData
     public int avatar => bodyType;
 
     [JsonIgnore]
-    public List<SpellData> Spells
-    {
-        get
-        {
-            List<SpellData> spells = new List<SpellData>();
-            var allSpells = DownloadedAssets.spellDictData.Values;
-            foreach (var spellData in allSpells)
-            {
-                if (spellData.hidden)
-                    continue;
-                spells.Add(spellData);
-            }
-            return spells;
-        }
-    }
+    public List<SpellData> Spells => m_Spells;
 
     [JsonIgnore]
     public long minAlignment
@@ -406,26 +413,12 @@ public class PlayerData : WitchMarkerData
     public override string covenId => covenInfo.coven;
 }
 
-public class PortalMarkerData : MarkerData
-{
-    public override MarkerSpawner.MarkerType Type => MarkerSpawner.MarkerType.PORTAL;
-
-    public string owner;
-    public int degree;
-    public int energy;
-    public double createdOn;
-    public double summonOn;
-}
-
-
-
 //map select
-public class MapWitchData : WitchMarkerData
+public class SelectWitchData_Map : WitchMarkerData
 {
     public string coven;
     public new int power;
     public new int resilience;
-    public List<StatusEffect> effects;
     public PlayerRank rank;
 
     [JsonIgnore]
@@ -471,12 +464,11 @@ public class MapWitchData : WitchMarkerData
     public override string covenId => coven;
 }
 
-public class MapSpiritData : SpiritMarkerData
+public class SelectSpiritData_Map : SpiritMarkerData
 {
     public override double createdOn { get; set; }
     public override string owner { get; set; }
     public string coven { get; set; }
-    public List<StatusEffect> effects;
     public override int power { get; set; }
     public override int resilience { get; set; }
     public override int bounty { get; set; }

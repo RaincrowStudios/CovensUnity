@@ -80,43 +80,6 @@ public class Sun
     public double sunSet { get; set; }
 }
 
-public class Spellcraft
-{
-    public string id { get; set; }
-    public string ingredient { get; set; }
-    public string relation { get; set; }
-    public string type { get; set; }
-    public string location { get; set; }
-    public int amount { get; set; }
-    public int count { get; set; }
-    public bool complete { get; set; }
-}
-
-public class Gather
-{
-    public string type { get; set; }
-    public int amount { get; set; }
-    public string location { get; set; }
-    public int count { get; set; }
-    public bool complete { get; set; }
-}
-
-public class Explore
-{
-    public string id { get; set; }
-    public int count { get; set; }
-    public bool complete { get; set; }
-}
-
-public class Dailies
-{
-    public bool collected { get; set; }
-    public long expiresOn { get; set; }
-    public Spellcraft spellcraft { get; set; }
-    public Gather gather { get; set; }
-    public Explore explore { get; set; }
-}
-
 public class AnalyticsSession
 {
     public string SessionId { get; set; }
@@ -129,8 +92,6 @@ public class Rewards
     public int gold { get; set; }
 
 }
-
-
 
 public class Condition
 {
@@ -313,7 +274,7 @@ public class SpellData
     public int align;
     public bool pop;
     public bool hidden;
-
+    
     [JsonIgnore]
     public string Name => LocalizeLookUp.GetSpellName(id);
     [JsonIgnore]

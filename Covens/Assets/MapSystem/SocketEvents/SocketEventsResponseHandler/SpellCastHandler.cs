@@ -21,6 +21,9 @@ namespace Raincrow.GameEventResponses
             public int damage;
             public bool isCritical;
             public bool isSuccess;
+
+            [JsonProperty("appliedEffect")]
+            public StatusEffect statusEffect;
         }
 
         public struct SpellCastEventData
@@ -33,9 +36,12 @@ namespace Raincrow.GameEventResponses
             public bool immunity;
         }
 
-        public const string EventName = "cast.spell";
-        public static System.Action<string, SpellData, SpellCastHandler.Result> OnPlayerTargeted;
-        public static System.Action<string, string, SpellData, SpellCastHandler.Result> OnSpellCast;
+        public string EventName => "cast.spell";
+        public static event System.Action<string, SpellData, Result> OnPlayerTargeted;
+        public static event System.Action<StatusEffect> OnPlayerApplyStatusEffect;
+
+        public static event System.Action<string, string, SpellData, Result> OnSpellCast;
+        public static event System.Action<string, StatusEffect> OnApplyStatusEffect;
 
         public void HandleResponse(string eventData)
         {
@@ -49,22 +55,17 @@ namespace Raincrow.GameEventResponses
             SpellData spell = DownloadedAssets.GetSpell(data.spell);
             bool playerIsCaster = data.caster.id == player.instance;
             bool playerIsTarget = data.target.id == player.instance;
-
-            OnSpellCast?.Invoke(data.caster.id, data.target.id, spell, data.result);
-
-            if (playerIsTarget)
-            {
-                OnPlayerTargeted?.Invoke(data.caster.id, spell, data.result);
-            }
-
+                            
             IMarker caster = playerIsCaster ? PlayerManager.marker : MarkerManager.GetMarker(data.caster.id);
             IMarker target = playerIsTarget ? PlayerManager.marker : MarkerManager.GetMarker(data.target.id);
             int damage = data.result.damage;
             int casterNewEnergy = data.caster.energy;
             int targetNewEnergy = data.target.energy;
+            
+            OnSpellCast?.Invoke(data.caster.id, data.target.id, spell, data.result);
 
             SpellcastingTrailFX.SpawnTrail(spell.school, caster, target,
-                () =>
+                onStart: () =>
                 {
                     onTrailStart?.Invoke();
 
@@ -83,35 +84,61 @@ namespace Raincrow.GameEventResponses
                     {
                         SpellcastingFX.SpawnDamage(caster, -spell.cost);
                     }
+
+                    //localy remove the immunity so you may attack again
+                    if (playerIsTarget)
+                    {
+                        MarkerSpawner.RemoveImmunity(data.caster.id, data.target.id);
+                        if (caster != null && caster is WitchMarker)
+                            (caster as WitchMarker).RemoveImmunityFX();
+
+                        OnPlayerTargeted?.Invoke(data.caster.id, spell, data.result);
+                    }
                 },
-                () =>
+                onComplete: () =>
                 {
                     onTrailEnd?.Invoke();
 
                     //trigger a map_energy_change event for the target
                     LeanTween.value(0, 0, 0.25f).setOnComplete(() => OnMapEnergyChange.ForceEvent(target, targetNewEnergy, data.timestamp));
+                    
+                    //add status effects to PlayerDataManager.playerData
+                    if (string.IsNullOrEmpty(data.result.statusEffect.spell) == false)
+                    {
+                        OnApplyStatusEffect?.Invoke(data.target.id, data.result.statusEffect);
 
-                    //add the immunity
-                    if (data.immunity)
+                        if (playerIsTarget)
+                        {
+                            foreach (StatusEffect item in PlayerDataManager.playerData.effects)
+                            {
+                                if (item.spell == data.result.statusEffect.spell)
+                                {
+                                    PlayerDataManager.playerData.effects.Remove(item);
+                                    break;
+                                }
+                            }
+                            PlayerDataManager.playerData.effects.Add(data.result.statusEffect);
+                            OnPlayerApplyStatusEffect?.Invoke(data.result.statusEffect);
+                        }
+                    }
+
+                    //add the immunity if the server said so
+                    if (data.immunity && !playerIsTarget) 
                     {
                         MarkerSpawner.AddImmunity(data.caster.id, data.target.id);
+                        if (target != null && target is WitchMarker)
+                            (target as WitchMarker).AddImmunityFX();
                     }
 
                     if (target != null)
                     {
-                        //add immunity fx
-                        if (data.immunity && target is WitchMarker)
-                            (target as WitchMarker).AddImmunityFX();
-
                         if (data.result.isSuccess)
                         {
+                            Debug.LogError("todo: move spell specific behavior to its own classes");
+
                             if (playerIsTarget)
                             {
-                                if (data.spell == "spell_banish")
-                                {
-                                    UISpellcasting.Instance.Hide();
-                                }
-                                else if (data.spell == "spell_bind")
+                                if (data.spell == "spell_bind")
                                 {
                                     BanishManager.Instance.ShowBindScreen(data);
                                 }
@@ -125,7 +152,7 @@ namespace Raincrow.GameEventResponses
                                 //spawn the banish fx and remove the marker
                                 if (data.spell == "spell_banish")
                                 {
-                                    target.interactable = false;
+                                    target.Interactable = false;
                                     SpellcastingFX.SpawnBanish(target, 0);
                                     //make sure marker is removed in case the server doesnt send the map_token_remove
                                     RemoveTokenHandler.ForceEvent(data.target.id);
@@ -145,9 +172,9 @@ namespace Raincrow.GameEventResponses
                         }
                     }
 
+                    //screen shake
                     if (playerIsTarget || playerIsCaster)
                     {
-                        //shake slightly if being healed
                         if (damage > 0) //healed
                         {
                             MapCameraUtils.ShakeCamera(
@@ -157,7 +184,6 @@ namespace Raincrow.GameEventResponses
                                 2f
                             );
                         }
-                        //shake more if taking damage
                         else if (damage < 0) //dealt damage
                         {
                             MapCameraUtils.ShakeCamera(
@@ -168,22 +194,35 @@ namespace Raincrow.GameEventResponses
                             );
                         }
                     }
+
+                    //show notification
                     if (playerIsTarget && !playerIsCaster)
                     {
-                        if (caster is WitchMarker)
+                        if (caster != null && target != null)
                         {
-                            (caster as WitchMarker).GetPortrait(spr =>
+                            if (caster is WitchMarker)
                             {
-                                PlayerNotificationManager.Instance.ShowNotification(SpellcastingTextFeedback.CreateSpellFeedback(caster, target, data), spr);
-                            });
-                        }
-                        else if (caster is SpiritMarker)
-                        {
-                            PlayerNotificationManager.Instance.ShowNotification(SpellcastingTextFeedback.CreateSpellFeedback(caster, target, data));
+                                (caster as WitchMarker).GetPortrait(spr =>
+                                {
+                                    PlayerNotificationManager.Instance.ShowNotification(SpellcastingTextFeedback.CreateSpellFeedback(caster, target, data), spr);
+                                });
+                            }
+                            else if (caster is SpiritMarker)
+                            {
+
+                                PlayerNotificationManager.Instance.ShowNotification(SpellcastingTextFeedback.CreateSpellFeedback(caster, target, data));
+                            }
+                            else
+                            {
+                                Debug.LogError("something went wrong");
+                            }
                         }
                         else
                         {
-                            Debug.LogError("something went wrong");
+                            MarkerSpawner.MarkerType casterType = data.caster.Type;
+                            MarkerSpawner.MarkerType targetType = data.target.Type;
+                            string msg = "todo: generic attack notification";
+                            PlayerNotificationManager.Instance.ShowNotification(msg);
                         }
                     }
                 });

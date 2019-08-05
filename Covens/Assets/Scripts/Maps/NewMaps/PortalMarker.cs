@@ -7,7 +7,7 @@ public class PortalMarker : MuskMarker {
 
     [SerializeField] private Transform m_ViewTransform;
 
-    public override Transform characterTransform => m_ViewTransform;
+    public override Transform AvatarTransform => m_ViewTransform;
 
     public override void Setup(Token data)
     {

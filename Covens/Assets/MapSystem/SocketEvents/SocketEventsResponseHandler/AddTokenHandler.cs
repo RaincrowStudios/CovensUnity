@@ -9,6 +9,8 @@ namespace Raincrow.GameEventResponses
         public static event System.Action<string> OnTokenAdd;
         public static event System.Action<IMarker> OnMarkerAdd;
 
+        //public virtual string EventName { get { return "add.token"; } }
+        public abstract string EventName { get; }
         public abstract void HandleResponse(string eventData);
 
         public static void HandleEvent(Token token)
@@ -37,7 +39,7 @@ namespace Raincrow.GameEventResponses
 
             if (isNew)
             {
-                marker.gameObject.SetActive(false);
+                marker.GameObject.SetActive(false);
                 marker.SetAlpha(0);
             }
 

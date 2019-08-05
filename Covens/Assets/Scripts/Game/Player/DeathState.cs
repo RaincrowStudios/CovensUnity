@@ -47,10 +47,10 @@ public class DeathState : MonoBehaviour
         if (map == null) map = MapsAPI.Instance;
         map.SetPosition(GetGPS.longitude, GetGPS.latitude);
 
-        PlayerManager.marker.gameObject.transform.GetChild(0).GetChild(0).GetChild(1).gameObject.SetActive(true);
+        PlayerManager.marker.GameObject.transform.GetChild(0).GetChild(0).GetChild(1).gameObject.SetActive(true);
         PlayerManager.marker.SetCharacterAlpha(.56f);
 
-        PlayerDataManager.playerData.conditions.Clear();
+        PlayerDataManager.playerData.effects.Clear();
 
         if (BanishManager.isBind)
         {
@@ -98,7 +98,7 @@ public class DeathState : MonoBehaviour
             return;
 
         IsDead = false;
-        PlayerManager.marker.gameObject.transform.GetChild(0).GetChild(0).GetChild(1).gameObject.SetActive(false);
+        PlayerManager.marker.GameObject.transform.GetChild(0).GetChild(0).GetChild(1).gameObject.SetActive(false);
         PlayerManager.marker.SetCharacterAlpha(1);
 
         MarkerManagerAPI.GetMarkers(true, false, () =>

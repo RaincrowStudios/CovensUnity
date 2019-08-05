@@ -20,7 +20,7 @@
 		Cull Off
 		Lighting Off
 		ZWrite Off
-		Blend One OneMinusSrcAlpha
+		Blend One One
 
 		CGPROGRAM
 		#pragma surface surf Lambert vertex:vert nofog nolightmap nodynlightmap keepalpha 
@@ -57,6 +57,14 @@
 			
 			if (angle <= endAngle) 
 			{
+				float sinX = sin(1 * _Time);
+				float cosX = cos(1 * _Time);
+				float sinY = sin(1 * _Time);
+				float2x2 rotationMatrix = float2x2(cosX, -sinX, sinY, cosX);
+				IN.uv_MainTex.xy -= 0.5;
+				IN.uv_MainTex.xy = mul(IN.uv_MainTex.xy, rotationMatrix);
+				IN.uv_MainTex.xy += 0.5;
+
 				IN.color.a = 1;
 				fixed4 c = SampleSpriteTexture(IN.uv_MainTex) * IN.color;
 				o.Albedo = c.rgb * c.a;

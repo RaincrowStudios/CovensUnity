@@ -200,7 +200,6 @@ namespace Raincrow.Chat
                 {
                     InitCoven(CovenName, CovenId);
                 }
-                TeamManager.OnCovenCreated += OnJoinCoven;
                 TeamManager.OnJoinCoven += OnJoinCoven;
                 TeamManager.OnLeaveCoven += LeaveCovenChatRequested;
             }            
