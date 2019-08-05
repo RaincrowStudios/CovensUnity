@@ -156,6 +156,8 @@ public class DeathState : MonoBehaviour
     {
         foreach (var item in DisableItems)
         {
+            if (item == null)
+                continue;
             item.SetActive(false);
         }
         float t = 0;

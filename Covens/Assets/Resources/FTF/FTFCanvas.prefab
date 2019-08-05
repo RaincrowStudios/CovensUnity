@@ -5183,7 +5183,7 @@ ParticleSystem:
 --- !u!199 &199333533109263490
 ParticleSystemRenderer:
   serializedVersion: 6
-  m_ObjectHideFlags: 2
+  m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
@@ -13878,7 +13878,7 @@ ParticleSystem:
 --- !u!199 &199126151158478454
 ParticleSystemRenderer:
   serializedVersion: 6
-  m_ObjectHideFlags: 2
+  m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
@@ -24194,7 +24194,7 @@ ParticleSystem:
 --- !u!199 &199248881849801172
 ParticleSystemRenderer:
   serializedVersion: 6
-  m_ObjectHideFlags: 2
+  m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
@@ -34845,7 +34845,7 @@ ParticleSystem:
 --- !u!199 &199310367532772986
 ParticleSystemRenderer:
   serializedVersion: 6
-  m_ObjectHideFlags: 2
+  m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
@@ -58361,7 +58361,7 @@ ParticleSystem:
 --- !u!199 &199023276922210986
 ParticleSystemRenderer:
   serializedVersion: 6
-  m_ObjectHideFlags: 2
+  m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
@@ -65575,7 +65575,7 @@ ParticleSystem:
 --- !u!199 &199136090973550814
 ParticleSystemRenderer:
   serializedVersion: 6
-  m_ObjectHideFlags: 2
+  m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
@@ -66872,84 +66872,6 @@ MonoBehaviour:
     type: 3}
   mirrors: {fileID: 1641599854068124, guid: b12bbb209e463e34ba01e0a04c8d4744, type: 3}
   mirrorsInstance: {fileID: 0}
-  dialogues:
-  - 'Savannah Grey: "You''re all alone, witch. Let''s get you some protection."'
-  - 'Savannah Grey: "The Barghest is a spectral hound that can act as a protector
-    for witches"'
-  - 'Savannah Grey: "Before you can summon the Barghest, you must first defeat it
-    in battle."'
-  - 'Savannah Grey: "Tap on the Barghest Spirit to continue."'
-  - 'Savannah Grey: "I will weaken this Barghest for you."'
-  - 'Savannah Grey: "Let''s use a spell from the White School to capture this Barghest."'
-  - 'Savannah Grey: "Well done! You have captured your first spirit."'
-  - 'Savannah Grey: "The Barghest is now in your Spirit Deck."'
-  - 'Savannah Grey: "There are hundreds of spirits in the world that can be captured
-    and summoned."'
-  - 'Savannah Grey: "Let''s summon your Barghest now..."'
-  - 'Savannah Grey: "Brilliant! You completed your first summoning ritual!"'
-  - 'Savannah Grey: "The Barghest is a Familiar type spirit. It will follow you around
-    and protect you."'
-  - 'Savannah Grey: "It will be very aggressive to anything that attacks you, especially
-    other witches . . ."'
-  - 'Savannah Grey: "Speaking of other witches, I''ve summoned Ms. Brigid Sawyer to
-    {{Location}} to offer a little guidance . . ."'
-  - Brigid Sawyer / Seven Hills Coven / Dominion of California
-  - 'Savannah Grey: "Ms. Sawyer, so good to see you. I see you''ve chosen the Shadow
-    Path . . ."'
-  - 'Brigid Sawyer: "I find comfort in the shadows, Dea."'
-  - 'Savannah Grey: "Now, tap Brigid."'
-  - 'Savannah Grey: "Let''s begin by casting a simple Hex on Brigid . . ."'
-  - 'Savannah Grey: "Your common Hex did a little damage to Brigid. It will do more
-    damage over time unless it is dispelled."'
-  - 'Savannah Grey: "Brigid is immune to your magic until she casts on you."'
-  - 'Brigid Sawyer: "What an adorable little Hex, {{Player Name}}. You''ve saved me
-    the trouble of feeding Theo, my Fowler spirit."'
-  - 
-  - 'Savannah Grey: "Bringing your Fowler to train a new witch, Brigid? Seems out
-    of taste."'
-  - 'Brigid Sawyer: "I thought you''d be impressed, Dea."'
-  - 
-  - 'Savannah Grey: "How can we teach {{him/her}} witchcraft when {{he/she}} cannot
-    speak?!"'
-  - 'Brigid Sawyer: "I think a Cat Sidhe''s got {{his/her}} tongue, Dea."'
-  - 
-  - 'Savannah Grey: "Let''s give this cheeky witch . . . oh no!"'
-  - 'Brigid uses signature ingredients to cast: Mirrors.'
-  - 'Savannah Grey: "You are one bold little witch, Brigid Sawyer."'
-  - 'Savannah Grey: "No bother, {{Player Name}}, I''m granting you a very powerful
-    blessing called Truesight."'
-  - 'Savannah Grey: "The gift of Truesight allows you to see what is not meant to
-    be seen."'
-  - 
-  - 'Savannah Grey: "{{Player Name}}! Brigid has lost the plot! You have my word she''ll
-    pay for that... Let''s get you back on your feet!"'
-  - 'Savannah Grey: "Brigid used ingredients to make her spell more powerful, including
-    the very rare Halfeti rose only found in Turkey."'
-  - 'Savannah Grey: "I will grant you a blessing of Energy every day. Use my gift
-    wisely."'
-  - 'Brigid Sawyer: "Really, Dea? Banish me to Uluru!? {{Player Name}}, I''ll send
-    you a bill for my services . . ."'
-  - 'Savannah Grey: "I think it''s time we introduce you to Madame Fortuna. She can
-    provide you sufficient ingredients to get started . . ."'
-  - 'Madame Fortuna: "Sastipe, Dea Grey! It is always a pleasure my dear lady . .
-    ."'
-  - 'Savannah Grey: "The pleasure is mine, dear friend. {{Player Name}} is our newest
-    witch; {{he/she}} needs a collection of ingredients for {{his/her}} spellcraft."'
-  - 'Madame Fortuna: "Va! Sastipe, {{Player Name}}, you have come to the right place.
-    And I have just the collection for a witch learning their craft . . ."'
-  - 
-  - 
-  - 
-  - 'Savannah Grey: "Abondia''s Best collection added 940 items to your inventory!
-    You can collect items for spellcraft all over the world."'
-  - 'Savannah Grey: "Well, witch, that''s quite enough hand-holding. I officially
-    welcome you to the {{Season}} tournament of witchcraft. {{Number}} days remain."'
-  - 'Savannah Grey: "This is just the beginning of your adventure. I strongly suggest
-    you visit Witch School, but if you''re the adventurous type, feel free to explore
-    on your own."'
-  - 'Savannah Grey: "As long as you abide by my rules, I''ll continue to grant you
-    a daily blessing of Energy."'
-  - 
   dialogueIndex: 0
   continueButton: {fileID: 1682706316352576}
   dialogueFX: {fileID: 1397624116206692}
@@ -78026,7 +77948,7 @@ ParticleSystem:
 --- !u!199 &199165281256654422
 ParticleSystemRenderer:
   serializedVersion: 6
-  m_ObjectHideFlags: 2
+  m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
@@ -86834,7 +86756,7 @@ ParticleSystem:
 --- !u!199 &199605194514863472
 ParticleSystemRenderer:
   serializedVersion: 6
-  m_ObjectHideFlags: 2
+  m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
@@ -102807,7 +102729,7 @@ ParticleSystem:
 --- !u!199 &199073125199335640
 ParticleSystemRenderer:
   serializedVersion: 6
-  m_ObjectHideFlags: 2
+  m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
@@ -103842,7 +103764,7 @@ Canvas:
   m_GameObject: {fileID: 1859191740339906}
   m_Enabled: 1
   serializedVersion: 3
-  m_RenderMode: 1
+  m_RenderMode: 0
   m_Camera: {fileID: 20605928895595166}
   m_PlaneDistance: 100
   m_PixelPerfect: 0

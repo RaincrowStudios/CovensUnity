@@ -377,6 +377,9 @@ public class SummoningManager : MonoBehaviour
 
     public void CastSummon()
     {
+        if (FTFManager.InFTF)
+            return;
+
         summonButton.interactable = false;
         SoundManagerOneShot.Instance.SummonRiser();
 
