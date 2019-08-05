@@ -278,16 +278,6 @@ public static class LoginAPIManager
         return player;
     }
 
-    public static void WebSocketConnected()
-    {
-        Debug.LogError("TODO: REPLACE FOR EVENT");
-    }
-
-    public static void initiateLogin()
-    {
-        Debug.LogError("TODO: REPLACE FOR EVENT");
-    }
-
     private struct GameConfig
     {
         public float displayRadius;

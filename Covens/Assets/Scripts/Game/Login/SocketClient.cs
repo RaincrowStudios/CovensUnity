@@ -105,7 +105,6 @@ public class SocketClient : MonoBehaviour
 
         if (!_isRefreshingConnection)
         {
-            UnityMainThreadDispatcher.Instance().Enqueue(LoginAPIManager.WebSocketConnected);
         }
 
         StartCoroutine(ReadFromQueue());
@@ -137,7 +136,7 @@ public class SocketClient : MonoBehaviour
 
         if (!LoginAPIManager.accountLoggedIn)
         {
-            UnityMainThreadDispatcher.Instance().Enqueue(LoginAPIManager.initiateLogin);
+
         }
         else
         {

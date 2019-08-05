@@ -95,6 +95,9 @@ namespace Raincrow.Maps
             m_Particles = GetComponentsInChildren<ParticleSystem>(true);
 
             m_CharacterRenderers = new List<SpriteRenderer> { m_AvatarRenderer };
+            if (m_Shadows == null)
+                m_Shadows = new SpriteRenderer[0];
+
             UpdateRenderers();
         }
 
@@ -317,7 +320,9 @@ namespace Raincrow.Maps
                 m_Renderers.Remove(sr);
             foreach (SpriteRenderer sr in m_Shadows)
                 m_Renderers.Remove(sr);
-            m_Renderers.Remove(m_EnergyRing);
+
+            if (m_EnergyRing != null)
+                m_Renderers.Remove(m_EnergyRing);
         }
         
         public void SetWorldPosition(Vector3 worldPos, float time = 0, System.Action onComplete = null)
