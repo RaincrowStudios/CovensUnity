@@ -258,7 +258,7 @@ public class UIInventoryWheel : MonoBehaviour
         m_UpperBorder = m_Angle + m_Spacing;
 
         if (items.Count > 0)
-            Focus(0, 0.2f, null);
+            Focus(0, 0.2f, null, null);
     }
 
     public void SelectItem(UIInventoryWheelItem wheelItem)
@@ -303,27 +303,50 @@ public class UIInventoryWheel : MonoBehaviour
         return pos >= min && pos < max;
     }
 
-    public void SetPicker(UIInventoryWheelItem reference, int amount)
+    public void SetPicker(string itemId, int amount)
     {
-        if (amount > 0)
-        {
-            //selected a different item, so reset the previous
-            if (reference.inventoryItemId != m_PickerItemRef)
-                ResetPicker();
-
-            m_PickerItemRef = reference.inventoryItemId;
-            m_PickerAmountRef = amount;
-
-            if (m_Pickers.Count == 0)
-                m_Pickers.Add(m_PickerPool.Spawn());
-
-            foreach (UIInventoryItemPicker _picker in m_Pickers)
-                _picker.Setup(reference, amount);
-        }
-        else
+        if (amount <= 0)
         {
             ResetPicker();
+            return;
         }
+                
+        foreach (var uiItem in m_Items)
+        {
+            if (uiItem.inventoryItemId == itemId)
+            {
+                SetPicker(uiItem, amount);
+                return;
+            }
+        }
+
+        //if no item found visible, setup the picker references
+        m_PickerItemRef = itemId;
+        m_PickerAmountRef = amount;
+    }
+
+    public void SetPicker(UIInventoryWheelItem reference, int amount)
+    {
+        if (amount <= 0)
+        {
+            ResetPicker();
+            return;
+        }
+
+        //selected a different item, so reset the previous
+        if (reference.inventoryItemId != m_PickerItemRef)
+            ResetPicker();
+
+        m_PickerItemRef = reference.inventoryItemId;
+        m_PickerAmountRef = amount;
+
+        reference.SetAmount(PlayerDataManager.playerData.GetIngredient(reference.inventoryItemId) - amount);
+
+        if (m_Pickers.Count == 0)
+            m_Pickers.Add(m_PickerPool.Spawn());
+
+        foreach (UIInventoryItemPicker _picker in m_Pickers)
+            _picker.Setup(reference, amount);
     }
 
     public void ResetPicker()
@@ -348,12 +371,13 @@ public class UIInventoryWheel : MonoBehaviour
             return;
         }
 
+        m_PickerItemRef = item;
+        m_PickerAmountRef = 0;
+
         for (int j = 0; j < m_Inventory.Count; j++)
         {
             if (m_Inventory[j].id == item)
             {
-                m_PickerItemRef = item;
-
                 //if the wheel was preset, there is no guarantee the wheel is ordered the same way as the inventory
                 if (m_PrearrangedItems.Length > 0)
                 {
@@ -361,7 +385,7 @@ public class UIInventoryWheel : MonoBehaviour
                     {
                         if (m_PickerItemRef != null && m_Items[i].inventoryItemId == m_PickerItemRef)
                         {
-                            Focus(i, animDuration, null);
+                            Focus(i, animDuration, null, null);
                             m_Items[i].SetIngredientPicker(1);
                             return;
                         }
@@ -369,17 +393,7 @@ public class UIInventoryWheel : MonoBehaviour
                 }
                 else
                 {
-                    Focus(j, animDuration, () =>
-                    {
-                        for (int i = 0; i < m_Items.Count; i++)
-                        {
-                            if (m_PickerItemRef != null && m_Items[i].inventoryItemId == m_PickerItemRef)
-                            {
-                                m_Items[i].SetIngredientPicker(1);
-                                return;
-                            }
-                        }
-                    });
+                    Focus(j, animDuration, null, null);
                 }
 
                 break;
@@ -387,7 +401,7 @@ public class UIInventoryWheel : MonoBehaviour
         }
     }
 
-    public void Focus(int index, float animDuration, System.Action onItemInscreen)
+    public void Focus(int index, float animDuration, System.Action onItemEnterScreen, System.Action onComplete)
     {
         LeanTween.cancel(m_IntertiaTween, true);
         LeanTween.cancel(m_FocusTweenId, true);
@@ -405,13 +419,13 @@ public class UIInventoryWheel : MonoBehaviour
                 transform.localEulerAngles = new Vector3(0, 0, m_Angle);
                 ManageItems();
 
-                if (onItemInscreen != null && Mathf.Abs(targetAngle - m_Angle) < validAngle)
+                if (onItemEnterScreen != null && Mathf.Abs(targetAngle - m_Angle) < validAngle)
                 {
-                    onItemInscreen.Invoke();
-                    onItemInscreen = null;
+                    onItemEnterScreen.Invoke();
+                    onItemEnterScreen = null;
                 }
             })
-            .setOnComplete(onItemInscreen)
+            .setOnComplete(onComplete)
             .uniqueId;
     }
     public void AnimIn1()

@@ -20,7 +20,7 @@ public class UIInventoryItemPicker : MonoBehaviour
         gameObject.SetActive(value);
     }
 
-    public void SetAmount(int amount)
+    public void SetFillAmount(int amount)
     {
         this.amount = amount;
         //m_AmountText.text = amount.ToString();
@@ -29,7 +29,7 @@ public class UIInventoryItemPicker : MonoBehaviour
 
     public void Setup(UIInventoryWheelItem reference, int amount)
     {
-        SetAmount(amount);
+        SetFillAmount(amount);
         Setup(reference);
     }
 
