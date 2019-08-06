@@ -38,7 +38,7 @@ public class APIManagerServer
             retry = www.isNetworkError || (www.isHttpError && www.responseCode > 500);
             retryCount += 1;
 
-            if (www.isHttpError && (www.responseCode == 401))
+            if (www.isHttpError && (www.responseCode == 401 || www.downloadHandler.text == "1006"))
             {
                 //refresh auth tokens and repeat the request
                 bool waitingTokens = true;
