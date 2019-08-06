@@ -19,7 +19,7 @@ public class CovenConstants : MonoBehaviour
             }
             else if (UnityEditor.EditorPrefs.GetString("game") == "Release")
             {
-                return isBackUpServer ? "http://35.222.147.118:8080/api/" : "http://35.227.71.49:8080/api/";
+                return isBackUpServer ? "http://35.222.147.118:8080/api/" : "https://game-server-dot-raincrow-pantheon.appspot.com/api/";
             }
             else if (UnityEditor.EditorPrefs.GetString("game") == "Gustavo")
             {

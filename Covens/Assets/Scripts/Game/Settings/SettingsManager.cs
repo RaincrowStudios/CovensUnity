@@ -2,7 +2,7 @@
 using UnityEngine;
 using UnityEngine.UI;
 using System.Collections;
-using Facebook;
+using Facebook.Unity;
 using System.Collections.Generic;
 // using Facebook.Unity.Example;
 using Newtonsoft.Json;
@@ -107,42 +107,42 @@ public class SettingsManager : MonoBehaviour
             collectible = witches,
             spirit = witches
         };
-        // if (FB.IsInitialized)
-        // {
-        //     FB.ActivateApp();
-        // }
-        // else
-        // {
-        //     //Handle FB.Init
-        //     FB.Init(() =>
-        //     {
-        //         FB.ActivateApp();
-        //     });
-        // }
+        if (FB.IsInitialized)
+        {
+            FB.ActivateApp();
+        }
+        else
+        {
+            //Handle FB.Init
+            FB.Init(() =>
+            {
+                FB.ActivateApp();
+            });
+        }
     }
 
 
-    // void OnApplicationPause(bool pauseStatus)
-    // {
-    //     // Check the pauseStatus to see if we are in the foreground
-    //     // or background
-    //     if (!pauseStatus)
-    //     {
-    //         //app resume
-    //         if (FB.IsInitialized)
-    //         {
-    //             FB.ActivateApp();
-    //         }
-    //         else
-    //         {
-    //             //Handle FB.Init
-    //             FB.Init(() =>
-    //             {
-    //                 FB.ActivateApp();
-    //             });
-    //         }
-    //     }
-    // }
+    void OnApplicationPause(bool pauseStatus)
+    {
+        // Check the pauseStatus to see if we are in the foreground
+        // or background
+        if (!pauseStatus)
+        {
+            //app resume
+            if (FB.IsInitialized)
+            {
+                FB.ActivateApp();
+            }
+            else
+            {
+                //Handle FB.Init
+                FB.Init(() =>
+                {
+                    FB.ActivateApp();
+                });
+            }
+        }
+    }
     // Use this for initialization
     private void Start()
     {
