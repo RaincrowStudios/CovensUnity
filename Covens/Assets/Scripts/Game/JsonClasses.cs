@@ -166,6 +166,12 @@ public struct CollectableItem
     [JsonProperty("collectible")]
     public string id;
     public int count;
+
+    public CollectableItem(string id, int count)
+    {
+        this.id = id;
+        this.count = count;
+    }
 }
 
 public class KytelerItem

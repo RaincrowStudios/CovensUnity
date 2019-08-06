@@ -92,7 +92,7 @@ public class UIMain : MonoBehaviour
             
         };
 
-        UIInventory.Instance.Show(onSelectItem, onClickClose, true, true, true);
+        UIInventory.Instance.Show(onSelectItem, onClickClose, true, true);
     }
 
     private void OnClickCoven()
