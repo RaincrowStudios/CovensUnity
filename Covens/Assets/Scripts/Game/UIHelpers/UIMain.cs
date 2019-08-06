@@ -83,8 +83,10 @@ public class UIMain : MonoBehaviour
     {
         System.Action<UIInventoryWheelItem> onSelectItem = (item) =>
         {
-            if (item != null && item.inventoryItemId != null)
+            if (item != null && item.inventoryItemId != null && item.inventoryItemId != UICollectableInfo.Instance.CollectableId)
                 UICollectableInfo.Instance.Show(item.inventoryItemId);
+            else
+                UICollectableInfo.Instance.Close();
         };
 
         System.Action onClickClose = () => 

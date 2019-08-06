@@ -169,6 +169,11 @@ public class TeamPlayerView : MonoBehaviour
 
     public static void ViewCharacter(string id, System.Action<WitchMarkerData, string> callback)
     {
+        Debug.LogError("TODO: GET FULL CHARACTER INFO");
+        UIGlobalPopup.ShowError(null, "not implemented");
+        callback?.Invoke(null, "not implemented");
+        return;
+
         MarkerSpawner.GetMarkerDetails(id, (result, response) =>
         {
             if (result == 200)

@@ -32,8 +32,19 @@ public class UICollectableInfo : MonoBehaviour
         }
     }
 
+    public static bool IsOpen
+    {
+        get
+        {
+            if (m_Instance == null)
+                return false;
+            return m_Instance.m_InputRaycaster.enabled;
+        }
+    }
+
     private int m_TweenId;
     public Dictionary<string, Sprite> m_IconDict;
+    public string CollectableId { get; private set; }
 
     private void Awake()
     {
@@ -51,6 +62,8 @@ public class UICollectableInfo : MonoBehaviour
 
     public void Show(string id)
     {
+        CollectableId = id;
+
         IngredientData data = DownloadedAssets.GetCollectable(id);
         m_Icon.sprite = m_IconDict[data.type];
         m_Title.text = LocalizeLookUp.GetCollectableName(id);
@@ -92,6 +105,8 @@ public class UICollectableInfo : MonoBehaviour
     
     public void Close()
     {
+        CollectableId = null;
+
         m_InputRaycaster.enabled = false;
         LeanTween.cancel(m_TweenId);
         m_TweenId = LeanTween.value(1, 0, 0.5f)
