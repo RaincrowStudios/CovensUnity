@@ -39,7 +39,7 @@ public class SpiritMarker : MuskMarker
         m_DisplayName.text = LocalizeLookUp.GetSpiritName(spiritToken.spiritId);
         SetStats();
 
-        UpdateNameplate(m_DisplayName.preferredWidth);
+        //UpdateNameplate(m_DisplayName.preferredWidth);
         UpdateEnergy();
 
         //todo: load icon and spirit avatar (currently implemented on marker spawner
@@ -49,7 +49,7 @@ public class SpiritMarker : MuskMarker
 
         m_IconRenderer.sprite = null;
         m_AvatarRenderer.sprite = null;
-        
+
         m_IconRenderer.sprite = null;
     }
 
@@ -68,7 +68,7 @@ public class SpiritMarker : MuskMarker
 
         if (m_IconRenderer.sprite == null)
             SetupIcon();
-        
+
         IsShowingIcon = true;
         IsShowingAvatar = false;
 
@@ -99,7 +99,7 @@ public class SpiritMarker : MuskMarker
 
         if (m_AvatarRenderer.sprite == null)
             SetupAvatar();
-        
+
         IsShowingAvatar = true;
         IsShowingIcon = false;
 
