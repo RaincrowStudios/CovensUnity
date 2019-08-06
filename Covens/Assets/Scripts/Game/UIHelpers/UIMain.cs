@@ -127,7 +127,6 @@ public class UIMain : MonoBehaviour
 
     private void OnClickChat()
     {
-        UIGlobalPopup.ShowError(null, "not implemented");
-        //UIChat.Open();
+        UIChat.Open();
     }
 }

@@ -146,6 +146,8 @@ public class UIInventory : MonoBehaviour
         m_GemsWheel.ResetAnim1();
         m_ToolsWheel.ResetAnim2();
         m_HerbsWheel.ResetAnim3();
+
+        m_InputRaycaster.enabled = false;
         LeanTween.alphaCanvas(inventoryCG, 0f, 0.3f).setOnComplete(() =>
        {
            m_HerbsWheel.enabled = false;
@@ -153,7 +155,6 @@ public class UIInventory : MonoBehaviour
            m_GemsWheel.enabled = false;
 
            m_Canvas.enabled = false;
-           m_InputRaycaster.enabled = false;
        });
 
     }

@@ -52,13 +52,12 @@ namespace Raincrow.Chat
 
         public static void InitChat()
         {
-            Debug.LogError("TODO: CHAT");
-            return;
-
             string covenId = string.Empty;
+            string covenName = string.Empty;
             if (string.IsNullOrEmpty(TeamManager.MyCovenId) == false)
             {
                 covenId = TeamManager.MyCovenId;
+                covenName = TeamManager.MyCovenInfo.name;
             }
 
             InitChat(
@@ -71,7 +70,7 @@ namespace Raincrow.Chat
                     avatar = PlayerDataManager.playerData.bodyType,
                 }, 
                 covenId, 
-                TeamManager.MyCovenInfo.name
+                covenName
             );
         }
 

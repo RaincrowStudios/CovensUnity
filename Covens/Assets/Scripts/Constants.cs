@@ -45,7 +45,7 @@ public class CovenConstants : MonoBehaviour
 #if PRODUCTION
             return "https://analytics-server-dot-raincrow-pantheon.appspot.com/";
 #else
-            return "http://35.196.97.86:8082/";
+            return "http://34.73.145.51:8082/";
 #endif
         }
     }
@@ -107,7 +107,7 @@ public class CovenConstants : MonoBehaviour
         get
         {
 #if GUSTAVO_LOCAL
-                return "http://192.168.0.129:8083/socket.io/?";
+                return "http://192.168.0.129:8083/socket.io/";
 #elif UNITY_EDITOR
             if (UnityEditor.EditorPrefs.GetString("chat") == "Local")
             {
@@ -119,16 +119,16 @@ public class CovenConstants : MonoBehaviour
             }
             else if (UnityEditor.EditorPrefs.GetString("chat") == "Gustavo")
             {
-                return "http://192.168.0.129:8083/socket.io/?";
+                return "http://192.168.0.129:8083/socket.io/";
             }
             else
             {
-                return "http://35.196.97.86:8083/socket.io/?";
+                return "http://34.73.145.51:8083/socket.io/?";
             }
 #elif PRODUCTION
             return "http://35.227.88.204:8083/socket.io/?";
 #else
-            return "http://35.196.97.86:8083/socket.io/";
+            return "http://34.73.145.51:8083/socket.io/";
 #endif
         }
     }

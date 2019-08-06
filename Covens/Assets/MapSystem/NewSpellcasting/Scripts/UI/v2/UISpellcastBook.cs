@@ -107,17 +107,25 @@ public class UISpellcastBook : MonoBehaviour, IEnhancedScrollerDelegate
         SetSchool(m_SelectedSchool);
         SetupTarget(marker, target);
 
+        //todo: animate
         m_Canvas.enabled = true;
         m_InputRaycaster.enabled = true;
+
+        UpdateCanCast();
+
+        //todo: listen for spell related events
     }
 
     private void Hide()
     {
+        //todo: animate
         m_Canvas.enabled = false;
         m_InputRaycaster.enabled = false;
 
         m_OnConfirmSpell = null;
         m_OnBack = null;
+
+        CloseInventory();
 
         OnSelectCard(null);
     }
@@ -180,25 +188,15 @@ public class UISpellcastBook : MonoBehaviour, IEnhancedScrollerDelegate
         }
 
         m_Scroller.ReloadData();
-
-        ////focus on selected spell
-        //if (m_SelectedSpell != null)
-        //{
-        //    for (int i = 0; i < m_ScrollerSpells.Count; i++)
-        //    {
-        //        if (m_ScrollerSpells[i].id == m_SelectedSpell.id)
-        //        {
-        //            FocusOn(i);
-        //            break;
-        //        }
-        //    }
-        //}
     }
 
     private void OnSelectCard(UISpellcard card)
     {
-        //if (card != null && m_SelectedSpell != null && m_SelectedSpell.id == card.Spell.id)
-        //    return;
+        if (UIInventory.isOpen)
+        {
+            CloseInventory();
+            return;
+        }
 
         if (card == null || m_SelectedSpell != null)
         {
@@ -270,6 +268,10 @@ public class UISpellcastBook : MonoBehaviour, IEnhancedScrollerDelegate
 
     private void OnSelectSchool(int school)
     {
+        //disable filter while ivnentory picker is open
+        if (UIInventory.isOpen)
+            return;
+
         if (m_SelectedSchool == null || m_SelectedSchool != school)
             SetSchool(school);
         else
@@ -300,7 +302,7 @@ public class UISpellcastBook : MonoBehaviour, IEnhancedScrollerDelegate
 
     private void OpenInventory()
     {
-        UIInventory.Instance.Show(OnClickInventoryItem, OnCloseInventory, false, true);
+        UIInventory.Instance.Show(OnClickInventoryItem, OnCloseInventory, false, false);
 
         //lock if necessary
         UIInventory.Instance.LockIngredients(m_SelectedSpell.ingredients, 0);
@@ -317,6 +319,9 @@ public class UISpellcastBook : MonoBehaviour, IEnhancedScrollerDelegate
 
     private void CloseInventory()
     {
+        if (UIInventory.isOpen == false)
+            return;
+
         UIInventory.Instance.Close();
         OnCloseInventory();
     }
@@ -324,7 +329,7 @@ public class UISpellcastBook : MonoBehaviour, IEnhancedScrollerDelegate
     private void OnOpenInventory()
     {
         //lock scroller
-        m_ScrollerCanvasGroup.interactable = false;
+        m_Scroller.ScrollRect.enabled = false;
 
         //move scroller to the right
         FocusOn(m_SelectedSpellIndex, 0.75f);       
@@ -335,7 +340,7 @@ public class UISpellcastBook : MonoBehaviour, IEnhancedScrollerDelegate
         EnableInventoryButton(true);
 
         //unlock scroller
-        m_ScrollerCanvasGroup.interactable = true;
+        m_Scroller.ScrollRect.enabled = true;
 
         //move scroller to center
         FocusOn(m_SelectedSpellIndex);
@@ -472,9 +477,6 @@ public class UISpellcastBook : MonoBehaviour, IEnhancedScrollerDelegate
                 }
             }
         }
-
-        //if (UIInventory.isOpen)
-        //    UIInventory.Instance.LockIngredients(ingredients, 0.5f);
     }
 
     #endregion
@@ -511,7 +513,6 @@ public class UISpellcastBook : MonoBehaviour, IEnhancedScrollerDelegate
 
     public void FocusOn(int dataIndex, float offset = 0.5f, System.Action onComplete = null)
     {
-        m_Scroller.ScrollRect.enabled = true;
         m_Scroller.JumpToDataIndex(
             dataIndex: dataIndex,
             scrollerOffset: offset,
