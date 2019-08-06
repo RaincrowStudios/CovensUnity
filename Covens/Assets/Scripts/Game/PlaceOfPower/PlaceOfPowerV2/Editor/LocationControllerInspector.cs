@@ -12,7 +12,7 @@ public class LocationControllerInspector : Editor
         GUILayout.Label("Debug");
         if (GUILayout.Button("Create Fake Pop"))
         {
-            //
+            LocationIslandController.EnterPOP();
         }
     }
 }

@@ -155,7 +155,7 @@ Transform:
 --- !u!199 &71336793
 ParticleSystemRenderer:
   serializedVersion: 6
-  m_ObjectHideFlags: 2
+  m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
@@ -5256,7 +5256,7 @@ Transform:
 --- !u!199 &382805885
 ParticleSystemRenderer:
   serializedVersion: 6
-  m_ObjectHideFlags: 2
+  m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
@@ -10723,7 +10723,7 @@ Transform:
 --- !u!199 &1055838017
 ParticleSystemRenderer:
   serializedVersion: 6
-  m_ObjectHideFlags: 2
+  m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
@@ -15481,7 +15481,7 @@ Transform:
 --- !u!199 &1216975919
 ParticleSystemRenderer:
   serializedVersion: 6
-  m_ObjectHideFlags: 2
+  m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
@@ -20405,7 +20405,7 @@ Transform:
 --- !u!199 &1485493920
 ParticleSystemRenderer:
   serializedVersion: 6
-  m_ObjectHideFlags: 2
+  m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
@@ -25157,7 +25157,7 @@ Transform:
 --- !u!199 &1501217023
 ParticleSystemRenderer:
   serializedVersion: 6
-  m_ObjectHideFlags: 2
+  m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
@@ -29884,6 +29884,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1523608368}
   - component: {fileID: 1523608367}
+  - component: {fileID: 1523608369}
   m_Layer: 0
   m_Name: LocationController
   m_TagString: Untagged
@@ -29905,7 +29906,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   totalIslands: 6
   distance: 100
-  m_LineRenderer: {fileID: 619464124}
+  m_LinePrefab: {fileID: 619464124}
+  popCameraController: {fileID: 2123791991}
+  locationUnitSpawner: {fileID: 1523608369}
 --- !u!4 &1523608368
 Transform:
   m_ObjectHideFlags: 0
@@ -29920,6 +29923,22 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 4
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1523608369
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1523608366}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ea0f8df2e9e6d8146b282c8f897dc41d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  witchIcon: {fileID: 4767689075213191803, guid: 89e3fe87cf19ae5479f7e1a9537767ed,
+    type: 3}
+  spiritIcon: {fileID: 8901639778753666950, guid: 48efc2c29b7c7cf4b9c681920687bc5a,
+    type: 3}
 --- !u!1 &1539544219
 GameObject:
   m_ObjectHideFlags: 0
@@ -29955,7 +29974,7 @@ Transform:
 --- !u!199 &1539544221
 ParticleSystemRenderer:
   serializedVersion: 6
-  m_ObjectHideFlags: 2
+  m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}

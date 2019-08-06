@@ -47,11 +47,14 @@ public class LocationIslandController : MonoBehaviour
         }
     }
 
-    IEnumerator Start()
+    public void Initiate()
     {
-        yield return new WaitForSeconds(1.5f);
         CreateIslands(m_LocationData);
     }
+
+    // IEnumerator StartTest()
+    // {
+    // }
 
     private void CreateIslands(LocationData locationData)
     {
@@ -95,14 +98,15 @@ public class LocationIslandController : MonoBehaviour
         return island;
     }
 
-    public static void EnterPOP(LocationData locationData)
+    public static void EnterPOP()
     {
+
         MoveTokenHandlerPOP.OnMarkerMovePOP += instance.locationUnitSpawner.MoveMarker;
         MoveTokenHandlerPOP.OnMarkerMovePOP += instance.locationUnitSpawner.MoveMarker;
         AddWitchHandlerPOP.OnWitchAddPOP += instance.locationUnitSpawner.AddMarker;
         AddSpiritHandlerPOP.OnSpiritAddPOP += instance.locationUnitSpawner.AddMarker;
         instance.popCameraController.onUpdate += UpdateMarkers;
-        instance.CreateIslands(locationData);
+        instance.CreateIslands(instance.m_LocationData);
     }
 
     private static void UpdateMarkers(bool arg1, bool arg2, bool arg3)
@@ -113,6 +117,7 @@ public class LocationIslandController : MonoBehaviour
             {
                 item.Value.AvatarTransform.rotation = instance.popCameraController.camera.transform.rotation;
             }
+
         }
     }
 
