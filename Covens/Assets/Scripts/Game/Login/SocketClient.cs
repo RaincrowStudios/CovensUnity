@@ -91,7 +91,7 @@ public class SocketClient : MonoBehaviour
         _socketManager.Socket.On("game.event", OnGameEvent);
 
 #if LOCAL_API
-        UnityMainThreadDispatcher.Instance().Enqueue(LoginAPIManager.WebSocketConnected);
+        
 #else
         _socketManager.Open();
 #endif

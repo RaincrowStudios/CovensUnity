@@ -8,7 +8,6 @@ namespace Raincrow.GameEventResponses
     public class DailyProgressHandler : IGameEventHandler
     {
         public string EventName => "daily.progress";
-        public static event System.Action<DailyProgressEventData> OnDailyProgress;
 
         public struct DailyProgressEventData
         {
@@ -49,9 +48,7 @@ namespace Raincrow.GameEventResponses
                 PlayerDataManager.playerData.silver += data.silver;
                 PlayerManagerUI.Instance.UpdateDrachs();
             }
-
-            OnDailyProgress?.Invoke(data);
-
+            
             ShowNotification(data.daily, data.silver, data.count);
         }
 

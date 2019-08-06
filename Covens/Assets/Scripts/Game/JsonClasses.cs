@@ -85,11 +85,11 @@ public class AnalyticsSession
     public string SessionId { get; set; }
 }
 
-public class Rewards
+public struct DailyRewards
 {
-    public int silver { get; set; }
-    public int energy { get; set; }
-    public int gold { get; set; }
+    public int silver;
+    public int energy;
+    public int gold;
 
 }
 

@@ -1,4 +1,5 @@
 using Newtonsoft.Json;
+using Raincrow.GameEventResponses;
 using System.Collections;
 using UnityEngine;
 using UnityEngine.UI;
@@ -156,14 +157,34 @@ public static class QuestsController
             });
     }
 
-    public static void ClaimRewards(System.Action<Rewards, string> callback)
+    public static void CompleteExplore(System.Action<string> callback)
     {
-        APIManager.Instance.Get("daily/reward",
+        APIManager.Instance.Get("dailies/explore", (response, result) =>
+        {
+            if (result == 200)
+            {
+                DailyProgressHandler.DailyProgressEventData data =
+                    JsonConvert.DeserializeObject<DailyProgressHandler.DailyProgressEventData>(response);
+
+                DailyProgressHandler.HandleResponse(data);
+
+                callback?.Invoke(null);
+            }
+            else
+            {
+                callback?.Invoke(APIManager.ParseError(response));
+            }
+        });
+    }
+
+    public static void ClaimRewards(System.Action<DailyRewards, string> callback)
+    {
+        APIManager.Instance.Get("dailies/reward",
             (string result, int response) =>
             {
                 if (response == 200)
                 {
-                    Rewards rewards = JsonConvert.DeserializeObject<Rewards>(result);
+                    DailyRewards rewards = JsonConvert.DeserializeObject<DailyRewards>(result);
 
                     PlayerDataManager.playerData.quest.completed = true;
                     PlayerDataManager.playerData.silver += rewards.silver;
@@ -180,7 +201,7 @@ public static class QuestsController
                 }
                 else
                 {
-                    callback?.Invoke(null, APIManager.ParseError(result));
+                    callback?.Invoke(new DailyRewards(), APIManager.ParseError(result));
                 }
                 //if (response == 200)
                 //{

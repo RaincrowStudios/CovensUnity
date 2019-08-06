@@ -191,59 +191,57 @@
     }
   ],
   "lastBlessing": 0,
-  "quest": {
-    "completed": false,
-    "spell": {
-      "count": 0,
-      "completed": false
-    },
-    "gather": {
-      "count": 0,
-      "completed": false
-    },
-    "explore": {
-      "count": 0,
-      "completed": false
-    },
-    "daily": {
-      "active": true,
-      "_id": "5d4422f026e12f3e00d65e4a",
-      "startDate": 1564746480870,
-      "endDate": 1564832880870,
-      "spellcraft": {
-        "amount": 2,
-        "country": null,
-        "degree": 0,
-        "ingredient": "gem",
-        "relation": "higher",
-        "spell": "spell_silence",
-        "type": "character"
+  "quest":{
+      "completed":false,
+      "spell":{
+      "count":5,
+      "completed":true
       },
-      "gather": {
-        "country": null,
-        "type": "herb",
-        "amount": 18
+      "gather":{
+      "count":3,
+      "completed":true
       },
-      "explore": {
-        "amount": 1,
-        "type": "lore_27",
-        "location": {
-          "type": "Point",
-          "coordinates": [
-            32.751233,
-            129.870334
-          ],
-          "_id": "5d4422f026e12f3e00d65e4b"
-        }
+      "explore":{
+      "count":0,
+      "completed":false
       },
-      "createdOn": "2019-08-02T11:48:00.873Z",
-      "modifiedOn": "2019-08-02T11:48:00.873Z",
-      "__v": 0
-    }
-  },
+      "daily":{
+      "_id":"5d4960b52f26454280f8c811",
+      "active":true,
+      "startDate":1565089973403,
+      "endDate":1565176373403,
+      "spellcraft":{
+      "amount":5,
+      "country":null,
+      "degree":null,
+      "ingredient":"gem",
+      "relation":null,
+      "spell":"spell_grace",
+      "type":null
+      },
+      "gather":{
+      "country":"GBR",
+      "type":"gem",
+      "amount":3
+      },
+      "explore":{
+      "amount":1,
+      "type":"lore_32",
+      "location":{
+      "type":"Point",
+      "coordinates":[22.503297,
+      114.239139],
+      "_id":"5d4960b52f26454280f8c812"
+      }
+      },
+      "createdOn":"2019-08-06T11:12:53.408Z",
+      "modifiedOn":"2019-08-06T11:12:53.408Z",
+      "__v":0
+      }
+      },
   "effects": [],
-  "latitude": 47.67603,
-  "longitude": -122.407913,
+  "latitude": 22.9031420337241,
+  "longitude": 113.477459182014,
   "male": false,
   "bodyType": 0,
   "name": "lucas 051",

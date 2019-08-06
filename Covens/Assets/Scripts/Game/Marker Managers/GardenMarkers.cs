@@ -109,15 +109,22 @@ public class GardenMarkers : MonoBehaviour
 
     private void SetupExplore(QuestsController.CovenDaily.Explore lore)
     {
-        var go = Utilities.InstantiateObject(lorePrefab, map.trackedContainer);
-        
-        go.name = "[lore] EXPLORE QUEST";
-        go.transform.position = map.GetWorldPosition(lore.location.longitude, lore.location.latitude);
-        go.SetActive(false);
+        if (PlayerDataManager.playerData.quest.explore.completed)
+            return;
 
-        loreMarker = go.GetComponent<MuskMarker>();
         if (loreMarker == null)
-            loreMarker = go.AddComponent<MuskMarker>();
+        {
+            var go = Utilities.InstantiateObject(lorePrefab, map.trackedContainer);
+
+            go.name = "[lore] EXPLORE QUEST";
+            go.transform.position = map.GetWorldPosition(lore.location.longitude, lore.location.latitude);
+            go.SetActive(false);
+
+            loreMarker = go.GetComponent<MuskMarker>();
+            if (loreMarker == null)
+                loreMarker = go.AddComponent<MuskMarker>();
+        }
+
         loreMarker.OnClick = (m) => SendQuestLore();
         loreMarker.Coords = new Vector2(lore.location.longitude, lore.location.latitude);
     }
@@ -211,20 +218,31 @@ public class GardenMarkers : MonoBehaviour
         }
     }
 
-    private static void SendQuestLore()
+    private void SendQuestLore()
     {
-        APIManager.Instance.Get("dailies/explore", (response, result) =>
-        {
-            if (result == 200)
-            {
-                DailyProgressHandler.DailyProgressEventData data = 
-                    JsonConvert.DeserializeObject<DailyProgressHandler.DailyProgressEventData>(response);
+        if (loreMarker == null)
+            return;
 
-                DailyProgressHandler.HandleResponse(data);
+        loreMarker.Interactable = false;
+        loreMarker.SetAlpha(0.5f, 0.2f);
+
+        QuestsController.CompleteExplore(error =>
+        {
+            if (string.IsNullOrEmpty(error))
+            {
+                if (loreMarker == null)
+                    return;
+
+                loreMarker.SetAlpha(0, 1f, () =>
+                {
+                    loreMarker.GameObject.SetActive(false);
+                });
             }
             else
             {
-                UIGlobalPopup.ShowError(null, APIManager.ParseError(response));
+                loreMarker.Interactable = true;
+                loreMarker.SetAlpha(1, 1f);
+                UIGlobalPopup.ShowError(null, error);
             }
         });
     }

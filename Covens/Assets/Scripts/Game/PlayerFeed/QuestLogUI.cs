@@ -26,13 +26,14 @@ public class QuestLogUI : UIAnimationManager
     public GameObject spellExpLine;
 
     public GameObject claimFX;
+    public CanvasGroup claimLoadingFx;
     public GameObject openChest;
     public GameObject closedChest;
 
     public Text rewardEnergy;
     public Text rewardGold;
     public Text rewardSilver;
-    public GameObject buttonTapChest;
+    public Button buttonTapChest;
 
     public Text bottomInfo;
 
@@ -83,6 +84,9 @@ public class QuestLogUI : UIAnimationManager
         m_Instance = this;
         gameObject.SetActive(false);
         m_CloseButton.onClick.AddListener(Hide);
+        buttonTapChest.onClick.AddListener(OnClickClaimChest);
+
+        claimLoadingFx.gameObject.SetActive(false);
     }
 
     [ContextMenu("Show")]
@@ -104,8 +108,6 @@ public class QuestLogUI : UIAnimationManager
             OnClickQuest();
         else
             OnClickLog();
-
-        DailyProgressHandler.OnDailyProgress += DailyProgressHandler_OnDailyProgress;
     }
 
     [ContextMenu("Hide")]
@@ -113,6 +115,7 @@ public class QuestLogUI : UIAnimationManager
     {
         if (isOpen == false)
             return;
+
         isOpen = false;
 
         if (questInfoVisible)
@@ -124,8 +127,6 @@ public class QuestLogUI : UIAnimationManager
         {
             CloseP2();
         }
-
-        DailyProgressHandler.OnDailyProgress -= DailyProgressHandler_OnDailyProgress;
     }
 
     private void DailyProgressHandler_OnDailyProgress(DailyProgressHandler.DailyProgressEventData data)
@@ -172,6 +173,7 @@ public class QuestLogUI : UIAnimationManager
         //        else
         //            Debug.Log(result + response);
         //    });
+        UIGlobalPopup.ShowError(null, "not implemented");
     }
 
     public void OnClickLog()
@@ -235,7 +237,7 @@ public class QuestLogUI : UIAnimationManager
                 closedChest.SetActive(true);
                 claimFX.SetActive(true);
 				bottomInfo.text = LocalizeLookUp.GetText ("daily_tap_chest");//"Tap the chest to claim rewards";
-                buttonTapChest.SetActive(true);
+                buttonTapChest.gameObject.SetActive(true);
             }
             else
             {
@@ -243,7 +245,7 @@ public class QuestLogUI : UIAnimationManager
                 closedChest.SetActive(false);
                 claimFX.SetActive(false);
                 StartCoroutine(NewQuestTimer());
-                buttonTapChest.SetActive(false);
+                buttonTapChest.gameObject.SetActive(false);
             }
         }
         else
@@ -252,11 +254,11 @@ public class QuestLogUI : UIAnimationManager
             closedChest.SetActive(true);
             claimFX.SetActive(false);
             StartCoroutine(NewQuestTimer());
-            buttonTapChest.SetActive(false);
+            buttonTapChest.gameObject.SetActive(false);
         }
     }
 
-    IEnumerator ShowRewards(Rewards reward)
+    IEnumerator ShowRewards(DailyRewards reward)
     {
         SoundManagerOneShot.Instance.PlayReward();
         if (reward.silver != 0)
@@ -292,6 +294,32 @@ public class QuestLogUI : UIAnimationManager
 			bottomInfo.text = LocalizeLookUp.GetText("daily_new_quest") + " " + "<color=white>" + Utilities.GetTimeRemaining(QuestsController.Quests.endDate) + "</color>";
             yield return new WaitForSeconds(1);
         }
+    }
+
+    private void OnClickClaimChest()
+    {
+        if (PlayerDataManager.playerData.quest.completed)
+            return;
+
+        claimLoadingFx.alpha = 0;
+        claimLoadingFx.gameObject.SetActive(true);
+        LeanTween.alphaCanvas(claimLoadingFx, 0.7f, 0.25f).setEaseOutCubic();
+
+        QuestsController.ClaimRewards((rewards, error) =>
+        {
+            LeanTween.alphaCanvas(claimLoadingFx, 0f, 2)
+                .setEaseOutCubic()
+                .setOnComplete(() => claimLoadingFx.gameObject.SetActive(false));
+
+            if (string.IsNullOrEmpty(error))
+            {
+                StartCoroutine(ShowRewards(rewards));
+            }
+            else
+            {
+                UIGlobalPopup.ShowError(null, error);
+            }
+        });
     }
 
     public void ClickExplore()
