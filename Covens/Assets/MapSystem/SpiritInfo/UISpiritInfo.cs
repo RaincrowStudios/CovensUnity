@@ -148,7 +148,7 @@ public class UISpiritInfo : UIInfoPanel
         BanishManager.OnBanished -= Abort;
 
         MapsAPI.Instance.allowControl = true;
-        MapCameraUtils.FocusOnPosition(previousMapPosition, m_PreviousMapZoom, true);
+        MapCameraUtils.FocusOnPosition(MapsAPI.Instance.mapCenter.position, m_PreviousMapZoom, true);
         MainUITransition.Instance.ShowMainUI();
 
         MarkerSpawner.HighlightMarker(new List<IMarker> { PlayerManager.marker, m_SpiritMarker }, false);
@@ -233,10 +233,8 @@ public class UISpiritInfo : UIInfoPanel
                     () => OnClickClose()
                 );
             },
-            () =>
-            {
-                this.ReOpen();
-            }
+            () => this.ReOpen(),
+            () => Close()
         );
     }
 

@@ -163,7 +163,7 @@ public class UIPlayerInfo : UIInfoPanel
 
         MainUITransition.Instance.ShowMainUI();
         MapsAPI.Instance.allowControl = true;
-        MapCameraUtils.FocusOnPosition(previousMapPosition, m_PreviousMapZoom, true);
+        MapCameraUtils.FocusOnPosition(MapsAPI.Instance.mapCenter.position, m_PreviousMapZoom, true);
 
         //m_Witch.SetTextAlpha(NewMapsMarker.defaultTextAlpha);
 
@@ -256,10 +256,8 @@ public class UIPlayerInfo : UIInfoPanel
                     () =>  OnClickClose()
                 );
             },
-            () => 
-            {
-                this.ReOpen();
-            }
+            () => this.ReOpen(),
+            () => Close()
         );
     }
 

@@ -14,19 +14,23 @@ public class UISpellcastBook : MonoBehaviour, IEnhancedScrollerDelegate
     [SerializeField] private EnhancedScroller m_Scroller;
     [SerializeField] private CanvasGroup m_ScrollerCanvasGroup;
     [SerializeField] private UISpellcard m_CardPrefab;
-    
+    [SerializeField] private Image m_InventoryGlow;
+
     [SerializeField] private Image m_TargetPortrait;
     [SerializeField] private TextMeshProUGUI m_TargetName;
     [SerializeField] private Image m_TargetEnergy;
-    [SerializeField] private Image m_InventoryGlow;
+    [SerializeField] private RectTransform m_NamePanel;
 
+    [SerializeField] private Button m_CloseButton;
     [SerializeField] private Button m_PortraitButton;
     [SerializeField] private Button m_InventoryButton;
+
+    [SerializeField] private Sprite[] m_TierSprite;
 
     private static UISpellcastBook m_Instance;
 
     private List<SpellData> m_PlayerSpells;
-    private List<SpellData> m_ScrollerSpells = new List<SpellData>();    private IMarker m_TargetMarker;    private CharacterMarkerData m_TargetData;    private int? m_SelectedSchool = null;    private SpellData m_SelectedSpell = null;    private int m_SelectedSpellIndex = 0;    private CollectableItem m_Herb;    private CollectableItem m_Tool;    private CollectableItem m_Gem;    private System.Action<SpellData, List<spellIngredientsData>> m_OnConfirmSpell;    private System.Action m_OnBack;        public static bool IsOpen
+    private List<SpellData> m_ScrollerSpells = new List<SpellData>();    private IMarker m_TargetMarker;    private CharacterMarkerData m_TargetData;    private int? m_SelectedSchool = null;    private SpellData m_SelectedSpell = null;    private int m_SelectedSpellIndex = 0;    private CollectableItem m_Herb;    private CollectableItem m_Tool;    private CollectableItem m_Gem;    private System.Action<SpellData, List<spellIngredientsData>> m_OnConfirmSpell;    private System.Action m_OnBack;    private System.Action m_OnClose;        public static bool IsOpen
     {
         get
         {
@@ -40,7 +44,8 @@ public class UISpellcastBook : MonoBehaviour, IEnhancedScrollerDelegate
         IMarker marker, 
         List<SpellData> spells, 
         System.Action<SpellData, List<spellIngredientsData>> onConfirm, 
-        System.Action onClickBack = null)
+        System.Action onClickBack = null,
+        System.Action onClickClose = null)
     {
         if (m_Instance == null)
         {
@@ -50,12 +55,12 @@ public class UISpellcastBook : MonoBehaviour, IEnhancedScrollerDelegate
                 (progress) => { },
                 () =>
                 {
-                    m_Instance.Show(target, marker, spells, onConfirm, onClickBack);
+                    m_Instance.Show(target, marker, spells, onConfirm, onClickBack, onClickClose);
                 });
         }
         else
         {
-            m_Instance.Show(target, marker, spells, onConfirm, onClickBack);
+            m_Instance.Show(target, marker, spells, onConfirm, onClickBack, onClickClose);
         }
     }    public static void Close()
     {
@@ -75,6 +80,7 @@ public class UISpellcastBook : MonoBehaviour, IEnhancedScrollerDelegate
 
         m_InventoryButton.onClick.AddListener(OnClickInventory);
         m_PortraitButton.onClick.AddListener(OnClickPortrait);
+        m_CloseButton.onClick.AddListener(OnClickClose);
 
         DownloadedAssets.OnWillUnloadAssets += DownloadedAssets_OnWillUnloadAssets;
     }
@@ -95,13 +101,15 @@ public class UISpellcastBook : MonoBehaviour, IEnhancedScrollerDelegate
         IMarker marker, 
         List<SpellData> spells, 
         System.Action<SpellData, List<spellIngredientsData>> onConfirm, 
-        System.Action onBack = null)
+        System.Action onBack = null,
+        System.Action onClose = null)
     {
         m_TargetMarker = marker;
         m_TargetData = target;
 
         m_OnConfirmSpell = onConfirm;
         m_OnBack = onBack;
+        m_OnClose = onClose;
 
         m_PlayerSpells = spells;
         SetSchool(m_SelectedSchool);
@@ -124,6 +132,7 @@ public class UISpellcastBook : MonoBehaviour, IEnhancedScrollerDelegate
 
         m_OnConfirmSpell = null;
         m_OnBack = null;
+        m_OnClose = null;
 
         CloseInventory();
 
@@ -136,7 +145,7 @@ public class UISpellcastBook : MonoBehaviour, IEnhancedScrollerDelegate
         m_TargetName.text = "";
 
         m_TargetPortrait.overrideSprite = null;
-        m_TargetPortrait.transform.localScale = Vector3.one;
+
         if (marker.Type == MarkerManager.MarkerType.WITCH)
         {
             WitchMarker witch = marker as WitchMarker;
@@ -161,12 +170,19 @@ public class UISpellcastBook : MonoBehaviour, IEnhancedScrollerDelegate
             m_TargetName.text = spirit.spiritData.Name;
             m_TargetEnergy.color = Color.white;
 
-            DownloadedAssets.GetSprite(spirit.spiritData.id, spr =>
-            {
-                m_TargetPortrait.transform.localScale = Vector3.one * 2;
-                m_TargetPortrait.overrideSprite = spr;
-            });
+            int idx = Mathf.Clamp(spirit.spiritData.tier - 1, 0, 4);
+            m_TargetPortrait.overrideSprite = m_TierSprite[idx];
+            //DownloadedAssets.GetSprite(spirit.spiritData.id, spr =>
+            //{
+            //    m_TargetPortrait.transform.localScale = Vector3.one * 2;
+            //    m_TargetPortrait.overrideSprite = spr;
+            //});
         }
+
+        LeanTween.value(0, 1, 1f).setOnUpdate((float t) =>
+        {
+            m_NamePanel.sizeDelta = m_TargetName.rectTransform.sizeDelta;
+        });
     }
 
     private void SetSchool(int? school)
@@ -281,6 +297,12 @@ public class UISpellcastBook : MonoBehaviour, IEnhancedScrollerDelegate
     private void OnClickPortrait()
     {
         m_OnBack?.Invoke();
+        Hide();
+    }
+
+    private void OnClickClose()
+    {
+        m_OnClose?.Invoke();
         Hide();
     }
 
