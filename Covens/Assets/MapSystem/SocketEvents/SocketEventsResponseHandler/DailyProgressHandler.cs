@@ -22,7 +22,11 @@ namespace Raincrow.GameEventResponses
         public void HandleResponse(string eventData)
         {
             DailyProgressEventData data = JsonConvert.DeserializeObject<DailyProgressEventData>(eventData);
+            HandleResponse(data);
+        }
 
+        public static void HandleResponse(DailyProgressEventData data)
+        {
             string message = null;
             switch (data.daily)
             {
