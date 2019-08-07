@@ -8,6 +8,7 @@ using Raincrow.GameEventResponses;
 
 public class UISpiritInfo : UIInfoPanel
 {
+    [SerializeField] private UIQuickCast m_CastMenu;
     [SerializeField] private UIConditionList m_ConditionList;
 
     [Header("Texts")]
@@ -15,15 +16,10 @@ public class UISpiritInfo : UIInfoPanel
     [SerializeField] private TextMeshProUGUI m_Tier;
     [SerializeField] private TextMeshProUGUI m_Energy;
     [SerializeField] private TextMeshProUGUI m_Desc;
-    [SerializeField] private TextMeshProUGUI m_CastText;
 
     [Header("Buttons")]
     [SerializeField] private Button m_InfoButton;
     [SerializeField] private Button m_DescButton;
-    [SerializeField] private Button m_QuickBless;
-    [SerializeField] private Button m_QuickSeal;
-    [SerializeField] private Button m_QuickHex;
-    [SerializeField] private Button m_CastButton;
     [SerializeField] private Button m_BackButton;
     [SerializeField] private Button m_CloseButton;
 
@@ -62,14 +58,12 @@ public class UISpiritInfo : UIInfoPanel
     {
         base.Awake();
 
-        m_CastButton.onClick.AddListener(OnClickCast);
         m_BackButton.onClick.AddListener(OnClickBack);
         m_CloseButton.onClick.AddListener(OnClickClose);
         m_InfoButton.onClick.AddListener(OnClickInfo);
 
-        m_QuickBless.onClick.AddListener(() => QuickCast("spell_bless"));
-        m_QuickHex.onClick.AddListener(() => QuickCast("spell_hex"));
-        m_QuickSeal.onClick.AddListener(() => QuickCast("spell_seal"));
+        m_CastMenu.OnClickCast = OnClickCast;
+        m_CastMenu.OnQuickCast = (spell) => QuickCast(spell);
     }
 
     public void Show(IMarker spirit, Token token)
@@ -199,23 +193,11 @@ public class UISpiritInfo : UIInfoPanel
     {
         if (m_SpiritDetails == null)
         {
-            m_QuickBless.interactable = m_QuickHex.interactable = m_QuickSeal.interactable = m_CastButton.interactable = false;
-            m_CastText.text = LocalizeLookUp.GetText("spellbook_more_spells") + " (" + LocalizeLookUp.GetText("loading") + ")";
+            m_CastMenu.UpdateCanCast(null, null);
             return;
         }
 
-        Spellcasting.SpellState canCast = Spellcasting.CanCast((SpellData)null, m_SpiritMarker, m_SpiritDetails);
-
-
-        if (canCast == Spellcasting.SpellState.TargetImmune)
-            m_CastText.text = LocalizeLookUp.GetText("spell_immune_to_you");//"Player is immune to you";
-        else if (canCast == Spellcasting.SpellState.PlayerSilenced)
-            m_CastText.text = LocalizeLookUp.GetText("ftf_silenced");//You are silenced";
-        else
-            m_CastText.text = LocalizeLookUp.GetText("spellbook_more_spells");//More Spells";
-
-        m_QuickBless.interactable = m_QuickHex.interactable = m_QuickSeal.interactable = m_CastButton.interactable = canCast == Spellcasting.SpellState.CanCast;
-
+        m_CastMenu.UpdateCanCast(m_SpiritDetails, m_SpiritMarker);
     }
 
     private void OnClickCast()
@@ -278,12 +260,12 @@ public class UISpiritInfo : UIInfoPanel
 
     private void OnClickOwner()
     {
-        Debug.Log("TODO: go to player");
+        Debug.LogError("TODO: go to player");
     }
 
     private void OnClickCoven()
     {
-        Debug.Log("TODO: Open coven");
+        TeamManagerUI.OpenName(m_SpiritDetails.coven);
     }
     
     private void Abort()

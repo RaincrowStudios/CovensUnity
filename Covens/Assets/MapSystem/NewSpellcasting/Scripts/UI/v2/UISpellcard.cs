@@ -39,7 +39,8 @@ public class UISpellcard : EnhancedScrollerCellView
     private System.Action<UISpellcard> m_OnClickGlyph;
 
     private int m_TweenId;
-    private Coroutine m_CooldownCoroutine;
+    //private Coroutine m_CooldownCoroutine;
+    private int m_CooldownTweenId;
 
     private void Awake()
     {
@@ -55,11 +56,7 @@ public class UISpellcard : EnhancedScrollerCellView
         System.Action<UISpellcard> onClickCard,
         System.Action<UISpellcard> onClickGlyph)
     {
-        if (m_CooldownCoroutine != null)
-        {
-            StopCoroutine(m_CooldownCoroutine);
-            m_CooldownCoroutine = null;
-        }
+        LeanTween.cancel(m_CooldownTweenId);
 
         name = "[" + spell.id + "] UISpellcard prefab";
         Spell = spell;
@@ -96,8 +93,7 @@ public class UISpellcard : EnhancedScrollerCellView
 
     public void UpdateCancast(CharacterMarkerData targetData, IMarker targetMarker)
     {
-        if (m_CooldownCoroutine != null)
-            StopCoroutine(m_CooldownCoroutine);
+        LeanTween.cancel(m_CooldownTweenId);
 
         Spellcasting.SpellState canCast = Spellcasting.CanCast(Spell, targetMarker, targetData);
         if (canCast == Spellcasting.SpellState.CanCast)
@@ -113,36 +109,22 @@ public class UISpellcard : EnhancedScrollerCellView
 
         if (canCast == Spellcasting.SpellState.InCooldown)
         {
-            m_CooldownCoroutine = StartCoroutine(CooldownCoroutine(targetData, targetMarker));
+            Cooldown? cd = CooldownManager.GetCooldown(Spell.id);
+            if (cd != null)
+            {
+                float remaining = cd.Value.Remaining;
+                float total = cd.Value.total;
+                m_CooldownTweenId = LeanTween.value(remaining / total, 0, remaining)
+                    .setOnUpdate((float t) => m_CooldownMask.fillAmount = t)
+                    .setOnComplete(() => UpdateCancast(targetData, targetMarker))
+                    .uniqueId;
+            }
+
         }
         else
         {
-            m_CooldownTex.text = "";
             m_CooldownMask.fillAmount = 0;
         }
-    }
-
-    private IEnumerator CooldownCoroutine(CharacterMarkerData targetData, IMarker targetmarker)
-    {
-        m_CooldownTex.text = "";
-        Cooldown? cd = CooldownManager.GetCooldown(Spell.id);
-
-        if (cd == null)
-            yield break;
-
-        float time = cd.Value.Remaining;
-        while (time > 0)
-        {
-            m_CooldownMask.fillAmount = time / cd.Value.total;
-            //m_CooldownTex.text = ((int)time).ToString();
-
-            yield return 0;
-            time = cd.Value.Remaining;
-        }
-        m_CooldownTex.text = "";
-        m_CooldownCoroutine = null;
-
-        UpdateCancast(targetData, targetmarker);
     }
 
     private void OnClickSchool()

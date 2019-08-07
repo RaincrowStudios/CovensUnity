@@ -449,21 +449,16 @@ public class SelectWitchData_Map : WitchMarkerData
     public WitchToken token;
     
     public override MarkerSpawner.MarkerType Type => MarkerSpawner.MarkerType.WITCH;
-
-
+    
     //temp fix to avoid replacing all WitchMarkerData references
     [JsonIgnore]
     public override string state => token.state; 
     [JsonIgnore]
     public override int energy => token.energy;
-    //[JsonIgnore]
-    //public override int baseEnergy => token.baseEnergy;
     [JsonIgnore]
     public override int degree => token.degree;
     [JsonIgnore]
     public override int level => token.level;
-    //[JsonIgnore]
-    //public override string covenName => coven;
     [JsonIgnore]
     public override string dominion => "?";
     [JsonIgnore]

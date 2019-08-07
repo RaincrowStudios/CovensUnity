@@ -13,10 +13,10 @@ public class UIPlayerInfo : UIInfoPanel
     [SerializeField] private Sprite m_WhiteSigilSprite;
 
     [SerializeField] private UIConditionList m_ConditionsList;
+    [SerializeField] private UIQuickCast m_CastMenu;
 
     [Header("Images")]
     [SerializeField] private Image m_Sigil;
-    [SerializeField] private TextMeshProUGUI m_CastText;
 
     [Header("Texts")]
     [SerializeField] private TextMeshProUGUI m_DisplayNameText;
@@ -30,10 +30,6 @@ public class UIPlayerInfo : UIInfoPanel
     [SerializeField] private Button m_CloseButton;
     [SerializeField] private Button m_PlayerButton;
     [SerializeField] private Button m_CovenButton;
-    [SerializeField] private Button m_CastButton;
-    [SerializeField] private Button m_QuickBless;
-    [SerializeField] private Button m_QuickSeal;
-    [SerializeField] private Button m_QuickHex;
 
     private static UIPlayerInfo m_Instance;
 
@@ -62,10 +58,8 @@ public class UIPlayerInfo : UIInfoPanel
     private WitchToken m_WitchToken;
     private SelectWitchData_Map m_WitchDetails;
     private float m_PreviousMapZoom;
-    private string previousMarker = "";
     public WitchToken WitchToken { get { return m_WitchToken; } }
-
-
+    
     protected override void Awake()
     {
         m_Instance = this;
@@ -74,11 +68,9 @@ public class UIPlayerInfo : UIInfoPanel
         m_CloseButton.onClick.AddListener(OnClickClose);
         m_PlayerButton.onClick.AddListener(OnClickPlayer);
         m_CovenButton.onClick.AddListener(OnClickCoven);
-        m_CastButton.onClick.AddListener(OnClickCast);
 
-        m_QuickBless.onClick.AddListener(() => QuickCast("spell_bless"));
-        m_QuickHex.onClick.AddListener(() => QuickCast("spell_hex"));
-        m_QuickSeal.onClick.AddListener(() => QuickCast("spell_seal"));
+        m_CastMenu.OnClickCast = OnClickCast;
+        m_CastMenu.OnQuickCast = (spell) => QuickCast(spell);
 
         base.Awake();
     }
@@ -286,36 +278,13 @@ public class UIPlayerInfo : UIInfoPanel
     {
         if (m_WitchDetails == null)
         {
-            m_QuickBless.interactable = m_QuickHex.interactable = m_QuickSeal.interactable = m_CastButton.interactable = false;
-            m_CastText.text = LocalizeLookUp.GetText("spellbook_more_spells") + " (" + LocalizeLookUp.GetText("loading") + ")";
+            m_CastMenu.UpdateCanCast(null, null);
             return;
         }
 
-        Spellcasting.SpellState canCast = Spellcasting.CanCast((SpellData)null, m_WitchMarker, m_WitchDetails);
-
-        m_CastButton.interactable = canCast == Spellcasting.SpellState.CanCast;
-        m_QuickHex.interactable = Spellcasting.CanCast("spell_hex", m_WitchMarker, m_WitchDetails) == Spellcasting.SpellState.CanCast;
-        m_QuickSeal.interactable = Spellcasting.CanCast("spell_seal", m_WitchMarker, m_WitchDetails) == Spellcasting.SpellState.CanCast;
-        m_QuickBless.interactable = Spellcasting.CanCast("spell_bless", m_WitchMarker, m_WitchDetails) == Spellcasting.SpellState.CanCast;
-
-        if (canCast == Spellcasting.SpellState.TargetImmune)
-        {
-            m_CastText.text = LocalizeLookUp.GetText("spell_immune_to_you");// "Player is immune to you";
-            if (previousMarker != m_WitchDetails.name)
-            {
-                SoundManagerOneShot.Instance.WitchImmune();
-                previousMarker = m_WitchDetails.name;
-            }
-        }
-        else if (canCast == Spellcasting.SpellState.PlayerSilenced)
-            m_CastText.text = LocalizeLookUp.GetText("ftf_silenced");//) "You are silenced";
-        else
-        {
-            m_CastText.text = LocalizeLookUp.GetText("spellbook_more_spells");
-        }
+        m_CastMenu.UpdateCanCast(m_WitchDetails, m_WitchMarker);
     }
-
-
+    
     private void _OnPlayerAttacked(string caster, SpellData spell, Raincrow.GameEventResponses.SpellCastHandler.Result result)
     {
         if (caster == m_WitchToken.instance)

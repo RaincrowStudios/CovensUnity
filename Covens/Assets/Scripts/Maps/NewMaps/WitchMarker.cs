@@ -17,9 +17,6 @@ public class WitchMarker : MuskMarker
     [SerializeField] private TextMeshPro m_Level;
 
     [SerializeField] private SpriteRenderer m_IconRenderer;
-    
-    [SerializeField] private double m_latitude;
-    [SerializeField] private double m_longitude;
 
     public WitchToken witchToken { get => Token as WitchToken; }
 
@@ -56,16 +53,7 @@ public class WitchMarker : MuskMarker
     public override void Setup(Token data)
     {
         base.Setup(data);
-        
-        m_latitude = data.latitude;
-        m_longitude = data.longitude;
-        
-        //if (IsShowingAvatar == false && IsShowingIcon == false)
-        //{
-        //    m_AvatarGroup.localScale = Vector3.zero;
-        //    m_IconGroup.localScale = Vector3.zero;
-        //}
-
+                
         m_DisplayName.text = witchToken.displayName;
         SetStats();
         UpdateNameplate(m_DisplayName.preferredWidth);

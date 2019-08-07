@@ -31,44 +31,20 @@ public abstract class Token
             return MarkerManager.MarkerType.NONE;
     }
 
-    public string type;
+    public virtual string type { get; set; }
     [JsonProperty("_id")]
-    public string instance;
-    public float longitude;
-    public float latitude;
+    public virtual string instance { get; set; }
+    public virtual float longitude { get; set; }
+    public virtual float latitude { get; set; }
 
     [NonSerialized, JsonIgnore]
     public double lastEnergyUpdate;
 
     [JsonIgnore]
     public MarkerSpawner.MarkerType Type { get { return (type == null ? MarkerSpawner.MarkerType.NONE : m_TypeMap[type]); } }
-
-
-    ////{ get; set; }
-    //// { get; set; }
-    //// { get; set; }
-    //// { get; set; }
-    ////{ get; set; }
-    ////{ get; set; }
-    //// { get; set; }
-    ////{ get; set; }
-    ////public string race { get; set; }
-    ////public bool male { get { return race != null && race.StartsWith("m_"); } }
-    ////public bool bot { get; set; }
-    ////public int degree { get; set; }
-    ////public float latitude { get; set; }
-    ////public float longitude { get; set; }
-    ////public bool physical { get; set; }
-    ////public int position { get; set; }
-    ////public HashSet<string> immunityList { get; set; }
-    ////public int tier { get; set; }
-    ////public int energy { get; set; }
-    ////public int baseEnergy { get; set; }
-    ////public int amount { get; set; }
-    ////public int level { get; set; }
-
+    
     [JsonIgnore]
-    public string Id => instance;
+    public virtual string Id => instance;
     [JsonIgnore]
     public int position;
     [JsonIgnore]
@@ -83,12 +59,12 @@ public class CollectableToken : Token
 
 public class CharacterToken : Token
 {
-    public int energy;
-    public string state;
-    public int level;
-    public HashSet<string> immunities = new HashSet<string>();
-    public int degree;
-    public string coven;
+    public virtual int energy { get; set; }
+    public virtual string state { get; set; }
+    public virtual int level { get; set; }
+    public virtual HashSet<string> immunities { get; set; }
+    public virtual int degree { get; set; }
+    public virtual string coven { get; set; }
 
     public virtual int baseEnergy { get; set; }
 }
@@ -103,9 +79,9 @@ public class SpiritToken : CharacterToken
 public class WitchToken : CharacterToken
 {
     [JsonProperty("name")]
-    public string displayName;
-    public List<EquippedApparel> equipped;
-    public int bodyType;
+    public virtual string displayName { get; set; }
+    public virtual List<EquippedApparel> equipped { get; set; }
+    public virtual int bodyType { get; set; }
 
     [JsonIgnore]
     public bool male => (bodyType >= 3);
@@ -118,6 +94,76 @@ public class WitchToken : CharacterToken
                 return PlayerDataManager.baseEnergyPerLevel[level];
             return PlayerDataManager.baseEnergyPerLevel[PlayerDataManager.baseEnergyPerLevel.Length - 1];
         }
+    }
+}
+
+public class PlayerToken : WitchToken
+{
+    //witch token
+    public override string displayName => PlayerDataManager.playerData.name;
+    public override int bodyType => PlayerDataManager.playerData.bodyType;
+
+    public override List<EquippedApparel> equipped
+    {
+        get => PlayerDataManager.playerData.equipped;
+        set => PlayerDataManager.playerData.equipped = value;
+    }
+
+    //character token
+    public override int energy
+    {
+        get => PlayerDataManager.playerData.energy;
+        set => PlayerDataManager.playerData.energy = value;
+    }
+
+    public override int baseEnergy
+    {
+        get => PlayerDataManager.playerData.baseEnergy;
+        set => PlayerDataManager.playerData.baseEnergy = value;
+    }
+
+    public override string state
+    {
+        get => PlayerDataManager.playerData.state;
+        set => PlayerDataManager.playerData.state = value;
+    }
+
+    public override int level
+    {
+        get => PlayerDataManager.playerData.level;
+        set => PlayerDataManager.playerData.level = value;
+    }
+
+    public override HashSet<string> immunities
+    {
+        get => PlayerDataManager.playerData.immunities;
+        set => PlayerDataManager.playerData.immunities = value;
+    }
+
+    public override int degree
+    {
+        get => PlayerDataManager.playerData.degree;
+        set => PlayerDataManager.playerData.degree = value;
+    }
+
+    //base tokem
+    public override string type
+    {
+        get => "character";
+    }
+    
+    public override string instance => PlayerDataManager.playerData.instance;
+
+    public override float longitude
+    {
+        get => PlayerDataManager.playerData.longitude;
+        set => PlayerDataManager.playerData.longitude = value;
+    }
+
+    public override float latitude
+    {
+        get => PlayerDataManager.playerData.latitude;
+        set => PlayerDataManager.playerData.latitude = value;
     }
 }
 

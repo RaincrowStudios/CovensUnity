@@ -104,13 +104,6 @@ public class Condition
     public bool constant { get; set; }
 }
 
-public class CoolDown
-{
-    public string instance { get; set; }
-    public string spell { get; set; }
-    public double expiresOn { get; set; }
-}
-
 public class InventoryData
 {
     public Dictionary<string, int> herbs { get; set; }

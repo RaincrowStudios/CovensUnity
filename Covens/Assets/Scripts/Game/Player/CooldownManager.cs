@@ -44,17 +44,14 @@ public static class CooldownManager
 
             if (cd.Remaining <= 0)
             {
-                Debug.Log("<color=magenta>expired cooldown: " + id + "</color>");
                 m_CooldownDictionary.Remove(id);
                 return null;
             }
 
-            Debug.Log("<color=magenta>cooldown: " + id + ": " + cd.Remaining + "</color>");
             return cd;
         }
         else
         {
-            Debug.Log("<color=magenta>null cooldown: " + id + "</color>");
             return null;
         }
     }
