@@ -183,7 +183,7 @@ public class MarkerSpawner : MarkerManager
         if (Markers.ContainsKey(ID))
         {
             IMarker marker = Markers[ID][0];
-            marker.inMapView = false;
+            //marker.inMapView = false;
             marker.Interactable = false;
 
             //remove from dictionary

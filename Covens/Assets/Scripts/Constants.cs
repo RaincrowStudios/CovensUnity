@@ -123,7 +123,7 @@ public class CovenConstants : MonoBehaviour
             }
             else
             {
-                return "http://34.73.145.51:8083/socket.io/?";
+                return "http://34.73.145.51:8083/socket.io/";
             }
 #elif PRODUCTION
             return "http://35.227.88.204:8083/socket.io/?";

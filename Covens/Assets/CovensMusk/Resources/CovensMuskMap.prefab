@@ -1339,9 +1339,9 @@ MonoBehaviour:
   m_CollectableHerb: {fileID: 21300000, guid: e4b40da8ce7f7aa428cdcb0f507a12e6, type: 3}
   m_CollectableGem: {fileID: 21300000, guid: 4184d8c76117f2145815a9eb20ec3d53, type: 3}
   m_CollectableTool: {fileID: 21300000, guid: 16ab6d5ebf30eb34c98870239e10b2e2, type: 3}
-  m_WitchColor: {r: 0.02745098, g: 0.5803922, b: 0.8, a: 0.50980395}
-  m_SpiritColor: {r: 0.02745098, g: 0.5803922, b: 0.8, a: 0.50980395}
-  m_CollectableColor: {r: 0.02745098, g: 0.5803922, b: 0.8, a: 0.50980395}
+  m_WitchColor: {r: 0.02745098, g: 0.5803922, b: 0.8, a: 0.76862746}
+  m_SpiritColor: {r: 0.8, g: 0.20905113, b: 0.027450992, a: 0.88235295}
+  m_CollectableColor: {r: 0.5626074, g: 1, b: 0, a: 0.6784314}
   m_PopColor: {r: 0.6117647, g: 0.6117647, b: 0.6117647, a: 0.5019608}
   m_MarkerDetailedThreshold: 0.82
   m_MarkerVisibleThreshoold: 0.58

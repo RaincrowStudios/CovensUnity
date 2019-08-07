@@ -98,18 +98,19 @@ public class UISpellcastingItem : MonoBehaviour
 
     private IEnumerator CooldownCoroutine()
     {
-        CooldownManager.Cooldown? cooldown = CooldownManager.GetCooldown(m_Spell.id);
+        yield break;
+        //CooldownManager.Cooldown? cooldown = CooldownManager.GetCooldown(m_Spell.id);
         
-        float secondsRemaining = cooldown.HasValue ? (float)Utilities.TimespanFromJavaTime(cooldown.Value.timestamp).TotalSeconds : 0;
+        //float secondsRemaining = cooldown.HasValue ? (float)Utilities.TimespanFromJavaTime(cooldown.Value.endDate).TotalSeconds : 0;
 
-        while (secondsRemaining >= 0)
-        {
-            m_Fill.fillAmount = m_GlyphFill.fillAmount = 1 - secondsRemaining / cooldown.Value.duration;
+        //while (secondsRemaining >= 0)
+        //{
+        //    m_Fill.fillAmount = m_GlyphFill.fillAmount = 1 - secondsRemaining / cooldown.Value.total;
 
-            yield return new WaitForSeconds(0.1f);
-            secondsRemaining -= 0.1f;
-        }
+        //    yield return new WaitForSeconds(0.1f);
+        //    secondsRemaining -= 0.1f;
+        //}
 
-        m_Fill.fillAmount = m_GlyphFill.fillAmount = 1;
+        //m_Fill.fillAmount = m_GlyphFill.fillAmount = 1;
     }
 }

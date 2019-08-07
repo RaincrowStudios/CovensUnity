@@ -7,39 +7,55 @@ public static class CooldownManager
     public struct Cooldown
     {
         public string id;
-        public double timestamp;
-        public float duration;
+        public float total;
+        private double timestamp;
+        public System.DateTime endDate;
 
-        public Cooldown(string id, double timestamp)
+        public float Remaining => (float)Utilities.TimespanFromJavaTime(timestamp).TotalSeconds;
+
+        public Cooldown(string id, float total, double timestamp)
         {
             this.id = id;
+            this.total = total;
             this.timestamp = timestamp;
-            this.duration = (float)Utilities.TimespanFromJavaTime(timestamp).TotalSeconds;
-            Debug.Log("new cooldown: " + id + " - " + duration + "s");
-        } 
+            this.endDate = Utilities.FromJavaTime(timestamp);
+        }
     }
 
-    private static Dictionary<string, Cooldown?> m_CooldownDictionary = new Dictionary<string, Cooldown?>();
-    public static event System.Action<string> OnCooldownEnd;
+    private static Dictionary<string, Cooldown> m_CooldownDictionary = new Dictionary<string, Cooldown>();
 
-    public static void OnCooldownStart(WSData data)
+    public static void AddCooldown(string id, float total, double endDate)
     {
-        m_CooldownDictionary[data.spell] = new Cooldown(data.spell, data.cooldownTime);
+        id = id.ToLower();
+
+        Cooldown cd = new Cooldown(id, total, endDate);
+        m_CooldownDictionary[id] = cd;
+        Debug.Log("<color=magenta>add cooldown\n" + cd.id + "(" + cd.Remaining + "/" + cd.total + "</color>");
     }
-
-    public static void OnCooldownFinish(WSData data)
-    {
-        if (m_CooldownDictionary.ContainsKey(data.spell))
-            m_CooldownDictionary.Remove(data.spell);
-
-        OnCooldownEnd?.Invoke(data.spell);
-    }
-
+    
     public static Cooldown? GetCooldown(string id)
     {
+        id = id.ToLower();
+
+
         if (m_CooldownDictionary.ContainsKey(id))
-            return m_CooldownDictionary[id];
+        {
+            Cooldown cd = m_CooldownDictionary[id];
+
+            if (cd.Remaining <= 0)
+            {
+                Debug.Log("<color=magenta>expired cooldown: " + id + "</color>");
+                m_CooldownDictionary.Remove(id);
+                return null;
+            }
+
+            Debug.Log("<color=magenta>cooldown: " + id + ": " + cd.Remaining + "</color>");
+            return cd;
+        }
         else
+        {
+            Debug.Log("<color=magenta>null cooldown: " + id + "</color>");
             return null;
+        }
     }
 }

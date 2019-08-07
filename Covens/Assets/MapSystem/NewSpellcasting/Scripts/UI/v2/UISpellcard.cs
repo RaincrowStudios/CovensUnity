@@ -5,6 +5,7 @@ using UnityEngine;
 using TMPro;
 using UnityEngine.UI;
 using Raincrow.Maps;
+using static CooldownManager;
 
 public class UISpellcard : EnhancedScrollerCellView
 {
@@ -22,24 +23,30 @@ public class UISpellcard : EnhancedScrollerCellView
     [SerializeField] private Button m_SchoolButton;
     [SerializeField] private Button m_SpellButton;
 
+    [Header("cooldowns")]
+    [SerializeField] private Image m_CooldownMask;
+    [SerializeField] private Image m_MaskedSpellIcon;
+    [SerializeField] private TextMeshProUGUI m_CooldownTex;
+
     [Header("crests")]
     [SerializeField] private Sprite m_ShadowCrest;
     [SerializeField] private Sprite m_GreyCrest;
     [SerializeField] private Sprite m_WhiteCrest;
     
     public SpellData Spell { get; private set; }
-
     private System.Action<int> m_OnClickSchool;
     private System.Action<UISpellcard> m_OnClickCard;
     private System.Action<UISpellcard> m_OnClickGlyph;
 
     private int m_TweenId;
+    private Coroutine m_CooldownCoroutine;
 
     private void Awake()
     {
         m_SchoolButton.onClick.AddListener(OnClickSchool);
         m_CardButton.onClick.AddListener(OnClickCard);
         m_SpellButton.onClick.AddListener(OnClickGlyph);
+        m_CooldownTex.text = "";
     }
 
     public void SetData(
@@ -48,6 +55,13 @@ public class UISpellcard : EnhancedScrollerCellView
         System.Action<UISpellcard> onClickCard,
         System.Action<UISpellcard> onClickGlyph)
     {
+        if (m_CooldownCoroutine != null)
+        {
+            StopCoroutine(m_CooldownCoroutine);
+            m_CooldownCoroutine = null;
+        }
+
+        name = "[" + spell.id + "] UISpellcard prefab";
         Spell = spell;
         m_OnClickSchool = onClickSchool;
         m_OnClickCard = onClickCard;
@@ -73,15 +87,18 @@ public class UISpellcard : EnhancedScrollerCellView
             m_SchoolIcon.overrideSprite = m_GreyCrest;
         }
 
-        m_SpellIcon.overrideSprite = null;
+        m_SpellIcon.overrideSprite = m_MaskedSpellIcon.overrideSprite = null;
         DownloadedAssets.GetSprite(spell.id, spr =>
         {
-            m_SpellIcon.overrideSprite = spr;
+            m_SpellIcon.overrideSprite = m_MaskedSpellIcon.overrideSprite = spr;
         });
     }
 
     public void UpdateCancast(CharacterMarkerData targetData, IMarker targetMarker)
     {
+        if (m_CooldownCoroutine != null)
+            StopCoroutine(m_CooldownCoroutine);
+
         Spellcasting.SpellState canCast = Spellcasting.CanCast(Spell, targetMarker, targetData);
         if (canCast == Spellcasting.SpellState.CanCast)
         {
@@ -93,6 +110,39 @@ public class UISpellcard : EnhancedScrollerCellView
             m_SpellFrame.gameObject.SetActive(false);
             m_SpellButton.interactable = false;
         }
+
+        if (canCast == Spellcasting.SpellState.InCooldown)
+        {
+            m_CooldownCoroutine = StartCoroutine(CooldownCoroutine(targetData, targetMarker));
+        }
+        else
+        {
+            m_CooldownTex.text = "";
+            m_CooldownMask.fillAmount = 0;
+        }
+    }
+
+    private IEnumerator CooldownCoroutine(CharacterMarkerData targetData, IMarker targetmarker)
+    {
+        m_CooldownTex.text = "";
+        Cooldown? cd = CooldownManager.GetCooldown(Spell.id);
+
+        if (cd == null)
+            yield break;
+
+        float time = cd.Value.Remaining;
+        while (time > 0)
+        {
+            m_CooldownMask.fillAmount = time / cd.Value.total;
+            //m_CooldownTex.text = ((int)time).ToString();
+
+            yield return 0;
+            time = cd.Value.Remaining;
+        }
+        m_CooldownTex.text = "";
+        m_CooldownCoroutine = null;
+
+        UpdateCancast(targetData, targetmarker);
     }
 
     private void OnClickSchool()

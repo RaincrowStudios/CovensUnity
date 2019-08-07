@@ -8,6 +8,7 @@ namespace Raincrow.GameEventResponses
     {
         public struct SpellCastCharacter
         {
+            [JsonProperty("_id")]
             public string id;
             public string type;
             public int energy;
@@ -34,6 +35,7 @@ namespace Raincrow.GameEventResponses
             public Result result;
             public double timestamp;
             public bool immunity;
+            public double cooldown;
         }
 
         public string EventName => "cast.spell";
@@ -63,6 +65,9 @@ namespace Raincrow.GameEventResponses
             int targetNewEnergy = data.target.energy;
             
             OnSpellCast?.Invoke(data.caster.id, data.target.id, spell, data.result);
+
+            if (playerIsCaster)
+                CooldownManager.AddCooldown(spell.id, spell.cooldown, data.cooldown);
 
             SpellcastingTrailFX.SpawnTrail(spell.school, caster, target,
                 onStart: () =>

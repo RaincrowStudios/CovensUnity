@@ -313,9 +313,6 @@ public class UIPlayerInfo : UIInfoPanel
         {
             m_CastText.text = LocalizeLookUp.GetText("spellbook_more_spells");
         }
-
-        //if (UISpellcasting.isOpen)
-        //    UISpellcasting.Instance.UpdateCanCast();
     }
 
 

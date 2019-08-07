@@ -164,6 +164,14 @@ public class CovenInvite
     public int worldRank;
 }
 
+public struct PlayerCooldown
+{
+    [JsonProperty("spell")]
+    public string id;
+    [JsonProperty("expiresOn")]
+    public double cooldown;
+}
+
 public class PlayerData : WitchMarkerData
 {
     [JsonProperty("_id")] public string instance;
@@ -192,6 +200,8 @@ public class PlayerData : WitchMarkerData
 
     public CovenInfo covenInfo;
     public QuestStatus quest;
+
+    public PlayerCooldown[] cooldowns;
 
     [JsonProperty("tools")] private List<CollectableItem> m_Tools;
     [JsonProperty("herbs")] private List<CollectableItem> m_Herbs;
@@ -251,6 +261,16 @@ public class PlayerData : WitchMarkerData
                 continue;
 
             m_Spells.Add(spellData);
+        }
+
+        foreach (var cooldown in cooldowns)
+        {
+            float total = 0;
+            SpellData spell = DownloadedAssets.GetSpell(cooldown.id);
+            if (spell != null)
+                total = spell.cooldown;
+
+            CooldownManager.AddCooldown(cooldown.id, total, cooldown.cooldown);
         }
     }
 

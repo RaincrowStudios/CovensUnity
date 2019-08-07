@@ -104,13 +104,6 @@ public class Spellcasting
             }
             else
             {
-                //if (token.Type == MarkerSpawner.MarkerType.SPIRIT)
-                //{
-                //    //temp fix: disable banish of spirits on pop
-                //    if (PlaceOfPower.IsInsideLocation && spell != null && spell.id == "spell_banish")
-                //        return SpellState.InvalidState;
-                //}
-                //else 
                 if (token.Type == MarkerSpawner.MarkerType.WITCH)
                 {
                     //immunity

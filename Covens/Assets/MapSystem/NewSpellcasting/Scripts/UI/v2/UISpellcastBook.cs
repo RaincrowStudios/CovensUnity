@@ -6,6 +6,7 @@ using UnityEngine.UI;
 using TMPro;
 using Raincrow;
 using Raincrow.Maps;
+using Raincrow.GameEventResponses;
 
 public class UISpellcastBook : MonoBehaviour, IEnhancedScrollerDelegate
 {
@@ -121,7 +122,29 @@ public class UISpellcastBook : MonoBehaviour, IEnhancedScrollerDelegate
 
         UpdateCanCast();
 
-        //todo: listen for spell related events
+        SpellCastHandler.OnPlayerTargeted += SpellCastHandler_OnPlayerTargeted;
+        OnMapEnergyChange.OnEnergyChange += OnMapEnergyChange_OnEnergyChange;
+    }
+
+    private void OnMapEnergyChange_OnEnergyChange(string character, int energy)
+    {
+        if (character != m_TargetMarker.Token.Id)
+            return;
+
+        SetupTargetEnergy(
+            energy,
+            m_TargetData.baseEnergy,
+            m_TargetMarker.Type == MarkerManager.MarkerType.SPIRIT ? new int?() : (m_TargetMarker as WitchMarker).witchToken.degree);
+
+        UpdateCanCast();
+    }
+
+    private void SpellCastHandler_OnPlayerTargeted(string attacker, SpellData spell, SpellCastHandler.Result Result)
+    {
+        if (attacker != m_TargetMarker.Token.Id)
+            return;
+
+        UpdateCanCast();
     }
 
     private void Hide()
@@ -139,11 +162,11 @@ public class UISpellcastBook : MonoBehaviour, IEnhancedScrollerDelegate
         OnSelectCard(null);
     }
 
+
+
     private void SetupTarget(IMarker marker, CharacterMarkerData data)
     {
-        m_TargetEnergy.fillAmount = (float)data.energy / data.baseEnergy;
         m_TargetName.text = "";
-
         m_TargetPortrait.overrideSprite = null;
 
         if (marker.Type == MarkerManager.MarkerType.WITCH)
@@ -151,12 +174,8 @@ public class UISpellcastBook : MonoBehaviour, IEnhancedScrollerDelegate
             WitchMarker witch = marker as WitchMarker;
 
             m_TargetName.text = witch.witchToken.displayName;
-            if (witch.witchToken.degree < 0)
-                m_TargetEnergy.color = Utilities.Purple;
-            else if (witch.witchToken.degree > 0)
-                m_TargetEnergy.color = Utilities.Orange;
-            else
-                m_TargetEnergy.color = Utilities.Blue;
+
+            SetupTargetEnergy(data.energy, data.baseEnergy, witch.witchToken.degree);
 
             witch.GetPortrait(spr =>
             {
@@ -168,21 +187,35 @@ public class UISpellcastBook : MonoBehaviour, IEnhancedScrollerDelegate
             SpiritMarker spirit = marker as SpiritMarker;
 
             m_TargetName.text = spirit.spiritData.Name;
-            m_TargetEnergy.color = Color.white;
+            SetupTargetEnergy(data.energy, data.baseEnergy, null);
 
             int idx = Mathf.Clamp(spirit.spiritData.tier - 1, 0, 4);
             m_TargetPortrait.overrideSprite = m_TierSprite[idx];
-            //DownloadedAssets.GetSprite(spirit.spiritData.id, spr =>
-            //{
-            //    m_TargetPortrait.transform.localScale = Vector3.one * 2;
-            //    m_TargetPortrait.overrideSprite = spr;
-            //});
         }
 
         LeanTween.value(0, 1, 1f).setOnUpdate((float t) =>
         {
             m_NamePanel.sizeDelta = m_TargetName.rectTransform.sizeDelta;
         });
+    }
+
+    private void SetupTargetEnergy(int energy, int baseEnergy, int? school)
+    {
+        if (school == null)
+        {
+            m_TargetEnergy.color = Color.white;
+        }
+        else
+        {
+            if (school < 0)
+                m_TargetEnergy.color = Utilities.Purple;
+            else if (school > 0)
+                m_TargetEnergy.color = Utilities.Orange;
+            else
+                m_TargetEnergy.color = Utilities.Blue;
+        }
+
+        m_TargetEnergy.fillAmount = (float)energy / baseEnergy;
     }
 
     private void SetSchool(int? school)
@@ -252,11 +285,14 @@ public class UISpellcastBook : MonoBehaviour, IEnhancedScrollerDelegate
         }
     }
 
-    private void UpdateCanCast()
+    private void UpdateCanCast(string spell = null)
     {
         UISpellcard[] cards = m_Scroller.GetComponentsInChildren<UISpellcard>();
         foreach (UISpellcard card in cards)
         {
+            if (spell != null && spell != card.Spell.id)
+                continue;
+
             card.UpdateCancast(m_TargetData, m_TargetMarker);
         }
     }
