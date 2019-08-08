@@ -57,7 +57,7 @@ public class TeamMemberItemUI : MonoBehaviour
         System.Action<string, CovenRole> onDemote,
         System.Action<TeamMemberItemUI> onClickTitle)
     {
-        Disable(false);
+        //Disable(false);
         transform.localScale = Vector3.one;
 
         Coven = coven;
@@ -223,8 +223,8 @@ public class TeamMemberItemUI : MonoBehaviour
         return System.DateTime.UtcNow.Subtract(dtDateTime);
     }
 
-    public void Disable(bool disable)
-    {
-        m_DisableOverlay.SetActive(disable);
-    }
+    //public void Disable(bool disable)
+    //{
+    //    m_DisableOverlay.SetActive(disable);
+    //}
 }

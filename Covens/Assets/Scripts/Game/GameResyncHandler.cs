@@ -96,6 +96,9 @@ public class GameResyncHandler : MonoBehaviour
 
     public static void ResyncGame()
     {
+#if LOCAL_API
+        return;
+#endif
         Debug.Log("Resync game");
         Instance.ShowScreen(LocalizeLookUp.GetText("server_syncing"));
         Instance.StartCoroutine(Instance.ResyncCoroutine());

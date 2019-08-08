@@ -51,7 +51,7 @@ public class TeamInviteItemUI : MonoBehaviour
     public void Setup(PendingInvite data, System.Action onCancel)
     {
         m_Background.SetActive(transform.GetSiblingIndex() % 2 == 0);
-        Disable(false);
+        //Disable(false);
 
         ItemId = data.Character;
         ItemName = data.Name;
@@ -104,7 +104,7 @@ public class TeamInviteItemUI : MonoBehaviour
     public void Setup(PendingRequest data, System.Action onAccept, System.Action onReject)
     {
         m_Background.SetActive(transform.GetSiblingIndex() % 2 == 0);
-        Disable(false);
+        //Disable(false);
 
         ItemId = data.Character;
         ItemName = data.Name;
@@ -181,7 +181,7 @@ public class TeamInviteItemUI : MonoBehaviour
     public void Setup(CovenInvite data, System.Action onAccept, System.Action onReject)
     {
         m_Background.SetActive(transform.GetSiblingIndex() % 2 == 0);
-        Disable(false);
+        //Disable(false);
 
         ItemId = data.coven;
         ItemName = data.name;
@@ -255,7 +255,7 @@ public class TeamInviteItemUI : MonoBehaviour
     public void Setup(CovenRequest data)
     {
         m_Background.SetActive(transform.GetSiblingIndex() % 2 == 0);
-        Disable(false);
+        //Disable(false);
 
         ItemId = data.coven;
         ItemName = data.name;
@@ -276,8 +276,8 @@ public class TeamInviteItemUI : MonoBehaviour
         m_OnCancel = null;
     }
 
-    public void Disable(bool disable)
-    {
-        m_DisableOverlay.SetActive(disable);
-    }
+    //public void Disable(bool disable)
+    //{
+    //    m_DisableOverlay.SetActive(disable); 
+    //}
 }
