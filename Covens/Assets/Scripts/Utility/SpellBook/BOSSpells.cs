@@ -90,6 +90,7 @@ public class BOSSpells : BOSBase
             navButton.GetComponentInChildren<Button>().onClick.AddListener(() => { ShowSpell(item.id); });
             navButtons[item.id] = navButton.transform;
             aux.Add(navButton.transform);
+            LeanTween.scale(navButton, Vector3.one, 1f).setEase(LeanTweenType.easeOutCubic);
         }
 
         yield return 0;
@@ -98,15 +99,14 @@ public class BOSSpells : BOSBase
         ShowSpell(spellList[0].id);
 
         //load the icons
-        yield return 0;
+        yield return new WaitForSeconds(0.1f);
         for (int i = 0; i < aux.Count; i++)
         {
             DownloadedAssets.GetSprite(spellList[i].id, spr =>
             {
                 aux[i].GetChild(1).GetComponent<Image>().overrideSprite = spr;
-                LeanTween.scale(aux[i].gameObject, Vector3.one, .8f).setEase(LeanTweenType.easeInOutSine);
             });
-            yield return 0;
+            yield return new WaitForSeconds(0.1f);
         }
     }
 

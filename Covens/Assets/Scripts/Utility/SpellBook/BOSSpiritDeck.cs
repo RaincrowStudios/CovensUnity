@@ -38,6 +38,7 @@ public class BOSSpiritDeck : BOSBase
         //        });
         //    }
         //});
+        StartCoroutine(Init());
     }
 
     IEnumerator Init()

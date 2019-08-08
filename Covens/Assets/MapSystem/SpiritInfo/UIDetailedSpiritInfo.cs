@@ -49,7 +49,7 @@ public class UIDetailedSpiritInfo : MonoBehaviour {
         });
     }
 
-    public void Show(SpiritData spirit, Token token)
+    public void Show(SpiritData spirit, Token token = null)
     {
         m_DisplayName.text = spirit.Name;
 
