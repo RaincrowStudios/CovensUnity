@@ -3,6 +3,7 @@ using System;
 using System.Collections.Generic;
 using System.Reflection;
 using System.Globalization;
+using Newtonsoft.Json;
 
 public class Utilities : MonoBehaviour
 {
@@ -593,4 +594,22 @@ public static class ArrayExtensions
     }
 }
 
+public static class JsonExtensions
+{
+    public static bool TryParseJson<T>(this string obj, out object result)
+    {
+        try
+        {
+            Debug.Log(obj);
+            result = JsonConvert.DeserializeObject<T>(obj);
+            return true;
+        }
+        catch (Exception)
+        {
+            result = default(T);
+            return false;
+        }
+    }
+
+}
 

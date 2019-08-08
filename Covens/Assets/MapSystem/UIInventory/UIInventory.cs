@@ -72,7 +72,7 @@ public class UIInventory : MonoBehaviour
         Destroy(this.gameObject);
     }
 
-    public void Show(System.Action<UIInventoryWheelItem> onSelectItem, System.Action onClickClose, bool showApothecary, bool enableCloseButton, bool resetIngredientPicker)
+    public void Show(System.Action<UIInventoryWheelItem> onSelectItem, System.Action onClickClose, bool showApothecary, bool enableCloseButton)
     {
         m_OnClickClose = onClickClose;
 
@@ -83,7 +83,7 @@ public class UIInventory : MonoBehaviour
         m_HerbsWheel.LockIngredient(null, 0);
         m_ToolsWheel.LockIngredient(null, 0);
         m_GemsWheel.LockIngredient(null, 0);
-
+        
         m_ApothecaryButton.gameObject.SetActive(showApothecary && PlayerDataManager.playerData.energy != 0);
 
         if (m_ApothecaryButton.gameObject.activeSelf)
@@ -105,18 +105,18 @@ public class UIInventory : MonoBehaviour
 
         m_CloseButton.gameObject.SetActive(enableCloseButton);
 
-        if (resetIngredientPicker)
-            ResetIngredientPicker();
+        //if (resetIngredientPicker)
+        //    ResetIngredientPicker();
 
         AnimateIn();
     }
 
-    public void Close(bool resetIngrPicker = false)
+    public void Close()
     {
         AnimateOut();
 
-        if (resetIngrPicker)
-            ResetIngredientPicker();
+        //if (resetIngrPicker)
+        ResetIngredientPicker();
     }
 
     public void ResetIngredientPicker()
@@ -146,6 +146,8 @@ public class UIInventory : MonoBehaviour
         m_GemsWheel.ResetAnim1();
         m_ToolsWheel.ResetAnim2();
         m_HerbsWheel.ResetAnim3();
+
+        m_InputRaycaster.enabled = false;
         LeanTween.alphaCanvas(inventoryCG, 0f, 0.3f).setOnComplete(() =>
        {
            m_HerbsWheel.enabled = false;
@@ -153,7 +155,6 @@ public class UIInventory : MonoBehaviour
            m_GemsWheel.enabled = false;
 
            m_Canvas.enabled = false;
-           m_InputRaycaster.enabled = false;
        });
 
     }
@@ -196,6 +197,33 @@ public class UIInventory : MonoBehaviour
                 m_ToolsWheel.LockIngredient(ingredients[i], animDuration);
             else if (type == IngredientType.gem)
                 m_GemsWheel.LockIngredient(ingredients[i], animDuration);
+        }
+    }
+
+    public void SetSelected(List<CollectableItem> items)
+    {
+        ResetIngredientPicker();
+
+        if (items == null)
+            return;
+
+        IngredientData itemData;
+        foreach (var _item in items)
+        {
+            if (string.IsNullOrEmpty(_item.id))
+                continue;
+
+            itemData = DownloadedAssets.GetCollectable(_item.id);
+
+            if (string.IsNullOrEmpty(itemData.type))
+                continue;
+
+            switch (itemData.Type)
+            {
+                case IngredientType.herb: m_HerbsWheel.SetPicker(_item.id, _item.count); break;
+                case IngredientType.tool: m_ToolsWheel.SetPicker(_item.id, _item.count); break;
+                case IngredientType.gem:  m_GemsWheel.SetPicker(_item.id, _item.count); break;
+            }
         }
     }
 }

@@ -92,7 +92,7 @@ public class UIMain : MonoBehaviour
             
         };
 
-        UIInventory.Instance.Show(onSelectItem, onClickClose, true, true, true);
+        UIInventory.Instance.Show(onSelectItem, onClickClose, true, true);
     }
 
     private void OnClickCoven()
@@ -127,7 +127,6 @@ public class UIMain : MonoBehaviour
 
     private void OnClickChat()
     {
-        UIGlobalPopup.ShowError(null, "not implemented");
-        //UIChat.Open();
+        UIChat.Open();
     }
 }

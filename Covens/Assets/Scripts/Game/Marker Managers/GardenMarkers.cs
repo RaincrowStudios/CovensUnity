@@ -5,6 +5,8 @@ using Raincrow.Maps;
 using TMPro;
 using System.Collections.Generic;
 using Newtonsoft.Json;
+using Raincrow.GameEventResponses;
+
 public class GardenMarkers : MonoBehaviour
 {
     public static GardenMarkers instance { get; set; }
@@ -108,7 +110,7 @@ public class GardenMarkers : MonoBehaviour
     private void SetupExplore(QuestsController.CovenDaily.Explore lore)
     {
         var go = Utilities.InstantiateObject(lorePrefab, map.trackedContainer);
-        
+
         go.name = "[lore] EXPLORE QUEST";
         go.transform.position = map.GetWorldPosition(lore.location.longitude, lore.location.latitude);
         go.SetActive(false);
@@ -117,6 +119,7 @@ public class GardenMarkers : MonoBehaviour
         if (loreMarker == null)
             loreMarker = go.AddComponent<MuskMarker>();
         loreMarker.OnClick = (m) => SendQuestLore();
+        loreMarker.Coords = new Vector2(lore.location.longitude, lore.location.latitude);
     }
 
 
@@ -132,7 +135,9 @@ public class GardenMarkers : MonoBehaviour
         if (loreMarker == null)
             return;
 
-        if (!PlayerDataManager.playerData.quest.explore.completed && 
+        Debug.Log("check lore on land:\n" + map.position + "\n" + loreMarker.Coords);
+
+        if (!PlayerDataManager.playerData.quest.explore.completed &&
             map.DistanceBetweenPointsD(map.position, new Vector2(loreMarker.Coords.x, loreMarker.Coords.y)) < 8)
         {
             SendQuestLore();
@@ -208,15 +213,20 @@ public class GardenMarkers : MonoBehaviour
 
     private static void SendQuestLore()
     {
-        UIGlobalPopup.ShowError(null, "explore quest not implemented");
-        //var data = new { lore = PlayerDataManager.config.explore.id };
-        //APIManager.Instance.PostData("lore/select", JsonConvert.SerializeObject(data), (string s, int r) =>
-        //{
-        //    if (r == 200)
-        //    {
-        //        QuestsController.instance.ExploreQuestDone(data.lore);
-        //    }
-        //});
+        APIManager.Instance.Get("dailies/explore", (response, result) =>
+        {
+            if (result == 200)
+            {
+                DailyProgressHandler.DailyProgressEventData data =
+                    JsonConvert.DeserializeObject<DailyProgressHandler.DailyProgressEventData>(response);
+
+                // DailyProgressHandler.HandleResponse(data);
+            }
+            else
+            {
+                UIGlobalPopup.ShowError(null, APIManager.ParseError(response));
+            }
+        });
     }
 
     public void OnClick(string id)

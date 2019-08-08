@@ -23,12 +23,7 @@ namespace Raincrow.GameEventResponses
         {
             DailyProgressEventData data = JsonConvert.DeserializeObject<DailyProgressEventData>(eventData);
 
-            if (data.silver != 0)
-            {
-                PlayerDataManager.playerData.silver += data.silver;
-                PlayerManagerUI.Instance.UpdateDrachs();
-            }
-
+            string message = null;
             switch (data.daily)
             {
                 case "gather":
@@ -45,7 +40,65 @@ namespace Raincrow.GameEventResponses
                     break;
             }
 
+            if (data.silver != 0)
+            {
+                PlayerDataManager.playerData.silver += data.silver;
+                PlayerManagerUI.Instance.UpdateDrachs();
+            }
+
             OnDailyProgress?.Invoke(data);
+
+            ShowNotification(data.daily, data.silver, data.count);
+        }
+
+        public static void ShowNotification(string quest, int silver, int count)
+        {
+            string message = null;
+
+            if (silver == 0)
+            {
+                if (quest == "gather")
+                {
+                    message = 
+                        LocalizeLookUp.GetText("daily_quest_progress") + " " + 
+                        LocalizeLookUp.GetText("daily_gather") + "\n" + 
+                        LocalizeLookUp.GetText("daily_completed") + " " + count.ToString() + "/" + QuestsController.Quests.gather.amount.ToString();
+                }
+                else if (quest == "spellcraft")
+                {
+                    message = 
+                        LocalizeLookUp.GetText("daily_quest_progress") + " " + 
+                        LocalizeLookUp.GetText("daily_spell") + "\n" + 
+                        LocalizeLookUp.GetText("daily_completed") + " " + count.ToString() + "/" + QuestsController.Quests.spellcraft.amount.ToString();
+                }
+            }
+            else
+            {
+                if (quest == "gather")
+                {
+                    message = LocalizeLookUp.GetText("daily_completed_gather") + "\n"+ 
+                        "+ " + silver.ToString() + " " + LocalizeLookUp.GetText("store_silver");
+                }
+                else if (quest == "spellcraft")
+                {
+                    message = LocalizeLookUp.GetText("daily_completed_spellcraft") + "\n" + 
+                        "+ " + silver.ToString() + " " + LocalizeLookUp.GetText("store_silver");
+                }
+                else
+                {
+                    message = LocalizeLookUp.GetText("daily_completed_explore") + "\n" + 
+                        "+ " + silver.ToString() + " " + LocalizeLookUp.GetText("store_silver");
+                }
+            }
+
+            if (message != null)
+            {
+                LeanTween.value(0, 0, 1f).setOnComplete(() => PlayerNotificationManager.Instance.ShowNotification(message, null));
+            }
+            else
+            {
+                Debug.LogError("null quest progress text");
+            }
         }
     }
 }

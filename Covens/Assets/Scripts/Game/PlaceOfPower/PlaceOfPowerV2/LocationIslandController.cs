@@ -11,6 +11,15 @@ public class LocationIslandController : MonoBehaviour
     public static bool inLocation { get; private set; }
     public static List<Transform> unitPositions { get; private set; }
 
+    public static bool isInBattle
+    {
+        get
+        {
+            return locationData.isInBattle;
+        }
+    }
+    public static LocationData locationData => instance.m_LocationData;
+
     [SerializeField] private LocationData m_LocationData;
 
     [Header("Debug Parameters")]
@@ -24,27 +33,9 @@ public class LocationIslandController : MonoBehaviour
     [SerializeField] private PopCameraController popCameraController;
     [SerializeField] private LocationUnitSpawner locationUnitSpawner;
 
-    void Awake()
+    private void Awake()
     {
         instance = this;
-        GenerateFakeData();
-    }
-
-    private void GenerateFakeData()
-    {
-        m_LocationData = new LocationData();
-        for (int i = 0; i < totalIslands; i++)
-        {
-            int range = Random.Range(0, 3);
-            var tokenData = new Dictionary<int, string>();
-            for (int j = 0; j <= range; j++)
-            {
-                tokenData.Add(j, Random.Range(-99999, 99999).ToString());
-            }
-            var mLData = new LocationIslandData();
-            mLData.tokenData = tokenData;
-            m_LocationData.islands.Add(i, mLData);
-        }
     }
 
     public void Initiate()
@@ -52,24 +43,63 @@ public class LocationIslandController : MonoBehaviour
         CreateIslands(m_LocationData);
     }
 
-    // IEnumerator StartTest()
-    // {
-    // }
+    private void BattleBeginPOP()
+    {
+        MoveTokenHandlerPOP.OnMarkerMovePOP += instance.locationUnitSpawner.MoveMarker;
+        AddSpiritHandlerPOP.OnSpiritAddPOP += instance.locationUnitSpawner.AddMarker;
+        instance.popCameraController.onUpdate += UpdateMarkers;
+        m_LocationData.isInBattle = true;
+        CreateIslands(instance.m_LocationData);
+    }
+
+    private void BattleStopPOP()
+    {
+        MoveTokenHandlerPOP.OnMarkerMovePOP -= instance.locationUnitSpawner.MoveMarker;
+        AddSpiritHandlerPOP.OnSpiritAddPOP -= instance.locationUnitSpawner.AddMarker;
+        popCameraController.onUpdate -= UpdateMarkers;
+        LocationBattleStart.OnLocationBattleStart -= BattleBeginPOP;
+        LocationBattleEnd.OnLocationBattleEnd -= BattleStopPOP;
+    }
+
+    private void WitchJoined(WitchToken token)
+    {
+
+    }
+
+
+    public static void EnterPOP(string id, System.Action<LocationData> OnComplete)
+    {
+        APIManager.Instance.Put($"place-of-power/enter/{id}", "{}", (response, result) =>
+          {
+              if (result == 200)
+              {
+
+                  instance.m_LocationData = LocationSlotParser.HandleResponse(response);
+                  OnComplete(locationData);
+                  LocationBattleStart.OnLocationBattleStart += instance.BattleBeginPOP;
+                  LocationBattleEnd.OnLocationBattleEnd += instance.BattleStopPOP;
+              }
+              else
+              {
+                  OnComplete(null);
+              }
+          });
+    }
 
     private void CreateIslands(LocationData locationData)
     {
         CreateGuardianSpirit();
 
-        float angleStep = 360 / locationData.islands.Count;
+        float angleStep = 360 / locationData.islands;
         float previousAngle = 0;
         unitPositions = new List<Transform>();
-        foreach (var item in locationData.islands)
+        for (int i = 0; i < locationData.islands; i++)
         {
             LocationIsland island = SpawnIsland(previousAngle);
             unitPositions.AddRange(island.Setup(distance));
             previousAngle += angleStep;
         }
-        m_LinePrefab.positionCount = locationData.islands.Count;
+        m_LinePrefab.positionCount = locationData.islands;
         LeanTween.value(0, 1, 1).setOnUpdate((float value) =>
         {
             transform.localEulerAngles = new Vector3(0, Mathf.Lerp(0, 30, value));
@@ -98,17 +128,6 @@ public class LocationIslandController : MonoBehaviour
         return island;
     }
 
-    public static void EnterPOP()
-    {
-
-        MoveTokenHandlerPOP.OnMarkerMovePOP += instance.locationUnitSpawner.MoveMarker;
-        MoveTokenHandlerPOP.OnMarkerMovePOP += instance.locationUnitSpawner.MoveMarker;
-        AddWitchHandlerPOP.OnWitchAddPOP += instance.locationUnitSpawner.AddMarker;
-        AddSpiritHandlerPOP.OnSpiritAddPOP += instance.locationUnitSpawner.AddMarker;
-        instance.popCameraController.onUpdate += UpdateMarkers;
-        instance.CreateIslands(instance.m_LocationData);
-    }
-
     private static void UpdateMarkers(bool arg1, bool arg2, bool arg3)
     {
         if (arg3)
@@ -117,27 +136,46 @@ public class LocationIslandController : MonoBehaviour
             {
                 item.Value.AvatarTransform.rotation = instance.popCameraController.camera.transform.rotation;
             }
-
         }
     }
 
-    public static void ExitPOP()
-    {
-        MoveTokenHandlerPOP.OnMarkerMovePOP -= instance.locationUnitSpawner.MoveMarker;
-        MoveTokenHandlerPOP.OnMarkerMovePOP -= instance.locationUnitSpawner.MoveMarker;
-        AddWitchHandlerPOP.OnWitchAddPOP -= instance.locationUnitSpawner.AddMarker;
-        AddSpiritHandlerPOP.OnSpiritAddPOP -= instance.locationUnitSpawner.AddMarker;
-        instance.popCameraController.onUpdate -= UpdateMarkers;
-    }
 }
 
 public class LocationData
 {
-    public Dictionary<int, LocationIslandData> islands = new Dictionary<int, LocationIslandData>();
+    public string _id { get; set; }
+    public int maxSlots { get; set; }
+    public int currentOccupants { get; set; }
+    public bool isInBattle { get; set; }
+    public int islands
+    {
+        get
+        {
+            return maxSlots / 3;
+        }
+    }
+    public MultiKeyDictionary<int, string, object> tokens = new MultiKeyDictionary<int, string, object>();
 }
 
-public class LocationIslandData
+
+
+public class LocationViewData
 {
-    public Dictionary<int, string> tokenData = new Dictionary<int, string>();
+    public string _id { get; set; }
+    public string name { get; set; }
+    public double battleFinishedOn
+    {
+        get
+        {
+            return battleFinishedOn + (coolDownWindow * 1000);
+        }
+        set { }
+    } // if pop is under cooldown
+    public double battleBeginsOn { get; set; } // when did/will the battle begin
+    public bool isActive { get; set; }     // on going battle {cooldownEnd:0} {battleBegin:934099}
+    public bool isOpen { get; set; }     // accepting players
+    public int tier { get; set; }
+    public int openTimeWindow { get; set; }
+    public int coolDownWindow { get; set; }
 }
 

@@ -167,7 +167,7 @@ public class UISpellcasting : UIInfoPanel
         base.Close();
 
         if (UIInventory.isOpen)
-            UIInventory.Instance.Close(true);
+            UIInventory.Instance.Close();
         o_InventoryButtonTop.SetActive(false);
         m_SelectedHerb = m_SelectedTool = m_SelectedGem = null;
         m_SelectedHerbAmount = m_SelectedToolAmount = m_SelectedGemAmount = 0;
@@ -465,7 +465,7 @@ public class UISpellcasting : UIInfoPanel
 
         if (UIInventory.isOpen)
         {
-            UIInventory.Instance.Close(true);
+            UIInventory.Instance.Close();
             m_CloseButton.gameObject.SetActive(true);
         }
 
@@ -560,7 +560,7 @@ public class UISpellcasting : UIInfoPanel
         }
         else
         {
-            UIInventory.Instance.Show(OnSelectInventoryItem, null, false, false, false);
+            UIInventory.Instance.Show(OnSelectInventoryItem, null, false, false);
             UIInventory.Instance.LockIngredients(m_SelectedSpell.ingredients, 0f);
             m_CloseButton.gameObject.SetActive(false);
             o_InventoryButtonImage.GetComponent<Image>().color = Color.grey;

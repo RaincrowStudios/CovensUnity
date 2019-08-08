@@ -76,8 +76,8 @@ public class UIInventoryWheelItem : MonoBehaviour
     {
         m_Wheel.SetPicker(this, amount);
 
-        if (inventoryItemId != null)
-            SetAmount(PlayerDataManager.playerData.GetIngredient(inventoryItemId) - amount);
+        //if (inventoryItemId != null)
+        //    SetAmount(PlayerDataManager.playerData.GetIngredient(inventoryItemId) - amount);
     }
 
     public void ResetAmount()
