@@ -359,6 +359,10 @@ public class CovensMuskMap : MonoBehaviour
 
     private void OnMapLoadError(MapLoadErrorArgs args)
     {
+#if UNITY_EDITOR && LOCAL_API
+        if (Application.internetReachability == NetworkReachability.NotReachable)
+            return;
+#endif
         Debug.LogError("load map error [" + args.DetailedErrorCode + "] " + args.Message);
     }
 

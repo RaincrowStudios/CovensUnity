@@ -359,26 +359,30 @@ public enum CurrentView
 
 public class SpiritInstance
 {
-    public string id { get; set; }
-    public string instance { get; set; }
-    public double summonOn { get; set; }
-    public double createdOn { get; set; }
-    public double banishedOn { get; set; }
-    public double expiresOn { get; set; }
-    public double lat { get; set; }
-    public double lng { get; set; }
-    public string location { get; set; }
-    public string state { get; set; }
-    public LastAttackedBy lastAttackedBy { get; set; }
-    public string spirit { get; set; }
-    public int xpGained { get; set; }
-    public int degree { get; set; }
-    public int energy { get; set; }
-    public int attacked { get; set; }
-    public int zone { get; set; }
-    public int gathered { get; set; }
-    public List<Gathered> ingredients { get; set; }
-    public SpiritDeckUIManager.type deckCardType { get; set; }
+    public string id;                       //spirit_barghest
+    public string instance;                 //database id
+    public double summonOn;                 //summon timestamp
+    public double banishedOn;               //discovered timestamp
+    public double expiresOn;                //expire timestamp
+    public double lat;                      //latitude
+    public double lng;                      //longitude
+    public string location;                 //discovered dominion
+    public int xpGained;
+    public int degree;
+    public int energy;
+    public int attacked;                    //number of witches the spirit attacked
+    public int zone;                        // ?
+    public int gathered;                    //number of collectables the spirit picked up
+
+    //public double createdOn { get; set; }
+    //public string state { get; set; }
+    //public LastAttackedBy lastAttackedBy { get; set; }
+    //public List<Gathered> ingredients { get; set; }
+
+    [JsonIgnore]
+    public string spirit => id;
+    [JsonIgnore]
+    public SpiritDeckUIManager.type deckCardType;
 }
 
 public class LastAttackedBy

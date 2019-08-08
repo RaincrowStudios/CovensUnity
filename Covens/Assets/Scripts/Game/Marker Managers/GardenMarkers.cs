@@ -100,6 +100,7 @@ public class GardenMarkers : MonoBehaviour
             greyHandOfficesTrans[i] = greyHand.transform;
         }
 
+        Debug.Log("setup explore quests");
         QuestsController.GetQuests(error =>
         {
             if (string.IsNullOrEmpty(error))

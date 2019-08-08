@@ -51,37 +51,63 @@ public class BOSSpells : BOSBase
         swipeDetector.detectSwipeOnlyAfterRelease = true;
 
         LeanTween.alphaCanvas(navCG, 1, .7f);
-        CreateSpellNavigation();
+        StartCoroutine(CreateSpellNavigation());
     }
 
-    private void ClearNavigation()
+    //private void ClearNavigation()
+    //{
+    //    spellList.Clear();
+    //    // signatureList.Clear();
+    //    navButtons.Clear();
+    //    foreach (Transform item in navTransform)
+    //    {
+    //        Destroy(item.gameObject);
+    //    }
+    //    currentSpell = "";
+    //}
+
+    private System.Collections.IEnumerator CreateSpellNavigation()
     {
-        spellList.Clear();
-        // signatureList.Clear();
-        navButtons.Clear();
-        foreach (Transform item in navTransform)
-        {
-            Destroy(item.gameObject);
-        }
-        currentSpell = "";
-    }
+        //ClearNavigation();
+        //spellList = PlayerDataManager.playerData.Spells;
+        //foreach (var item in spellList)
+        //{
+        //    var navButton = Utilities.InstantiateObject(circleNavPrefab, navTransform, 0);
+        //    navButton.GetComponentInChildren<Button>().onClick.AddListener(() => { ShowSpell(item.id); });
+        //    DownloadedAssets.GetSprite(item.id, navButton.transform.GetChild(1).GetComponent<Image>());
+        //    navButtons[item.id] = navButton.transform;
+        //    LeanTween.scale(navButton, Vector3.one, .8f).setEase(LeanTweenType.easeInOutSine);
+        //}
+        //ShowSpell(spellList[0].id);
 
-    private void CreateSpellNavigation()
-    {
-
-
-        ClearNavigation();
         spellList = PlayerDataManager.playerData.Spells;
+        List<Transform> aux = new List<Transform>();
+
+        //spell all the icons
         foreach (var item in spellList)
         {
             var navButton = Utilities.InstantiateObject(circleNavPrefab, navTransform, 0);
             navButton.GetComponentInChildren<Button>().onClick.AddListener(() => { ShowSpell(item.id); });
-            DownloadedAssets.GetSprite(item.id, navButton.transform.GetChild(1).GetComponent<Image>());
             navButtons[item.id] = navButton.transform;
-            LeanTween.scale(navButton, Vector3.one, .8f).setEase(LeanTweenType.easeInOutSine);
+            aux.Add(navButton.transform);
         }
+
+        yield return 0;
+
+        //prepar ethe selected spell
         ShowSpell(spellList[0].id);
 
+        //load the icons
+        yield return 0;
+        for (int i = 0; i < aux.Count; i++)
+        {
+            DownloadedAssets.GetSprite(spellList[i].id, spr =>
+            {
+                aux[i].GetChild(1).GetComponent<Image>().overrideSprite = spr;
+                LeanTween.scale(aux[i].gameObject, Vector3.one, .8f).setEase(LeanTweenType.easeInOutSine);
+            });
+            yield return 0;
+        }
     }
 
     private void ShowSpell(string id, bool isButton = true, int side = 0)
@@ -98,7 +124,6 @@ public class BOSSpells : BOSBase
                     index = i;
             }
         }
-
 
         if (currentSpell != "")
         {

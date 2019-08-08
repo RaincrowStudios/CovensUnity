@@ -158,6 +158,10 @@ namespace Raincrow.Chat
         //MAIN SOCKET EVENTS
         private static void OnError(ChatCategory category, Socket socket, Packet packet, object[] args)
         {
+#if UNITY_EDITOR && LOCAL_API
+            if (Application.internetReachability == NetworkReachability.NotReachable)
+                return;
+#endif
             string errorMessage = args[0].ToString();
             Debug.LogError("[" + category + "] Chat error: " + errorMessage);
             OnSocketError?.Invoke(errorMessage);

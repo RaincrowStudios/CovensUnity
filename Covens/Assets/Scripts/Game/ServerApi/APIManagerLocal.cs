@@ -95,7 +95,7 @@ public class APIManagerLocal
         string sFile = string.Format("LocalApi/websocket/{0}", sCommand);
 
         string sContent = LoadFile(sFile);
-        if (!string.IsNullOrWhiteSpace(sContent))
+        if (!string.IsNullOrEmpty(sContent))
         {
             CommandResponse commandReponse = new CommandResponse()
             {
