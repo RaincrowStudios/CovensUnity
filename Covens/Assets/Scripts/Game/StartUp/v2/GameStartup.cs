@@ -217,7 +217,7 @@ public class GameStartup : MonoBehaviour
         //try auto login
         LoginAPIManager.Login((loginResult, loginResponse) =>
         {
-            if (loginResult == 200)
+            if (loginResult == 200 && (loginResponse.hasCharacter.HasValue == false || loginResponse.hasCharacter.Value == true))
             {
                 //the player is logged in, get the character
                 LoginAPIManager.GetCharacter((charResult, charResponse) =>

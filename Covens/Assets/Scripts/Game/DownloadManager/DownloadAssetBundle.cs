@@ -56,6 +56,12 @@ public class GameDictionary
     public Dictionary<string, SpiritData> Spirits;
 }
 
+public struct PlaceOfPowerSettings
+{
+    public int[] openTimeWindow;
+    public int[] cooldownWindow;
+}
+
 public class GameSettingsData
 {
     public int[] summoningCosts;
@@ -66,6 +72,8 @@ public class GameSettingsData
     public long[] alignment;
     public ulong[] exp;
     public int[] baseEnergy;
+
+    public PlaceOfPowerSettings PlaceOfPower;
 
     public Dictionary<string, SpellData> Spells;
     public Dictionary<string, SpiritData> Spirits;

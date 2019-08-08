@@ -947,7 +947,7 @@ public class TeamManagerUI : MonoBehaviour
         if (m_CovenData == null) //show the player's received invitations
         {
             m_CreateCovenButton.gameObject.SetActive(true);
-            m_ViewRequestsButton.gameObject.SetActive(true);
+            //m_ViewRequestsButton.gameObject.SetActive(true);
             m_ViewInvitesButton.gameObject.SetActive(true);
             m_SendRequestButton.gameObject.SetActive(true);
 
