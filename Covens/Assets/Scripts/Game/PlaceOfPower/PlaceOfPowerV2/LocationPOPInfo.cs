@@ -21,7 +21,10 @@ public class LocationPOPInfo : UIInfoPanel
     [SerializeField] private CanvasGroup m_FadeOut;
     [SerializeField] private Button m_CloseBtn;
     [SerializeField] private GameObject m_EnterAnimation;
-
+    [SerializeField] private GameObject m_PlayerJoined;
+    [SerializeField] private TextMeshProUGUI m_PlayerJoinedTitle;
+    [SerializeField] private TextMeshProUGUI m_PlayerJoinedSubtitle;
+    [SerializeField] private Image m_PlayerJoinedColor;
     private Button m_EnterBtn;
     private LocationViewData m_LocationViewData;
     private static LocationPOPInfo m_Instance;
@@ -57,6 +60,9 @@ public class LocationPOPInfo : UIInfoPanel
 
     public void Show(LocationViewData data)
     {
+        base.Show();
+        m_Locked.SetActive(false);
+        LocationIslandController.OnWitchEnter += AddWitch;
         m_HasEnteredPOP = false;
         m_EnterAnimation.SetActive(false);
         m_LocationViewData = data;
@@ -66,13 +72,14 @@ public class LocationPOPInfo : UIInfoPanel
         {
             m_Content.text = "Place of power is open and accepting players, pay 1 gold drach to go in";
             m_Enter.gameObject.SetActive(true);
+
+            m_Enter.color = m_EnoughSilver;
+            m_EnterBtn.onClick.RemoveAllListeners();
+            InitiateTimeUI();
+            UpdateEnterTimer();
             if (PlayerDataManager.playerData.gold >= 1)
             {
-                m_Enter.color = m_EnoughSilver;
-                m_EnterBtn.onClick.RemoveAllListeners();
                 m_EnterBtn.onClick.AddListener(() => LocationIslandController.EnterPOP(data._id, OnEnterPOP));
-                InitiateTimeUI();
-                UpdateEnterTimer();
             }
             else
             {
@@ -147,7 +154,10 @@ public class LocationPOPInfo : UIInfoPanel
 
     private async void UpdateEnterTimer()
     {
+        Debug.Log("Update Timer");
         await Task.Delay(1000);
+        Debug.Log("Update Timer2");
+
         var tStamp = GetSeconds(m_LocationViewData.battleBeginsOn);
         if (tStamp < 1)
         {
@@ -157,7 +167,7 @@ public class LocationPOPInfo : UIInfoPanel
         m_TimeTitle.text = tStamp.ToString();
         if (!m_HasEnteredPOP)
             m_TimeSubtitle.text = "seconds";
-
+        Debug.Log("ticking");
         m_Progress.fillAmount = tStamp / m_LocationViewData.openTimeWindow;
         UpdateEnterTimer();
     }
@@ -167,7 +177,7 @@ public class LocationPOPInfo : UIInfoPanel
         //play SFX
         if (locationData != null)
         {
-            UpdateWitchCount(locationData.currentOccupants);
+            UpdateWitchCount();
             m_EnterAnimation.SetActive(true);
             LeanTween.value(0, 1, 2.2f).setOnComplete(() => m_EnterAnimation.SetActive(false));
             m_Enter.gameObject.SetActive(false);
@@ -175,13 +185,38 @@ public class LocationPOPInfo : UIInfoPanel
         }
     }
 
-    private void UpdateWitchCount(int witchCount)
+    private void UpdateWitchCount()
     {
-        m_TimeSubtitle.text = witchCount.ToString() + "Witches Joined";
+        m_TimeSubtitle.text = LocationIslandController.locationData.currentOccupants.ToString() + "Witches Joined";
+    }
+
+    private void AddWitch(WitchToken token)
+    {
+        this.CancelInvoke("DisablePlayerJoined");
+        if (m_PlayerJoined.activeInHierarchy)
+        {
+            DisablePlayerJoined();
+        }
+        m_PlayerJoined.SetActive(true);
+        m_PlayerJoinedTitle.text = $"<color=white>{token.displayName}</color> Joined";
+        m_PlayerJoinedSubtitle.text = $"Level: <color=white>{token.level}</color> | <color=white> {Utilities.GetDegree(token.degree)}";
+        if (token.degree > 0)
+            m_PlayerJoinedColor.color = Utilities.Orange;
+        else if (token.degree < 0)
+            m_PlayerJoinedColor.color = Utilities.Purple;
+        else
+            m_PlayerJoinedColor.color = Utilities.Blue;
+        Invoke("DisablePlayerJoined", 2.1f);
+    }
+
+    private void DisablePlayerJoined()
+    {
+        m_PlayerJoined.SetActive(false);
     }
 
     public override void Close()
     {
+        LocationIslandController.OnWitchEnter -= AddWitch;
         base.Close();
     }
 

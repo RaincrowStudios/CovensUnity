@@ -32,14 +32,14 @@ public class LocationUnitSpawner : MonoBehaviour
     {
         if (Markers.ContainsKey(token.instance))
         {
-            if (!isPositionOccupied(GetIndex(token)))
+            if (!isPositionOccupied(token.popIndex))
             {
                 Markers[token.instance].SetWorldPosition(GetWorldPosition(token));
                 return;
             }
             else
             {
-                string curInstance = GetTokenAtIndex(GetIndex(token)).instance;
+                string curInstance = GetTokenAtIndex(token.popIndex).instance;
                 if (token.instance == curInstance)
                 {
                     Debug.LogError("Marker already at position");
@@ -173,14 +173,9 @@ public class LocationUnitSpawner : MonoBehaviour
         return null;
     }
 
-    private int GetIndex(Token token)
-    {
-        return token.island * 3 + token.position - 1;
-    }
-
     private Vector3 GetWorldPosition(Token token)
     {
-        return LocationIslandController.unitPositions[GetIndex(token)].position;
+        return LocationIslandController.unitPositions[token.popIndex].position;
     }
 
     private bool isPositionOccupied(int index)

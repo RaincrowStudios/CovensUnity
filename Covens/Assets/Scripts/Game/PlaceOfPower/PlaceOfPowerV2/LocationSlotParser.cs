@@ -36,7 +36,7 @@ public static class LocationSlotParser
                         WitchToken witchToken = result as WitchToken;
                         witchToken.position = pos;
                         witchToken.island = island;
-                        tokens.Add(island * 3 + (pos - 1), witchToken.instance, result);
+                        tokens.Add(witchToken.popIndex, witchToken.instance, result);
                     }
                     else if (token.TryParseJson<SpiritToken>(out result))
                     {
@@ -44,7 +44,7 @@ public static class LocationSlotParser
                         spiritToken.position = pos;
                         spiritToken.island = island;
                         AddSpiritHandlerPOP.RaiseEvent(spiritToken);
-                        tokens.Add(island * 3 + (pos - 1), spiritToken.instance, result);
+                        tokens.Add(spiritToken.popIndex, spiritToken.instance, result);
                     }
                     //tokenList.Add(result);
                 }

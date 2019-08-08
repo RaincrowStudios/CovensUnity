@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using Raincrow.DynamicPlacesOfPower;
@@ -10,7 +11,7 @@ public class LocationIslandController : MonoBehaviour
     public static LocationIslandController instance { get; private set; }
     public static bool inLocation { get; private set; }
     public static List<Transform> unitPositions { get; private set; }
-
+    public static event System.Action<WitchToken> OnWitchEnter;
     public static bool isInBattle
     {
         get
@@ -63,9 +64,13 @@ public class LocationIslandController : MonoBehaviour
 
     private void WitchJoined(WitchToken token)
     {
-
+        if (!m_LocationData.tokens.ContainsKey1(token.popIndex) && !m_LocationData.tokens.ContainsKey2(token.instance))
+        {
+            locationData.tokens.Add(token.popIndex, token.instance, token);
+            m_LocationData.currentOccupants = locationData.tokens.Count;
+            OnWitchEnter?.Invoke(token);
+        }
     }
-
 
     public static void EnterPOP(string id, System.Action<LocationData> OnComplete)
     {

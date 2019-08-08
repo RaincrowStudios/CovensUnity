@@ -1,5 +1,6 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
+using Newtonsoft.Json;
 using Raincrow;
 using Raincrow.Maps;
 using UnityEngine;
@@ -17,22 +18,31 @@ public class LoadPOPManager : MonoBehaviour
             {
                 map = MapsAPI.Instance;
             }
-            foreach (var item in MainUIDisable)
-            {
-                item.SetActive(false);
-            }
-            map.HideMap(true);
+            // foreach (var item in MainUIDisable)
+            // {
+            //     item.SetActive(false);
+            // }
+            // map.HideMap(true);
             // var k = new { id = "5d49893f1df43058b9f42a93" };
-            APIManager.Instance.Put("place-of-power/enter/5d49893f1df43058b9f42a93", "{}", (response, result) =>
+            APIManager.Instance.Get("place-of-power/view/5d4c830601f40c2379dfefd2", (response, result) =>
             {
                 Debug.Log(response);
-                Debug.Log(result);
+                if (result == 200)
+                {
+                    var popInfo = LocationPOPInfo.Instance;
+                    popInfo.Show(JsonConvert.DeserializeObject<LocationViewData>(response));
+                }
+                else
+                {
+                    Debug.Log(result);
+                }
+
             });
 
-            SceneManager.LoadSceneAsync(SceneManager.Scene.PLACE_OF_POWER, UnityEngine.SceneManagement.LoadSceneMode.Additive, null, () =>
-            {
-                LocationIslandController.instance.Initiate();
-            });
+            // SceneManager.LoadSceneAsync(SceneManager.Scene.PLACE_OF_POWER, UnityEngine.SceneManagement.LoadSceneMode.Additive, null, () =>
+            // {
+            //     LocationIslandController.instance.Initiate();
+            // });
         }
     }
 }

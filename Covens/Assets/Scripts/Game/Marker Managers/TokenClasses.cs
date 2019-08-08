@@ -44,35 +44,15 @@ public abstract class Token
     public MarkerSpawner.MarkerType Type { get { return (type == null ? MarkerSpawner.MarkerType.NONE : m_TypeMap[type]); } }
 
 
-    ////{ get; set; }
-    //// { get; set; }
-    //// { get; set; }
-    //// { get; set; }
-    ////{ get; set; }
-    ////{ get; set; }
-    //// { get; set; }
-    ////{ get; set; }
-    ////public string race { get; set; }
-    ////public bool male { get { return race != null && race.StartsWith("m_"); } }
-    ////public bool bot { get; set; }
-    ////public int degree { get; set; }
-    ////public float latitude { get; set; }
-    ////public float longitude { get; set; }
-    ////public bool physical { get; set; }
-    ////public int position { get; set; }
-    ////public HashSet<string> immunityList { get; set; }
-    ////public int tier { get; set; }
-    ////public int energy { get; set; }
-    ////public int baseEnergy { get; set; }
-    ////public int amount { get; set; }
-    ////public int level { get; set; }
+
 
     [JsonIgnore]
     public string Id => instance;
-    [JsonIgnore]
     public int position;
-    [JsonIgnore]
     public int island;
+    [JsonIgnore]
+    public int popIndex => island * 3 + (position - 1);
+
 }
 
 public class CollectableToken : Token
