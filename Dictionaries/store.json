@@ -1,0 +1,507 @@
+{
+  "Bundles": [
+    {
+      "id": "bundle_abondiasBest"
+    },
+    {
+      "id": "bundle_sapphosChoice"
+    },
+    {
+      "id": "bundle_hermeticCollection"
+    }
+  ],
+  "Consumables": [
+    {
+      "id": "consumable_alignmentBoosterSmaller"
+    },
+    {
+      "id": "consumable_alignmentBoosterMedium"
+    },
+    {
+      "id": "consumable_alignmentBoosterGreater"
+    },
+    {
+      "id": "consumable_xpBoosterSmaller"
+    },
+    {
+      "id": "consumable_xpBoosterMedium"
+    },
+    {
+      "id": "consumable_xpBoosterGreater"
+    },
+    {
+      "id": "consumable_invisible"
+    },
+    {
+      "id": "consumable_truesight"
+    }
+  ],
+  "Silver": [
+    {
+      "id": "silver1"
+    },
+    {
+      "id": "silver2"
+    },
+    {
+      "id": "silver3"
+    },
+    {
+      "id": "silver4"
+    },
+    {
+      "id": "silver5"
+    },
+    {
+      "id": "silver6"
+    }
+  ],
+  "Cosmetics": [
+    {
+      "id": "cosmetic_f_PF_WENDIGO",
+      "unlockOn": 1561680000000,
+      "tooltip": "shop_locked_wndg"
+    },
+    {
+      "id": "cosmetic_f_PF_BARGHEST",
+      "unlockOn": 1561680000000,
+      "tooltip": "shop_locked_barg"
+    },
+    {
+      "id": "cosmetic_f_PF_CATSIDHE",
+      "unlockOn": 1561680000000,
+      "tooltip": "shop_locked_sidh"
+    },
+    {
+      "id": "cosmetic_f_PF_GRINDYLOW",
+      "unlockOn": 1561680000000,
+      "tooltip": "shop_locked_grdlw"
+    },
+    {
+      "id": "cosmetic_f_PF_SENTINALOWL",
+      "unlockOn": 1561680000000,
+      "tooltip": "shop_locked_owl"
+    },
+    {
+      "id": "cosmetic_f_HE_DWO"
+    },
+    {
+      "id": "cosmetic_f_HE_HDWO"
+    },
+    {
+      "id": "cosmetic_f_HE_HBH"
+    },
+    {
+      "id": "cosmetic_f_HE_HBO"
+    },
+    {
+      "id": "cosmetic_f_HE_HHO"
+    },
+    {
+      "id": "cosmetic_f_HE_HNO"
+    },
+    {
+      "id": "cosmetic_f_HE_CEH"
+    },
+    {
+      "id": "cosmetic_f_HE_CES"
+    },
+    {
+      "id": "cosmetic_f_HE_FLOWER"
+    },
+    {
+      "id": "cosmetic_f_HE_BDH",
+      "tooltip": "shop_locked_rrc"
+    },
+    {
+      "id": "cosmetic_f_HA_DWO"
+    },
+    {
+      "id": "cosmetic_f_HA_FKFO"
+    },
+    {
+      "id": "cosmetic_f_HA_KSO"
+    },
+    {
+      "id": "cosmetic_f_HA_CGH"
+    },
+    {
+      "id": "cosmetic_f_HA_PNY"
+    },
+    {
+      "id": "cosmetic_f_HA_SNWDRP"
+    },
+    {
+      "id": "cosmetic_f_HA_BUN"
+    },
+    {
+      "id": "cosmetic_f_HA_BRD"
+    },
+    {
+      "id": "cosmetic_f_HA_SPK"
+    },
+    {
+      "id": "cosmetic_f_HA_BZZ"
+    },
+    {
+      "id": "cosmetic_f_HA_CURL"
+    },
+    {
+      "id": "cosmetic_f_HA_WAVE"
+    },
+    {
+      "id": "cosmetic_f_HA_BOB"
+    },
+    {
+      "id": "cosmetic_f_N_DWO"
+    },
+    {
+      "id": "cosmetic_f_N_KSO"
+    },
+    {
+      "id": "cosmetic_f_N_FANCYCHOKER"
+    },
+    {
+      "id": "cosmetic_f_N_MOONNECKLACE"
+    },
+    {
+      "id": "cosmetic_f_N_BOW"
+    },
+    {
+      "id": "cosmetic_f_C_DWO"
+    },
+    {
+      "id": "cosmetic_f_C_KFO"
+    },
+    {
+      "id": "cosmetic_f_C_KSO"
+    },
+    {
+      "id": "cosmetic_f_C_PPS"
+    },
+    {
+      "id": "cosmetic_f_C_SCT"
+    },
+    {
+      "id": "cosmetic_f_C_MESHDRESS"
+    },
+    {
+      "id": "cosmetic_f_C_TN"
+    },
+    {
+      "id": "cosmetic_f_C_MESHTOP"
+    },
+    {
+      "id": "cosmetic_f_C_WRAP"
+    },
+    {
+      "id": "cosmetic_f_C_ROMP"
+    },
+    {
+      "id": "cosmetic_f_C_BUTTON"
+    },
+    {
+      "id": "cosmetic_f_C_WBYE"
+    },
+    {
+      "id": "cosmetic_f_C_WITCHCO"
+    },
+    {
+      "id": "cosmetic_f_C_MAGICINK"
+    },
+    {
+      "id": "cosmetic_f_WL_DWO"
+    },
+    {
+      "id": "cosmetic_f_WL_KFO"
+    },
+    {
+      "id": "cosmetic_f_WR_DWO"
+    },
+    {
+      "id": "cosmetic_f_WR_KFO"
+    },
+    {
+      "id": "cosmetic_f_H_DWO"
+    },
+    {
+      "id": "cosmetic_f_H_BH"
+    },
+    {
+      "id": "cosmetic_f_FL_KSO"
+    },
+    {
+      "id": "cosmetic_f_FL_HFR"
+    },
+    {
+      "id": "cosmetic_f_FR_KSO"
+    },
+    {
+      "id": "cosmetic_f_L_DWO"
+    },
+    {
+      "id": "cosmetic_f_L_KFO"
+    },
+    {
+      "id": "cosmetic_f_L_KSO"
+    },
+    {
+      "id": "cosmetic_f_L_PPS"
+    },
+    {
+      "id": "cosmetic_f_L_LS"
+    },
+    {
+      "id": "cosmetic_f_L_SS"
+    },
+    {
+      "id": "cosmetic_f_L_TIGHT"
+    },
+    {
+      "id": "cosmetic_f_L_HEAVYSKIRT"
+    },
+    {
+      "id": "cosmetic_f_L_SHORTS"
+    },
+    {
+      "id": "cosmetic_f_L_ROMPER"
+    },
+    {
+      "id": "cosmetic_f_L_LACELEG"
+    },
+    {
+      "id": "cosmetic_f_F_BDWO"
+    },
+    {
+      "id": "cosmetic_f_F_SBDWO"
+    },
+    {
+      "id": "cosmetic_f_F_SDWO"
+    },
+    {
+      "id": "cosmetic_f_F_KFO"
+    },
+    {
+      "id": "cosmetic_f_F_KSO"
+    },
+    {
+      "id": "cosmetic_f_F_TIED"
+    },
+    {
+      "id": "cosmetic_f_F_BOW"
+    },
+    {
+      "id": "cosmetic_f_F_FUR"
+    },
+    {
+      "id": "cosmetic_f_CR_DWO",
+      "tooltip": "shop_locked_beta"
+    },
+    {
+      "id": "cosmetic_f_CR_DSO",
+      "tooltip": "shop_locked_beta"
+    },
+    {
+      "id": "cosmetic_f_CR_DTO",
+      "tooltip": "shop_locked_beta"
+    },
+    {
+      "id": "cosmetic_f_CR_PRIMAVERA"
+    },
+    {
+      "id": "cosmetic_f_CR_KIM",
+      "unlockOn": 1564617600000,
+      "tooltip": "shop_locked_top"
+    },
+    {
+      "id": "cosmetic_f_CR_SMMRSOL"
+    },
+    {
+      "id": "cosmetic_f_CR_SHADOW",
+      "tooltip": "shop_locked_shadow"
+    },
+    {
+      "id": "cosmetic_f_CR_GRAY",
+      "tooltip": "shop_locked_gray"
+    },
+    {
+      "id": "cosmetic_f_CR_WHITE",
+      "tooltip": "shop_locked_white"
+    },
+    {
+      "id": "cosmetic_f_SF_HSF"
+    },
+    {
+      "id": "cosmetic_f_SF_HSS"
+    },
+    {
+      "id": "cosmetic_f_SF_HST"
+    },
+    {
+      "id": "cosmetic_f_SF_GLSS"
+    },
+    {
+      "id": "cosmetic_f_SF_HOOPS"
+    },
+    {
+      "id": "cosmetic_f_SS_CROWSKULL"
+    },
+    {
+      "id": "cosmetic_f_SS_HAT"
+    },
+    {
+      "id": "cosmetic_f_SS_HBT"
+    },
+    {
+      "id": "cosmetic_f_SS_HFT"
+    },
+    {
+      "id": "cosmetic_f_SS_HMT"
+    },
+    {
+      "id": "cosmetic_f_SS_HST"
+    },
+    {
+      "id": "cosmetic_f_SS_JET"
+    },
+    {
+      "id": "cosmetic_f_SS_DWO"
+    },
+    {
+      "id": "cosmetic_f_SS_MOLOTOV"
+    },
+    {
+      "id": "cosmetic_f_SS_PYRAMIDS"
+    },
+    {
+      "id": "cosmetic_f_SS_UNICORN"
+    },
+    {
+      "id": "cosmetic_f_SC_COFFIN"
+    },
+    {
+      "id": "cosmetic_f_SC_CROWN"
+    },
+    {
+      "id": "cosmetic_f_SC_SPIDER"
+    },
+    {
+      "id": "cosmetic_f_SC_DWO"
+    },
+    {
+      "id": "cosmetic_f_SC_HRT"
+    },
+    {
+      "id": "cosmetic_f_SC_JBT"
+    },
+    {
+      "id": "cosmetic_f_SC_JSET"
+    },
+    {
+      "id": "cosmetic_f_SA_FLWR"
+    },
+    {
+      "id": "cosmetic_f_SA_HWT"
+    },
+    {
+      "id": "cosmetic_f_SA_JDT"
+    },
+    {
+      "id": "cosmetic_f_SA_JGT"
+    },
+    {
+      "id": "cosmetic_f_SA_JWT"
+    },
+    {
+      "id": "cosmetic_f_SA_TRIBE"
+    },
+    {
+      "id": "cosmetic_f_SA_LEOPARD"
+    },
+    {
+      "id": "cosmetic_f_SS_BALLET",
+      "unlockOn": 1566705600000,
+      "tooltip": "shop_locked_bm"
+    },
+    {
+      "id": "cosmetic_f_SS_BUTTERFLY",
+      "unlockOn": 1566705600000,
+      "tooltip": "shop_locked_bm"
+    },
+    {
+      "id": "cosmetic_f_SS_COUPLE",
+      "unlockOn": 1566705600000,
+      "tooltip": "shop_locked_bm"
+    },
+    {
+      "id": "cosmetic_f_SS_JOKER",
+      "unlockOn": 1566705600000,
+      "tooltip": "shop_locked_bm"
+    },
+    {
+      "id": "cosmetic_f_SS_PUPPET",
+      "unlockOn": 1566705600000,
+      "tooltip": "shop_locked_bm"
+    },
+    {
+      "id": "cosmetic_f_SC_ASTRONAUT",
+      "unlockOn": 1566705600000,
+      "tooltip": "shop_locked_bm"
+    },
+    {
+      "id": "cosmetic_f_SC_BIRDCAGE",
+      "unlockOn": 1566705600000,
+      "tooltip": "shop_locked_bm"
+    },
+    {
+      "id": "cosmetic_f_SC_ELEPHANT",
+      "unlockOn": 1566705600000,
+      "tooltip": "shop_locked_bm"
+    },
+    {
+      "id": "cosmetic_f_SC_SUN",
+      "unlockOn": 1566705600000,
+      "tooltip": "shop_locked_bm"
+    }
+  ],
+  "Styles": [
+    {
+      "id": "cosmetic_f_S_HHO"
+    },
+    {
+      "id": "cosmetic_f_S_HKO"
+    },
+    {
+      "id": "cosmetic_f_S_HLO"
+    },
+    {
+      "id": "cosmetic_f_S_SNOWQUEEN"
+    },
+    {
+      "id": "cosmetic_f_S_LILYOV"
+    },
+    {
+      "id": "cosmetic_f_S_MIDSUMMER"
+    },
+    {
+      "id": "cosmetic_f_S_THUNDERMOON",
+      "unlockOn": 1563249600000
+    },
+    {
+      "id": "cosmetic_f_S_ECLIPSE",
+      "unlockOn": 1562040000000
+    },
+    {
+      "id": "cosmetic_f_S_CORNMOON",
+      "unlockOn": 1565841600000
+    },
+    {
+      "id": "cosmetic_f_S_BRNNGWTCH",
+      "unlockOn": 1566705600000
+    },
+    {
+      "id": "cosmetic_f_S_CALYPSO",
+      "unlockOn": 1564977600000
+    }
+  ]
+}

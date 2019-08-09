@@ -3,53 +3,261 @@ using System.Collections.Generic;
 using UnityEngine;
 using System;
 using Newtonsoft.Json;
+using System.ComponentModel;
 
-public class StoreManagerAPI : MonoBehaviour
+namespace Raincrow.Store
 {
-
-    public static void GetShopItems(Action<string, int> data)
+    public struct IngredientBundleData
     {
-        APIManager.Instance.Get("shop/display", data);
+        public int silver;
+        public int gold;
+        public string[] collectables;
+        public int[] amount;
     }
 
-    //public static void PurchaseItem(string itemID, Action<string,int>data){
-    //	var js = new {purchase = itemID}; 
-    //	APIManager.Instance.PostData ("shop/purchase", JsonConvert.SerializeObject (js),data);
-    //}
+    public struct ConsumableData
+    {
+        public int silver;
+        public int gold;
+        public float duration;
+    }
+
+    public struct SilverBundleData
+    {
+        [DefaultValue("")]
+        public string product;
+        public float cost;
+        public int amount;
+        [DefaultValue("")]
+        public string extra;
+    }
+
+    public struct StoreItem
+    {
+        [DefaultValue("")]
+        public string id;
+        public double unlockOn;
+        [DefaultValue("")]
+        public string tooltip;
+    }
+
+    public struct StoreData
+    {
+        public StoreItem[] Bundles;
+        public StoreItem[] Consumables;
+        public StoreItem[] Silver;
+        public StoreItem[] Cosmetics;
+        public StoreItem[] Styles;
+    }
+
+
+    public class StoreItemContent
+    {
+        public string id { get; set; }
+        public int count { get; set; }
+    }
+
+    public class StoreApiObject
+    {
+        public List<StoreApiItem> bundles { get; set; }
+        public List<CosmeticData> cosmetics { get; set; }
+        public List<CosmeticData> styles { get; set; }
+        public List<StoreApiItem> consumables { get; set; }
+        public List<StoreApiItem> silver { get; set; }
+    }
+
+    public class StoreApiItem
+    {
+        public string id { get; set; }
+        public string productId { get; set; }
+        public string title { get; set; }
+        public string type { get; set; }
+        public int amount { get; set; }
+        public string bonus { get; set; }
+        public float cost { get; set; }
+        public int silver { get; set; }
+        public int gold { get; set; }
+        public List<StoreItemContent> contents { get; set; }
+
+        [JsonIgnore]
+        public bool owned => PlayerDataManager.playerData.inventory.cosmetics.Exists(item => item.id == id);
+
+        [JsonIgnore]
+        public Sprite pic;
+        [JsonIgnore]
+        public int count;
+    }
+       
+    public static class StoreManagerAPI
+    {
+        public static StoreApiObject OldStore { get; private set; }
+
+        public static Dictionary<string, IngredientBundleData> BundleDict { get; set; }
+        public static Dictionary<string, ConsumableData> ConsumableDict { get; set; }
+        public static Dictionary<string, SilverBundleData> SilverBundleDict { get; set; }
+
+        //public static void PurchaseItem(string itemID, Action<string,int>data){
+        //	var js = new {purchase = itemID}; 
+        //	APIManager.Instance.PostData ("shop/purchase", JsonConvert.SerializeObject (js),data);
+        //}
+
+        public static void Purchase(string id, string type, string currency, System.Action<string> callback)
+        {
+            Purchase(id, type, currency, null, callback);
+        }
+
+        public static void Purchase(string id, string type, string currency, string receipt, System.Action<string> callback)
+        {
+            Dictionary<string, string> data = new Dictionary<string, string>();
+            data.Add("itemId", id);
+            data.Add("itemType", type);
+            if (currency != null)
+                data.Add("currency", currency);
+            if (receipt != null)
+                data.Add("receipt", receipt);
+
+            Debug.Log("<color=magenta>" + id + "</color>");
+            APIManager.Instance.Post("shop/purchase", JsonConvert.SerializeObject(data), (response, result) =>
+            {
+                if (result == 200)
+                {
+                    callback(null);
+                }
+                else
+                {
+                    callback(response);
+                }
+            });
+        }
+
+        public static IngredientBundleData GetBundle(string id)
+        {
+            if (BundleDict.ContainsKey(id))
+            {
+                return BundleDict[id];
+            }
+            else
+            {
+                Debug.LogError($"ingredient bundle not found (\"{id}\")");
+                return new IngredientBundleData();
+            }
+        }
+
+        public static ConsumableData GetConsumable(string id)
+        {
+            if (ConsumableDict.ContainsKey(id))
+            {
+                return ConsumableDict[id];
+            }
+            else
+            {
+                Debug.LogError($"consumable not found (\"{id}\")");
+                return new ConsumableData();
+            }
+        }
+
+        public static SilverBundleData GetSilverBundle(string id)
+        {
+            if (SilverBundleDict.ContainsKey(id))
+            {
+                return SilverBundleDict[id];
+            }
+            else
+            {
+                Debug.LogError($"silver bundle not found (\"{id}\")");
+                return new SilverBundleData();
+            }
+        }
+
+        public static void SetupOldStore(StoreData data)
+        {
+            OldStore = new StoreApiObject();
+
+            //setup bundles
+            OldStore.bundles = new List<StoreApiItem>();
+            foreach (StoreItem item in data.Bundles)
+            {
+                IngredientBundleData bundle = GetBundle(item.id);
+
+                StoreApiItem aux = new StoreApiItem();
+                aux.id = item.id;
+                aux.type = "bundles";
+                aux.silver = bundle.silver;
+                aux.gold = bundle.gold;
+
+                if (bundle.collectables != null)
+                {
+                    aux.contents = new List<StoreItemContent>();
+                    for (int i = 0; i < bundle.collectables.Length; i++)
+                    {
+                        aux.contents.Add(new StoreItemContent()
+                        {
+                            id = bundle.collectables[i],
+                            count = bundle.amount[i]
+                        });
+                    }
+                }
+
+                OldStore.bundles.Add(aux);
+            }
+
+            //setup consumables
+            OldStore.consumables = new List<StoreApiItem>();
+            foreach (StoreItem item in data.Consumables)
+            {
+                ConsumableData consumable = GetConsumable(item.id);
+
+                StoreApiItem aux = new StoreApiItem();
+                aux.id = item.id;
+                aux.type = "consumables";
+                aux.silver = consumable.silver;
+                aux.gold = consumable.gold;
+
+                OldStore.consumables.Add(aux);
+            }
+
+            //setup silver
+            OldStore.silver = new List<StoreApiItem>();
+            foreach (StoreItem item in data.Silver)
+            {
+                SilverBundleData silver = GetSilverBundle(item.id);
+
+                StoreApiItem aux = new StoreApiItem();
+                aux.id = item.id;
+                aux.type = "silver";
+                aux.amount = silver.amount;
+                aux.bonus = silver.extra;
+                aux.cost = silver.cost;
+                aux.productId = silver.product;
+
+                OldStore.silver.Add(aux);
+            }
+
+            //setup cosmetics
+            OldStore.cosmetics = new List<CosmeticData>();
+            foreach(StoreItem item in data.Cosmetics)
+            {
+                CosmeticData aux = DownloadedAssets.GetCosmetic(item.id);
+                if (aux == null)
+                    continue;
+
+                aux.unlockOn = item.unlockOn;
+                aux.tooltip = item.tooltip;
+                OldStore.cosmetics.Add(aux);
+            }
+
+            //setup styles
+            OldStore.styles = new List<CosmeticData>();
+            foreach (StoreItem item in data.Styles)
+            {
+                CosmeticData aux = DownloadedAssets.GetCosmetic(item.id);
+                if (aux == null)
+                    continue;
+
+                aux.unlockOn = item.unlockOn;
+                aux.tooltip = item.tooltip;
+                OldStore.styles.Add(aux);
+            }
+        }
+    }
 }
-
-
-public class StoreItemContent
-{
-    public string id { get; set; }
-    public int count { get; set; }
-}
-
-public class StoreApiObject
-{
-    public List<StoreApiItem> bundles { get; set; }
-    public List<CosmeticData> cosmetics { get; set; }
-    public List<CosmeticData> styles { get; set; }
-    public List<StoreApiItem> consumables { get; set; }
-    public List<StoreApiItem> silver { get; set; }
-}
-
-public class StoreApiItem
-{
-    public string id { get; set; }
-    public string productId { get; set; }
-    public string title { get; set; }
-    public string type { get; set; }
-    public int amount { get; set; }
-    public string bonus { get; set; }
-    public float cost { get; set; }
-    public int silver { get; set; }
-    public int gold { get; set; }
-    public List<StoreItemContent> contents { get; set; }
-    public bool owned { get; set; }
-    [JsonIgnore]
-    public Sprite pic;
-    [JsonIgnore]
-    public int count;
-}
-

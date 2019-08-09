@@ -21,7 +21,7 @@ public class BOSSpirit : BOSBase
     [SerializeField] private TextMeshProUGUI spiritsButton;
 
 
-    public static List<SpiritInstance> activeSpiritsData = new List<SpiritInstance>();
+    //public static List<SpiritInstance> activeSpiritsData = new List<SpiritInstance>();
     public static List<SpiritInstance> activePortalsData = new List<SpiritInstance>();
     public static int currentZone;
     public static int undiscoveredSpirits;
@@ -49,10 +49,10 @@ public class BOSSpirit : BOSBase
 
     public void CheckDisableButton()
     {
-        if (activeSpiritsData.Count == 0)
-            spiritsButton.GetComponent<Button>().enabled = false;
-        else
-            spiritsButton.GetComponent<Button>().enabled = true;
+        //if (activeSpiritsData.Count == 0)
+        //    spiritsButton.GetComponent<Button>().enabled = false;
+        //else
+        //    spiritsButton.GetComponent<Button>().enabled = true;
 
         if (activePortalsData.Count == 0)
             portalsButton.GetComponent<Button>().enabled = false;

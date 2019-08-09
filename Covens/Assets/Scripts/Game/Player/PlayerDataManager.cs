@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using Raincrow.Store;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -28,7 +29,7 @@ public class PlayerDataManager : MonoBehaviour
     public static int zone = 0;
     
     private ConsumableItemModel[] m_ConsumableItemModel;
-    public static StoreApiObject StoreData;
+    public static StoreApiObject StoreData => StoreManagerAPI.OldStore;
     public static int soundTrack = 0;
 
     void Awake()

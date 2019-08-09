@@ -1,0 +1,7874 @@
+{
+  "summoningCosts": [
+    100,
+    200,
+    300,
+    400
+  ],
+  "idleTimeLimit": 60,
+  "witchVideos": [
+    "mainui",
+    "fly",
+    "summoning",
+    "spellcasting",
+    "path",
+    "energy",
+    "money",
+    "tribunal",
+    "store",
+    "wardrobe",
+    "inventory",
+    "moon",
+    "covens",
+    "bos",
+    "conditions",
+    "pop",
+    "deck",
+    "portals",
+    "dailies",
+    "savannahGrey",
+    ""
+  ],
+  "alignment": [
+    -60,
+    60,
+    200,
+    1700,
+    4500,
+    9000,
+    18000,
+    37000,
+    75000,
+    130000,
+    230000,
+    842000,
+    1501600,
+    2630000,
+    3752400
+  ],
+  "exp": [
+    0,
+    600,
+    8950,
+    60388,
+    260388,
+    560388,
+    1060388,
+    2060388,
+    5060388,
+    10060388,
+    20060388,
+    40060388,
+    90060388,
+    190060388,
+    490060388,
+    661131830,
+    843112533,
+    1218559466,
+    3351038531,
+    9215355960,
+    27031710816,
+    81095132448,
+    243285397344,
+    729856192032,
+    2189568576096,
+    6979249836306,
+    22682561967995,
+    73718326395984,
+    239584560786948,
+    778649822557582
+  ],
+  "baseEnergy": [
+    0,
+    10000,
+    11000,
+    12000,
+    13000,
+    14000,
+    15000,
+    16000,
+    17000,
+    18000,
+    19000,
+    20000,
+    21000,
+    22000,
+    23000,
+    24000,
+    25000,
+    26000,
+    27000,
+    28000,
+    29000,
+    30000,
+    31000,
+    32000,
+    33000,
+    34000,
+    35000,
+    36000,
+    37000,
+    38000,
+    39000,
+    40000
+  ],
+  "PlaceOfPower": {
+    "openTimeWindow": [
+      120,
+      120,
+      120,
+      120
+    ],
+    "cooldownWindow": [
+      2400,
+      2400,
+      2400,
+      2400
+    ]
+  },
+  "Spells": {
+    "spell_hex": {
+      "id": "spell_hex",
+      "glyph": 9,
+      "school": -1,
+      "states": [
+        "",
+        "vulnerable"
+      ],
+      "target": 1,
+      "xp": 2,
+      "cooldown": 5
+    },
+    "spell_sunEater": {
+      "id": "spell_sunEater",
+      "glyph": 15,
+      "school": -1,
+      "cost": 2,
+      "states": [
+        "",
+        "vulnerable"
+      ],
+      "target": 1,
+      "align": 2,
+      "xp": 2,
+      "cooldown": 5
+    },
+    "spell_bind": {
+      "id": "spell_bind",
+      "glyph": 2,
+      "school": -1,
+      "states": [
+        "",
+        "vulnerable"
+      ],
+      "target": 1,
+      "align": 1,
+      "xp": 15,
+      "cooldown": 30
+    },
+    "spell_resurrection": {
+      "id": "spell_resurrection",
+      "glyph": 12,
+      "school": -1,
+      "states": [
+        "dead"
+      ],
+      "target": 1,
+      "align": 1,
+      "xp": 15,
+      "cooldown": 120
+    },
+    "spell_bless": {
+      "id": "spell_bless",
+      "glyph": 3,
+      "school": 1,
+      "states": [
+        "",
+        "vulnerable"
+      ],
+      "target": 1,
+      "xp": 2,
+      "cooldown": 5
+    },
+    "spell_silence": {
+      "id": "spell_silence",
+      "glyph": 14,
+      "school": 1,
+      "states": [
+        "vulnerable"
+      ],
+      "target": 1,
+      "align": 1,
+      "xp": 15,
+      "cooldown": 120
+    },
+    "spell_whiteFlame": {
+      "id": "spell_whiteFlame",
+      "glyph": 6,
+      "school": 1,
+      "cost": 2,
+      "states": [
+        "",
+        "vulnerable"
+      ],
+      "target": 1,
+      "align": 2,
+      "xp": 2,
+      "cooldown": 5
+    },
+    "spell_grace": {
+      "id": "spell_grace",
+      "glyph": 7,
+      "school": 1,
+      "states": [
+        "dead"
+      ],
+      "target": 1,
+      "align": 1,
+      "xp": 15,
+      "cooldown": 120
+    },
+    "spell_seal": {
+      "id": "spell_seal",
+      "glyph": 13,
+      "cost": 10,
+      "states": [
+        "",
+        "vulnerable"
+      ],
+      "target": 1,
+      "align": 3,
+      "xp": 2,
+      "cooldown": 20
+    },
+    "spell_invisibility": {
+      "id": "spell_invisibility",
+      "glyph": 10,
+      "states": [
+        "",
+        "vulnerable"
+      ],
+      "target": 1,
+      "xp": 15,
+      "cooldown": 120
+    },
+    "spell_dispel": {
+      "id": "spell_dispel",
+      "glyph": 5,
+      "states": [
+        "",
+        "vulnerable"
+      ],
+      "target": 1,
+      "align": 1,
+      "xp": 5,
+      "cooldown": 15
+    },
+    "spell_clarity": {
+      "id": "spell_clarity",
+      "glyph": 25,
+      "states": [
+        "",
+        "vulnerable"
+      ],
+      "target": 1,
+      "align": 1,
+      "xp": 15,
+      "cooldown": 15
+    },
+    "spell_sealBalance": {
+      "id": "spell_sealBalance",
+      "glyph": 17,
+      "baseSpell": "spell_seal",
+      "cost": 30,
+      "ingredients": [
+        "coll_malachite",
+        "coll_frankincense",
+        "coll_rocksGlass"
+      ],
+      "states": [
+        "",
+        "vulnerable"
+      ],
+      "target": 1,
+      "align": 5,
+      "xp": 50,
+      "cooldown": 30
+    },
+    "spell_sealLight": {
+      "id": "spell_sealLight",
+      "glyph": 18,
+      "school": 1,
+      "baseSpell": "spell_seal",
+      "cost": 30,
+      "ingredients": [
+        "coll_motherTear",
+        "coll_nettle",
+        "coll_fireIron"
+      ],
+      "states": [
+        "",
+        "vulnerable"
+      ],
+      "target": 1,
+      "align": 5,
+      "xp": 50,
+      "cooldown": 30
+    },
+    "spell_sealShadow": {
+      "id": "spell_sealShadow",
+      "glyph": 19,
+      "school": -1,
+      "baseSpell": "spell_seal",
+      "cost": 30,
+      "ingredients": [
+        "coll_bloodAgate",
+        "coll_anise",
+        "coll_petrifiedWood"
+      ],
+      "states": [
+        "",
+        "vulnerable"
+      ],
+      "target": 1,
+      "align": 5,
+      "xp": 50,
+      "cooldown": 30
+    },
+    "spell_reflectiveWard": {
+      "id": "spell_reflectiveWard",
+      "glyph": 20,
+      "school": 1,
+      "baseSpell": "spell_ward",
+      "cost": 30,
+      "ingredients": [
+        "coll_motherTear",
+        "coll_orrisRoot",
+        "coll_whiteFur"
+      ],
+      "states": [
+        "",
+        "vulnerable"
+      ],
+      "target": 1,
+      "align": 5,
+      "xp": 15,
+      "cooldown": 600
+    },
+    "spell_rageWard": {
+      "id": "spell_rageWard",
+      "glyph": 21,
+      "school": -1,
+      "baseSpell": "spell_ward",
+      "cost": 30,
+      "ingredients": [
+        "coll_bloodAgate",
+        "coll_newtEye",
+        "coll_mayanInk"
+      ],
+      "states": [
+        "",
+        "vulnerable"
+      ],
+      "target": 1,
+      "align": 5,
+      "xp": 25,
+      "cooldown": 600
+    },
+    "spell_greaterSeal": {
+      "id": "spell_greaterSeal",
+      "glyph": 13,
+      "school": 0,
+      "baseSpell": "spell_seal",
+      "cost": 30,
+      "ingredients": [
+        "coll_malachite",
+        "coll_fennel",
+        "coll_onyxAmulet"
+      ],
+      "states": [
+        "",
+        "vulnerable"
+      ],
+      "target": 1,
+      "align": 5,
+      "xp": 30,
+      "cooldown": 60
+    },
+    "spell_greaterBless": {
+      "id": "spell_greaterBless",
+      "glyph": 3,
+      "school": 1,
+      "baseSpell": "spell_bless",
+      "cost": 30,
+      "ingredients": [
+        "coll_motherTear",
+        "coll_betony",
+        "coll_onyxCirclet"
+      ],
+      "states": [
+        "",
+        "vulnerable"
+      ],
+      "target": 1,
+      "align": 5,
+      "xp": 30,
+      "cooldown": 60
+    },
+    "spell_greaterHex": {
+      "id": "spell_greaterHex",
+      "glyph": 9,
+      "school": -1,
+      "baseSpell": "spell_hex",
+      "cost": 30,
+      "ingredients": [
+        "coll_bloodAgate",
+        "coll_borage",
+        "coll_onyxRing"
+      ],
+      "states": [
+        "",
+        "vulnerable"
+      ],
+      "target": 1,
+      "align": 5,
+      "xp": 30,
+      "cooldown": 60
+    },
+    "spell_greaterDispel": {
+      "id": "spell_greaterDispel",
+      "glyph": 5,
+      "baseSpell": "spell_dispel",
+      "cost": 30,
+      "ingredients": [
+        "coll_malachite",
+        "coll_birch",
+        "coll_whiteFur"
+      ],
+      "states": [
+        "",
+        "vulnerable"
+      ],
+      "target": 1,
+      "align": 5,
+      "xp": 30,
+      "cooldown": 60
+    },
+    "spell_banish": {
+      "id": "spell_banish",
+      "glyph": 4,
+      "school": 1,
+      "cost": 30,
+      "ingredients": [
+        "coll_motherTear",
+        "coll_angelica",
+        "coll_whiteCrystal"
+      ],
+      "states": [
+        "",
+        "vulnerable"
+      ],
+      "target": 1,
+      "align": 5,
+      "xp": 2,
+      "cooldown": 120
+    },
+    "spell_wither": {
+      "id": "spell_wither",
+      "glyph": 22,
+      "school": -1,
+      "baseSpell": "spell_bind",
+      "cost": 30,
+      "ingredients": [
+        "coll_bloodAgate",
+        "coll_barberry",
+        "coll_cingulum"
+      ],
+      "states": [
+        "vulnerable"
+      ],
+      "target": 1,
+      "align": 5,
+      "xp": 15,
+      "cooldown": 120
+    },
+    "spell_foolBargain": {
+      "id": "spell_foolBargain",
+      "glyph": 16,
+      "baseSpell": "spell_bargain",
+      "cost": 30,
+      "states": [
+        "",
+        "vulnerable"
+      ],
+      "target": 1,
+      "align": 5,
+      "xp": 15,
+      "cooldown": 140
+    },
+    "spell_leech": {
+      "id": "spell_leech",
+      "glyph": 26,
+      "school": -1,
+      "baseSpell": "spell_sunEater",
+      "cost": 30,
+      "ingredients": [
+        "coll_bloodAgate",
+        "coll_lemongrass",
+        "coll_kaskaraBlade"
+      ],
+      "states": [
+        "",
+        "vulnerable"
+      ],
+      "target": 1,
+      "align": 5,
+      "xp": 25,
+      "cooldown": 1200
+    },
+    "spell_confusion": {
+      "id": "spell_confusion",
+      "glyph": 1,
+      "baseSpell": "spell_dispel",
+      "target": 1,
+      "xp": 30
+    },
+    "spell_burst": {
+      "id": "spell_burst",
+      "glyph": 27,
+      "school": 1,
+      "baseSpell": "spell_whiteFlame",
+      "cost": 80,
+      "ingredients": [
+        "coll_motherTear",
+        "coll_hyssop",
+        "coll_hourglass"
+      ],
+      "states": [
+        "",
+        "vulnerable"
+      ],
+      "target": 1,
+      "align": 5,
+      "xp": 5,
+      "cooldown": 15
+    },
+    "spell_lazurus": {
+      "id": "spell_lazurus",
+      "glyph": 8,
+      "school": 1,
+      "baseSpell": "spell_grace",
+      "cost": 30,
+      "ingredients": [
+        "coll_motherTear",
+        "coll_mugwort",
+        "coll_oilyFeather"
+      ],
+      "states": [
+        "dead"
+      ],
+      "target": 1,
+      "align": 5,
+      "xp": 15,
+      "cooldown": 30
+    },
+    "spell_wail": {
+      "id": "spell_wail",
+      "glyph": 28,
+      "school": -1,
+      "baseSpell": "spell_sunEater",
+      "cost": 30,
+      "ingredients": [
+        "coll_bloodAgate",
+        "coll_batWool",
+        "coll_silverComb"
+      ],
+      "states": [
+        "",
+        "vulnerable"
+      ],
+      "target": 1,
+      "align": 5,
+      "xp": 2,
+      "cooldown": 120
+    },
+    "spell_trueSight": {
+      "id": "spell_trueSight",
+      "glyph": 11,
+      "states": [
+        "",
+        "vulnerable"
+      ],
+      "target": 1,
+      "align": 1,
+      "xp": 10,
+      "cooldown": 120
+    },
+    "spell_crowsEye": {
+      "id": "spell_crowsEye",
+      "glyph": 24,
+      "states": [
+        "",
+        "vulnerable"
+      ],
+      "target": 1,
+      "align": 1,
+      "xp": 20,
+      "cooldown": 120
+    },
+    "spell_twilightDusk": {
+      "id": "spell_twilightDusk",
+      "glyph": 30,
+      "school": -1,
+      "baseSpell": "spell_sunEater",
+      "cost": 30,
+      "ingredients": [
+        "coll_bloodAgate",
+        "coll_lobelia",
+        "coll_silverComb"
+      ],
+      "states": [
+        "",
+        "vulnerable"
+      ],
+      "target": 1,
+      "align": 5,
+      "xp": 5,
+      "cooldown": 30
+    },
+    "spell_shadowMark": {
+      "id": "spell_shadowMark",
+      "glyph": 23,
+      "school": -1,
+      "baseSpell": "spell_sunEater",
+      "states": [
+        "",
+        "vulnerable"
+      ],
+      "target": 1,
+      "xp": 15,
+      "cooldown": 300
+    },
+    "spell_twilightDawn": {
+      "id": "spell_twilightDawn",
+      "glyph": 31,
+      "school": 1,
+      "baseSpell": "spell_whiteFlame",
+      "cost": 30,
+      "ingredients": [
+        "coll_motherTear",
+        "coll_pennyRoyal",
+        "coll_friedTofu"
+      ],
+      "states": [
+        "",
+        "vulnerable"
+      ],
+      "target": 1,
+      "align": 5,
+      "xp": 5,
+      "cooldown": 30
+    },
+    "spell_channeling": {
+      "id": "spell_channeling",
+      "glyph": 10,
+      "common": true,
+      "cost": 1,
+      "states": [
+        "",
+        "vulnerable"
+      ],
+      "target": 0,
+      "cooldown": 60
+    },
+    "spell_tranquility": {
+      "id": "spell_tranquility",
+      "glyph": 10,
+      "cost": 10,
+      "states": [
+        "",
+        "vulnerable"
+      ],
+      "target": 2,
+      "cooldown": 60
+    },
+    "spell_addledMind": {
+      "id": "spell_addledMind",
+      "glyph": 10,
+      "cost": 10,
+      "states": [
+        "",
+        "vulnerable"
+      ],
+      "target": 1,
+      "xp": 15,
+      "cooldown": 20
+    },
+    "attack": {
+      "id": "attack",
+      "glyph": 9,
+      "school": -1,
+      "states": [
+        "",
+        "vulnerable"
+      ],
+      "target": 1,
+      "hidden": true
+    },
+    "elixir_degree": {
+      "id": "elixir_degree",
+      "glyph": 10,
+      "target": 1,
+      "hidden": true
+    },
+    "elixir_xp": {
+      "id": "elixir_xp",
+      "glyph": 10,
+      "target": 1,
+      "hidden": true
+    }
+  },
+  "Spirits": {
+    "spirit_aatxe": {
+      "id": "spirit_aatxe",
+      "type": "guardian",
+      "tier": 2,
+      "legend": "zone_4",
+      "zones": [
+        0,
+        4,
+        5
+      ],
+      "tool": "coll_oxHorn"
+    },
+    "spirit_abata": {
+      "id": "spirit_abata",
+      "type": "harvester",
+      "tier": 3,
+      "legend": "zone_1",
+      "zones": [
+        2,
+        1
+      ],
+      "tool": "coll_coal",
+      "herb": "coll_mangrove"
+    },
+    "spirit_abchanchu": {
+      "id": "spirit_abchanchu",
+      "type": "forbidden",
+      "tier": 4,
+      "legend": "zone_1",
+      "zones": [
+        1
+      ],
+      "tool": "coll_redDiamond",
+      "herb": "coll_nightShade",
+      "gem": "coll_demonEye"
+    },
+    "spirit_abeonaAdeona": {
+      "id": "spirit_abeonaAdeona",
+      "type": "resurrector",
+      "tier": 4,
+      "legend": "zone_4",
+      "zones": [
+        4
+      ],
+      "tool": "coll_janiceMirror",
+      "herb": "coll_mistleToe",
+      "gem": "coll_motherTear"
+    },
+    "spirit_abiku": {
+      "id": "spirit_abiku",
+      "type": "hunter",
+      "tier": 3,
+      "legend": "zone_1",
+      "zones": [
+        1,
+        2
+      ],
+      "tool": "coll_silverAmulet",
+      "herb": "coll_vervain"
+    },
+    "spirit_abkaHehe": {
+      "id": "spirit_abkaHehe",
+      "type": "assassin",
+      "tier": 3,
+      "legend": "zone_10",
+      "tool": "coll_boiledEdamame",
+      "herb": "coll_cinnamon"
+    },
+    "spirit_abnoba": {
+      "id": "spirit_abnoba",
+      "type": "assassin",
+      "tier": 3,
+      "legend": "zone_4",
+      "zones": [
+        5,
+        4
+      ],
+      "tool": "coll_benitier",
+      "herb": "coll_pine"
+    },
+    "spirit_acat": {
+      "id": "spirit_acat",
+      "type": "assassin",
+      "tier": 2,
+      "legend": "zone_1",
+      "zones": [
+        2
+      ],
+      "tool": "coll_mayanInk"
+    },
+    "spirit_accaLarentia": {
+      "id": "spirit_accaLarentia",
+      "type": "healer",
+      "tier": 3,
+      "legend": "zone_4",
+      "zones": [
+        4,
+        5
+      ],
+      "tool": "coll_terracotta",
+      "herb": "coll_anise"
+    },
+    "spirit_acheri": {
+      "id": "spirit_acheri",
+      "type": "forbidden",
+      "tier": 2,
+      "legend": "zone_9",
+      "zones": [
+        4,
+        6,
+        9
+      ],
+      "tool": "coll_bloodRibbon"
+    },
+    "spirit_aegir": {
+      "id": "spirit_aegir",
+      "type": "assassin",
+      "tier": 4,
+      "legend": "zone_5",
+      "zones": [
+        5
+      ],
+      "tool": "coll_fineSand",
+      "herb": "coll_vervain",
+      "gem": "coll_bloodAgate"
+    },
+    "spirit_aeronwen": {
+      "id": "spirit_aeronwen",
+      "type": "assassin",
+      "tier": 3,
+      "legend": "zone_5",
+      "tool": "coll_tankard",
+      "herb": "coll_heliotrope"
+    },
+    "spirit_aganyu": {
+      "id": "spirit_aganyu",
+      "type": "assassin",
+      "tier": 3,
+      "legend": "zone_7",
+      "zones": [
+        8,
+        7
+      ],
+      "tool": "coll_handkerchief",
+      "herb": "coll_pennyRoyal"
+    },
+    "spirit_agni": {
+      "id": "spirit_agni",
+      "type": "assassin",
+      "tier": "2",
+      "legend": "zone_9",
+      "zones": [
+        6
+      ],
+      "tool": "coll_fireWand"
+    },
+    "spirit_agogwe": {
+      "id": "spirit_agogwe",
+      "type": "assassin",
+      "tier": "2",
+      "legend": "zone_7",
+      "zones": [
+        4,
+        8,
+        7
+      ],
+      "tool": "coll_bambooSymbol"
+    },
+    "spirit_agwe": {
+      "id": "spirit_agwe",
+      "type": "guardian",
+      "tier": "3",
+      "legend": "zone_3",
+      "zones": [
+        2,
+        3
+      ],
+      "tool": "coll_navalRum",
+      "herb": "coll_anise"
+    },
+    "spirit_ahool": {
+      "id": "spirit_ahool",
+      "type": "forbidden",
+      "tier": 3,
+      "legend": "zone_6",
+      "zones": [
+        6
+      ],
+      "tool": "coll_fishOil",
+      "herb": "coll_dragonBlood"
+    },
+    "spirit_aife": {
+      "id": "spirit_aife",
+      "type": "assassin",
+      "tier": 2,
+      "legend": "zone_4",
+      "zones": [
+        0,
+        4,
+        5
+      ],
+      "tool": "coll_bridle"
+    },
+    "spirit_aine": {
+      "id": "spirit_aine",
+      "type": "guardian",
+      "tier": 3,
+      "legend": "zone_4",
+      "zones": [
+        5,
+        4
+      ],
+      "tool": "coll_cakeBatter",
+      "herb": "coll_orrisRoot"
+    },
+    "spirit_alakshmi": {
+      "id": "spirit_alakshmi",
+      "type": "assassin",
+      "tier": "2",
+      "legend": "zone_9",
+      "zones": [
+        6,
+        4
+      ],
+      "tool": "coll_brokenMirror"
+    },
+    "spirit_alcyone": {
+      "id": "spirit_alcyone",
+      "type": "healer",
+      "tier": 2,
+      "legend": "zone_4",
+      "zones": [
+        0,
+        5,
+        4
+      ],
+      "tool": "coll_earrings"
+    },
+    "spirit_altamaha": {
+      "id": "spirit_altamaha",
+      "type": "guardian",
+      "tier": "2",
+      "legend": "zone_0",
+      "zones": [
+        0
+      ],
+      "tool": "coll_remains"
+    },
+    "spirit_aluqa": {
+      "id": "spirit_aluqa",
+      "type": "forbidden",
+      "tier": 3,
+      "legend": "zone_8",
+      "zones": [
+        12,
+        4
+      ],
+      "tool": "coll_alderFlute",
+      "herb": "coll_ghostOrchid"
+    },
+    "spirit_amFear": {
+      "id": "spirit_amFear",
+      "type": "guardian",
+      "tier": 4,
+      "legend": "zone_4",
+      "tool": "coll_meteorite",
+      "herb": "coll_dogBane",
+      "gem": "coll_malachite"
+    },
+    "spirit_amberella": {
+      "id": "spirit_amberella",
+      "type": "healer",
+      "tier": 3,
+      "legend": "zone_12",
+      "zones": [
+        12,
+        4
+      ],
+      "tool": "coll_amberAmulet",
+      "herb": "coll_sandalWood"
+    },
+    "spirit_ammit": {
+      "id": "spirit_ammit",
+      "type": "hunter",
+      "tier": "3",
+      "legend": "zone_7",
+      "zones": [
+        8,
+        7
+      ],
+      "tool": "coll_hyenaFur",
+      "herb": "coll_hyssop"
+    },
+    "spirit_andraste": {
+      "id": "spirit_andraste",
+      "type": "assassin",
+      "tier": 2,
+      "legend": "zone_5",
+      "zones": [
+        0,
+        4,
+        5
+      ],
+      "tool": "coll_hareFur"
+    },
+    "spirit_angerboda": {
+      "id": "spirit_angerboda",
+      "type": "guardian",
+      "tier": 3,
+      "legend": "zone_5",
+      "zones": [
+        4,
+        5
+      ],
+      "tool": "coll_petrifiedWood",
+      "herb": "coll_garlic"
+    },
+    "spirit_angerona": {
+      "id": "spirit_angerona",
+      "type": "healer",
+      "tier": 3,
+      "legend": "zone_4",
+      "zones": [
+        5,
+        4
+      ],
+      "tool": "coll_wineSpirit",
+      "herb": "coll_motherwort"
+    },
+    "spirit_anhanga": {
+      "id": "spirit_anhanga",
+      "type": "healer",
+      "tier": 2,
+      "legend": "zone_1",
+      "zones": [
+        1,
+        0,
+        2
+      ],
+      "tool": "coll_whiteFur"
+    },
+    "spirit_aoandon": {
+      "id": "spirit_aoandon",
+      "type": "trickster",
+      "tier": 3,
+      "legend": "zone_10",
+      "zones": [
+        1,
+        10
+      ],
+      "tool": "coll_blueLantern",
+      "herb": "coll_lobelia"
+    },
+    "spirit_apep": {
+      "id": "spirit_apep",
+      "type": "guardian",
+      "tier": "2",
+      "legend": "zone_7",
+      "zones": [
+        4,
+        7,
+        8
+      ],
+      "tool": "coll_incense"
+    },
+    "spirit_apsara": {
+      "id": "spirit_apsara",
+      "type": "healer",
+      "tier": "3",
+      "legend": "zone_9",
+      "zones": [
+        6
+      ],
+      "tool": "coll_rainwater",
+      "herb": "coll_allspice"
+    },
+    "spirit_ascalaphus": {
+      "id": "spirit_ascalaphus",
+      "type": "familiar",
+      "tier": 1,
+      "zones": [
+        1,
+        0,
+        11,
+        12,
+        14,
+        3,
+        5,
+        4,
+        9,
+        7,
+        10,
+        13,
+        2,
+        6,
+        8
+      ],
+      "tool": "coll_serpentVenom"
+    },
+    "spirit_attercroppe": {
+      "id": "spirit_attercroppe",
+      "type": "assassin",
+      "tier": 3,
+      "legend": "zone_4",
+      "zones": [
+        4,
+        5
+      ],
+      "tool": "coll_frogLeg",
+      "herb": "coll_adderFork"
+    },
+    "spirit_aurora": {
+      "id": "spirit_aurora",
+      "type": "healer",
+      "tier": "1",
+      "legend": "zone_5",
+      "zones": [
+        5
+      ],
+      "tool": "coll_magnet"
+    },
+    "spirit_austeja": {
+      "id": "spirit_austeja",
+      "type": "hunter",
+      "tier": 2,
+      "legend": "zone_12",
+      "zones": [
+        12,
+        4,
+        0
+      ],
+      "tool": "coll_beeswax"
+    },
+    "spirit_axehandle": {
+      "id": "spirit_axehandle",
+      "type": "hunter",
+      "tier": "2",
+      "legend": "zone_0",
+      "zones": [
+        0
+      ],
+      "tool": "coll_axeHandle"
+    },
+    "spirit_ayida": {
+      "id": "spirit_ayida",
+      "type": "hunter",
+      "tier": "2",
+      "legend": "zone_3",
+      "zones": [
+        2,
+        3,
+        1
+      ],
+      "tool": "coll_whiteEgg"
+    },
+    "spirit_ayizan": {
+      "id": "spirit_ayizan",
+      "type": "healer",
+      "tier": "3",
+      "legend": "zone_3",
+      "zones": [
+        3,
+        2
+      ],
+      "tool": "coll_sugarCane",
+      "herb": "coll_clove"
+    },
+    "spirit_azaka": {
+      "id": "spirit_azaka",
+      "type": "healer",
+      "tier": "2",
+      "legend": "zone_3",
+      "zones": [
+        1,
+        2,
+        3
+      ],
+      "tool": "coll_coffeeBeans"
+    },
+    "spirit_babaYaga": {
+      "id": "spirit_babaYaga",
+      "type": "healer",
+      "tier": 1,
+      "legend": "zone_12"
+    },
+    "spirit_badbh": {
+      "id": "spirit_badbh",
+      "type": "assassin",
+      "tier": 2,
+      "legend": "zone_4",
+      "zones": [
+        0,
+        4,
+        5
+      ],
+      "tool": "coll_oilyFeather"
+    },
+    "spirit_bakeneko": {
+      "id": "spirit_bakeneko",
+      "type": "assassin",
+      "tier": 2,
+      "legend": "zone_10",
+      "zones": [
+        10,
+        1,
+        0
+      ],
+      "tool": "coll_lampOil"
+    },
+    "spirit_bakru": {
+      "id": "spirit_bakru",
+      "type": "forbidden",
+      "tier": 1,
+      "legend": "zone_1",
+      "zones": [
+        0,
+        1,
+        2,
+        3
+      ],
+      "tool": "coll_guilder"
+    },
+    "spirit_baku": {
+      "id": "spirit_baku",
+      "type": "forbidden",
+      "tier": 1,
+      "legend": "zone_10",
+      "zones": [
+        0,
+        6,
+        1,
+        10
+      ],
+      "tool": "coll_dreamcatcher"
+    },
+    "spirit_banamuHehe": {
+      "id": "spirit_banamuHehe",
+      "type": "assassin",
+      "tier": 3,
+      "legend": "zone_10",
+      "zones": [
+        1,
+        10
+      ],
+      "tool": "coll_boiledEdamame",
+      "herb": "coll_coriander"
+    },
+    "spirit_banaspati": {
+      "id": "spirit_banaspati",
+      "type": "forbidden",
+      "tier": 1,
+      "legend": "zone_6",
+      "zones": [
+        0,
+        10,
+        1,
+        6
+      ],
+      "tool": "coll_lavaLamp"
+    },
+    "spirit_banshee": {
+      "id": "spirit_banshee",
+      "type": "guardian",
+      "tier": 2,
+      "legend": "zone_4",
+      "zones": [
+        0,
+        4,
+        5
+      ],
+      "tool": "coll_silverComb"
+    },
+    "spirit_baobhanSith": {
+      "id": "spirit_baobhanSith",
+      "type": "forbidden",
+      "tier": 3,
+      "legend": "zone_4",
+      "zones": [
+        5
+      ],
+      "tool": "coll_bloodyCloth",
+      "herb": "coll_bitDevil"
+    },
+    "spirit_barghest": {
+      "id": "spirit_barghest",
+      "type": "familiar",
+      "tier": 1,
+      "zones": [
+        0,
+        1,
+        11,
+        10,
+        13,
+        4,
+        2,
+        5,
+        7,
+        6,
+        8,
+        12,
+        14,
+        3,
+        9
+      ],
+      "tool": "coll_ironCollar"
+    },
+    "spirit_befana": {
+      "id": "spirit_befana",
+      "type": "healer",
+      "tier": 2,
+      "legend": "zone_4",
+      "zones": [
+        4,
+        5,
+        0
+      ],
+      "tool": "coll_candleBlue"
+    },
+    "spirit_begtse": {
+      "id": "spirit_begtse",
+      "type": "assassin",
+      "tier": 3,
+      "legend": "zone_6",
+      "zones": [
+        10,
+        6
+      ],
+      "tool": "coll_barleyFlour",
+      "herb": "coll_camphor"
+    },
+    "spirit_belenus": {
+      "id": "spirit_belenus",
+      "type": "hunter",
+      "tier": 3,
+      "legend": "zone_4",
+      "zones": [
+        4,
+        5
+      ],
+      "tool": "coll_stoneCarving",
+      "herb": "coll_mandrake"
+    },
+    "spirit_belieBelcan": {
+      "id": "spirit_belieBelcan",
+      "type": "hunter",
+      "tier": 2,
+      "legend": "zone_3",
+      "zones": [
+        2
+      ],
+      "tool": "coll_rocksGlass"
+    },
+    "spirit_benten": {
+      "id": "spirit_benten",
+      "type": "healer",
+      "tier": 3,
+      "legend": "zone_10",
+      "tool": "coll_emaBoard",
+      "herb": "coll_clove"
+    },
+    "spirit_bigfoot": {
+      "id": "spirit_bigfoot",
+      "type": "hunter",
+      "tier": "4",
+      "legend": "zone_0",
+      "zones": [
+        0
+      ],
+      "tool": "coll_redApple",
+      "herb": "coll_licorice",
+      "gem": "coll_brimstone"
+    },
+    "spirit_boggart": {
+      "id": "spirit_boggart",
+      "type": "trickster",
+      "tier": 1,
+      "legend": "zone_4",
+      "zones": [
+        4,
+        5
+      ],
+      "tool": "coll_jokerCard"
+    },
+    "spirit_booHag": {
+      "id": "spirit_booHag",
+      "type": "assassin",
+      "tier": "2",
+      "legend": "zone_10",
+      "zones": [
+        0,
+        10
+      ],
+      "tool": "coll_strawStrand"
+    },
+    "spirit_boromu": {
+      "id": "spirit_boromu",
+      "type": "forbidden",
+      "tier": 2,
+      "legend": "zone_7",
+      "zones": [
+        4,
+        7,
+        8
+      ],
+      "tool": "coll_kaskaraBlade"
+    },
+    "spirit_brockenSpectre": {
+      "id": "spirit_brockenSpectre",
+      "type": "familiar",
+      "tier": 1,
+      "zones": [
+        6,
+        8,
+        5,
+        0,
+        9,
+        4,
+        7
+      ],
+      "tool": "coll_prism"
+    },
+    "spirit_bruxaEvora": {
+      "id": "spirit_bruxaEvora",
+      "type": "assassin",
+      "tier": 2,
+      "legend": "zone_1",
+      "zones": [
+        1,
+        0,
+        2
+      ],
+      "tool": "coll_candleRed"
+    },
+    "spirit_buda": {
+      "id": "spirit_buda",
+      "type": "forbidden",
+      "tier": "2",
+      "legend": "zone_7",
+      "zones": [
+        7,
+        8,
+        4
+      ],
+      "tool": "coll_brokenAmulet"
+    },
+    "spirit_bunyip": {
+      "id": "spirit_bunyip",
+      "type": "harvester",
+      "tier": 3,
+      "legend": "zone_11",
+      "zones": [
+        4,
+        11
+      ],
+      "tool": "coll_crocTooth",
+      "herb": "coll_sandalWood"
+    },
+    "spirit_caipora": {
+      "id": "spirit_caipora",
+      "type": "assassin",
+      "tier": 4,
+      "legend": "zone_1",
+      "zones": [
+        1
+      ],
+      "tool": "coll_tapirTrunk",
+      "herb": "coll_ayahusc",
+      "gem": "coll_bloodAgate"
+    },
+    "spirit_callisto": {
+      "id": "spirit_callisto",
+      "type": "guardian",
+      "tier": 3,
+      "legend": "zone_4",
+      "zones": [
+        5,
+        4
+      ],
+      "tool": "coll_honeyDipper",
+      "herb": "coll_lobelia"
+    },
+    "spirit_camazotz": {
+      "id": "spirit_camazotz",
+      "type": "forbidden",
+      "tier": 3,
+      "legend": "zone_2",
+      "zones": [
+        1,
+        2
+      ],
+      "tool": "coll_axeHead",
+      "herb": "coll_datura"
+    },
+    "spirit_catSidhe": {
+      "id": "spirit_catSidhe",
+      "type": "familiar",
+      "tier": 1,
+      "zones": [
+        0,
+        10,
+        13,
+        2,
+        12,
+        4,
+        14,
+        5,
+        3,
+        6,
+        7,
+        8,
+        1,
+        9,
+        11
+      ],
+      "tool": "coll_hourglass"
+    },
+    "spirit_chantico": {
+      "id": "spirit_chantico",
+      "type": "assassin",
+      "tier": 3,
+      "legend": "zone_1",
+      "zones": [
+        1,
+        2
+      ],
+      "tool": "coll_aztaxFeather",
+      "herb": "coll_capsicum"
+    },
+    "spirit_charities": {
+      "id": "spirit_charities",
+      "type": "healer",
+      "tier": 2,
+      "legend": "zone_4",
+      "zones": [
+        0,
+        5,
+        4
+      ],
+      "tool": "coll_floralWreath"
+    },
+    "spirit_chelone": {
+      "id": "spirit_chelone",
+      "type": "guardian",
+      "tier": 1,
+      "legend": "zone_4",
+      "zones": [
+        11,
+        4,
+        5
+      ],
+      "tool": "coll_toadHeart"
+    },
+    "spirit_choncon": {
+      "id": "spirit_choncon",
+      "type": "assassin",
+      "tier": 3,
+      "legend": "zone_1",
+      "tool": "coll_scentedCandle",
+      "herb": "coll_patchouli"
+    },
+    "spirit_chthonian": {
+      "id": "spirit_chthonian",
+      "type": "familiar",
+      "tier": 1,
+      "zones": [
+        0,
+        10,
+        1,
+        13,
+        12,
+        2,
+        14,
+        11,
+        4,
+        3,
+        7,
+        6,
+        8,
+        9,
+        5
+      ],
+      "tool": "coll_salamanderTail"
+    },
+    "spirit_chupacabra": {
+      "id": "spirit_chupacabra",
+      "type": "assassin",
+      "tier": "2",
+      "legend": "zone_0",
+      "zones": [
+        0
+      ],
+      "tool": "coll_goatMilk"
+    },
+    "spirit_cindaku": {
+      "id": "spirit_cindaku",
+      "type": "hunter",
+      "tier": 4,
+      "legend": "zone_6",
+      "zones": [
+        6
+      ],
+      "tool": "coll_pedang",
+      "herb": "coll_galangal",
+      "gem": "coll_brimstone"
+    },
+    "spirit_cipelahq": {
+      "id": "spirit_cipelahq",
+      "type": "hunter",
+      "tier": 3,
+      "legend": "zone_0",
+      "zones": [
+        0,
+        1
+      ],
+      "tool": "coll_birdStone",
+      "herb": "coll_spiceBush"
+    },
+    "spirit_coventina": {
+      "id": "spirit_coventina",
+      "type": "healer",
+      "tier": 2,
+      "legend": "zone_5",
+      "zones": [
+        0,
+        5
+      ],
+      "tool": "coll_votiveCandle"
+    },
+    "spirit_curupira": {
+      "id": "spirit_curupira",
+      "type": "trickster",
+      "tier": 1,
+      "legend": "zone_1",
+      "zones": [
+        1,
+        2,
+        3
+      ],
+      "tool": "coll_dollWood"
+    },
+    "spirit_dapperSkeleton": {
+      "id": "spirit_dapperSkeleton",
+      "type": "familiar",
+      "tier": "1",
+      "zones": [
+        0,
+        10,
+        11,
+        2,
+        4,
+        13,
+        5,
+        3,
+        7,
+        6,
+        1,
+        8,
+        12,
+        14
+      ],
+      "tool": "coll_monocle"
+    },
+    "spirit_djab": {
+      "id": "spirit_djab",
+      "type": "assassin",
+      "tier": 1,
+      "legend": "zone_3",
+      "zones": [
+        0,
+        1,
+        2,
+        3
+      ],
+      "tool": "coll_gourde"
+    },
+    "spirit_djinn": {
+      "id": "spirit_djinn",
+      "type": "forbidden",
+      "tier": 3,
+      "legend": "zone_8",
+      "zones": [
+        8,
+        9
+      ],
+      "tool": "coll_talisman",
+      "herb": "coll_bitDevil"
+    },
+    "spirit_dropBear": {
+      "id": "spirit_dropBear",
+      "type": "guardian",
+      "tier": 3,
+      "legend": "zone_11",
+      "zones": [
+        11,
+        4
+      ],
+      "tool": "coll_witchettyGrub",
+      "herb": "coll_motherwort"
+    },
+    "spirit_dryad": {
+      "id": "spirit_dryad",
+      "type": "assassin",
+      "tier": 3,
+      "legend": "zone_4",
+      "zones": [
+        5,
+        4
+      ],
+      "tool": "coll_honeyJar",
+      "herb": "coll_oakmoss"
+    },
+    "spirit_edimmu": {
+      "id": "spirit_edimmu",
+      "type": "forbidden",
+      "tier": 2,
+      "legend": "zone_6",
+      "zones": [
+        4,
+        8,
+        7
+      ],
+      "tool": "coll_blackCrystal"
+    },
+    "spirit_indio": {
+      "id": "spirit_indio",
+      "type": "assassin",
+      "tier": 2,
+      "legend": "zone_1",
+      "zones": [
+        0,
+        1,
+        2
+      ],
+      "tool": "coll_tobaccoPipe"
+    },
+    "spirit_evilWind": {
+      "id": "spirit_evilWind",
+      "type": "forbidden",
+      "tier": "3",
+      "legend": "zone_8",
+      "zones": [
+        7,
+        8
+      ],
+      "tool": "coll_lightningRod",
+      "herb": "coll_bitDevil"
+    },
+    "spirit_farDarrig": {
+      "id": "spirit_farDarrig",
+      "type": "trickster",
+      "tier": 1,
+      "legend": "zone_4",
+      "zones": [
+        11,
+        5,
+        0,
+        4
+      ],
+      "tool": "coll_broom"
+    },
+    "spirit_fossegrimen": {
+      "id": "spirit_fossegrimen",
+      "type": "guardian",
+      "tier": "3",
+      "legend": "zone_5",
+      "tool": "coll_harpStrings",
+      "herb": "coll_oakmoss"
+    },
+    "spirit_fowler": {
+      "id": "spirit_fowler",
+      "type": "familiar",
+      "tier": 1,
+      "zones": [
+        0,
+        1,
+        10,
+        11,
+        12,
+        14,
+        3,
+        4,
+        6,
+        5,
+        9,
+        7,
+        13,
+        2,
+        8
+      ],
+      "tool": "coll_onyxRing"
+    },
+    "spirit_fuath": {
+      "id": "spirit_fuath",
+      "type": "forbidden",
+      "tier": "3",
+      "legend": "zone_5",
+      "zones": [
+        4,
+        5
+      ],
+      "tool": "coll_shinyTrinket",
+      "herb": "coll_agueWeed"
+    },
+    "spirit_fudo": {
+      "id": "spirit_fudo",
+      "type": "guardian",
+      "tier": 4,
+      "legend": "zone_10",
+      "zones": [
+        10
+      ],
+      "tool": "coll_kurikara",
+      "herb": "coll_wolfBane",
+      "gem": "coll_malachite"
+    },
+    "spirit_fukusuke": {
+      "id": "spirit_fukusuke",
+      "type": "healer",
+      "tier": 2,
+      "legend": "zone_10",
+      "zones": [
+        6,
+        1
+      ],
+      "tool": "coll_sake"
+    },
+    "spirit_furiousWolf": {
+      "id": "spirit_furiousWolf",
+      "type": "forbidden",
+      "tier": "2",
+      "legend": "zone_8",
+      "zones": [
+        4,
+        8,
+        7
+      ],
+      "tool": "coll_bloodySkin"
+    },
+    "spirit_gabija": {
+      "id": "spirit_gabija",
+      "type": "assassin",
+      "tier": "2",
+      "legend": "zone_4",
+      "zones": [
+        5
+      ],
+      "tool": "coll_salt"
+    },
+    "spirit_gashadokuro": {
+      "id": "spirit_gashadokuro",
+      "type": "forbidden",
+      "tier": 1,
+      "legend": "zone_10",
+      "zones": [
+        1,
+        10,
+        6
+      ],
+      "tool": "coll_humanHair"
+    },
+    "spirit_glaistig": {
+      "id": "spirit_glaistig",
+      "type": "hunter",
+      "tier": "2",
+      "legend": "zone_4",
+      "zones": [
+        5,
+        0,
+        4
+      ],
+      "tool": "coll_freshMilk"
+    },
+    "spirit_goatman": {
+      "id": "spirit_goatman",
+      "type": "assassin",
+      "tier": "2",
+      "legend": "zone_0",
+      "tool": "coll_brokenVial"
+    },
+    "spirit_greatDragon": {
+      "id": "spirit_greatDragon",
+      "type": "forbidden",
+      "tier": "4",
+      "legend": "zone_8",
+      "zones": [
+        8
+      ],
+      "tool": "coll_dragonScale",
+      "herb": "coll_bitDevil",
+      "gem": "coll_demonEye"
+    },
+    "spirit_leopard": {
+      "id": "spirit_leopard",
+      "type": "forbidden",
+      "tier": "3",
+      "legend": "zone_8",
+      "zones": [
+        7,
+        8
+      ],
+      "tool": "coll_leopardTablet",
+      "herb": "coll_bitDevil"
+    },
+    "spirit_grindylow": {
+      "id": "spirit_grindylow",
+      "type": "guardian",
+      "tier": 3,
+      "legend": "zone_4",
+      "zones": [
+        4,
+        5
+      ],
+      "tool": "coll_murkyWater",
+      "herb": "coll_poppy"
+    },
+    "spirit_hitotsume": {
+      "id": "spirit_hitotsume",
+      "type": "healer",
+      "tier": 1,
+      "legend": "zone_10",
+      "zones": [
+        1,
+        10,
+        6
+      ],
+      "tool": "coll_hangingScroll"
+    },
+    "spirit_houndAnnwn": {
+      "id": "spirit_houndAnnwn",
+      "type": "hunter",
+      "tier": 4,
+      "legend": "zone_4",
+      "tool": "coll_silverHarness",
+      "herb": "coll_bitDevil",
+      "gem": "coll_brimstone"
+    },
+    "spirit_huldra": {
+      "id": "spirit_huldra",
+      "type": "assassin",
+      "tier": "1",
+      "legend": "zone_5",
+      "zones": [
+        0,
+        4,
+        11,
+        5
+      ],
+      "tool": "coll_foxFur"
+    },
+    "spirit_hyosube": {
+      "id": "spirit_hyosube",
+      "type": "trickster",
+      "tier": 1,
+      "legend": "zone_10",
+      "zones": [
+        6
+      ],
+      "tool": "coll_paperDoll"
+    },
+    "spirit_inugami": {
+      "id": "spirit_inugami",
+      "type": "hunter",
+      "tier": 1,
+      "legend": "zone_10",
+      "zones": [
+        10,
+        6,
+        1
+      ],
+      "tool": "coll_yen"
+    },
+    "spirit_itzamna": {
+      "id": "spirit_itzamna",
+      "type": "guardian",
+      "tier": 4,
+      "legend": "zone_1",
+      "zones": [
+        1
+      ],
+      "tool": "coll_tamalera",
+      "herb": "coll_johnWort",
+      "gem": "coll_malachite"
+    },
+    "spirit_itzpapalotl": {
+      "id": "spirit_itzpapalotl",
+      "type": "hunter",
+      "tier": 3,
+      "legend": "zone_1",
+      "zones": [
+        2,
+        1
+      ],
+      "tool": "coll_headDress",
+      "herb": "coll_snakeroot"
+    },
+    "spirit_jackolantern": {
+      "id": "spirit_jackolantern",
+      "type": "guardian",
+      "tier": "1",
+      "legend": "zone_0",
+      "zones": [
+        0,
+        11,
+        4,
+        5
+      ],
+      "tool": "coll_sweetTreat"
+    },
+    "spirit_jerseyDevil": {
+      "id": "spirit_jerseyDevil",
+      "type": "hunter",
+      "tier": "2",
+      "legend": "zone_0",
+      "zones": [
+        0
+      ],
+      "tool": "coll_pineIncense"
+    },
+    "spirit_jikininki": {
+      "id": "spirit_jikininki",
+      "type": "forbidden",
+      "tier": 2,
+      "legend": "zone_10",
+      "zones": [
+        1,
+        10,
+        6
+      ],
+      "tool": "coll_pineAsh"
+    },
+    "spirit_jurupari": {
+      "id": "spirit_jurupari",
+      "type": "assassin",
+      "tier": 1,
+      "legend": "zone_1",
+      "zones": [
+        1,
+        2,
+        3
+      ],
+      "tool": "coll_cingulum"
+    },
+    "spirit_kalku": {
+      "id": "spirit_kalku",
+      "type": "hunter",
+      "tier": 3,
+      "legend": "zone_1",
+      "zones": [
+        2
+      ],
+      "tool": "coll_trapelacucha",
+      "herb": "coll_mimosa"
+    },
+    "spirit_kamaitachi": {
+      "id": "spirit_kamaitachi",
+      "type": "assassin",
+      "tier": 1,
+      "legend": "zone_10",
+      "zones": [
+        1,
+        6,
+        10
+      ],
+      "tool": "coll_whetstone"
+    },
+    "spirit_kappa": {
+      "id": "spirit_kappa",
+      "type": "hunter",
+      "tier": 1,
+      "legend": "zone_10",
+      "zones": [
+        1,
+        10,
+        6
+      ],
+      "tool": "coll_shogi"
+    },
+    "spirit_katawaguruma": {
+      "id": "spirit_katawaguruma",
+      "type": "forbidden",
+      "tier": "2",
+      "legend": "zone_10",
+      "tool": "coll_woodAsh"
+    },
+    "spirit_kek": {
+      "id": "spirit_kek",
+      "type": "hunter",
+      "tier": "1",
+      "legend": "zone_7",
+      "zones": [
+        12,
+        4,
+        7,
+        8
+      ],
+      "tool": "coll_beerOffering"
+    },
+    "spirit_kesari": {
+      "id": "spirit_kesari",
+      "type": "assassin",
+      "tier": "3",
+      "legend": "zone_9",
+      "zones": [
+        6
+      ],
+      "tool": "coll_monkeyTotem",
+      "herb": "coll_mimosa"
+    },
+    "spirit_kijo": {
+      "id": "spirit_kijo",
+      "type": "forbidden",
+      "tier": 3,
+      "legend": "zone_10",
+      "zones": [
+        1,
+        10
+      ],
+      "tool": "coll_ironKey",
+      "herb": "coll_eyeBright"
+    },
+    "spirit_kirin": {
+      "id": "spirit_kirin",
+      "type": "assassin",
+      "tier": 3,
+      "legend": "zone_10",
+      "zones": [
+        10,
+        1
+      ],
+      "tool": "coll_sevenBell",
+      "herb": "coll_eyeBright"
+    },
+    "spirit_kitsune": {
+      "id": "spirit_kitsune",
+      "type": "trickster",
+      "tier": 2,
+      "legend": "zone_10",
+      "zones": [
+        6
+      ],
+      "tool": "coll_friedTofu"
+    },
+    "spirit_lakshmi": {
+      "id": "spirit_lakshmi",
+      "type": "healer",
+      "tier": "2",
+      "legend": "zone_9",
+      "zones": [
+        6,
+        4
+      ],
+      "tool": "coll_perfume"
+    },
+    "spirit_lalechusa": {
+      "id": "spirit_lalechusa",
+      "type": "guardian",
+      "tier": 4,
+      "legend": "zone_1",
+      "zones": [
+        1
+      ],
+      "tool": "coll_candleBlack",
+      "herb": "coll_sanPedro",
+      "gem": "coll_malachite"
+    },
+    "spirit_lamia": {
+      "id": "spirit_lamia",
+      "type": "guardian",
+      "tier": 4,
+      "legend": "zone_4",
+      "zones": [
+        4
+      ],
+      "tool": "coll_sharkTooth",
+      "herb": "coll_rosemary",
+      "gem": "coll_malachite"
+    },
+    "spirit_lares": {
+      "id": "spirit_lares",
+      "type": "healer",
+      "tier": 1,
+      "legend": "zone_4",
+      "zones": [
+        0,
+        4,
+        11,
+        7
+      ],
+      "tool": "coll_fireIron"
+    },
+    "spirit_lobisomem": {
+      "id": "spirit_lobisomem",
+      "type": "assassin",
+      "tier": 4,
+      "legend": "zone_1",
+      "zones": [
+        1
+      ],
+      "tool": "coll_rawMeat",
+      "herb": "coll_wolfClaw",
+      "gem": "coll_bloodAgate"
+    },
+    "spirit_lubana": {
+      "id": "spirit_lubana",
+      "type": "dispeller",
+      "tier": 2,
+      "legend": "zone_3",
+      "zones": [
+        0,
+        3,
+        2
+      ],
+      "tool": "coll_snakeOil"
+    },
+    "spirit_brigitte": {
+      "id": "spirit_brigitte",
+      "type": "healer",
+      "tier": "3",
+      "legend": "zone_3",
+      "zones": [
+        3,
+        2
+      ],
+      "tool": "coll_spicyRum",
+      "herb": "coll_snakeroot"
+    },
+    "spirit_mahamba": {
+      "id": "spirit_mahamba",
+      "type": "assassin",
+      "tier": "3",
+      "legend": "zone_7",
+      "zones": [
+        8,
+        7
+      ],
+      "tool": "coll_brokenPaddle",
+      "herb": "coll_mugwort"
+    },
+    "spirit_mamiWaters": {
+      "id": "spirit_mamiWaters",
+      "type": "resurrector",
+      "tier": "4",
+      "legend": "zone_7",
+      "zones": [
+        7
+      ],
+      "tool": "coll_pomade",
+      "herb": "coll_gileadBalm",
+      "gem": "coll_motherTear"
+    },
+    "spirit_manticore": {
+      "id": "spirit_manticore",
+      "type": "assassin",
+      "tier": 4,
+      "legend": "zone_8",
+      "zones": [
+        8
+      ],
+      "tool": "coll_crimsonShard",
+      "herb": "coll_saltDeadsea",
+      "gem": "coll_bloodAgate"
+    },
+    "spirit_mapinguari": {
+      "id": "spirit_mapinguari",
+      "type": "guardian",
+      "tier": 3,
+      "legend": "zone_1",
+      "zones": [
+        1,
+        2
+      ],
+      "tool": "coll_bonePile",
+      "herb": "coll_frangipani"
+    },
+    "spirit_mare": {
+      "id": "spirit_mare",
+      "type": "forbidden",
+      "tier": "1",
+      "legend": "zone_4",
+      "zones": [
+        0,
+        11,
+        4,
+        5
+      ],
+      "tool": "coll_darkCharm"
+    },
+    "spirit_maximon": {
+      "id": "spirit_maximon",
+      "type": "dispeller",
+      "tier": 3,
+      "legend": "zone_2",
+      "zones": [
+        1,
+        2
+      ],
+      "tool": "coll_cushaJar",
+      "herb": "coll_barberry"
+    },
+    "spirit_mazomba": {
+      "id": "spirit_mazomba",
+      "type": "hunter",
+      "tier": "3",
+      "legend": "zone_7",
+      "zones": [
+        7,
+        8
+      ],
+      "tool": "coll_seaglass",
+      "herb": "coll_lilac"
+    },
+    "spirit_mishipeshu": {
+      "id": "spirit_mishipeshu",
+      "type": "assassin",
+      "tier": 3,
+      "legend": "zone_0",
+      "zones": [
+        0,
+        1
+      ],
+      "tool": "coll_copperNugget",
+      "herb": "coll_shadeBlack"
+    },
+    "spirit_moonSnake": {
+      "id": "spirit_moonSnake",
+      "type": "familiar",
+      "tier": 1,
+      "zones": [
+        1,
+        10,
+        13,
+        12,
+        11,
+        2,
+        14,
+        3,
+        4,
+        6,
+        8,
+        5,
+        0,
+        9,
+        7
+      ],
+      "tool": "coll_onyxCirclet"
+    },
+    "spirit_mothman": {
+      "id": "spirit_mothman",
+      "type": "assassin",
+      "tier": "3",
+      "legend": "zone_0",
+      "tool": "coll_owlTalon",
+      "herb": "coll_lobelia"
+    },
+    "spirit_mujina": {
+      "id": "spirit_mujina",
+      "type": "assassin",
+      "tier": 2,
+      "legend": "zone_10",
+      "zones": [
+        0,
+        1,
+        10
+      ],
+      "tool": "coll_kimono"
+    },
+    "spirit_myobu": {
+      "id": "spirit_myobu",
+      "type": "guardian",
+      "tier": 3,
+      "legend": "zone_10",
+      "zones": [
+        1
+      ],
+      "tool": "coll_spiralKey",
+      "herb": "coll_asafetida"
+    },
+    "spirit_nilith": {
+      "id": "spirit_nilith",
+      "type": "forbidden",
+      "tier": 4,
+      "legend": "zone_15",
+      "zones": [
+        15
+      ],
+      "tool": "coll_icosahedron",
+      "herb": "coll_antarcticGrass",
+      "gem": "coll_demonEye"
+    },
+    "spirit_nisser": {
+      "id": "spirit_nisser",
+      "type": "healer",
+      "tier": "1",
+      "legend": "zone_5",
+      "zones": [
+        5,
+        0
+      ],
+      "tool": "coll_butterKnife"
+    },
+    "spirit_nokken": {
+      "id": "spirit_nokken",
+      "type": "hunter",
+      "tier": 3,
+      "legend": "zone_4",
+      "zones": [
+        4,
+        5
+      ],
+      "tool": "coll_needle",
+      "herb": "coll_nettle"
+    },
+    "spirit_onamazu": {
+      "id": "spirit_onamazu",
+      "type": "guardian",
+      "tier": 4,
+      "legend": "zone_10",
+      "zones": [
+        10
+      ],
+      "tool": "coll_namazue",
+      "herb": "coll_thyme",
+      "gem": "coll_malachite"
+    },
+    "spirit_oni": {
+      "id": "spirit_oni",
+      "type": "forbidden",
+      "tier": 3,
+      "legend": "zone_10",
+      "zones": [
+        1
+      ],
+      "tool": "coll_ironLock",
+      "herb": "coll_calamusRoot"
+    },
+    "spirit_ouni": {
+      "id": "spirit_ouni",
+      "type": "dispeller",
+      "tier": 2,
+      "legend": "zone_10",
+      "zones": [
+        1,
+        0,
+        10
+      ],
+      "tool": "coll_ramie"
+    },
+    "spirit_pesta": {
+      "id": "spirit_pesta",
+      "type": "forbidden",
+      "tier": "3",
+      "legend": "zone_5",
+      "zones": [
+        5
+      ],
+      "tool": "coll_plagueMask",
+      "herb": "coll_shadeBlack"
+    },
+    "spirit_piasa": {
+      "id": "spirit_piasa",
+      "type": "guardian",
+      "tier": "4",
+      "legend": "zone_0",
+      "zones": [
+        0
+      ],
+      "tool": "coll_carvingKnife",
+      "herb": "coll_tongueDeer",
+      "gem": "coll_malachite"
+    },
+    "spirit_pisadeira": {
+      "id": "spirit_pisadeira",
+      "type": "forbidden",
+      "tier": 3,
+      "legend": "zone_1",
+      "zones": [
+        1,
+        2
+      ],
+      "tool": "coll_metronome",
+      "herb": "coll_elder"
+    },
+    "spirit_pukwudgie": {
+      "id": "spirit_pukwudgie",
+      "type": "hunter",
+      "tier": "1",
+      "legend": "zone_0",
+      "zones": [
+        0
+      ],
+      "tool": "coll_poisonArrow"
+    },
+    "spirit_quetzalcoatl": {
+      "id": "spirit_quetzalcoatl",
+      "type": "hunter",
+      "tier": 2,
+      "legend": "zone_1",
+      "zones": [
+        0,
+        1,
+        2
+      ],
+      "tool": "coll_cocoaBean"
+    },
+    "spirit_rampant": {
+      "id": "spirit_rampant",
+      "type": "forbidden",
+      "tier": "3",
+      "legend": "zone_8",
+      "zones": [
+        8,
+        7
+      ],
+      "tool": "coll_lionTablet",
+      "herb": "coll_bitDevil"
+    },
+    "spirit_redMan": {
+      "id": "spirit_redMan",
+      "type": "assassin",
+      "tier": 2,
+      "legend": "zone_0",
+      "zones": [
+        0,
+        1,
+        2
+      ],
+      "tool": "coll_tribalMask"
+    },
+    "spirit_redcap": {
+      "id": "spirit_redcap",
+      "type": "trickster",
+      "tier": 2,
+      "legend": "zone_4",
+      "zones": [
+        5,
+        0,
+        4
+      ],
+      "tool": "coll_bloodyHat"
+    },
+    "spirit_ryeWolf": {
+      "id": "spirit_ryeWolf",
+      "type": "assassin",
+      "tier": 2,
+      "legend": "zone_4",
+      "zones": [
+        5
+      ],
+      "tool": "coll_candleWhite"
+    },
+    "spirit_saci": {
+      "id": "spirit_saci",
+      "type": "trickster",
+      "tier": 1,
+      "legend": "zone_1",
+      "zones": [
+        0,
+        1,
+        2,
+        3
+      ],
+      "tool": "coll_rottenEgg"
+    },
+    "spirit_sentinelOwl": {
+      "id": "spirit_sentinelOwl",
+      "type": "familiar",
+      "tier": 1,
+      "zones": [
+        0,
+        1,
+        10,
+        13,
+        12,
+        2,
+        14,
+        3,
+        11,
+        4,
+        7,
+        6,
+        8,
+        9,
+        5
+      ],
+      "tool": "coll_onyxAmulet"
+    },
+    "spirit_shezmu": {
+      "id": "spirit_shezmu",
+      "type": "assassin",
+      "tier": "4",
+      "legend": "zone_7",
+      "zones": [
+        7
+      ],
+      "tool": "coll_redFabric",
+      "herb": "coll_eucalyptus",
+      "gem": "coll_bloodAgate"
+    },
+    "spirit_shojo": {
+      "id": "spirit_shojo",
+      "type": "guardian",
+      "tier": 3,
+      "legend": "zone_10",
+      "zones": [
+        10,
+        1
+      ],
+      "tool": "coll_sake",
+      "herb": "coll_allspice"
+    },
+    "spirit_sidhe": {
+      "id": "spirit_sidhe",
+      "type": "trickster",
+      "tier": 3,
+      "legend": "zone_4",
+      "zones": [
+        4,
+        5
+      ],
+      "tool": "coll_milkBottle",
+      "herb": "coll_pennyRoyal"
+    },
+    "spirit_southWind": {
+      "id": "spirit_southWind",
+      "type": "forbidden",
+      "tier": "2",
+      "legend": "zone_8",
+      "zones": [
+        4,
+        7,
+        8
+      ],
+      "tool": "coll_wootzSteel"
+    },
+    "spirit_stingyJack": {
+      "id": "spirit_stingyJack",
+      "type": "assassin",
+      "tier": "2",
+      "legend": "zone_4",
+      "zones": [
+        0,
+        5,
+        4
+      ],
+      "tool": "coll_rustyFlask"
+    },
+    "spirit_strigoi": {
+      "id": "spirit_strigoi",
+      "type": "forbidden",
+      "tier": 3,
+      "legend": "zone_4",
+      "zones": [
+        4,
+        5
+      ],
+      "tool": "coll_vialBlood",
+      "herb": "coll_tormentil"
+    },
+    "spirit_strix": {
+      "id": "spirit_strix",
+      "type": "forbidden",
+      "tier": 3,
+      "legend": "zone_4",
+      "zones": [
+        5,
+        4
+      ],
+      "tool": "coll_oldScroll",
+      "herb": "coll_parisNight"
+    },
+    "spirit_tanuki": {
+      "id": "spirit_tanuki",
+      "type": "harvester",
+      "tier": 2,
+      "legend": "zone_10",
+      "zones": [
+        1,
+        6,
+        10
+      ],
+      "tool": "coll_sunHat"
+    },
+    "spirit_tengu": {
+      "id": "spirit_tengu",
+      "type": "hunter",
+      "tier": 4,
+      "legend": "zone_10",
+      "zones": [
+        10
+      ],
+      "tool": "coll_shakujo",
+      "herb": "coll_lilac",
+      "gem": "coll_brimstone"
+    },
+    "spirit_shibbu": {
+      "id": "spirit_shibbu",
+      "type": "forbidden",
+      "tier": "2",
+      "legend": "zone_8",
+      "zones": [
+        7,
+        8
+      ],
+      "tool": "coll_kudurru"
+    },
+    "spirit_thunderBird": {
+      "id": "spirit_thunderBird",
+      "type": "assassin",
+      "tier": 4,
+      "legend": "zone_0",
+      "zones": [
+        0
+      ],
+      "tool": "coll_eagleFeather",
+      "herb": "coll_queenMeadow",
+      "gem": "coll_bloodAgate"
+    },
+    "spirit_tlaloc": {
+      "id": "spirit_tlaloc",
+      "type": "guardian",
+      "tier": 1,
+      "legend": "zone_2",
+      "zones": [
+        1,
+        3,
+        2
+      ],
+      "tool": "coll_jaguarSkull"
+    },
+    "spirit_tzitzimitl": {
+      "id": "spirit_tzitzimitl",
+      "type": "guardian",
+      "tier": "2",
+      "legend": "zone_2",
+      "zones": [
+        0,
+        1,
+        2
+      ],
+      "tool": "coll_starSymbol"
+    },
+    "spirit_uldenHehe": {
+      "id": "spirit_uldenHehe",
+      "type": "assassin",
+      "tier": 3,
+      "legend": "zone_10",
+      "zones": [
+        1,
+        10
+      ],
+      "tool": "coll_boiledEdamame",
+      "herb": "coll_clover"
+    },
+    "spirit_undine": {
+      "id": "spirit_undine",
+      "type": "healer",
+      "tier": 2,
+      "legend": "zone_4",
+      "zones": [
+        0,
+        5,
+        4
+      ],
+      "tool": "coll_greekWine"
+    },
+    "spirit_vila": {
+      "id": "spirit_vila",
+      "type": "healer",
+      "tier": 3,
+      "legend": "zone_12",
+      "zones": [
+        4
+      ],
+      "tool": "coll_windChime",
+      "herb": "coll_cedar"
+    },
+    "spirit_wanderingHead": {
+      "id": "spirit_wanderingHead",
+      "type": "trickster",
+      "tier": 1,
+      "legend": "zone_1",
+      "zones": [
+        2,
+        3,
+        0
+      ],
+      "tool": "coll_athame"
+    },
+    "spirit_wendigo": {
+      "id": "spirit_wendigo",
+      "type": "forbidden",
+      "tier": 4,
+      "legend": "zone_0",
+      "zones": [
+        0
+      ],
+      "tool": "coll_wolverineTooth",
+      "herb": "coll_ghostOrchid",
+      "gem": "coll_demonEye"
+    },
+    "spirit_whiteLady": {
+      "id": "spirit_whiteLady",
+      "type": "assassin",
+      "tier": 1,
+      "legend": "zone_1",
+      "zones": [
+        0,
+        1,
+        4,
+        12
+      ],
+      "tool": "coll_whiteCrystal"
+    },
+    "spirit_xochipilli": {
+      "id": "spirit_xochipilli",
+      "type": "healer",
+      "tier": 3,
+      "legend": "zone_2",
+      "zones": [
+        1,
+        2
+      ],
+      "tool": "coll_spearHead",
+      "herb": "coll_rowan"
+    },
+    "spirit_xolotl": {
+      "id": "spirit_xolotl",
+      "type": "hunter",
+      "tier": 3,
+      "legend": "zone_2",
+      "zones": [
+        1,
+        2
+      ],
+      "tool": "coll_flintKnife",
+      "herb": "coll_juniper"
+    },
+    "spirit_xtabay": {
+      "id": "spirit_xtabay",
+      "type": "healer",
+      "tier": 3,
+      "legend": "zone_2",
+      "zones": [
+        1,
+        2
+      ],
+      "tool": "coll_liqueur",
+      "herb": "coll_basil"
+    },
+    "spirit_yamanba": {
+      "id": "spirit_yamanba",
+      "type": "forbidden",
+      "tier": 3,
+      "legend": "zone_10",
+      "zones": [
+        1,
+        10
+      ],
+      "tool": "coll_alderCane",
+      "herb": "coll_henbane"
+    },
+    "spirit_yatagarasu": {
+      "id": "spirit_yatagarasu",
+      "type": "hunter",
+      "tier": 3,
+      "legend": "zone_10",
+      "zones": [
+        1,
+        10
+      ],
+      "tool": "coll_sundial",
+      "herb": "coll_snakeroot"
+    },
+    "spirit_yukiOnna": {
+      "id": "spirit_yukiOnna",
+      "type": "healer",
+      "tier": 3,
+      "legend": "zone_10",
+      "zones": [
+        10,
+        1
+      ],
+      "tool": "coll_goheiWand",
+      "herb": "coll_willow"
+    },
+    "spirit_yunwiTsunsdi": {
+      "id": "spirit_yunwiTsunsdi",
+      "type": "trickster",
+      "tier": "1",
+      "legend": "zone_0",
+      "zones": [
+        0,
+        1,
+        2,
+        3
+      ],
+      "tool": "coll_birdBeak"
+    },
+    "spirit_zarabanda": {
+      "id": "spirit_zarabanda",
+      "type": "forbidden",
+      "tier": 3,
+      "legend": "zone_7",
+      "zones": [
+        7,
+        8
+      ],
+      "tool": "coll_sharpMachete",
+      "herb": "coll_adderFork"
+    },
+    "spirit_zashiki": {
+      "id": "spirit_zashiki",
+      "type": "healer",
+      "tier": 1,
+      "legend": "zone_10",
+      "zones": [
+        1,
+        10,
+        6
+      ],
+      "tool": "coll_candy"
+    }
+  },
+  "Collectibles": {
+    "coll_alderFlute": {
+      "rarity": 3,
+      "type": "tool",
+      "forbidden": true
+    },
+    "coll_amberAmulet": {
+      "rarity": 3,
+      "type": "tool"
+    },
+    "coll_athame": {
+      "rarity": 1,
+      "type": "tool"
+    },
+    "coll_axeHead": {
+      "rarity": 3,
+      "type": "tool",
+      "forbidden": true
+    },
+    "coll_aztaxFeather": {
+      "rarity": 3,
+      "type": "tool"
+    },
+    "coll_barleyFlour": {
+      "rarity": 3,
+      "type": "tool"
+    },
+    "coll_beeswax": {
+      "rarity": 2,
+      "type": "tool"
+    },
+    "coll_benitier": {
+      "rarity": 3,
+      "type": "tool"
+    },
+    "coll_birdStone": {
+      "rarity": 3,
+      "type": "tool"
+    },
+    "coll_blackCrystal": {
+      "rarity": 2,
+      "type": "tool",
+      "forbidden": true
+    },
+    "coll_bloodRibbon": {
+      "rarity": 2,
+      "type": "tool",
+      "forbidden": true
+    },
+    "coll_bloodyCloth": {
+      "rarity": 3,
+      "type": "tool",
+      "forbidden": true
+    },
+    "coll_bloodyHat": {
+      "rarity": 2,
+      "type": "tool"
+    },
+    "coll_blueLantern": {
+      "rarity": 3,
+      "type": "tool"
+    },
+    "coll_boiledEdamame": {
+      "rarity": 3,
+      "type": "tool"
+    },
+    "coll_bonePile": {
+      "rarity": 3,
+      "type": "tool"
+    },
+    "coll_bridle": {
+      "rarity": 2,
+      "type": "tool"
+    },
+    "coll_broom": {
+      "rarity": 1,
+      "type": "tool"
+    },
+    "coll_cakeBatter": {
+      "rarity": 3,
+      "type": "tool"
+    },
+    "coll_candleBlack": {
+      "rarity": 4,
+      "type": "tool"
+    },
+    "coll_candleBlue": {
+      "rarity": 2,
+      "type": "tool"
+    },
+    "coll_candleRed": {
+      "rarity": 2,
+      "type": "tool"
+    },
+    "coll_candleWhite": {
+      "rarity": 2,
+      "type": "tool"
+    },
+    "coll_cingulum": {
+      "rarity": 1,
+      "type": "tool"
+    },
+    "coll_coal": {
+      "rarity": 3,
+      "type": "tool"
+    },
+    "coll_cocoaBean": {
+      "rarity": 2,
+      "type": "tool"
+    },
+    "coll_copperNugget": {
+      "rarity": 3,
+      "type": "tool"
+    },
+    "coll_crimsonShard": {
+      "rarity": 4,
+      "type": "tool"
+    },
+    "coll_crocTooth": {
+      "rarity": 3,
+      "type": "tool"
+    },
+    "coll_cushaJar": {
+      "rarity": 3,
+      "type": "tool"
+    },
+    "coll_dollWood": {
+      "rarity": 1,
+      "type": "tool"
+    },
+    "coll_dreamcatcher": {
+      "rarity": 1,
+      "type": "tool",
+      "forbidden": true
+    },
+    "coll_eagleFeather": {
+      "rarity": 4,
+      "type": "tool"
+    },
+    "coll_earrings": {
+      "rarity": 2,
+      "type": "tool"
+    },
+    "coll_emaBoard": {
+      "rarity": 3,
+      "type": "tool"
+    },
+    "coll_fineSand": {
+      "rarity": 4,
+      "type": "tool"
+    },
+    "coll_fireIron": {
+      "rarity": 1,
+      "type": "tool"
+    },
+    "coll_fishOil": {
+      "rarity": 3,
+      "type": "tool"
+    },
+    "coll_flintKnife": {
+      "rarity": 3,
+      "type": "tool"
+    },
+    "coll_floralWreath": {
+      "rarity": 2,
+      "type": "tool"
+    },
+    "coll_friedTofu": {
+      "rarity": 2,
+      "type": "tool"
+    },
+    "coll_frogLeg": {
+      "rarity": 3,
+      "type": "tool"
+    },
+    "coll_goheiWand": {
+      "rarity": 3,
+      "type": "tool"
+    },
+    "coll_gourde": {
+      "rarity": 1,
+      "type": "tool",
+      "forbidden": true
+    },
+    "coll_greekWine": {
+      "rarity": 2,
+      "type": "tool"
+    },
+    "coll_guilder": {
+      "rarity": 1,
+      "type": "tool",
+      "forbidden": true
+    },
+    "coll_handkerchief": {
+      "rarity": 3,
+      "type": "tool"
+    },
+    "coll_hareFur": {
+      "rarity": 2,
+      "type": "tool"
+    },
+    "coll_headDress": {
+      "rarity": 3,
+      "type": "tool"
+    },
+    "coll_honeyDipper": {
+      "rarity": 3,
+      "type": "tool"
+    },
+    "coll_honeyJar": {
+      "rarity": 3,
+      "type": "tool"
+    },
+    "coll_hourglass": {
+      "rarity": 1,
+      "type": "tool"
+    },
+    "coll_icosahedron": {
+      "rarity": 4,
+      "type": "tool",
+      "forbidden": true
+    },
+    "coll_ironCollar": {
+      "rarity": 1,
+      "type": "tool"
+    },
+    "coll_ironLock": {
+      "rarity": 3,
+      "type": "tool",
+      "forbidden": true
+    },
+    "coll_janiceMirror": {
+      "rarity": 4,
+      "type": "tool"
+    },
+    "coll_jokerCard": {
+      "rarity": 1,
+      "type": "tool"
+    },
+    "coll_kaskaraBlade": {
+      "rarity": 2,
+      "type": "tool",
+      "forbidden": true
+    },
+    "coll_kurikara": {
+      "rarity": 4,
+      "type": "tool"
+    },
+    "coll_lavaLamp": {
+      "rarity": 1,
+      "type": "tool",
+      "forbidden": true
+    },
+    "coll_liqueur": {
+      "rarity": 3,
+      "type": "tool"
+    },
+    "coll_mayanInk": {
+      "rarity": 2,
+      "type": "tool"
+    },
+    "coll_meteorite": {
+      "rarity": 4,
+      "type": "tool"
+    },
+    "coll_metronome": {
+      "rarity": 3,
+      "type": "tool",
+      "forbidden": true
+    },
+    "coll_milkBottle": {
+      "rarity": 3,
+      "type": "tool"
+    },
+    "coll_mortarPestle": {
+      "rarity": 1,
+      "type": "tool"
+    },
+    "coll_murkyWater": {
+      "rarity": 3,
+      "type": "tool"
+    },
+    "coll_needle": {
+      "rarity": 3,
+      "type": "tool"
+    },
+    "coll_oilyFeather": {
+      "rarity": 2,
+      "type": "tool"
+    },
+    "coll_oldScroll": {
+      "rarity": 3,
+      "type": "tool",
+      "forbidden": true
+    },
+    "coll_onyxAmulet": {
+      "rarity": 1,
+      "type": "tool"
+    },
+    "coll_onyxCirclet": {
+      "rarity": 1,
+      "type": "tool"
+    },
+    "coll_onyxRing": {
+      "rarity": 1,
+      "type": "tool"
+    },
+    "coll_oxHorn": {
+      "rarity": 2,
+      "type": "tool"
+    },
+    "coll_pedang": {
+      "rarity": 4,
+      "type": "tool"
+    },
+    "coll_petrifiedWood": {
+      "rarity": 3,
+      "type": "tool"
+    },
+    "coll_pineAsh": {
+      "rarity": 2,
+      "type": "tool",
+      "forbidden": true
+    },
+    "coll_prism": {
+      "rarity": 1,
+      "type": "tool"
+    },
+    "coll_rawMeat": {
+      "rarity": 4,
+      "type": "tool"
+    },
+    "coll_redDiamond": {
+      "rarity": 4,
+      "type": "tool",
+      "forbidden": true
+    },
+    "coll_rocksGlass": {
+      "rarity": 2,
+      "type": "tool"
+    },
+    "coll_rottenEgg": {
+      "rarity": 1,
+      "type": "tool"
+    },
+    "coll_sake": {
+      "rarity": 2,
+      "type": "tool"
+    },
+    "coll_salamanderTail": {
+      "rarity": 1,
+      "type": "tool"
+    },
+    "coll_scentedCandle": {
+      "rarity": 3,
+      "type": "tool"
+    },
+    "coll_serpentVenom": {
+      "rarity": 1,
+      "type": "tool"
+    },
+    "coll_sevenBell": {
+      "rarity": 3,
+      "type": "tool"
+    },
+    "coll_sharkTooth": {
+      "rarity": 4,
+      "type": "tool"
+    },
+    "coll_sharpMachete": {
+      "rarity": 3,
+      "type": "tool",
+      "forbidden": true
+    },
+    "coll_silverAmulet": {
+      "rarity": 3,
+      "type": "tool"
+    },
+    "coll_silverComb": {
+      "rarity": 2,
+      "type": "tool"
+    },
+    "coll_silverHarness": {
+      "rarity": 4,
+      "type": "tool"
+    },
+    "coll_snakeOil": {
+      "rarity": 2,
+      "type": "tool"
+    },
+    "coll_spearHead": {
+      "rarity": 3,
+      "type": "tool"
+    },
+    "coll_stoneCarving": {
+      "rarity": 3,
+      "type": "tool"
+    },
+    "coll_sunHat": {
+      "rarity": 2,
+      "type": "tool"
+    },
+    "coll_talisman": {
+      "rarity": 3,
+      "type": "tool",
+      "forbidden": true
+    },
+    "coll_tamalera": {
+      "rarity": 4,
+      "type": "tool"
+    },
+    "coll_tankard": {
+      "rarity": 3,
+      "type": "tool"
+    },
+    "coll_tapirTrunk": {
+      "rarity": 4,
+      "type": "tool"
+    },
+    "coll_terracotta": {
+      "rarity": 3,
+      "type": "tool"
+    },
+    "coll_toadHeart": {
+      "rarity": 1,
+      "type": "tool"
+    },
+    "coll_tobaccoPipe": {
+      "rarity": 2,
+      "type": "tool"
+    },
+    "coll_trapelacucha": {
+      "rarity": 3,
+      "type": "tool"
+    },
+    "coll_tribalMask": {
+      "rarity": 2,
+      "type": "tool"
+    },
+    "coll_vialBlood": {
+      "rarity": 3,
+      "type": "tool",
+      "forbidden": true
+    },
+    "coll_votiveCandle": {
+      "rarity": 2,
+      "type": "tool"
+    },
+    "coll_whiteCrystal": {
+      "rarity": 1,
+      "type": "tool"
+    },
+    "coll_whiteFur": {
+      "rarity": 2,
+      "type": "tool"
+    },
+    "coll_windChime": {
+      "rarity": 3,
+      "type": "tool"
+    },
+    "coll_wineSpirit": {
+      "rarity": 3,
+      "type": "tool"
+    },
+    "coll_witchettyGrub": {
+      "rarity": 3,
+      "type": "tool"
+    },
+    "coll_wolverineTooth": {
+      "rarity": 4,
+      "type": "tool",
+      "forbidden": true
+    },
+    "coll_jaguarSkull": {
+      "rarity": 1,
+      "type": "tool"
+    },
+    "coll_humanHair": {
+      "rarity": 1,
+      "type": "tool",
+      "forbidden": true
+    },
+    "coll_hangingScroll": {
+      "rarity": 1,
+      "type": "tool"
+    },
+    "coll_whetstone": {
+      "rarity": 1,
+      "type": "tool"
+    },
+    "coll_shogi": {
+      "rarity": 1,
+      "type": "tool"
+    },
+    "coll_candy": {
+      "rarity": 1,
+      "type": "tool"
+    },
+    "coll_yen": {
+      "rarity": 1,
+      "type": "tool"
+    },
+    "coll_lampOil": {
+      "rarity": 2,
+      "type": "tool"
+    },
+    "coll_kimono": {
+      "rarity": 2,
+      "type": "tool"
+    },
+    "coll_ramie": {
+      "rarity": 2,
+      "type": "tool"
+    },
+    "coll_sundial": {
+      "rarity": 3,
+      "type": "tool"
+    },
+    "coll_spiralKey": {
+      "rarity": 3,
+      "type": "tool"
+    },
+    "coll_alderCane": {
+      "rarity": 3,
+      "type": "tool",
+      "forbidden": true
+    },
+    "coll_shakujo": {
+      "rarity": 4,
+      "type": "tool"
+    },
+    "coll_namazue": {
+      "rarity": 4,
+      "type": "tool"
+    },
+    "coll_paperDoll": {
+      "rarity": 1,
+      "type": "tool"
+    },
+    "coll_ironKey": {
+      "rarity": 3,
+      "type": "tool",
+      "forbidden": true
+    },
+    "coll_beerOffering": {
+      "rarity": 1,
+      "type": "tool"
+    },
+    "coll_birdBeak": {
+      "rarity": 1,
+      "type": "tool"
+    },
+    "coll_butterKnife": {
+      "rarity": 1,
+      "type": "tool"
+    },
+    "coll_monocle": {
+      "rarity": 1,
+      "type": "tool"
+    },
+    "coll_darkCharm": {
+      "rarity": 1,
+      "type": "tool",
+      "forbidden": true
+    },
+    "coll_foxFur": {
+      "rarity": 1,
+      "type": "tool"
+    },
+    "coll_magnet": {
+      "rarity": 1,
+      "type": "tool"
+    },
+    "coll_poisonArrow": {
+      "rarity": 1,
+      "type": "tool"
+    },
+    "coll_sweetTreat": {
+      "rarity": 1,
+      "type": "tool"
+    },
+    "coll_goatMilk": {
+      "rarity": 2,
+      "type": "tool"
+    },
+    "coll_axeHandle": {
+      "rarity": 2,
+      "type": "tool"
+    },
+    "coll_bambooSymbol": {
+      "rarity": 2,
+      "type": "tool"
+    },
+    "coll_remains": {
+      "rarity": 2,
+      "type": "tool"
+    },
+    "coll_bloodySkin": {
+      "rarity": 2,
+      "type": "tool",
+      "forbidden": true
+    },
+    "coll_brokenAmulet": {
+      "rarity": 2,
+      "type": "tool",
+      "forbidden": true
+    },
+    "coll_brokenMirror": {
+      "rarity": 2,
+      "type": "tool"
+    },
+    "coll_brokenVial": {
+      "rarity": 2,
+      "type": "tool"
+    },
+    "coll_coffeeBeans": {
+      "rarity": 2,
+      "type": "tool"
+    },
+    "coll_fireWand": {
+      "rarity": 2,
+      "type": "tool"
+    },
+    "coll_freshMilk": {
+      "rarity": 2,
+      "type": "tool"
+    },
+    "coll_kudurru": {
+      "rarity": 2,
+      "type": "tool",
+      "forbidden": true
+    },
+    "coll_perfume": {
+      "rarity": 2,
+      "type": "tool"
+    },
+    "coll_pineIncense": {
+      "rarity": 2,
+      "type": "tool"
+    },
+    "coll_rustyFlask": {
+      "rarity": 2,
+      "type": "tool"
+    },
+    "coll_salt": {
+      "rarity": 2,
+      "type": "tool"
+    },
+    "coll_starSymbol": {
+      "rarity": 2,
+      "type": "tool"
+    },
+    "coll_strawStrand": {
+      "rarity": 2,
+      "type": "tool"
+    },
+    "coll_incense": {
+      "rarity": 2,
+      "type": "tool"
+    },
+    "coll_whiteEgg": {
+      "rarity": 2,
+      "type": "tool"
+    },
+    "coll_woodAsh": {
+      "rarity": 2,
+      "type": "tool",
+      "forbidden": true
+    },
+    "coll_wootzSteel": {
+      "rarity": 2,
+      "type": "tool",
+      "forbidden": true
+    },
+    "coll_brokenPaddle": {
+      "rarity": 3,
+      "type": "tool"
+    },
+    "coll_rainwater": {
+      "rarity": 3,
+      "type": "tool"
+    },
+    "coll_harpStrings": {
+      "rarity": 3,
+      "type": "tool"
+    },
+    "coll_hyenaFur": {
+      "rarity": 3,
+      "type": "tool"
+    },
+    "coll_leopardTablet": {
+      "rarity": 3,
+      "type": "tool",
+      "forbidden": true
+    },
+    "coll_lightningRod": {
+      "rarity": 3,
+      "type": "tool",
+      "forbidden": true
+    },
+    "coll_lionTablet": {
+      "rarity": 3,
+      "type": "tool",
+      "forbidden": true
+    },
+    "coll_monkeyTotem": {
+      "rarity": 3,
+      "type": "tool"
+    },
+    "coll_navalRum": {
+      "rarity": 3,
+      "type": "tool"
+    },
+    "coll_owlTalon": {
+      "rarity": 3,
+      "type": "tool"
+    },
+    "coll_plagueMask": {
+      "rarity": 3,
+      "type": "tool",
+      "forbidden": true
+    },
+    "coll_seaglass": {
+      "rarity": 3,
+      "type": "tool"
+    },
+    "coll_shinyTrinket": {
+      "rarity": 3,
+      "type": "tool",
+      "forbidden": true
+    },
+    "coll_spicyRum": {
+      "rarity": 3,
+      "type": "tool"
+    },
+    "coll_sugarCane": {
+      "rarity": 3,
+      "type": "tool"
+    },
+    "coll_carvingKnife": {
+      "rarity": 4,
+      "type": "tool"
+    },
+    "coll_dragonScale": {
+      "rarity": 4,
+      "type": "tool",
+      "forbidden": true
+    },
+    "coll_pomade": {
+      "rarity": 4,
+      "type": "tool"
+    },
+    "coll_redApple": {
+      "rarity": 4,
+      "type": "tool"
+    },
+    "coll_redFabric": {
+      "rarity": 4,
+      "type": "tool"
+    },
+    "coll_adderFork": {
+      "rarity": 2,
+      "type": "herb"
+    },
+    "coll_agathosma": {
+      "rarity": 4,
+      "type": "herb"
+    },
+    "coll_agrimony": {
+      "rarity": 2,
+      "type": "herb"
+    },
+    "coll_agueWeed": {
+      "rarity": 3,
+      "type": "herb"
+    },
+    "coll_allspice": {
+      "rarity": 4,
+      "type": "herb"
+    },
+    "coll_althea": {
+      "rarity": 3,
+      "type": "herb"
+    },
+    "coll_angelica": {
+      "rarity": 2,
+      "type": "herb"
+    },
+    "coll_anise": {
+      "rarity": 3,
+      "type": "herb"
+    },
+    "coll_antarcticGrass": {
+      "rarity": 4,
+      "type": "herb"
+    },
+    "coll_antarcticWort": {
+      "rarity": 4,
+      "type": "herb"
+    },
+    "coll_asafetida": {
+      "rarity": 3,
+      "type": "herb"
+    },
+    "coll_ayahuasca": {
+      "rarity": 4,
+      "type": "herb"
+    },
+    "coll_gileadBalm": {
+      "rarity": 4,
+      "type": "herb"
+    },
+    "coll_barberry": {
+      "rarity": 3,
+      "type": "herb"
+    },
+    "coll_basil": {
+      "rarity": 3,
+      "type": "herb"
+    },
+    "coll_bayLeaf": {
+      "rarity": 2,
+      "type": "herb"
+    },
+    "coll_bella": {
+      "rarity": 4,
+      "type": "herb"
+    },
+    "coll_bergamot": {
+      "rarity": 1,
+      "type": "herb"
+    },
+    "coll_betony": {
+      "rarity": 1,
+      "type": "herb"
+    },
+    "coll_bindweed": {
+      "rarity": 3,
+      "type": "herb"
+    },
+    "coll_birch": {
+      "rarity": 1,
+      "type": "herb"
+    },
+    "coll_shadeBlack": {
+      "rarity": 3,
+      "type": "herb"
+    },
+    "coll_blueberry": {
+      "rarity": 1,
+      "type": "herb"
+    },
+    "coll_borage": {
+      "rarity": 1,
+      "type": "herb"
+    },
+    "coll_broomTop": {
+      "rarity": 3,
+      "type": "herb"
+    },
+    "coll_calamusRoot": {
+      "rarity": 3,
+      "type": "herb"
+    },
+    "coll_camphor": {
+      "rarity": 3,
+      "type": "herb"
+    },
+    "coll_capsicum": {
+      "rarity": 3,
+      "type": "herb"
+    },
+    "coll_carawaySeed": {
+      "rarity": 3,
+      "type": "herb"
+    },
+    "coll_cedar": {
+      "rarity": 2,
+      "type": "herb"
+    },
+    "coll_chamomile": {
+      "rarity": 3,
+      "type": "herb"
+    },
+    "coll_clove": {
+      "rarity": 2,
+      "type": "herb"
+    },
+    "coll_cockComb": {
+      "rarity": 3,
+      "type": "herb"
+    },
+    "coll_datura": {
+      "rarity": 2,
+      "type": "herb"
+    },
+    "coll_saltDeadsea": {
+      "rarity": 3,
+      "type": "herb"
+    },
+    "coll_nightShade": {
+      "rarity": 4,
+      "type": "herb"
+    },
+    "coll_tongueDeer": {
+      "rarity": 4,
+      "type": "herb"
+    },
+    "coll_bitDevil": {
+      "rarity": 3,
+      "type": "herb"
+    },
+    "coll_dogBane": {
+      "rarity": 4,
+      "type": "herb"
+    },
+    "coll_dragonBlood": {
+      "rarity": 4,
+      "type": "herb"
+    },
+    "coll_elder": {
+      "rarity": 3,
+      "type": "herb"
+    },
+    "coll_eucalyptus": {
+      "rarity": 3,
+      "type": "herb"
+    },
+    "coll_eyeBright": {
+      "rarity": 4,
+      "type": "herb"
+    },
+    "coll_newtEye": {
+      "rarity": 3,
+      "type": "herb"
+    },
+    "coll_fennel": {
+      "rarity": 2,
+      "type": "herb"
+    },
+    "coll_fingerGrass": {
+      "rarity": 3,
+      "type": "herb"
+    },
+    "coll_foxGlove": {
+      "rarity": 3,
+      "type": "herb"
+    },
+    "coll_frangipani": {
+      "rarity": 2,
+      "type": "herb"
+    },
+    "coll_frankincense": {
+      "rarity": 3,
+      "type": "herb"
+    },
+    "coll_galangal": {
+      "rarity": 1,
+      "type": "herb"
+    },
+    "coll_garlic": {
+      "rarity": 4,
+      "type": "herb"
+    },
+    "coll_geranium": {
+      "rarity": 3,
+      "type": "herb"
+    },
+    "coll_ghostOrchid": {
+      "rarity": 4,
+      "type": "herb"
+    },
+    "coll_hawthorn": {
+      "rarity": 4,
+      "type": "herb"
+    },
+    "coll_hazel": {
+      "rarity": 3,
+      "type": "herb"
+    },
+    "coll_heather": {
+      "rarity": 3,
+      "type": "herb"
+    },
+    "coll_heliotrope": {
+      "rarity": 3,
+      "type": "herb"
+    },
+    "coll_hellebore": {
+      "rarity": 3,
+      "type": "herb"
+    },
+    "coll_hemlock": {
+      "rarity": 2,
+      "type": "herb"
+    },
+    "coll_henbane": {
+      "rarity": 1,
+      "type": "herb"
+    },
+    "coll_honeySuckle": {
+      "rarity": 2,
+      "type": "herb"
+    },
+    "coll_hyacinth": {
+      "rarity": 1,
+      "type": "herb"
+    },
+    "coll_hyssop": {
+      "rarity": 2,
+      "type": "herb"
+    },
+    "coll_jasmine": {
+      "rarity": 3,
+      "type": "herb"
+    },
+    "coll_juniper": {
+      "rarity": 2,
+      "type": "herb"
+    },
+    "coll_juniperBerry": {
+      "rarity": 3,
+      "type": "herb"
+    },
+    "coll_lavender": {
+      "rarity": 4,
+      "type": "herb"
+    },
+    "coll_lemonVerbena": {
+      "rarity": 1,
+      "type": "herb"
+    },
+    "coll_lemongrass": {
+      "rarity": 3,
+      "type": "herb"
+    },
+    "coll_licorice": {
+      "rarity": 2,
+      "type": "herb"
+    },
+    "coll_lilac": {
+      "rarity": 3,
+      "type": "herb"
+    },
+    "coll_lilyValley": {
+      "rarity": 3,
+      "type": "herb"
+    },
+    "coll_lobelia": {
+      "rarity": 4,
+      "type": "herb"
+    },
+    "coll_lotus": {
+      "rarity": 3,
+      "type": "herb"
+    },
+    "coll_mandrake": {
+      "rarity": 2,
+      "type": "herb"
+    },
+    "coll_mangrove": {
+      "rarity": 2,
+      "type": "herb"
+    },
+    "coll_mimosa": {
+      "rarity": 3,
+      "type": "herb"
+    },
+    "coll_mistleToe": {
+      "rarity": 4,
+      "type": "herb"
+    },
+    "coll_moly": {
+      "rarity": 4,
+      "type": "herb"
+    },
+    "coll_motherwort": {
+      "rarity": 3,
+      "type": "herb"
+    },
+    "coll_mugwort": {
+      "rarity": 3,
+      "type": "herb"
+    },
+    "coll_mullein": {
+      "rarity": 1,
+      "type": "herb"
+    },
+    "coll_nettle": {
+      "rarity": 3,
+      "type": "herb"
+    },
+    "coll_oakmoss": {
+      "rarity": 2,
+      "type": "herb"
+    },
+    "coll_orrisRoot": {
+      "rarity": 3,
+      "type": "herb"
+    },
+    "coll_parisNight": {
+      "rarity": 1,
+      "type": "herb"
+    },
+    "coll_parsley": {
+      "rarity": 3,
+      "type": "herb"
+    },
+    "coll_patchouli": {
+      "rarity": 3,
+      "type": "herb"
+    },
+    "coll_pennyRoyal": {
+      "rarity": 3,
+      "type": "herb"
+    },
+    "coll_pine": {
+      "rarity": 3,
+      "type": "herb"
+    },
+    "coll_poppy": {
+      "rarity": 4,
+      "type": "herb"
+    },
+    "coll_queenMeadow": {
+      "rarity": 1,
+      "type": "herb"
+    },
+    "coll_redAlder": {
+      "rarity": 3,
+      "type": "herb"
+    },
+    "coll_roseGeranium": {
+      "rarity": 4,
+      "type": "herb"
+    },
+    "coll_rosemary": {
+      "rarity": 3,
+      "type": "herb"
+    },
+    "coll_rowan": {
+      "rarity": 1,
+      "type": "herb"
+    },
+    "coll_rue": {
+      "rarity": 4,
+      "type": "herb"
+    },
+    "coll_johnWort": {
+      "rarity": 4,
+      "type": "herb"
+    },
+    "coll_sanPedro": {
+      "rarity": 3,
+      "type": "herb"
+    },
+    "coll_sandalWood": {
+      "rarity": 1,
+      "type": "herb"
+    },
+    "coll_sassafras": {
+      "rarity": 3,
+      "type": "herb"
+    },
+    "coll_slipperyElm": {
+      "rarity": 2,
+      "type": "herb"
+    },
+    "coll_snakeroot": {
+      "rarity": 3,
+      "type": "herb"
+    },
+    "coll_solomonSeal": {
+      "rarity": 4,
+      "type": "herb"
+    },
+    "coll_spiceBush": {
+      "rarity": 3,
+      "type": "herb"
+    },
+    "coll_thyme": {
+      "rarity": 3,
+      "type": "herb"
+    },
+    "coll_frogToe": {
+      "rarity": 1,
+      "type": "herb"
+    },
+    "coll_dogTongue": {
+      "rarity": 4,
+      "type": "herb"
+    },
+    "coll_tormentil": {
+      "rarity": 3,
+      "type": "herb"
+    },
+    "coll_vervain": {
+      "rarity": 3,
+      "type": "herb"
+    },
+    "coll_vetivert": {
+      "rarity": 1,
+      "type": "herb"
+    },
+    "coll_willow": {
+      "rarity": 1,
+      "type": "herb"
+    },
+    "coll_witchEgg": {
+      "rarity": 4,
+      "type": "herb"
+    },
+    "coll_wolfClaw": {
+      "rarity": 4,
+      "type": "herb"
+    },
+    "coll_wolfBane": {
+      "rarity": 4,
+      "type": "herb"
+    },
+    "coll_batWool": {
+      "rarity": 1,
+      "type": "herb"
+    },
+    "coll_cinnamon": {
+      "rarity": 2,
+      "type": "herb"
+    },
+    "coll_clover": {
+      "rarity": 2,
+      "type": "herb"
+    },
+    "coll_coriander": {
+      "rarity": 2,
+      "type": "herb"
+    },
+    "coll_bloodAgate": {
+      "rarity": 1,
+      "type": "gem"
+    },
+    "coll_brimstone": {
+      "rarity": 2,
+      "type": "gem"
+    },
+    "coll_demonEye": {
+      "rarity": 4,
+      "type": "gem"
+    },
+    "coll_malachite": {
+      "rarity": 1,
+      "type": "gem"
+    },
+    "coll_motherTear": {
+      "rarity": 1,
+      "type": "gem"
+    },
+    "coll_buckthorn": {
+      "rarity": 1,
+      "type": "herb"
+    },
+    "coll_creepLettuce": {
+      "rarity": 1,
+      "type": "herb"
+    },
+    "coll_dogrose": {
+      "rarity": 1,
+      "type": "herb"
+    },
+    "coll_flaxweed": {
+      "rarity": 1,
+      "type": "herb"
+    },
+    "coll_ginger": {
+      "rarity": 1,
+      "type": "herb"
+    },
+    "coll_holly": {
+      "rarity": 1,
+      "type": "herb"
+    },
+    "coll_linden": {
+      "rarity": 1,
+      "type": "herb"
+    },
+    "coll_mayflower": {
+      "rarity": 1,
+      "type": "herb"
+    },
+    "coll_parsnip": {
+      "rarity": 1,
+      "type": "herb"
+    },
+    "coll_rosePetal": {
+      "rarity": 1,
+      "type": "herb"
+    },
+    "coll_tigerLily": {
+      "rarity": 1,
+      "type": "herb"
+    },
+    "coll_aspen": {
+      "rarity": 2,
+      "type": "herb"
+    },
+    "coll_blackAlder": {
+      "rarity": 2,
+      "type": "herb"
+    },
+    "coll_blackthorn": {
+      "rarity": 2,
+      "type": "herb"
+    },
+    "coll_camellia": {
+      "rarity": 2,
+      "type": "herb"
+    },
+    "coll_cardio": {
+      "rarity": 2,
+      "type": "herb"
+    },
+    "coll_comfrey": {
+      "rarity": 2,
+      "type": "herb"
+    },
+    "coll_fringedIris": {
+      "rarity": 2,
+      "type": "herb"
+    },
+    "coll_honeyFlower": {
+      "rarity": 2,
+      "type": "herb"
+    },
+    "coll_rutabaga": {
+      "rarity": 2,
+      "type": "herb"
+    },
+    "coll_snakeGourd": {
+      "rarity": 2,
+      "type": "herb"
+    },
+    "coll_tulip": {
+      "rarity": 2,
+      "type": "herb"
+    },
+    "coll_amurAdonis": {
+      "rarity": 3,
+      "type": "herb"
+    },
+    "coll_asarabacca": {
+      "rarity": 3,
+      "type": "herb"
+    },
+    "coll_attenPitcher": {
+      "rarity": 3,
+      "type": "herb"
+    },
+    "coll_dragonWort": {
+      "rarity": 3,
+      "type": "herb"
+    },
+    "coll_lacecap": {
+      "rarity": 3,
+      "type": "herb"
+    },
+    "coll_sasanqua": {
+      "rarity": 3,
+      "type": "herb"
+    },
+    "coll_starMagnolia": {
+      "rarity": 3,
+      "type": "herb"
+    },
+    "coll_tricyrtis": {
+      "rarity": 3,
+      "type": "herb"
+    },
+    "coll_wisteria": {
+      "rarity": 3,
+      "type": "herb"
+    },
+    "coll_adderTongue": {
+      "rarity": 4,
+      "type": "herb"
+    },
+    "coll_andromeda": {
+      "rarity": 4,
+      "type": "herb"
+    },
+    "coll_queenLace": {
+      "rarity": 4,
+      "type": "herb"
+    },
+    "coll_snowBell": {
+      "rarity": 4,
+      "type": "herb"
+    },
+    "coll_starDust": {
+      "rarity": 4,
+      "type": "herb"
+    },
+    "coll_hogweed": {
+      "rarity": 4,
+      "type": "herb"
+    }
+  },
+  "Conditions": {
+    "spell_seal": {
+      "spellID": "spell_seal"
+    },
+    "spell_bargain": {
+      "spellID": "spell_bargain"
+    },
+    "spell_ward": {
+      "spellID": "spell_ward"
+    },
+    "spell_sealBalance": {
+      "spellID": "spell_seal"
+    },
+    "spell_confusion": {
+      "spellID": "spell_dispel"
+    },
+    "spell_invisibility": {
+      "spellID": "spell_invisibility"
+    },
+    "spell_trueSight": {
+      "spellID": "spell_invisibility"
+    },
+    "spell_hex": {
+      "spellID": "spell_hex"
+    },
+    "spell_bind": {
+      "spellID": "spell_bind"
+    },
+    "spell_wither": {
+      "spellID": "spell_bind"
+    },
+    "spell_sealShadow": {
+      "spellID": "spell_seal"
+    },
+    "spell_wail": {
+      "spellID": "spell_sunEater"
+    },
+    "spell_rageWard": {
+      "spellID": "spell_ward"
+    },
+    "spell_shadowfeet": {
+      "spellID": "spell_resurrection"
+    },
+    "spell_bless": {
+      "spellID": "spell_bless"
+    },
+    "spell_silence": {
+      "spellID": "spell_silence"
+    },
+    "spell_sealLight": {
+      "spellID": "spell_seal"
+    },
+    "spell_burst": {
+      "spellID": "spell_whiteFlame"
+    },
+    "spell_lazurus": {
+      "spellID": "spell_grace"
+    },
+    "spell_reflectiveWard": {
+      "spellID": "spell_reflectiveWard"
+    },
+    "spell_shadowMark": {
+      "spellID": "spell_shadowMark"
+    },
+    "spell_crowsEye": {
+      "spellID": "spell_crowsEye"
+    },
+    "spell_greaterSeal": {
+      "spellID": "spell_greaterSeal"
+    },
+    "spell_greaterBless": {
+      "spellID": "spell_greaterBless"
+    },
+    "spell_greaterHex": {
+      "spellID": "spell_greaterHex"
+    },
+    "spell_twilightDusk": {
+      "spellID": "spell_twilightDusk"
+    },
+    "spell_twilightDawn": {
+      "spellID": "spell_twilightDawn"
+    },
+    "elixir_xp": {
+      "spellID": "elixir_xp"
+    },
+    "elixir_degree": {
+      "spellID": "elixir_degree"
+    },
+    "spell_tranquility": {
+      "spellID": "spell_tranquility"
+    }
+  },
+  "Gardens": {
+    "garden_brockenMountain": {
+      "latitude": 51.7996,
+      "longitude": 10.61525,
+      "distance": 75000
+    },
+    "garden_hellfireClub": {
+      "latitude": 53.25235,
+      "longitude": -6.330009,
+      "distance": 35000
+    },
+    "garden_crossroadsAncient": {
+      "latitude": 34.52653,
+      "longitude": 69.15392,
+      "distance": 75000
+    },
+    "garden_xunantunich": {
+      "latitude": 17.092,
+      "longitude": -89.14152,
+      "distance": 75000
+    },
+    "garden_crossroadsAmerica": {
+      "latitude": 40.75998,
+      "longitude": -73.98418,
+      "distance": 10000
+    },
+    "garden_bellWitch": {
+      "latitude": 36.5916,
+      "longitude": -87.05484,
+      "distance": 75000
+    },
+    "garden_lostLaNoria": {
+      "latitude": -27.92623,
+      "longitude": -70.87649,
+      "distance": 100000
+    },
+    "garden_fengdu": {
+      "latitude": 29.88803,
+      "longitude": 107.7188,
+      "distance": 35000
+    },
+    "garden_nakagusukuRift": {
+      "latitude": 26.28284,
+      "longitude": 127.7972,
+      "distance": 75000
+    },
+    "garden_hoghtonBottoms": {
+      "latitude": 53.7328,
+      "longitude": -2.574073,
+      "distance": 75000
+    }
+  },
+  "Cosmetics": {
+    "cosmetic_f_A_B": {
+      "id": "cosmetic_f_A_B",
+      "position": "baseBody",
+      "base": [
+        "f_A_B"
+      ],
+      "hidden": true
+    },
+    "cosmetic_f_E_B": {
+      "id": "cosmetic_f_E_B",
+      "position": "baseBody",
+      "base": [
+        "f_E_B"
+      ],
+      "hidden": true
+    },
+    "cosmetic_f_O_B": {
+      "id": "cosmetic_f_O_B",
+      "position": "baseBody",
+      "base": [
+        "f_O_B"
+      ],
+      "hidden": true
+    },
+    "cosmetic_m_A_B": {
+      "id": "cosmetic_m_A_B",
+      "position": "baseBody",
+      "base": [
+        "m_A_B"
+      ],
+      "hidden": true
+    },
+    "cosmetic_m_E_B": {
+      "id": "cosmetic_m_E_B",
+      "position": "baseBody",
+      "base": [
+        "m_E_B"
+      ],
+      "hidden": true
+    },
+    "cosmetic_m_O_B": {
+      "id": "cosmetic_m_O_B",
+      "position": "baseBody",
+      "base": [
+        "m_O_B"
+      ],
+      "hidden": true
+    },
+    "cosmetic_f_A_H": {
+      "id": "cosmetic_f_A_H",
+      "position": "baseHand",
+      "base": [
+        "f_A_H_Relaxed"
+      ],
+      "hidden": true
+    },
+    "cosmetic_f_EO_H": {
+      "id": "cosmetic_f_EO_H",
+      "position": "baseHand",
+      "base": [
+        "f_EO_H_Relaxed"
+      ],
+      "hidden": true
+    },
+    "cosmetic_m_A_H": {
+      "id": "cosmetic_m_A_H",
+      "position": "baseHand",
+      "base": [
+        "m_A_H_Relaxed"
+      ],
+      "hidden": true
+    },
+    "cosmetic_m_EO_H": {
+      "id": "cosmetic_m_EO_H",
+      "position": "baseHand",
+      "base": [
+        "m_EO_H_Relaxed"
+      ],
+      "hidden": true
+    },
+    "": {
+      "hidden": true
+    },
+    "cosmetic_m_HE_CES": {
+      "id": "cosmetic_m_HE_CES",
+      "type": "male",
+      "position": "head",
+      "iconId": "m_HE_G_CES",
+      "base": [
+        "m_HE_G_CES"
+      ]
+    },
+    "cosmetic_f_HA_FKFO": {
+      "id": "cosmetic_f_HA_FKFO",
+      "type": "female",
+      "position": "hair",
+      "iconId": "f_HA_G_FKFO",
+      "base": [
+        "f_HA_G_FKFO"
+      ],
+      "silver": 2500,
+      "gold": 2
+    },
+    "cosmetic_m_HA_DTO": {
+      "id": "cosmetic_m_HA_DTO",
+      "type": "male",
+      "position": "hair",
+      "iconId": "m_HA_G_DTO",
+      "base": [
+        "m_HA_G_DTO"
+      ]
+    },
+    "cosmetic_f_N_KSO": {
+      "id": "cosmetic_f_N_KSO",
+      "type": "female",
+      "position": "neck",
+      "iconId": "f_N_G_KSO",
+      "base": [
+        "f_N_G_KSO"
+      ],
+      "silver": 600,
+      "gold": 0
+    },
+    "cosmetic_m_C_DWO": {
+      "id": "cosmetic_m_C_DWO",
+      "type": "male",
+      "position": "chest",
+      "iconId": "m_C_W_DWO",
+      "shadow": [
+        "m_C_S_DWO_Front",
+        "m_C_S_DWO_Back"
+      ],
+      "grey": [
+        "m_C_G_DWO_Front",
+        "m_C_G_DWO_Back"
+      ],
+      "white": [
+        "m_C_W_DWO_Front",
+        "m_C_W_DWO_Back"
+      ]
+    },
+    "cosmetic_f_C_PPS": {
+      "id": "cosmetic_f_C_PPS",
+      "type": "female",
+      "position": "chest",
+      "iconId": "f_C_G_PPS",
+      "base": [
+        "f_C_G_PPS"
+      ],
+      "silver": 2500,
+      "gold": 2
+    },
+    "cosmetic_f_WR_DWO": {
+      "id": "cosmetic_f_WR_DWO",
+      "type": "female",
+      "position": "wristRight",
+      "iconId": "f_WR_W_DWO",
+      "base": [
+        "f_WR_W_DWO"
+      ],
+      "silver": 500,
+      "gold": 0
+    },
+    "cosmetic_f_F_BDWO": {
+      "id": "cosmetic_f_F_BDWO",
+      "type": "female",
+      "position": "feet",
+      "iconId": "f_F_S_BDWO",
+      "base": [
+        "f_F_S_BDWO"
+      ],
+      "silver": 4000,
+      "gold": 3
+    },
+    "cosmetic_m_F_DWO": {
+      "id": "cosmetic_m_F_DWO",
+      "type": "male",
+      "position": "feet",
+      "iconId": "m_F_G_DWO",
+      "base": [
+        "m_F_G_DWO"
+      ]
+    },
+    "cosmetic_m_SF_HSS": {
+      "id": "cosmetic_m_SF_HSS",
+      "type": "male",
+      "position": "skinFace",
+      "iconId": "m_SF_G_HSS",
+      "base": [
+        "m_SF_G_HSS"
+      ]
+    },
+    "cosmetic_f_SS_HAT": {
+      "id": "cosmetic_f_SS_HAT",
+      "type": "female",
+      "position": "skinShoulder",
+      "iconId": "f_SS_G_HAT",
+      "base": [
+        "f_SS_G_HAT"
+      ],
+      "silver": 550,
+      "gold": 0
+    },
+    "cosmetic_m_SS_DWO": {
+      "id": "cosmetic_m_SS_DWO",
+      "type": "male",
+      "position": "skinShoulder",
+      "iconId": "m_SS_S_DWO",
+      "base": [
+        "m_SS_S_DWO"
+      ]
+    },
+    "cosmetic_m_SS_HST": {
+      "id": "cosmetic_m_SS_HST",
+      "type": "male",
+      "position": "skinShoulder",
+      "iconId": "m_SS_G_HST",
+      "base": [
+        "m_SS_G_HST"
+      ]
+    },
+    "cosmetic_f_SC_JBT": {
+      "id": "cosmetic_f_SC_JBT",
+      "type": "female",
+      "position": "skinChest",
+      "iconId": "f_SC_S_JBT",
+      "base": [
+        "f_SC_S_JBT"
+      ],
+      "silver": 3500,
+      "gold": 2
+    },
+    "cosmetic_f_SA_HWT": {
+      "id": "cosmetic_f_SA_HWT",
+      "type": "female",
+      "position": "skinArm",
+      "iconId": "f_SA_G_HWT",
+      "base": [
+        "f_SA_G_HWT"
+      ],
+      "silver": 3000,
+      "gold": 3
+    },
+    "cosmetic_f_SA_JGT": {
+      "id": "cosmetic_f_SA_JGT",
+      "type": "female",
+      "position": "skinArm",
+      "iconId": "f_SA_G_JGT",
+      "base": [
+        "f_SA_G_JGT"
+      ],
+      "silver": 2500,
+      "gold": 2
+    },
+    "cosmetic_m_SA_TRIBE": {
+      "id": "cosmetic_m_SA_TRIBE",
+      "type": "male",
+      "position": "skinArm",
+      "iconId": "m_SA_G_TRIBE",
+      "base": [
+        "m_SA_G_TRIBE"
+      ]
+    },
+    "cosmetic_f_S_SNOWQUEEN": {
+      "id": "cosmetic_f_S_SNOWQUEEN",
+      "type": "female",
+      "position": "style",
+      "iconId": "f_S_M_SNOWQUEEN",
+      "silver": 8000,
+      "gold": 7
+    },
+    "cosmetic_f_HE_HBH": {
+      "id": "cosmetic_f_HE_HBH",
+      "type": "female",
+      "position": "head",
+      "iconId": "f_HE_G_HBH",
+      "base": [
+        "f_HE_G_HBH"
+      ],
+      "silver": 1500,
+      "gold": 1
+    },
+    "cosmetic_f_HE_CES": {
+      "id": "cosmetic_f_HE_CES",
+      "type": "female",
+      "position": "head",
+      "iconId": "f_HE_G_CES",
+      "base": [
+        "f_HE_G_CES"
+      ],
+      "silver": 500,
+      "gold": 0
+    },
+    "cosmetic_f_HE_HDWO": {
+      "id": "cosmetic_f_HE_HDWO",
+      "type": "female",
+      "position": "head",
+      "iconId": "f_HE_S_HDWO",
+      "base": [
+        "f_HE_S_HDWO"
+      ],
+      "silver": 5250,
+      "gold": 4
+    },
+    "cosmetic_f_HE_CEH": {
+      "id": "cosmetic_f_HE_CEH",
+      "type": "female",
+      "position": "head",
+      "iconId": "f_HE_G_CEH",
+      "base": [
+        "f_HE_G_CEH"
+      ],
+      "silver": 500,
+      "gold": 0
+    },
+    "cosmetic_m_HE_HBH": {
+      "id": "cosmetic_m_HE_HBH",
+      "type": "male",
+      "position": "head",
+      "iconId": "m_HE_G_HBH",
+      "base": [
+        "m_HE_G_HBH"
+      ]
+    },
+    "cosmetic_m_HE_GLSS": {
+      "id": "cosmetic_m_HE_GLSS",
+      "type": "male",
+      "position": "head",
+      "iconId": "m_HE_G_GLSS",
+      "base": [
+        "m_HE_G_GLSS"
+      ]
+    },
+    "cosmetic_f_HA_CGH": {
+      "id": "cosmetic_f_HA_CGH",
+      "type": "female",
+      "position": "hair",
+      "iconId": "f_HA_G_CGH",
+      "base": [
+        "f_HA_G_CGH"
+      ],
+      "silver": 900,
+      "gold": 0
+    },
+    "cosmetic_f_HE_GLSS": {
+      "id": "cosmetic_f_HE_GLSS",
+      "type": "female",
+      "position": "head",
+      "iconId": "f_HE_G_GLSS",
+      "base": [
+        "f_HE_G_GLSS"
+      ]
+    },
+    "cosmetic_m_HE_HDWO": {
+      "id": "cosmetic_m_HE_HDWO",
+      "type": "male",
+      "position": "head",
+      "iconId": "m_HE_S_HDWO",
+      "base": [
+        "m_HE_S_HDWO"
+      ]
+    },
+    "cosmetic_f_HA_BHDWO": {
+      "id": "cosmetic_f_HA_BHDWO",
+      "type": "female",
+      "position": "hair",
+      "iconId": "f_HA_W_DWO",
+      "base": [
+        "f_HA_W_BHDWO_Front",
+        "f_HA_W_BHDWO_Back"
+      ]
+    },
+    "cosmetic_f_HA_KSO": {
+      "id": "cosmetic_f_HA_KSO",
+      "type": "female",
+      "position": "hair",
+      "iconId": "f_HA_G_KSO",
+      "base": [
+        "f_HA_G_KSO"
+      ],
+      "silver": 2000,
+      "gold": 1
+    },
+    "cosmetic_f_HA_BZZ": {
+      "id": "cosmetic_f_HA_BZZ",
+      "type": "female",
+      "position": "hair",
+      "iconId": "f_HA_G_BZZ",
+      "base": [
+        "f_HA_G_BZZ"
+      ],
+      "silver": 500,
+      "gold": 0
+    },
+    "cosmetic_m_HA_CGH": {
+      "id": "cosmetic_m_HA_CGH",
+      "type": "male",
+      "position": "hair",
+      "iconId": "m_HA_G_CGH",
+      "base": [
+        "m_HA_G_CGH"
+      ]
+    },
+    "cosmetic_m_HA_DWO": {
+      "id": "cosmetic_m_HA_DWO",
+      "type": "male",
+      "position": "hair",
+      "iconId": "m_HA_G_DWO",
+      "base": [
+        "m_HA_G_DWO"
+      ]
+    },
+    "cosmetic_m_HE_CEH": {
+      "id": "cosmetic_m_HE_CEH",
+      "type": "male",
+      "position": "head",
+      "iconId": "m_HE_G_CEH",
+      "base": [
+        "m_HE_G_CEH"
+      ]
+    },
+    "cosmetic_m_HA_DSO": {
+      "id": "cosmetic_m_HA_DSO",
+      "type": "male",
+      "position": "hair",
+      "iconId": "m_HA_G_DSO",
+      "base": [
+        "m_HA_G_DSO"
+      ]
+    },
+    "cosmetic_m_N_KSO": {
+      "id": "cosmetic_m_N_KSO",
+      "type": "male",
+      "position": "neck",
+      "iconId": "m_N_G_KSO",
+      "base": [
+        "m_N_G_KSO"
+      ]
+    },
+    "cosmetic_f_C_MESH": {
+      "id": "cosmetic_f_C_MESH",
+      "type": "female",
+      "position": "chest",
+      "iconId": "f_C_G_MESH",
+      "base": [
+        "f_C_G_MESHDRESS"
+      ]
+    },
+    "cosmetic_f_WL_KFO": {
+      "id": "cosmetic_f_WL_KFO",
+      "type": "female",
+      "position": "wristLeft",
+      "iconId": "f_WL_G_KFO",
+      "base": [
+        "f_WL_G_KFO"
+      ],
+      "silver": 400,
+      "gold": 0
+    },
+    "cosmetic_f_WL_DWO": {
+      "id": "cosmetic_f_WL_DWO",
+      "type": "female",
+      "position": "wristLeft",
+      "iconId": "f_WL_S_DWO",
+      "base": [
+        "f_WL_S_DWO"
+      ],
+      "silver": 300,
+      "gold": 0
+    },
+    "cosmetic_f_H_NAIL": {
+      "id": "cosmetic_f_H_NAIL",
+      "type": "female",
+      "position": "baseHand",
+      "iconId": "f_H_S_NAIL",
+      "base": [
+        "f_H_S_NAIL"
+      ]
+    },
+    "cosmetic_f_N_DWO": {
+      "id": "cosmetic_f_N_DWO",
+      "type": "female",
+      "position": "neck",
+      "iconId": "f_N_W_DWO",
+      "base": [
+        "f_N_W_DWO"
+      ],
+      "silver": 400,
+      "gold": 0
+    },
+    "cosmetic_f_WR_KFO": {
+      "id": "cosmetic_f_WR_KFO",
+      "type": "female",
+      "position": "wristRight",
+      "iconId": "f_WR_G_KFO",
+      "base": [
+        "f_WR_G_KFO"
+      ],
+      "silver": 400,
+      "gold": 0
+    },
+    "cosmetic_m_FR_HSR": {
+      "id": "cosmetic_m_FR_HSR",
+      "type": "male",
+      "position": "fingerRight",
+      "iconId": "m_FR_G_HSR",
+      "base": [
+        "m_FR_G_HSR"
+      ]
+    },
+    "cosmetic_m_WR_KSO": {
+      "id": "cosmetic_m_WR_KSO",
+      "type": "male",
+      "position": "wristRight",
+      "iconId": "m_WR_G_KSO",
+      "base": [
+        "m_WR_G_KSO"
+      ]
+    },
+    "cosmetic_f_FL_KSO": {
+      "id": "cosmetic_f_FL_KSO",
+      "type": "female",
+      "position": "fingerLeft",
+      "iconId": "f_FL_G_KSO",
+      "base": [
+        "f_FL_G_KSO"
+      ],
+      "silver": 300,
+      "gold": 0
+    },
+    "cosmetic_m_FR_HGR": {
+      "id": "cosmetic_m_FR_HGR",
+      "type": "male",
+      "position": "fingerRight",
+      "iconId": "m_FR_G_HGR",
+      "base": [
+        "m_FR_G_HGR"
+      ]
+    },
+    "cosmetic_f_F_SDWO": {
+      "id": "cosmetic_f_F_SDWO",
+      "type": "female",
+      "position": "feet",
+      "iconId": "f_F_W_SDWO",
+      "base": [
+        "f_F_W_SDWO"
+      ],
+      "silver": 500,
+      "gold": 0
+    },
+    "cosmetic_m_WL_KSO": {
+      "id": "cosmetic_m_WL_KSO",
+      "type": "male",
+      "position": "wristLeft",
+      "iconId": "m_WL_W_KSO",
+      "base": [
+        "m_WL_W_KSO"
+      ]
+    },
+    "cosmetic_f_L_PPS": {
+      "id": "cosmetic_f_L_PPS",
+      "type": "female",
+      "position": "legs",
+      "iconId": "f_L_G_PPS",
+      "base": [
+        "f_L_G_PPS"
+      ],
+      "silver": 1500,
+      "gold": 1
+    },
+    "cosmetic_m_F_DSO": {
+      "id": "cosmetic_m_F_DSO",
+      "type": "male",
+      "position": "feet",
+      "iconId": "m_F_G_DSO",
+      "base": [
+        "m_F_G_DSO"
+      ]
+    },
+    "cosmetic_f_F_SBDWO": {
+      "id": "cosmetic_f_F_SBDWO",
+      "type": "female",
+      "position": "feet",
+      "iconId": "f_F_G_SBDWO",
+      "base": [
+        "f_F_G_SBDWO"
+      ],
+      "silver": 2000,
+      "gold": 2
+    },
+    "cosmetic_f_F_KFO": {
+      "id": "cosmetic_f_F_KFO",
+      "type": "female",
+      "position": "feet",
+      "iconId": "f_F_S_KFO",
+      "base": [
+        "f_F_S_KFO"
+      ],
+      "silver": 1500,
+      "gold": 1
+    },
+    "cosmetic_m_F_CHFO": {
+      "id": "cosmetic_m_F_CHFO",
+      "type": "male",
+      "position": "feet",
+      "iconId": "m_F_G_CHFO",
+      "base": [
+        "m_F_G_CHFO"
+      ]
+    },
+    "cosmetic_f_SF_HSS": {
+      "id": "cosmetic_f_SF_HSS",
+      "type": "female",
+      "position": "skinFace",
+      "iconId": "f_SF_G_HSS",
+      "base": [
+        "f_SF_G_HSS"
+      ],
+      "silver": 800,
+      "gold": 0
+    },
+    "cosmetic_m_F_DTO": {
+      "id": "cosmetic_m_F_DTO",
+      "type": "male",
+      "position": "feet",
+      "iconId": "m_F_G_DTO",
+      "base": [
+        "m_F_G_DTO"
+      ]
+    },
+    "cosmetic_m_SF_DBB": {
+      "id": "cosmetic_m_SF_DBB",
+      "type": "male",
+      "position": "skinFace",
+      "iconId": "m_SF_G_DBB",
+      "base": [
+        "m_SF_G_DBB"
+      ]
+    },
+    "cosmetic_f_SF_HSF": {
+      "id": "cosmetic_f_SF_HSF",
+      "type": "female",
+      "position": "skinFace",
+      "iconId": "f_SF_G_HSF",
+      "base": [
+        "f_SF_G_HSF"
+      ],
+      "silver": 800,
+      "gold": 0
+    },
+    "cosmetic_f_SS_HFT": {
+      "id": "cosmetic_f_SS_HFT",
+      "type": "female",
+      "position": "skinShoulder",
+      "iconId": "f_SS_G_HFT",
+      "base": [
+        "f_SS_G_HFT"
+      ],
+      "silver": 650,
+      "gold": 0
+    },
+    "cosmetic_f_SF_HST": {
+      "id": "cosmetic_f_SF_HST",
+      "type": "female",
+      "position": "skinFace",
+      "iconId": "f_SF_G_HST",
+      "base": [
+        "f_SF_G_HST"
+      ],
+      "silver": 800,
+      "gold": 0
+    },
+    "cosmetic_m_SF_HST": {
+      "id": "cosmetic_m_SF_HST",
+      "type": "male",
+      "position": "skinFace",
+      "iconId": "m_SF_G_HST",
+      "base": [
+        "m_SF_G_HST"
+      ]
+    },
+    "cosmetic_f_L_TIGHT": {
+      "id": "cosmetic_f_L_TIGHT",
+      "type": "female",
+      "position": "legs",
+      "iconId": "f_L_G_TIGHT",
+      "base": [
+        "f_L_G_TIGHT"
+      ],
+      "silver": 500,
+      "gold": 0
+    },
+    "cosmetic_m_SS_HBT": {
+      "id": "cosmetic_m_SS_HBT",
+      "type": "male",
+      "position": "skinShoulder",
+      "iconId": "m_SS_G_HBT",
+      "base": [
+        "m_SS_G_HBT"
+      ]
+    },
+    "cosmetic_m_SF_DBM": {
+      "id": "cosmetic_m_SF_DBM",
+      "type": "male",
+      "position": "skinFace",
+      "iconId": "m_SF_G_DBM",
+      "base": [
+        "m_SF_G_DBM"
+      ]
+    },
+    "cosmetic_f_SS_HBT": {
+      "id": "cosmetic_f_SS_HBT",
+      "type": "female",
+      "position": "skinShoulder",
+      "iconId": "f_SS_G_HBT",
+      "base": [
+        "f_SS_G_HBT"
+      ],
+      "silver": 1000,
+      "gold": 1
+    },
+    "cosmetic_f_F_KSO": {
+      "id": "cosmetic_f_F_KSO",
+      "type": "female",
+      "position": "feet",
+      "iconId": "f_F_S_KSO",
+      "base": [
+        "f_F_S_KSO"
+      ],
+      "silver": 1500,
+      "gold": 1
+    },
+    "cosmetic_f_SS_JET": {
+      "id": "cosmetic_f_SS_JET",
+      "type": "female",
+      "position": "skinShoulder",
+      "iconId": "f_SS_G_JET",
+      "base": [
+        "f_SS_G_JET"
+      ],
+      "silver": 1000,
+      "gold": 1
+    },
+    "cosmetic_f_SS_HMT": {
+      "id": "cosmetic_f_SS_HMT",
+      "type": "female",
+      "position": "skinShoulder",
+      "iconId": "f_SS_G_HMT",
+      "base": [
+        "f_SS_G_HMT"
+      ],
+      "silver": 550,
+      "gold": 0
+    },
+    "cosmetic_m_SS_HAT": {
+      "id": "cosmetic_m_SS_HAT",
+      "type": "male",
+      "position": "skinShoulder",
+      "iconId": "m_SS_G_HAT",
+      "base": [
+        "m_SS_G_HAT"
+      ]
+    },
+    "cosmetic_m_F_HFO": {
+      "id": "cosmetic_m_F_HFO",
+      "type": "male",
+      "position": "feet",
+      "iconId": "m_F_G_HFO",
+      "base": [
+        "m_F_G_HFO"
+      ]
+    },
+    "cosmetic_f_SC_JSET": {
+      "id": "cosmetic_f_SC_JSET",
+      "type": "female",
+      "position": "skinChest",
+      "iconId": "f_SC_S_JSET",
+      "base": [
+        "f_SC_S_JSET"
+      ],
+      "silver": 2000,
+      "gold": 1
+    },
+    "cosmetic_m_SS_HFT": {
+      "id": "cosmetic_m_SS_HFT",
+      "type": "male",
+      "position": "skinShoulder",
+      "iconId": "m_SS_G_HFT",
+      "base": [
+        "m_SS_G_HFT"
+      ]
+    },
+    "cosmetic_m_SS_JET": {
+      "id": "cosmetic_m_SS_JET",
+      "type": "male",
+      "position": "skinShoulder",
+      "iconId": "m_SS_G_JET",
+      "base": [
+        "m_SS_G_JET"
+      ]
+    },
+    "cosmetic_m_SA_JDT": {
+      "id": "cosmetic_m_SA_JDT",
+      "type": "male",
+      "position": "skinArm",
+      "iconId": "m_SA_G_JDT",
+      "base": [
+        "m_SA_G_JDT"
+      ]
+    },
+    "cosmetic_m_SC_JSET": {
+      "id": "cosmetic_m_SC_JSET",
+      "type": "male",
+      "position": "skinChest",
+      "iconId": "m_SC_S_JSET",
+      "base": [
+        "m_SC_S_JSET"
+      ]
+    },
+    "cosmetic_f_SC_DWO": {
+      "id": "cosmetic_f_SC_DWO",
+      "type": "female",
+      "position": "skinChest",
+      "iconId": "f_SC_S_DWO",
+      "base": [
+        "f_SC_S_DWO"
+      ],
+      "silver": 2000,
+      "gold": 1
+    },
+    "cosmetic_m_SF_HSF": {
+      "id": "cosmetic_m_SF_HSF",
+      "type": "male",
+      "position": "skinFace",
+      "iconId": "m_SF_G_HSF",
+      "base": [
+        "m_SF_G_HSF"
+      ]
+    },
+    "cosmetic_f_SA_JWT": {
+      "id": "cosmetic_f_SA_JWT",
+      "type": "female",
+      "position": "skinArm",
+      "iconId": "f_SA_G_JWT",
+      "base": [
+        "f_SA_G_JWT"
+      ],
+      "silver": 2500,
+      "gold": 2
+    },
+    "cosmetic_m_SA_HWT": {
+      "id": "cosmetic_m_SA_HWT",
+      "type": "male",
+      "position": "skinArm",
+      "iconId": "m_SA_G_HWT",
+      "base": [
+        "m_SA_G_HWT"
+      ]
+    },
+    "cosmetic_m_SC_HRT": {
+      "id": "cosmetic_m_SC_HRT",
+      "type": "male",
+      "position": "skinChest",
+      "iconId": "m_SC_S_HRT",
+      "base": [
+        "m_SC_S_HRT"
+      ]
+    },
+    "cosmetic_f_SS_DWO": {
+      "id": "cosmetic_f_SS_DWO",
+      "type": "female",
+      "position": "skinShoulder",
+      "iconId": "f_SS_S_DWO",
+      "base": [
+        "f_SS_S_DWO"
+      ],
+      "silver": 500,
+      "gold": 0
+    },
+    "cosmetic_f_S_HHO": {
+      "id": "cosmetic_f_S_HHO",
+      "type": "female",
+      "position": "style",
+      "iconId": "f_S_M_HHO",
+      "silver": 8000,
+      "gold": 7
+    },
+    "cosmetic_m_SA_JWT": {
+      "id": "cosmetic_m_SA_JWT",
+      "type": "male",
+      "position": "skinArm",
+      "iconId": "m_SA_G_JWT",
+      "base": [
+        "m_SA_G_JWT"
+      ]
+    },
+    "cosmetic_f_SA_JDT": {
+      "id": "cosmetic_f_SA_JDT",
+      "type": "female",
+      "position": "skinArm",
+      "iconId": "f_SA_G_JDT",
+      "base": [
+        "f_SA_G_JDT"
+      ],
+      "silver": 3000,
+      "gold": 3
+    },
+    "cosmetic_f_SS_HST": {
+      "id": "cosmetic_f_SS_HST",
+      "type": "female",
+      "position": "skinShoulder",
+      "iconId": "f_SS_G_HST",
+      "base": [
+        "f_SS_G_HST"
+      ],
+      "silver": 1250,
+      "gold": 1
+    },
+    "cosmetic_m_S_HKO": {
+      "id": "cosmetic_m_S_HKO",
+      "type": "male",
+      "position": "style",
+      "iconId": "m_S_M_HKO",
+      "silver": 8000,
+      "gold": 7
+    },
+    "cosmetic_f_SA_TRIBE": {
+      "id": "cosmetic_f_SA_TRIBE",
+      "type": "female",
+      "position": "skinArm",
+      "iconId": "f_SA_G_TRIBE",
+      "base": [
+        "f_SA_G_TRIBE"
+      ],
+      "silver": 2500,
+      "gold": 2
+    },
+    "cosmetic_m_SA_FLWR": {
+      "id": "cosmetic_m_SA_FLWR",
+      "type": "male",
+      "position": "skinArm",
+      "iconId": "m_SA_G_FLWR",
+      "base": [
+        "m_SA_G_FLWR"
+      ]
+    },
+    "cosmetic_m_SS_HMT": {
+      "id": "cosmetic_m_SS_HMT",
+      "type": "male",
+      "position": "skinShoulder",
+      "iconId": "m_SS_G_HMT",
+      "base": [
+        "m_SS_G_HMT"
+      ]
+    },
+    "cosmetic_m_S_HHO": {
+      "id": "cosmetic_m_S_HHO",
+      "type": "male",
+      "position": "style",
+      "iconId": "m_S_M_HHO",
+      "silver": 8000,
+      "gold": 7
+    },
+    "cosmetic_f_S_HKO": {
+      "id": "cosmetic_f_S_HKO",
+      "type": "female",
+      "position": "style",
+      "iconId": "f_S_M_HKO",
+      "silver": 8000,
+      "gold": 7
+    },
+    "cosmetic_m_SC_JBT": {
+      "id": "cosmetic_m_SC_JBT",
+      "type": "male",
+      "position": "skinChest",
+      "iconId": "m_SC_S_JBT",
+      "base": [
+        "m_SC_S_JBT"
+      ]
+    },
+    "cosmetic_m_S_HLO": {
+      "id": "cosmetic_m_S_HLO",
+      "type": "male",
+      "position": "style",
+      "iconId": "m_S_M_HLO",
+      "silver": 8000,
+      "gold": 7
+    },
+    "cosmetic_f_SC_HRT": {
+      "id": "cosmetic_f_SC_HRT",
+      "type": "female",
+      "position": "skinChest",
+      "iconId": "f_SC_S_HRT",
+      "base": [
+        "f_SC_S_HRT"
+      ],
+      "silver": 2000,
+      "gold": 1
+    },
+    "cosmetic_m_SA_JGT": {
+      "id": "cosmetic_m_SA_JGT",
+      "type": "male",
+      "position": "skinArm",
+      "iconId": "m_SA_G_JGT",
+      "base": [
+        "m_SA_G_JGT"
+      ]
+    },
+    "cosmetic_f_SA_FLWR": {
+      "id": "cosmetic_f_SA_FLWR",
+      "type": "female",
+      "position": "skinArm",
+      "iconId": "f_SA_G_FLWR",
+      "base": [
+        "f_SA_G_FLWR"
+      ],
+      "silver": 2500,
+      "gold": 2
+    },
+    "cosmetic_f_S_HLO": {
+      "id": "cosmetic_f_S_HLO",
+      "type": "female",
+      "position": "style",
+      "iconId": "f_S_M_HLO",
+      "silver": 8000,
+      "gold": 7
+    },
+    "cosmetic_m_S_JACKFROST": {
+      "id": "cosmetic_m_S_JACKFROST",
+      "type": "male",
+      "position": "style",
+      "iconId": "m_S_M_JACKFROST",
+      "silver": 8000,
+      "gold": 7
+    },
+    "cosmetic_f_C_MESHTOP": {
+      "id": "cosmetic_f_C_MESHTOP",
+      "type": "female",
+      "position": "chest",
+      "iconId": "f_C_S_MESHTOP",
+      "base": [
+        "f_C_S_MESHTOP"
+      ],
+      "silver": 1200,
+      "gold": 1
+    },
+    "cosmetic_m_F_SANDALS": {
+      "id": "cosmetic_m_F_SANDALS",
+      "type": "male",
+      "position": "feet",
+      "iconId": "m_F_G_SANDALS",
+      "base": [
+        "m_F_G_SANDALS"
+      ]
+    },
+    "cosmetic_m_SC_CROWN": {
+      "id": "cosmetic_m_SC_CROWN",
+      "type": "male",
+      "position": "skinChest",
+      "iconId": "m_SC_G_CROWN",
+      "base": [
+        "m_SC_G_CROWN"
+      ]
+    },
+    "cosmetic_f_S_MIDSUMMER": {
+      "id": "cosmetic_f_S_MIDSUMMER",
+      "type": "female",
+      "position": "style",
+      "iconId": "f_S_M_MIDSUMMER",
+      "silver": 8000,
+      "gold": 7
+    },
+    "cosmetic_m_S_MIDSUMMER": {
+      "id": "cosmetic_m_S_MIDSUMMER",
+      "type": "male",
+      "position": "style",
+      "iconId": "m_S_M_MIDSUMMER",
+      "silver": 8000,
+      "gold": 7
+    },
+    "cosmetic_f_HE_FLOWER": {
+      "id": "cosmetic_f_HE_FLOWER",
+      "type": "female",
+      "position": "head",
+      "iconId": "f_HE_G_FLOWER",
+      "base": [
+        "f_HE_G_FLOWER"
+      ],
+      "silver": 800,
+      "gold": 0
+    },
+    "cosmetic_f_N_BOW": {
+      "id": "cosmetic_f_N_BOW",
+      "type": "female",
+      "position": "neck",
+      "iconId": "f_N_G_BOW",
+      "base": [
+        "f_N_G_BOW"
+      ],
+      "silver": 250,
+      "gold": 0
+    },
+    "cosmetic_f_L_HEAVYSKIRT": {
+      "id": "cosmetic_f_L_HEAVYSKIRT",
+      "type": "female",
+      "position": "legs",
+      "iconId": "f_L_W_HEAVYSKIRT",
+      "shadow": [
+        "f_L_S_HEAVYSKIRT"
+      ],
+      "grey": [
+        "f_L_G_HEAVYSKIRT"
+      ],
+      "white": [
+        "f_L_W_HEAVYSKIRT"
+      ],
+      "silver": 2500,
+      "gold": 2
+    },
+    "cosmetic_f_F_FUR": {
+      "id": "cosmetic_f_F_FUR",
+      "type": "female",
+      "position": "feet",
+      "iconId": "f_F_G_FUR",
+      "base": [
+        "f_F_G_FUR"
+      ],
+      "silver": 2000,
+      "gold": 1
+    },
+    "cosmetic_m_C_HOOD": {
+      "id": "cosmetic_m_C_HOOD",
+      "type": "male",
+      "position": "chest",
+      "iconId": "m_C_G_HOOD",
+      "base": [
+        "m_C_G_HOOD"
+      ]
+    },
+    "cosmetic_f_FL_HFR": {
+      "id": "cosmetic_f_FL_HFR",
+      "type": "female",
+      "position": "fingerLeft",
+      "iconId": "f_FL_G_HFR",
+      "base": [
+        "f_FL_G_HFR"
+      ],
+      "silver": 400,
+      "gold": 0
+    },
+    "cosmetic_f_SC_CROWN": {
+      "id": "cosmetic_f_SC_CROWN",
+      "type": "female",
+      "position": "skinChest",
+      "iconId": "f_SC_G_CROWN",
+      "base": [
+        "f_SC_G_CROWN"
+      ],
+      "silver": 2000,
+      "gold": 1
+    },
+    "cosmetic_f_L_LACELEG": {
+      "id": "cosmetic_f_L_LACELEG",
+      "type": "female",
+      "position": "legs",
+      "iconId": "f_L_G_LACELEG",
+      "base": [
+        "f_L_G_LACELEG"
+      ],
+      "silver": 800,
+      "gold": 0
+    },
+    "cosmetic_f_F_TIED": {
+      "id": "cosmetic_f_F_TIED",
+      "type": "female",
+      "position": "feet",
+      "iconId": "f_F_G_TIED",
+      "base": [
+        "f_F_G_TIED"
+      ],
+      "silver": 3000,
+      "gold": 2
+    },
+    "cosmetic_f_SF_HOOPS": {
+      "id": "cosmetic_f_SF_HOOPS",
+      "type": "female",
+      "position": "skinFace",
+      "iconId": "f_SF_G_HOOPS",
+      "base": [
+        "f_SF_G_HOOPS"
+      ],
+      "silver": 800,
+      "gold": 0
+    },
+    "cosmetic_f_S_CORNMOON": {
+      "id": "cosmetic_f_S_CORNMOON",
+      "type": "female",
+      "position": "style",
+      "iconId": "f_S_M_CORNMOON",
+      "silver": 8000,
+      "gold": 7
+    },
+    "cosmetic_f_F_BOW": {
+      "id": "cosmetic_f_F_BOW",
+      "type": "female",
+      "position": "feet",
+      "iconId": "f_F_G_BOW",
+      "base": [
+        "f_F_G_BOW"
+      ],
+      "silver": 1500,
+      "gold": 1
+    },
+    "cosmetic_m_S_CORNMOON": {
+      "id": "cosmetic_m_S_CORNMOON",
+      "type": "male",
+      "position": "style",
+      "iconId": "m_S_M_CORNMOON",
+      "silver": 8000,
+      "gold": 7
+    },
+    "cosmetic_m_S_CALYPSO": {
+      "id": "cosmetic_m_S_CALYPSO",
+      "type": "male",
+      "position": "style",
+      "iconId": "m_S_M_CALYPSO",
+      "silver": 8000,
+      "gold": 7
+    },
+    "cosmetic_f_SF_GLSS": {
+      "id": "cosmetic_f_SF_GLSS",
+      "type": "female",
+      "position": "skinFace",
+      "iconId": "f_SF_G_GLSS",
+      "base": [
+        "f_SF_G_GLSS"
+      ],
+      "silver": 600,
+      "gold": 0
+    },
+    "cosmetic_m_SF_GOATEE": {
+      "id": "cosmetic_m_SF_GOATEE",
+      "type": "male",
+      "position": "skinFace",
+      "iconId": "m_SF_G_GOATEE",
+      "base": [
+        "m_SF_G_GOATEE"
+      ]
+    },
+    "cosmetic_m_SF_GLSS": {
+      "id": "cosmetic_m_SF_GLSS",
+      "type": "male",
+      "position": "skinFace",
+      "iconId": "m_SF_G_GLSS",
+      "base": [
+        "m_SF_G_GLSS"
+      ]
+    },
+    "cosmetic_f_S_LILYOV": {
+      "id": "cosmetic_f_S_LILYOV",
+      "type": "female",
+      "position": "style",
+      "iconId": "f_S_M_LILYOV",
+      "silver": 8000,
+      "gold": 7
+    },
+    "cosmetic_f_S_BRNNGWTCH": {
+      "id": "cosmetic_f_S_BRNNGWTCH",
+      "type": "female",
+      "position": "style",
+      "iconId": "f_S_M_BRNNGWTCH",
+      "silver": 8000,
+      "gold": 7
+    },
+    "cosmetic_m_S_FIREDANCER": {
+      "id": "cosmetic_m_S_FIREDANCER",
+      "type": "male",
+      "position": "style",
+      "iconId": "m_S_M_FIREDANCER",
+      "silver": 8000,
+      "gold": 7
+    },
+    "cosmetic_m_S_BRNNGWTCH": {
+      "id": "cosmetic_m_S_BRNNGWTCH",
+      "type": "male",
+      "position": "style",
+      "iconId": "m_S_M_BRNNGWTCH",
+      "silver": 8000,
+      "gold": 7
+    },
+    "cosmetic_m_SC_DWO": {
+      "id": "cosmetic_m_SC_DWO",
+      "type": "male",
+      "position": "skinChest",
+      "iconId": "m_SC_S_DWO",
+      "base": [
+        "m_SC_S_DWO"
+      ]
+    },
+    "cosmetic_f_S_ECLIPSE": {
+      "id": "cosmetic_f_S_ECLIPSE",
+      "type": "female",
+      "position": "style",
+      "iconId": "f_S_M_ECLIPSE",
+      "silver": 8000,
+      "gold": 7
+    },
+    "cosmetic_f_S_CALYPSO": {
+      "id": "cosmetic_f_S_CALYPSO",
+      "type": "female",
+      "position": "style",
+      "iconId": "f_S_M_CALYPSO",
+      "silver": 8000,
+      "gold": 7
+    },
+    "cosmetic_m_S_ECLIPSE": {
+      "id": "cosmetic_m_S_ECLIPSE",
+      "type": "male",
+      "position": "style",
+      "iconId": "m_S_M_ECLIPSE",
+      "silver": 8000,
+      "gold": 7
+    },
+    "cosmetic_f_S_THUNDERMOON": {
+      "id": "cosmetic_f_S_THUNDERMOON",
+      "type": "female",
+      "position": "style",
+      "iconId": "f_S_M_THUNDERMOON",
+      "silver": 8000,
+      "gold": 7
+    },
+    "cosmetic_m_S_THUNDERMOON": {
+      "id": "cosmetic_m_S_THUNDERMOON",
+      "type": "male",
+      "position": "style",
+      "iconId": "m_S_M_THUNDERMOON",
+      "silver": 8000,
+      "gold": 7
+    },
+    "cosmetic_f_C_MAGICINK": {
+      "id": "cosmetic_f_C_MAGICINK",
+      "type": "female",
+      "position": "chest",
+      "iconId": "f_C_W_MAGICINK",
+      "shadow": [
+        "f_C_S_MAGICINK"
+      ],
+      "grey": [
+        "f_C_G_MAGICINK"
+      ],
+      "white": [
+        "f_C_W_MAGICINK"
+      ],
+      "silver": 1000,
+      "gold": 0
+    },
+    "cosmetic_m_C_WITCHCO": {
+      "id": "cosmetic_m_C_WITCHCO",
+      "type": "male",
+      "position": "chest",
+      "iconId": "m_C_W_WITCHCO",
+      "shadow": [
+        "m_C_S_WITCHCO"
+      ],
+      "grey": [
+        "m_C_G_WITCHCO"
+      ],
+      "white": [
+        "m_C_W_WITCHCO"
+      ]
+    },
+    "cosmetic_f_C_BUTTON": {
+      "id": "cosmetic_f_C_BUTTON",
+      "type": "female",
+      "position": "chest",
+      "iconId": "f_C_W_BUTTON",
+      "shadow": [
+        "f_C_S_BUTTON"
+      ],
+      "grey": [
+        "f_C_G_BUTTON"
+      ],
+      "white": [
+        "f_C_W_BUTTON"
+      ],
+      "silver": 2500,
+      "gold": 2
+    },
+    "cosmetic_m_C_SSBUTTON": {
+      "id": "cosmetic_m_C_SSBUTTON",
+      "type": "male",
+      "position": "chest",
+      "iconId": "m_C_W_SSBUTTON",
+      "shadow": [
+        "m_C_S_SSBUTTON"
+      ],
+      "grey": [
+        "m_C_G_SSBUTTON"
+      ],
+      "white": [
+        "m_C_W_SSBUTTON"
+      ]
+    },
+    "cosmetic_m_C_MAGICINK": {
+      "id": "cosmetic_m_C_MAGICINK",
+      "type": "male",
+      "position": "chest",
+      "iconId": "m_C_W_MAGICINK",
+      "shadow": [
+        "m_C_S_MAGICINK"
+      ],
+      "grey": [
+        "m_C_G_MAGICINK"
+      ],
+      "white": [
+        "m_C_W_MAGICINK"
+      ]
+    },
+    "cosmetic_m_L_TRAVEL": {
+      "id": "cosmetic_m_L_TRAVEL",
+      "type": "male",
+      "position": "legs",
+      "iconId": "m_L_W_TRAVEL",
+      "shadow": [
+        "m_L_S_TRAVEL"
+      ],
+      "grey": [
+        "m_L_G_TRAVEL"
+      ],
+      "white": [
+        "m_L_W_TRAVEL"
+      ]
+    },
+    "cosmetic_m_L_SHORTS": {
+      "id": "cosmetic_m_L_SHORTS",
+      "type": "male",
+      "position": "legs",
+      "iconId": "m_L_W_SHORTS",
+      "shadow": [
+        "m_L_S_SHORTS"
+      ],
+      "grey": [
+        "m_L_G_SHORTS"
+      ],
+      "white": [
+        "m_L_W_SHORTS"
+      ]
+    },
+    "cosmetic_f_L_SHORTS": {
+      "id": "cosmetic_f_L_SHORTS",
+      "type": "female",
+      "position": "legs",
+      "iconId": "f_L_W_SHORTS",
+      "shadow": [
+        "f_L_S_SHORTS"
+      ],
+      "grey": [
+        "f_L_G_SHORTS"
+      ],
+      "white": [
+        "f_L_W_SHORTS"
+      ],
+      "silver": 1000,
+      "gold": 1
+    },
+    "cosmetic_f_C_WITCHCO": {
+      "id": "cosmetic_f_C_WITCHCO",
+      "type": "female",
+      "position": "chest",
+      "iconId": "f_C_W_WITCHCO",
+      "shadow": [
+        "f_C_S_WITCHCO"
+      ],
+      "grey": [
+        "f_C_G_WITCHCO"
+      ],
+      "white": [
+        "f_C_W_WITCHCO"
+      ],
+      "silver": 1000,
+      "gold": 0
+    },
+    "cosmetic_f_L_ROMPER": {
+      "id": "cosmetic_f_L_ROMPER",
+      "type": "female",
+      "position": "legs",
+      "iconId": "f_L_W_ROMPER",
+      "shadow": [
+        "f_L_S_ROMPER"
+      ],
+      "grey": [
+        "f_L_G_ROMPER"
+      ],
+      "white": [
+        "f_L_W_ROMPER"
+      ],
+      "silver": 1500,
+      "gold": 1
+    },
+    "cosmetic_f_HE_DWO": {
+      "id": "cosmetic_f_HE_DWO",
+      "type": "female",
+      "position": "head",
+      "iconId": "f_HE_W_DWO",
+      "shadow": [
+        "f_HE_S_DWO"
+      ],
+      "grey": [
+        "f_HE_G_DWO"
+      ],
+      "white": [
+        "f_HE_W_DWO"
+      ],
+      "silver": 1750,
+      "gold": 1
+    },
+    "cosmetic_f_HE_HNO": {
+      "id": "cosmetic_f_HE_HNO",
+      "type": "female",
+      "position": "head",
+      "iconId": "f_HE_W_HNO",
+      "shadow": [
+        "f_HE_S_HNO"
+      ],
+      "grey": [
+        "f_HE_G_HNO"
+      ],
+      "white": [
+        "f_HE_W_HNO"
+      ],
+      "silver": 1000,
+      "gold": 0
+    },
+    "cosmetic_m_HE_DWO": {
+      "id": "cosmetic_m_HE_DWO",
+      "type": "male",
+      "position": "head",
+      "iconId": "m_HE_W_DWO",
+      "shadow": [
+        "m_HE_S_DWO"
+      ],
+      "grey": [
+        "m_HE_G_DWO"
+      ],
+      "white": [
+        "m_HE_W_DWO"
+      ]
+    },
+    "cosmetic_m_HE_HNO": {
+      "id": "cosmetic_m_HE_HNO",
+      "type": "male",
+      "position": "head",
+      "iconId": "m_HE_W_HNO",
+      "shadow": [
+        "m_HE_S_HNO"
+      ],
+      "grey": [
+        "m_HE_G_HNO"
+      ],
+      "white": [
+        "m_HE_W_HNO"
+      ]
+    },
+    "cosmetic_f_HA_DWO": {
+      "id": "cosmetic_f_HA_DWO",
+      "type": "female",
+      "position": "hair",
+      "iconId": "f_HA_W_DWO",
+      "shadow": [
+        "f_HA_W_DWO_Front",
+        "f_HA_W_DWO_Back"
+      ],
+      "silver": 1000,
+      "gold": 0
+    },
+    "cosmetic_m_C_DSO": {
+      "id": "cosmetic_m_C_DSO",
+      "type": "male",
+      "position": "chest",
+      "iconId": "m_C_W_DSO",
+      "shadow": [
+        "m_C_S_DSO"
+      ],
+      "grey": [
+        "m_C_G_DSO"
+      ],
+      "white": [
+        "m_C_W_DSO"
+      ]
+    },
+    "cosmetic_f_C_SCT": {
+      "id": "cosmetic_f_C_SCT",
+      "type": "female",
+      "position": "chest",
+      "iconId": "f_C_W_SCT",
+      "shadow": [
+        "f_C_S_SCT"
+      ],
+      "grey": [
+        "f_C_G_SCT"
+      ],
+      "white": [
+        "f_C_W_SCT"
+      ],
+      "silver": 1500,
+      "gold": 1
+    },
+    "cosmetic_m_C_OPEN": {
+      "id": "cosmetic_m_C_OPEN",
+      "type": "male",
+      "position": "chest",
+      "iconId": "m_C_W_OPEN",
+      "shadow": [
+        "m_C_S_OPEN"
+      ],
+      "grey": [
+        "m_C_G_OPEN"
+      ],
+      "white": [
+        "m_C_W_OPEN"
+      ]
+    },
+    "cosmetic_m_WR_DWO": {
+      "id": "cosmetic_m_WR_DWO",
+      "type": "male",
+      "position": "wristRight",
+      "iconId": "m_WR_W_DWO",
+      "shadow": [
+        "m_WR_S_DWO"
+      ],
+      "grey": [
+        "m_WR_G_DWO"
+      ],
+      "white": [
+        "m_WR_W_DWO"
+      ]
+    },
+    "cosmetic_m_L_DSO": {
+      "id": "cosmetic_m_L_DSO",
+      "type": "male",
+      "position": "legs",
+      "iconId": "m_L_W_DSO",
+      "shadow": [
+        "m_L_S_DSO"
+      ],
+      "grey": [
+        "m_L_G_DSO"
+      ],
+      "white": [
+        "m_L_W_DSO"
+      ]
+    },
+    "cosmetic_f_L_LS": {
+      "id": "cosmetic_f_L_LS",
+      "type": "female",
+      "position": "legs",
+      "iconId": "f_L_W_LS",
+      "shadow": [
+        "f_L_S_LS"
+      ],
+      "grey": [
+        "f_L_G_LS"
+      ],
+      "white": [
+        "f_L_W_LS"
+      ],
+      "silver": 4000,
+      "gold": 3
+    },
+    "cosmetic_m_L_PUFF": {
+      "id": "cosmetic_m_L_PUFF",
+      "type": "male",
+      "position": "legs",
+      "iconId": "m_L_W_PUFF",
+      "shadow": [
+        "m_L_S_PUFF"
+      ],
+      "grey": [
+        "m_L_G_PUFF"
+      ],
+      "white": [
+        "m_L_W_PUFF"
+      ]
+    },
+    "cosmetic_m_SF_SPARSEMUSTACHE": {
+      "id": "cosmetic_m_SF_SPARSEMUSTACHE",
+      "type": "male",
+      "position": "skinFace",
+      "iconId": "m_SF_G_SPARSEMUSTACHE",
+      "base": [
+        "m_SF_G_SPARSEMUSTACHE"
+      ]
+    },
+    "cosmetic_f_SS_CROWSKULL": {
+      "id": "cosmetic_f_SS_CROWSKULL",
+      "type": "female",
+      "position": "skinShoulder",
+      "iconId": "f_SS_G_CROWSKULL",
+      "base": [
+        "f_SS_G_CROWSKULL"
+      ],
+      "silver": 850,
+      "gold": 0
+    },
+    "cosmetic_f_SC_ASTRONAUT": {
+      "id": "cosmetic_f_SC_ASTRONAUT",
+      "type": "female",
+      "position": "skinChest",
+      "iconId": "f_SC_G_ASTRONAUT",
+      "base": [
+        "f_SC_G_ASTRONAUT"
+      ],
+      "silver": 2000,
+      "gold": 1
+    },
+    "cosmetic_f_PF_SENTINALOWL": {
+      "id": "cosmetic_f_PF_SENTINALOWL",
+      "type": "female",
+      "position": "petFeet",
+      "iconId": "f_PF_G_SENTINALOWL",
+      "base": [
+        "f_PF_G_SENTINALOWL"
+      ],
+      "silver": 1000,
+      "gold": 0
+    },
+    "cosmetic_f_HE_HHO": {
+      "id": "cosmetic_f_HE_HHO",
+      "type": "female",
+      "position": "head",
+      "iconId": "f_HE_W_HHO",
+      "shadow": [
+        "f_HE_S_HHO"
+      ],
+      "grey": [
+        "f_HE_G_HHO"
+      ],
+      "white": [
+        "f_HE_W_HHO"
+      ],
+      "silver": 1750,
+      "gold": 1
+    },
+    "cosmetic_f_HE_HBO": {
+      "id": "cosmetic_f_HE_HBO",
+      "type": "female",
+      "position": "head",
+      "iconId": "f_HE_W_HBO",
+      "shadow": [
+        "f_HE_S_HBO"
+      ],
+      "grey": [
+        "f_HE_G_HBO"
+      ],
+      "white": [
+        "f_HE_W_HBO"
+      ],
+      "silver": 1000,
+      "gold": 0
+    },
+    "cosmetic_m_HE_KSO": {
+      "id": "cosmetic_m_HE_KSO",
+      "type": "male",
+      "position": "head",
+      "iconId": "m_HE_W_KSO",
+      "shadow": [
+        "m_HE_S_KSO"
+      ],
+      "grey": [
+        "m_HE_G_KSO"
+      ],
+      "white": [
+        "m_HE_W_KSO"
+      ]
+    },
+    "cosmetic_f_HA_SNWDRP": {
+      "id": "cosmetic_f_HA_SNWDRP",
+      "type": "female",
+      "position": "hair",
+      "iconId": "f_HA_G_SNWDRP",
+      "shadow": [
+        "f_HA_G_SNWDRP"
+      ],
+      "grey": [
+        "f_HA_W_SNWDRP"
+      ],
+      "silver": 2000,
+      "gold": 1
+    },
+    "cosmetic_f_C_KSO": {
+      "id": "cosmetic_f_C_KSO",
+      "type": "female",
+      "position": "chest",
+      "iconId": "f_C_W_KSO",
+      "shadow": [
+        "f_C_S_KSO"
+      ],
+      "grey": [
+        "f_C_G_KSO"
+      ],
+      "white": [
+        "f_C_W_KSO"
+      ],
+      "silver": 1750,
+      "gold": 1
+    },
+    "cosmetic_m_C_DTO": {
+      "id": "cosmetic_m_C_DTO",
+      "type": "male",
+      "position": "chest",
+      "iconId": "m_C_W_DTO",
+      "shadow": [
+        "m_C_S_DTO"
+      ],
+      "grey": [
+        "m_C_G_DTO"
+      ],
+      "white": [
+        "m_C_W_DTO"
+      ]
+    },
+    "cosmetic_f_C_TN": {
+      "id": "cosmetic_f_C_TN",
+      "type": "female",
+      "position": "chest",
+      "iconId": "f_C_W_TN",
+      "shadow": [
+        "f_C_S_TN"
+      ],
+      "grey": [
+        "f_C_G_TN"
+      ],
+      "white": [
+        "f_C_W_TN"
+      ],
+      "silver": 1750,
+      "gold": 1
+    },
+    "cosmetic_m_C_WBYE": {
+      "id": "cosmetic_m_C_WBYE",
+      "type": "male",
+      "position": "chest",
+      "iconId": "m_C_W_WBYE",
+      "shadow": [
+        "m_C_S_WBYE"
+      ],
+      "grey": [
+        "m_C_G_WBYE"
+      ],
+      "white": [
+        "m_C_W_WBYE"
+      ]
+    },
+    "cosmetic_f_C_WBYE": {
+      "id": "cosmetic_f_C_WBYE",
+      "type": "female",
+      "position": "chest",
+      "iconId": "f_C_W_WBYE",
+      "shadow": [
+        "f_C_S_WBYE"
+      ],
+      "grey": [
+        "f_C_G_WBYE"
+      ],
+      "white": [
+        "f_C_W_WBYE"
+      ],
+      "silver": 1000,
+      "gold": 0
+    },
+    "cosmetic_f_H_BH": {
+      "id": "cosmetic_f_H_BH",
+      "type": "female",
+      "position": "baseHand",
+      "iconId": "f_H_S_BH",
+      "base": [
+        "f_H_S_BH_Relaxed",
+        "f_H_S_BH_Censer"
+      ],
+      "silver": 1000,
+      "gold": 0
+    },
+    "cosmetic_f_FR_KSO": {
+      "id": "cosmetic_f_FR_KSO",
+      "type": "female",
+      "position": "fingerRight",
+      "iconId": "f_FR_G_KSO",
+      "base": [
+        "f_FR_G_KSO_Relaxed",
+        "f_FR_G_KSO_Censer"
+      ],
+      "silver": 300,
+      "gold": 0
+    },
+    "cosmetic_m_H_BH": {
+      "id": "cosmetic_m_H_BH",
+      "type": "male",
+      "position": "baseHand",
+      "iconId": "m_H_S_BH",
+      "base": [
+        "m_H_S_BH_Relaxed",
+        "m_H_S_BH_Censer"
+      ]
+    },
+    "cosmetic_f_L_KSO": {
+      "id": "cosmetic_f_L_KSO",
+      "type": "female",
+      "position": "legs",
+      "iconId": "f_L_W_KSO",
+      "shadow": [
+        "f_L_S_KSO"
+      ],
+      "grey": [
+        "f_L_G_KSO"
+      ],
+      "white": [
+        "f_L_W_KSO"
+      ],
+      "silver": 1500,
+      "gold": 1
+    },
+    "cosmetic_m_L_DWO": {
+      "id": "cosmetic_m_L_DWO",
+      "type": "male",
+      "position": "legs",
+      "iconId": "m_L_W_DWO",
+      "shadow": [
+        "m_L_S_DWO"
+      ],
+      "grey": [
+        "m_L_G_DWO"
+      ],
+      "white": [
+        "m_L_W_DWO"
+      ]
+    },
+    "cosmetic_m_L_DTO": {
+      "id": "cosmetic_m_L_DTO",
+      "type": "male",
+      "position": "legs",
+      "iconId": "m_L_W_DTO",
+      "shadow": [
+        "m_L_S_DTO"
+      ],
+      "grey": [
+        "m_L_G_DTO"
+      ],
+      "white": [
+        "m_L_W_DTO"
+      ]
+    },
+    "cosmetic_m_L_LOOSE": {
+      "id": "cosmetic_m_L_LOOSE",
+      "type": "male",
+      "position": "legs",
+      "iconId": "m_L_W_LOOSE",
+      "shadow": [
+        "m_L_S_LOOSE"
+      ],
+      "grey": [
+        "m_L_G_LOOSE"
+      ],
+      "white": [
+        "m_L_W_LOOSE"
+      ]
+    },
+    "cosmetic_m_HA_BRDPNY": {
+      "id": "cosmetic_m_HA_BRDPNY",
+      "type": "male",
+      "position": "hair",
+      "iconId": "m_HA_G_BRDPNY",
+      "grey": [
+        "m_HA_G_BRDPNY"
+      ],
+      "white": [
+        "m_HA_W_BRDPNY"
+      ]
+    },
+    "cosmetic_f_CR_PRIMAVERA": {
+      "id": "cosmetic_f_CR_PRIMAVERA",
+      "type": "female",
+      "position": "carryOnRight",
+      "iconId": "f_CR_G_PRIMAVERA",
+      "base": [
+        "f_CR_G_PRIMAVERA"
+      ],
+      "silver": 5000,
+      "gold": 4
+    },
+    "cosmetic_f_C_DWO": {
+      "id": "cosmetic_f_C_DWO",
+      "type": "female",
+      "position": "chest",
+      "iconId": "f_C_W_DWO",
+      "shadow": [
+        "f_C_S_DWO"
+      ],
+      "grey": [
+        "f_C_G_DWO"
+      ],
+      "white": [
+        "f_C_W_DWO"
+      ],
+      "silver": 5500,
+      "gold": 5
+    },
+    "cosmetic_m_HE_BKSO": {
+      "id": "cosmetic_m_HE_BKSO",
+      "type": "male",
+      "position": "head",
+      "iconId": "m_HE_W_BKSO",
+      "shadow": [
+        "m_HE_S_BKSO"
+      ],
+      "grey": [
+        "m_HE_G_BKSO"
+      ],
+      "white": [
+        "m_HE_W_BKSO"
+      ]
+    },
+    "cosmetic_m_C_HFO": {
+      "id": "cosmetic_m_C_HFO",
+      "type": "male",
+      "position": "chest",
+      "iconId": "m_C_W_HFO",
+      "shadow": [
+        "m_C_S_HFO"
+      ],
+      "grey": [
+        "m_C_G_HFO"
+      ],
+      "white": [
+        "m_C_W_HFO"
+      ]
+    },
+    "cosmetic_f_C_WRAP": {
+      "id": "cosmetic_f_C_WRAP",
+      "type": "female",
+      "position": "chest",
+      "iconId": "f_C_W_WRAP",
+      "shadow": [
+        "f_C_S_WRAP"
+      ],
+      "grey": [
+        "f_C_G_WRAP"
+      ],
+      "white": [
+        "f_C_W_WRAP"
+      ],
+      "silver": 1500,
+      "gold": 1
+    },
+    "cosmetic_m_SF_ANCHORBEARD": {
+      "id": "cosmetic_m_SF_ANCHORBEARD",
+      "type": "male",
+      "position": "skinFace",
+      "iconId": "m_SF_G_ANCHORBEARD",
+      "base": [
+        "m_SF_G_ANCHORBEARD"
+      ]
+    },
+    "cosmetic_m_SF_SPARSEBEARD": {
+      "id": "cosmetic_m_SF_SPARSEBEARD",
+      "type": "male",
+      "position": "skinFace",
+      "iconId": "m_SF_G_SPARSEBEARD",
+      "base": [
+        "m_SF_G_SPARSEBEARD"
+      ]
+    },
+    "cosmetic_m_HA_ZEFRON": {
+      "id": "cosmetic_m_HA_ZEFRON",
+      "type": "male",
+      "position": "hair",
+      "iconId": "m_HA_G_ZEFRON",
+      "shadow": [
+        "m_HA_G_ZEFRON"
+      ],
+      "white": [
+        "m_HA_W_ZEFRON"
+      ]
+    },
+    "cosmetic_f_C_KFO": {
+      "id": "cosmetic_f_C_KFO",
+      "type": "female",
+      "position": "chest",
+      "iconId": "f_C_W_KFO",
+      "shadow": [
+        "f_C_S_KFO"
+      ],
+      "grey": [
+        "f_C_G_KFO"
+      ],
+      "white": [
+        "f_C_W_KFO"
+      ],
+      "silver": 1750,
+      "gold": 1
+    },
+    "cosmetic_m_C_KSO": {
+      "id": "cosmetic_m_C_KSO",
+      "type": "male",
+      "position": "chest",
+      "iconId": "m_C_W_KSO",
+      "shadow": [
+        "m_C_S_KSO"
+      ],
+      "grey": [
+        "m_C_G_KSO"
+      ],
+      "white": [
+        "m_C_W_KSO"
+      ]
+    },
+    "cosmetic_m_WL_DWO": {
+      "id": "cosmetic_m_WL_DWO",
+      "type": "male",
+      "position": "wristLeft",
+      "iconId": "m_WL_W_DWO",
+      "shadow": [
+        "m_WL_S_DWO"
+      ],
+      "grey": [
+        "m_WL_G_DWO"
+      ],
+      "white": [
+        "m_WL_W_DWO"
+      ]
+    },
+    "cosmetic_f_C_ROMP": {
+      "id": "cosmetic_f_C_ROMP",
+      "type": "female",
+      "position": "chest",
+      "iconId": "f_C_W_ROMP",
+      "shadow": [
+        "f_C_S_ROMP"
+      ],
+      "grey": [
+        "f_C_G_ROMP"
+      ],
+      "white": [
+        "f_C_W_ROMP"
+      ],
+      "silver": 1750,
+      "gold": 1
+    },
+    "cosmetic_m_C_TUNIC": {
+      "id": "cosmetic_m_C_TUNIC",
+      "type": "male",
+      "position": "chest",
+      "iconId": "m_C_W_TUNIC",
+      "shadow": [
+        "m_C_S_TUNIC"
+      ],
+      "grey": [
+        "m_C_G_TUNIC"
+      ],
+      "white": [
+        "m_C_W_TUNIC"
+      ]
+    },
+    "cosmetic_f_H_DWO": {
+      "id": "cosmetic_f_H_DWO",
+      "type": "female",
+      "position": "baseHand",
+      "iconId": "f_H_S_DWO",
+      "base": [
+        "f_H_S_DWO_Relaxed",
+        "f_H_S_DWO_Censer"
+      ],
+      "silver": 1500,
+      "gold": 1
+    },
+    "cosmetic_m_FL_HFR": {
+      "id": "cosmetic_m_FL_HFR",
+      "type": "male",
+      "position": "fingerLeft",
+      "iconId": "m_FL_G_HFR",
+      "base": [
+        "m_FL_G_HFR_Relaxed",
+        "m_FL_G_HFR_Censer"
+      ]
+    },
+    "cosmetic_f_L_KFO": {
+      "id": "cosmetic_f_L_KFO",
+      "type": "female",
+      "position": "legs",
+      "iconId": "f_L_W_KFO",
+      "shadow": [
+        "f_L_S_KFO"
+      ],
+      "grey": [
+        "f_L_G_KFO"
+      ],
+      "white": [
+        "f_L_W_KFO"
+      ],
+      "silver": 2000,
+      "gold": 1
+    },
+    "cosmetic_m_L_KSO": {
+      "id": "cosmetic_m_L_KSO",
+      "type": "male",
+      "position": "legs",
+      "iconId": "m_L_W_KSO",
+      "shadow": [
+        "m_L_S_KSO"
+      ],
+      "grey": [
+        "m_L_G_KSO"
+      ],
+      "white": [
+        "m_L_W_KSO"
+      ]
+    },
+    "cosmetic_f_L_DWO": {
+      "id": "cosmetic_f_L_DWO",
+      "type": "female",
+      "position": "legs",
+      "iconId": "f_L_W_DWO",
+      "shadow": [
+        "f_L_S_DWO"
+      ],
+      "grey": [
+        "f_L_G_DWO"
+      ],
+      "white": [
+        "f_L_W_DWO"
+      ],
+      "silver": 2000,
+      "gold": 1
+    },
+    "cosmetic_m_L_HFO": {
+      "id": "cosmetic_m_L_HFO",
+      "type": "male",
+      "position": "legs",
+      "iconId": "m_L_W_HFO",
+      "shadow": [
+        "m_L_S_HFO"
+      ],
+      "grey": [
+        "m_L_G_HFO"
+      ],
+      "white": [
+        "m_L_W_HFO"
+      ]
+    },
+    "cosmetic_f_L_SS": {
+      "id": "cosmetic_f_L_SS",
+      "type": "female",
+      "position": "legs",
+      "iconId": "f_L_W_SS",
+      "shadow": [
+        "f_L_S_SS"
+      ],
+      "grey": [
+        "f_L_G_SS"
+      ],
+      "white": [
+        "f_L_W_SS"
+      ],
+      "silver": 1000,
+      "gold": 0
+    },
+    "cosmetic_f_SS_BUTTERFLY": {
+      "id": "cosmetic_f_SS_BUTTERFLY",
+      "type": "female",
+      "position": "skinShoulder",
+      "iconId": "f_SS_G_BUTTERFLY",
+      "base": [
+        "f_SS_G_BUTTERFLY"
+      ],
+      "silver": 700,
+      "gold": 0
+    },
+    "cosmetic_m_SS_BUTTERFLY": {
+      "id": "cosmetic_m_SS_BUTTERFLY",
+      "type": "male",
+      "position": "skinShoulder",
+      "iconId": "m_SS_G_BUTTERFLY",
+      "base": [
+        "m_SS_G_BUTTERFLY"
+      ]
+    },
+    "cosmetic_m_PF_SENTINALOWL": {
+      "id": "cosmetic_m_PF_SENTINALOWL",
+      "type": "male",
+      "position": "petFeet",
+      "iconId": "m_PF_G_SENTINALOWL",
+      "base": [
+        "m_PF_G_SENTINALOWL"
+      ]
+    },
+    "cosmetic_f_PF_WENDIGO": {
+      "id": "cosmetic_f_PF_WENDIGO",
+      "type": "female",
+      "position": "petFeet",
+      "iconId": "f_PF_G_WENDIGO",
+      "base": [
+        "f_PF_G_WENDIGO"
+      ],
+      "silver": 3000,
+      "gold": 2
+    },
+    "cosmetic_m_PF_WENDIGO": {
+      "id": "cosmetic_m_PF_WENDIGO",
+      "type": "male",
+      "position": "petFeet",
+      "iconId": "m_PF_G_WENDIGO",
+      "base": [
+        "m_PF_G_WENDIGO"
+      ]
+    },
+    "cosmetic_f_HA_BUN": {
+      "id": "cosmetic_f_HA_BUN",
+      "type": "female",
+      "position": "hair",
+      "iconId": "f_HA_G_BUN",
+      "grey": [
+        "f_HA_G_BUN"
+      ],
+      "white": [
+        "f_HA_W_BUN"
+      ],
+      "silver": 2000,
+      "gold": 1
+    },
+    "cosmetic_m_HA_LT": {
+      "id": "cosmetic_m_HA_LT",
+      "type": "male",
+      "position": "hair",
+      "iconId": "m_HA_G_LT",
+      "grey": [
+        "m_HA_G_LT"
+      ],
+      "white": [
+        "m_HA_W_LT"
+      ]
+    },
+    "cosmetic_f_HA_WAVE": {
+      "id": "cosmetic_f_HA_WAVE",
+      "type": "female",
+      "position": "hair",
+      "iconId": "f_HA_G_WAVE",
+      "grey": [
+        "f_HA_G_WAVE"
+      ],
+      "white": [
+        "f_HA_W_WAVE"
+      ],
+      "silver": 2500,
+      "gold": 2
+    },
+    "cosmetic_m_N_WOLFAMULET": {
+      "id": "cosmetic_m_N_WOLFAMULET",
+      "type": "male",
+      "position": "neck",
+      "iconId": "m_N_G_WOLFAMULET",
+      "base": [
+        "m_N_G_WOLFAMULET"
+      ]
+    },
+    "cosmetic_f_PF_BARGHEST": {
+      "id": "cosmetic_f_PF_BARGHEST",
+      "type": "female",
+      "position": "petFeet",
+      "iconId": "f_PF_G_BARGHEST",
+      "base": [
+        "f_PF_G_BARGHEST"
+      ],
+      "silver": 1000,
+      "gold": 0
+    },
+    "cosmetic_m_PF_BARGHEST": {
+      "id": "cosmetic_m_PF_BARGHEST",
+      "type": "male",
+      "position": "petFeet",
+      "iconId": "m_PF_G_BARGHEST",
+      "base": [
+        "m_PF_G_BARGHEST"
+      ]
+    },
+    "cosmetic_f_PF_GRINDYLOW": {
+      "id": "cosmetic_f_PF_GRINDYLOW",
+      "type": "female",
+      "position": "petFeet",
+      "iconId": "f_PF_G_GRINDYLOW",
+      "base": [
+        "f_PF_G_GRINDYLOW"
+      ],
+      "silver": 2000,
+      "gold": 1
+    },
+    "cosmetic_m_PF_GRINDYLOW": {
+      "id": "cosmetic_m_PF_GRINDYLOW",
+      "type": "male",
+      "position": "petFeet",
+      "iconId": "m_PF_G_GRINDYLOW",
+      "base": [
+        "m_PF_G_GRINDYLOW"
+      ]
+    },
+    "cosmetic_f_PF_CATSIDHE": {
+      "id": "cosmetic_f_PF_CATSIDHE",
+      "type": "female",
+      "position": "petFeet",
+      "iconId": "f_PF_G_CATSIDHE",
+      "base": [
+        "f_PF_G_CATSIDHE"
+      ],
+      "silver": 1000,
+      "gold": 0
+    },
+    "cosmetic_m_PF_CATSIDHE": {
+      "id": "cosmetic_m_PF_CATSIDHE",
+      "type": "male",
+      "position": "petFeet",
+      "iconId": "m_PF_G_CATSIDHE",
+      "base": [
+        "m_PF_G_CATSIDHE"
+      ]
+    },
+    "cosmetic_f_HA_BRD": {
+      "id": "cosmetic_f_HA_BRD",
+      "type": "female",
+      "position": "hair",
+      "iconId": "f_HA_G_BRD",
+      "grey": [
+        "f_HA_G_BRD"
+      ],
+      "white": [
+        "f_HA_W_BRD"
+      ],
+      "silver": 2500,
+      "gold": 2
+    },
+    "cosmetic_m_HE_BIRDSKULL": {
+      "id": "cosmetic_m_HE_BIRDSKULL",
+      "type": "male",
+      "position": "head",
+      "iconId": "m_HE_G_BIRDSKULL",
+      "base": [
+        "m_HE_G_BIRDSKULL"
+      ]
+    },
+    "cosmetic_f_HE_BDH": {
+      "id": "cosmetic_f_HE_BDH",
+      "type": "female",
+      "position": "head",
+      "iconId": "f_HE_G_BDH",
+      "base": [
+        "f_HE_G_BDH"
+      ],
+      "silver": 3000,
+      "gold": 2
+    },
+    "cosmetic_f_HA_PNY": {
+      "id": "cosmetic_f_HA_PNY",
+      "type": "female",
+      "position": "hair",
+      "iconId": "f_HA_G_PNY",
+      "grey": [
+        "f_HA_G_PNY"
+      ],
+      "white": [
+        "f_HA_W_PNY"
+      ],
+      "silver": 500,
+      "gold": 0
+    },
+    "cosmetic_f_HA_BOB": {
+      "id": "cosmetic_f_HA_BOB",
+      "type": "female",
+      "position": "hair",
+      "iconId": "f_HA_G_BOB",
+      "grey": [
+        "f_HA_G_BOB"
+      ],
+      "white": [
+        "f_HA_W_BOB"
+      ],
+      "silver": 2000,
+      "gold": 1
+    },
+    "cosmetic_f_N_FANCYCHOKER": {
+      "id": "cosmetic_f_N_FANCYCHOKER",
+      "type": "female",
+      "position": "neck",
+      "iconId": "f_N_G_FANCYCHOKER",
+      "base": [
+        "f_N_G_FANCYCHOKER"
+      ],
+      "silver": 700,
+      "gold": 0
+    },
+    "cosmetic_m_HE_BDH": {
+      "id": "cosmetic_m_HE_BDH",
+      "type": "male",
+      "position": "head",
+      "iconId": "m_HE_G_BDH",
+      "base": [
+        "m_HE_G_BDH"
+      ]
+    },
+    "cosmetic_m_HA_LNG": {
+      "id": "cosmetic_m_HA_LNG",
+      "type": "male",
+      "position": "hair",
+      "iconId": "m_HA_G_LNG",
+      "grey": [
+        "m_HA_G_LNG"
+      ],
+      "white": [
+        "m_HA_W_LNG"
+      ]
+    },
+    "cosmetic_f_HA_SPK": {
+      "id": "cosmetic_f_HA_SPK",
+      "type": "female",
+      "position": "hair",
+      "iconId": "f_HA_G_SPK",
+      "grey": [
+        "f_HA_G_SPK"
+      ],
+      "white": [
+        "f_HA_W_SPK"
+      ],
+      "silver": 500,
+      "gold": 0
+    },
+    "cosmetic_m_HA_BUN": {
+      "id": "cosmetic_m_HA_BUN",
+      "type": "male",
+      "position": "hair",
+      "iconId": "m_HA_G_BUN",
+      "grey": [
+        "m_HA_G_BUN"
+      ],
+      "white": [
+        "m_HA_W_BUN"
+      ]
+    },
+    "cosmetic_f_C_MESHDRESS": {
+      "id": "cosmetic_f_C_MESHDRESS",
+      "type": "female",
+      "position": "chest",
+      "iconId": "f_C_G_MESHDRESS",
+      "base": [
+        "f_C_G_MESHDRESS"
+      ],
+      "silver": 2500,
+      "gold": 2
+    },
+    "cosmetic_f_HA_CURL": {
+      "id": "cosmetic_f_HA_CURL",
+      "type": "female",
+      "position": "hair",
+      "iconId": "f_HA_G_CURL",
+      "grey": [
+        "f_HA_G_CURL"
+      ],
+      "white": [
+        "f_HA_W_CURL"
+      ],
+      "silver": 2500,
+      "gold": 2
+    },
+    "cosmetic_m_CL_KIM": {
+      "id": "cosmetic_m_CL_KIM",
+      "type": "male",
+      "position": "carryOnLeft",
+      "iconId": "m_CL_G_KIM",
+      "base": [
+        "m_CL_G_KIM"
+      ]
+    },
+    "cosmetic_m_HA_AFRO": {
+      "id": "cosmetic_m_HA_AFRO",
+      "type": "male",
+      "position": "hair",
+      "iconId": "m_HA_G_AFRO",
+      "grey": [
+        "m_HA_G_AFRO"
+      ],
+      "white": [
+        "m_HA_W_AFRO"
+      ]
+    },
+    "cosmetic_f_N_MOONNECKLACE": {
+      "id": "cosmetic_f_N_MOONNECKLACE",
+      "type": "female",
+      "position": "neck",
+      "iconId": "f_N_G_MOONNECKLACE",
+      "base": [
+        "f_N_G_MOONNECKLACE"
+      ],
+      "silver": 400,
+      "gold": 0
+    },
+    "cosmetic_f_CR_DWO": {
+      "id": "cosmetic_f_CR_DWO",
+      "type": "female",
+      "position": "carryOnRight",
+      "iconId": "f_CR_S_DWO",
+      "base": [
+        "f_CR_S_DWO"
+      ],
+      "silver": 0,
+      "gold": 0
+    },
+    "cosmetic_f_CR_SMMRSOL": {
+      "id": "cosmetic_f_CR_SMMRSOL",
+      "type": "female",
+      "position": "carryOnRight",
+      "iconId": "f_CR_G_SMMRSOL",
+      "base": [
+        "f_CR_G_SMMRSOL"
+      ],
+      "silver": 5000,
+      "gold": 4
+    },
+    "cosmetic_m_N_CROWAMULET": {
+      "id": "cosmetic_m_N_CROWAMULET",
+      "type": "male",
+      "position": "neck",
+      "iconId": "m_N_G_CROWAMULET",
+      "base": [
+        "m_N_G_CROWAMULET"
+      ]
+    },
+    "cosmetic_m_C_PC": {
+      "id": "cosmetic_m_C_PC",
+      "type": "male",
+      "position": "chest",
+      "iconId": "m_C_W_PC",
+      "shadow": [
+        "m_C_S_PC"
+      ],
+      "grey": [
+        "m_C_G_PC"
+      ],
+      "white": [
+        "m_C_W_PC"
+      ]
+    },
+    "cosmetic_m_C_TT": {
+      "id": "cosmetic_m_C_TT",
+      "type": "male",
+      "position": "chest",
+      "iconId": "m_C_W_TT",
+      "shadow": [
+        "m_C_S_TT"
+      ],
+      "grey": [
+        "m_C_G_TT"
+      ],
+      "white": [
+        "m_C_W_TT"
+      ]
+    },
+    "cosmetic_f_SS_UNICORN": {
+      "id": "cosmetic_f_SS_UNICORN",
+      "type": "female",
+      "position": "skinShoulder",
+      "iconId": "f_SS_G_UNICORN",
+      "base": [
+        "f_SS_G_UNICORN"
+      ],
+      "silver": 1250,
+      "gold": 1
+    },
+    "cosmetic_m_SS_PYRAMIDS": {
+      "id": "cosmetic_m_SS_PYRAMIDS",
+      "type": "male",
+      "position": "skinShoulder",
+      "iconId": "m_SS_G_PYRAMIDS",
+      "base": [
+        "m_SS_G_PYRAMIDS"
+      ]
+    },
+    "cosmetic_m_CL_DWO": {
+      "id": "cosmetic_m_CL_DWO",
+      "type": "male",
+      "position": "carryOnLeft",
+      "iconId": "m_CL_S_DWO",
+      "base": [
+        "m_CL_S_DWO"
+      ]
+    },
+    "cosmetic_m_CL_SMMRSOL": {
+      "id": "cosmetic_m_CL_SMMRSOL",
+      "type": "male",
+      "position": "carryOnLeft",
+      "iconId": "m_CL_G_SMMRSOL",
+      "base": [
+        "m_CL_G_SMMRSOL"
+      ]
+    },
+    "cosmetic_f_CR_DSO": {
+      "id": "cosmetic_f_CR_DSO",
+      "type": "female",
+      "position": "carryOnRight",
+      "iconId": "f_CR_G_DSO",
+      "base": [
+        "f_CR_G_DSO"
+      ],
+      "silver": 0,
+      "gold": 0
+    },
+    "cosmetic_m_CL_DTO": {
+      "id": "cosmetic_m_CL_DTO",
+      "type": "male",
+      "position": "carryOnLeft",
+      "iconId": "m_CL_W_DTO",
+      "base": [
+        "m_CL_W_DTO"
+      ]
+    },
+    "cosmetic_f_CR_SHADOW": {
+      "id": "cosmetic_f_CR_SHADOW",
+      "type": "female",
+      "position": "carryOnRight",
+      "iconId": "f_CR_S_SHADOW",
+      "base": [
+        "f_CR_S_SHADOW"
+      ],
+      "silver": 5000,
+      "gold": 4
+    },
+    "cosmetic_m_CL_GRAY": {
+      "id": "cosmetic_m_CL_GRAY",
+      "type": "male",
+      "position": "carryOnLeft",
+      "iconId": "m_CL_G_GRAY",
+      "base": [
+        "m_CL_G_GRAY"
+      ]
+    },
+    "cosmetic_m_F_STRAPPEDSHOES": {
+      "id": "cosmetic_m_F_STRAPPEDSHOES",
+      "type": "male",
+      "position": "feet",
+      "iconId": "m_F_G_STRAPPEDSHOES",
+      "base": [
+        "m_F_G_STRAPPEDSHOES"
+      ]
+    },
+    "cosmetic_m_CL_DSO": {
+      "id": "cosmetic_m_CL_DSO",
+      "type": "male",
+      "position": "carryOnLeft",
+      "iconId": "m_CL_G_DSO",
+      "base": [
+        "m_CL_G_DSO"
+      ]
+    },
+    "cosmetic_m_CL_PRIMAVERA": {
+      "id": "cosmetic_m_CL_PRIMAVERA",
+      "type": "male",
+      "position": "carryOnLeft",
+      "iconId": "m_CL_G_PRIMAVERA",
+      "base": [
+        "m_CL_G_PRIMAVERA"
+      ]
+    },
+    "cosmetic_f_CR_WHITE": {
+      "id": "cosmetic_f_CR_WHITE",
+      "type": "female",
+      "position": "carryOnRight",
+      "iconId": "f_CR_W_WHITE",
+      "base": [
+        "f_CR_W_WHITE"
+      ],
+      "silver": 5000,
+      "gold": 4
+    },
+    "cosmetic_m_CL_SHADOW": {
+      "id": "cosmetic_m_CL_SHADOW",
+      "type": "male",
+      "position": "carryOnLeft",
+      "iconId": "m_CL_S_SHADOW",
+      "base": [
+        "m_CL_S_SHADOW"
+      ]
+    },
+    "cosmetic_m_CL_WHITE": {
+      "id": "cosmetic_m_CL_WHITE",
+      "type": "male",
+      "position": "carryOnLeft",
+      "iconId": "m_CL_W_WHITE",
+      "base": [
+        "m_CL_W_WHITE"
+      ]
+    },
+    "cosmetic_f_CR_DTO": {
+      "id": "cosmetic_f_CR_DTO",
+      "type": "female",
+      "position": "carryOnRight",
+      "iconId": "f_CR_W_DTO",
+      "base": [
+        "f_CR_W_DTO"
+      ],
+      "silver": 0,
+      "gold": 0
+    },
+    "cosmetic_f_SS_BALLET": {
+      "id": "cosmetic_f_SS_BALLET",
+      "type": "female",
+      "position": "skinShoulder",
+      "iconId": "f_SS_G_BALLET",
+      "base": [
+        "f_SS_G_BALLET"
+      ],
+      "silver": 550,
+      "gold": 0
+    },
+    "cosmetic_f_CR_KIM": {
+      "id": "cosmetic_f_CR_KIM",
+      "type": "female",
+      "position": "carryOnRight",
+      "iconId": "f_CR_G_KIM",
+      "base": [
+        "f_CR_G_KIM"
+      ],
+      "silver": 5000,
+      "gold": 4
+    },
+    "cosmetic_f_CR_GRAY": {
+      "id": "cosmetic_f_CR_GRAY",
+      "type": "female",
+      "position": "carryOnRight",
+      "iconId": "f_CR_G_GRAY",
+      "base": [
+        "f_CR_G_GRAY"
+      ],
+      "silver": 5000,
+      "gold": 4
+    },
+    "cosmetic_m_SS_BALLET": {
+      "id": "cosmetic_m_SS_BALLET",
+      "type": "male",
+      "position": "skinShoulder",
+      "iconId": "m_SS_G_BALLET",
+      "base": [
+        "m_SS_G_BALLET"
+      ]
+    },
+    "cosmetic_m_SF_SUNGLASSES": {
+      "id": "cosmetic_m_SF_SUNGLASSES",
+      "type": "male",
+      "position": "skinFace",
+      "iconId": "m_SF_G_SUNGLASSES",
+      "base": [
+        "m_SF_G_SUNGLASSES"
+      ]
+    },
+    "cosmetic_m_SS_CROWSKULL": {
+      "id": "cosmetic_m_SS_CROWSKULL",
+      "type": "male",
+      "position": "skinShoulder",
+      "iconId": "m_SS_G_CROWSKULL",
+      "base": [
+        "m_SS_G_CROWSKULL"
+      ]
+    },
+    "cosmetic_m_SC_BIRDCAGE": {
+      "id": "cosmetic_m_SC_BIRDCAGE",
+      "type": "male",
+      "position": "skinChest",
+      "iconId": "m_SC_G_BIRDCAGE",
+      "base": [
+        "m_SC_G_BIRDCAGE"
+      ]
+    },
+    "cosmetic_f_SS_MOLOTOV": {
+      "id": "cosmetic_f_SS_MOLOTOV",
+      "type": "female",
+      "position": "skinShoulder",
+      "iconId": "f_SS_G_MOLOTOV",
+      "base": [
+        "f_SS_G_MOLOTOV"
+      ],
+      "silver": 1250,
+      "gold": 1
+    },
+    "cosmetic_m_SS_UNICORN": {
+      "id": "cosmetic_m_SS_UNICORN",
+      "type": "male",
+      "position": "skinShoulder",
+      "iconId": "m_SS_G_UNICORN",
+      "base": [
+        "m_SS_G_UNICORN"
+      ]
+    },
+    "cosmetic_m_SC_SPIDER": {
+      "id": "cosmetic_m_SC_SPIDER",
+      "type": "male",
+      "position": "skinChest",
+      "iconId": "m_SC_G_SPIDER",
+      "base": [
+        "m_SC_G_SPIDER"
+      ]
+    },
+    "cosmetic_f_SS_PYRAMIDS": {
+      "id": "cosmetic_f_SS_PYRAMIDS",
+      "type": "female",
+      "position": "skinShoulder",
+      "iconId": "f_SS_G_PYRAMIDS",
+      "base": [
+        "f_SS_G_PYRAMIDS"
+      ],
+      "silver": 700,
+      "gold": 0
+    },
+    "cosmetic_m_SS_MOLOTOV": {
+      "id": "cosmetic_m_SS_MOLOTOV",
+      "type": "male",
+      "position": "skinShoulder",
+      "iconId": "m_SS_G_MOLOTOV",
+      "base": [
+        "m_SS_G_MOLOTOV"
+      ]
+    },
+    "cosmetic_f_SC_COFFIN": {
+      "id": "cosmetic_f_SC_COFFIN",
+      "type": "female",
+      "position": "skinChest",
+      "iconId": "f_SC_G_COFFIN",
+      "base": [
+        "f_SC_G_COFFIN"
+      ],
+      "silver": 1750,
+      "gold": 1
+    },
+    "cosmetic_f_SC_SPIDER": {
+      "id": "cosmetic_f_SC_SPIDER",
+      "type": "female",
+      "position": "skinChest",
+      "iconId": "f_SC_G_SPIDER",
+      "base": [
+        "f_SC_G_SPIDER"
+      ],
+      "silver": 2150,
+      "gold": 1
+    },
+    "cosmetic_m_SC_COFFIN": {
+      "id": "cosmetic_m_SC_COFFIN",
+      "type": "male",
+      "position": "skinChest",
+      "iconId": "m_SC_G_COFFIN",
+      "base": [
+        "m_SC_G_COFFIN"
+      ]
+    },
+    "cosmetic_f_SA_LEOPARD": {
+      "id": "cosmetic_f_SA_LEOPARD",
+      "type": "female",
+      "position": "skinArm",
+      "iconId": "f_SA_G_LEOPARD",
+      "base": [
+        "f_SA_G_LEOPARD"
+      ],
+      "silver": 3000,
+      "gold": 2
+    },
+    "cosmetic_f_SC_BIRDCAGE": {
+      "id": "cosmetic_f_SC_BIRDCAGE",
+      "type": "female",
+      "position": "skinChest",
+      "iconId": "f_SC_G_BIRDCAGE",
+      "base": [
+        "f_SC_G_BIRDCAGE"
+      ],
+      "silver": 1650,
+      "gold": 1
+    },
+    "cosmetic_m_SA_LEOPARD": {
+      "id": "cosmetic_m_SA_LEOPARD",
+      "type": "male",
+      "position": "skinArm",
+      "iconId": "m_SA_G_LEOPARD",
+      "base": [
+        "m_SA_G_LEOPARD"
+      ]
+    },
+    "cosmetic_m_SC_ELEPHANT": {
+      "id": "cosmetic_m_SC_ELEPHANT",
+      "type": "male",
+      "position": "skinChest",
+      "iconId": "m_SC_G_ELEPHANT",
+      "base": [
+        "m_SC_G_ELEPHANT"
+      ]
+    },
+    "cosmetic_f_SS_JOKER": {
+      "id": "cosmetic_f_SS_JOKER",
+      "type": "female",
+      "position": "skinShoulder",
+      "iconId": "f_SS_G_JOKER",
+      "base": [
+        "f_SS_G_JOKER"
+      ],
+      "silver": 1250,
+      "gold": 1
+    },
+    "cosmetic_f_SS_COUPLE": {
+      "id": "cosmetic_f_SS_COUPLE",
+      "type": "female",
+      "position": "skinShoulder",
+      "iconId": "f_SS_G_COUPLE",
+      "base": [
+        "f_SS_G_COUPLE"
+      ],
+      "silver": 800,
+      "gold": 0
+    },
+    "cosmetic_m_SS_JOKER": {
+      "id": "cosmetic_m_SS_JOKER",
+      "type": "male",
+      "position": "skinShoulder",
+      "iconId": "m_SS_G_JOKER",
+      "base": [
+        "m_SS_G_JOKER"
+      ]
+    },
+    "cosmetic_m_SS_COUPLE": {
+      "id": "cosmetic_m_SS_COUPLE",
+      "type": "male",
+      "position": "skinShoulder",
+      "iconId": "m_SS_G_COUPLE",
+      "base": [
+        "m_SS_G_COUPLE"
+      ]
+    },
+    "cosmetic_f_SC_ELEPHANT": {
+      "id": "cosmetic_f_SC_ELEPHANT",
+      "type": "female",
+      "position": "skinChest",
+      "iconId": "f_SC_G_ELEPHANT",
+      "base": [
+        "f_SC_G_ELEPHANT"
+      ],
+      "silver": 2000,
+      "gold": 1
+    },
+    "cosmetic_f_SC_SUN": {
+      "id": "cosmetic_f_SC_SUN",
+      "type": "female",
+      "position": "skinChest",
+      "iconId": "f_SC_G_SUN",
+      "base": [
+        "f_SC_G_SUN"
+      ],
+      "silver": 2000,
+      "gold": 1
+    },
+    "cosmetic_m_SC_SUN": {
+      "id": "cosmetic_m_SC_SUN",
+      "type": "male",
+      "position": "skinChest",
+      "iconId": "m_SC_G_SUN",
+      "base": [
+        "m_SC_G_SUN"
+      ]
+    },
+    "cosmetic_f_SS_PUPPET": {
+      "id": "cosmetic_f_SS_PUPPET",
+      "type": "female",
+      "position": "skinShoulder",
+      "iconId": "f_SS_G_PUPPET",
+      "base": [
+        "f_SS_G_PUPPET"
+      ],
+      "silver": 700,
+      "gold": 0
+    },
+    "cosmetic_m_SS_PUPPET": {
+      "id": "cosmetic_m_SS_PUPPET",
+      "type": "male",
+      "position": "skinShoulder",
+      "iconId": "m_SS_G_PUPPET",
+      "base": [
+        "m_SS_G_PUPPET"
+      ]
+    },
+    "cosmetic_m_SC_ASTRONAUT": {
+      "id": "cosmetic_m_SC_ASTRONAUT",
+      "type": "male",
+      "position": "skinChest",
+      "iconId": "m_SC_G_ASTRONAUT",
+      "base": [
+        "m_SC_G_ASTRONAUT"
+      ]
+    }
+  },
+  "_Styles": {
+    "cosmetic_f_S_HHO": {
+      "id": "cosmetic_f_S_HHO",
+      "type": "female",
+      "position": "style",
+      "iconId": "f_S_M_HHO",
+      "hidden": false,
+      "silver": 8000,
+      "gold": 7
+    },
+    "cosmetic_f_S_HKO": {
+      "id": "cosmetic_f_S_HKO",
+      "type": "female",
+      "position": "style",
+      "iconId": "f_S_M_HKO",
+      "hidden": false,
+      "silver": 8000,
+      "gold": 7
+    },
+    "cosmetic_f_S_HLO": {
+      "id": "cosmetic_f_S_HLO",
+      "type": "female",
+      "position": "style",
+      "iconId": "f_S_M_HLO",
+      "hidden": false,
+      "silver": 8000,
+      "gold": 7
+    },
+    "cosmetic_f_S_SNOWQUEEN": {
+      "id": "cosmetic_f_S_SNOWQUEEN",
+      "type": "female",
+      "position": "style",
+      "iconId": "f_S_M_SNOWQUEEN",
+      "hidden": false,
+      "silver": 8000,
+      "gold": 7
+    },
+    "cosmetic_f_S_LILYOV": {
+      "id": "cosmetic_f_S_LILYOV",
+      "type": "female",
+      "position": "style",
+      "iconId": "f_S_M_LILYOV",
+      "hidden": false,
+      "silver": 8000,
+      "gold": 7
+    },
+    "cosmetic_f_S_MIDSUMMER": {
+      "id": "cosmetic_f_S_MIDSUMMER",
+      "type": "female",
+      "position": "style",
+      "iconId": "f_S_M_MIDSUMMER",
+      "hidden": false,
+      "silver": 8000,
+      "gold": 7
+    },
+    "cosmetic_f_S_THUNDERMOON": {
+      "id": "cosmetic_f_S_THUNDERMOON",
+      "type": "female",
+      "position": "style",
+      "iconId": "f_S_M_THUNDERMOON",
+      "hidden": false,
+      "silver": 8000,
+      "gold": 7
+    },
+    "cosmetic_f_S_ECLIPSE": {
+      "id": "cosmetic_f_S_ECLIPSE",
+      "type": "female",
+      "position": "style",
+      "iconId": "f_S_M_ECLIPSE",
+      "hidden": false,
+      "silver": 8000,
+      "gold": 7
+    },
+    "cosmetic_f_S_CORNMOON": {
+      "id": "cosmetic_f_S_CORNMOON",
+      "type": "female",
+      "position": "style",
+      "iconId": "f_S_M_CORNMOON",
+      "hidden": false,
+      "silver": 8000,
+      "gold": 7
+    },
+    "cosmetic_f_S_BRNNGWTCH": {
+      "id": "cosmetic_f_S_BRNNGWTCH",
+      "type": "female",
+      "position": "style",
+      "iconId": "f_S_M_BRNNGWTCH",
+      "hidden": false,
+      "silver": 8000,
+      "gold": 7
+    },
+    "cosmetic_f_S_CALYPSO": {
+      "id": "cosmetic_f_S_CALYPSO",
+      "type": "female",
+      "position": "style",
+      "iconId": "f_S_M_CALYPSO",
+      "hidden": false,
+      "silver": 8000,
+      "gold": 7
+    }
+  },
+  "Bundles": {
+    "bundle_abondiasBest": {
+      "silver": 300,
+      "gold": 0,
+      "collectables": [
+        "coll_ironCollar",
+        "coll_betony",
+        "coll_hyssop",
+        "coll_pennyRoyal",
+        "coll_angelica",
+        "coll_orrisRoot",
+        "coll_onyxCirclet",
+        "coll_hourglass",
+        "coll_friedTofu",
+        "coll_whiteCrystal",
+        "coll_whiteFur",
+        "coll_motherTear"
+      ],
+      "amount": [
+        15,
+        75,
+        75,
+        75,
+        75,
+        75,
+        75,
+        75,
+        75,
+        75,
+        75,
+        375
+      ]
+    },
+    "bundle_sapphosChoice": {
+      "silver": 300,
+      "gold": 0,
+      "collectables": [
+        "coll_borage",
+        "coll_lobelia",
+        "coll_barberry",
+        "coll_anise",
+        "coll_newtEye",
+        "coll_onyxRing",
+        "coll_silverComb",
+        "coll_cingulum",
+        "coll_petrifiedWood",
+        "coll_mayanInk",
+        "coll_bloodAgate"
+      ],
+      "amount": [
+        75,
+        75,
+        75,
+        75,
+        75,
+        75,
+        75,
+        75,
+        75,
+        75,
+        375
+      ]
+    },
+    "bundle_hermeticCollection": {
+      "silver": 300,
+      "gold": 0,
+      "collectables": [
+        "coll_fennel",
+        "coll_birch",
+        "coll_betony",
+        "coll_borage",
+        "coll_frankincense",
+        "coll_onyxAmulet",
+        "coll_whiteFur",
+        "coll_onyxCirclet",
+        "coll_onyxRing",
+        "coll_rocksGlass",
+        "coll_malachite",
+        "coll_bloodAgate",
+        "coll_motherTear"
+      ],
+      "amount": [
+        75,
+        75,
+        75,
+        75,
+        75,
+        75,
+        75,
+        75,
+        75,
+        75,
+        225,
+        75,
+        75
+      ]
+    }
+  },
+  "Consumables": {
+    "consumable_alignmentBoosterSmaller": {
+      "silver": 100,
+      "gold": 0,
+      "duration": 60
+    },
+    "consumable_alignmentBoosterMedium": {
+      "silver": 300,
+      "gold": 0,
+      "duration": 60
+    },
+    "consumable_alignmentBoosterGreater": {
+      "silver": 500,
+      "gold": 0,
+      "duration": 60
+    },
+    "consumable_xpBoosterSmaller": {
+      "silver": 100,
+      "gold": 0,
+      "duration": 60
+    },
+    "consumable_xpBoosterMedium": {
+      "silver": 300,
+      "gold": 0,
+      "duration": 60
+    },
+    "consumable_xpBoosterGreater": {
+      "silver": 500,
+      "gold": 0,
+      "duration": 60
+    },
+    "consumable_invisible": {
+      "silver": 200,
+      "gold": 0,
+      "duration": 0
+    }
+  },
+  "Silver": {
+    "silver1": {
+      "product": "com.raincrow.covens.silver1",
+      "cost": 0.99,
+      "amount": 100
+    },
+    "silver2": {
+      "product": "com.raincrow.covens.silver2",
+      "cost": 4.99,
+      "amount": 550,
+      "extra": "+50"
+    },
+    "silver3": {
+      "product": "com.raincrow.covens.silver3",
+      "cost": 9.99,
+      "amount": 1200,
+      "extra": "+200"
+    },
+    "silver4": {
+      "product": "com.raincrow.covens.silver4",
+      "cost": 19.99,
+      "amount": 2500,
+      "extra": "+500"
+    },
+    "silver5": {
+      "product": "com.raincrow.covens.silver5",
+      "cost": 39.99,
+      "amount": 5200,
+      "extra": "+1200"
+    },
+    "silver6": {
+      "product": "com.raincrow.covens.silver6",
+      "cost": 89.99,
+      "amount": 14500,
+      "extra": "+4500"
+    }
+  }
+}

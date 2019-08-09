@@ -5,7 +5,7 @@ using UnityEngine.UI;
 using Newtonsoft.Json;
 using System;
 using System.Text.RegularExpressions;
-
+using Raincrow.Store;
 
 public class StoreUIManager : UIAnimationManager
 {
@@ -20,7 +20,7 @@ public class StoreUIManager : UIAnimationManager
     public GameObject elixirContainer;
     public GameObject gearContainer;
     public GearUIManager gearUIM;
-    StoreApiObject storeItems;
+    StoreApiObject storeItems => StoreManagerAPI.OldStore;
 
     public StoreButtonData[] Energy;
     public StoreButtonData[] xp;
@@ -62,25 +62,25 @@ public class StoreUIManager : UIAnimationManager
     {
         goldDrachs.text = PlayerDataManager.playerData.gold.ToString();
         UIStateManager.Instance.CallWindowChanged(false);
-        StoreManagerAPI.GetShopItems(Callback);
-        loadingButton.SetActive(true);
+        Callback();
+        //loadingButton.SetActive(true);
     }
 
-    public void Callback(string result, int code)
+    public void Callback()//string result, int code)
     {
 
-        if (code == 200)
+        //if (code == 200)
         {
-            storeItems = JsonConvert.DeserializeObject<StoreApiObject>(result);
+            //storeItems = JsonConvert.DeserializeObject<StoreApiObject>(result);
             HandleResult();
             InitStore();
         }
-        else
-        {
-            UIStateManager.Instance.CallWindowChanged(true);
-            Debug.LogError(code + " | Couldnt Get Store Data : " + result);
-        }
-        loadingButton.SetActive(false);
+        //else
+        //{
+        //    UIStateManager.Instance.CallWindowChanged(true);
+        //    Debug.LogError(code + " | Couldnt Get Store Data : " + result);
+        //}
+        //loadingButton.SetActive(false);
 
     }
 

@@ -10,6 +10,7 @@ using System.Linq;
 using UnityEngine.UI;
 using TMPro;
 using System.ComponentModel;
+using Raincrow.Store;
 
 public static class DownloadAssetBundle
 {
@@ -81,6 +82,9 @@ public class GameSettingsData
     public Dictionary<string, IngredientData> Collectibles;
     public Dictionary<string, ConditionData> Conditions;
     public Dictionary<string, CosmeticData> Cosmetics;
+    public Dictionary<string, IngredientBundleData> Bundles;
+    public Dictionary<string, ConsumableData> Consumables;
+    public Dictionary<string, SilverBundleData> Silver;
 }
 
 public struct IngredientData
@@ -99,22 +103,5 @@ public struct IngredientData
 
     [JsonIgnore]
     public IngredientType Type => m_CollectableTypeMap[type];
-}
-
-public class LocalizeData
-{
-    public string value { get; set; }
-    public string title { get; set; }
-    public string description { get; set; }
-}
-
-public class AssetResponse
-{
-    public string dictionary { get; set; }
-    public List<string> assets { get; set; }
-    public string version { get; set; }
-    public int android { get; set; }
-    public int apple { get; set; }
-    public bool maintenance { get; set; }
 }
 #endregion

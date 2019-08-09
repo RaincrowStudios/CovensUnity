@@ -2,6 +2,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine.UI;
+using Raincrow.Store;
 
 public class StoreButtonData : MonoBehaviour
 {

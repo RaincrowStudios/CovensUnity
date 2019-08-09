@@ -48,14 +48,14 @@ public class BOSSpiritDeckCardItem : BOSBase
         }
 
 
-        foreach (var item in BOSSpirit.activeSpiritsData)
-        {
-            if (item.zone == zone)
-            {
-                activeSpiritsList.Add(item.id);
-                activeSpiritCount++;
-            }
-        }
+        //foreach (var item in BOSSpirit.activeSpiritsData)
+        //{
+        //    if (item.zone == zone)
+        //    {
+        //        activeSpiritsList.Add(item.id);
+        //        activeSpiritCount++;
+        //    }
+        //}
 
         totalSpirits.text = "Total Spirits: " + totalSpiritsCount.ToString();
         discovered.text = "Discovered: " + discoveredSpiritsCount.ToString();

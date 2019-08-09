@@ -357,9 +357,11 @@ public enum CurrentView
 
 
 
-public class SpiritInstance
-{
+public struct SpiritInstance
+{    
+    [JsonProperty("spirit")]
     public string id;                       //spirit_barghest
+    [JsonProperty("_id")]
     public string instance;                 //database id
     public double summonOn;                 //summon timestamp
     public double banishedOn;               //discovered timestamp
@@ -371,7 +373,6 @@ public class SpiritInstance
     public int degree;
     public int energy;
     public int attacked;                    //number of witches the spirit attacked
-    public int zone;                        // ?
     public int gathered;                    //number of collectables the spirit picked up
 
     //public double createdOn { get; set; }
@@ -383,6 +384,8 @@ public class SpiritInstance
     public string spirit => id;
     [JsonIgnore]
     public SpiritDeckUIManager.type deckCardType;
+    [JsonIgnore]
+    public int zone;                        // ?
 }
 
 public class LastAttackedBy
