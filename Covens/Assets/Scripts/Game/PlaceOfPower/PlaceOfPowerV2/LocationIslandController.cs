@@ -19,9 +19,9 @@ public class LocationIslandController : MonoBehaviour
             return locationData.isInBattle;
         }
     }
-    public static LocationData locationData => instance.m_LocationData;
+    public static LocationData locationData => m_LocationData;
 
-    [SerializeField] private LocationData m_LocationData;
+    [SerializeField] private static LocationData m_LocationData;
 
     [Header("Debug Parameters")]
     [SerializeField] private int totalIslands = 6;
@@ -50,7 +50,7 @@ public class LocationIslandController : MonoBehaviour
         AddSpiritHandlerPOP.OnSpiritAddPOP += instance.locationUnitSpawner.AddMarker;
         instance.popCameraController.onUpdate += UpdateMarkers;
         m_LocationData.isInBattle = true;
-        CreateIslands(instance.m_LocationData);
+        CreateIslands(m_LocationData);
     }
 
     private void BattleStopPOP()
@@ -62,32 +62,54 @@ public class LocationIslandController : MonoBehaviour
         LocationBattleEnd.OnLocationBattleEnd -= BattleStopPOP;
     }
 
-    private void WitchJoined(WitchToken token)
+    private static void WitchJoined(WitchToken token)
     {
         if (!m_LocationData.tokens.ContainsKey1(token.popIndex) && !m_LocationData.tokens.ContainsKey2(token.instance))
         {
+            Debug.Log(m_LocationData.tokens.Count + "  A");
             locationData.tokens.Add(token.popIndex, token.instance, token);
-            m_LocationData.currentOccupants = locationData.tokens.Count;
+            Debug.Log(m_LocationData.tokens.Count + "  A2");
+
+            m_LocationData.currentOccupants = m_LocationData.tokens.Count;
             OnWitchEnter?.Invoke(token);
         }
     }
 
     public static void EnterPOP(string id, System.Action<LocationData> OnComplete)
     {
+        Debug.Log("EnterPOP");
         APIManager.Instance.Put($"place-of-power/enter/{id}", "{}", (response, result) =>
           {
+              Debug.Log(result);
+              Debug.Log(response);
+              AddWitchHandlerPOP.OnWitchAddPOP += WitchJoined;
               if (result == 200)
               {
 
-                  instance.m_LocationData = LocationSlotParser.HandleResponse(response);
+                  m_LocationData = LocationSlotParser.HandleResponse(response);
+                  Debug.Log(m_LocationData.tokens.Count + "  E");
                   OnComplete(locationData);
-                  LocationBattleStart.OnLocationBattleStart += instance.BattleBeginPOP;
-                  LocationBattleEnd.OnLocationBattleEnd += instance.BattleStopPOP;
+                  LoadPOPManager.LoadScene(() =>
+                  {
+                      LocationBattleStart.OnLocationBattleStart += instance.BattleBeginPOP;
+                      LocationBattleEnd.OnLocationBattleEnd += instance.BattleStopPOP;
+                  });
+
               }
               else
               {
                   OnComplete(null);
               }
+          });
+    }
+
+    public static void ExitPOP()
+    {
+        AddWitchHandlerPOP.OnWitchAddPOP -= WitchJoined;
+        APIManager.Instance.Put($"place-of-power/leave", "{}", (response, result) =>
+          {
+              Debug.Log(result);
+              Debug.Log(response);
           });
     }
 
@@ -168,11 +190,12 @@ public class LocationViewData
 {
     public string _id { get; set; }
     public string name { get; set; }
-    public double battleFinishedOn
+    public double battleFinishedOn { get; set; }
+    public double coolDownEndOn
     {
         get
         {
-            return battleFinishedOn + (coolDownWindow * 1000);
+            return battleFinishedOn + (coolDownTimeWindow * 1000);
         }
         set { }
     } // if pop is under cooldown
@@ -181,6 +204,12 @@ public class LocationViewData
     public bool isOpen { get; set; }     // accepting players
     public int tier { get; set; }
     public int openTimeWindow { get; set; }
-    public int coolDownWindow { get; set; }
+    public int coolDownTimeWindow { get; set; }
 }
 
+public class LocationWitchToken
+{
+    public WitchToken character;
+    public int island { get; set; }
+    public int position { get; set; }
+}

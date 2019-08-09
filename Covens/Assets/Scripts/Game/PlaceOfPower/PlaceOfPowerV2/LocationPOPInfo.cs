@@ -5,6 +5,7 @@ using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 using Newtonsoft.Json.Linq;
+using Newtonsoft.Json;
 
 public class LocationPOPInfo : UIInfoPanel
 {
@@ -60,16 +61,20 @@ public class LocationPOPInfo : UIInfoPanel
 
     public void Show(LocationViewData data)
     {
-        base.Show();
-        m_Locked.SetActive(false);
+        m_LocationViewData = data;
         LocationIslandController.OnWitchEnter += AddWitch;
+        base.Show();
+        ShowUI();
+    }
+    private void ShowUI()
+    {
         m_HasEnteredPOP = false;
         m_EnterAnimation.SetActive(false);
-        m_LocationViewData = data;
-        m_Title.text = data.name;
+        m_Title.text = m_LocationViewData.name;
         FadeOutUITimer();
-        if (data.isOpen)
+        if (m_LocationViewData.isOpen)
         {
+            m_Locked.SetActive(false);
             m_Content.text = "Place of power is open and accepting players, pay 1 gold drach to go in";
             m_Enter.gameObject.SetActive(true);
 
@@ -77,20 +82,20 @@ public class LocationPOPInfo : UIInfoPanel
             m_EnterBtn.onClick.RemoveAllListeners();
             InitiateTimeUI();
             UpdateEnterTimer();
-            if (PlayerDataManager.playerData.gold >= 1)
-            {
-                m_EnterBtn.onClick.AddListener(() => LocationIslandController.EnterPOP(data._id, OnEnterPOP));
-            }
-            else
-            {
-                m_Enter.color = m_NotEnoughSilver;
-                //handle taking to store
-            }
+            // if (PlayerDataManager.playerData.gold >= 1)
+            m_EnterBtn.onClick.AddListener(() => LocationIslandController.EnterPOP(m_LocationViewData._id, OnEnterPOP));
+            // else
+            // {
+            //     m_Enter.color = m_NotEnoughSilver;
+            //     //handle taking to store
+            // }
 
         }
         else
         {
-            if (data.isActive)
+            m_Enter.gameObject.SetActive(false);
+            m_Locked.SetActive(true);
+            if (m_LocationViewData.isActive)
             {
                 m_TimeCG.gameObject.SetActive(false);
                 m_Content.text = "There is a battle going on in this place of power, check back later";
@@ -98,6 +103,7 @@ public class LocationPOPInfo : UIInfoPanel
             else
             {
                 InitiateTimeUI();
+                m_Content.text = "This place is under cooldown, check back later";
                 UpdateCooldownTimer();
             }
         }
@@ -136,47 +142,71 @@ public class LocationPOPInfo : UIInfoPanel
     private async void UpdateCooldownTimer()
     {
         await Task.Delay(1000);
-        var tStamp = GetTime(m_LocationViewData.battleFinishedOn);
-        var tSec = GetSeconds(m_LocationViewData.battleFinishedOn);
+
+        if (!Application.isPlaying || !gameObject.activeInHierarchy) return;
+
+        var tStamp = GetTime(m_LocationViewData.coolDownEndOn);
+        var tSec = GetSeconds(m_LocationViewData.coolDownEndOn);
         if (tSec == 0)
         {
-            m_LocationViewData.isActive = true;
-            Show(m_LocationViewData);
+            RefreshViewData();
         }
         else
         {
             m_TimeTitle.text = tStamp.timeStamp;
             m_TimeSubtitle.text = tStamp.timeType;
-            m_Progress.fillAmount = tSec / m_LocationViewData.coolDownWindow;
+            m_Progress.fillAmount = MapUtils.scale(0, 1, 0, m_LocationViewData.coolDownTimeWindow, tSec);
+
             UpdateCooldownTimer();
         }
     }
 
     private async void UpdateEnterTimer()
     {
-        Debug.Log("Update Timer");
+
         await Task.Delay(1000);
-        Debug.Log("Update Timer2");
+
+        if (!Application.isPlaying || !gameObject.activeInHierarchy) return;
 
         var tStamp = GetSeconds(m_LocationViewData.battleBeginsOn);
-        if (tStamp < 1)
-        {
-            m_LocationViewData.isOpen = false;
-            return;
-        }
+
         m_TimeTitle.text = tStamp.ToString();
         if (!m_HasEnteredPOP)
             m_TimeSubtitle.text = "seconds";
-        Debug.Log("ticking");
-        m_Progress.fillAmount = tStamp / m_LocationViewData.openTimeWindow;
+
+        m_Progress.fillAmount = MapUtils.scale(0, 1, 0, m_LocationViewData.openTimeWindow, tStamp);
+
+        if (tStamp < 1)
+        {
+            RefreshViewData();
+            return;
+        }
+
+
         UpdateEnterTimer();
+    }
+
+    private void RefreshViewData()
+    {
+        APIManager.Instance.Get($"place-of-power/view/{m_LocationViewData._id}", (x, y) =>
+        {
+            if (y == 200)
+            {
+                m_LocationViewData = JsonConvert.DeserializeObject<LocationViewData>(x);
+                ShowUI();
+            }
+            else
+            {
+                Debug.LogError(x);
+            }
+        });
     }
 
     private void OnEnterPOP(LocationData locationData)
     {
-        //play SFX
         if (locationData != null)
         {
+            m_HasEnteredPOP = true;
             UpdateWitchCount();
             m_EnterAnimation.SetActive(true);
             LeanTween.value(0, 1, 2.2f).setOnComplete(() => m_EnterAnimation.SetActive(false));
@@ -187,7 +217,9 @@ public class LocationPOPInfo : UIInfoPanel
 
     private void UpdateWitchCount()
     {
-        m_TimeSubtitle.text = LocationIslandController.locationData.currentOccupants.ToString() + "Witches Joined";
+        Debug.Log("updating witch count");
+        Debug.Log(LocationIslandController.locationData.currentOccupants);
+        m_TimeSubtitle.text = LocationIslandController.locationData.currentOccupants.ToString() + " Witches Joined";
     }
 
     private void AddWitch(WitchToken token)
@@ -197,6 +229,7 @@ public class LocationPOPInfo : UIInfoPanel
         {
             DisablePlayerJoined();
         }
+
         m_PlayerJoined.SetActive(true);
         m_PlayerJoinedTitle.text = $"<color=white>{token.displayName}</color> Joined";
         m_PlayerJoinedSubtitle.text = $"Level: <color=white>{token.level}</color> | <color=white> {Utilities.GetDegree(token.degree)}";

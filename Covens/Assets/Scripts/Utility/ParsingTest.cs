@@ -13,7 +13,7 @@ public class ParsingTest : MonoBehaviour
     List<WitchToken> stuff = new List<WitchToken>();
     void Start()
     {
-        parse();
+        Debug.Log(MapUtils.scale(0, 1, 0, 120, 10));
     }
 
     void parse()
