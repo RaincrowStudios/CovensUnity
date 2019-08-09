@@ -11,6 +11,9 @@ GameObject:
   - component: {fileID: 1493830386294971512}
   - component: {fileID: 1393353529569502386}
   - component: {fileID: 7910251442914062874}
+  - component: {fileID: 776805320762257252}
+  - component: {fileID: 5707173380096728571}
+  - component: {fileID: 6534195688801235334}
   m_Layer: 0
   m_Name: ColoredFrame
   m_TagString: Untagged
@@ -74,6 +77,45 @@ MonoBehaviour:
   m_FillClockwise: 1
   m_FillOrigin: 0
   m_UseSpriteMesh: 0
+--- !u!225 &776805320762257252
+CanvasGroup:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 137755379817874005}
+  m_Enabled: 1
+  m_Alpha: 1
+  m_Interactable: 1
+  m_BlocksRaycasts: 1
+  m_IgnoreParentGroups: 0
+--- !u!114 &5707173380096728571
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 137755379817874005}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: da111de74ba29374ba138e059611f948, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  frequency: 1
+--- !u!114 &6534195688801235334
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 137755379817874005}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: aa550121c55abff499c1937a3d4d7e26, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  rotationSpeed: 2
+  isUp: 0
 --- !u!1 &1143389949974837671
 GameObject:
   m_ObjectHideFlags: 0
@@ -159,6 +201,9 @@ GameObject:
   - component: {fileID: 7771755625108050465}
   - component: {fileID: 2332669675130241721}
   - component: {fileID: 6450776400789927806}
+  - component: {fileID: 4589667039912109070}
+  - component: {fileID: 7388522659668851404}
+  - component: {fileID: 3937836115119739537}
   m_Layer: 0
   m_Name: ColoredFrame
   m_TagString: Untagged
@@ -222,6 +267,45 @@ MonoBehaviour:
   m_FillClockwise: 1
   m_FillOrigin: 0
   m_UseSpriteMesh: 0
+--- !u!114 &4589667039912109070
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1307800805608416754}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: aa550121c55abff499c1937a3d4d7e26, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  rotationSpeed: -3
+  isUp: 0
+--- !u!225 &7388522659668851404
+CanvasGroup:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1307800805608416754}
+  m_Enabled: 1
+  m_Alpha: 1
+  m_Interactable: 1
+  m_BlocksRaycasts: 1
+  m_IgnoreParentGroups: 0
+--- !u!114 &3937836115119739537
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1307800805608416754}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: da111de74ba29374ba138e059611f948, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  frequency: 1
 --- !u!1 &1803867677275844992
 GameObject:
   m_ObjectHideFlags: 0
@@ -391,6 +475,7 @@ GameObject:
   - component: {fileID: 260099060751710153}
   - component: {fileID: 3659148820857297665}
   - component: {fileID: 308330893077966014}
+  - component: {fileID: 3434676675423045418}
   m_Layer: 0
   m_Name: Glyph
   m_TagString: Untagged
@@ -504,6 +589,18 @@ MonoBehaviour:
       m_Calls: []
     m_TypeName: UnityEngine.UI.Button+ButtonClickedEvent, UnityEngine.UI, Version=1.0.0.0,
       Culture=neutral, PublicKeyToken=null
+--- !u!225 &3434676675423045418
+CanvasGroup:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3617850951595044885}
+  m_Enabled: 1
+  m_Alpha: 1
+  m_Interactable: 1
+  m_BlocksRaycasts: 1
+  m_IgnoreParentGroups: 0
 --- !u!1 &4151317303938904112
 GameObject:
   m_ObjectHideFlags: 0
@@ -613,8 +710,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 0, y: 0}
+  m_AnchoredPosition: {x: 0, y: 17.50001}
+  m_SizeDelta: {x: 0, y: 35}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &4487739848003220564
 CanvasRenderer:
@@ -644,7 +741,7 @@ MonoBehaviour:
       m_Calls: []
     m_TypeName: UnityEngine.UI.MaskableGraphic+CullStateChangedEvent, UnityEngine.UI,
       Version=1.0.0.0, Culture=neutral, PublicKeyToken=null
-  m_Sprite: {fileID: 21300000, guid: 489a279405776ea429697e77018e2a40, type: 3}
+  m_Sprite: {fileID: 21300000, guid: 119c97c9849cf714caf04754deba7612, type: 3}
   m_Type: 0
   m_PreserveAspect: 0
   m_FillCenter: 1
@@ -1203,6 +1300,7 @@ GameObject:
   - component: {fileID: 6245758356872771813}
   - component: {fileID: 5652202415859041917}
   - component: {fileID: 7223043438575244383}
+  - component: {fileID: 6011541464569818634}
   m_Layer: 0
   m_Name: School
   m_TagString: Untagged
@@ -1312,6 +1410,18 @@ MonoBehaviour:
       m_Calls: []
     m_TypeName: UnityEngine.UI.Button+ButtonClickedEvent, UnityEngine.UI, Version=1.0.0.0,
       Culture=neutral, PublicKeyToken=null
+--- !u!225 &6011541464569818634
+CanvasGroup:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6884126111396026157}
+  m_Enabled: 1
+  m_Alpha: 1
+  m_Interactable: 1
+  m_BlocksRaycasts: 1
+  m_IgnoreParentGroups: 0
 --- !u!1 &7215018815285666659
 GameObject:
   m_ObjectHideFlags: 0

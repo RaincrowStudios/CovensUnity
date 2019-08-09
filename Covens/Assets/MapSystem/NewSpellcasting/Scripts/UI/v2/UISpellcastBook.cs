@@ -11,6 +11,7 @@ using Raincrow.GameEventResponses;
 public class UISpellcastBook : MonoBehaviour, IEnhancedScrollerDelegate
 {
     [SerializeField] private Canvas m_Canvas;
+    [SerializeField] private GameObject Container;
     [SerializeField] private GraphicRaycaster m_InputRaycaster;
     [SerializeField] private EnhancedScroller m_Scroller;
     [SerializeField] private CanvasGroup m_ScrollerCanvasGroup;
@@ -28,10 +29,29 @@ public class UISpellcastBook : MonoBehaviour, IEnhancedScrollerDelegate
 
     [SerializeField] private Sprite[] m_TierSprite;
 
+    [SerializeField] private TextMeshProUGUI m_BottomText;
+
+
     private static UISpellcastBook m_Instance;
 
     private List<SpellData> m_PlayerSpells;
-    private List<SpellData> m_ScrollerSpells = new List<SpellData>();    private IMarker m_TargetMarker;    private CharacterMarkerData m_TargetData;    private int? m_SelectedSchool = null;    private SpellData m_SelectedSpell = null;    private int m_SelectedSpellIndex = 0;    private CollectableItem m_Herb;    private CollectableItem m_Tool;    private CollectableItem m_Gem;    private System.Action<SpellData, List<spellIngredientsData>> m_OnConfirmSpell;    private System.Action m_OnBack;    private System.Action m_OnClose;        public static bool IsOpen
+    private List<SpellData> m_ScrollerSpells = new List<SpellData>();
+
+    private IMarker m_TargetMarker;
+    private CharacterMarkerData m_TargetData;
+
+    private int? m_SelectedSchool = null;
+    private SpellData m_SelectedSpell = null;
+    private int m_SelectedSpellIndex = 0;
+    private CollectableItem m_Herb;
+    private CollectableItem m_Tool;
+    private CollectableItem m_Gem;
+
+    private System.Action<SpellData, List<spellIngredientsData>> m_OnConfirmSpell;
+    private System.Action m_OnBack;
+    private System.Action m_OnClose;
+
+    public static bool IsOpen
     {
         get
         {
@@ -40,11 +60,13 @@ public class UISpellcastBook : MonoBehaviour, IEnhancedScrollerDelegate
 
             return m_Instance.m_InputRaycaster.enabled;
         }
-    }    public static void Open(
-        CharacterMarkerData target, 
-        IMarker marker, 
-        List<SpellData> spells, 
-        System.Action<SpellData, List<spellIngredientsData>> onConfirm, 
+    }
+
+    public static void Open(
+        CharacterMarkerData target,
+        IMarker marker,
+        List<SpellData> spells,
+        System.Action<SpellData, List<spellIngredientsData>> onConfirm,
         System.Action onClickBack = null,
         System.Action onClickClose = null)
     {
@@ -63,16 +85,21 @@ public class UISpellcastBook : MonoBehaviour, IEnhancedScrollerDelegate
         {
             m_Instance.Show(target, marker, spells, onConfirm, onClickBack, onClickClose);
         }
-    }    public static void Close()
+    }
+
+    public static void Close()
     {
         if (m_Instance == null)
             return;
 
         m_Instance.Hide();
-    }    private void Awake()
+    }
+
+    private void Awake()
     {
         m_Instance = this;
-        m_InventoryButton.gameObject.SetActive(false);
+        m_InventoryButton.interactable = false;
+        m_InventoryButton.GetComponent<CanvasGroup>().alpha = 0f;
         m_InventoryGlow.gameObject.SetActive(false);
         m_Scroller.Delegate = this;
 
@@ -90,7 +117,7 @@ public class UISpellcastBook : MonoBehaviour, IEnhancedScrollerDelegate
     {
         if (IsOpen)
             return;
-        
+
         DownloadedAssets.OnWillUnloadAssets -= DownloadedAssets_OnWillUnloadAssets;
 
         m_Scroller.ClearAll();
@@ -98,10 +125,10 @@ public class UISpellcastBook : MonoBehaviour, IEnhancedScrollerDelegate
     }
 
     private void Show(
-        CharacterMarkerData target, 
-        IMarker marker, 
-        List<SpellData> spells, 
-        System.Action<SpellData, List<spellIngredientsData>> onConfirm, 
+        CharacterMarkerData target,
+        IMarker marker,
+        List<SpellData> spells,
+        System.Action<SpellData, List<spellIngredientsData>> onConfirm,
         System.Action onBack = null,
         System.Action onClose = null)
     {
@@ -115,8 +142,11 @@ public class UISpellcastBook : MonoBehaviour, IEnhancedScrollerDelegate
         m_PlayerSpells = spells;
         SetSchool(m_SelectedSchool);
         SetupTarget(marker, target);
+        SetupBottomText();
 
-        //todo: animate
+
+
+        AnimOpen();
         m_Canvas.enabled = true;
         m_InputRaycaster.enabled = true;
 
@@ -146,11 +176,38 @@ public class UISpellcastBook : MonoBehaviour, IEnhancedScrollerDelegate
 
         UpdateCanCast();
     }
+    private void SetupBottomText()
+    {
+        if (PlayerManager.inSpiritForm == false) //physical
+        {
+            m_BottomText.text = LocalizeLookUp.GetText("spell_form_physical");
+        }
+        else //spirit 
+        {
+            m_BottomText.text = LocalizeLookUp.GetText("spell_form_spirit");
+        }
+    }
 
+    private void AnimOpen()
+    {
+        SoundManagerOneShot.Instance.PlayWhisperFX();
+        SoundManagerOneShot.Instance.PlayWooshShort();
+        LeanTween.moveLocalX(Container, 0f, 0.5f).setEase(LeanTweenType.easeInCubic);
+        LeanTween.value(0f, 1f, 0.3f).setOnComplete(() =>
+        {
+            LeanTween.alphaCanvas(m_ScrollerCanvasGroup, 1f, 1f);
+        });
+    }
+    private void AnimClose()
+    {
+        SoundManagerOneShot.Instance.PlayWhisperFX();
+        LeanTween.alphaCanvas(m_ScrollerCanvasGroup, 0f, 0.4f);
+        LeanTween.moveLocalX(Container, 1308f, 0.5f).setEase(LeanTweenType.easeInCubic).setOnComplete(() => { m_Canvas.enabled = false; });
+    }
     private void Hide()
     {
-        //todo: animate
-        m_Canvas.enabled = false;
+        AnimClose();
+        //m_Canvas.enabled = false;
         m_InputRaycaster.enabled = false;
 
         m_OnConfirmSpell = null;
@@ -220,6 +277,7 @@ public class UISpellcastBook : MonoBehaviour, IEnhancedScrollerDelegate
 
     private void SetSchool(int? school)
     {
+        SoundManagerOneShot.Instance.PlayAHSAWhisper();
         //block the filter change if a card is selected
         if (m_SelectedSpell != null)
             return;
@@ -230,7 +288,7 @@ public class UISpellcastBook : MonoBehaviour, IEnhancedScrollerDelegate
         m_SelectedSchool = school;
 
         m_ScrollerSpells.Clear();
-        foreach(SpellData spell in m_PlayerSpells)
+        foreach (SpellData spell in m_PlayerSpells)
         {
             if (school == null || school == spell.school)
                 m_ScrollerSpells.Add(spell);
@@ -241,6 +299,7 @@ public class UISpellcastBook : MonoBehaviour, IEnhancedScrollerDelegate
 
     private void OnSelectCard(UISpellcard card)
     {
+        SoundManagerOneShot.Instance.PlayButtonTap();
         if (UIInventory.isOpen)
         {
             CloseInventory();
@@ -299,6 +358,7 @@ public class UISpellcastBook : MonoBehaviour, IEnhancedScrollerDelegate
 
     private void OnClickCast(UISpellcard card)
     {
+        SoundManagerOneShot.Instance.PlayEnYaSa();
         //in case the player clicked the glyph without first selecting a card
         if (m_SelectedSpell == null || m_SelectedSpell.id != card.Spell.id)
         {
@@ -320,6 +380,9 @@ public class UISpellcastBook : MonoBehaviour, IEnhancedScrollerDelegate
 
     private void OnSelectSchool(int school)
     {
+        SoundManagerOneShot.Instance.PlayWhisperFX();
+        SoundManagerOneShot.Instance.PlayButtonTap();
+
         //disable filter while ivnentory picker is open
         if (UIInventory.isOpen)
             return;
@@ -346,6 +409,7 @@ public class UISpellcastBook : MonoBehaviour, IEnhancedScrollerDelegate
 
     private void OnClickInventory()
     {
+
         if (UIInventory.isOpen)
             CloseInventory();
         else
@@ -354,12 +418,22 @@ public class UISpellcastBook : MonoBehaviour, IEnhancedScrollerDelegate
 
     private void EnableInventoryButton(bool enabled)
     {
-        m_InventoryButton.gameObject.SetActive(enabled);
+        m_InventoryButton.interactable = enabled;
         m_InventoryGlow.gameObject.SetActive(m_Herb.id != null || m_Tool.id != null || m_Gem.id != null);
+        if (enabled == true)
+        {
+            LeanTween.alphaCanvas(m_InventoryButton.GetComponent<CanvasGroup>(), 1f, 0.5f);
+        }
+        else
+        {
+            m_InventoryButton.GetComponent<CanvasGroup>().alpha = 0f;
+        }
+
     }
 
     private void OpenInventory()
     {
+        SoundManagerOneShot.Instance.PlayWhisperFX();
         UIInventory.Instance.Show(OnClickInventoryItem, OnCloseInventory, false, false);
 
         //lock if necessary
@@ -377,6 +451,7 @@ public class UISpellcastBook : MonoBehaviour, IEnhancedScrollerDelegate
 
     private void CloseInventory()
     {
+        SoundManagerOneShot.Instance.PlayButtonTap();
         if (UIInventory.isOpen == false)
             return;
 
@@ -386,15 +461,18 @@ public class UISpellcastBook : MonoBehaviour, IEnhancedScrollerDelegate
 
     private void OnOpenInventory()
     {
+        SoundManagerOneShot.Instance.PlayWhisperFX();
+        SoundManagerOneShot.Instance.PlayButtonTap();
         //lock scroller
         m_Scroller.ScrollRect.enabled = false;
 
         //move scroller to the right
-        FocusOn(m_SelectedSpellIndex, 0.75f);       
+        FocusOn(m_SelectedSpellIndex, 0.75f);
     }
 
     private void OnCloseInventory()
     {
+        SoundManagerOneShot.Instance.PlayButtonTap();
         EnableInventoryButton(true);
 
         //unlock scroller
@@ -406,6 +484,7 @@ public class UISpellcastBook : MonoBehaviour, IEnhancedScrollerDelegate
 
     private void OnClickInventoryItem(UIInventoryWheelItem item)
     {
+        SoundManagerOneShot.Instance.PlayButtonTap();
         //just resets if clicking on an empty inventory item
         if (item.inventoryItemId == null)
         {
@@ -550,6 +629,7 @@ public class UISpellcastBook : MonoBehaviour, IEnhancedScrollerDelegate
         if (m_SelectedSpell == null || m_ScrollerSpells[dataIndex].id == m_SelectedSpell.id)
         {
             cellView.SetAlpha(1);
+
         }
         else
         {

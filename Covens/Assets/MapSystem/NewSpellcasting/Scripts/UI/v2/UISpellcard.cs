@@ -32,7 +32,7 @@ public class UISpellcard : EnhancedScrollerCellView
     [SerializeField] private Sprite m_ShadowCrest;
     [SerializeField] private Sprite m_GreyCrest;
     [SerializeField] private Sprite m_WhiteCrest;
-    
+
     public SpellData Spell { get; private set; }
     private System.Action<int> m_OnClickSchool;
     private System.Action<UISpellcard> m_OnClickCard;
@@ -51,8 +51,8 @@ public class UISpellcard : EnhancedScrollerCellView
     }
 
     public void SetData(
-        SpellData spell, 
-        System.Action<int> onClickSchool, 
+        SpellData spell,
+        System.Action<int> onClickSchool,
         System.Action<UISpellcard> onClickCard,
         System.Action<UISpellcard> onClickGlyph)
     {
@@ -65,7 +65,7 @@ public class UISpellcard : EnhancedScrollerCellView
         m_OnClickGlyph = onClickGlyph;
 
         m_SpellName.text = spell.Name;
-        m_SpellCost.text = spell.cost.ToString();
+        m_SpellCost.text = LocalizeLookUp.GetText("spell_data_cost").Replace("{{Energy Cost}}", spell.cost.ToString());
         m_SpellDescription.text = PlayerManager.inSpiritForm ? spell.SpiritDescription : spell.PhysicalDescription;
 
         if (spell.school < 0)
@@ -99,12 +99,18 @@ public class UISpellcard : EnhancedScrollerCellView
         if (canCast == Spellcasting.SpellState.CanCast)
         {
             m_SpellFrame.gameObject.SetActive(true);
+            m_SchoolFrame.gameObject.SetActive(true);
             m_SpellButton.interactable = true;
+            m_SpellButton.gameObject.GetComponent<CanvasGroup>().alpha = 1f;
+            m_SchoolButton.gameObject.GetComponent<CanvasGroup>().alpha = 1f;
         }
         else
         {
+            m_SchoolFrame.gameObject.SetActive(false);
             m_SpellFrame.gameObject.SetActive(false);
             m_SpellButton.interactable = false;
+            m_SpellButton.gameObject.GetComponent<CanvasGroup>().alpha = 0.5f;
+            m_SchoolButton.gameObject.GetComponent<CanvasGroup>().alpha = 0.5f;
         }
 
         if (canCast == Spellcasting.SpellState.InCooldown)
@@ -146,12 +152,12 @@ public class UISpellcard : EnhancedScrollerCellView
     {
         LeanTween.cancel(m_TweenId);
 
-        if(time == 0)
+        if (time == 0)
         {
             m_CanvasGroup.alpha = a;
             return;
         }
-        
+
         m_TweenId = LeanTween.alphaCanvas(m_CanvasGroup, a, time).setEaseOutCubic().uniqueId;
     }
 
