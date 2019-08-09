@@ -193,7 +193,7 @@ public class PlayerData : WitchMarkerData
     public bool tutorial;
 
     public string favoriteSpell;
-    public string race;
+    //public string race;
     public bool dailyBlessing;
     public string benefactor;
     public string nemesis;

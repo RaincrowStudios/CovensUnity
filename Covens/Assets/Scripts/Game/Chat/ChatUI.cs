@@ -590,40 +590,7 @@ public class ChatUI : UIAnimationManager
 
     void SetAvatar()
     {
-        var data = PlayerDataManager.playerData;
-        if (data.male)
-        {
-            if (data.race.Contains("A"))
-            {
-                playerAvatar = 0;
-            }
-            else if (data.race.Contains("O"))
-            {
-                playerAvatar = 1;
-            }
-            else
-            {
-                playerAvatar = 2;
-            }
-        }
-        else
-        {
-            if (data.race.Contains("A"))
-            {
-                playerAvatar = 3;
-
-            }
-            else if (data.race.Contains("O"))
-            {
-                playerAvatar = 4;
-
-            }
-            else
-            {
-                playerAvatar = 5;
-
-            }
-        }
+        playerAvatar = PlayerDataManager.playerData.bodyType;
     }
 
     void SendEmail()

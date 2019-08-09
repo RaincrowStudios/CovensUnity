@@ -103,7 +103,9 @@ public class ApparelView : MonoBehaviour
 
     string GetStyleID(string id)
     {
-        string race = PlayerDataManager.playerData.race.ElementAt(2) + "_";
+        string[] races = new string[] { "A_", "E_", "O_", "A_", "E_", "O_" };
+        string race = races[PlayerDataManager.playerData.bodyType - 1];
+        //string race = PlayerDataManager.playerData.race.ElementAt(2) + "_";
         id = id.Replace("cosmetic_", "");
         id = id.Replace("_S_", "_S_" + race);
         return id + "_Relaxed";
