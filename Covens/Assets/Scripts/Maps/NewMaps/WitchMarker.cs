@@ -143,6 +143,27 @@ public class WitchMarker : MuskMarker
         m_Level.text = witchToken.level.ToString();
     }
 
+    public void UpdateEquips(List<EquippedApparel> equips)
+    {
+        //update equip list and generate new textures if visible
+        witchToken.equipped = equips;
+
+        if (m_AvatarRenderer != null)
+        {
+            if (IsShowingAvatar)
+                SetupAvatar(witchToken.male, witchToken.equipped);
+            else if (m_AvatarRenderer.sprite != null && m_AvatarRenderer.sprite.texture != null)
+                Destroy(m_AvatarRenderer.sprite.texture);
+        }
+        if (m_IconRenderer != null)
+        {
+            if (IsShowingIcon)
+                SetupPortrait(witchToken.male, witchToken.equipped);
+            else if (m_IconRenderer.sprite != null && m_IconRenderer.sprite.texture != null)
+                Destroy(m_IconRenderer.sprite.texture);
+        }
+    }
+
     public void SetupAvatar(bool male, List<EquippedApparel> equips, System.Action<Sprite> callback = null)
     {
         //generate sprites for avatar and icon
@@ -150,9 +171,13 @@ public class WitchMarker : MuskMarker
         {
             if (m_AvatarRenderer != null)
             {
+                if (m_AvatarRenderer.sprite != null && m_AvatarRenderer.sprite.texture != null)
+                    Destroy(m_AvatarRenderer.sprite.texture);
+
                 m_AvatarRenderer.transform.localPosition = Vector3.zero;
                 m_AvatarRenderer.sprite = spr;
             }
+
             callback?.Invoke(spr);
         });
     }
@@ -162,7 +187,12 @@ public class WitchMarker : MuskMarker
         AvatarSpriteUtil.Instance.GeneratePortrait(male, equips, spr =>
         {
             if (m_IconRenderer != null)
+            {
+                if (m_IconRenderer.sprite != null && m_IconRenderer.sprite.texture != null)
+                    Destroy(m_IconRenderer.sprite.texture);
+
                 m_IconRenderer.sprite = spr;
+            }
             callback?.Invoke(spr);
         });
     }

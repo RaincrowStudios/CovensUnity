@@ -24,6 +24,9 @@ public class ApparelManager : MonoBehaviour
         PlayerDataManager.playerData.equipped = ActiveViewPlayer.equippedApparel.Values.ToList();
         PlayerManager.Instance.OnUpdateEquips();
         LoadPlayerPortrait.ReloadPortrait();
+
+
+
         APIManager.Instance.Put("character/equip", JsonConvert.SerializeObject(PlayerDataManager.playerData.equipped), equipResult);
     }
 
