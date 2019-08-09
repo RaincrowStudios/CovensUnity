@@ -117,10 +117,50 @@ namespace Raincrow.Store
                 data.Add("receipt", receipt);
 
             Debug.Log("<color=magenta>" + id + "</color>");
+
             APIManager.Instance.Post("shop/purchase", JsonConvert.SerializeObject(data), (response, result) =>
             {
                 if (result == 200)
                 {
+                    string debug = "<color=magenta>purchase complete:</color>\n";
+                    switch (type)
+                    {
+                        case "silver":
+                            debug += "[silver] " + id;
+                            //silver is processed on IAPSilver
+                            break;
+
+                        case "cosmetics":
+                            debug += "[cosmetics] " + id;
+                            CosmeticData cosmetic = DownloadedAssets.GetCosmetic(id);
+                            PlayerDataManager.playerData.inventory.cosmetics.Add(cosmetic);
+                            break;
+
+                        case "bundles":
+                            debug += "[cosmetics] " + id;
+                            IngredientBundleData bundle = StoreManagerAPI.GetBundle(id);
+                            for (int i = 0; i < bundle.collectables.Length; i++)
+                            {
+                                debug += "\n\t" + bundle.collectables[i] + " +" + bundle.amount[i];
+                                PlayerDataManager.playerData.AddIngredient(bundle.collectables[i], bundle.amount[i]);
+                            }
+                            break;
+
+                        case "consumables":
+                            debug += "[consumables] " + id;
+                            debug += "\n\tNOT IMPLEMENTED";
+                            //List<Item> consumables = PlayerDataManager.playerData.inventory.consumables;
+                            //foreach(var potion in consumables)
+                            //{
+                            //    if (potion.id == id)
+                            //    {
+                            //        break;
+                            //    }
+                            //}
+                            break;
+                    }
+                    Debug.Log(debug);
+
                     callback(null);
                 }
                 else

@@ -180,6 +180,10 @@ public class IAPSilver : MonoBehaviour, IStoreListener
             {
                 if (string.IsNullOrEmpty(error))
                 {
+                    PlayerDataManager.playerData.silver += data.amount;
+                    if (PlayerManagerUI.Instance != null)
+                        PlayerManagerUI.Instance.UpdateDrachs();
+
                     //remove from pending
                     m_StoreController.ConfirmPendingPurchase(args.purchasedProduct);
                 }

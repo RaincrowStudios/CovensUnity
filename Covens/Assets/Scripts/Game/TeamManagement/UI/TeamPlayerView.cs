@@ -77,7 +77,7 @@ public class TeamPlayerView : MonoBehaviour
         _dominion.text = LocalizeLookUp.GetText("lt_dominion") + " " + data.dominion;
         _dominionRank.text = LocalizeLookUp.GetText("lt_dominion_rank") + " " + data.dominionRank;
         _worldRank.text = LocalizeLookUp.GetText("lt_world_rank") + " " + data.worldRank;
-        _coven.text = (string.IsNullOrEmpty(data.covenId) ? LocalizeLookUp.GetText("lt_coven_none") : LocalizeLookUp.GetText("lt_coven") + " " + data.covenId);
+        _coven.text = (string.IsNullOrEmpty(data.coven) ? LocalizeLookUp.GetText("lt_coven_none") : LocalizeLookUp.GetText("lt_coven") + " " + data.coven);
         //_state.text = (data.state == "" ? LocalizeLookUp.GetText("lt_state_normal") : LocalizeLookUp.GetText("lt_state") + " " + data.state);
         _power.text = "<Power>: " + data.power;
         _resilience.text = "<Resilience>: " + data.resilience;

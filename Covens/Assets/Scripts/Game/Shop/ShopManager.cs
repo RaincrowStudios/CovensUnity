@@ -558,23 +558,41 @@ public class ShopManager : ShopBase
         buyWithGoldBtn.onClick.RemoveAllListeners();
         buyWithSilverBtn.onClick.RemoveAllListeners();
         SetCloseAction(HideStyles);
-        if (st.owned)
+
+        bool owned = st.owned;
+        bool locked = Utilities.TimespanFromJavaTime(st.unlockOn).TotalSeconds > 0;
+
+        buyWithSilverBtn.gameObject.SetActive(owned || !locked);
+        buyWithGoldBtn.gameObject.SetActive(!owned && !locked);
+        styleUnlockOn.gameObject.SetActive(locked);
+        styleIcon.color = locked ? Color.black : Color.white;
+
+        if (styleUnlockOn.gameObject.activeSelf)
         {
-            buyWithGoldBtn.gameObject.SetActive(false);
-            buyWithSilver.text = LocalizeLookUp.GetText("store_gear_owned_upper");
-            buyWithSilver.color = Color.white;
+            styleUnlockOn.text = "This style will be available on " + ShopItem.GetTimeStampDate(st.unlockOn);
         }
-        else
+
+        if (buyWithSilver.gameObject.activeSelf)
         {
-            buyWithGoldBtn.gameObject.SetActive(true);
+            buyWithSilver.text = owned ? LocalizeLookUp.GetText("store_gear_owned_upper") : LocalizeLookUp.GetText("store_buy_silver") + ": " + st.silver.ToString();
+
+            if (owned)
+            {
+                buyWithSilver.color = Color.white;
+            }
+            else
+            {
+                buyWithSilverBtn.onClick.AddListener(() => { OnBuy(st, true); });
+                buyWithSilverBtn.interactable = st.silver <= PlayerDataManager.playerData.silver;
+                buyWithSilver.color = st.silver > PlayerDataManager.playerData.silver ? Color.red : Color.white;
+            }
+        }
+
+        if (buyWithGold.gameObject.activeSelf)
+        {
             buyWithGoldBtn.onClick.AddListener(() => { OnBuy(st, false); });
-            buyWithSilverBtn.onClick.AddListener(() => { OnBuy(st, true); });
-            buyWithSilver.color = st.silver > PlayerDataManager.playerData.silver ? Color.red : Color.white;
-            buyWithGold.color = st.gold > PlayerDataManager.playerData.gold ? Color.red : Utilities.Orange;
-            buyWithGoldBtn.interactable = st.gold <= PlayerDataManager.playerData.gold;
-            buyWithSilverBtn.interactable = st.silver <= PlayerDataManager.playerData.silver;
             buyWithGold.text = LocalizeLookUp.GetText("store_buy_gold") + ": " + st.gold.ToString();
-            buyWithSilver.text = LocalizeLookUp.GetText("store_buy_silver") + ": " + st.silver.ToString();
+            buyWithGold.color = st.gold > PlayerDataManager.playerData.gold ? Color.red : Utilities.Orange;
         }
 
         title.text = LocalizeLookUp.GetStoreTitle(st.id);
@@ -583,23 +601,7 @@ public class ShopManager : ShopBase
         ResetNavButtons();
         styleNavContainer.GetChild(currentStyle).GetComponent<Image>().color = Color.white;
 
-        DownloadedAssets.GetSprite(st.iconId, styleIcon);
-
-        if (Utilities.TimespanFromJavaTime(st.unlockOn).TotalSeconds > 0)
-        {
-            styleIcon.color = Color.black;
-            buyWithSilver.gameObject.SetActive(false);
-            buyWithGold.gameObject.SetActive(false);
-            styleUnlockOn.gameObject.SetActive(true);
-            styleUnlockOn.text = "This style will be available on " + ShopItem.GetTimeStampDate(st.unlockOn);
-        }
-        else
-        {
-            styleIcon.color = Color.white;
-            styleUnlockOn.gameObject.SetActive(false);
-            buyWithSilver.gameObject.SetActive(true);
-            buyWithGold.gameObject.SetActive(true);
-        }
+        DownloadedAssets.GetSprite(st.iconId, styleIcon);        
     }
 
     private void SwipeRightStyle()
@@ -856,7 +858,7 @@ public class ShopManager : ShopBase
                     buySuccessSubTitle.text = LocalizeLookUp.GetStoreSubtitle(item.id);
                     DownloadedAssets.GetSprite(item.iconId, buySuccessIcon, true);
                     PlayerDataManager.playerData.inventory.cosmetics.Add(item);
-                    item.owned = true;
+                    //item.owned = true;
                     if (buttonItem != null)
                     {
                         buttonItem.SetBought();

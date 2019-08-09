@@ -76,8 +76,8 @@ public abstract class CharacterMarkerData : MarkerData
 
     public List<StatusEffect> effects;
     
-    [JsonIgnore]
-    public virtual string covenId { get; }
+    public virtual string covenId { get; set; }
+    public virtual string coven { get; set; }
 
     [JsonIgnore]
     public virtual int baseEnergy { get; set; }
@@ -435,12 +435,14 @@ public class PlayerData : WitchMarkerData
 
     [JsonIgnore]
     public override string covenId => covenInfo.coven;
+
+    //[JsonIgnore]
+    //public override string coven
 }
 
 //map select
 public class SelectWitchData_Map : WitchMarkerData
 {
-    public string coven;
     public new int power;
     public new int resilience;
     public PlayerRank rank;
@@ -479,15 +481,13 @@ public class SelectWitchData_Map : WitchMarkerData
     [JsonIgnore]
     public override bool male => bodyType >= 3;
 
-    [JsonIgnore]
-    public override string covenId => coven;
 }
 
 public class SelectSpiritData_Map : SpiritMarkerData
 {
     public override double createdOn { get; set; }
     public override string owner { get; set; }
-    public string coven { get; set; }
+    //public override string coven { get; set; }
     public override int power { get; set; }
     public override int resilience { get; set; }
     public override int bounty { get; set; }

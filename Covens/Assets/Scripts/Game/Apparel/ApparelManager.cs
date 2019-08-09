@@ -85,7 +85,7 @@ public class CosmeticData
     public string tooltip;
 
     [JsonIgnore]
-    public bool owned;
+    public bool owned => PlayerDataManager.playerData.inventory.cosmetics.Exists(item => item.id == id);
 
     [JsonIgnore]
     public double unlockOn;
