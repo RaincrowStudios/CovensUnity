@@ -207,11 +207,14 @@ public class PlayerData : WitchMarkerData
     [JsonProperty("herbs")] private List<CollectableItem> m_Herbs;
     [JsonProperty("gems")] private List<CollectableItem> m_Gems;
 
+    [JsonProperty("cosmetics")] private string[] m_Cosmetics;
+    [JsonProperty("consumables")] private ConsumableItem[] m_Consumables;
+
     [JsonIgnore] private Dictionary<string, int> m_HerbsDict = null;
     [JsonIgnore] private Dictionary<string, int> m_ToolsDict = null;
     [JsonIgnore] private Dictionary<string, int> m_GemsDict = null;
-
-    [JsonProperty("cosmetics")] private List<string> m_Cosmetics;
+    [JsonIgnore] private Inventory m_Inventory = null;
+    
     public List<string> spirits;
     public List<KnownSpirits> knownSpirits;
     public List<CovenInvite> covenInvites;
@@ -374,21 +377,33 @@ public class PlayerData : WitchMarkerData
     {
         get
         {
-            Inventory inv = new Inventory()
+            if (m_Inventory == null)
             {
-                consumables = new List<Item>(),
-                cosmetics = new List<CosmeticData>()
-            };
+                m_Inventory = new Inventory()
+                {
+                    consumables = new List<Item>(),
+                    cosmetics = new List<CosmeticData>()
+                };
 
-            CosmeticData cosmeticData;
-            foreach (var id in m_Cosmetics)
-            {
-                cosmeticData = DownloadedAssets.GetCosmetic(id);
-                if (cosmeticData != null && cosmeticData.hidden == false)
-                    inv.cosmetics.Add(cosmeticData);
+                CosmeticData cosmetic;
+                foreach (var id in m_Cosmetics)
+                {
+                    cosmetic = DownloadedAssets.GetCosmetic(id);
+                    if (cosmetic != null && string.IsNullOrEmpty(cosmetic.id) == false)// && cosmetic.hidden == false)
+                        m_Inventory.cosmetics.Add(cosmetic);
+                }
+
+                foreach(var item in m_Consumables)
+                {
+                    m_Inventory.consumables.Add(new Item
+                    {
+                        id = item.id,
+                        count = item.amount
+                    });
+                }
             }
 
-            return inv;
+            return m_Inventory;
         }
     }
     

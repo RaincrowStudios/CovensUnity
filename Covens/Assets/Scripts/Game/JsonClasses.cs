@@ -167,6 +167,19 @@ public struct CollectableItem
     }
 }
 
+public struct ConsumableItem
+{
+    [JsonProperty("consumable")]
+    public string id;
+    public int amount;
+
+    public ConsumableItem(string id, int count)
+    {
+        this.id = id;
+        this.amount = count;
+    }
+}
+
 public class KytelerItem
 {
     public string id;

@@ -148,15 +148,20 @@ namespace Raincrow.Store
 
                         case "consumables":
                             debug += "[consumables] " + id;
-                            debug += "\n\tNOT IMPLEMENTED";
-                            //List<Item> consumables = PlayerDataManager.playerData.inventory.consumables;
-                            //foreach(var potion in consumables)
-                            //{
-                            //    if (potion.id == id)
-                            //    {
-                            //        break;
-                            //    }
-                            //}
+
+                            Item consumable = PlayerDataManager.playerData.inventory.consumables.Find(it => it.id == id);
+                            if (consumable == null || string.IsNullOrEmpty(consumable.id))
+                            {
+                                PlayerDataManager.playerData.inventory.consumables.Add(new Item
+                                {
+                                    id = id,
+                                    count = 1
+                                });
+                            }
+                            else
+                            {
+                                consumable.count += 1;
+                            }
                             break;
                     }
                     Debug.Log(debug);
