@@ -1323,6 +1323,14 @@ public class FTFManager : MonoBehaviour
             Destroy(Instance.mirrorsInstance.gameObject);
     }
 
+    private struct FinishFTFResponse
+    {
+        public CollectableItem[] tools;
+        public CollectableItem[] herbs;
+        public CollectableItem[] gems;
+        public ulong xp;
+    }
+
     public void EndFTF()
     {
         print("end ftf");
@@ -1344,27 +1352,22 @@ public class FTFManager : MonoBehaviour
                 {
                     Debug.Log("ftf complete");
 
-                    PlayerData update = JsonConvert.DeserializeObject<PlayerData>(response);
-                    update.Setup();
-                    
-                    List<CollectableItem> herbs = update.GetAllIngredients(IngredientType.herb);
-                    List<CollectableItem> tools = update.GetAllIngredients(IngredientType.tool);
-                    List<CollectableItem> gems = update.GetAllIngredients(IngredientType.gem);
-                    
-                    foreach (var item in herbs)
+                    FinishFTFResponse data = JsonConvert.DeserializeObject<FinishFTFResponse>(response);
+                                        
+                    foreach (var item in data.herbs)
                         PlayerDataManager.playerData.SetIngredient(item.id, item.count);
-                    foreach (var item in tools)
+                    foreach (var item in data.tools)
                         PlayerDataManager.playerData.SetIngredient(item.id, item.count);
-                    foreach (var item in gems)
+                    foreach (var item in data.gems)
                         PlayerDataManager.playerData.SetIngredient(item.id, item.count);
 
-                    PlayerDataManager.playerData.xp = update.xp;
-                    PlayerDataManager.playerData.spirits = update.spirits;
-
+                    PlayerDataManager.playerData.xp = data.xp;
+                    PlayerManagerUI.Instance.setupXP();
+                    //PlayerDataManager.playerData.spirits = update.spirits;
+                    
                     AppsFlyerAPI.CompletedFTUE();
                     Utilities.allowMapControl(true);
-
-
+                    
                     //get the markers at the current position
                     MarkerManagerAPI.GetMarkers(
                         PlayerDataManager.playerData.longitude,
