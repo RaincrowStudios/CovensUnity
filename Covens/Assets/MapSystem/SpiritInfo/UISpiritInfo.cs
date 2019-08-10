@@ -93,7 +93,7 @@ public class UISpiritInfo : UIInfoPanel
         m_Tier.text = tier;
                         
         previousMapPosition = MapsAPI.Instance.GetWorldPosition();
-        m_PreviousMapZoom = MapsAPI.Instance.normalizedZoom;
+        m_PreviousMapZoom = Mathf.Min(0.98f, MapsAPI.Instance.normalizedZoom);
 
         MainUITransition.Instance.HideMainUI();
 

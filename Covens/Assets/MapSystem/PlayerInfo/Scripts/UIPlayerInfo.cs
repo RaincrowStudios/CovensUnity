@@ -115,7 +115,7 @@ public class UIPlayerInfo : UIInfoPanel
         m_CovenText.text = LocalizeLookUp.GetText("chat_coven").ToUpper() + " <color=black>" + LocalizeLookUp.GetText("loading") + "</color>";
 
         previousMapPosition = MapsAPI.Instance.GetWorldPosition();
-        m_PreviousMapZoom = MapsAPI.Instance.normalizedZoom;
+        m_PreviousMapZoom = Mathf.Min(MapsAPI.Instance.normalizedZoom, 0.98f);
 
         MarkerSpawner.HighlightMarker(new List<IMarker> { PlayerManager.marker, m_WitchMarker }, true);
 
