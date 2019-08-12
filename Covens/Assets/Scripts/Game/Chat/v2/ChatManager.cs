@@ -52,9 +52,6 @@ namespace Raincrow.Chat
 
         public static void InitChat()
         {
-            Debug.LogError("TODO: INIT CHAT");
-            return;
-
             string covenId = string.Empty;
             string covenName = string.Empty;
             if (string.IsNullOrEmpty(TeamManager.MyCovenId) == false)
