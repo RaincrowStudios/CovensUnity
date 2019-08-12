@@ -357,12 +357,6 @@ namespace Raincrow.Maps
                 })
                 .uniqueId;
         }
-        
-        private void OnDisable()
-        {
-            //in case the marker was disabled while animating the movement
-            LeanTween.cancel(m_MoveTweenId, true);
-        }
 
 #if UNITY_EDITOR
         [Header("Base Debug")]
