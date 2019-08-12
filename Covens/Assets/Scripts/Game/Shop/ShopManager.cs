@@ -782,24 +782,8 @@ public class ShopManager : ShopBase
                     buySuccessSubTitle.text = LocalizeLookUp.GetStoreSubtitle(item.id);
                     DownloadedAssets.GetSprite(item.id, buySuccessIcon, true);
 
-                    if (type != ShopItemType.Silver)
-                    {
-                        int cur = PlayerDataManager.playerData.silver;
-                        int dif = cur - item.silver;
-                        LeanTween.value(cur, dif, 1f).setOnUpdate((float v) =>
-                        {
-                            playerSilver.text = ((int)v).ToString();
-
-                        }).setOnComplete(() =>
-                        {
-                            //Debug.Log(item.silver);
-                            //Debug.Log(PlayerDataManager.playerData.silver);
-                            //PlayerDataManager.playerData.silver = dif;
-                            //PlayerManagerUI.Instance.UpdateDrachs(false);
-                            playerSilver.text = PlayerDataManager.playerData.silver.ToString();
-
-                        });
-                    }
+                    playerSilver.text = PlayerDataManager.playerData.silver.ToString();
+                    playerGold.text = PlayerDataManager.playerData.gold.ToString();
                 }
                 else
                 {
@@ -869,28 +853,30 @@ public class ShopManager : ShopBase
                         buyWithSilver.text = LocalizeLookUp.GetText("store_gear_owned_upper");
                         buyWithSilver.color = Color.white;
                     }
-                    if (isBuySilver)
-                    {
-                        LeanTween.value(PlayerDataManager.playerData.silver, PlayerDataManager.playerData.silver - item.silver, 1f).setOnUpdate((float v) =>
-                        {
-                            playerSilver.text = ((int)v).ToString();
-                        }).setOnComplete(() =>
-                        {
-                            //PlayerDataManager.playerData.silver -= item.silver;
-                            //PlayerManagerUI.Instance.UpdateDrachs();
-                        });
-                    }
-                    else
-                    {
-                        LeanTween.value(PlayerDataManager.playerData.gold, PlayerDataManager.playerData.gold - item.gold, 1f).setOnUpdate((float v) =>
-                        {
-                            playerGold.text = ((int)v).ToString();
-                        }).setOnComplete(() =>
-                        {
-                            //PlayerDataManager.playerData.gold -= item.gold;
-                            //PlayerManagerUI.Instance.UpdateDrachs();
-                        }); ;
-                    }
+                    playerSilver.text = PlayerDataManager.playerData.silver.ToString();
+                    playerGold.text = PlayerDataManager.playerData.gold.ToString();
+                    //if (isBuySilver)
+                    //{
+                    //    //LeanTween.value(PlayerDataManager.playerData.silver, PlayerDataManager.playerData.silver - item.silver, 1f).setOnUpdate((float v) =>
+                    //    //{
+                    //    //    playerSilver.text = ((int)v).ToString();
+                    //    //}).setOnComplete(() =>
+                    //    //{
+                    //    //    //PlayerDataManager.playerData.silver -= item.silver;
+                    //    //    //PlayerManagerUI.Instance.UpdateDrachs();
+                    //    //});
+                    //}
+                    //else
+                    //{
+                    //    //LeanTween.value(PlayerDataManager.playerData.gold, PlayerDataManager.playerData.gold - item.gold, 1f).setOnUpdate((float v) =>
+                    //    //{
+                    //    //    playerGold.text = ((int)v).ToString();
+                    //    //}).setOnComplete(() =>
+                    //    //{
+                    //    //    //PlayerDataManager.playerData.gold -= item.gold;
+                    //    //    //PlayerManagerUI.Instance.UpdateDrachs();
+                    //    //}); ;
+                    //}
                 }
                 else
                 {
