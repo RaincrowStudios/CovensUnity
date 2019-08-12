@@ -66,14 +66,6 @@ public class KnownSpirits
     public string dominion { get; set; }
 }
 
-public class Blessing
-{
-    public int daily { get; set; }
-    public int lunar { get; set; }
-    public int locations { get; set; }
-    public int moonPhase { get; set; }
-}
-
 public class Sun
 {
     public double sunRise { get; set; }

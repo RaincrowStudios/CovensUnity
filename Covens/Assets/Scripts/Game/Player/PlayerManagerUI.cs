@@ -23,9 +23,6 @@ public class PlayerManagerUI : UIAnimationManager
     public GameObject coinGlow;
     FlightVisualManager FVM;
     public GameObject LandFX;
-    public GameObject DailyBlessing;
-    public Text blessingText;
-    public Text locationEn;
 
     public Image LunarPhaseHolder;
     public Sprite[] LunarPhase;
@@ -92,7 +89,6 @@ public class PlayerManagerUI : UIAnimationManager
         SetupEnergy();
         UpdateDrachs();
 
-        CheckForNewDay();
         SetupAlignmentPhase();
         setupXP();
 
@@ -233,10 +229,6 @@ public class PlayerManagerUI : UIAnimationManager
     public void playerlevelUp()
     {
         Level.text = PlayerDataManager.playerData.level.ToString();
-        //levelUp.SetActive(true);
-        //titleLevelup.text = "You Leveled up!";
-        //mainLevelup.text = "Level " + Level.text + "!";
-        //iconLevelUp.sprite = levelSp;
         setupXP();
     }
 
@@ -244,46 +236,7 @@ public class PlayerManagerUI : UIAnimationManager
     {
         LineRendererBasedDome.Instance.SetupDome();
         PlayerManager.Instance.AddAttackRing();
-        //levelUp.SetActive(true);
-        //titleLevelup.text = "Your Alignment Changed!";
-        //mainLevelup.text = Utilities.witchTypeControlSmallCaps(PlayerDataManager.playerData.degree);
-        //iconLevelUp.sprite = degreeSprite;
         SetupAlignmentPhase();
-    }
-
-    void SetupBlessing()
-    {
-        if (PlayerDataManager.playerData.blessing.daily != 0)
-        {
-            blessingText.text = LocalizeLookUp.GetText("blessing_grant");
-            blessingText.text = blessingText.text.Replace("{{amount}}", "<color=#FF9900>" + PlayerDataManager.playerData.blessing.daily.ToString() + "</color>");
-        }
-        else
-            blessingText.text = LocalizeLookUp.GetText("blessing_full");
-        //blessingText.text = "The Dea Savannah Grey has granted you her daily gift of <color=#FF9900>" + PlayerDataManager.playerData.blessing.daily.ToString() + "</color> energy";
-        if (PlayerDataManager.playerData.blessing.locations > 0)
-        {
-            locationEn.text = LocalizeLookUp.GetText("blessing_pop").Replace("{{amount}}", PlayerDataManager.playerData.blessing.locations.ToString());// "You also gained " + PlayerDataManager.playerData.blessing.locations.ToString() + " energy from your Places of Power";
-        }
-        else
-        {
-            locationEn.text = "";
-        }
-    }
-
-    public void ShowBlessing()
-    {
-        SoundManagerOneShot.Instance.MenuSound();
-        SetupBlessing();
-        Show(DailyBlessing);
-
-    }
-
-    public void HideBlessing()
-    {
-        DailyBlessing.GetComponent<Animator>().Play("out");
-        //Disable(DailyBlessing, 1.3f);
-        Destroy(DailyBlessing.gameObject, 1.3f);
     }
 
     public void UpdateDrachs(bool updateStore = true)
@@ -375,123 +328,6 @@ public class PlayerManagerUI : UIAnimationManager
         }
     }
     */
-
-    IEnumerator WaitForTime(float time)
-    {
-        yield return new WaitForSeconds(time);
-        DailyBlessingCheck(-Utilities.TimespanFromJavaTime(LastDailyTimeStamp));
-    }
-
-
-    void DailyBlessingCheck(TimeSpan time)
-    {
-
-
-        Debug.Log(time.TotalHours);
-        Debug.Log(time.TotalMinutes);
-        Debug.Log(time.TotalSeconds);
-        if (time.TotalHours < 23)
-        {
-            Debug.Log("gonna wait an hour");
-            StartCoroutine(WaitForTime(3600f));
-            return;
-        }
-        else if (time.TotalMinutes < 1439)
-        {
-            Debug.Log("gonna wait a minute");
-            StartCoroutine(WaitForTime(60f));
-            return;
-        }
-        else if (time.TotalSeconds < 86400)
-        {
-            Debug.Log("gonna wait a second");
-            StartCoroutine(WaitForTime(1f));
-            return;
-        }
-        Debug.LogError("executing daily blessing");
-        CheckForNewDay();
-        //PlayerPrefs.SetString("secondsSinceLastDaily", totalMilliseconds.ToString());
-    }
-
-    public void CheckForNewDay()
-    {
-        //here I put the double that gustavo sends me
-        //currently it is hard coded to yesterday
-        LastDailyTimeStamp = Double.Parse(PlayerPrefs.GetString("LastDailyTimeStamp"));
-        // Debug.Log(LastDailyTimeStamp);
-
-        var timeSpan = -Utilities.TimespanFromJavaTime(LastDailyTimeStamp);
-        Debug.LogError("TODO: DAILY CHECK");
-
-        //if (timeSpan.TotalDays > 1)
-        //{
-        //    APIManager.Instance.Get("character/get", (string s, int r) =>
-        //    {
-
-        //        if (r == 200)
-        //        {
-        //            LastDailyTimeStamp = DateTime.UtcNow.Subtract(new DateTime(1970, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc)).TotalMilliseconds;
-        //            PlayerPrefs.SetString("LastDailyTimeStamp", LastDailyTimeStamp.ToString());
-
-        //            //PlayerPrefs.Save();
-        //            var rawData = JsonConvert.DeserializeObject<PlayerDataDetail>(s);
-        //            if (rawData.dailyBlessing)
-        //            {
-        //                PlayerDataManager.playerData.blessing = rawData.blessing;
-        //                ShowBlessing();
-        //            }
-        //        }
-        //        else
-        //        {
-        //            Debug.LogError("character/get failure : " + s);
-        //        }
-
-        //    });
-        //}
-        //else
-        //{
-        //    // Debug.Log("A day hasn't passed");
-        //    DailyBlessingCheck(-Utilities.TimespanFromJavaTime(LastDailyTimeStamp));
-        //}
-    }
-
-    IEnumerator CheckTime()
-    {
-        while (true)
-        {
-            if (System.DateTime.Now.Hour == 0 && System.DateTime.Now.Minute == 0 && System.DateTime.Now.Second == 0)
-            {
-                //TODO add daily blessing check
-                yield return new WaitForSeconds(1);
-                Debug.Log("Checking Reset");
-                APIManager.Instance.Get("character/get", (string s, int r) =>
-                {
-
-                    if (r == 200)
-                    {
-                        var rawData = JsonConvert.DeserializeObject<PlayerData>(s);
-                        if (rawData.dailyBlessing)
-                        {
-                            PlayerDataManager.playerData.blessing = rawData.blessing;
-                            ShowBlessing();
-                        }
-                    }
-
-                });
-            }
-
-            yield return new WaitForSeconds(1);
-
-            if (EnergyElixir.activeSelf)
-            {
-                if (PlayerDataManager.playerData.energy > PlayerDataManager.playerData.baseEnergy * 0.6f)
-                {
-                    elixirButton.onClick.RemoveAllListeners();
-                    Hide(EnergyElixir, true, 6);
-                }
-            }
-        }
-    }
 
     public void Revived()
     {

@@ -339,6 +339,7 @@ public class GameStartup : MonoBehaviour
         }
         else
         {
+            BlessingManager.CheckDailyBlessing();
             SocketClient.Instance.InitiateSocketConnection();
             ChatManager.InitChat();
         }

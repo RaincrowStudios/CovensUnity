@@ -193,7 +193,6 @@ public class PlayerData : WitchMarkerData
     public bool tutorial;
 
     public string favoriteSpell;
-    //public string race;
     public bool dailyBlessing;
     public string benefactor;
     public string nemesis;
@@ -248,9 +247,6 @@ public class PlayerData : WitchMarkerData
         foreach (var item in m_Gems)
             m_GemsDict[item.id] = item.count;
         
-        Debug.LogError("TODO: GET BLESSINGS");
-        blessing = new Blessing { };
-
         Debug.LogError("TODO: WATCHED VIDEOS");
         firsts = new Firsts { };
 
@@ -406,9 +402,6 @@ public class PlayerData : WitchMarkerData
             return m_Inventory;
         }
     }
-    
-    [JsonIgnore]
-    public Blessing blessing;
     
     [JsonIgnore]
     public Firsts firsts;

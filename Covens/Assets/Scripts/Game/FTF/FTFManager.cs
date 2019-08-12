@@ -959,13 +959,10 @@ public class FTFManager : MonoBehaviour
             StartCoroutine(FadeOutFocus(dialogueCG));
 
             DeathState.Instance.FTFDeathState(false);
-            Blessing bs = new Blessing();
-            bs.daily = PlayerDataManager.playerData.baseEnergy;
-            PlayerDataManager.playerData.blessing = bs;
             var bless = Instantiate(blessingParticle, PlayerManager.marker.GameObject.transform);
             Destroy(bless, 3f);
             yield return new WaitForSeconds(3f);
-            PlayerManagerUI.Instance.ShowBlessing();
+            UIDailyBlessing.Show(PlayerDataManager.playerData.baseEnergy);
             PlayerDataManager.playerData.energy = PlayerDataManager.playerData.baseEnergy;
             PlayerManagerUI.Instance.UpdateEnergy();
             StartCoroutine(FadeOutFocus(savannahCG));
@@ -1364,7 +1361,7 @@ public class FTFManager : MonoBehaviour
                     PlayerDataManager.playerData.xp = data.xp;
                     PlayerManagerUI.Instance.setupXP();
                     //PlayerDataManager.playerData.spirits = update.spirits;
-                    
+
                     AppsFlyerAPI.CompletedFTUE();
                     Utilities.allowMapControl(true);
                     
