@@ -11,7 +11,7 @@ GameObject:
   - component: {fileID: 5870418490620506532}
   - component: {fileID: 6027634055324651834}
   - component: {fileID: 6026117184673848714}
-  m_Layer: 0
+  m_Layer: 20
   m_Name: Distortion(Optinal)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -4821,7 +4821,7 @@ GameObject:
   - component: {fileID: 5866151314170300628}
   - component: {fileID: 6041835070556359100}
   - component: {fileID: 6026694237219916776}
-  m_Layer: 0
+  m_Layer: 20
   m_Name: StartCircle
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -9649,7 +9649,7 @@ GameObject:
   - component: {fileID: 5870296793159539292}
   - component: {fileID: 6027354009016935320}
   - component: {fileID: 6026696080404808536}
-  m_Layer: 0
+  m_Layer: 20
   m_Name: Trail
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -14459,7 +14459,7 @@ GameObject:
   - component: {fileID: 5866083943721350904}
   - component: {fileID: 6041810488258705192}
   - component: {fileID: 6027101262243209716}
-  m_Layer: 0
+  m_Layer: 20
   m_Name: Smoke
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -19269,7 +19269,7 @@ GameObject:
   - component: {fileID: 5870010793564209614}
   - component: {fileID: 6027978945628591924}
   - component: {fileID: 6027200402566712194}
-  m_Layer: 0
+  m_Layer: 20
   m_Name: CenterSparks
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -19542,7 +19542,7 @@ ParticleSystem:
     startSize:
       serializedVersion: 2
       minMaxState: 3
-      scalar: 0.14
+      scalar: 0.24
       minScalar: 0.1
       maxCurve:
         serializedVersion: 2
@@ -24394,7 +24394,7 @@ GameObject:
   - component: {fileID: 5866117175308986254}
   - component: {fileID: 6028037621134855406}
   - component: {fileID: 6026142161619786032}
-  m_Layer: 0
+  m_Layer: 20
   m_Name: GroundTrails
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -29204,7 +29204,7 @@ GameObject:
   - component: {fileID: 5866104631642733862}
   - component: {fileID: 6041595390049301700}
   - component: {fileID: 6026785190024331282}
-  m_Layer: 0
+  m_Layer: 20
   m_Name: MagicCircle
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -29415,7 +29415,7 @@ ParticleSystem:
       serializedVersion: 2
       minMaxState: 0
       minColor: {r: 1, g: 1, b: 1, a: 1}
-      maxColor: {r: 0.5071333, g: 0.07609467, b: 0.8490566, a: 1}
+      maxColor: {r: 0.5071333, g: 0.07609467, b: 0.8490566, a: 0.4392157}
       maxGradient:
         serializedVersion: 2
         key0: {r: 1, g: 1, b: 1, a: 1}
@@ -33997,7 +33997,7 @@ ParticleSystemRenderer:
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: 0
   m_SortingLayer: 0
-  m_SortingOrder: 0
+  m_SortingOrder: -5
   m_RenderMode: 0
   m_SortMode: 0
   m_MinParticleSize: 0
@@ -34032,7 +34032,7 @@ GameObject:
   - component: {fileID: 5870377346709323684}
   - component: {fileID: 6027604438891592618}
   - component: {fileID: 6026933415451414832}
-  m_Layer: 0
+  m_Layer: 20
   m_Name: Fancy_Bind_VFX
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -34311,9 +34311,9 @@ ParticleSystem:
         m_NumAlphaKeys: 2
     startSize:
       serializedVersion: 2
-      minMaxState: 0
-      scalar: 0.07
-      minScalar: 1
+      minMaxState: 3
+      scalar: 0.15
+      minScalar: 0.07
       maxCurve:
         serializedVersion: 2
         m_Curve:
@@ -34364,7 +34364,7 @@ ParticleSystem:
         m_RotationOrder: 4
     startSizeY:
       serializedVersion: 2
-      minMaxState: 0
+      minMaxState: 3
       scalar: 1
       minScalar: 1
       maxCurve:
@@ -34417,7 +34417,7 @@ ParticleSystem:
         m_RotationOrder: 4
     startSizeZ:
       serializedVersion: 2
-      minMaxState: 0
+      minMaxState: 3
       scalar: 1
       minScalar: 1
       maxCurve:
@@ -34634,7 +34634,7 @@ ParticleSystem:
     gravityModifier:
       serializedVersion: 2
       minMaxState: 0
-      scalar: -1.87
+      scalar: -0.96
       minScalar: 0
       maxCurve:
         serializedVersion: 2
