@@ -73,7 +73,7 @@ public class DictionaryManager
         Debug.Log("Download dictionary " + version);
         using (var webClient = new System.Net.WebClient())
         {
-            var url = new System.Uri(baseURL + version + "/" + Languages[language] + ".json");
+            var url = new System.Uri(baseURL + version + "/" + Languages[0] + ".json");
 
             CrashReportHandler.SetUserMetadata("dictionary", version + "/" + Languages[language]);
 
