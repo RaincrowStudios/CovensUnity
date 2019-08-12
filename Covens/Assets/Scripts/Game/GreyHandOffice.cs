@@ -3,10 +3,22 @@ using System.Collections.Generic;
 using UnityEngine;
 using TMPro;
 using UnityEngine.UI;
-
+using Raincrow;
 
 public class GreyHandOffice : MonoBehaviour {
 
+    [SerializeField] private Canvas m_Canvas;
+    [SerializeField] private GraphicRaycaster m_InputRaycaster;
+
+    [SerializeField] private Button m_AcceptButton;
+    [SerializeField] private Button m_DeclineButton;
+
+    [SerializeField] private Button m_RewardContinueButton;
+    [SerializeField] private Button m_WarningCloseButton;
+
+    private static GreyHandOffice m_Instance;
+
+    //
 	public GameObject NotToday;
 	
 	public TextMeshProUGUI greyHandOffice;
@@ -33,29 +45,96 @@ public class GreyHandOffice : MonoBehaviour {
 
     public GameObject close;
 
-    public Button rewardContinue;
+    //public Button rewardContinue;
     public Text rewardText;
 
     private List<CollectableItem> inventoryItems = new List<CollectableItem>();
     private int forbidTool = 0;
     private int forbidToolValue = 0;
 
-    // Use this for initialization
-    void Start () {
-        
-        rewardContinue.onClick.AddListener(() => {
-			LeanTween.alphaCanvas(SavCG, 0f, 0.4f);
-			LeanTween.alphaCanvas(TextContainer, 0f, 0.4f);
-			LeanTween.alphaCanvas(BGCG, 0.01f, 0.5f).setOnComplete(() => {
-				LeanTween.alphaCanvas(BGCG, 0f, 0.2f).setOnComplete(() => {
-					Destroy(gameObject);
-				});
-			});
-        });
-        InitAnims ();
+    public static void Show(string officeName)
+    {
+        if (m_Instance != null)
+        {
+            m_Instance.Open(officeName);
+        }
+        else
+        {
+            LoadingOverlay.Show();
+            SceneManager.LoadSceneAsync(
+                SceneManager.Scene.GREY_HAND_OFFICE,
+                UnityEngine.SceneManagement.LoadSceneMode.Additive,
+                (progress) =>
+                {
+
+                },
+                () =>
+                {
+                    m_Instance.Open(officeName);
+                    LoadingOverlay.Hide();
+                }
+            );
+        }
     }
 
-	void InitAnims() {
+    private void Awake()
+    {
+        m_Instance = this;
+
+        m_Canvas.enabled = false;
+        m_InputRaycaster.enabled = false;
+
+        m_AcceptButton.onClick.AddListener(() =>
+        {
+            APIManager.Instance.Get("vendors", TurnInCallback);
+        });
+
+        m_DeclineButton.onClick.AddListener(() =>
+        {
+            ShowWarning();
+        });
+
+        m_WarningCloseButton.onClick.AddListener(() =>
+        {
+            m_InputRaycaster.enabled = false;
+            LeanTween.alphaCanvas(SavCG, 0f, 0.4f);
+            LeanTween.alphaCanvas(TextContainer, 0f, 0.4f);
+            LeanTween.alphaCanvas(NotToday.GetComponent<CanvasGroup>(), 0f, 0.4f);
+            LeanTween.alphaCanvas(BGCG, 0.01f, 0.5f).setOnComplete(() => 
+            {
+                LeanTween.alphaCanvas(BGCG, 0f, 0.2f).setOnComplete(() => 
+                {
+                    m_Canvas.enabled = false;
+                });
+            });
+        });
+
+        m_RewardContinueButton.onClick.AddListener(() =>
+        {
+            m_InputRaycaster.enabled = false;
+            LeanTween.alphaCanvas(SavCG, 0f, 0.4f);
+            LeanTween.alphaCanvas(TextContainer, 0f, 0.4f);
+            LeanTween.alphaCanvas(BGCG, 0.01f, 0.5f).setOnComplete(() => 
+            {
+                LeanTween.alphaCanvas(BGCG, 0f, 0.2f).setOnComplete(() => 
+                {
+                    m_Canvas.enabled = false;
+                });
+            });
+        });
+}
+
+    private void Open(string officeName)
+    {
+        TextSetup(officeName);
+
+        m_InputRaycaster.enabled = true;
+        m_Canvas.enabled = true;
+        InitAnims();
+    }
+    
+	void InitAnims()
+    {
         close.SetActive(false);
         NotToday.SetActive (false);
 		accept.SetActive (false);
@@ -74,6 +153,7 @@ public class GreyHandOffice : MonoBehaviour {
         Anim();
         Anim2();
     }
+
 	// Update is called once per frame
 	void Anim () {
 		LeanTween.scale (Sav, Vector3.one*0.7f, 7f).setEase (LeanTweenType.easeOutCubic);
@@ -83,27 +163,22 @@ public class GreyHandOffice : MonoBehaviour {
 		//callOnCompletes(Anim2());
 		//Invoke ("Anim2", 1f);
 	}
+
 	void Anim2 () {
         LeanTween.alphaCanvas(ToolsCG, 1f, 1f).setEase(LeanTweenType.easeOutCubic);
         LeanTween.alphaCanvas(DrachsCG, 1f, 1f).setEase(LeanTweenType.easeOutCubic);
         //	.setEase (LeanTweenType.easeOutCubic);
 
     }
-	public void Warning () {
+
+	public void ShowWarning ()
+    {
         close.SetActive(true);
-        close.GetComponent<Button>().onClick.AddListener(() => {
-			LeanTween.alphaCanvas(SavCG, 0f, 0.4f);
-			LeanTween.alphaCanvas(TextContainer, 0f, 0.4f);
-			LeanTween.alphaCanvas(NotToday.GetComponent<CanvasGroup>(), 0f, 0.4f);
-			LeanTween.alphaCanvas(BGCG, 0.01f, 0.5f).setOnComplete(() => {
-				LeanTween.alphaCanvas(BGCG, 0f, 0.2f).setOnComplete(() => {
-				Destroy(gameObject);
-				});
-			});
-        });
+        
 		LeanTween.alphaCanvas (TextContainer, 0f, .5f).setEase (LeanTweenType.easeOutCubic).setOnComplete (() => {
 			NotToday.SetActive (true);
-			LeanTween.alphaCanvas(WarningBG, 1f, 1f).setEase(LeanTweenType.easeOutCubic);
+            LeanTween.alphaCanvas(NotToday.GetComponent<CanvasGroup>(), 1f, 0.4f);
+            LeanTween.alphaCanvas(WarningBG, 1f, 1f).setEase(LeanTweenType.easeOutCubic);
             LeanTween.alphaCanvas(WarningTextCont.transform.GetChild(0).GetComponent<CanvasGroup>(), 1f, 1f).setEase(LeanTweenType.easeInCubic).setOnComplete(() =>
             {
             LeanTween.alphaCanvas(WarningTextCont.transform.GetChild(1).GetComponent<CanvasGroup>(), 1f, 0.5f).setEase(LeanTweenType.easeInCubic);
@@ -113,6 +188,7 @@ public class GreyHandOffice : MonoBehaviour {
 
     public void TextSetup(string officeName)
     {
+        forbidTool = 0;
         List<CollectableItem> tools = PlayerDataManager.playerData.GetAllIngredients(IngredientType.tool);
         foreach (var item in tools)
         {
@@ -147,16 +223,13 @@ public class GreyHandOffice : MonoBehaviour {
         }
         else
         {
-            transform.GetChild(2).GetChild(4).GetComponent<Button>().onClick.AddListener(() => {
-                APIManager.Instance.Get("vendor/give", TurnInCallback);
-            });
+
         }
 
         greyHandOffice.text = officeName;
         toolNum.text = forbidTool.ToString();
         drachNum.text = forbidToolValue.ToString();
 		rewardText.text = forbidToolValue.ToString ();
-
     }
 
     void TurnInCallback(string result, int response)
@@ -176,4 +249,11 @@ public class GreyHandOffice : MonoBehaviour {
         }
     }
 
+#if UNITY_EDITOR
+    [ContextMenu("Unload screen")]
+    private void Unload()
+    {
+        SceneManager.UnloadScene(SceneManager.Scene.GREY_HAND_OFFICE, null, null);
+    }
+#endif
 }

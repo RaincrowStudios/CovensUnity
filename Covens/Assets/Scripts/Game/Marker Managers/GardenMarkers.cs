@@ -46,7 +46,6 @@ public class GardenMarkers : MonoBehaviour
         public float officeLatitude;
     }
 
-    public GameObject greyHandOfficePrefab;
     public GameObject greyHandMarker;
     public GreyHandOfficeData[] greyHandOffices = new GreyHandOfficeData[3];
     private Transform[] greyHandOfficesTrans = new Transform[3];
@@ -70,6 +69,10 @@ public class GardenMarkers : MonoBehaviour
     {
         map.OnCameraUpdate -= OnMapUpdate;
         checkLoreOnLand();
+
+        SetLoreScale();
+        updateGardenScale();
+        SetGreyHandMarkerScale();
     }
 
     public void SetupGardens()
@@ -93,12 +96,20 @@ public class GardenMarkers : MonoBehaviour
 
         for (int i = 0; i < greyHandOffices.Length; i++)
         {
+            string officeName = greyHandOffices[i].officeLocation;
             var greyHand = Utilities.InstantiateObject(greyHandMarker, map.trackedContainer);
-            greyHand.name = greyHandOffices[i].officeLocation;
+            greyHand.name = "[greyhand] " + greyHandOffices[i].officeLocation;
             greyHand.transform.position = map.GetWorldPosition(greyHandOffices[i].officeLongitude, greyHandOffices[i].officeLatitude);
             greyHand.transform.Rotate(90, 0, 0);
             greyHandOfficesTrans[i] = greyHand.transform;
+
+            MuskMarker marker = greyHandMarker.GetComponent<MuskMarker>();
+            if (marker == null)
+                marker = greyHand.AddComponent<MuskMarker>();
+            marker.OnClick = (m) => OnClickGreyOffice(officeName);
+            marker.Coords = new Vector2(greyHandOffices[i].officeLongitude, greyHandOffices[i].officeLatitude);
         }
+        SetGreyHandMarkerScale();
 
         Debug.Log("setup explore quests");
         QuestsController.GetQuests(error =>
@@ -128,6 +139,7 @@ public class GardenMarkers : MonoBehaviour
 
         loreMarker.OnClick = (m) => SendQuestLore();
         loreMarker.Coords = new Vector2(lore.location.longitude, lore.location.latitude);
+        SetLoreScale();
     }
 
 
@@ -210,11 +222,6 @@ public class GardenMarkers : MonoBehaviour
                 {
                     OnClick(hit.transform.name);
                 }
-                else if (hit.transform.tag == "greyHand")
-                {
-                    var gho = Instantiate(greyHandOfficePrefab);
-                    gho.GetComponent<GreyHandOffice>().TextSetup(hit.transform.name);
-                }
             }
         }
     }
@@ -255,6 +262,11 @@ public class GardenMarkers : MonoBehaviour
         title.text = LocalizeLookUp.GetGardenName(id);
         desc.text = LocalizeLookUp.GetGardenDesc(id);
         StartCoroutine(GetImage(id));
+    }
+
+    private void OnClickGreyOffice(string name)
+    {
+        GreyHandOffice.Show(name);
     }
 
     IEnumerator GetImage(string id)

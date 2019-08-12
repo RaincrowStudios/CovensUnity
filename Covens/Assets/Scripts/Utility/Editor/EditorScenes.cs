@@ -37,6 +37,9 @@ public class EditorScenes : MonoBehaviour
     [MenuItem("Scenes/Screens/Daily Blessing")]
     static void DailyBlessingScene() => OpenScene("DailyBlessing");
 
+    [MenuItem("Scenes/Screens/Grey Hand Office")]
+    static void GreyHandOfficeScene() => OpenScene("GreyHandOffice");
+
     private static void OpenScene(string name)
     {
         if (EditorSceneManager.SaveCurrentModifiedScenesIfUserWantsTo())
