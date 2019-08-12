@@ -176,7 +176,7 @@ public class Leaderboards : UIAnimationManager
 
     public void OnClickPlayer(string playerName)
     {
-        TeamPlayerView.ViewCharacter(playerName, (character, error) => { });
+        TeamPlayerView.ViewCharacter(playerName, (character, error) => { }, true);
     }
 
     public void OnClickCoven(string covenName)

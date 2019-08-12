@@ -167,25 +167,23 @@ public class TeamPlayerView : MonoBehaviour
     }
 
 
-    public static void ViewCharacter(string id, System.Action<WitchMarkerData, string> callback)
+    public static void ViewCharacter(string id, System.Action<WitchMarkerData, string> callback, bool searchByName = false)
     {
-        Debug.LogError("TODO: GET FULL CHARACTER INFO");
-        UIGlobalPopup.ShowError(null, "not implemented");
-        callback?.Invoke(null, "not implemented");
-        return;
-
-        MarkerSpawner.GetMarkerDetails(id, (result, response) =>
-        {
-            if (result == 200)
+        APIManager.Instance.Get(
+            "character/select/" + id + "?selection=chat&name=" + searchByName.ToString().ToLower(),
+            "",
+            (response, result) =>
             {
-                WitchMarkerData character = JsonConvert.DeserializeObject<WitchMarkerData>(response);
-                Instance.Show(character);
-                callback?.Invoke(character, null);
-            }
-            else
-            {
-                callback?.Invoke(null, response);
-            }
-        });
+                if (result == 200)
+                {
+                    WitchMarkerData data = JsonConvert.DeserializeObject<WitchMarkerData>(response);
+                    Instance.Show(data);
+                    callback?.Invoke(data, null);
+                }
+                else
+                {
+                    callback?.Invoke(null, APIManager.ParseError(response));
+                }
+            });
     }
 }

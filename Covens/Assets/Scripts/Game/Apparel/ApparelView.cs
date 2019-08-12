@@ -140,7 +140,7 @@ public class ApparelView : MonoBehaviour
         {
             string assetId = "";
             string[] races = new string[] { "A_", "E_", "O_", "A_", "E_", "O_" };
-            string race = races[PlayerDataManager.playerData.bodyType - 1];
+            string race = races[PlayerDataManager.playerData.bodyType];
             assetId = data.id.Replace("cosmetic_", "").Replace("_S_", "_S_" + race);
             if (isCenser)
                 assetId += "_Censer";

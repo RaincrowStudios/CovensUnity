@@ -444,8 +444,8 @@ public class PlayerData : WitchMarkerData
     [JsonIgnore]
     public override string covenId => covenInfo.coven;
 
-    //[JsonIgnore]
-    //public override string coven
+    [JsonIgnore]
+    public override string coven => covenInfo.name;
 }
 
 //map select
