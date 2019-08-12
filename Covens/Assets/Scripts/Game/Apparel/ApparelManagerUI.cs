@@ -120,6 +120,9 @@ public class ApparelManagerUI : MonoBehaviour
         buttonDict.Clear();
         foreach (var item in PlayerDataManager.playerData.inventory.cosmetics)
         {
+            if (item.hidden)
+                continue;
+
             var g = Utilities.InstantiateObject(ApparelButton, container);
             item.buttonData = g.GetComponent<ApparelButtonData>();
             item.buttonData.Setup(item);

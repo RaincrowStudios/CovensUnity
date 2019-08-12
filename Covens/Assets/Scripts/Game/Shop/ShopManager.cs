@@ -792,10 +792,10 @@ public class ShopManager : ShopBase
 
                         }).setOnComplete(() =>
                         {
-                            Debug.Log(item.silver);
-                            Debug.Log(PlayerDataManager.playerData.silver);
-                            PlayerDataManager.playerData.silver = dif;
-                            PlayerManagerUI.Instance.UpdateDrachs(false);
+                            //Debug.Log(item.silver);
+                            //Debug.Log(PlayerDataManager.playerData.silver);
+                            //PlayerDataManager.playerData.silver = dif;
+                            //PlayerManagerUI.Instance.UpdateDrachs(false);
                             playerSilver.text = PlayerDataManager.playerData.silver.ToString();
 
                         });
@@ -857,7 +857,7 @@ public class ShopManager : ShopBase
                     buySuccessTitle.text = LocalizeLookUp.GetStoreTitle(item.id);
                     buySuccessSubTitle.text = LocalizeLookUp.GetStoreSubtitle(item.id);
                     DownloadedAssets.GetSprite(item.iconId, buySuccessIcon, true);
-                    PlayerDataManager.playerData.inventory.cosmetics.Add(item);
+                    //PlayerDataManager.playerData.inventory.cosmetics.Add(item);
                     //item.owned = true;
                     if (buttonItem != null)
                     {
@@ -876,8 +876,8 @@ public class ShopManager : ShopBase
                             playerSilver.text = ((int)v).ToString();
                         }).setOnComplete(() =>
                         {
-                            PlayerDataManager.playerData.silver -= item.silver;
-                            PlayerManagerUI.Instance.UpdateDrachs();
+                            //PlayerDataManager.playerData.silver -= item.silver;
+                            //PlayerManagerUI.Instance.UpdateDrachs();
                         });
                     }
                     else
@@ -887,8 +887,8 @@ public class ShopManager : ShopBase
                             playerGold.text = ((int)v).ToString();
                         }).setOnComplete(() =>
                         {
-                            PlayerDataManager.playerData.gold -= item.gold;
-                            PlayerManagerUI.Instance.UpdateDrachs();
+                            //PlayerDataManager.playerData.gold -= item.gold;
+                            //PlayerManagerUI.Instance.UpdateDrachs();
                         }); ;
                     }
                 }

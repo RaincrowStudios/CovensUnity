@@ -123,6 +123,9 @@ namespace Raincrow.Store
                 if (result == 200)
                 {
                     string debug = "<color=magenta>purchase complete:</color>\n";
+                    int silver = 0;
+                    int gold = 0;
+
                     switch (type)
                     {
                         case "silver":
@@ -133,12 +136,28 @@ namespace Raincrow.Store
                         case "cosmetics":
                             debug += "[cosmetics] " + id;
                             CosmeticData cosmetic = DownloadedAssets.GetCosmetic(id);
+
+                            //get the price
+                            if (currency == "silver")
+                                silver = cosmetic.silver;
+                            if (currency == "gold")
+                                gold = cosmetic.gold;
+
+                            //add the item to inventory
                             PlayerDataManager.playerData.inventory.cosmetics.Add(cosmetic);
                             break;
 
                         case "bundles":
-                            debug += "[cosmetics] " + id;
+                            debug += "[bundles] " + id;
                             IngredientBundleData bundle = StoreManagerAPI.GetBundle(id);
+
+                            //get the price
+                            if (currency == "silver")
+                                silver = bundle.silver;
+                            if (currency == "gold")
+                                gold = bundle.gold;
+
+                            //add the ingredients to the inventory
                             for (int i = 0; i < bundle.collectables.Length; i++)
                             {
                                 debug += "\n\t" + bundle.collectables[i] + " +" + bundle.amount[i];
@@ -149,8 +168,17 @@ namespace Raincrow.Store
                         case "consumables":
                             debug += "[consumables] " + id;
 
-                            Item consumable = PlayerDataManager.playerData.inventory.consumables.Find(it => it.id == id);
-                            if (consumable == null || string.IsNullOrEmpty(consumable.id))
+                            Item item = PlayerDataManager.playerData.inventory.consumables.Find(it => it.id == id);
+                            ConsumableData consumable = StoreManagerAPI.GetConsumable(id); ;
+
+                            //get the price
+                            if (currency == "silver")
+                                silver = consumable.silver;
+                            if (currency == "gold")
+                                gold = consumable.gold;
+
+                            //add to the inventory
+                            if (item == null || string.IsNullOrEmpty(item.id))
                             {
                                 PlayerDataManager.playerData.inventory.consumables.Add(new Item
                                 {
@@ -160,10 +188,25 @@ namespace Raincrow.Store
                             }
                             else
                             {
-                                consumable.count += 1;
+                                item.count += 1;
                             }
                             break;
                     }
+
+                    if (silver != 0)
+                    {
+                        debug += "\nlost " + silver + " drachs";
+                        PlayerDataManager.playerData.silver -= silver;
+                    }
+                    if (gold != 0)
+                    {
+                        debug += "\nlost " + gold + " gold";
+                        PlayerDataManager.playerData.gold -= gold;
+                    }
+
+                    if (PlayerManagerUI.Instance != null)
+                        PlayerManagerUI.Instance.UpdateDrachs();
+
                     Debug.Log(debug);
 
                     callback(null);
