@@ -11,7 +11,7 @@ using Raincrow.GameEventResponses;
 public class UISpellcastBook : MonoBehaviour, IEnhancedScrollerDelegate
 {
     [SerializeField] private Canvas m_Canvas;
-    [SerializeField] private GameObject Container;
+    [SerializeField] private RectTransform Container;
     [SerializeField] private GraphicRaycaster m_InputRaycaster;
     [SerializeField] private EnhancedScroller m_Scroller;
     [SerializeField] private CanvasGroup m_ScrollerCanvasGroup;
@@ -50,6 +50,8 @@ public class UISpellcastBook : MonoBehaviour, IEnhancedScrollerDelegate
     private System.Action<SpellData, List<spellIngredientsData>> m_OnConfirmSpell;
     private System.Action m_OnBack;
     private System.Action m_OnClose;
+
+    private int m_MoveTweenId;
 
     public static bool IsOpen
     {
@@ -111,6 +113,7 @@ public class UISpellcastBook : MonoBehaviour, IEnhancedScrollerDelegate
         m_CloseButton.onClick.AddListener(OnClickClose);
 
         DownloadedAssets.OnWillUnloadAssets += DownloadedAssets_OnWillUnloadAssets;
+        Container.anchoredPosition = Vector3.right * Container.rect.width;
     }
 
     private void DownloadedAssets_OnWillUnloadAssets()
@@ -192,7 +195,13 @@ public class UISpellcastBook : MonoBehaviour, IEnhancedScrollerDelegate
     {
         SoundManagerOneShot.Instance.PlayWhisperFX();
         SoundManagerOneShot.Instance.PlayWooshShort();
-        LeanTween.moveLocalX(Container, 0f, 0.5f).setEase(LeanTweenType.easeInCubic);
+
+        LeanTween.cancel(m_MoveTweenId);
+        m_MoveTweenId = LeanTween.value(Container.anchoredPosition.x, 0, 0.5f)
+            .setEase(LeanTweenType.easeInCubic)
+            .setOnUpdate((float x) => Container.anchoredPosition = new Vector3(x, 0, 0))
+            .uniqueId;
+        //LeanTween.moveLocalX(Container.gameObject, 0f, 0.5f).setEase(LeanTweenType.easeInCubic);
         LeanTween.value(0f, 1f, 0.3f).setOnComplete(() =>
         {
             LeanTween.alphaCanvas(m_ScrollerCanvasGroup, 1f, 1f);
@@ -202,7 +211,13 @@ public class UISpellcastBook : MonoBehaviour, IEnhancedScrollerDelegate
     {
         SoundManagerOneShot.Instance.PlayWhisperFX();
         LeanTween.alphaCanvas(m_ScrollerCanvasGroup, 0f, 0.4f);
-        LeanTween.moveLocalX(Container, 1308f, 0.5f).setEase(LeanTweenType.easeInCubic).setOnComplete(() => { m_Canvas.enabled = false; });
+        //LeanTween.moveLocalX(Container.gameObject, 1308, 0.5f).setEase(LeanTweenType.easeInCubic).setOnComplete(() => { m_Canvas.enabled = false; });
+        LeanTween.cancel(m_MoveTweenId);
+        m_MoveTweenId = LeanTween.value(Container.anchoredPosition.x, Container.rect.width + 50, 0.5f)
+            .setEase(LeanTweenType.easeInCubic)
+            .setOnUpdate((float x) => Container.anchoredPosition = new Vector3(x, 0, 0))
+            .setOnComplete(() => m_Canvas.enabled = false)
+            .uniqueId;
     }
     private void Hide()
     {

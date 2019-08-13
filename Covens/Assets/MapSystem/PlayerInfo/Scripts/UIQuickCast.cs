@@ -16,9 +16,9 @@ public class UIQuickCast : MonoBehaviour
     [SerializeField] private Button m_QuickHex;
 
     [Header("Cooldown")]
-    [SerializeField] private Image m_BlessMask;
-    [SerializeField] private Image m_SealMask;
-    [SerializeField] private Image m_HexMask;
+    [SerializeField] private Image m_BlessCooldown;
+    [SerializeField] private Image m_SealCooldown;
+    [SerializeField] private Image m_HexCooldown;
 
     public System.Action OnClickCast;
     public System.Action<string> OnQuickCast;
@@ -67,13 +67,13 @@ public class UIQuickCast : MonoBehaviour
         if (cd.HasValue)
         {
             m_HexTweenId = LeanTween.value(cd.Value.Remaining / cd.Value.total, 0, cd.Value.Remaining)
-                .setOnUpdate((float t) => m_HexMask.fillAmount = t)
+                .setOnUpdate((float t) => m_HexCooldown.fillAmount = t)
                 .setOnComplete(() => UpdateCanCast(data, marker))
                 .uniqueId;
         }
         else
         {
-            m_HexMask.fillAmount = 0;
+            m_HexCooldown.fillAmount = 0;
         }
 
         //seal
@@ -81,13 +81,13 @@ public class UIQuickCast : MonoBehaviour
         if (cd.HasValue)
         {
             m_SealTweenId = LeanTween.value(cd.Value.Remaining / cd.Value.total, 0, cd.Value.Remaining)
-                .setOnUpdate((float t) => m_SealMask.fillAmount = t)
+                .setOnUpdate((float t) => m_SealCooldown.fillAmount = t)
                 .setOnComplete(() => UpdateCanCast(data, marker))
                 .uniqueId;
         }
         else
         {
-            m_SealMask.fillAmount = 0;
+            m_SealCooldown.fillAmount = 0;
         }
 
         //bless
@@ -95,13 +95,13 @@ public class UIQuickCast : MonoBehaviour
         if (cd.HasValue)
         {
             m_BlessTweenId = LeanTween.value(cd.Value.Remaining / cd.Value.total, 0, cd.Value.Remaining)
-                .setOnUpdate((float t) => m_BlessMask.fillAmount = t)
+                .setOnUpdate((float t) => m_BlessCooldown.fillAmount = t)
                 .setOnComplete(() => UpdateCanCast(data, marker))
                 .uniqueId;
         }
         else
         {
-            m_BlessMask.fillAmount = 0;
+            m_BlessCooldown.fillAmount = 0;
         }
 
         //
