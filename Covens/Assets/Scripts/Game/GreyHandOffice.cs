@@ -111,16 +111,19 @@ public class GreyHandOffice : MonoBehaviour {
 
         m_RewardContinueButton.onClick.AddListener(() =>
         {
+            accept.SetActive(false);
+            m_Canvas.enabled = false;
             m_InputRaycaster.enabled = false;
-            LeanTween.alphaCanvas(SavCG, 0f, 0.4f);
-            LeanTween.alphaCanvas(TextContainer, 0f, 0.4f);
-            LeanTween.alphaCanvas(BGCG, 0.01f, 0.5f).setOnComplete(() => 
-            {
-                LeanTween.alphaCanvas(BGCG, 0f, 0.2f).setOnComplete(() => 
-                {
-                    m_Canvas.enabled = false;
-                });
-            });
+            //m_InputRaycaster.enabled = false;
+            //LeanTween.alphaCanvas(SavCG, 0f, 0.4f);
+            //LeanTween.alphaCanvas(TextContainer, 0f, 0.4f);
+            //LeanTween.alphaCanvas(BGCG, 0.01f, 0.5f).setOnComplete(() => 
+            //{
+            //    LeanTween.alphaCanvas(BGCG, 0f, 0.2f).setOnComplete(() => 
+            //    {
+            //        m_Canvas.enabled = false;
+            //    });
+            //});
         });
 }
 
@@ -189,6 +192,8 @@ public class GreyHandOffice : MonoBehaviour {
     public void TextSetup(string officeName)
     {
         forbidTool = 0;
+        forbidToolValue = 0;
+
         List<CollectableItem> tools = PlayerDataManager.playerData.GetAllIngredients(IngredientType.tool);
         foreach (var item in tools)
         {
@@ -223,7 +228,8 @@ public class GreyHandOffice : MonoBehaviour {
         }
         else
         {
-
+            transform.GetChild(2).GetChild(4).GetComponent<TextMeshProUGUI>().color = Color.white;
+            transform.GetChild(2).GetChild(4).GetComponent<Button>().interactable = true;
         }
 
         greyHandOffice.text = officeName;
