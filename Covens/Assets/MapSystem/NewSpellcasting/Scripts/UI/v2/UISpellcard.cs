@@ -24,8 +24,8 @@ public class UISpellcard : EnhancedScrollerCellView
     [SerializeField] private Button m_SpellButton;
 
     [Header("cooldowns")]
-    [SerializeField] private Image m_CooldownMask;
-    [SerializeField] private Image m_MaskedSpellIcon;
+    [SerializeField] private Image m_CooldownBackground;
+    [SerializeField] private Image m_CooldownIcon;
     [SerializeField] private TextMeshProUGUI m_CooldownTex;
 
     [Header("crests")]
@@ -84,10 +84,10 @@ public class UISpellcard : EnhancedScrollerCellView
             m_SchoolIcon.overrideSprite = m_GreyCrest;
         }
 
-        m_SpellIcon.overrideSprite = m_MaskedSpellIcon.overrideSprite = null;
+        m_SpellIcon.overrideSprite = m_CooldownIcon.overrideSprite = null;
         DownloadedAssets.GetSprite(spell.id, spr =>
         {
-            m_SpellIcon.overrideSprite = m_MaskedSpellIcon.overrideSprite = spr;
+            m_SpellIcon.overrideSprite = m_CooldownIcon.overrideSprite = spr;
         });
     }
 
@@ -121,7 +121,7 @@ public class UISpellcard : EnhancedScrollerCellView
                 float remaining = cd.Value.Remaining;
                 float total = cd.Value.total;
                 m_CooldownTweenId = LeanTween.value(remaining / total, 0, remaining)
-                    .setOnUpdate((float t) => m_CooldownMask.fillAmount = t)
+                    .setOnUpdate((float t) => m_CooldownBackground.fillAmount = m_CooldownIcon.fillAmount = t)
                     .setOnComplete(() => UpdateCancast(targetData, targetMarker))
                     .uniqueId;
             }
@@ -129,7 +129,7 @@ public class UISpellcard : EnhancedScrollerCellView
         }
         else
         {
-            m_CooldownMask.fillAmount = 0;
+            m_CooldownBackground.fillAmount = m_CooldownIcon.fillAmount = 0;
         }
     }
 
