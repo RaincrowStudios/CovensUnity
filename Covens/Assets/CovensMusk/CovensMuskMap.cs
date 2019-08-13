@@ -460,7 +460,7 @@ public class CovensMuskMap : MonoBehaviour
 
     public void HideMap(bool hide)
     {
-        this.gameObject.SetActive(!hide);
+        m_Camera.gameObject.SetActive(!hide);
     }
 
     public bool IsVisible()
