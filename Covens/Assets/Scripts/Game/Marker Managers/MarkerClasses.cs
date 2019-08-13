@@ -219,6 +219,7 @@ public class PlayerData : WitchMarkerData
     public List<CovenInvite> covenInvites;
     public List<CovenRequest> covenRequests;
     public HashSet<string> immunities;
+    public HashSet<string> firsts;
 
     private List<SpellData> m_Spells = null;
 
@@ -247,9 +248,6 @@ public class PlayerData : WitchMarkerData
         foreach (var item in m_Gems)
             m_GemsDict[item.id] = item.count;
         
-        Debug.LogError("TODO: WATCHED VIDEOS");
-        firsts = new Firsts { };
-
         m_Spells = new List<SpellData>();
         var allSpells = new List<SpellData>(DownloadedAssets.spellDictData.Values);
         allSpells.Sort(new System.Comparison<SpellData> ((a,b) => a.Name.CompareTo(b.Name)));
@@ -403,9 +401,6 @@ public class PlayerData : WitchMarkerData
         }
     }
     
-    [JsonIgnore]
-    public Firsts firsts;
-
     [JsonIgnore]
     public double lastEnergyUpdate;
 

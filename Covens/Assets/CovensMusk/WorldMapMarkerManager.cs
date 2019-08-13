@@ -194,7 +194,6 @@ public class WorldMapMarkerManager : MonoBehaviour
 
         //get all surrounding markers on starting flight
         RequestMarkers((int)m_Controller.maxDistanceFromCenter);
-        Debug.LogError("marker start flying");
     }
 
     private void OnStopFlying()
@@ -220,7 +219,6 @@ public class WorldMapMarkerManager : MonoBehaviour
         m_MarkersList.Clear();
 
         updateFrom = 0;
-        Debug.LogError("marker stop flying");
     }
 
     private void Update()
