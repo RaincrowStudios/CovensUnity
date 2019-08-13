@@ -69,7 +69,7 @@ namespace Raincrow.GameEventResponses
             if (playerIsCaster)
             {
                 //lcoaly add spell cooldown
-                CooldownManager.AddCooldown(spell.id, spell.cooldown, data.cooldown);
+                CooldownManager.AddCooldown(spell.id, data.timestamp, data.cooldown);
 
                 //update the player alignment
                 int alignmentChange = spell.align;
@@ -217,6 +217,12 @@ namespace Raincrow.GameEventResponses
                         }
                     }
 
+                    if (playerIsCaster && data.target.energy == 0 && target is SpiritMarker)
+                    {
+                        SpiritData spiritData = (target as SpiritMarker).spiritData;
+                        UISpiritBanished.Instance.Show(spiritData.id);
+                    }
+
                     //show notification
                     if (playerIsTarget && !playerIsCaster)
                     {
@@ -231,7 +237,6 @@ namespace Raincrow.GameEventResponses
                             }
                             else if (caster is SpiritMarker)
                             {
-
                                 PlayerNotificationManager.Instance.ShowNotification(SpellcastingTextFeedback.CreateSpellFeedback(caster, target, data));
                             }
                             else

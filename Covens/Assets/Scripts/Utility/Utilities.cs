@@ -216,7 +216,8 @@ public class Utilities : MonoBehaviour
     public static System.TimeSpan TimespanFromJavaTime(double timestamp)
     {
         System.DateTime date = FromJavaTime(timestamp);
-        return date.Subtract(System.DateTime.UtcNow);
+        System.DateTime now = System.DateTime.UtcNow;
+        return date - now;
     }
 
     public static string GetSummonTime(double javaTimeStamp)

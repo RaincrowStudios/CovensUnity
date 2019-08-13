@@ -269,7 +269,7 @@ public class PlayerData : WitchMarkerData
             if (spell != null)
                 total = spell.cooldown;
 
-            CooldownManager.AddCooldown(cooldown.id, total, cooldown.cooldown);
+            CooldownManager.AddCooldown(cooldown.id, cooldown.cooldown, total);
         }
     }
 
