@@ -198,7 +198,6 @@ public class ExploreLore
 
 public struct GardenData
 {
-    public string id;
     public float latitude;
     public float longitude;
     public int distance;

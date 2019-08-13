@@ -51,7 +51,7 @@ public class GardenMarkers : MonoBehaviour
     private Transform[] greyHandOfficesTrans = new Transform[3];
 
     private List<Transform> gardensTransform = new List<Transform>();
-    private GardenData[] gardens;
+    private List<GardenData> gardens = new List<GardenData>();
 
     IMaps map;
 
@@ -81,17 +81,17 @@ public class GardenMarkers : MonoBehaviour
 
         map.OnExitStreetLevel += OnStartFlying;
         map.OnEnterStreetLevel += OnStopFlying;
-
-        gardens = new List<GardenData>(DownloadedAssets.gardenDict.Values).ToArray();
-
-        foreach (GardenData item in gardens)
+        
+        foreach (var item in DownloadedAssets.gardenDict)
         {
             var g = Utilities.InstantiateObject(gardenPrefab, map.trackedContainer, 0);
-            g.name = item.id;
-            g.transform.position = map.GetWorldPosition(item.longitude, item.latitude);
+            g.name = item.Key;
+            g.transform.position = map.GetWorldPosition(item.Value.longitude, item.Value.latitude);
             g.transform.localEulerAngles = new Vector3(90, 0, 180);
-            g.GetComponentInChildren<TextMeshPro>().text = LocalizeLookUp.GetGardenName(item.id);
+            g.GetComponentInChildren<TextMeshPro>().text = LocalizeLookUp.GetGardenName(item.Key);
+
             gardensTransform.Add(g.transform);
+            gardens.Add(item.Value);
         }
 
         for (int i = 0; i < greyHandOffices.Length; i++)
@@ -184,7 +184,7 @@ public class GardenMarkers : MonoBehaviour
 
     void updateGardenScale()
     {
-        for (int i = 0; i < gardens.Length; i++)
+        for (int i = 0; i < gardens.Count; i++)
         {
             gardensTransform[i].position = map.GetWorldPosition(gardens[i].longitude, gardens[i].latitude);
             gardensTransform[i].localScale = Vector3.one * gardenScale * MapLineraScale.linearMultiplier;
