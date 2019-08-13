@@ -34,13 +34,6 @@ public class LocationBuff
     public string spellId { get; set; }
 }
 
-public class HeatMapPoints
-{
-    public int count { get; set; }
-    public float latitude { get; set; }
-    public float longitude { get; set; }
-}
-
 public class Firsts
 {
     public bool locationReward { get; set; }

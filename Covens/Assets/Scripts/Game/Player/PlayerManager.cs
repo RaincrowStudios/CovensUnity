@@ -78,8 +78,6 @@ public class PlayerManager : MonoBehaviour
         var pos = new Vector2(PlayerDataManager.playerData.longitude, PlayerDataManager.playerData.latitude);
         SpawnPlayer(pos.x, pos.y);
 
-        Debug.LogError("TODO: SETUP HEATMAPS");
-        //HeatMapManager.instance.createHeatMap(PlayerDataManager.config.heatmap);
         GardenMarkers.instance.SetupGardens();
         SoundManagerOneShot.Instance.PlayWelcome();
     }
