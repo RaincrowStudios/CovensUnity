@@ -48,12 +48,16 @@ public class QuestLogUI : UIAnimationManager
     bool isQuest = true;
 
     public Animator anim;
+    public CanvasGroup eventLogLoading;
 
     private bool isOpen = false;
     private bool questInfoVisible = false;
     
     private static QuestLogUI m_Instance;
     private int m_TweenId;
+
+    private List<EventLog> m_Logs;
+    private float m_LastLogRequest;
 
     public static void Open()
     {
@@ -87,6 +91,7 @@ public class QuestLogUI : UIAnimationManager
         buttonTapChest.onClick.AddListener(OnClickClaimChest);
 
         claimLoadingFx.gameObject.SetActive(false);
+        eventLogLoading.alpha = 0;
     }
 
     [ContextMenu("Show")]
@@ -156,24 +161,29 @@ public class QuestLogUI : UIAnimationManager
     //    dailiesCompleted = false;
     //}
 
-    void GetLogs()
+    void GetLogs(System.Action<List<EventLog>, string> callback)
     {
-        Debug.LogError("TODO: GET EVENT LOGS");
-        //APIManager.Instance.Get("character/event-log",
-        //    (string result, int response) =>
-        //    {
-        //        if (Application.isEditor)
-        //            Debug.Log(result);
+        if (m_Logs != null && Time.realtimeSinceStartup - m_LastLogRequest < 60)
+        {
+            callback?.Invoke(m_Logs, null);
+            return;
+        }
 
-        //        if (response == 200)
-        //        {
-        //            LS.log = JsonConvert.DeserializeObject<List<EventLogData>>(result);
-        //            SetupLogs();
-        //        }
-        //        else
-        //            Debug.Log(result + response);
-        //    });
-        UIGlobalPopup.ShowError(null, "not implemented");
+        m_LastLogRequest = Time.realtimeSinceStartup;
+
+        APIManager.Instance.Get("character/eventLog", (response, result) =>
+        {
+            if (result == 200)
+            {
+                m_Logs = JsonConvert.DeserializeObject<List<EventLog>>(response);
+                callback?.Invoke(m_Logs, null);
+            }
+            else
+            {
+                Debug.LogError("eventlog request error\n" + response);
+                callback?.Invoke(null, APIManager.ParseError(response));
+            }
+        });
     }
 
     public void OnClickLog()
@@ -185,7 +195,17 @@ public class QuestLogUI : UIAnimationManager
         questObject.SetActive(false);
         questCG.alpha = .4f;
         logCG.alpha = 1;
-        GetLogs();
+
+        LeanTween.alphaCanvas(eventLogLoading, 1f, 0.5f).setEaseOutCubic();
+        GetLogs((logs, error) =>
+        {
+            LeanTween.alphaCanvas(eventLogLoading, 0f, 1f).setEaseOutCubic();
+            LS.log = logs;
+            if (string.IsNullOrEmpty(error))
+                SetupLogs();
+            else
+                UIGlobalPopup.ShowError(null, error);
+        });
     }
 
     public void OnClickQuest()
@@ -435,19 +455,23 @@ public class QuestLogUI : UIAnimationManager
     }
 }
 
-public class EventLogData
+public struct EventLog
 {
+    public struct Data
+    {
+        public string spirit;
+        public string spiritId;
+        public string spellId;
+        public int casterDegree;
+        public int energyChange;
+        public string casterName;
+        //public string witchCreated;
+    }
 
-    public string type { get; set; }
-    public string spirit { get; set; }
-    public string spiritId { get; set; }
-    public string spellId { get; set; }
-    public int casterDegree { get; set; }
-    public int energyChange { get; set; }
-    public string casterName { get; set; }
-    public double timestamp { get; set; }
-
-    public string witchCreated { get; set; }
+    public string character;
+    public string type;
+    public double createdOn;
+    public Data data;
 }
 
 
