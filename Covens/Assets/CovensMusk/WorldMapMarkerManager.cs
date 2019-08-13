@@ -14,6 +14,7 @@ public class WorldMapMarkerManager : MonoBehaviour
         character3 = 3,
         character4 = 4,
         character5 = 5,
+
         spiritguardian = 6,
         spiritharvester = 7,
         spiritforbidden = 8,
@@ -21,9 +22,15 @@ public class WorldMapMarkerManager : MonoBehaviour
         spiritwarrior = 10,
         spirittrickster = 11,
         spiritfamiliar = 12,
+
         itemherb = 13,
         itemgem = 14,
-        itemtool = 15
+        itemtool = 15,
+
+        placeOfPower1 = 16,
+        placeOfPower2 = 17,
+        placeOfPower3 = 18,
+        placeOfPower4 = 19
     }
 
     [SerializeField] private WorldMapMarker m_MarkerPrefab;
@@ -38,6 +45,7 @@ public class WorldMapMarkerManager : MonoBehaviour
     [SerializeField] private Sprite m_WitchMaleCaucasian;
     [SerializeField] private Sprite m_WitchMaleAsian;
 
+    [Space(2)]
     [SerializeField] private Sprite m_SpiritGuardian;
     [SerializeField] private Sprite m_SpiritHarvester;
     [SerializeField] private Sprite m_SpiritForbidden;
@@ -46,9 +54,16 @@ public class WorldMapMarkerManager : MonoBehaviour
     [SerializeField] private Sprite m_SpiritTrickster;
     [SerializeField] private Sprite m_SpiritFamiliar;
 
+    [Space(2)]
     [SerializeField] private Sprite m_CollectableHerb;
     [SerializeField] private Sprite m_CollectableGem;
     [SerializeField] private Sprite m_CollectableTool;
+
+    [Space(2)]
+    [SerializeField] private Sprite m_PlaceOfPower1;
+    [SerializeField] private Sprite m_PlaceOfPower2;
+    [SerializeField] private Sprite m_PlaceOfPower3;
+    [SerializeField] private Sprite m_PlaceOfPower4;
 
     [Header("Colors")]
     [SerializeField] private Color m_WitchColor;
@@ -128,6 +143,11 @@ public class WorldMapMarkerManager : MonoBehaviour
             m_CollectableHerb,
             m_CollectableGem,
             m_CollectableTool,
+
+            m_PlaceOfPower1,
+            m_PlaceOfPower1,
+            m_PlaceOfPower1,
+            m_PlaceOfPower1,
         };
 
         m_MarkerColorMap = new Color[]
@@ -150,6 +170,11 @@ public class WorldMapMarkerManager : MonoBehaviour
             m_CollectableColor,
             m_CollectableColor,
             m_CollectableColor,
+
+            m_PopColor,
+            m_PopColor,
+            m_PopColor,
+            m_PopColor,
         };
     }
 
@@ -325,7 +350,7 @@ public class WorldMapMarkerManager : MonoBehaviour
 
     private IEnumerator DespawnCoroutine(WorldMapMarker[] markers)
     {
-        int batchSize = 100;
+        int batchSize = 500;
         int from = 0;
         int to = Mathf.Min(from + batchSize, markers.Length);
 

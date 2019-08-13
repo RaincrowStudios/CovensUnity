@@ -55,7 +55,8 @@ SpriteAtlas:
     - {fileID: 102900000, guid: 3cebe1ea632e78c4492359b49561a90a, type: 3}
     - {fileID: 102900000, guid: da5c7db05569b83478c1e141091d6aae, type: 3}
     - {fileID: 102900000, guid: 19fa35c62a9a83e4d97fbd1c66bbce4d, type: 3}
-    totalSpriteSurfaceArea: 65536
+    - {fileID: 102900000, guid: 48be170108e65e2449aa6ca148606929, type: 3}
+    totalSpriteSurfaceArea: 69632
     bindAsDefault: 1
   m_MasterAtlas: {fileID: 0}
   m_PackedSprites:
@@ -71,6 +72,7 @@ SpriteAtlas:
   - {fileID: 21300000, guid: e4b40da8ce7f7aa428cdcb0f507a12e6, type: 3}
   - {fileID: 21300000, guid: 3cf30bc9c89f87449860b8c2ef9bba7b, type: 3}
   - {fileID: 21300000, guid: d57a226a311fc574c8e0dac48acca2c2, type: 3}
+  - {fileID: 21300000, guid: e960e4aa9e18084489ef7b48650b2bbf, type: 3}
   - {fileID: 21300000, guid: 1d327fcc5c5d5fe4190d06ccc5c5613d, type: 3}
   - {fileID: 21300000, guid: 16ab6d5ebf30eb34c98870239e10b2e2, type: 3}
   - {fileID: 21300000, guid: 1086a1bea06d7e54abf8971c8115956c, type: 3}
@@ -88,6 +90,7 @@ SpriteAtlas:
   - Herb
   - Trickster
   - Forbidden
+  - Place of Power
   - Female_African 216x216
   - Crafting
   - Female_European 216x216
