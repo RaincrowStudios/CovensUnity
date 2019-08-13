@@ -45,7 +45,6 @@ public class Firsts
 {
     public bool locationReward { get; set; }
     public bool portal { get; set; }
-    public bool flight { get; set; }
     public bool collect { get; set; }
     public bool cast { get; set; }
     public bool purchaseGold { get; set; }
@@ -56,6 +55,13 @@ public class Firsts
     public bool portalSummon { get; set; }
     public bool banish { get; set; }
     public bool kyteler { get; set; }
+    
+    [JsonIgnore]
+    public bool flight
+    {
+        get => PlayerPrefs.GetInt("first.flight." + PlayerDataManager.playerData.instance, 0) == 1;
+        set => PlayerPrefs.SetInt("first.flight." + PlayerDataManager.playerData.instance, value ? 1 : 0);
+    }
 }
 
 
