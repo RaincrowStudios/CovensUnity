@@ -686,13 +686,13 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 610928741}
   m_TextComponent: {fileID: 1767559198}
   m_Placeholder: {fileID: 1551367415}
-  m_ContentType: 0
+  m_ContentType: 2
   m_InputType: 0
   m_AsteriskChar: 42
-  m_KeyboardType: 0
+  m_KeyboardType: 4
   m_LineType: 0
   m_HideMobileInput: 1
-  m_CharacterValidation: 0
+  m_CharacterValidation: 1
   m_CharacterLimit: 2
   m_OnEndEdit:
     m_PersistentCalls:
@@ -830,13 +830,13 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 640599133}
   m_TextComponent: {fileID: 223922563}
   m_Placeholder: {fileID: 1421577135}
-  m_ContentType: 0
+  m_ContentType: 2
   m_InputType: 0
   m_AsteriskChar: 42
-  m_KeyboardType: 0
+  m_KeyboardType: 4
   m_LineType: 0
   m_HideMobileInput: 1
-  m_CharacterValidation: 0
+  m_CharacterValidation: 1
   m_CharacterLimit: 2
   m_OnEndEdit:
     m_PersistentCalls:
@@ -1898,13 +1898,13 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 1782779604}
   m_TextComponent: {fileID: 1937149004}
   m_Placeholder: {fileID: 1068834785}
-  m_ContentType: 0
+  m_ContentType: 2
   m_InputType: 0
   m_AsteriskChar: 42
-  m_KeyboardType: 0
+  m_KeyboardType: 4
   m_LineType: 0
   m_HideMobileInput: 1
-  m_CharacterValidation: 0
+  m_CharacterValidation: 1
   m_CharacterLimit: 4
   m_OnEndEdit:
     m_PersistentCalls:
@@ -20135,7 +20135,7 @@ ParticleSystem:
 --- !u!199 &199449852290353564
 ParticleSystemRenderer:
   serializedVersion: 6
-  m_ObjectHideFlags: 2
+  m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
@@ -20197,7 +20197,7 @@ ParticleSystemRenderer:
 --- !u!199 &199907851508563380
 ParticleSystemRenderer:
   serializedVersion: 6
-  m_ObjectHideFlags: 2
+  m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
