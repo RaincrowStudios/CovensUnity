@@ -13,7 +13,7 @@ public static class LoginAPIManager
     }
 
     public static bool characterLoggedIn { get { return PlayerDataManager.playerData != null; } }
-    public static bool accountLoggedIn { get { return !(string.IsNullOrEmpty(loginToken) || string.IsNullOrEmpty(wssToken)) ; } }
+    public static bool accountLoggedIn { get { return !(string.IsNullOrEmpty(loginToken) || string.IsNullOrEmpty(wssToken)); } }
     
     public static string loginToken
     {
@@ -300,18 +300,30 @@ public static class LoginAPIManager
 
         return player;
     }
-
-    private struct GameConfig
+    
+    public struct GameConfig
     {
+        public struct DominionRank
+        {
+            [JsonProperty("character")]
+            public string topPlayer;
+            [JsonProperty("coven")]
+            public string topCoven;
+        }
+
         public float displayRadius;
         public int tribunal;
         public double daysRemaining;
+
+        public string dominion;
+        [JsonProperty("topRanking")]
+        public DominionRank dominionRank;
 
         public Sun sun;
         public MoonData moon;
     }
 
-    public static void GetConfigurations(float longitude, float latitude, System.Action<int, string> callback)
+    public static void GetConfigurations(float longitude, float latitude, System.Action<GameConfig, string> callback)
     {
         APIManager.Instance.GetRaincrow($"configurations?latitude={latitude.ToString().Replace(',','.')}&longitude={longitude.ToString().Replace(',', '.')}", "", (response, result) =>
         {
@@ -324,9 +336,13 @@ public static class LoginAPIManager
                 PlayerDataManager.sunData = data.sun;
                 PlayerDataManager.tribunal = data.tribunal;
                 PlayerDataManager.tribunalDaysRemaining = data.daysRemaining;
-            }
 
-            callback?.Invoke(result, response);
+                callback?.Invoke(data, null);
+            }
+            else
+            {
+                callback?.Invoke(new GameConfig(), response);
+            }
         });
     }
 }

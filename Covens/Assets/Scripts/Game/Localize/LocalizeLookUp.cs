@@ -47,6 +47,11 @@ public class LocalizeLookUp : MonoBehaviour
             return $"<{id}>";
     }
 
+    public static bool HasKey(string id)
+    {
+        return DownloadedAssets.localizedText.ContainsKey(id);
+    }
+
     //spell
     public static string GetSpellName(string id) => GetText(id + "_name");
     public static string GetSpellSpiritDescription(string id) => GetText(id + "_desc");

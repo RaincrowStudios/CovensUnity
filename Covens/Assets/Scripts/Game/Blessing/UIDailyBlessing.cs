@@ -17,6 +17,7 @@ public class UIDailyBlessing : MonoBehaviour
     [SerializeField] private Button m_CloseButton;
 
     private static UIDailyBlessing m_Instance;
+    private static System.Action m_OnClose;
     private int m_TweenId;
 
     public static void Show(int energyGained)

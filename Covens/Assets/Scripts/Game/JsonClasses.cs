@@ -42,7 +42,7 @@ public class KnownSpirits
     public string dominion { get; set; }
 }
 
-public class Sun
+public struct Sun
 {
     public double sunRise { get; set; }
     public double sunSet { get; set; }
@@ -179,7 +179,7 @@ public struct GardenData
     public int distance;
 }
 
-public class MoonData
+public struct MoonData
 {
     public double phase { get; set; }
     public double luminosity { get; set; }

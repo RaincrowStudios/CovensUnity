@@ -234,13 +234,19 @@ public class SplashManager : MonoBehaviour
 
     public void HideHints(float time, System.Action onComplete)
     {
+        if (IsShowingHints == false)
+        {
+            onComplete?.Invoke();
+            return;
+        }
+
         IsShowingHints = false;
 
-        if (m_HintsCoroutine == null)
-            return;
-
-        StopCoroutine(m_HintsCoroutine);
-        m_HintsCoroutine = null;
+        if (m_HintsCoroutine != null)
+        {
+            StopCoroutine(m_HintsCoroutine);
+            m_HintsCoroutine = null;
+        }
 
         m_HintTweenId = LeanTween.alphaCanvas(m_HintScreen, time, 0f)
             .setOnComplete(() =>
@@ -323,6 +329,11 @@ public class SplashManager : MonoBehaviour
             StopCoroutine(m_TribunalCoroutine);
 
         m_TribunalCoroutine = StartCoroutine(TribunalCoroutine(onStart));
+    }
+
+    public void HideTribunal(System.Action onComplete)
+    {
+        LeanTween.alphaCanvas(m_TribualScreen, 0f, 1f).setEaseOutCubic().setOnComplete(onComplete);
     }
 
     private IEnumerator TribunalCoroutine(System.Action onShow)

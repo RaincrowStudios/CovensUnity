@@ -173,19 +173,15 @@ public class FTFManager : MonoBehaviour
         camCenterPoint = cameraTransform.parent.parent;
         Utilities.allowMapControl(false);
 
-        Debug.LogError("TODO:SET FTF DOMINION");
-        //currentDominion.text = LocalizeLookUp.GetText("dominion_location") + " " + PlayerDataManager.config.dominion;
-        //strongestWitch.text = LocalizeLookUp.GetText("strongest_witch_dominion") + " " + PlayerDataManager.config.strongestWitch;
-        //strongestCoven.text = LocalizeLookUp.GetText("strongest_coven_dominion") + " " + PlayerDataManager.config.strongestCoven;
+        currentDominion.text = LocalizeLookUp.GetText("dominion_location") + " " + GameStartup.Dominion;
+        strongestWitch.text = LocalizeLookUp.GetText("strongest_witch_dominion") + " " + GameStartup.TopPlayer;
+        strongestCoven.text = LocalizeLookUp.GetText("strongest_coven_dominion") + " " + GameStartup.TopCoven;
 
         //StartRotation();
         MapCameraUtils.SetRotation(-180f, 90f, true, () => { });
         zoomCamera(-360f, 60f);
         UIStateManager.Instance.CallWindowChanged(true);
-
-        Debug.LogError("TODO: ENABLE MAIN UI");
-        //LoginUIManager.Instance.mainUI.SetActive(true);
-
+        
         if (PlayerDataManager.playerData.GetIngredient("coll_ironCollar") == 0)
             PlayerDataManager.playerData.SetIngredient("coll_ironCollar", 1);
 
