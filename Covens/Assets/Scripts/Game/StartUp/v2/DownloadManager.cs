@@ -476,9 +476,7 @@ public class DownloadManager : MonoBehaviour
     {
         try
         {
-            StoreData store = JsonConvert.DeserializeObject<StoreData>(json);
-            StoreManagerAPI.SetupOldStore(store);
-
+            StoreManagerAPI.Store = JsonConvert.DeserializeObject<StoreData>(json);
             return true;
         }
         catch (System.Exception e)

@@ -52,11 +52,6 @@ public struct SpiritData
     public string Description { get => LocalizeLookUp.GetSpiritDesc(id); }
 }
 
-public class GameDictionary
-{
-    public Dictionary<string, SpiritData> Spirits;
-}
-
 public struct PlaceOfPowerSettings
 {
     public int[] openTimeWindow;

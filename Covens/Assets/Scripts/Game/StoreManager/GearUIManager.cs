@@ -50,7 +50,11 @@ public class GearUIManager : UIAnimationManager
 	public GearButtonData curButton;
 	bool isGold;
 	public void Init(List<CosmeticData> apparelList)
-	{
+    {
+        //char gender = PlayerDataManager.playerData.male ? 'm' : 'f';
+        //apparelList = new List<CosmeticData>(apparelList);
+        //apparelList.RemoveAll(cosmetic => cosmetic.type[0] != gender);
+
 		foreach (var item in apparelList) {
 			Utilities.SetCatagoryApparel (item);
 		}

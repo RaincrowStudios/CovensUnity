@@ -90,7 +90,18 @@ namespace Raincrow.Store
        
     public static class StoreManagerAPI
     {
-        public static StoreApiObject OldStore { get; private set; }
+        public static StoreData Store { get; set; }
+
+        private static StoreApiObject m_OldStore = null;
+        public static StoreApiObject OldStore
+        {
+            get
+            {
+                if (m_OldStore == null)
+                    SetupOldStore(Store);
+                return m_OldStore;
+            }
+        }
 
         public static Dictionary<string, IngredientBundleData> BundleDict { get; set; }
         public static Dictionary<string, ConsumableData> ConsumableDict { get; set; }
@@ -259,10 +270,11 @@ namespace Raincrow.Store
 
         public static void SetupOldStore(StoreData data)
         {
-            OldStore = new StoreApiObject();
+            m_OldStore = new StoreApiObject();
+            char gender = PlayerDataManager.playerData.male ? 'm' : 'f';
 
             //setup bundles
-            OldStore.bundles = new List<StoreApiItem>();
+            m_OldStore.bundles = new List<StoreApiItem>();
             foreach (StoreItem item in data.Bundles)
             {
                 IngredientBundleData bundle = GetBundle(item.id);
@@ -286,11 +298,11 @@ namespace Raincrow.Store
                     }
                 }
 
-                OldStore.bundles.Add(aux);
+                m_OldStore.bundles.Add(aux);
             }
 
             //setup consumables
-            OldStore.consumables = new List<StoreApiItem>();
+            m_OldStore.consumables = new List<StoreApiItem>();
             foreach (StoreItem item in data.Consumables)
             {
                 ConsumableData consumable = GetConsumable(item.id);
@@ -305,7 +317,7 @@ namespace Raincrow.Store
             }
 
             //setup silver
-            OldStore.silver = new List<StoreApiItem>();
+            m_OldStore.silver = new List<StoreApiItem>();
             foreach (StoreItem item in data.Silver)
             {
                 SilverBundleData silver = GetSilverBundle(item.id);
@@ -318,33 +330,41 @@ namespace Raincrow.Store
                 aux.cost = silver.cost;
                 aux.productId = silver.product;
 
-                OldStore.silver.Add(aux);
+                m_OldStore.silver.Add(aux);
             }
 
             //setup cosmetics
-            OldStore.cosmetics = new List<CosmeticData>();
+            m_OldStore.cosmetics = new List<CosmeticData>();
             foreach(StoreItem item in data.Cosmetics)
             {
                 CosmeticData aux = DownloadedAssets.GetCosmetic(item.id);
+
                 if (aux == null)
+                    continue;
+
+                if (aux.type[0] != gender)
                     continue;
 
                 aux.unlockOn = item.unlockOn;
                 aux.tooltip = item.tooltip;
-                OldStore.cosmetics.Add(aux);
+                m_OldStore.cosmetics.Add(aux);
             }
 
             //setup styles
-            OldStore.styles = new List<CosmeticData>();
+            m_OldStore.styles = new List<CosmeticData>();
             foreach (StoreItem item in data.Styles)
             {
                 CosmeticData aux = DownloadedAssets.GetCosmetic(item.id);
+
                 if (aux == null)
+                    continue;
+
+                if (aux.type[0] != gender)
                     continue;
 
                 aux.unlockOn = item.unlockOn;
                 aux.tooltip = item.tooltip;
-                OldStore.styles.Add(aux);
+                m_OldStore.styles.Add(aux);
             }
         }
     }

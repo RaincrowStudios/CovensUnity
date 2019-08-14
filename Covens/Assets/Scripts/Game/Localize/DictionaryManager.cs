@@ -213,7 +213,7 @@ public class DictionaryManager
 
         if (result == LocalFileState.FILE_AVAILABLE && json != null)
         {
-            Debug.Log($"\"{version}\" already downloaded.");
+            Debug.Log($"store \"{version}\" already downloaded.");
             if (DownloadManager.DeserializeStoreDictionary(json))
             {
                 onDicionaryReady?.Invoke();
@@ -227,11 +227,11 @@ public class DictionaryManager
         else
         {
             if (result == LocalFileState.FILE_NOT_FOUND)
-                Debug.Log($"game dict \"{version}\" is marked as download but no file was found.");
+                Debug.Log($"store dict \"{version}\" is marked as download but no file was found.");
             else if (result == LocalFileState.KEY_NOT_FOUND)
-                Debug.Log("No gamedict found");
+                Debug.Log("No store found");
             else if (result == LocalFileState.VERSION_OUTDATED)
-                Debug.Log($"gamedict outdated.");
+                Debug.Log($"store outdated.");
         }
 
         var url = new System.Uri(baseURL + version + "/store.json");

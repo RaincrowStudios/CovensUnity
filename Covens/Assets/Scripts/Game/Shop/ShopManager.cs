@@ -288,8 +288,13 @@ public class ShopManager : ShopBase
 
         if (styleNavContainer.childCount == 0)
         {
+            //char gender = PlayerDataManager.playerData.male ? 'm' : 'f';
+
             foreach (var item in PlayerDataManager.StoreData.styles)
             {
+                //if (item.type[0] != gender)
+                //    continue;
+
                 var g = Utilities.InstantiateObject(navCircle, styleNavContainer);
             }
         }
