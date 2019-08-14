@@ -7,12 +7,16 @@ using UnityEngine;
 
 public class LocationBattleStart : IGameEventHandler
 {
-    public string EventName => "pop.start";
-    public static event System.Action OnLocationBattleStart;
+    public string EventName => "start.pop";
+    public static event System.Action<SpiritToken> OnLocationBattleStart;
 
     public void HandleResponse(string eventData)
     {
+        Debug.Log(eventData);
         Debug.Log("Location Battle has Started");
-        OnLocationBattleStart?.Invoke();
+        var spiritData = JsonConvert.DeserializeObject<SpiritToken>(eventData);
+        spiritData.island = -1;
+        spiritData.position = -1;
+        OnLocationBattleStart?.Invoke(spiritData);
     }
 }

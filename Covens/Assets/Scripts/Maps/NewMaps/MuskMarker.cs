@@ -12,6 +12,7 @@ namespace Raincrow.Maps
         [SerializeField] protected SpriteRenderer m_NameBanner;
         [SerializeField] protected Transform m_StatsContainer;
         [SerializeField] protected SpriteRenderer m_EnergyRing;
+        [SerializeField] protected SpriteRenderer m_EnergyRingEmpty;
         [SerializeField] protected SpriteRenderer[] m_Shadows;
 
         protected bool m_Interactable = true;
@@ -33,13 +34,13 @@ namespace Raincrow.Maps
         public Token Token { get; protected set; }
 
         public bool IsPlayer { get { return (Object)PlayerManager.marker == this; } }
-        
+
 
         protected List<SpriteRenderer> m_Renderers;
         protected List<SpriteRenderer> m_CharacterRenderers;
         protected TextMeshPro[] m_TextMeshes;
         protected ParticleSystem[] m_Particles;
-        
+
         protected float m_CharacterAlphaMul = 1f;
         protected int m_MoveTweenId;
         protected int m_AlphaTweenId;
@@ -48,7 +49,7 @@ namespace Raincrow.Maps
 
         protected Color m_SchoolColor = Color.white;
         private float m_EnergyFill = 0;
-        
+
         public float scale
         {
             get { return transform.localScale.x; }
@@ -58,17 +59,17 @@ namespace Raincrow.Maps
         public bool inMapView { get; set; }
 
         public bool isNull { get { return this == null || this.GameObject == null; } }
-        
+
         public virtual void OnDespawn()
         {
             LeanTween.cancel(m_AlphaTweenId);
             LeanTween.cancel(m_MoveTweenId);
-            
+
             OnClick = null;
 
             GameObject.SetActive(false);
         }
-                     
+
         public bool Interactable
         {
             get { return m_Interactable; }
@@ -128,12 +129,18 @@ namespace Raincrow.Maps
             m_EnergyRingTweenId = LeanTween.alpha(m_EnergyRing.gameObject, m_EnergyFill, 1f).uniqueId;
         }
 
+        public virtual void EnablePopSorting()
+        {
+            m_AvatarRenderer.sortingOrder = 10;
+            m_EnergyRingEmpty.sortingOrder = 8;
+            m_EnergyRing.sortingOrder = 9;
+        }
 
         public virtual void UpdateNameplate(float preferredWidth)
         {
             if (m_NameBanner == null)
                 return;
-            
+
             Vector2 bannerSize = new Vector2(MapUtils.scale(2.2f, 9.5f, .86f, 8f, preferredWidth), m_NameBanner.size.y);
             m_NameBanner.size = bannerSize;
 
@@ -273,7 +280,7 @@ namespace Raincrow.Maps
 
                         for (int i = 0; i < m_TextMeshes.Length; i++)
                             m_TextMeshes[i].alpha = TextAlpha * Alpha;
-                        
+
                         for (int i = 0; i < m_CharacterRenderers.Count; i++)
                         {
                             aux = m_CharacterRenderers[i].color;
@@ -324,7 +331,12 @@ namespace Raincrow.Maps
             if (m_EnergyRing != null)
                 m_Renderers.Remove(m_EnergyRing);
         }
-        
+
+        public void InitializePositionPOP()
+        {
+            transform.localPosition = Vector3.zero;
+        }
+
         public void SetWorldPosition(Vector3 worldPos, float time = 0, System.Action onComplete = null)
         {
             LeanTween.cancel(m_MoveTweenId);
@@ -353,7 +365,7 @@ namespace Raincrow.Maps
                 })
                 .uniqueId;
         }
-        
+
         private void OnDisable()
         {
             //in case the marker was disabled while animating the movement
@@ -362,7 +374,7 @@ namespace Raincrow.Maps
 
 #if UNITY_EDITOR
         [Header("Base Debug")]
-        [SerializeField, Range(0,1)] private float m_DebugFloat;
+        [SerializeField, Range(0, 1)] private float m_DebugFloat;
 
         [ContextMenu("Update energy")]
         private void DebugEnergy()

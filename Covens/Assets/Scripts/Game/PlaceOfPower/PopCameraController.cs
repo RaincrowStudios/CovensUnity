@@ -17,6 +17,7 @@ namespace Raincrow.DynamicPlacesOfPower
         [SerializeField] private float m_MinAngle = 30f;
         [SerializeField] private float m_MaxAngle = 50f;
         [SerializeField] private float m_DragInertia = 10f;
+        [SerializeField] private Vector2 m_TargetFocusOffset = new Vector2(19.1266f, 19.5f);
 
         [Header("LeanTouch")]
         [SerializeField] private LeanScreenDepth m_ScreenDepth;
@@ -56,6 +57,13 @@ namespace Raincrow.DynamicPlacesOfPower
 
         private Vector3 m_CenterPosition;
         private float m_BoundRadius;
+
+        private int m_MoveTweenId;
+        // private int m_ZoomTweenId;
+        // private int m_TwistTweenId;
+        // private int m_CamRotationTweenId;
+        // private int m_FlyButtonTweenId;
+        // private int m_ElasticTweenId;
 
         private void Awake()
         {
@@ -235,6 +243,37 @@ namespace Raincrow.DynamicPlacesOfPower
 
             Vector3 targetPosition = ClampPosition(m_CenterPoint.transform.position + m_PositionDelta);
             m_PositionDelta = targetPosition - m_CenterPoint.transform.position;
+        }
+
+
+        private void AnimatePosition(Vector3 pos, float time, bool allowCancel)
+        {
+            LeanTween.cancel(m_MoveTweenId, true);
+
+            System.Action cancelAction = () => { };
+            if (allowCancel)
+                cancelAction = () => LeanTween.cancel(m_MoveTweenId, true);
+            onUserPan += cancelAction;
+
+            m_MoveTweenId = LeanTween.move(m_CenterPoint.gameObject, pos, time)
+                .setEaseOutCubic()
+                .setOnUpdate((float t) =>
+                {
+                    onUpdate?.Invoke(true, false, false);
+                })
+                .setOnComplete(() =>
+                {
+                    onUserPan -= cancelAction;
+                })
+                .uniqueId;
+        }
+
+        public void MoveCamera(Vector3 position, float time, System.Action OnComplete = null)
+        {
+            // position.x += 85;
+            // position.z += 50;
+            position.y = 0;
+            AnimatePosition(position + m_CenterPoint.right * m_TargetFocusOffset.x + m_CenterPoint.forward * m_TargetFocusOffset.y, time, false);
         }
     }
 }

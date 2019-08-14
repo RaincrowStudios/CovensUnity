@@ -6,50 +6,40 @@ using UnityEngine;
 using static MarkerManager;
 using Newtonsoft.Json;
 using static Raincrow.GameEventResponses.MoveTokenHandlerPOP;
+using UnityEngine.UI;
 
 public class LocationUnitSpawner : MonoBehaviour
 {
+    private static LocationUnitSpawner Instance { get; set; }
     [Header("Witch")]
     public GameObject witchIcon;
 
     [Header("Spirits")]
     public GameObject spiritIcon;
+    public static IMarker guardianMarker { get; private set; }
+    [SerializeField] private Transform m_CenterSpiritTransform;
+    [SerializeField] private Transform m_PlayerHighlight;
 
     private static SimplePool<Transform> m_WitchPool;
     private static SimplePool<Transform> m_SpiritPool;
     private static SimplePool<Transform> m_EnergyPool;
-
+    public static string currentSelection { get; private set; }
     public static Dictionary<string, IMarker> Markers = new Dictionary<string, IMarker>();
 
     void Awake()
     {
+        Instance = this;
+        m_PlayerHighlight.gameObject.SetActive(false);
         m_WitchPool = new SimplePool<Transform>(witchIcon.transform, 10);
-        m_SpiritPool = new SimplePool<Transform>(witchIcon.transform, 2);
+        m_SpiritPool = new SimplePool<Transform>(spiritIcon.transform, 2);
         m_EnergyPool = new SimplePool<Transform>(witchIcon.transform, 1);
     }
 
     public void AddMarker(Token token)
     {
-        if (Markers.ContainsKey(token.instance))
+        if (!Markers.ContainsKey(token.instance))
         {
-            if (!isPositionOccupied(token.popIndex))
-            {
-                Markers[token.instance].SetWorldPosition(GetWorldPosition(token));
-                return;
-            }
-            else
-            {
-                string curInstance = GetTokenAtIndex(token.popIndex).instance;
-                if (token.instance == curInstance)
-                {
-                    Debug.LogError("Marker already at position");
-                }
-                else
-                {
-                    Debug.LogError("Position is occupied");
-                }
-            }
-
+            Debug.Log("Adding ");
             GameObject go = null;
 
             if (token.Type == MarkerType.WITCH)
@@ -68,31 +58,71 @@ public class LocationUnitSpawner : MonoBehaviour
                 // go = m_EnergyPool.Spawn().gameObject;
                 // go.name = "[Energy] " + (token as CollectableToken).type + " [" + token.instance + "]";
             }
-
             IMarker marker = go.GetComponent<MuskMarker>();
-            marker.Interactable = true;
-            marker.Setup(token);
-            marker.GameObject.SetActive(true);
+            Debug.Log(token.popIndex + $" {token.type}");
+            if (token.popIndex == -1)
+            {
+                SetupCenterSpirit(go, marker, token);
+                guardianMarker = marker;
+            }
+            else
+                Setup(go, marker, token);
             marker.OnClick += onClickMarker;
+            Markers.Add(token.instance, marker);
+            if (token.instance == PlayerDataManager.playerData.instance) LocationPlayerAction.SetPlayerMarker(marker);
+        }
+        else
+        {
+            if (!isPositionOccupied(token.popIndex))
+            {
+                Markers[token.instance].GameObject.transform.SetParent(GetTransform(token));
+                Markers[token.instance].InitializePositionPOP();
+                return;
+            }
+            else
+            {
+                string curInstance = GetTokenAtIndex(token.popIndex).instance;
+                if (token.instance == curInstance)
+                {
+                    Debug.LogError("Marker already at position");
+                }
+                else
+                {
+                    Debug.LogError("Position is occupied");
+                }
+            }
+
         }
 
     }
 
+
     private void onClickMarker(IMarker m)
     {
         var token = m.Token as Token;
+        currentSelection = token.instance;
+        if (!LocationPlayerAction.CanSelectIsland(token))
+        {
+            LocationPlayerAction.ShowMoveCloser();
+            DisableMarkers(token.instance);
+            return;
+        }
         if (token.Type == MarkerType.WITCH)
         {
-            UIPlayerInfo.Instance.Show(m as WitchMarker, token as WitchToken);
+            UIPlayerInfo.Instance.ShowPOP(m as WitchMarker, token as WitchToken);
         }
         else if (token.Type == MarkerType.SPIRIT)
         {
             UISpiritInfo.Instance.Show(m, token);
         }
-        MarkerSpawner.GetMarkerDetails(token.instance, (result, response) =>
+        SetHighlight(token);
+        LocationIslandController.moveCamera(m.AvatarTransform.position);
+        DisableMarkers(token.instance);
+        GetMarkerDetails(token.instance, (result, response) =>
         {
             if (result == 200)
             {
+                Debug.Log(response);
                 if (m.Type == MarkerType.WITCH)
                 {
                     SelectWitchData_Map witch = JsonConvert.DeserializeObject<SelectWitchData_Map>(response);
@@ -123,6 +153,22 @@ public class LocationUnitSpawner : MonoBehaviour
         });
     }
 
+    public static void SetHighlight(Token token)
+    {
+        Instance.m_PlayerHighlight.SetParent(Instance.GetTransform(token));
+        Instance.m_PlayerHighlight.localPosition = Vector3.zero;
+        Instance.m_PlayerHighlight.gameObject.SetActive(true);
+    }
+
+    public static void GetMarkerDetails(string id, System.Action<int, string> callback)
+    {
+        APIManager.Instance.Get(
+                    "character/select/" + id + "?selection=placeOfPower",
+                    "",
+                    (response, result) => callback(result, response));
+    }
+
+
     public async void RemoveMarker(string instance)
     {
         if (Markers.ContainsKey(instance))
@@ -144,19 +190,20 @@ public class LocationUnitSpawner : MonoBehaviour
         if (Markers.ContainsKey(data.instance))
         {
             var marker = GetMarker(data.instance);
-            marker.SetAlpha(0, 1, () =>
-            {
-                // TODO add fx
-                var mToken = marker.Token as Token;
-                mToken.position = data.position;
-                mToken.island = data.island;
-                AddMarker(mToken);
-                marker.SetAlpha(1, 0, () =>
-                {
-                    //fade in animation
-                });
+            // TODO add fx
+            var mToken = marker.Token as Token;
+            mToken.position = data.position;
+            mToken.island = data.island;
 
-            });
+            if (!isPositionOccupied(mToken.popIndex))
+            {
+                marker.GameObject.transform.SetParent(GetTransform(mToken));
+                marker.InitializePositionPOP();
+            }
+            else
+            {
+                Debug.LogError($"Index Not Empty: {data.instance} \n {mToken.popIndex} \n isl. {data.island} pos {data.position}");
+            }
         }
         else
         {
@@ -164,7 +211,36 @@ public class LocationUnitSpawner : MonoBehaviour
         }
     }
 
-    //Helper methods
+    public static void MoveWitch(int island, int position, System.Action onComplete)
+    {
+        Debug.Log("requesting move");
+        var data = new { island = island, position = position };
+        LocationPlayerAction.SetMoveActionState(false);
+        APIManager.Instance.Post("character/move", JsonConvert.SerializeObject(data),
+            (s, r) =>
+            {
+                Debug.Log(s);
+                Debug.Log(r);
+                if (r == 200)
+                {
+                    LocationPlayerAction.SetMoveActionState(true);
+                    MoveEventDataPOP moveData = new MoveEventDataPOP
+                    {
+                        instance = LocationPlayerAction.playerWitchToken.instance,
+                        island = island,
+                        position = position,
+                    };
+                    Instance.MoveMarker(moveData);
+                    LocationIslandController.SetActiveIslands();
+                    LocationPlayerAction.MakeTransparent();
+                    onComplete();
+                }
+                else
+                {
+                    LocationPlayerAction.SetMoveActionState(true);
+                }
+            });
+    }
 
     public static IMarker GetMarker(string instance)
     {
@@ -173,24 +249,87 @@ public class LocationUnitSpawner : MonoBehaviour
         return null;
     }
 
-    private Vector3 GetWorldPosition(Token token)
+    private void Setup(GameObject g, IMarker m, Token t)
     {
-        return LocationIslandController.unitPositions[token.popIndex].position;
+        m.Interactable = true;
+        m.Setup(t);
+        m.EnableAvatar();
+        m.AvatarTransform.localScale = Vector3.one * 1.3f;
+        g.transform.SetParent(GetTransform(t));
+        m.InitializePositionPOP();
+        m.EnablePopSorting();
+        m.GameObject.SetActive(true);
+    }
+
+    private void SetupCenterSpirit(GameObject g, IMarker m, Token t)
+    {
+        m.Interactable = true;
+        m.Setup(t);
+        m.EnableAvatar();
+        m.AvatarTransform.localScale = Vector3.one * 3.1f;
+        g.transform.SetParent(m_CenterSpiritTransform);
+        m.InitializePositionPOP();
+        m.EnablePopSorting();
+        m.GameObject.SetActive(true);
+    }
+
+    private Transform GetTransform(Token token)
+    {
+        try
+        {
+            return LocationIslandController.unitPositions[token.popIndex];
+
+        }
+        catch
+        {
+            return m_CenterSpiritTransform;
+        }
     }
 
     private bool isPositionOccupied(int index)
     {
         if (index > LocationIslandController.unitPositions.Count - 1)
             throw new System.Exception("Position Out of bounds");
-        return LocationIslandController.unitPositions[index].childCount == 1;
+        return LocationIslandController.unitPositions[index].childCount == 3;
     }
 
     private Token GetTokenAtIndex(int index)
     {
         if (isPositionOccupied(index))
         {
-            return LocationIslandController.unitPositions[index].GetChild(0).GetComponent<MuskMarker>().Token;
+            return LocationIslandController.unitPositions[index].GetChild(2).GetComponent<MuskMarker>().Token;
         }
         return null;
     }
+
+    public static void DisableMarkers(string instance = null)
+    {
+        foreach (var item in Markers)
+        {
+            if (instance == null)
+            {
+                item.Value.SetAlpha(.22f, 1);
+                item.Value.Interactable = false;
+            }
+            else
+            {
+                if (instance != item.Key)
+                {
+                    item.Value.SetAlpha(.22f, 1);
+                    item.Value.Interactable = true;
+                }
+            }
+        }
+    }
+
+    public static void EnableMarkers()
+    {
+
+        foreach (var item in Markers)
+        {
+            item.Value.SetAlpha(1, 1);
+            item.Value.Interactable = true;
+        }
+    }
+
 }

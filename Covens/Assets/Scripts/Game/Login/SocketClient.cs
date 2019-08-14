@@ -95,7 +95,7 @@ public class SocketClient : MonoBehaviour
 #else
         _socketManager.Open();
 #endif
-    }    
+    }
 
     #region Socket 
 
@@ -123,7 +123,7 @@ public class SocketClient : MonoBehaviour
                 Data = data
             };
             responsesQueue.Enqueue(response);
-        }   
+        }
     }
 
     private void OnError(Socket socket, Packet packet, object[] args)
@@ -153,7 +153,7 @@ public class SocketClient : MonoBehaviour
         }
     }
 
-#endregion
+    #endregion
 
     private void DisconnectFromSocket()
     {
@@ -207,6 +207,8 @@ public class SocketClient : MonoBehaviour
                                                        System.Environment.NewLine, "Stacktrace: ", e.StackTrace,
                                                        System.Environment.NewLine, "nData: ", response);
                     Debug.LogError(debugString);
+                    Debug.Log(response.Data);
+                    Debug.Log(response.Command);
                 }
 
                 batchIndex++;

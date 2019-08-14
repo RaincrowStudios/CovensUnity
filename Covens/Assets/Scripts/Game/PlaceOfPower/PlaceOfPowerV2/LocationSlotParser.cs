@@ -1,3 +1,5 @@
+using System.Linq;
+using System.Net.Http.Headers;
 using Microsoft.Win32;
 using System;
 using System.Collections;
@@ -36,6 +38,7 @@ public static class LocationSlotParser
                         WitchToken witchToken = result as WitchToken;
                         witchToken.position = pos;
                         witchToken.island = island;
+                        Debug.Log(witchToken.popIndex + " On Enter");
                         tokens.Add(witchToken.popIndex, witchToken.instance, result);
                     }
                     else if (token.TryParseJson<SpiritToken>(out result))
@@ -58,36 +61,92 @@ public static class LocationSlotParser
 
 }
 
-public class MultiKeyDictionary<TKey1, TKey2, TValue> : Dictionary<(TKey1, TKey2), TValue>, IDictionary<(TKey1, TKey2), TValue>
+public class MultiKeyDictionary<TKey1, TKey2, TValue>
 {
-    private HashSet<TKey1> t1Keys = new HashSet<TKey1>();
-    private HashSet<TKey2> t2Keys = new HashSet<TKey2>();
+
+    private Dictionary<TKey1, TValue> Key1Dictionary = new Dictionary<TKey1, TValue>();
+    private Dictionary<TKey2, TValue> Key2Dictionary = new Dictionary<TKey2, TValue>();
+
+    public int Count
+    {
+        get
+        {
+            return Key1Dictionary.Count;
+        }
+    }
 
     public TValue this[TKey1 key1, TKey2 key2]
     {
-        get { return base[(key1, key2)]; }
-        set { base[(key1, key2)] = value; }
+        get
+        {
+            if (Key1Dictionary.ContainsKey(key1) && Key2Dictionary.ContainsKey(key2))
+                return Key1Dictionary[key1];
+            else
+            {
+                Debug.LogError("Key Not found " + key1 + " \n " + key2);
+                return default(TValue);
+            }
+        }
+        set
+        {
+            Key1Dictionary[key1] = value;
+            Key2Dictionary[key2] = value;
+        }
     }
 
     public void Add(TKey1 key1, TKey2 key2, TValue value)
     {
-        t1Keys.Add(key1);
-        t2Keys.Add(key2);
-        base.Add((key1, key2), value);
+        Key1Dictionary[key1] = value;
+        Key2Dictionary[key2] = value;
     }
 
     public bool ContainsKey(TKey1 key1, TKey2 key2)
     {
-        return base.ContainsKey((key1, key2));
+        return (Key1Dictionary.ContainsKey(key1) && Key2Dictionary.ContainsKey(key2));
     }
 
     public bool ContainsKey1(TKey1 key)
     {
-        return t1Keys.Contains(key);
+        return Key1Dictionary.ContainsKey(key);
     }
 
     public bool ContainsKey2(TKey2 key)
     {
-        return t2Keys.Contains(key);
+        return Key2Dictionary.ContainsKey(key);
+    }
+
+    public void Remove(TKey1 key1, TKey2 key2)
+    {
+        if (ContainsKey(key1, key2))
+        {
+            Key1Dictionary.Remove(key1);
+            Key2Dictionary.Remove(key2);
+        }
+    }
+
+    public string Keys1ToString()
+    {
+        string s = "";
+        foreach (var item in Key1Dictionary.Keys.ToArray())
+        {
+            s += item + "\n";
+        }
+        return s;
+    }
+
+    public string Keys2ToString()
+    {
+        string s = "";
+        foreach (var item in Key2Dictionary.Keys.ToArray())
+        {
+            s += item + "\n";
+        }
+        return s;
+    }
+
+    public TValue[] Values()
+    {
+        return Key1Dictionary.Values.ToArray();
     }
 }
+

@@ -17,7 +17,7 @@ public class WitchMarker : MuskMarker
     [SerializeField] private TextMeshPro m_Level;
 
     [SerializeField] private SpriteRenderer m_IconRenderer;
-    
+
     [SerializeField] private double m_latitude;
     [SerializeField] private double m_longitude;
 
@@ -55,11 +55,12 @@ public class WitchMarker : MuskMarker
 
     public override void Setup(Token data)
     {
+        Debug.Log("Setting up Marker");
         base.Setup(data);
-        
+
         m_latitude = data.latitude;
         m_longitude = data.longitude;
-        
+
         //if (IsShowingAvatar == false && IsShowingIcon == false)
         //{
         //    m_AvatarGroup.localScale = Vector3.zero;
@@ -83,6 +84,12 @@ public class WitchMarker : MuskMarker
             AddDeathFX();
         else
             RemoveDeathFX();
+    }
+
+    public override void EnablePopSorting()
+    {
+        base.EnablePopSorting();
+        m_AvatarRenderer.sortingOrder = 10;
     }
 
     public override void EnablePortait()
@@ -151,7 +158,7 @@ public class WitchMarker : MuskMarker
     {
         if (m_Level == null)
             return;
-        
+
         m_Level.text = witchToken.level.ToString();
     }
 
@@ -298,11 +305,11 @@ public class WitchMarker : MuskMarker
             m_CharacterAlphaMul = 0.38f;
         else
             m_CharacterAlphaMul = 1f;
-        
+
         if (m_CharacterAlphaMul != prevValue)
             SetCharacterAlpha(AvatarAlpha, 1f);
     }
-    
+
 #if UNITY_EDITOR
     [ContextMenu("Update nameplate")]
     private void DebugNameplate()

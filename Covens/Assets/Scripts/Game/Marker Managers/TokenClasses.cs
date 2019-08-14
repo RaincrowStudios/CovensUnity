@@ -51,7 +51,15 @@ public abstract class Token
     public int position;
     public int island;
     [JsonIgnore]
-    public int popIndex => island * 3 + (position - 1);
+    public int popIndex
+    {
+        get
+        {
+            if (island >= 0) return island * 3 + position;
+            else
+                return -1;
+        }
+    }
 
 }
 

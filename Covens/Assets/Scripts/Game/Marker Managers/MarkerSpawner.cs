@@ -19,7 +19,7 @@ public class MarkerSpawner : MarkerManager
 
     [Header("Witch")]
     public GameObject witchIcon;
-    
+
     [Header("Spirits")]
     public GameObject spiritIcon;
 
@@ -44,11 +44,11 @@ public class MarkerSpawner : MarkerManager
     public GameObject tool;
     public GameObject gem;
     public GameObject energyIcon;
-    
+
     //[Header("MarkerEnergyRing")]
     //public Sprite[] EnergyRings;
     private string lastEnergyInstance = "";
-    
+
     private Dictionary<string, Sprite> m_SpiritIcons;
     private List<(SimplePool<Transform>, IMarker)> m_ToDespawn = new List<(SimplePool<Transform>, IMarker)>();
     private float m_DespawnTimer;
@@ -205,7 +205,7 @@ public class MarkerSpawner : MarkerManager
                 Instance.m_DespawnTimer = despawnDelay;
 
             if (Instance.m_DespawnCoroutine == null)
-                Instance.m_DespawnCoroutine =  Instance.StartCoroutine(Instance.DespawnCoroutine());
+                Instance.m_DespawnCoroutine = Instance.StartCoroutine(Instance.DespawnCoroutine());
 
             MapsAPI.Instance.RemoveMarker(marker);
         }
@@ -556,7 +556,7 @@ public class MarkerSpawner : MarkerManager
     {
         bool inputUp = false;
         bool inputDown = false;
-
+        if (LocationIslandController.isInBattle) return;
         if (Application.isEditor)
         {
             inputDown = Input.GetMouseButtonDown(0);

@@ -63,6 +63,7 @@ public class LocationPOPInfo : UIInfoPanel
     {
         m_LocationViewData = data;
         LocationIslandController.OnWitchEnter += AddWitch;
+        LocationIslandController.OnWitchExit += RemoveWitch;
         base.Show();
         ShowUI();
     }
@@ -81,7 +82,7 @@ public class LocationPOPInfo : UIInfoPanel
             m_Enter.color = m_EnoughSilver;
             m_EnterBtn.onClick.RemoveAllListeners();
             InitiateTimeUI();
-            UpdateEnterTimer();
+            // UpdateEnterTimer();
             // if (PlayerDataManager.playerData.gold >= 1)
             m_EnterBtn.onClick.AddListener(() => LocationIslandController.EnterPOP(m_LocationViewData._id, OnEnterPOP));
             // else
@@ -104,7 +105,7 @@ public class LocationPOPInfo : UIInfoPanel
             {
                 InitiateTimeUI();
                 m_Content.text = "This place is under cooldown, check back later";
-                UpdateCooldownTimer();
+                //  UpdateCooldownTimer();
             }
         }
     }
@@ -202,36 +203,36 @@ public class LocationPOPInfo : UIInfoPanel
         });
     }
 
-    private void OnEnterPOP(LocationData locationData)
+    private async void OnEnterPOP(LocationData locationData)
     {
         if (locationData != null)
         {
             m_HasEnteredPOP = true;
             UpdateWitchCount();
             m_EnterAnimation.SetActive(true);
-            LeanTween.value(0, 1, 2.2f).setOnComplete(() => m_EnterAnimation.SetActive(false));
             m_Enter.gameObject.SetActive(false);
+            m_Locked.SetActive(true);
             m_Content.text = $"Prepare to battle for {m_LocationViewData.name}. Defeat the Guardian. Last Witch Standing wins.";
+            await Task.Delay(2200);
+            m_EnterAnimation.SetActive(false);
         }
     }
 
     private void UpdateWitchCount()
     {
-        Debug.Log("updating witch count");
-        Debug.Log(LocationIslandController.locationData.currentOccupants);
-        m_TimeSubtitle.text = LocationIslandController.locationData.currentOccupants.ToString() + " Witches Joined";
+        m_TimeSubtitle.text = $"{LocationIslandController.locationData.currentOccupants} Witches Joined";
     }
 
-    private void AddWitch(WitchToken token)
+    private void SetupWitchAnimation(WitchToken token, bool Add)
     {
         this.CancelInvoke("DisablePlayerJoined");
         if (m_PlayerJoined.activeInHierarchy)
         {
             DisablePlayerJoined();
         }
-
+        UpdateWitchCount();
         m_PlayerJoined.SetActive(true);
-        m_PlayerJoinedTitle.text = $"<color=white>{token.displayName}</color> Joined";
+        m_PlayerJoinedTitle.text = $"<color=white>{token.displayName}</color> {(Add ? "Joined" : "Left")}";
         m_PlayerJoinedSubtitle.text = $"Level: <color=white>{token.level}</color> | <color=white> {Utilities.GetDegree(token.degree)}";
         if (token.degree > 0)
             m_PlayerJoinedColor.color = Utilities.Orange;
@@ -242,6 +243,16 @@ public class LocationPOPInfo : UIInfoPanel
         Invoke("DisablePlayerJoined", 2.1f);
     }
 
+    private void AddWitch(WitchToken token)
+    {
+        SetupWitchAnimation(token, true);
+    }
+
+    private void RemoveWitch(WitchToken token)
+    {
+        SetupWitchAnimation(token, false);
+    }
+
     private void DisablePlayerJoined()
     {
         m_PlayerJoined.SetActive(false);
@@ -249,8 +260,14 @@ public class LocationPOPInfo : UIInfoPanel
 
     public override void Close()
     {
-        LocationIslandController.OnWitchEnter -= AddWitch;
+        UnsubscribeWitchEvents();
         base.Close();
+    }
+
+    private void UnsubscribeWitchEvents()
+    {
+        LocationIslandController.OnWitchEnter -= AddWitch;
+        LocationIslandController.OnWitchExit -= RemoveWitch;
     }
 
     private static (string timeStamp, string timeType) GetTime(double javaTimeStamp)
