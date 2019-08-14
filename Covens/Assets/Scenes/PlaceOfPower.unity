@@ -10984,7 +10984,7 @@ MonoBehaviour:
   ReflectionAlpha: 0.565
   LayersToReflect:
     serializedVersion: 2
-    m_Bits: 4294967295
+    m_Bits: 15859511
 --- !u!23 &576983381
 MeshRenderer:
   m_ObjectHideFlags: 0
