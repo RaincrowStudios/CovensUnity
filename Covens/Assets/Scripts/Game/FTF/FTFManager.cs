@@ -10,7 +10,7 @@ using Raincrow.Chat;
 public class FTFManager : MonoBehaviour
 {
     public static FTFManager Instance { get; set; }
-    public static bool InFTF { get; private set; }
+    public static bool InFTF => PlayerDataManager.IsFTF;
     
     private int m_CurrentIndex = 0;
     public int curIndex

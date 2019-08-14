@@ -20,11 +20,20 @@ public class UIDominionSplash : MonoBehaviour
 
     private void Awake()
     {
-        Instance = this;
-        m_CloseButton.onClick.AddListener(Close);
-        m_InputRaycaster.enabled = true;
-        m_Canvas.enabled = true;
-        m_CanvasGroup.alpha = 1;
+        if (FTFManager.InFTF)
+        {
+            m_Canvas.enabled = false;
+            Destroy(this.gameObject);
+        }
+        else
+        {
+            Instance = this;
+            m_CloseButton.onClick.AddListener(Close);
+
+            m_InputRaycaster.enabled = true;
+            m_Canvas.enabled = true;
+            m_CanvasGroup.alpha = 1;
+        }
     }
 
     public void Show(System.Action onClose)
