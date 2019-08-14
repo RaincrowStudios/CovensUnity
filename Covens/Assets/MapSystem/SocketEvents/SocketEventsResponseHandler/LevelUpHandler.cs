@@ -28,11 +28,8 @@ namespace Raincrow.GameEventResponses
 
                 //update level
                 player.level = data.level;
-
-                ////update required exp and baseenergy
-                //player.xpToLevelUp = data.xpToLevelUp;
-                //player.baseEnergy = data.newBaseEnergy;
-
+                PlayerDataManager.playerData.UpdateSpells();
+                
                 //udpate UI
                 PlayerManagerUI.Instance.playerlevelUp();
                 PlayerManagerUI.Instance.UpdateEnergy();

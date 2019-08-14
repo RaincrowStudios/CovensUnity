@@ -247,6 +247,7 @@ public class SpellData
     public bool common;
     public int cost;
     public int xp;
+    public int level;
 
     public string[] ingredients;
     public string[] states;

@@ -47,14 +47,24 @@ public class UIDominionSplash : MonoBehaviour
 
         if (string.IsNullOrEmpty(GameStartup.TopPlayer) == false)
         {
+            m_TopWitch.gameObject.SetActive(true);
             m_TopWitch.text = LocalizeLookUp.GetText("strongest_witch_dominion") + " " + GameStartup.TopPlayer;
             LeanTween.value(0, 1f, 2f).setOnUpdate((float a) => m_TopWitch.alpha = a).setDelay(1.25f).setEaseOutCubic();
+        }
+        else
+        {
+            m_TopWitch.gameObject.SetActive(false);
         }
 
         if (string.IsNullOrEmpty(GameStartup.TopCoven) == false)
         {
+            m_TopCoven.gameObject.SetActive(true);
             m_TopCoven.text = LocalizeLookUp.GetText("strongest_coven_dominion") + " " + GameStartup.TopCoven;
             LeanTween.value(0, 1f, 2f).setOnUpdate((float a) => m_TopCoven.alpha = a).setDelay(2.25f).setEaseOutCubic();
+        }
+        else
+        {
+            m_TopCoven.gameObject.SetActive(false);
         }
     }
 
