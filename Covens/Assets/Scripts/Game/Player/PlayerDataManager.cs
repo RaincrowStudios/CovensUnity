@@ -32,6 +32,8 @@ public class PlayerDataManager : MonoBehaviour
     public static StoreApiObject StoreData => StoreManagerAPI.OldStore;
     public static int soundTrack = 0;
 
+    public static double[] tribunalStamps => new double[] { 1553040000, 1561075200, 1569196800, 1576972800, 1584662400, 1592697600 };
+
     void Awake()
     {
         DontDestroyOnLoad(this);

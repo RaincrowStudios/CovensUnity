@@ -281,7 +281,7 @@ public class GameStartup : MonoBehaviour
                     Debug.LogError("GetConfig failed\n" + error);
 
                 Dominion = config.dominion;
-                TopPlayer = config.dominionRank.topCoven;
+                TopPlayer = config.dominionRank.topPlayer;
                 TopCoven = config.dominionRank.topCoven;
 
                 StartGame();

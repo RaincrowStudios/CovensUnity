@@ -550,7 +550,7 @@ public class FTFManager : MonoBehaviour
 
             continueButton.SetActive(false);
             //    Debug.Log(dialogues[dialogueIndex]);
-            dialogueText.text = LocalizeLookUp.GetFtfDialog(dialogueIndex).Replace("{{Location}}", "<color=#FF8400>" + PlayerDataManager.playerData.dominion + "</color>");
+            dialogueText.text = LocalizeLookUp.GetFtfDialog(dialogueIndex).Replace("{{Location}}", "<color=#FF8400>" + GameStartup.Dominion + "</color>");
             //      Debug.Log(dialogueText.text);
             //brigidPrefab.SetActive (true);
             //continueButton.SetActive(false);
@@ -1146,30 +1146,33 @@ public class FTFManager : MonoBehaviour
             });
             //storePrefab.SetActive(false);
 
-            Debug.LogError("TODO: SET FTF TRIBUNAL");
-            //string tribunal = "";
+            string tribunal = "";
 
-            ////  Debug.Log("replacing season and days here");
-            //if (PlayerDataManager.config.tribunal == 1)
-            //{
-            //    tribunal = LocalizeLookUp.GetText(LocalizationManager.ftf_summer);
-            //}
-            //else if (PlayerDataManager.config.tribunal == 2)
-            //{
-            //    tribunal = LocalizeLookUp.GetText(LocalizationManager.ftf_spring);
-            //}
-            //else if (PlayerDataManager.config.tribunal == 3)
-            //{
-            //    tribunal = LocalizeLookUp.GetText(LocalizationManager.ftf_autumn);
-            //}
-            //else
-            //{
-            //    tribunal = LocalizeLookUp.GetText(LocalizationManager.ftf_winter);
-            //}
+            //  Debug.Log("replacing season and days here");
+            if (PlayerDataManager.tribunal == 1)
+            {
+                tribunal = LocalizeLookUp.GetText(LocalizationManager.ftf_summer);
+            }
+            else if (PlayerDataManager.tribunal == 2)
+            {
+                tribunal = LocalizeLookUp.GetText(LocalizationManager.ftf_spring);
+            }
+            else if (PlayerDataManager.tribunal == 3)
+            {
+                tribunal = LocalizeLookUp.GetText(LocalizationManager.ftf_autumn);
+            }
+            else
+            {
+                tribunal = LocalizeLookUp.GetText(LocalizationManager.ftf_winter);
+            }
 
-            //dialogueText.text = LocalizeLookUp.GetFtfDialog(dialogueIndex).Replace("{{Season}}", tribunal);
-            //dialogueText.text = dialogueText.text.Replace("{{Number}}", PlayerDataManager.config.daysRemaining.ToString())
-            //                .Replace("{{Season}}", tribunal);
+            System.DateTime dtDateTime = new System.DateTime(1970, 1, 1, 0, 0, 0, 0, System.DateTimeKind.Utc);
+            dtDateTime = dtDateTime.AddSeconds(PlayerDataManager.tribunalStamps[PlayerDataManager.tribunal]).ToUniversalTime();
+            var timeSpan = dtDateTime.Subtract(System.DateTime.UtcNow);
+
+            dialogueText.text = LocalizeLookUp.GetFtfDialog(dialogueIndex).Replace("{{Season}}", tribunal);
+            dialogueText.text = dialogueText.text.Replace("{{Number}}", ((int)timeSpan.TotalDays).ToString())
+                            .Replace("{{Season}}", tribunal);
             //exit out of store and purchase screen.
             //slide 55
         }

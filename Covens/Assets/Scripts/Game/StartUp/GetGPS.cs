@@ -92,6 +92,10 @@ public class GetGPS : MonoBehaviour
             errorText.text = "Please check your internet connection and try again.";
             yield return new WaitForSeconds(0.1f);
         }
+
+        locationError.SetActive(false);
+        GPSicon.SetActive(false);
+        WifiIccon.SetActive(false);
 #endif
 
         if (Application.isEditor == false)
