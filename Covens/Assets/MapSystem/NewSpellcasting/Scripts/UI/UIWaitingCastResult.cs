@@ -38,6 +38,15 @@ public class UIWaitingCastResult : UIInfoPanel
     [SerializeField] private Sprite m_GreyCrest;
     [SerializeField] private Sprite m_WhiteCrest;
 
+    [Header("Degree UI")]
+    //[SerializeField] private GameObject AlignmentState;
+    [SerializeField] private Slider BarFillSlider;
+    [SerializeField] private TextMeshProUGUI CurrentDegree;
+    [SerializeField] private TextMeshProUGUI NextDegree;
+    [SerializeField] private GameObject CurrentShadowIcon;
+    [SerializeField] private GameObject NextShadowIcon;
+    [SerializeField] private CanvasGroup HandleSlideArea;
+
     private static UIWaitingCastResult m_Instance;
     public static UIWaitingCastResult Instance
     {
@@ -95,7 +104,6 @@ public class UIWaitingCastResult : UIInfoPanel
         LeanTween.cancel(m_LoadingTweenId);
         LeanTween.cancel(m_DelayTweenId);
         LeanTween.cancel(m_ButtonTweenId);
-
         CloseResults();
 
         m_Target = target;
@@ -171,12 +179,14 @@ public class UIWaitingCastResult : UIInfoPanel
 
     public void ShowResults(SpellData spell, Raincrow.GameEventResponses.SpellCastHandler.Result result)
     {
+        DegreeSetup();
+
         m_OnClickContinue = () => m_OnContinueCallback?.Invoke(result);
 
         LeanTween.cancel(m_ResultsTweenId);
         LeanTween.cancel(m_ButtonTweenId);
         CloseLoading();
-        
+
         m_TitleText.text = LocalizeLookUp.GetText("generic_results");//"Results";
         m_ResultSpellTitle.text = LocalizeLookUp.GetSpellName(spell.id);
 
@@ -206,7 +216,7 @@ public class UIWaitingCastResult : UIInfoPanel
         else if (result.isSuccess == false)
         {
             m_ResultText.text = LocalizeLookUp.GetText("spell_fail");//"Spell failed!";
-        }        
+        }
         else
         {
             m_XPGained.text = LocalizeLookUp.GetText("spirit_deck_xp_gained").Replace("{{Number}}", spell.xp.ToString());// $"XP gained: {result.xpGain}";
@@ -217,8 +227,8 @@ public class UIWaitingCastResult : UIInfoPanel
         //m_ResultGroup.interactable = false;
         //m_ButtonTweenId = LeanTween.value(0, 0, 0).setDelay(0.2f).setOnStart(() =>
         //    {
-                m_ResultGroup.interactable = true;
-            //}).uniqueId;
+        m_ResultGroup.interactable = true;
+        //}).uniqueId;
 
         m_ResultGroup.gameObject.SetActive(true);
         m_ResultsTweenId = LeanTween.alphaCanvas(m_ResultGroup, 1f, 1f)
@@ -271,4 +281,73 @@ public class UIWaitingCastResult : UIInfoPanel
         m_OnClickContinue?.Invoke();
         Close();
     }
+    public void DegreeSetup()
+    {
+        long OldMin = 0;
+        long OldMax = 0;
+        int OldVal = 0;
+        Debug.Log("DegreeSetup");
+        Debug.Log(PlayerDataManager.playerData.alignment + " is current Align");
+        Debug.Log(PlayerDataManager.playerData.maxAlignment + " is max Align");
+        Debug.Log(PlayerDataManager.playerData.minAlignment + " is min Align");
+        var initialFill = BarFillSlider.value;
+        if (CurrentDegree == null || NextDegree == null)
+        {
+            Debug.LogError("orry, help, these are null");
+            return;
+        }
+        if (PlayerDataManager.playerData.degree == 0) //setting up the Degree Bar UI if the witch is grey
+        {
+            Debug.Log("Witch is Grey");
+            OldMin = -PlayerDataManager.playerData.maxAlignment;
+            OldMax = PlayerDataManager.playerData.maxAlignment;
+            OldVal = PlayerDataManager.playerData.alignment;
+            CurrentDegree.gameObject.SetActive(false);
+            NextDegree.gameObject.SetActive(false);
+            NextShadowIcon.SetActive(false);
+            CurrentShadowIcon.SetActive(true);
+        }
+        else //seting up the Degree Bar UI if the witch is not grey
+        {
+            CurrentDegree.gameObject.SetActive(true);
+            NextDegree.gameObject.SetActive(true);
+            CurrentDegree.text = Mathf.Abs(PlayerDataManager.playerData.degree).ToString();
+            NextDegree.text = (Mathf.Abs(PlayerDataManager.playerData.degree) + 1).ToString();
+
+            if (PlayerDataManager.playerData.degree > 0) //White Witch
+            {
+                CurrentDegree.color = new Color(0.2705882f, 0.2705882f, 0.2705882f);
+                NextDegree.color = new Color(0.2705882f, 0.2705882f, 0.2705882f);
+                NextShadowIcon.SetActive(false);
+                CurrentShadowIcon.SetActive(false);
+                OldMin = PlayerDataManager.playerData.minAlignment;
+                OldMax = PlayerDataManager.playerData.maxAlignment;
+                OldVal = PlayerDataManager.playerData.alignment;
+            }
+            else if (PlayerDataManager.playerData.degree < 0) //Shadow Witch
+            {
+                NextShadowIcon.SetActive(true);
+                CurrentShadowIcon.SetActive(true);
+                CurrentDegree.color = new Color(1f, 1f, 1f);
+                NextDegree.color = new Color(1f, 1f, 1f);
+                OldMin = (int)Mathf.Abs(PlayerDataManager.playerData.maxAlignment);
+                OldMax = (int)Mathf.Abs(PlayerDataManager.playerData.minAlignment);
+                OldVal = Mathf.Abs(PlayerDataManager.playerData.alignment);
+            }
+        }
+        var finalFill = MapUtils.scale(0f, 1f, OldMin, OldMax, OldVal); //Finding new Value
+
+        if (initialFill != finalFill)
+        {
+            LeanTween.alphaCanvas(HandleSlideArea, 1f, 0.5f); //turning on Glow
+            LeanTween.value(initialFill, finalFill, 1f).setOnUpdate((float i) => //moving the bar to new Value
+            {
+                BarFillSlider.value = i;
+            }).setOnComplete(() =>
+            {
+                LeanTween.alphaCanvas(HandleSlideArea, 0f, 0.5f); //turning off Glow
+            });
+        }
+    }
 }
+
