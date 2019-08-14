@@ -95,7 +95,11 @@ namespace Raincrow.Maps
             m_TextMeshes = GetComponentsInChildren<TextMeshPro>(true);
             m_Particles = GetComponentsInChildren<ParticleSystem>(true);
 
-            m_CharacterRenderers = new List<SpriteRenderer> { m_AvatarRenderer };
+            if (m_AvatarRenderer != null)
+                m_CharacterRenderers = new List<SpriteRenderer> { m_AvatarRenderer };
+            else
+                m_CharacterRenderers = new List<SpriteRenderer>();
+
             if (m_Shadows == null)
                 m_Shadows = new SpriteRenderer[0];
 
@@ -366,11 +370,6 @@ namespace Raincrow.Maps
                 .uniqueId;
         }
 
-        private void OnDisable()
-        {
-            //in case the marker was disabled while animating the movement
-            LeanTween.cancel(m_MoveTweenId, true);
-        }
 
 #if UNITY_EDITOR
         [Header("Base Debug")]

@@ -14,6 +14,7 @@ public class WorldMapMarkerManager : MonoBehaviour
         character3 = 3,
         character4 = 4,
         character5 = 5,
+
         spiritguardian = 6,
         spiritharvester = 7,
         spiritforbidden = 8,
@@ -21,9 +22,15 @@ public class WorldMapMarkerManager : MonoBehaviour
         spiritwarrior = 10,
         spirittrickster = 11,
         spiritfamiliar = 12,
+
         itemherb = 13,
         itemgem = 14,
-        itemtool = 15
+        itemtool = 15,
+
+        placeOfPower1 = 16,
+        placeOfPower2 = 17,
+        placeOfPower3 = 18,
+        placeOfPower4 = 19
     }
 
     [SerializeField] private WorldMapMarker m_MarkerPrefab;
@@ -38,6 +45,7 @@ public class WorldMapMarkerManager : MonoBehaviour
     [SerializeField] private Sprite m_WitchMaleCaucasian;
     [SerializeField] private Sprite m_WitchMaleAsian;
 
+    [Space(2)]
     [SerializeField] private Sprite m_SpiritGuardian;
     [SerializeField] private Sprite m_SpiritHarvester;
     [SerializeField] private Sprite m_SpiritForbidden;
@@ -46,9 +54,16 @@ public class WorldMapMarkerManager : MonoBehaviour
     [SerializeField] private Sprite m_SpiritTrickster;
     [SerializeField] private Sprite m_SpiritFamiliar;
 
+    [Space(2)]
     [SerializeField] private Sprite m_CollectableHerb;
     [SerializeField] private Sprite m_CollectableGem;
     [SerializeField] private Sprite m_CollectableTool;
+
+    [Space(2)]
+    [SerializeField] private Sprite m_PlaceOfPower1;
+    [SerializeField] private Sprite m_PlaceOfPower2;
+    [SerializeField] private Sprite m_PlaceOfPower3;
+    [SerializeField] private Sprite m_PlaceOfPower4;
 
     [Header("Colors")]
     [SerializeField] private Color m_WitchColor;
@@ -68,11 +83,14 @@ public class WorldMapMarkerManager : MonoBehaviour
     [Space(5)]
     [SerializeField] private float m_MinScale = 150;
     [SerializeField] private float m_MaxScale = 5;
+    [Space(5)]
+    [SerializeField] private int m_UpdateBatchSize = 200;
     
     private Sprite[] m_MarkerSpriteMap;
     private Color[] m_MarkerColorMap;
 
     private List<WorldMapMarker> m_MarkersList = new List<WorldMapMarker>();
+    private List<WorldMapMarker> m_DespawnList = new List<WorldMapMarker>();
     private SimplePool<WorldMapMarker> m_MarkerPool;
 
     private float m_MarkerScale;
@@ -84,8 +102,20 @@ public class WorldMapMarkerManager : MonoBehaviour
     private bool m_VisibleMarkers;
 
     private Coroutine m_SpawnCoroutine;
-    private Coroutine m_ScaleCoroutine;
     private Coroutine m_RequestCoroutine;
+    
+    private int m_UpdateFrom;
+    private int m_UpdateTo;
+
+    private int updateFrom
+    {
+        get => m_UpdateFrom;
+        set
+        {
+            m_UpdateFrom = value;
+            m_UpdateTo = Mathf.Min(m_UpdateFrom + m_UpdateBatchSize, m_MarkersList.Count);
+        }
+    }
 
     private int m_BatchIndex;
     private float m_Range;
@@ -113,6 +143,11 @@ public class WorldMapMarkerManager : MonoBehaviour
             m_CollectableHerb,
             m_CollectableGem,
             m_CollectableTool,
+
+            m_PlaceOfPower1,
+            m_PlaceOfPower1,
+            m_PlaceOfPower1,
+            m_PlaceOfPower1,
         };
 
         m_MarkerColorMap = new Color[]
@@ -135,6 +170,11 @@ public class WorldMapMarkerManager : MonoBehaviour
             m_CollectableColor,
             m_CollectableColor,
             m_CollectableColor,
+
+            m_PopColor,
+            m_PopColor,
+            m_PopColor,
+            m_PopColor,
         };
     }
 
@@ -173,16 +213,12 @@ public class WorldMapMarkerManager : MonoBehaviour
             m_RequestCoroutine = null;
         }
 
-        if (m_ScaleCoroutine != null)
-        {
-            StopCoroutine(m_ScaleCoroutine);
-            m_ScaleCoroutine = null;
-        }
-
         //despawn all markers
         foreach (WorldMapMarker _item in m_MarkersList)
             m_MarkerPool.Despawn(_item);
         m_MarkersList.Clear();
+
+        updateFrom = 0;
     }
 
     private void Update()
@@ -245,17 +281,11 @@ public class WorldMapMarkerManager : MonoBehaviour
                         m_SpawnCoroutine = null;
                     }
 
-                    //stop scaling the old markers
-                    if (m_ScaleCoroutine != null)
-                    {
-                        StopCoroutine(m_ScaleCoroutine);
-                        m_ScaleCoroutine = null;
-                    }
-
                     //despawn old
                     StartCoroutine(DespawnCoroutine(m_MarkersList.ToArray()));
                     m_MarkersList.Clear();
-                    
+                    updateFrom = 0;
+
                     //spawn new markers
                     m_SpawnCoroutine = StartCoroutine(SpawnCoroutine(markers));
                 }
@@ -272,17 +302,11 @@ public class WorldMapMarkerManager : MonoBehaviour
         m_DetailedMarkers = MapsAPI.Instance.normalizedZoom > m_MarkerDetailedThreshold;
         m_VisibleMarkers = MapsAPI.Instance.normalizedZoom > m_MarkerVisibleThreshoold;
 
-        if (Time.time - m_LastScaleTime < 0.2f)
+        if (Time.time - m_LastScaleTime < 0.05f)
             return;
 
         m_LastScaleTime = Time.time;
-
-        if (m_ScaleCoroutine != null)
-        {
-            StopCoroutine(m_ScaleCoroutine);
-            m_ScaleCoroutine = null;
-        }
-        m_ScaleCoroutine = StartCoroutine(UpdateScaleCoroutine());
+        updateFrom = 0;
     }
 
     private void ScaleMarker(WorldMapMarker marker)
@@ -324,7 +348,7 @@ public class WorldMapMarkerManager : MonoBehaviour
 
     private IEnumerator DespawnCoroutine(WorldMapMarker[] markers)
     {
-        int batchSize = 100;
+        int batchSize = 500;
         int from = 0;
         int to = Mathf.Min(from + batchSize, markers.Length);
 
@@ -339,21 +363,18 @@ public class WorldMapMarkerManager : MonoBehaviour
         }
     }
 
-    private IEnumerator UpdateScaleCoroutine()
+    private void LateUpdate()
     {
-        int batchSize = 250;
-        int from = 0;
-        int to = Mathf.Min(from + batchSize, m_MarkersList.Count);
-
-        while (from < m_MarkersList.Count)
+        //batch update of the markers
+        for (int i = m_UpdateFrom; i < m_UpdateTo; i++)
         {
-            for (int i = from; i < to; i++)
-                ScaleMarker(m_MarkersList[i]);
-
-            yield return 0;
+            ScaleMarker(m_MarkersList[i]);
         }
-
-        m_ScaleCoroutine = null;
+        if (m_UpdateFrom < m_MarkersList.Count)
+        {
+            m_UpdateFrom = m_UpdateFrom + m_UpdateBatchSize;
+            m_UpdateTo = Mathf.Min(m_UpdateFrom + m_UpdateBatchSize, m_MarkersList.Count);
+        }
     }
 
     [ContextMenu("Start Flying")]

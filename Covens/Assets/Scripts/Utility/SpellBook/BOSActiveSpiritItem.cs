@@ -51,16 +51,16 @@ public class BOSActiveSpiritItem : MonoBehaviour
         //spiritTier.text = $"({r})";
         spiritTitle.text = LocalizeLookUp.GetSpiritName(sp.id) + $" <b>({r})";
         DownloadedAssets.GetSprite(sp.id, spiritIcon);
-		StartCoroutine (PortalCountDown());
+		//StartCoroutine (PortalCountDown());
     }
-	IEnumerator PortalCountDown()
-	{
-		while (Utilities.TimespanFromJavaTime(spiritSummonOnTime).TotalSeconds > 0d)//timeLeft.text != "Time Left: <b>0 secs")
-		{
-			expireOn.text = LocalizeLookUp.GetText("spirit_deck_expire").Replace("{{time}}", Utilities.GetSummonTime(spiritSummonOnTime));//$"Time Left: <b>{Utilities.GetSummonTime(spiritSummonOnTime)}";
-			yield return new WaitForSeconds(1f);
-		}
+	//IEnumerator PortalCountDown()
+	//{
+	//	while (Utilities.TimespanFromJavaTime(spiritSummonOnTime).TotalSeconds > 0d)//timeLeft.text != "Time Left: <b>0 secs")
+	//	{
+	//		expireOn.text = LocalizeLookUp.GetText("spirit_deck_expire").Replace("{{time}}", Utilities.GetSummonTime(spiritSummonOnTime));//$"Time Left: <b>{Utilities.GetSummonTime(spiritSummonOnTime)}";
+	//		yield return new WaitForSeconds(1f);
+	//	}
 
-		Destroy(gameObject);
-	}
+	//	Destroy(gameObject);
+	//}
 }

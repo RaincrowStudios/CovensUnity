@@ -69,7 +69,6 @@ public class ApparelButtonData : MonoBehaviour
                 {
                     foreach (var equip in viewPlayer.equippedApparel)
                     {
-
                         if (equip.Value.position != "style" && equip.Value.assets[0] == item)
                         {
                             shadowAssetFill.SetActive(true);
@@ -151,7 +150,7 @@ public class ApparelButtonData : MonoBehaviour
     public void Unequip()
     {
         tapCount = 0;
-        viewPlayer.UnequipApparel(apparelData);
+        viewPlayer.UnequipApparel(apparelData.position);
         Selected.SetActive(false);
         whiteAssetFill.SetActive(false);
         greyAssetFill.SetActive(false);

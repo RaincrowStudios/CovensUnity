@@ -30,13 +30,15 @@ public class DictionaryManager
     public static readonly string[] Languages = new string[] { "English", "Portuguese", "Spanish", "Japanese", "German", "Russian" };
     public static readonly string[] Cultures = new string[] { "en", "pt", "es", "jp", "de", "ru" };
 
-    private const string baseURL = "https://storage.googleapis.com/raincrow-covens/dictionary_v2/";
+    private const string baseURL = "https://storage.googleapis.com/raincrow-covens/dictionary_v3/";
 
     private const string LOCALISATION_DICT_KEY = "LocalisationDict";
     private const string GAME_DICT_KEY = "GameDict";
+    private const string STORE_DICT_KEY = "StoreDict";
 
-    public const string GAME_DICT_FILENAME = "gamedata.text";
-    
+    public const string GAME_DICT_FILENAME = "game.text";
+    public const string STORE_DICT_FILENAME = "store.text";
+
     public static int languageIndex
     {
         get { return PlayerPrefs.GetInt(LanguageIndexPlayerPrefsKey, 0); }
@@ -51,6 +53,8 @@ public class DictionaryManager
         }
         return Cultures[languageIndex];
     }
+
+
 
     public static void GetLocalisationDictionary(string version, System.Action onDicionaryReady, System.Action<int, string> onDownloadError, System.Action onParseError)
     {
@@ -163,7 +167,7 @@ public class DictionaryManager
                 Debug.Log($"gamedict outdated.");
         }
 
-        var url = new System.Uri(baseURL + version + "/gamedata.json");
+        var url = new System.Uri(baseURL + version + "/game.json");
         DownloadFile(url, (resultCode, response) =>
         {
             if (resultCode == 200)
@@ -171,6 +175,73 @@ public class DictionaryManager
                 if (DownloadManager.DeserializeGameDictionary(response))
                 {
                     PlayerPrefs.SetString(GAME_DICT_KEY, version);
+                    System.IO.File.WriteAllText(localPath, response);
+                    onDicionaryReady?.Invoke();
+                }
+                else
+                {
+                    onParseError?.Invoke();
+                }
+            }
+            else
+            {
+                onDownloadError?.Invoke(resultCode, response);
+            }
+        },
+        5, 0);
+    }
+
+    public static void GetStoreDictionary(string version, System.Action onDicionaryReady, System.Action<int, string> onDownloadError, System.Action onParseError)
+    {
+#if UNITY_EDITOR
+        if (!Application.isPlaying)
+            return;
+
+        //TextAsset gamedata = (TextAsset)UnityEditor.EditorGUIUtility.Load("gamedata.json");
+        //if (DownloadManager.DeserializeGameDictionary(version, gamedata.text))
+        //    onDicionaryReady?.Invoke();
+        //else
+        //    onParseError?.Invoke();
+        //return;
+#endif
+
+        CrashReportHandler.SetUserMetadata("store", version);
+
+        string json;
+        string localPath = System.IO.Path.Combine(Application.persistentDataPath, STORE_DICT_FILENAME);
+        LocalFileState result = TryGetLocalFile(STORE_DICT_KEY, version, localPath, out json);
+
+        if (result == LocalFileState.FILE_AVAILABLE && json != null)
+        {
+            Debug.Log($"store \"{version}\" already downloaded.");
+            if (DownloadManager.DeserializeStoreDictionary(json))
+            {
+                onDicionaryReady?.Invoke();
+                return;
+            }
+            else
+            {
+                Debug.LogError($"Failed to parse the store dictionary. Redownloading it");
+            }
+        }
+        else
+        {
+            if (result == LocalFileState.FILE_NOT_FOUND)
+                Debug.Log($"store dict \"{version}\" is marked as download but no file was found.");
+            else if (result == LocalFileState.KEY_NOT_FOUND)
+                Debug.Log("No store found");
+            else if (result == LocalFileState.VERSION_OUTDATED)
+                Debug.Log($"store outdated.");
+        }
+
+        var url = new System.Uri(baseURL + version + "/store.json");
+        DownloadFile(url, (resultCode, response) =>
+        {
+            if (resultCode == 200)
+            {
+                if (DownloadManager.DeserializeStoreDictionary(response))
+                {
+                    PlayerPrefs.SetString(STORE_DICT_KEY, version);
                     System.IO.File.WriteAllText(localPath, response);
                     onDicionaryReady?.Invoke();
                 }

@@ -6920,7 +6920,7 @@ ParticleSystem:
 --- !u!199 &199319716252145802
 ParticleSystemRenderer:
   serializedVersion: 6
-  m_ObjectHideFlags: 2
+  m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
@@ -7574,10 +7574,8 @@ GameObject:
   - component: {fileID: 114980571988460038}
   - component: {fileID: 114722325630148162}
   - component: {fileID: 225726102352705916}
-  - component: {fileID: 114812552616884096}
   - component: {fileID: 114190060156661342}
   - component: {fileID: 114921118978569972}
-  - component: {fileID: 114396318251932132}
   m_Layer: 5
   m_Name: STORE========_____
   m_TagString: Untagged
@@ -7677,18 +7675,6 @@ CanvasGroup:
   m_Interactable: 1
   m_BlocksRaycasts: 1
   m_IgnoreParentGroups: 0
---- !u!114 &114812552616884096
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1320051771821954}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 7515452301d11f449bd0306d0ac83a22, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!114 &114190060156661342
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -7767,7 +7753,6 @@ MonoBehaviour:
   easeTypeWheel: 4
   easeTimeWheel: 0.5
   closeButton: {fileID: 114343313988981652}
-  storeButton: {fileID: 0}
   ingredientButton: {fileID: 114987866995455944}
   charmsButton: {fileID: 114671597483029434}
   silverButton: {fileID: 114087420194396866}
@@ -7794,18 +7779,6 @@ MonoBehaviour:
   detectSwipeOnlyAfterRelease: 1
   SWIPE_THRESHOLD: 30
   canSwipe: 1
---- !u!114 &114396318251932132
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1320051771821954}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 396df1818056dfe46861c7c7726e4177, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!1 &1325960883796598
 GameObject:
   m_ObjectHideFlags: 0
@@ -10447,7 +10420,7 @@ RectTransform:
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 0, y: 1}
   m_AnchoredPosition: {x: 0, y: -57.100006}
-  m_SizeDelta: {x: 0, y: 982}
+  m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: 0.0000000037252903, y: 0.99999994}
 --- !u!114 &114724479154058730
 MonoBehaviour:
@@ -12764,7 +12737,7 @@ MonoBehaviour:
       m_Calls: []
     m_TypeName: UnityEngine.UI.MaskableGraphic+CullStateChangedEvent, UnityEngine.UI,
       Version=1.0.0.0, Culture=neutral, PublicKeyToken=null
-  m_Sprite: {fileID: 21300000, guid: 2a39ecc82ce9d7d40913a744daebdd15, type: 3}
+  m_Sprite: {fileID: 0}
   m_Type: 0
   m_PreserveAspect: 0
   m_FillCenter: 1
@@ -17724,7 +17697,7 @@ ParticleSystem:
 --- !u!199 &199654633422683820
 ParticleSystemRenderer:
   serializedVersion: 6
-  m_ObjectHideFlags: 2
+  m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
@@ -20056,7 +20029,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!224 &224783909381180714
 RectTransform:
   m_ObjectHideFlags: 0
@@ -21788,7 +21761,7 @@ MonoBehaviour:
       m_Calls: []
     m_TypeName: UnityEngine.UI.MaskableGraphic+CullStateChangedEvent, UnityEngine.UI,
       Version=1.0.0.0, Culture=neutral, PublicKeyToken=null
-  m_Sprite: {fileID: 21300000, guid: 314b7e648ae8203479dde4af211cad9f, type: 3}
+  m_Sprite: {fileID: 21300000, guid: 1c4e4842edff5924a95d2105bc1d938c, type: 3}
   m_Type: 0
   m_PreserveAspect: 1
   m_FillCenter: 1

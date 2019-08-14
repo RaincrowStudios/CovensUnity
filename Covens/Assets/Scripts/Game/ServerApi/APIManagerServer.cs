@@ -2,6 +2,7 @@
 using System;
 using UnityEngine;
 using UnityEngine.Networking;
+using System.Collections.Generic;
 
 /// <summary>
 /// request only responsible class
@@ -31,6 +32,7 @@ public class APIManagerServer
         while (retry && retryCount < MaxRetries)
         {
             www = BakeRequest(url, data, sMethod, bRequiresToken, bRequiresWssToken);
+
             APIManager.CallRequestEvent(www, data);
             yield return www.SendWebRequest();
             APIManager.CallOnResponseEvent(www, data, www.isNetworkError ? www.error : www.downloadHandler.text);
@@ -74,6 +76,19 @@ public class APIManagerServer
                 break;
             }
         }
+
+        Dictionary<string, string> responseHeaders = www.GetResponseHeaders();
+
+        //if (responseHeaders.ContainsKey("Set-Cookie"))
+        //{
+        //    string cookie = responseHeaders["Set-Cookie"].Split(';')[0];
+        //    if (Application.isEditor)
+        //        Debug.Log("<color=magenta>settings cookie\n" + cookie + "</color>");
+        //    else
+        //        Debug.Log("<color=magenta>settings cookie</color>");
+
+        //    PlayerPrefs.SetString("cookie", cookie);
+        //}
 
         LoadingOverlay.Hide();
         CallBack(retry ? www.error : www.downloadHandler.text, Convert.ToInt32(www.responseCode));
@@ -152,6 +167,7 @@ public class APIManagerServer
         }
 
         www.timeout = 20;
+
         www.SetRequestHeader("Content-Type", "application/json");
         if (bRequiresLoginToken)
         {
@@ -161,6 +177,11 @@ public class APIManagerServer
         {
             www.SetRequestHeader("Authorization", LoginAPIManager.wssToken);
         }
+        //if (PlayerPrefs.HasKey("cookie"))
+        //{
+        //    Debug.LogError(endpoint + "\n>>>>>>>>>" + PlayerPrefs.GetString("cookie"));
+        //    www.SetRequestHeader("Cookie", PlayerPrefs.GetString("cookie"));
+        //}
 
         return www;
     }

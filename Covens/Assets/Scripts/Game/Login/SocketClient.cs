@@ -91,7 +91,7 @@ public class SocketClient : MonoBehaviour
         _socketManager.Socket.On("game.event", OnGameEvent);
 
 #if LOCAL_API
-        UnityMainThreadDispatcher.Instance().Enqueue(LoginAPIManager.WebSocketConnected);
+        
 #else
         _socketManager.Open();
 #endif
@@ -128,6 +128,9 @@ public class SocketClient : MonoBehaviour
 
     private void OnError(Socket socket, Packet packet, object[] args)
     {
+#if UNITY_EDITOR && LOCAL_API
+        return;
+#endif
         if (args != null && args.Length > 0)
         {
             string errorMessage = args[0].ToString();

@@ -169,50 +169,50 @@ public class SpiritDeckUIManager : UIAnimationManager
             buttons[0].color = new Color(1, 1, 1, .35f);
         }
         TurnOffDesc();
-        Get();
+        //Get();
     }
 
-    void Get()
-    {
-        waitingResponse = true;
+    //void Get()
+    //{
+    //    waitingResponse = true;
 
-        if (currentType == type.known)
-            ReceiveData("", 1);
-        else if (currentType == type.active)
-            APIManager.Instance.Get("/character/spirits/active", ReceiveData);
-        else
-            APIManager.Instance.Get("/character/portals/active", ReceiveData);
-    }
+    //    if (currentType == type.known)
+    //        ReceiveData("", 1);
+    //    else if (currentType == type.active)
+    //        APIManager.Instance.Get("/character/spirits/active", ReceiveData);
+    //    else
+    //        APIManager.Instance.Get("/character/portals/active", ReceiveData);
+    //}
 
-    public void ReceiveData(string response, int code)
-    {
-        if (code == 200)
-        {
-            Debug.Log(response);
-            currentList = JsonConvert.DeserializeObject<List<SpiritInstance>>(response);
-            foreach (var item in currentList)
-            {
-                item.deckCardType = currentType;
-            }
+    //public void ReceiveData(string response, int code)
+    //{
+    //    if (code == 200)
+    //    {
+    //        Debug.Log(response);
+    //        currentList = JsonConvert.DeserializeObject<List<SpiritInstance>>(response);
+    //        foreach (var item in currentList)
+    //        {
+    //            item.deckCardType = currentType;
+    //        }
 
-            SetupUI();
-        }
-        else
-        {
-            currentList = new List<SpiritInstance>();
-            foreach (var item in PlayerDataManager.playerData.knownSpirits)
-            {
-                var d = new SpiritInstance();
-                d.banishedOn = item.banishedOn;
-                d.location = item.dominion;
-                d.id = item.spirit;
-                currentList.Add(d);
-            }
-            SetupUI();
-        }
+    //        SetupUI();
+    //    }
+    //    else
+    //    {
+    //        currentList = new List<SpiritInstance>();
+    //        foreach (var item in PlayerDataManager.playerData.knownSpirits)
+    //        {
+    //            var d = new SpiritInstance();
+    //            d.banishedOn = item.banishedOn;
+    //            d.location = item.dominion;
+    //            d.id = item.spirit;
+    //            currentList.Add(d);
+    //        }
+    //        SetupUI();
+    //    }
 
-        waitingResponse = false;
-    }
+    //    waitingResponse = false;
+    //}
 
     public void Enter(Transform t)
     {

@@ -24,6 +24,9 @@ public class ApparelManager : MonoBehaviour
         PlayerDataManager.playerData.equipped = ActiveViewPlayer.equippedApparel.Values.ToList();
         PlayerManager.Instance.OnUpdateEquips();
         LoadPlayerPortrait.ReloadPortrait();
+
+
+
         APIManager.Instance.Put("character/equip", JsonConvert.SerializeObject(PlayerDataManager.playerData.equipped), equipResult);
     }
 
@@ -61,9 +64,15 @@ public class CosmeticData
         public List<string> white;
     }
 
+    [System.ComponentModel.DefaultValue("")]
     public string id;
+    [System.ComponentModel.DefaultValue("")]
     public string position;
+    [System.ComponentModel.DefaultValue("")]
     public string iconId;
+    [System.ComponentModel.DefaultValue("")]
+    public string type;
+
     [JsonProperty("base")]
     public string[] baseAssets;
     [JsonProperty("shadow")]
@@ -82,7 +91,7 @@ public class CosmeticData
     public string tooltip;
 
     [JsonIgnore]
-    public bool owned;
+    public bool owned => PlayerDataManager.playerData.inventory.cosmetics.Exists(item => item.id == id);
 
     [JsonIgnore]
     public double unlockOn;

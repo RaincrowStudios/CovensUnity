@@ -18,26 +18,27 @@ public class BOSSpiritDeck : BOSBase
         CG.alpha = 0;
 		currentDominion.text = LocalizeLookUp.GetText ("ftf_spawn_region").Replace ("{{region}}", LocalizeLookUp.GetZoneName(PlayerDataManager.zone));//}.";
 
-        APIManager.Instance.Get("/character/spirits/active", (string rs, int r) =>
-        {
-            Debug.Log("GETTING SPIRIT DATA");
-            Debug.Log(rs);
-            if (r == 200)
-            {
-                BOSSpirit.activeSpiritsData = JsonConvert.DeserializeObject<List<SpiritInstance>>(rs);
-                APIManager.Instance.Get("/character/portals/active", (string res, int resp) =>
-                {
-                    if (r == 200)
-                    {
-                        Debug.Log(res);
-                        BOSSpirit.activePortalsData = JsonConvert.DeserializeObject<List<SpiritInstance>>(res);
-                        BOSSpirit.instance.CheckDisableButton();
-                        StartCoroutine(Init());
-                    }
-                });
-            }
-        });
+        //BOSSpirit.instance.CheckDisableButton();
+        //StartCoroutine(Init());
 
+        //APIManager.Instance.Get("/character/spirits/active", (string rs, int r) =>
+        //{
+        //    if (r == 200)
+        //    {
+        //        BOSSpirit.activeSpiritsData = JsonConvert.DeserializeObject<List<SpiritInstance>>(rs);
+        //        APIManager.Instance.Get("/character/portals/active", (string res, int resp) =>
+        //        {
+        //            if (r == 200)
+        //            {
+        //                Debug.Log(res);
+        //                BOSSpirit.activePortalsData = JsonConvert.DeserializeObject<List<SpiritInstance>>(res);
+        //                BOSSpirit.instance.CheckDisableButton();
+        //                StartCoroutine(Init());
+        //            }
+        //        });
+        //    }
+        //});
+        StartCoroutine(Init());
     }
 
     IEnumerator Init()

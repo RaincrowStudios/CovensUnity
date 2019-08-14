@@ -83,6 +83,7 @@ public class GetGPS : MonoBehaviour
 
     IEnumerator Start()
     {
+#if !LOCAL_API
         while (Application.internetReachability == NetworkReachability.NotReachable)
         {
             locationError.SetActive(true);
@@ -91,6 +92,7 @@ public class GetGPS : MonoBehaviour
             errorText.text = "Please check your internet connection and try again.";
             yield return new WaitForSeconds(0.1f);
         }
+#endif
 
         if (Application.isEditor == false)
         {

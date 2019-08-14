@@ -1,53 +1,56 @@
 ﻿using UnityEngine;
 using UnityEngine.Purchasing;
 using Newtonsoft.Json;
+using Raincrow.Store;
+using System.Collections.Generic;
+
 public class IAPSilver : MonoBehaviour, IStoreListener
 {
 
     public static IAPSilver instance { get; set; }
     private static IStoreController m_StoreController;
     private static IExtensionProvider m_StoreExtensionProvider;
+        
+    private class OngoingPurchase
+    {
+        public string id;
+        public SilverBundleData data;
+        public System.Action<string> callback;
+    }
 
+    private static Dictionary<string, string> m_ProductMap;
+    private static OngoingPurchase m_OngoingPurchase;
 
-    public static string silver1 = "com.raincrow.covens.silver1";
-    public static string silver2 = "com.raincrow.covens.silver2";
-    public static string silver3 = "com.raincrow.covens.silver3";
-    public static string silver4 = "com.raincrow.covens.silver4";
-    public static string silver5 = "com.raincrow.covens.silver5";
-    public static string silver6 = "com.raincrow.covens.silver6";
-
-    public static StoreApiItem selectedSilverPackage;
-    //	private static string kProductNameAppleSubscription =  "com.unity3d.subscription.new";
-
-    //	private static string kProductNameGooglePlaySubscription =  "com.unity3d.subscription.original"; 
     void Awake()
     {
         instance = this;
     }
-    void Start()
+
+    private void Start()
     {
-        if (m_StoreController == null)
-        {
-            InitializePurchasing();
-        }
+        InitializePurchasing();
     }
 
     public void InitializePurchasing()
     {
         if (IsInitialized())
         {
+            Debug.LogError("IAP already initialized");
             return;
         }
-
+        
         var builder = ConfigurationBuilder.Instance(StandardPurchasingModule.Instance());
+        m_ProductMap = new Dictionary<string, string>();
 
-        builder.AddProduct(silver1, ProductType.Consumable);
-        builder.AddProduct(silver2, ProductType.Consumable);
-        builder.AddProduct(silver3, ProductType.Consumable);
-        builder.AddProduct(silver4, ProductType.Consumable);
-        builder.AddProduct(silver5, ProductType.Consumable);
-        builder.AddProduct(silver6, ProductType.Consumable);
+        string log = "Initializing IAP\nProducts:";
+        foreach (var prod in StoreManagerAPI.SilverBundleDict)
+        {
+            builder.AddProduct(prod.Value.product, ProductType.Consumable);
+            m_ProductMap.Add(prod.Value.product, prod.Key);
 
+            log += "\n\t" + prod.Value.product;
+        }
+        Debug.Log(log);
 
         UnityPurchasing.Initialize(this, builder);
     }
@@ -58,16 +61,29 @@ public class IAPSilver : MonoBehaviour, IStoreListener
         return m_StoreController != null && m_StoreExtensionProvider != null;
     }
 
-
-    public void BuyProductID(StoreApiItem storeProduct)
+    public void BuyProductID(StoreApiItem storeProduct, System.Action<string> callback)
     {
-        Raincrow.Analytics.Events.PurchaseAnalytics.StartIAP(storeProduct.id);
-        selectedSilverPackage = storeProduct;
-        var productId = "com.raincrow.covens." + storeProduct.id;
-        Debug.Log("Trying to buy + " + productId);
+        if (m_OngoingPurchase != null)
+        {
+            callback?.Invoke("another purchase is in progress [" + m_OngoingPurchase.id + "]");
+            return;
+        }
+
+        Debug.Log("Initializing purchase: " + storeProduct.productId);
+
         if (IsInitialized())
         {
-            Product product = m_StoreController.products.WithID(productId);
+            Raincrow.Analytics.Events.PurchaseAnalytics.StartIAP(storeProduct.productId);
+
+
+            Product product = m_StoreController.products.WithID(storeProduct.productId);
+
+            m_OngoingPurchase = new OngoingPurchase
+            {
+                id = storeProduct.id,
+                data = StoreManagerAPI.GetSilverBundle(storeProduct.id),
+                callback = callback
+            };
 
             if (product != null && product.availableToPurchase)
             {
@@ -76,20 +92,44 @@ public class IAPSilver : MonoBehaviour, IStoreListener
             }
             else
             {
-                Debug.Log("BuyProductID: FAIL. Not purchasing product, either is not found or is not available for purchase");
+                string error = "Purchase failed. Not purchasing product, either is not found or is not available for purchase";
+                Debug.LogError(error);
+                callback?.Invoke(error);
             }
         }
         else
         {
-            Debug.Log("BuyProductID FAIL. Not initialized.");
+            string error = "Purchase failed. Store not ready.";
+            Debug.LogError(error);
+            callback?.Invoke(error);
         }
+    }
+
+    private void FinishPurchase(string id, string error)
+    {
+        if (m_OngoingPurchase == null)
+        {
+            Debug.LogError("no pruchase ongoing");
+            return;
+        }
+
+        if (string.IsNullOrEmpty(error) == false)
+            Debug.LogError(error);
+
+        if (m_OngoingPurchase != null && m_OngoingPurchase.id == id)
+        {
+            Raincrow.Analytics.Events.PurchaseAnalytics.CompleteIAP(m_OngoingPurchase.id);
+            AppsFlyerAPI.TrackStorePurchaseEvent(m_OngoingPurchase.id);
+            m_OngoingPurchase?.callback(error);
+            m_OngoingPurchase = null;
+        }        
     }
 
     public void RestorePurchases()
     {
         if (!IsInitialized())
         {
-            Debug.Log("RestorePurchases FAIL. Not initialized.");
+            Debug.LogError("RestorePurchases FAIL. Not initialized.");
             return;
         }
         if (Application.platform == RuntimePlatform.IPhonePlayer ||
@@ -110,39 +150,15 @@ public class IAPSilver : MonoBehaviour, IStoreListener
 
     public void OnInitialized(IStoreController controller, IExtensionProvider extensions)
     {
-        Debug.Log("OnInitialized: PASS");
         m_StoreController = controller;
         m_StoreExtensionProvider = extensions;
+        Debug.Log("IAP initialized");
     }
 
 
     public void OnInitializeFailed(InitializationFailureReason error)
     {
-        Debug.Log("OnInitializeFailed InitializationFailureReason:" + error);
-    }
-
-    void SendTransaction(string token)
-    {
-        if (LoginAPIManager.characterLoggedIn)
-        {
-            Debug.Log("buying silver");
-            var data = new { purchaseItem = selectedSilverPackage.id, receipt = token };
-            APIManager.Instance.Post("shop/purchase-silver", JsonConvert.SerializeObject(data), ResponseO);
-        }
-    }
-
-    public void ResponseO(string s, int r)
-    {
-        Debug.Log(s);
-        if (r == 200)
-        {
-            Raincrow.Analytics.Events.PurchaseAnalytics.CompleteIAP(selectedSilverPackage.id);
-            ShopManager.Instance.OnBuy();
-            //Will need to specify a currency soon.
-
-            AppsFlyerAPI.TrackStorePurchaseEvent(selectedSilverPackage.id);
-
-        }
+        Debug.LogError("OnInitializeFailed InitializationFailureReason:" + error);
     }
 
     public PurchaseProcessingResult ProcessPurchase(PurchaseEventArgs args)
@@ -152,53 +168,43 @@ public class IAPSilver : MonoBehaviour, IStoreListener
             return PurchaseProcessingResult.Pending;
         }
 
-        if (string.Equals(args.purchasedProduct.definition.id, silver1, System.StringComparison.Ordinal))
-        {
-            //			SilverDrachs.text = "+100 SILVER DRACHS";
-            Debug.Log(args.purchasedProduct.receipt);
-            SendTransaction(args.purchasedProduct.receipt);
-        }
-        else if (string.Equals(args.purchasedProduct.definition.id, silver2, System.StringComparison.Ordinal))
-        {
-            //			SilverDrachs.text = "+550 SILVER DRACHS";
-            Debug.Log(args.purchasedProduct.receipt);
-            SendTransaction(args.purchasedProduct.receipt);
-        }
-        else if (string.Equals(args.purchasedProduct.definition.id, silver3, System.StringComparison.Ordinal))
-        {
-            //			SilverDrachs.text = "+1200 SILVER DRACHS";
-            Debug.Log(args.purchasedProduct.receipt);
-            SendTransaction(args.purchasedProduct.receipt);
-        }
-        else if (string.Equals(args.purchasedProduct.definition.id, silver4, System.StringComparison.Ordinal))
-        {
-            //			SilverDrachs.text = "+2500 SILVER DRACHS";
-            Debug.Log(args.purchasedProduct.receipt);
-            SendTransaction(args.purchasedProduct.receipt);
-        }
-        else if (string.Equals(args.purchasedProduct.definition.id, silver5, System.StringComparison.Ordinal))
-        {
-            //			SilverDrachs.text = "+5200 SILVER DRACHS";
-            Debug.Log(args.purchasedProduct.receipt);
-            SendTransaction(args.purchasedProduct.receipt);
-        }
-        else if (string.Equals(args.purchasedProduct.definition.id, silver6, System.StringComparison.Ordinal))
-        {
-            //			SilverDrachs.text = "+14500 SILVER DRACHS";
-            Debug.Log(args.purchasedProduct.receipt);
-            SendTransaction(args.purchasedProduct.receipt);
-        }
-        else
-        {
-            Debug.Log(string.Format("ProcessPurchase: FAIL. Unrecognized product: '{0}'", args.purchasedProduct.definition.id));
-        }
+        string id = m_ProductMap[args.purchasedProduct.definition.id];
+        SilverBundleData data = StoreManagerAPI.GetSilverBundle(id);
 
-        return PurchaseProcessingResult.Complete;
+        StoreManagerAPI.Purchase(
+            id,
+            "silver",
+            null,
+            args.purchasedProduct.receipt,
+            (error) =>
+            {
+                if (string.IsNullOrEmpty(error))
+                {
+                    PlayerDataManager.playerData.silver += data.amount;
+                    if (PlayerManagerUI.Instance != null)
+                        PlayerManagerUI.Instance.UpdateDrachs();
+
+                    //remove from pending
+                    m_StoreController.ConfirmPendingPurchase(args.purchasedProduct);
+                }
+                else
+                {
+                    //remove from pending so its not processed again
+                    if (error == "6006" || error == "6005" || error == "6004")
+                        m_StoreController.ConfirmPendingPurchase(args.purchasedProduct);
+                }
+
+                FinishPurchase(id, error);
+            }
+        );
+        return PurchaseProcessingResult.Pending;
     }
 
 
     public void OnPurchaseFailed(Product product, PurchaseFailureReason failureReason)
     {
+        string id = m_ProductMap[product.definition.id];
+        FinishPurchase(id, failureReason.ToString());
         Debug.Log(string.Format("OnPurchaseFailed: FAIL. Product: '{0}', PurchaseFailureReason: {1}", product.definition.storeSpecificId, failureReason));
     }
 

@@ -11,45 +11,53 @@ public class FirstTapVideoManager : MonoBehaviour
     public Image thumb;
     public CanvasGroup CG;
     public CanvasGroup videoContainer;
-    // Use this for initialization
     public MediaPlayerCtrl player;
     public Text videoTitle;
     public string ID = "";
+
+    public static bool IsFirstFlight
+    {
+        get => PlayerPrefs.GetInt("first.flight." + PlayerDataManager.playerData.instance, 0) == 1;
+        set => PlayerPrefs.SetInt("first.flight." + PlayerDataManager.playerData.instance, value ? 1 : 0);
+    }
+
+    public static bool IsFirstSummon
+    {
+        get => PlayerDataManager.playerData != null && PlayerDataManager.playerData.firsts != null && PlayerDataManager.playerData.firsts.Contains("summon") == false;
+        set
+        {
+            if (PlayerDataManager.playerData != null && PlayerDataManager.playerData.firsts != null)
+                PlayerDataManager.playerData.firsts.Add("summon");
+        }
+    }
+
+    public static bool IsFirstCast
+    {
+        get => PlayerDataManager.playerData != null && PlayerDataManager.playerData.firsts != null && PlayerDataManager.playerData.firsts.Contains("cast") == false;
+        set
+        {
+            if (PlayerDataManager.playerData != null && PlayerDataManager.playerData.firsts != null)
+                PlayerDataManager.playerData.firsts.Add("cast");
+        }
+    }
+
     void Awake()
     {
         Instance = this;
     }
-
-    public bool CheckKyteler()
-    {
-        if (PlayerDataManager.IsFTF)
-            return true;
-
-        if (!PlayerDataManager.playerData.firsts.kyteler)
-        {
-            SetupVideo("kyteler");
-            return false;
-        }
-        else
-        {
-            return true;
-        }
-    }
-
+    
     public bool CheckSummon()
     {
-        Debug.Log("Checking summon");
         if (PlayerDataManager.IsFTF)
             return true;
-        if (!PlayerDataManager.playerData.firsts.portalSummon)
+
+        if (IsFirstSummon)
         {
-            Debug.Log("Showing the video");
             SetupVideo("summoning");
             return false;
         }
         else
         {
-            Debug.Log("summon true");
             return true;
         }
     }
@@ -58,7 +66,8 @@ public class FirstTapVideoManager : MonoBehaviour
     {
         if (PlayerDataManager.IsFTF)
             return true;
-        if (!PlayerDataManager.playerData.firsts.cast)
+
+        if (IsFirstCast)
         {
             SetupVideo("spellcasting");
             return false;
@@ -71,7 +80,7 @@ public class FirstTapVideoManager : MonoBehaviour
 
     public bool CheckFlight()
     {
-        if (!PlayerDataManager.playerData.firsts.flight)
+        if (IsFirstFlight)
         {
             SetupVideo("fly");
             return false;
@@ -105,18 +114,17 @@ public class FirstTapVideoManager : MonoBehaviour
 
         if (ID == "fly")
         {
-            PlayerDataManager.playerData.firsts.flight = true;
-            //PlayerManager.Instance.Fly();
+            IsFirstFlight = false;
+            MapFlightTransition.Instance.FlyOut();
         }
         else if (ID == "summoning")
         {
-            PlayerDataManager.playerData.firsts.portalSummon = true;
+            IsFirstSummon = false;
             SummoningController.Instance.Open();
         }
         else if (ID == "spellcasting")
         {
-            PlayerDataManager.playerData.firsts.cast = true;
-            //ShowSelectionCard.Instance.Attack();
+            IsFirstCast = false;
         }
 
     }
@@ -132,22 +140,8 @@ public class FirstTapVideoManager : MonoBehaviour
     {
         player.UnLoad();
         StartCoroutine(FadeOutFocus(videoContainer));
-        StartCoroutine(FadeOutFocus(CG));
-        if (ID == "fly")
-        {
-            PlayerDataManager.playerData.firsts.flight = true;
-            //PlayerManager.Instance.Fly();
-        }
-        else if (ID == "summoning")
-        {
-            PlayerDataManager.playerData.firsts.portalSummon = true;
-            SummoningController.Instance.Open();
-        }
-        else if (ID == "spellcasting")
-        {
-            PlayerDataManager.playerData.firsts.cast = true;
-            //ShowSelectionCard.Instance.Attack();
-        }
+
+        OnSkip();
     }
 
     IEnumerator FadeOutFocus(CanvasGroup cg)

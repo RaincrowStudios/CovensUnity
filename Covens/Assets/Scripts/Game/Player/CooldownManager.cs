@@ -7,39 +7,69 @@ public static class CooldownManager
     public struct Cooldown
     {
         public string id;
-        public double timestamp;
-        public float duration;
+        public float total;
 
-        public Cooldown(string id, double timestamp)
+        public System.DateTime startDate;
+        public System.DateTime endDate;
+
+        public float Remaining => (float)(endDate - System.DateTime.UtcNow).TotalSeconds;
+
+        public Cooldown(string id, double end, float total)
         {
             this.id = id;
-            this.timestamp = timestamp;
-            this.duration = (float)Utilities.TimespanFromJavaTime(timestamp).TotalSeconds;
-            Debug.Log("new cooldown: " + id + " - " + duration + "s");
-        } 
+            this.total = total;
+            this.endDate = Utilities.FromJavaTime(end);
+            this.startDate = endDate.AddSeconds(-total);
+        }
+        public Cooldown(string id, double start, double end)
+        {
+            this.id = id;
+            this.startDate = Utilities.FromJavaTime(start);
+            this.endDate = Utilities.FromJavaTime(end);
+            this.total = (float)(endDate - startDate).TotalSeconds;
+        }
     }
 
-    private static Dictionary<string, Cooldown?> m_CooldownDictionary = new Dictionary<string, Cooldown?>();
-    public static event System.Action<string> OnCooldownEnd;
+    private static Dictionary<string, Cooldown> m_CooldownDictionary = new Dictionary<string, Cooldown>();
 
-    public static void OnCooldownStart(WSData data)
+    public static void AddCooldown(string id, double endDate, float total)
     {
-        m_CooldownDictionary[data.spell] = new Cooldown(data.spell, data.cooldownTime);
+        id = id.ToLower();
+
+        Cooldown cd = new Cooldown(id, endDate, total);
+        m_CooldownDictionary[id] = cd;
+        Debug.Log("<color=magenta>add cooldown\n" + cd.id + "(" + cd.Remaining + "/" + cd.total + "</color>");
     }
 
-    public static void OnCooldownFinish(WSData data)
+    public static void AddCooldown(string id, double start, double end)
     {
-        if (m_CooldownDictionary.ContainsKey(data.spell))
-            m_CooldownDictionary.Remove(data.spell);
+        id = id.ToLower();
 
-        OnCooldownEnd?.Invoke(data.spell);
+        Cooldown cd = new Cooldown(id, start, end);
+        m_CooldownDictionary[id] = cd;
+        Debug.Log("<color=magenta>add cooldown\n" + cd.id + "(" + cd.Remaining + "/" + cd.total + "</color>");
     }
-
+    
     public static Cooldown? GetCooldown(string id)
     {
+        id = id.ToLower();
+
+
         if (m_CooldownDictionary.ContainsKey(id))
-            return m_CooldownDictionary[id];
+        {
+            Cooldown cd = m_CooldownDictionary[id];
+
+            if (cd.Remaining <= 0)
+            {
+                m_CooldownDictionary.Remove(id);
+                return null;
+            }
+
+            return cd;
+        }
         else
+        {
             return null;
+        }
     }
 }

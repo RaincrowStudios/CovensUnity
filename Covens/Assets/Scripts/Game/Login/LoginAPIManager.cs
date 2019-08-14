@@ -4,8 +4,16 @@ using UnityEngine;
 
 public static class LoginAPIManager
 {
+    public struct LoginResponse
+    {
+        public string game;
+        public string socket;
+        public bool? hasCharacter;
+        public string error;
+    }
+
     public static bool characterLoggedIn { get { return PlayerDataManager.playerData != null; } }
-    public static bool accountLoggedIn { get { return !(string.IsNullOrEmpty(loginToken) || string.IsNullOrEmpty(wssToken)) ; } }
+    public static bool accountLoggedIn { get { return !(string.IsNullOrEmpty(loginToken) || string.IsNullOrEmpty(wssToken)); } }
     
     public static string loginToken
     {
@@ -20,6 +28,7 @@ public static class LoginAPIManager
         {
 #if UNITY_EDITOR
             UnityEditor.EditorPrefs.SetString("authToken", value);
+            return;
 #endif
             PlayerPrefs.SetString("authToken", value);
         }
@@ -38,6 +47,7 @@ public static class LoginAPIManager
         {
 #if UNITY_EDITOR
             UnityEditor.EditorPrefs.SetString("wssToken", value);
+            return;
 #endif
             PlayerPrefs.SetString("wssToken", value);
         }
@@ -56,6 +66,7 @@ public static class LoginAPIManager
         {
 #if UNITY_EDITOR
             UnityEditor.EditorPrefs.SetString("Username", value);
+            return;
 #endif
             PlayerPrefs.SetString("Username", value);
         }
@@ -73,6 +84,7 @@ public static class LoginAPIManager
         {
 #if UNITY_EDITOR
             UnityEditor.EditorPrefs.SetString("Password", value);
+            return;
 #endif
             PlayerPrefs.SetString("Password", value);
         }
@@ -84,6 +96,8 @@ public static class LoginAPIManager
     {
         loginToken = "";
         wssToken = "";
+        UnityEngine.Networking.UnityWebRequest.ClearCookieCache();
+        PlayerPrefs.DeleteKey("cookie");
 
         //try autologin with stored user
         if (string.IsNullOrEmpty(StoredUserName) == false && string.IsNullOrEmpty(StoredUserPassword) == false)
@@ -93,9 +107,7 @@ public static class LoginAPIManager
             {
                 if (result == 200)
                 {
-                    Dictionary<string, object> responseData = JsonConvert.DeserializeObject<Dictionary<string, object>>(response);
-                    bool hasCharacter = (bool)responseData["hasCharacter"];
-                    callback?.Invoke(true && hasCharacter);
+                    callback?.Invoke(true);
                 }
                 else
                 {
@@ -109,13 +121,18 @@ public static class LoginAPIManager
         }
     }
 
-    public static void Login(System.Action<int, string> callback)
+    public static void Login(System.Action<int, LoginResponse> callback)
     {
         //check for saved tokens
         if (accountLoggedIn)
         {
             Debug.Log("Login skiped (Token already set)");
-            callback?.Invoke(200, "");
+            callback?.Invoke(200, new LoginResponse()
+            {
+                game = loginToken,
+                socket = wssToken,
+                error = null
+            });
             return;
         }
 
@@ -128,10 +145,10 @@ public static class LoginAPIManager
         }
 
         //send a login failed with error [4100] USER_USERNAME_PASSWORD_NULL_OR_EMPTY
-        callback?.Invoke(400, "4100");
+        callback?.Invoke(400, new LoginResponse() { error = "4001" });
     }
 
-    public static void Login(string username, string password, System.Action<int, string> callback)
+    public static void Login(string username, string password, System.Action<int, LoginResponse> callback)
     {
         var plat = "";
         if (Application.platform == RuntimePlatform.Android)
@@ -160,18 +177,24 @@ public static class LoginAPIManager
                 {
                     StoredUserName = username;
                     StoredUserPassword = password;
-                    Dictionary<string, object> responseData = JsonConvert.DeserializeObject<Dictionary<string, object>>(response);
-                    loginToken = (string)responseData["game"];
-                    wssToken = (string)responseData["socket"];
-                }
 
-                callback?.Invoke(result, response);
+                    LoginResponse loginData = JsonConvert.DeserializeObject<LoginResponse>(response);
+
+                    loginToken = loginData.game;
+                    wssToken = loginData.socket;
+
+                    callback(result, loginData);
+                }
+                else
+                {
+                    callback?.Invoke(result, new LoginResponse() { error = response });
+                }
             }, 
             false, 
             false);
     }
 
-    public static void CreateAccount(string username, string password, string email, System.Action<int, string> callback)
+    public static void CreateAccount(string username, string password, string email, System.Action<int, LoginResponse> callback)
     {
         Dictionary<string, object> data = new Dictionary<string, object>();
         data.Add("username", username);
@@ -194,14 +217,14 @@ public static class LoginAPIManager
                 }
                 else
                 {
-                    callback?.Invoke(result, response);
+                    callback?.Invoke(result, new LoginResponse() { error = response });
                 }
             },
             false,
             false);
     }
 
-    public static void CreateCharacter(string name, int bodyType, bool male, System.Action<int, string> callback)
+    public static void CreateCharacter(string name, int bodyType, bool male, System.Action<int, LoginResponse> callback)
     {
         Dictionary<string, object> data = new Dictionary<string, object>();
         data.Add("name", name);
@@ -235,7 +258,7 @@ public static class LoginAPIManager
                 }
                 else
                 {
-                    callback?.Invoke(result, response);
+                    callback?.Invoke(result, new LoginResponse() { error = response });
                 }
 
             });
@@ -277,18 +300,30 @@ public static class LoginAPIManager
 
         return player;
     }
-
-    private struct GameConfig
+    
+    public struct GameConfig
     {
+        public struct DominionRank
+        {
+            [JsonProperty("character")]
+            public string topPlayer;
+            [JsonProperty("coven")]
+            public string topCoven;
+        }
+
         public float displayRadius;
         public int tribunal;
         public double daysRemaining;
+
+        public string dominion;
+        [JsonProperty("topRanking")]
+        public DominionRank dominionRank;
 
         public Sun sun;
         public MoonData moon;
     }
 
-    public static void GetConfigurations(float longitude, float latitude, System.Action<int, string> callback)
+    public static void GetConfigurations(float longitude, float latitude, System.Action<GameConfig, string> callback)
     {
         APIManager.Instance.GetRaincrow($"configurations?latitude={latitude.ToString().Replace(',','.')}&longitude={longitude.ToString().Replace(',', '.')}", "", (response, result) =>
         {
@@ -301,9 +336,13 @@ public static class LoginAPIManager
                 PlayerDataManager.sunData = data.sun;
                 PlayerDataManager.tribunal = data.tribunal;
                 PlayerDataManager.tribunalDaysRemaining = data.daysRemaining;
-            }
 
-            callback?.Invoke(result, response);
+                callback?.Invoke(data, null);
+            }
+            else
+            {
+                callback?.Invoke(new GameConfig(), response);
+            }
         });
     }
 }

@@ -274,6 +274,10 @@ namespace Raincrow.Test
                 {
                     MarkerManagerAPI.GetMarkers(Random.Range(-170, 170), Random.Range(-75, 75), null, true, true, true);
                 }
+                if (GUILayout.Button("daily blessing"))
+                {
+                    BlessingManager.CheckDailyBlessing();
+                }
                 EditorGUI.EndDisabledGroup();
             }
 

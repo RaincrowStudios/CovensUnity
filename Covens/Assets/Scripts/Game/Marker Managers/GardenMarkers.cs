@@ -46,13 +46,12 @@ public class GardenMarkers : MonoBehaviour
         public float officeLatitude;
     }
 
-    public GameObject greyHandOfficePrefab;
     public GameObject greyHandMarker;
     public GreyHandOfficeData[] greyHandOffices = new GreyHandOfficeData[3];
     private Transform[] greyHandOfficesTrans = new Transform[3];
 
     private List<Transform> gardensTransform = new List<Transform>();
-    private GardenData[] gardens;
+    private List<GardenData> gardens = new List<GardenData>();
 
     IMaps map;
 
@@ -70,6 +69,10 @@ public class GardenMarkers : MonoBehaviour
     {
         map.OnCameraUpdate -= OnMapUpdate;
         checkLoreOnLand();
+
+        SetLoreScale();
+        updateGardenScale();
+        SetGreyHandMarkerScale();
     }
 
     public void SetupGardens()
@@ -79,27 +82,36 @@ public class GardenMarkers : MonoBehaviour
         map.OnExitStreetLevel += OnStartFlying;
         map.OnEnterStreetLevel += OnStopFlying;
 
-        gardens = new List<GardenData>(DownloadedAssets.gardenDict.Values).ToArray();
-
-        foreach (GardenData item in gardens)
+        foreach (var item in DownloadedAssets.gardenDict)
         {
             var g = Utilities.InstantiateObject(gardenPrefab, map.trackedContainer, 0);
-            g.name = item.id;
-            g.transform.position = map.GetWorldPosition(item.longitude, item.latitude);
+            g.name = item.Key;
+            g.transform.position = map.GetWorldPosition(item.Value.longitude, item.Value.latitude);
             g.transform.localEulerAngles = new Vector3(90, 0, 180);
-            g.GetComponentInChildren<TextMeshPro>().text = LocalizeLookUp.GetGardenName(item.id);
+            g.GetComponentInChildren<TextMeshPro>().text = LocalizeLookUp.GetGardenName(item.Key);
+
             gardensTransform.Add(g.transform);
+            gardens.Add(item.Value);
         }
 
         for (int i = 0; i < greyHandOffices.Length; i++)
         {
+            string officeName = greyHandOffices[i].officeLocation;
             var greyHand = Utilities.InstantiateObject(greyHandMarker, map.trackedContainer);
-            greyHand.name = greyHandOffices[i].officeLocation;
+            greyHand.name = "[greyhand] " + greyHandOffices[i].officeLocation;
             greyHand.transform.position = map.GetWorldPosition(greyHandOffices[i].officeLongitude, greyHandOffices[i].officeLatitude);
             greyHand.transform.Rotate(90, 0, 0);
             greyHandOfficesTrans[i] = greyHand.transform;
-        }
 
+            MuskMarker marker = greyHandMarker.GetComponent<MuskMarker>();
+            if (marker == null)
+                marker = greyHand.AddComponent<MuskMarker>();
+            marker.OnClick = (m) => OnClickGreyOffice(officeName);
+            marker.Coords = new Vector2(greyHandOffices[i].officeLongitude, greyHandOffices[i].officeLatitude);
+        }
+        SetGreyHandMarkerScale();
+
+        Debug.Log("setup explore quests");
         QuestsController.GetQuests(error =>
         {
             if (string.IsNullOrEmpty(error))
@@ -109,17 +121,26 @@ public class GardenMarkers : MonoBehaviour
 
     private void SetupExplore(QuestsController.CovenDaily.Explore lore)
     {
-        var go = Utilities.InstantiateObject(lorePrefab, map.trackedContainer);
 
-        go.name = "[lore] EXPLORE QUEST";
-        go.transform.position = map.GetWorldPosition(lore.location.longitude, lore.location.latitude);
-        go.SetActive(false);
+        if (PlayerDataManager.playerData.quest.explore.completed)
+            return;
 
-        loreMarker = go.GetComponent<MuskMarker>();
         if (loreMarker == null)
-            loreMarker = go.AddComponent<MuskMarker>();
+        {
+            var go = Utilities.InstantiateObject(lorePrefab, map.trackedContainer);
+
+            go.name = "[lore] EXPLORE QUEST";
+            go.transform.position = map.GetWorldPosition(lore.location.longitude, lore.location.latitude);
+            go.SetActive(false);
+
+            loreMarker = go.GetComponent<MuskMarker>();
+            if (loreMarker == null)
+                loreMarker = go.AddComponent<MuskMarker>();
+        }
+
         loreMarker.OnClick = (m) => SendQuestLore();
         loreMarker.Coords = new Vector2(lore.location.longitude, lore.location.latitude);
+        SetLoreScale();
     }
 
 
@@ -164,7 +185,7 @@ public class GardenMarkers : MonoBehaviour
 
     void updateGardenScale()
     {
-        for (int i = 0; i < gardens.Length; i++)
+        for (int i = 0; i < gardens.Count; i++)
         {
             gardensTransform[i].position = map.GetWorldPosition(gardens[i].longitude, gardens[i].latitude);
             gardensTransform[i].localScale = Vector3.one * gardenScale * MapLineraScale.linearMultiplier;
@@ -202,29 +223,36 @@ public class GardenMarkers : MonoBehaviour
                 {
                     OnClick(hit.transform.name);
                 }
-                else if (hit.transform.tag == "greyHand")
-                {
-                    var gho = Instantiate(greyHandOfficePrefab);
-                    gho.GetComponent<GreyHandOffice>().TextSetup(hit.transform.name);
-                }
             }
         }
     }
 
-    private static void SendQuestLore()
+    private void SendQuestLore()
     {
-        APIManager.Instance.Get("dailies/explore", (response, result) =>
-        {
-            if (result == 200)
-            {
-                DailyProgressHandler.DailyProgressEventData data =
-                    JsonConvert.DeserializeObject<DailyProgressHandler.DailyProgressEventData>(response);
+        if (loreMarker == null)
+            return;
 
-                // DailyProgressHandler.HandleResponse(data);
+        loreMarker.Interactable = false;
+        loreMarker.SetAlpha(0.5f, 0.2f);
+
+        QuestsController.CompleteExplore(error =>
+        {
+            if (string.IsNullOrEmpty(error))
+            {
+
+                if (loreMarker == null)
+                    return;
+
+                loreMarker.SetAlpha(0, 1f, () =>
+                {
+                    loreMarker.GameObject.SetActive(false);
+                });
             }
             else
             {
-                UIGlobalPopup.ShowError(null, APIManager.ParseError(response));
+                loreMarker.Interactable = true;
+                loreMarker.SetAlpha(1, 1f);
+                UIGlobalPopup.ShowError(null, error);
             }
         });
     }
@@ -236,6 +264,11 @@ public class GardenMarkers : MonoBehaviour
         title.text = LocalizeLookUp.GetGardenName(id);
         desc.text = LocalizeLookUp.GetGardenDesc(id);
         StartCoroutine(GetImage(id));
+    }
+
+    private void OnClickGreyOffice(string name)
+    {
+        GreyHandOffice.Show(name);
     }
 
     IEnumerator GetImage(string id)

@@ -76,8 +76,8 @@ public abstract class CharacterMarkerData : MarkerData
 
     public List<StatusEffect> effects;
     
-    [JsonIgnore]
-    public virtual string covenId { get; }
+    public virtual string covenId { get; set; }
+    public virtual string coven { get; set; }
 
     [JsonIgnore]
     public virtual int baseEnergy { get; set; }
@@ -164,6 +164,14 @@ public class CovenInvite
     public int worldRank;
 }
 
+public struct PlayerCooldown
+{
+    [JsonProperty("spell")]
+    public string id;
+    [JsonProperty("expiresOn")]
+    public double cooldown;
+}
+
 public class PlayerData : WitchMarkerData
 {
     [JsonProperty("_id")] public string instance;
@@ -174,7 +182,7 @@ public class PlayerData : WitchMarkerData
     public bool whiteMastery;
     public bool shadowMastery;
     public bool greyMastery;
-        
+
     public int silver;
     public int gold;
     public int foxus;
@@ -185,7 +193,6 @@ public class PlayerData : WitchMarkerData
     public bool tutorial;
 
     public string favoriteSpell;
-    public string race;
     public bool dailyBlessing;
     public string benefactor;
     public string nemesis;
@@ -193,22 +200,27 @@ public class PlayerData : WitchMarkerData
     public CovenInfo covenInfo;
     public QuestStatus quest;
 
+    public PlayerCooldown[] cooldowns;
+
     [JsonProperty("tools")] private List<CollectableItem> m_Tools;
     [JsonProperty("herbs")] private List<CollectableItem> m_Herbs;
     [JsonProperty("gems")] private List<CollectableItem> m_Gems;
 
+    [JsonProperty("cosmetics")] private string[] m_Cosmetics;
+    [JsonProperty("consumables")] private ConsumableItem[] m_Consumables;
+
     [JsonIgnore] private Dictionary<string, int> m_HerbsDict = null;
     [JsonIgnore] private Dictionary<string, int> m_ToolsDict = null;
     [JsonIgnore] private Dictionary<string, int> m_GemsDict = null;
+    [JsonIgnore] private Inventory m_Inventory = null;
+    [JsonIgnore] private List<SpellData> m_Spells;
 
-    [JsonProperty("cosmetics")] private List<string> m_Cosmetics;
     public List<string> spirits;
     public List<KnownSpirits> knownSpirits;
     public List<CovenInvite> covenInvites;
     public List<CovenRequest> covenRequests;
     public HashSet<string> immunities;
-
-    private List<SpellData> m_Spells = null;
+    public HashSet<string> firsts;
 
     [JsonIgnore]
     public ulong xpToLevelUp
@@ -221,7 +233,7 @@ public class PlayerData : WitchMarkerData
             return 0;
         }
     }
-    
+
     public void Setup()
     {
         m_HerbsDict = new Dictionary<string, int>();
@@ -234,24 +246,33 @@ public class PlayerData : WitchMarkerData
             m_ToolsDict[item.id] = item.count;
         foreach (var item in m_Gems)
             m_GemsDict[item.id] = item.count;
-        
-        Debug.LogError("TODO: GET BLESSINGS");
-        blessing = new Blessing { };
 
-        Debug.LogError("TODO: WATCHED VIDEOS");
-        firsts = new Firsts { };
-
-        m_Spells = new List<SpellData>();
-        var allSpells = new List<SpellData>(DownloadedAssets.spellDictData.Values);
-        allSpells.Sort(new System.Comparison<SpellData> ((a,b) => a.Name.CompareTo(b.Name)));
-
-        foreach (var spellData in allSpells)
+        foreach (var cooldown in cooldowns)
         {
-            if (spellData.hidden)
+            float total = 0;
+            SpellData spell = DownloadedAssets.GetSpell(cooldown.id);
+            if (spell != null)
+                total = spell.cooldown;
+
+            CooldownManager.AddCooldown(cooldown.id, cooldown.cooldown, total);
+        }
+
+        UpdateSpells();
+    }
+
+    public void UpdateSpells()
+    {
+        m_Spells = new List<SpellData>();
+        foreach (var item in DownloadedAssets.spellDictData.Values)
+        {
+            if (item.hidden)
+                continue;
+            if (item.level > level)
                 continue;
 
-            m_Spells.Add(spellData);
+            m_Spells.Add(item);
         }
+        m_Spells.Sort(new System.Comparison<SpellData>((a, b) => a.Name.CompareTo(b.Name)));
     }
 
     public int GetIngredient(string id)
@@ -329,7 +350,7 @@ public class PlayerData : WitchMarkerData
             dict = new Dictionary<string, int>();
 
         List<CollectableItem> result = new List<CollectableItem>();
-        foreach(var pair in dict)
+        foreach (var pair in dict)
         {
             if (pair.Value <= 0)
                 continue;
@@ -354,29 +375,35 @@ public class PlayerData : WitchMarkerData
     {
         get
         {
-            Inventory inv = new Inventory()
+            if (m_Inventory == null)
             {
-                consumables = new List<Item>(),
-                cosmetics = new List<CosmeticData>()
-            };
+                m_Inventory = new Inventory()
+                {
+                    consumables = new List<Item>(),
+                    cosmetics = new List<CosmeticData>()
+                };
 
-            CosmeticData cosmeticData;
-            foreach (var id in m_Cosmetics)
-            {
-                cosmeticData = DownloadedAssets.GetCosmetic(id);
-                if (cosmeticData != null && cosmeticData.hidden == false)
-                    inv.cosmetics.Add(cosmeticData);
+                CosmeticData cosmetic;
+                foreach (var id in m_Cosmetics)
+                {
+                    cosmetic = DownloadedAssets.GetCosmetic(id);
+                    if (cosmetic != null && string.IsNullOrEmpty(cosmetic.id) == false)// && cosmetic.hidden == false)
+                        m_Inventory.cosmetics.Add(cosmetic);
+                }
+
+                foreach (var item in m_Consumables)
+                {
+                    m_Inventory.consumables.Add(new Item
+                    {
+                        id = item.id,
+                        count = item.amount
+                    });
+                }
             }
 
-            return inv;
+            return m_Inventory;
         }
     }
-    
-    [JsonIgnore]
-    public Blessing blessing;
-    
-    [JsonIgnore]
-    public Firsts firsts;
 
     [JsonIgnore]
     public double lastEnergyUpdate;
@@ -394,9 +421,9 @@ public class PlayerData : WitchMarkerData
         {
             int absDegree = Mathf.Abs(degree);
             if (degree < 0)
-                return PlayerDataManager.alignmentPerDegree[absDegree];
+                return PlayerDataManager.alignmentPerDegree[absDegree + 1] * -1;
             else
-                return PlayerDataManager.alignmentPerDegree[absDegree + 1];
+                return PlayerDataManager.alignmentPerDegree[absDegree];
         }
     }
 
@@ -407,20 +434,22 @@ public class PlayerData : WitchMarkerData
         {
             int absDegree = Mathf.Abs(degree);
             if (degree < 0)
-                return PlayerDataManager.alignmentPerDegree[absDegree + 1];
+                return PlayerDataManager.alignmentPerDegree[absDegree] * -1;
             else
-                return PlayerDataManager.alignmentPerDegree[absDegree];
+                return PlayerDataManager.alignmentPerDegree[absDegree + 1];
         }
     }
 
     [JsonIgnore]
     public override string covenId => covenInfo.coven;
+
+    [JsonIgnore]
+    public override string coven => covenInfo.name;
 }
 
 //map select
 public class SelectWitchData_Map : WitchMarkerData
 {
-    public string coven;
     public new int power;
     public new int resilience;
     public PlayerRank rank;
@@ -429,21 +458,16 @@ public class SelectWitchData_Map : WitchMarkerData
     public WitchToken token;
     
     public override MarkerSpawner.MarkerType Type => MarkerSpawner.MarkerType.WITCH;
-
-
+    
     //temp fix to avoid replacing all WitchMarkerData references
     [JsonIgnore]
     public override string state => token.state; 
     [JsonIgnore]
     public override int energy => token.energy;
-    //[JsonIgnore]
-    //public override int baseEnergy => token.baseEnergy;
     [JsonIgnore]
     public override int degree => token.degree;
     [JsonIgnore]
     public override int level => token.level;
-    //[JsonIgnore]
-    //public override string covenName => coven;
     [JsonIgnore]
     public override string dominion => "?";
     [JsonIgnore]
@@ -464,15 +488,13 @@ public class SelectWitchData_Map : WitchMarkerData
     [JsonIgnore]
     public override bool male => bodyType >= 3;
 
-    [JsonIgnore]
-    public override string covenId => coven;
 }
 
 public class SelectSpiritData_Map : SpiritMarkerData
 {
     public override double createdOn { get; set; }
     public override string owner { get; set; }
-    public string coven { get; set; }
+    //public override string coven { get; set; }
     public override int power { get; set; }
     public override int resilience { get; set; }
     public override int bounty { get; set; }

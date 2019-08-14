@@ -26,13 +26,14 @@ public class QuestLogUI : UIAnimationManager
     public GameObject spellExpLine;
 
     public GameObject claimFX;
+    public CanvasGroup claimLoadingFx;
     public GameObject openChest;
     public GameObject closedChest;
 
     public Text rewardEnergy;
     public Text rewardGold;
     public Text rewardSilver;
-    public GameObject buttonTapChest;
+    public Button buttonTapChest;
 
     public Text bottomInfo;
 
@@ -47,12 +48,16 @@ public class QuestLogUI : UIAnimationManager
     bool isQuest = true;
 
     public Animator anim;
+    public CanvasGroup eventLogLoading;
 
     private bool isOpen = false;
     private bool questInfoVisible = false;
     
     private static QuestLogUI m_Instance;
     private int m_TweenId;
+
+    private List<EventLog> m_Logs;
+    private float m_LastLogRequest;
 
     public static void Open()
     {
@@ -83,6 +88,10 @@ public class QuestLogUI : UIAnimationManager
         m_Instance = this;
         gameObject.SetActive(false);
         m_CloseButton.onClick.AddListener(Hide);
+        buttonTapChest.onClick.AddListener(OnClickClaimChest);
+
+        claimLoadingFx.gameObject.SetActive(false);
+        eventLogLoading.alpha = 0;
     }
 
     [ContextMenu("Show")]
@@ -104,8 +113,6 @@ public class QuestLogUI : UIAnimationManager
             OnClickQuest();
         else
             OnClickLog();
-
-        DailyProgressHandler.OnDailyProgress += DailyProgressHandler_OnDailyProgress;
     }
 
     [ContextMenu("Hide")]
@@ -113,6 +120,7 @@ public class QuestLogUI : UIAnimationManager
     {
         if (isOpen == false)
             return;
+
         isOpen = false;
 
         if (questInfoVisible)
@@ -124,8 +132,6 @@ public class QuestLogUI : UIAnimationManager
         {
             CloseP2();
         }
-
-        DailyProgressHandler.OnDailyProgress -= DailyProgressHandler_OnDailyProgress;
     }
 
     private void DailyProgressHandler_OnDailyProgress(DailyProgressHandler.DailyProgressEventData data)
@@ -155,23 +161,29 @@ public class QuestLogUI : UIAnimationManager
     //    dailiesCompleted = false;
     //}
 
-    void GetLogs()
+    void GetLogs(System.Action<List<EventLog>, string> callback)
     {
-        Debug.LogError("TODO: GET EVENT LOGS");
-        //APIManager.Instance.Get("character/event-log",
-        //    (string result, int response) =>
-        //    {
-        //        if (Application.isEditor)
-        //            Debug.Log(result);
+        if (m_Logs != null && Time.realtimeSinceStartup - m_LastLogRequest < 60)
+        {
+            callback?.Invoke(m_Logs, null);
+            return;
+        }
 
-        //        if (response == 200)
-        //        {
-        //            LS.log = JsonConvert.DeserializeObject<List<EventLogData>>(result);
-        //            SetupLogs();
-        //        }
-        //        else
-        //            Debug.Log(result + response);
-        //    });
+        m_LastLogRequest = Time.realtimeSinceStartup;
+
+        APIManager.Instance.Get("character/eventLog", (response, result) =>
+        {
+            if (result == 200)
+            {
+                m_Logs = JsonConvert.DeserializeObject<List<EventLog>>(response);
+                callback?.Invoke(m_Logs, null);
+            }
+            else
+            {
+                Debug.LogError("eventlog request error\n" + response);
+                callback?.Invoke(null, APIManager.ParseError(response));
+            }
+        });
     }
 
     public void OnClickLog()
@@ -183,7 +195,17 @@ public class QuestLogUI : UIAnimationManager
         questObject.SetActive(false);
         questCG.alpha = .4f;
         logCG.alpha = 1;
-        GetLogs();
+
+        LeanTween.alphaCanvas(eventLogLoading, 1f, 0.5f).setEaseOutCubic();
+        GetLogs((logs, error) =>
+        {
+            LeanTween.alphaCanvas(eventLogLoading, 0f, 1f).setEaseOutCubic();
+            LS.log = logs;
+            if (string.IsNullOrEmpty(error))
+                SetupLogs();
+            else
+                UIGlobalPopup.ShowError(null, error);
+        });
     }
 
     public void OnClickQuest()
@@ -235,7 +257,7 @@ public class QuestLogUI : UIAnimationManager
                 closedChest.SetActive(true);
                 claimFX.SetActive(true);
 				bottomInfo.text = LocalizeLookUp.GetText ("daily_tap_chest");//"Tap the chest to claim rewards";
-                buttonTapChest.SetActive(true);
+                buttonTapChest.gameObject.SetActive(true);
             }
             else
             {
@@ -243,7 +265,7 @@ public class QuestLogUI : UIAnimationManager
                 closedChest.SetActive(false);
                 claimFX.SetActive(false);
                 StartCoroutine(NewQuestTimer());
-                buttonTapChest.SetActive(false);
+                buttonTapChest.gameObject.SetActive(false);
             }
         }
         else
@@ -252,11 +274,11 @@ public class QuestLogUI : UIAnimationManager
             closedChest.SetActive(true);
             claimFX.SetActive(false);
             StartCoroutine(NewQuestTimer());
-            buttonTapChest.SetActive(false);
+            buttonTapChest.gameObject.SetActive(false);
         }
     }
 
-    IEnumerator ShowRewards(Rewards reward)
+    IEnumerator ShowRewards(DailyRewards reward)
     {
         SoundManagerOneShot.Instance.PlayReward();
         if (reward.silver != 0)
@@ -292,6 +314,32 @@ public class QuestLogUI : UIAnimationManager
 			bottomInfo.text = LocalizeLookUp.GetText("daily_new_quest") + " " + "<color=white>" + Utilities.GetTimeRemaining(QuestsController.Quests.endDate) + "</color>";
             yield return new WaitForSeconds(1);
         }
+    }
+
+    private void OnClickClaimChest()
+    {
+        if (PlayerDataManager.playerData.quest.completed)
+            return;
+
+        claimLoadingFx.alpha = 0;
+        claimLoadingFx.gameObject.SetActive(true);
+        LeanTween.alphaCanvas(claimLoadingFx, 0.7f, 0.25f).setEaseOutCubic();
+
+        QuestsController.ClaimRewards((rewards, error) =>
+        {
+            LeanTween.alphaCanvas(claimLoadingFx, 0f, 2)
+                .setEaseOutCubic()
+                .setOnComplete(() => claimLoadingFx.gameObject.SetActive(false));
+
+            if (string.IsNullOrEmpty(error))
+            {
+                StartCoroutine(ShowRewards(rewards));
+            }
+            else
+            {
+                UIGlobalPopup.ShowError(null, error);
+            }
+        });
     }
 
     public void ClickExplore()
@@ -407,19 +455,23 @@ public class QuestLogUI : UIAnimationManager
     }
 }
 
-public class EventLogData
+public struct EventLog
 {
+    public struct Data
+    {
+        public string spirit;
+        public string spiritId;
+        public string spellId;
+        public int casterDegree;
+        public int energyChange;
+        public string casterName;
+        //public string witchCreated;
+    }
 
-    public string type { get; set; }
-    public string spirit { get; set; }
-    public string spiritId { get; set; }
-    public string spellId { get; set; }
-    public int casterDegree { get; set; }
-    public int energyChange { get; set; }
-    public string casterName { get; set; }
-    public double timestamp { get; set; }
-
-    public string witchCreated { get; set; }
+    public string character;
+    public string type;
+    public double createdOn;
+    public Data data;
 }
 
 

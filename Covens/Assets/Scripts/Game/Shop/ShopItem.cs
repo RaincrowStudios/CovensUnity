@@ -3,6 +3,7 @@ using UnityEngine.UI;
 using TMPro;
 using System.Collections;
 using System;
+using Raincrow.Store;
 
 public class ShopItem : MonoBehaviour
 {
@@ -74,16 +75,37 @@ public class ShopItem : MonoBehaviour
 
     public void SetupSilver(StoreApiItem item, System.Action<ShopBase.ShopItemType, StoreApiItem> onClick)
     {
+        UnityEngine.Purchasing.Product product = IAPSilver.instance.GetProduct(item.productId);
+
+
         SetUp(item);
 
-        UnityEngine.Purchasing.Product product = IAPSilver.instance.GetProduct(item.productId);
-        cost.text = product.metadata.localizedPriceString;
+        if (product == null)
+        {
+            Debug.LogError("product not found for \"" + item.productId + "\"");
+            cost.text = "$??.??";
+        }
+        else
+        {
+            cost.text = product.metadata.localizedPriceString;
+        }
 
         tagAmount.text = item.bonus.ToString();
         if (tagAmount.text == "")
             tagAmount.transform.parent.gameObject.SetActive(false);
         amount.text = item.amount.ToString();
-        buyButton.onClick.AddListener(() => { IAPSilver.instance.BuyProductID(item); });
+        buyButton.onClick.AddListener(() => 
+        IAPSilver.instance.BuyProductID(item, (error) =>
+        {
+            if (string.IsNullOrEmpty(error))
+            {
+                ShopManager.OnBuySilver(item);
+            }
+            else
+            {
+                UIGlobalPopup.ShowError(null, APIManager.ParseError(error));
+            }
+        }));
 
     }
 
@@ -107,7 +129,14 @@ public class ShopItem : MonoBehaviour
         {
             button.sprite = red;
             buy.text = LocalizeLookUp.GetText("store_gear_locked_upper");//"Locked";
-            buyButton.onClick.AddListener(() => { ShopManager.Instance.ShowLocked(LocalizeLookUp.GetStoreTitle(item.id), GetTimeStampDate(item.unlockOn), DownloadedAssets.localizedText[item.tooltip]); });
+            buyButton.onClick.AddListener(() => 
+            {
+                UIGlobalPopup.ShowPopUp(
+                    null,
+                    DownloadedAssets.localizedText["shop_condition_locked"] + " " + GetTimeStampDate(item.unlockOn).Replace("unknown", "") + "\n" + DownloadedAssets.localizedText[item.tooltip]
+                );
+                    //ShopManager.Instance.ShowLocked(LocalizeLookUp.GetStoreTitle(item.id), GetTimeStampDate(item.unlockOn), DownloadedAssets.localizedText[item.tooltip]);
+            });
 
         }
 
@@ -126,7 +155,11 @@ public class ShopItem : MonoBehaviour
                 buyButton.onClick.RemoveAllListeners();
                 buyButton.onClick.AddListener(() =>
                 {
-                    ShopManager.Instance.ShowLocked(LocalizeLookUp.GetStoreTitle(item.id), GetTimeStampDate(item.unlockOn), DownloadedAssets.localizedText[item.tooltip]);
+                    UIGlobalPopup.ShowPopUp(
+                       null,
+                       DownloadedAssets.localizedText["shop_condition_locked"] + " " + GetTimeStampDate(item.unlockOn).Replace("unknown", "") + "\n" + DownloadedAssets.localizedText[item.tooltip]
+                    );
+                    //ShopManager.Instance.ShowLocked(LocalizeLookUp.GetStoreTitle(item.id), GetTimeStampDate(item.unlockOn), DownloadedAssets.localizedText[item.tooltip]);
                 });
             }
         }

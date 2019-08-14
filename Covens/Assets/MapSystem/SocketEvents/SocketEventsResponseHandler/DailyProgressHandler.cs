@@ -8,7 +8,6 @@ namespace Raincrow.GameEventResponses
     public class DailyProgressHandler : IGameEventHandler
     {
         public string EventName => "daily.progress";
-        public static event System.Action<DailyProgressEventData> OnDailyProgress;
 
         public struct DailyProgressEventData
         {
@@ -22,7 +21,11 @@ namespace Raincrow.GameEventResponses
         public void HandleResponse(string eventData)
         {
             DailyProgressEventData data = JsonConvert.DeserializeObject<DailyProgressEventData>(eventData);
+            HandleResponse(data);
+        }
 
+        public static void HandleResponse(DailyProgressEventData data)
+        {
             string message = null;
             switch (data.daily)
             {
@@ -46,8 +49,6 @@ namespace Raincrow.GameEventResponses
                 PlayerManagerUI.Instance.UpdateDrachs();
             }
 
-            OnDailyProgress?.Invoke(data);
-
             ShowNotification(data.daily, data.silver, data.count);
         }
 
@@ -59,16 +60,16 @@ namespace Raincrow.GameEventResponses
             {
                 if (quest == "gather")
                 {
-                    message = 
-                        LocalizeLookUp.GetText("daily_quest_progress") + " " + 
-                        LocalizeLookUp.GetText("daily_gather") + "\n" + 
+                    message =
+                        LocalizeLookUp.GetText("daily_quest_progress") + " " +
+                        LocalizeLookUp.GetText("daily_gather") + "\n" +
                         LocalizeLookUp.GetText("daily_completed") + " " + count.ToString() + "/" + QuestsController.Quests.gather.amount.ToString();
                 }
                 else if (quest == "spellcraft")
                 {
-                    message = 
-                        LocalizeLookUp.GetText("daily_quest_progress") + " " + 
-                        LocalizeLookUp.GetText("daily_spell") + "\n" + 
+                    message =
+                        LocalizeLookUp.GetText("daily_quest_progress") + " " +
+                        LocalizeLookUp.GetText("daily_spell") + "\n" +
                         LocalizeLookUp.GetText("daily_completed") + " " + count.ToString() + "/" + QuestsController.Quests.spellcraft.amount.ToString();
                 }
             }
@@ -76,17 +77,17 @@ namespace Raincrow.GameEventResponses
             {
                 if (quest == "gather")
                 {
-                    message = LocalizeLookUp.GetText("daily_completed_gather") + "\n"+ 
+                    message = LocalizeLookUp.GetText("daily_completed_gather") + "\n" +
                         "+ " + silver.ToString() + " " + LocalizeLookUp.GetText("store_silver");
                 }
                 else if (quest == "spellcraft")
                 {
-                    message = LocalizeLookUp.GetText("daily_completed_spellcraft") + "\n" + 
+                    message = LocalizeLookUp.GetText("daily_completed_spellcraft") + "\n" +
                         "+ " + silver.ToString() + " " + LocalizeLookUp.GetText("store_silver");
                 }
                 else
                 {
-                    message = LocalizeLookUp.GetText("daily_completed_explore") + "\n" + 
+                    message = LocalizeLookUp.GetText("daily_completed_explore") + "\n" +
                         "+ " + silver.ToString() + " " + LocalizeLookUp.GetText("store_silver");
                 }
             }

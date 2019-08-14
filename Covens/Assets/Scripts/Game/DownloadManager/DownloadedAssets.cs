@@ -27,7 +27,7 @@ public class DownloadedAssets : MonoBehaviour
     public static Dictionary<string, ConditionData> conditionsDict = new Dictionary<string, ConditionData>();
     public static Dictionary<string, IngredientData> ingredientDict = new Dictionary<string, IngredientData>();
     public static Dictionary<string, CosmeticData> cosmeticDict = new Dictionary<string, CosmeticData>();
-    
+
 
     public static bool UnloadingMemory { get; private set; }
     public static event System.Action OnWillUnloadAssets;
@@ -203,6 +203,7 @@ public class DownloadedAssets : MonoBehaviour
         if (type == "spell")
             id = spellDictData[id].glyph.ToString();
 
+        spr.overrideSprite = null;
         foreach (var item in loadedBundles[type])
         {
             if (item.Contains(id + ".png"))

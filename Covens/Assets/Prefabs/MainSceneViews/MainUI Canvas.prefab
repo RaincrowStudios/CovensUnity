@@ -47025,7 +47025,6 @@ GameObject:
   - component: {fileID: 222982042093325994}
   - component: {fileID: 114201076694474382}
   - component: {fileID: 114577347293517622}
-  - component: {fileID: 114650642740995804}
   m_Layer: 5
   m_Name: Button
   m_TagString: Untagged
@@ -47134,18 +47133,6 @@ MonoBehaviour:
       m_Calls: []
     m_TypeName: UnityEngine.UI.Button+ButtonClickedEvent, UnityEngine.UI, Version=1.0.0.0,
       Culture=neutral, PublicKeyToken=null
---- !u!114 &114650642740995804
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1472435309220438}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 2cbe40a3cc1f5d942a71d904eb6c0979, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!1 &1474998105084008
 GameObject:
   m_ObjectHideFlags: 0
@@ -134707,11 +134694,6 @@ PrefabInstance:
       propertyPath: m_Name
       value: Character_Reference
       objectReference: {fileID: 0}
-    - target: {fileID: 3251237561880716007, guid: fd5357c0819aaba4a9356f6e4618ac0a,
-        type: 3}
-      propertyPath: m_IsActive
-      value: 0
-      objectReference: {fileID: 0}
     - target: {fileID: 6595791206311145308, guid: fd5357c0819aaba4a9356f6e4618ac0a,
         type: 3}
       propertyPath: m_LocalPosition.x
@@ -134831,6 +134813,16 @@ PrefabInstance:
         type: 3}
       propertyPath: m_LocalScale.z
       value: 1.2380626
+      objectReference: {fileID: 0}
+    - target: {fileID: 7305716809244767620, guid: fd5357c0819aaba4a9356f6e4618ac0a,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3251237561880716007, guid: fd5357c0819aaba4a9356f6e4618ac0a,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: fd5357c0819aaba4a9356f6e4618ac0a, type: 3}

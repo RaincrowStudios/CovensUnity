@@ -99,7 +99,7 @@ public class CovensMuskMap : MonoBehaviour
         foreach (Camera _cam in cams)
             _cam.transparencySortMode = TransparencySortMode.Orthographic;
 
-        MapsAPI.Instance.InstantiateMap();
+        //MapsAPI.Instance.InstantiateMap();
 
         DontDestroyOnLoad(this.gameObject);
         //Instance = this;
@@ -359,6 +359,10 @@ public class CovensMuskMap : MonoBehaviour
 
     private void OnMapLoadError(MapLoadErrorArgs args)
     {
+#if UNITY_EDITOR && LOCAL_API
+        if (Application.internetReachability == NetworkReachability.NotReachable)
+            return;
+#endif
         Debug.LogError("load map error [" + args.DetailedErrorCode + "] " + args.Message);
     }
 
@@ -456,7 +460,7 @@ public class CovensMuskMap : MonoBehaviour
 
     public void HideMap(bool hide)
     {
-        this.gameObject.SetActive(!hide);
+        m_Camera.gameObject.SetActive(!hide);
     }
 
     public bool IsVisible()

@@ -10,7 +10,7 @@ using Raincrow.Chat;
 public class FTFManager : MonoBehaviour
 {
     public static FTFManager Instance { get; set; }
-    public static bool InFTF { get; private set; }
+    public static bool InFTF => PlayerDataManager.IsFTF;
     
     private int m_CurrentIndex = 0;
     public int curIndex
@@ -173,19 +173,15 @@ public class FTFManager : MonoBehaviour
         camCenterPoint = cameraTransform.parent.parent;
         Utilities.allowMapControl(false);
 
-        Debug.LogError("TODO:SET FTF DOMINION");
-        //currentDominion.text = LocalizeLookUp.GetText("dominion_location") + " " + PlayerDataManager.config.dominion;
-        //strongestWitch.text = LocalizeLookUp.GetText("strongest_witch_dominion") + " " + PlayerDataManager.config.strongestWitch;
-        //strongestCoven.text = LocalizeLookUp.GetText("strongest_coven_dominion") + " " + PlayerDataManager.config.strongestCoven;
+        currentDominion.text = LocalizeLookUp.GetText("dominion_location") + " " + GameStartup.Dominion;
+        strongestWitch.text = LocalizeLookUp.GetText("strongest_witch_dominion") + " " + GameStartup.TopPlayer;
+        strongestCoven.text = LocalizeLookUp.GetText("strongest_coven_dominion") + " " + GameStartup.TopCoven;
 
         //StartRotation();
         MapCameraUtils.SetRotation(-180f, 90f, true, () => { });
         zoomCamera(-360f, 60f);
         UIStateManager.Instance.CallWindowChanged(true);
-
-        Debug.LogError("TODO: ENABLE MAIN UI");
-        //LoginUIManager.Instance.mainUI.SetActive(true);
-
+        
         if (PlayerDataManager.playerData.GetIngredient("coll_ironCollar") == 0)
             PlayerDataManager.playerData.SetIngredient("coll_ironCollar", 1);
 
@@ -959,13 +955,10 @@ public class FTFManager : MonoBehaviour
             StartCoroutine(FadeOutFocus(dialogueCG));
 
             DeathState.Instance.FTFDeathState(false);
-            Blessing bs = new Blessing();
-            bs.daily = PlayerDataManager.playerData.baseEnergy;
-            PlayerDataManager.playerData.blessing = bs;
             var bless = Instantiate(blessingParticle, PlayerManager.marker.GameObject.transform);
             Destroy(bless, 3f);
             yield return new WaitForSeconds(3f);
-            PlayerManagerUI.Instance.ShowBlessing();
+            UIDailyBlessing.Show(PlayerDataManager.playerData.baseEnergy);
             PlayerDataManager.playerData.energy = PlayerDataManager.playerData.baseEnergy;
             PlayerManagerUI.Instance.UpdateEnergy();
             StartCoroutine(FadeOutFocus(savannahCG));
@@ -1323,6 +1316,14 @@ public class FTFManager : MonoBehaviour
             Destroy(Instance.mirrorsInstance.gameObject);
     }
 
+    private struct FinishFTFResponse
+    {
+        public CollectableItem[] tools;
+        public CollectableItem[] herbs;
+        public CollectableItem[] gems;
+        public ulong xp;
+    }
+
     public void EndFTF()
     {
         print("end ftf");
@@ -1344,27 +1345,22 @@ public class FTFManager : MonoBehaviour
                 {
                     Debug.Log("ftf complete");
 
-                    PlayerData update = JsonConvert.DeserializeObject<PlayerData>(response);
-                    update.Setup();
-                    
-                    List<CollectableItem> herbs = update.GetAllIngredients(IngredientType.herb);
-                    List<CollectableItem> tools = update.GetAllIngredients(IngredientType.tool);
-                    List<CollectableItem> gems = update.GetAllIngredients(IngredientType.gem);
-                    
-                    foreach (var item in herbs)
+                    FinishFTFResponse data = JsonConvert.DeserializeObject<FinishFTFResponse>(response);
+                                        
+                    foreach (var item in data.herbs)
                         PlayerDataManager.playerData.SetIngredient(item.id, item.count);
-                    foreach (var item in tools)
+                    foreach (var item in data.tools)
                         PlayerDataManager.playerData.SetIngredient(item.id, item.count);
-                    foreach (var item in gems)
+                    foreach (var item in data.gems)
                         PlayerDataManager.playerData.SetIngredient(item.id, item.count);
 
-                    PlayerDataManager.playerData.xp = update.xp;
-                    PlayerDataManager.playerData.spirits = update.spirits;
+                    PlayerDataManager.playerData.xp = data.xp;
+                    PlayerManagerUI.Instance.setupXP();
+                    //PlayerDataManager.playerData.spirits = update.spirits;
 
                     AppsFlyerAPI.CompletedFTUE();
                     Utilities.allowMapControl(true);
-
-
+                    
                     //get the markers at the current position
                     MarkerManagerAPI.GetMarkers(
                         PlayerDataManager.playerData.longitude,

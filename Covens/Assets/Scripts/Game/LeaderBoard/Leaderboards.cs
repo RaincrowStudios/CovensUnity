@@ -17,7 +17,6 @@ public class Leaderboards : UIAnimationManager
     public Text title;
 
     public GameObject loading;
-    public GameObject loadingFullscreen;
 
     private bool isPlayer = true;
 
@@ -34,7 +33,6 @@ public class Leaderboards : UIAnimationManager
 
     void Awake()
     {
-        loadingFullscreen.SetActive(false);
         Instance = this;
         transform.localScale = Vector3.zero;
 
@@ -100,8 +98,6 @@ public class Leaderboards : UIAnimationManager
     }
     public void Show()
     {
-
-
         if (transform.localScale.x != 1)
         {
             LeanTween.alphaCanvas(GetComponent<CanvasGroup>(), 1, .45f).setEase(LeanTweenType.easeOutSine).setOnComplete(() =>
@@ -132,7 +128,6 @@ public class Leaderboards : UIAnimationManager
         LeanTween.alphaCanvas(GetComponent<CanvasGroup>(), 0, .45f).setEase(LeanTweenType.easeOutSine);
         LeanTween.scale(gameObject, Vector3.zero, .45f).setEase(LeanTweenType.easeOutSine).setOnComplete(() =>
         {
-
             Destroy(gameObject);
         });
     }
@@ -181,18 +176,13 @@ public class Leaderboards : UIAnimationManager
 
     public void OnClickPlayer(string playerName)
     {
-        loadingFullscreen.SetActive(true);
-        TeamPlayerView.ViewCharacter(playerName,
-            (character, error) =>
-            {
-                loadingFullscreen.SetActive(false);
-            });
+        TeamPlayerView.ViewCharacter(playerName, (character, error) => { }, true);
     }
 
     public void OnClickCoven(string covenName)
     {
         Hide();
-        //TeamManagerUI.Open(covenName);
+        TeamManagerUI.OpenName(covenName);
     }
 
     public void ToggleList(bool player)

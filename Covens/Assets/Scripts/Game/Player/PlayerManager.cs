@@ -31,7 +31,7 @@ public class PlayerManager : MonoBehaviour
 
     public static IMarker marker { get; private set; }                //actual marker
     public static IMarker physicalMarker { get; set; }       // gyro marker
-    public static WitchMarker witchMarker { get; private set; }
+    public static WitchMarker witchMarker { get => marker as WitchMarker; }
     
     [SerializeField] private GameObject selectionRing;
 
@@ -78,8 +78,6 @@ public class PlayerManager : MonoBehaviour
         var pos = new Vector2(PlayerDataManager.playerData.longitude, PlayerDataManager.playerData.latitude);
         SpawnPlayer(pos.x, pos.y);
 
-        Debug.LogError("TODO: SETUP HEATMAPS");
-        //HeatMapManager.instance.createHeatMap(PlayerDataManager.config.heatmap);
         GardenMarkers.instance.SetupGardens();
         SoundManagerOneShot.Instance.PlayWelcome();
     }
@@ -103,8 +101,8 @@ public class PlayerManager : MonoBehaviour
         marker.GameObject.name += "_MyMarker";
         marker.inMapView = true;
         marker.Coords = pos;
+        marker.Setup(new PlayerToken());
         marker.AvatarTransform.rotation = MapsAPI.Instance.camera.transform.rotation;
-        witchMarker = marker as WitchMarker;
 
         OnUpdateEquips(() => witchMarker.EnableAvatar());
 

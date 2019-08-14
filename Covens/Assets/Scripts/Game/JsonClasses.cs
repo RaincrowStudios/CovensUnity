@@ -34,30 +34,6 @@ public class LocationBuff
     public string spellId { get; set; }
 }
 
-public class HeatMapPoints
-{
-    public int count { get; set; }
-    public float latitude { get; set; }
-    public float longitude { get; set; }
-}
-
-public class Firsts
-{
-    public bool locationReward { get; set; }
-    public bool portal { get; set; }
-    public bool flight { get; set; }
-    public bool collect { get; set; }
-    public bool cast { get; set; }
-    public bool purchaseGold { get; set; }
-    public bool locationSummon { get; set; }
-    public bool purchaseSilver { get; set; }
-    public bool purchaseMoney { get; set; }
-    public bool kill { get; set; }
-    public bool portalSummon { get; set; }
-    public bool banish { get; set; }
-    public bool kyteler { get; set; }
-}
-
 
 public class KnownSpirits
 {
@@ -66,15 +42,7 @@ public class KnownSpirits
     public string dominion { get; set; }
 }
 
-public class Blessing
-{
-    public int daily { get; set; }
-    public int lunar { get; set; }
-    public int locations { get; set; }
-    public int moonPhase { get; set; }
-}
-
-public class Sun
+public struct Sun
 {
     public double sunRise { get; set; }
     public double sunSet { get; set; }
@@ -85,11 +53,11 @@ public class AnalyticsSession
     public string SessionId { get; set; }
 }
 
-public class Rewards
+public struct DailyRewards
 {
-    public int silver { get; set; }
-    public int energy { get; set; }
-    public int gold { get; set; }
+    public int silver;
+    public int energy;
+    public int gold;
 
 }
 
@@ -102,13 +70,6 @@ public class Condition
     public string status { get; set; }
     public int stacked { get; set; }
     public bool constant { get; set; }
-}
-
-public class CoolDown
-{
-    public string instance { get; set; }
-    public string spell { get; set; }
-    public double expiresOn { get; set; }
 }
 
 public class InventoryData
@@ -174,6 +135,19 @@ public struct CollectableItem
     }
 }
 
+public struct ConsumableItem
+{
+    [JsonProperty("consumable")]
+    public string id;
+    public int amount;
+
+    public ConsumableItem(string id, int count)
+    {
+        this.id = id;
+        this.amount = count;
+    }
+}
+
 public class KytelerItem
 {
     public string id;
@@ -200,13 +174,12 @@ public class ExploreLore
 
 public struct GardenData
 {
-    public string id;
     public float latitude;
     public float longitude;
     public int distance;
 }
 
-public class MoonData
+public struct MoonData
 {
     public double phase { get; set; }
     public double luminosity { get; set; }
@@ -274,6 +247,7 @@ public class SpellData
     public bool common;
     public int cost;
     public int xp;
+    public int level;
 
     public string[] ingredients;
     public string[] states;
@@ -281,6 +255,7 @@ public class SpellData
     public int align;
     public bool pop;
     public bool hidden;
+    public float cooldown;
     
     [JsonIgnore]
     public string Name => LocalizeLookUp.GetSpellName(id);
@@ -363,28 +338,35 @@ public enum CurrentView
 
 
 
-public class SpiritInstance
-{
-    public string id { get; set; }
-    public string instance { get; set; }
-    public double summonOn { get; set; }
-    public double createdOn { get; set; }
-    public double banishedOn { get; set; }
-    public double expiresOn { get; set; }
-    public double lat { get; set; }
-    public double lng { get; set; }
-    public string location { get; set; }
-    public string state { get; set; }
-    public LastAttackedBy lastAttackedBy { get; set; }
-    public string spirit { get; set; }
-    public int xpGained { get; set; }
-    public int degree { get; set; }
-    public int energy { get; set; }
-    public int attacked { get; set; }
-    public int zone { get; set; }
-    public int gathered { get; set; }
-    public List<Gathered> ingredients { get; set; }
-    public SpiritDeckUIManager.type deckCardType { get; set; }
+public struct SpiritInstance
+{    
+    [JsonProperty("spirit")]
+    public string id;                       //spirit_barghest
+    [JsonProperty("_id")]
+    public string instance;                 //database id
+    public double summonOn;                 //summon timestamp
+    public double banishedOn;               //discovered timestamp
+    public double expiresOn;                //expire timestamp
+    public double lat;                      //latitude
+    public double lng;                      //longitude
+    public string location;                 //discovered dominion
+    public int xpGained;
+    public int degree;
+    public int energy;
+    public int attacked;                    //number of witches the spirit attacked
+    public int gathered;                    //number of collectables the spirit picked up
+
+    //public double createdOn { get; set; }
+    //public string state { get; set; }
+    //public LastAttackedBy lastAttackedBy { get; set; }
+    //public List<Gathered> ingredients { get; set; }
+
+    [JsonIgnore]
+    public string spirit => id;
+    [JsonIgnore]
+    public SpiritDeckUIManager.type deckCardType;
+    [JsonIgnore]
+    public int zone;                        // ?
 }
 
 public class LastAttackedBy

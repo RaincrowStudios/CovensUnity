@@ -135,10 +135,6 @@ public class UISpellcasting : UIInfoPanel
         m_ShadowText.text = LocalizeLookUp.GetText("generic_shadow");// "Shadow";
         m_GreyText.text = LocalizeLookUp.GetText("generic_grey");//  "Grey";
         m_WhiteText.text = LocalizeLookUp.GetText("generic_white");//  "White";
-
-        //m_ShadowGlyphBG.alpha = m_GreyGlyphBG.alpha = m_WhiteGlyphBG.alpha = 0;
-        
-        CooldownManager.OnCooldownEnd += OnCooldownEnd;
     }
 
     public void Show(CharacterMarkerData target, IMarker marker, List<SpellData> spells, System.Action onFinishSpellcasting, System.Action onBack = null, System.Action onClose = null)

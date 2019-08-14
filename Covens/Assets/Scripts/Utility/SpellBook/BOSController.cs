@@ -97,13 +97,20 @@ public class BOSController : BOSBase
 
     }
 
+    private int m_AnimTweenId;
+    private int m_CallbackTweenId;
+
     void AnimateRibbon(RectTransform rt, int pos)
     {
         var k = LeanTween.descr(LeanTween.moveX(rt, pos, ribbonAnimTime).id).setEase(easeOutType);
     }
+
     void AnimateRibbon(RectTransform rt, int pos, Action callback)
     {
-        var k = LeanTween.descr(LeanTween.moveX(rt, pos, ribbonAnimTime).id).setOnComplete(callback).setEase(easeOutType);
+        LeanTween.cancel(m_CallbackTweenId);
+        m_CallbackTweenId = LeanTween.value(0, 0, ribbonAnimTime / 2f).setOnComplete(callback).uniqueId;
+
+        var k = LeanTween.descr(LeanTween.moveX(rt, pos, ribbonAnimTime).id).setEase(easeOutType);
     }
 }
 

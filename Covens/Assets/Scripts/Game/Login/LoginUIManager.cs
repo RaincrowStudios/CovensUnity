@@ -365,18 +365,34 @@ public class LoginUIManager : MonoBehaviour
         {
             if (result == 200)
             {
-                LoginAPIManager.GetCharacter((charResult, charResponse) =>
+                if (response.hasCharacter.HasValue)
                 {
-                    if (LoginAPIManager.characterLoggedIn)
-                        Close();
+                    if (response.hasCharacter.Value)
+                    {
+                        LoginAPIManager.GetCharacter((charResult, charResponse) =>
+                        {
+                            if (LoginAPIManager.characterLoggedIn)
+                                Close();
+                            else
+                            {
+                                UIGlobalPopup.ShowError(() => SetScreen(Screen.WELCOME), APIManager.ParseError("error_" + charResponse));
+                            }
+                        });
+                    }
                     else
+                    {
                         SetScreen(Screen.CHOOSE_CHARACTER);
-                });
+                    }
+                }
+                else
+                {
+                    SetScreen(Screen.WELCOME);
+                }
             }
             else
             {
                 ShowLoading(false);
-                m_LoginError.text = APIManager.ParseError(response);
+                m_LoginError.text = APIManager.ParseError(response.error);
             }
         });
     }
@@ -426,7 +442,7 @@ public class LoginUIManager : MonoBehaviour
             else
             {
                 //show error
-                createAccountError.text = APIManager.ParseError(response);
+                createAccountError.text = APIManager.ParseError(response.error);
                 ShowLoading(false);
             }
         });
@@ -507,8 +523,13 @@ public class LoginUIManager : MonoBehaviour
             }
             else
             {
-                createCharacterError.text = APIManager.ParseError(response);
+                createCharacterError.text = APIManager.ParseError(response.error);
                 ShowLoading(false);
+
+                if (response.error == "1006")
+                {
+                    UIGlobalPopup.ShowError(() => SetScreen(Screen.WELCOME), APIManager.ParseError(response.error));
+                }
             }
         });
     }

@@ -1,4 +1,5 @@
 {
 	"game":"debug-auth-token",
-	"socket":"debug-socket-token"
+	"socket":"debug-socket-token",
+	"hasCharacter":true
 }

@@ -40,7 +40,7 @@ public class SpiritMarker : MuskMarker
         m_DisplayName.text = LocalizeLookUp.GetSpiritName(spiritToken.spiritId);
         SetStats();
 
-        UpdateNameplate(m_DisplayName.preferredWidth);
+        //UpdateNameplate(m_DisplayName.preferredWidth);
         UpdateEnergy();
 
         //todo: load icon and spirit avatar (currently implemented on marker spawner

@@ -1,4 +1,5 @@
 ﻿using Newtonsoft.Json;
+using Raincrow.Store;
 using System.Collections;
 using System.Collections.Generic;
 using System.IO;
@@ -7,6 +8,22 @@ using UnityEngine.Networking;
 
 public class DownloadManager : MonoBehaviour
 {
+    public struct AssetResponse
+    {
+        [JsonIgnore]
+        public string game => "107";
+        [JsonIgnore]
+        public string store => "107";
+        [JsonIgnore]
+        public string localization => "107";
+
+        public List<string> assets;
+        public string version;
+        public int android;
+        public int apple;
+        public bool maintenance;
+    }
+
     private const string downloadUrl = "https://storage.googleapis.com/raincrow-covens/";
     /// <summary>
     /// name
@@ -77,7 +94,7 @@ public class DownloadManager : MonoBehaviour
     public static bool DictionaryReady { get; set; }
 
 
-    public static void DownloadAssets()
+    public static void DownloadAssets(System.Action dictionaryDownloaded)
     {
         Debug.Log("Requesting asset list from server");
         SplashManager.Instance.SetDownloadMessage("Getting asset list from server", "");
@@ -96,36 +113,20 @@ public class DownloadManager : MonoBehaviour
                     //APIManagerServer.EnableAutoRetry = true;
                     Debug.Log("Assets to download:\n" + s);
                     var d = JsonConvert.DeserializeObject<AssetResponse>(s);
-                    Instance.StartCoroutine(StartDownloads(d));
+                    Instance.StartCoroutine(StartDownloads(d, dictionaryDownloaded, null));
                 }
                 else
                 {
                     Debug.LogError("Failed to request asset list from server.\n[" + responseCode.ToString() + "] " + s);
                     OnServerError?.Invoke(responseCode, s);
                 }
-                //else
-                //{
-                //    if (retryCount >= APIManagerServer.MaxRetries)
-                //    {
-                //            Debug.LogError("Failed to request asset list from server.\n[" + responseCode.ToString() + "] " + s);
-                //            OnServerError?.Invoke(responseCode, s);
-                //    }
-                //    else
-                //    {
-                //        SplashManager.Instance.SetDownloadMessage("Retrying connection to servers . . .", $"Attempt {retryCount}/{APIManagerServer.MaxRetries} ");
-
-                //        Debug.Log("Assets request failed. Retrying[" + retryCount + "]");
-                //        retryCount += 1;
-                //        LeanTween.value(0, 0, 2f).setOnComplete(getAssets);
-                //    }
-                //}
             });
         };
 
         getAssets.Invoke();
     }
 
-    private static IEnumerator StartDownloads(AssetResponse assets)
+    private static IEnumerator StartDownloads(AssetResponse assets, System.Action dictionariesDownloaded, System.Action bundlesDownloaded)
     {
         SplashManager.Instance.SetDownloadMessage("", "");
 
@@ -167,7 +168,7 @@ public class DownloadManager : MonoBehaviour
             bool isDictionaryParseError = false;
             string dictionaryDownloadError = null;
 
-            DictionaryManager.GetGameDictionary(assets.dictionary,
+            DictionaryManager.GetGameDictionary(assets.game,
                 onDicionaryReady: () =>
                 {
                     isDictionaryComplete = true;
@@ -175,7 +176,7 @@ public class DownloadManager : MonoBehaviour
                 onDownloadError: (code, response) =>
                 {
                     isDictionaryComplete = true;
-                    dictionaryDownloadError = $"Error downloading dictionary. [{code}] {response}";
+                    dictionaryDownloadError = $"Error downloading game settings. [{code}] {response}";
                 },
                 onParseError: () =>
                 {
@@ -209,7 +210,7 @@ public class DownloadManager : MonoBehaviour
             bool isDictionaryParseError = false;
             string dictionaryDownloadError = null;
 
-            DictionaryManager.GetLocalisationDictionary(assets.dictionary,
+            DictionaryManager.GetLocalisationDictionary(assets.localization,
                 onDicionaryReady: () =>
                 {
                     isDictionaryComplete = true;
@@ -217,7 +218,7 @@ public class DownloadManager : MonoBehaviour
                 onDownloadError: (code, response) =>
                 {
                     isDictionaryComplete = true;
-                    dictionaryDownloadError = $"Error downloading dictionary. [{code}] {response}";
+                    dictionaryDownloadError = $"Error downloading localization settings. [{code}] {response}";
                 },
                 onParseError: () =>
                 {
@@ -241,9 +242,51 @@ public class DownloadManager : MonoBehaviour
                 yield break;
             }
         }
+        //download the store dictionary
+        //OnDictionaryDownloadStart?.Invoke();
+        {
+
+            bool isDictionaryComplete = false;
+            bool isDictionaryParseError = false;
+            string dictionaryDownloadError = null;
+
+            DictionaryManager.GetStoreDictionary(assets.store,
+                onDicionaryReady: () =>
+                {
+                    isDictionaryComplete = true;
+                },
+                onDownloadError: (code, response) =>
+                {
+                    isDictionaryComplete = true;
+                    dictionaryDownloadError = $"Error downloading store settings. [{code}] {response}";
+                },
+                onParseError: () =>
+                {
+                    isDictionaryComplete = true;
+                    isDictionaryParseError = true;
+                });
+
+            while (isDictionaryComplete == false)
+                yield return 0;
+
+            if (string.IsNullOrEmpty(dictionaryDownloadError) == false)
+            {
+                OnDictionaryError?.Invoke(dictionaryDownloadError);
+                yield break;
+            }
+
+            if (isDictionaryParseError)
+            {
+                //error delegate was already invoked in SaveDict method
+                //OnDictionaryParserError?.Invoke();
+                yield break;
+            }
+        }
+
+
         OnDownloadedDictionary?.Invoke();
         DictionaryReady = true;
-
+        dictionariesDownloaded?.Invoke();
 
 
         //download the asset bundles
@@ -376,6 +419,7 @@ public class DownloadManager : MonoBehaviour
         }
 
         OnDownloadsComplete?.Invoke();
+        bundlesDownloaded?.Invoke();
     }
 
     public static bool DeserializeLocalisationDictionary(string json)
@@ -387,7 +431,7 @@ public class DownloadManager : MonoBehaviour
         }
         catch (System.Exception e)
         {
-            Debug.LogError("Failed to parse dictionary: " + e.Message + "\n" + e.StackTrace);
+            Debug.LogError("Failed to parse localization dictionary: " + e.Message + "\n" + e.StackTrace);
             OnDictionaryParserError?.Invoke(e.Message, e.StackTrace);
             return false;
         }
@@ -413,13 +457,32 @@ public class DownloadManager : MonoBehaviour
             DownloadedAssets.conditionsDict = data.Conditions;
             DownloadedAssets.ingredientDict = data.Collectibles;
             WitchSchoolManager.witchVideos = data.witchSchool;
+
             DownloadedAssets.cosmeticDict = data.Cosmetics;
+            StoreManagerAPI.BundleDict = data.Bundles;
+            StoreManagerAPI.ConsumableDict = data.Consumables;
+            StoreManagerAPI.SilverBundleDict = data.Silver;
 
             return true;
         }
         catch (System.Exception e)
         {
-            Debug.LogError("Failed to parse dictionary: " + e.Message + "\n" + e.StackTrace);
+            Debug.LogError("Failed to parse game dictionary: " + e.Message + "\n" + e.StackTrace);
+            OnDictionaryParserError?.Invoke(e.Message, e.StackTrace);
+            return false;
+        }
+    }
+
+    public static bool DeserializeStoreDictionary(string json)
+    {
+        try
+        {
+            StoreManagerAPI.Store = JsonConvert.DeserializeObject<StoreData>(json);
+            return true;
+        }
+        catch (System.Exception e)
+        {
+            Debug.LogError("Failed to parse store dictionary: " + e.Message + "\n" + e.StackTrace);
             OnDictionaryParserError?.Invoke(e.Message, e.StackTrace);
             return false;
         }

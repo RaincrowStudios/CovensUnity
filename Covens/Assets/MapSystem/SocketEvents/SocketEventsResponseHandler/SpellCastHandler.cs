@@ -8,6 +8,7 @@ namespace Raincrow.GameEventResponses
     {
         public struct SpellCastCharacter
         {
+            [JsonProperty("_id")]
             public string id;
             public string type;
             public int energy;
@@ -34,6 +35,7 @@ namespace Raincrow.GameEventResponses
             public Result result;
             public double timestamp;
             public bool immunity;
+            public double cooldown;
         }
 
         public string EventName => "cast.spell";
@@ -63,6 +65,26 @@ namespace Raincrow.GameEventResponses
             int targetNewEnergy = data.target.energy;
             
             OnSpellCast?.Invoke(data.caster.id, data.target.id, spell, data.result);
+
+            if (playerIsCaster)
+            {
+                //lcoaly add spell cooldown
+                CooldownManager.AddCooldown(spell.id, data.timestamp, data.cooldown);
+
+                //update the player alignment
+                int alignmentChange = spell.align;
+                if (spell.school < 0)
+                {
+                    alignmentChange *= -1;
+                }
+                else if (spell.school == 0)
+                {
+                    if (PlayerDataManager.playerData.degree < 0)
+                        alignmentChange *= -1;
+                }
+
+                PlayerDataManager.playerData.alignment += alignmentChange;
+            }
 
             SpellcastingTrailFX.SpawnTrail(spell.school, caster, target,
                 onStart: () =>
@@ -195,6 +217,12 @@ namespace Raincrow.GameEventResponses
                         }
                     }
 
+                    if (playerIsCaster && data.target.energy == 0 && target is SpiritMarker)
+                    {
+                        SpiritData spiritData = (target as SpiritMarker).spiritData;
+                        UISpiritBanished.Instance.Show(spiritData.id);
+                    }
+
                     //show notification
                     if (playerIsTarget && !playerIsCaster)
                     {
@@ -209,7 +237,6 @@ namespace Raincrow.GameEventResponses
                             }
                             else if (caster is SpiritMarker)
                             {
-
                                 PlayerNotificationManager.Instance.ShowNotification(SpellcastingTextFeedback.CreateSpellFeedback(caster, target, data));
                             }
                             else

@@ -5,6 +5,7 @@ using UnityEngine;
 using TMPro;
 using UnityEngine.UI;
 using Raincrow.Maps;
+using static CooldownManager;
 
 public class UISpellcard : EnhancedScrollerCellView
 {
@@ -22,39 +23,49 @@ public class UISpellcard : EnhancedScrollerCellView
     [SerializeField] private Button m_SchoolButton;
     [SerializeField] private Button m_SpellButton;
 
+    [Header("cooldowns")]
+    [SerializeField] private Image m_CooldownBackground;
+    [SerializeField] private Image m_CooldownIcon;
+    [SerializeField] private TextMeshProUGUI m_CooldownTex;
+
     [Header("crests")]
     [SerializeField] private Sprite m_ShadowCrest;
     [SerializeField] private Sprite m_GreyCrest;
     [SerializeField] private Sprite m_WhiteCrest;
-    
-    public SpellData Spell { get; private set; }
 
+    public SpellData Spell { get; private set; }
     private System.Action<int> m_OnClickSchool;
     private System.Action<UISpellcard> m_OnClickCard;
     private System.Action<UISpellcard> m_OnClickGlyph;
 
     private int m_TweenId;
+    //private Coroutine m_CooldownCoroutine;
+    private int m_CooldownTweenId;
 
     private void Awake()
     {
         m_SchoolButton.onClick.AddListener(OnClickSchool);
         m_CardButton.onClick.AddListener(OnClickCard);
         m_SpellButton.onClick.AddListener(OnClickGlyph);
+        m_CooldownTex.text = "";
     }
 
     public void SetData(
-        SpellData spell, 
-        System.Action<int> onClickSchool, 
+        SpellData spell,
+        System.Action<int> onClickSchool,
         System.Action<UISpellcard> onClickCard,
         System.Action<UISpellcard> onClickGlyph)
     {
+        LeanTween.cancel(m_CooldownTweenId);
+
+        name = "[" + spell.id + "] UISpellcard prefab";
         Spell = spell;
         m_OnClickSchool = onClickSchool;
         m_OnClickCard = onClickCard;
         m_OnClickGlyph = onClickGlyph;
 
         m_SpellName.text = spell.Name;
-        m_SpellCost.text = spell.cost.ToString();
+        m_SpellCost.text = LocalizeLookUp.GetText("spell_data_cost").Replace("{{Energy Cost}}", spell.cost.ToString());
         m_SpellDescription.text = PlayerManager.inSpiritForm ? spell.SpiritDescription : spell.PhysicalDescription;
 
         if (spell.school < 0)
@@ -73,25 +84,52 @@ public class UISpellcard : EnhancedScrollerCellView
             m_SchoolIcon.overrideSprite = m_GreyCrest;
         }
 
-        m_SpellIcon.overrideSprite = null;
+        m_SpellIcon.overrideSprite = m_CooldownIcon.overrideSprite = null;
         DownloadedAssets.GetSprite(spell.id, spr =>
         {
-            m_SpellIcon.overrideSprite = spr;
+            m_SpellIcon.overrideSprite = m_CooldownIcon.overrideSprite = spr;
         });
     }
 
     public void UpdateCancast(CharacterMarkerData targetData, IMarker targetMarker)
     {
+        LeanTween.cancel(m_CooldownTweenId);
+
         Spellcasting.SpellState canCast = Spellcasting.CanCast(Spell, targetMarker, targetData);
         if (canCast == Spellcasting.SpellState.CanCast)
         {
             m_SpellFrame.gameObject.SetActive(true);
+            m_SchoolFrame.gameObject.SetActive(true);
             m_SpellButton.interactable = true;
+            m_SpellButton.gameObject.GetComponent<CanvasGroup>().alpha = 1f;
+            m_SchoolButton.gameObject.GetComponent<CanvasGroup>().alpha = 1f;
         }
         else
         {
+            m_SchoolFrame.gameObject.SetActive(false);
             m_SpellFrame.gameObject.SetActive(false);
             m_SpellButton.interactable = false;
+            m_SpellButton.gameObject.GetComponent<CanvasGroup>().alpha = 0.5f;
+            m_SchoolButton.gameObject.GetComponent<CanvasGroup>().alpha = 0.5f;
+        }
+
+        if (canCast == Spellcasting.SpellState.InCooldown)
+        {
+            Cooldown? cd = CooldownManager.GetCooldown(Spell.id);
+            if (cd != null)
+            {
+                float remaining = cd.Value.Remaining;
+                float total = cd.Value.total;
+                m_CooldownTweenId = LeanTween.value(remaining / total, 0, remaining)
+                    .setOnUpdate((float t) => m_CooldownBackground.fillAmount = m_CooldownIcon.fillAmount = t)
+                    .setOnComplete(() => UpdateCancast(targetData, targetMarker))
+                    .uniqueId;
+            }
+
+        }
+        else
+        {
+            m_CooldownBackground.fillAmount = m_CooldownIcon.fillAmount = 0;
         }
     }
 
@@ -114,12 +152,12 @@ public class UISpellcard : EnhancedScrollerCellView
     {
         LeanTween.cancel(m_TweenId);
 
-        if(time == 0)
+        if (time == 0)
         {
             m_CanvasGroup.alpha = a;
             return;
         }
-        
+
         m_TweenId = LeanTween.alphaCanvas(m_CanvasGroup, a, time).setEaseOutCubic().uniqueId;
     }
 

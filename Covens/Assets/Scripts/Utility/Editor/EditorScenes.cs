@@ -8,56 +8,42 @@ using UnityEditor.SceneManagement;
 public class EditorScenes : MonoBehaviour
 {
     [MenuItem("Scenes/Start Scene",false,0)]
-    static void StartScene()
-    {
-        if (EditorSceneManager.SaveCurrentModifiedScenesIfUserWantsTo())
-            EditorSceneManager.OpenScene("Assets/Scenes/StartScene.unity");
-    }
+    static void StartScene() => OpenScene("StartScene");
 
     [MenuItem("Scenes/Main Scene", false, 1)]
-    static void MainScene()
-    {
-        if (EditorSceneManager.SaveCurrentModifiedScenesIfUserWantsTo())
-            EditorSceneManager.OpenScene("Assets/Scenes/MainScene.unity");
-    }
+    static void MainScene() => OpenScene("MainScene");
 
     [MenuItem("Scenes/Place of Power", false, 2)]
-    static void PopScene()
-    {
-        if (EditorSceneManager.SaveCurrentModifiedScenesIfUserWantsTo())
-            EditorSceneManager.OpenScene("Assets/Scenes/PlaceOfPower.unity");
-    }
+    static void PopScene() => OpenScene("PlaceOfPower");
 
     [MenuItem("Scenes/Screens/Login")]
-    static void LoginScene()
-    {
-        if (EditorSceneManager.SaveCurrentModifiedScenesIfUserWantsTo())
-            EditorSceneManager.OpenScene("Assets/Scenes/LoginScene.unity");
-    }
+    static void LoginScene() => OpenScene("LoginScene");
 
     [MenuItem("Scenes/Screens/Coven Managment")]
-    static void CovenScene()
-    {
-        if (EditorSceneManager.SaveCurrentModifiedScenesIfUserWantsTo())
-            EditorSceneManager.OpenScene("Assets/Scenes/CovenManagement.unity");
-    }
+    static void CovenScene() => OpenScene("CovenManagement");
+
     [MenuItem("Scenes/Screens/Daily Quests")]
-    static void DailiesScene()
-    {
-        if (EditorSceneManager.SaveCurrentModifiedScenesIfUserWantsTo())
-            EditorSceneManager.OpenScene("Assets/Scenes/DailyQuests.unity");
-    }
+    static void DailiesScene() => OpenScene("DailyQuests");
+
     [MenuItem("Scenes/Screens/Spellcast Book")]
-    static void SpellcastingScene()
-    {
-        if (EditorSceneManager.SaveCurrentModifiedScenesIfUserWantsTo())
-            EditorSceneManager.OpenScene("Assets/Scenes/SpellcastBook.unity");
-    }
+    static void SpellcastingScene() => OpenScene("SpellcastBook");
+
     [MenuItem("Scenes/Screens/Chat")]
-    static void ChatScene()
+    static void ChatScene() => OpenScene("Chat");
+
+    [MenuItem("Scenes/Screens/Store")]
+    static void StoreScene() => OpenScene("Store");
+
+    [MenuItem("Scenes/Screens/Daily Blessing")]
+    static void DailyBlessingScene() => OpenScene("DailyBlessing");
+
+    [MenuItem("Scenes/Screens/Grey Hand Office")]
+    static void GreyHandOfficeScene() => OpenScene("GreyHandOffice");
+
+    private static void OpenScene(string name)
     {
         if (EditorSceneManager.SaveCurrentModifiedScenesIfUserWantsTo())
-            EditorSceneManager.OpenScene("Assets/Scenes/Chat.unity");
+            EditorSceneManager.OpenScene($"Assets/Scenes/{name}.unity");
     }
 
     [MenuItem("Tools/Play")]

@@ -58,6 +58,11 @@ public class Spellcasting
         /// the spell is under cooldown
         /// </summary>
         InCooldown,
+
+        /// <summary>
+        /// player does not meet the spell's levev requirement
+        /// </summary>
+        NoLevel,
     }
     
     private static Dictionary <string, System.Action<SpellData, IMarker, List<spellIngredientsData>, System.Action<Raincrow.GameEventResponses.SpellCastHandler.Result>, System.Action>> m_SpecialSpells = 
@@ -78,10 +83,6 @@ public class Spellcasting
 
     public static SpellState CanCast(SpellData spell = null, IMarker target = null, CharacterMarkerData data = null)
     {
-        //PLAYER        
-        if (spell != null && DownloadedAssets.spellDictData.ContainsKey(spell.id) == false)
-            return SpellState.InvalidSpell;
-
         //silenced
         if (BanishManager.isSilenced)
             return SpellState.PlayerSilenced;
@@ -104,13 +105,6 @@ public class Spellcasting
             }
             else
             {
-                //if (token.Type == MarkerSpawner.MarkerType.SPIRIT)
-                //{
-                //    //temp fix: disable banish of spirits on pop
-                //    if (PlaceOfPower.IsInsideLocation && spell != null && spell.id == "spell_banish")
-                //        return SpellState.InvalidState;
-                //}
-                //else 
                 if (token.Type == MarkerSpawner.MarkerType.WITCH)
                 {
                     //immunity
@@ -124,7 +118,11 @@ public class Spellcasting
         //SPELL
         if (spell != null)
         {
-            //unlocked?
+            if (DownloadedAssets.spellDictData.ContainsKey(spell.id) == false)
+                return SpellState.InvalidSpell;
+
+            if (spell.level > PlayerDataManager.playerData.level)
+                return SpellState.NoLevel;
 
             //is pop only?
             //if (spell.pop && PlaceOfPower.IsInsideLocation == false)

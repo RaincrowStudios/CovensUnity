@@ -46,6 +46,8 @@ public class SoundManagerOneShot : MonoBehaviour
     public AudioClip[] AllWhisperSounds;
 
     public AudioClip EnYaSa;
+    public AudioClip flightButtonPress;
+    public AudioClip wooshShort;
 
     public AudioClip loginButtonPress;
 
@@ -212,7 +214,10 @@ public class SoundManagerOneShot : MonoBehaviour
     {
         playSound(witchDead, 1);
     }
-
+    public void PlayWooshShort()
+    {
+        playSound(wooshShort, 1);
+    }
     public void IngredientAdded()
     {
         playSound(BigDrum, 1);
@@ -236,7 +241,10 @@ public class SoundManagerOneShot : MonoBehaviour
     {
         playSound(landingSound, s);
     }
-
+    public void FlightButtonPress()
+    {
+        playSound(flightButtonPress, 1);
+    }
     public void PlayBarghest()
     {
         playSound(barghestSound, .55f);

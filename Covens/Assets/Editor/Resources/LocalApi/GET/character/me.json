@@ -1,277 +1,1425 @@
 {
-  "immunities": [
-    "5d43212505ed65460c49df7f",
-    "5d4047e0daf070189c074ca8",
-    "5d39d1d5cf3e8b37480ed3f3",
-    "5d360638fc9a782804908774",
-    "5d3602b6fc79250708866c17",
-    "5d372b8a7740c109e061a517",
-    "5d31af8f585e3a6890ee0ca8",
-    "5d3732622e043a3dcc92c549",
-    "5d3211e31822763f9c1da4d9",
-    "5d31a87fefc4f67aa8ecb1fe"
-  ],
-  "spirits": [
-    "5d4326a5280ac2321c12313c"
-  ],
-  "equipped": [
-    {
-      "position": "baseBody",
-      "id": "cosmetic_f_A_B",
-      "assets": [
-        "f_A_B"
-      ]
-    },
-    {
-      "position": "baseHand",
-      "id": "cosmetic_f_A_H",
-      "assets": [
-        "f_A_H_Relaxed"
-      ]
-    },
-    {
-      "position": "hair",
-      "id": "cosmetic_f_HA_DWO",
-      "assets": [
-        "f_HA_W_DWO_Front",
-        "f_HA_W_DWO_Back"
-      ]
-    },
-    {
-      "position": "legs",
-      "id": "cosmetic_f_L_KSO",
-      "assets": [
-        "f_L_G_KSO"
-      ]
-    },
-    {
-      "position": "feet",
-      "id": "cosmetic_f_F_KSO",
-      "assets": [
-        "f_F_S_KSO"
-      ]
-    }
-  ],
-  "cooldowns": [],
-  "bot": false,
-  "level": 1,
-  "xp": 178,
-  "alignment": -2,
-  "degree": 0,
-  "physical": false,
-  "insidePlaceOfPower": false,
-  "baseEnergy": 10000,
-  "energy": 6846,
-  "power": 0,
-  "resilience": 0,
-  "whiteMastery": false,
-  "shadowMastery": false,
-  "greyMastery": false,
-  "cosmetics": [
-    "cosmetic_f_A_B",
-    "cosmetic_f_A_H",
-    "cosmetic_f_HA_DWO",
-    "cosmetic_f_C_KSO",
-    "cosmetic_f_L_KSO",
-    "cosmetic_f_F_KSO"
-  ],
-  "silver": 500,
-  "gold": 0,
-  "ward": 0,
-  "favor": 0,
-  "aptitude": 0,
-  "wisdom": 0,
-  "tutorial": true,
-  "type": "character",
-  "model": "Character",
-  "_id": "myId",
-  "covenInfo": {
-    "role": 0,
-    "coven": null,
-    "joinedOn": 0,
-    "title": ""
-  },
-  "covenInvites": [],
-  "covenRequests": [],
-  "consumables": [],
-  "placeOfPower": null,
-  "state": "",
-  "tools": [
-    {
-      "collectible": "coll_ironCollar",
-      "count": 0
-    },
-    {
-      "collectible": "coll_onyxCirclet",
-      "count": 50
-    },
-    {
-      "collectible": "coll_friedTofu",
-      "count": 50
-    },
-    {
-      "collectible": "coll_hourglass",
-      "count": 10
-    },
-    {
-      "collectible": "coll_onyxRing",
-      "count": 50
-    },
-    {
-      "collectible": "coll_silverComb",
-      "count": 50
-    },
-    {
-      "collectible": "coll_fishOil",
-      "count": 50
-    },
-    {
-      "collectible": "coll_onyxAmulet",
-      "count": 50
-    },
-    {
-      "collectible": "coll_whiteFur",
-      "count": 50
-    },
-    {
-      "collectible": "coll_rocksGlass",
-      "count": 50
-    }
-  ],
-  "herbs": [
-    {
-      "collectible": "coll_betony",
-      "count": 50
-    },
-    {
-      "collectible": "coll_pennyRoyal",
-      "count": 50
-    },
-    {
-      "collectible": "coll_hyssop",
-      "count": 5
-    },
-    {
-      "collectible": "coll_borage",
-      "count": 50
-    },
-    {
-      "collectible": "coll_lobelia",
-      "count": 50
-    },
-    {
-      "collectible": "coll_cockComb",
-      "count": 50
-    },
-    {
-      "collectible": "coll_fennel",
-      "count": 50
-    },
-    {
-      "collectible": "coll_birch",
-      "count": 50
-    },
-    {
-      "collectible": "coll_frankincense",
-      "count": 50
-    }
-  ],
-  "gems": [
-    {
-      "collectible": "coll_motherTear",
-      "count": 150
-    },
-    {
-      "collectible": "coll_bloodAgate",
-      "count": 150
-    },
-    {
-      "collectible": "coll_malachite",
-      "count": 150
-    }
-  ],
-  "lastBlessing": 0,
-  "quest": {
-    "completed": false,
-    "spell": {
-      "count": 0,
-      "completed": false
-    },
-    "gather": {
-      "count": 0,
-      "completed": false
-    },
-    "explore": {
-      "count": 0,
-      "completed": false
-    },
-    "daily": {
-      "active": true,
-      "_id": "5d4422f026e12f3e00d65e4a",
-      "startDate": 1564746480870,
-      "endDate": 1564832880870,
-      "spellcraft": {
-        "amount": 2,
-        "country": null,
-        "degree": 0,
-        "ingredient": "gem",
-        "relation": "higher",
-        "spell": "spell_silence",
-        "type": "character"
-      },
-      "gather": {
-        "country": null,
-        "type": "herb",
-        "amount": 18
-      },
-      "explore": {
-        "amount": 1,
-        "type": "lore_27",
-        "location": {
-          "type": "Point",
-          "coordinates": [
-            32.751233,
-            129.870334
-          ],
-          "_id": "5d4422f026e12f3e00d65e4b"
-        }
-      },
-      "createdOn": "2019-08-02T11:48:00.873Z",
-      "modifiedOn": "2019-08-02T11:48:00.873Z",
-      "__v": 0
-    }
-  },
-  "effects": [],
-  "latitude": 47.67603,
-  "longitude": -122.407913,
-  "male": false,
-  "bodyType": 0,
-  "name": "lucas 051",
-  "account": "5d432693280ac2321c12308b",
-  "dominion": "Washington",
-  "physicalDominion": "5caf95e12e62b25248fd6291",
-  "knownSpirits": [
-    {
-      "spirit": "spirit_barghest",
-      "banishedOn": 1564681882879,
-      "dominion": "Washington"
-    }
-  ],
-  "createdOn": 1564681882882,
-  "modifiedOn": 1564750865112,
-  "__v": 133,
-  "physicalLatitude": 47.7027,
-  "physicalLongitude": -122.320045,
-  "attacking": "5d434674e613e70d24238189",
-  "lastTarget": {
-    "_id": "5d4446aa94fa743d00f05db7",
-    "entity": "5d434674e613e70d24238189",
-    "type": "Character"
-  },
-  "lastAttackedBy": {
-    "_id": "5d4446aa94fa743d00f05db8",
-    "entity": "5d4341e24952ea4458c6be0c",
-    "type": "Spirit"
-  },
-  "healing": "5d4341e24952ea4458c6be0c"
+"immunities":["5d43212505ed65460c49df7f",
+"5d43269a280ac2321c1230c6"],
+"spirits":["5d4343b94952ea4458c6e511"],
+"equipped":[{
+"position":"baseBody",
+"id":"cosmetic_f_O_B",
+"assets":["f_O_B"]
+},
+{
+"position":"baseHand",
+"id":"cosmetic_f_EO_H",
+"assets":["f_EO_H_Relaxed"]
+},
+{
+"position":"neck",
+"id":"cosmetic_f_N_BOW",
+"assets":["f_N_G_BOW"]
+},
+{
+"position":"chest",
+"id":"cosmetic_f_C_ROMP",
+"assets":["f_C_S_ROMP"]
+},
+{
+"position":"legs",
+"id":"cosmetic_f_L_ROMPER",
+"assets":["f_L_S_ROMPER"]
+},
+{
+"position":"hair",
+"id":"cosmetic_f_HA_DWO",
+"assets":["f_HA_W_DWO_Front",
+"f_HA_W_DWO_Back"]
+},
+{
+"position":"carryOnRight",
+"id":"cosmetic_f_CR_SHADOW",
+"assets":["f_CR_S_SHADOW"]
+}],
+"bot":false,
+"level":1,
+"xp":317,
+"alignment":79,
+"degree":1,
+"physical":false,
+"insidePlaceOfPower":false,
+"baseEnergy":10000,
+"energy":8737,
+"power":0,
+"resilience":1,
+"whiteMastery":false,
+"shadowMastery":false,
+"greyMastery":false,
+"cosmetics":["cosmetic_f_O_B",
+"cosmetic_f_EO_H",
+"cosmetic_f_HA_DWO",
+"cosmetic_f_C_KSO",
+"cosmetic_f_L_KSO",
+"cosmetic_f_F_KSO",
+"cosmetic_f_S_HHO",
+"cosmetic_f_S_CALYPSO",
+"cosmetic_f_S_HKO",
+"cosmetic_f_S_HLO",
+"cosmetic_f_S_SNOWQUEEN",
+"cosmetic_f_S_LILYOV",
+"cosmetic_f_L_DWO",
+"cosmetic_f_L_PPS",
+"cosmetic_f_HE_BDH",
+"cosmetic_f_L_LACELEG",
+"cosmetic_f_C_MESHDRESS",
+"cosmetic_f_L_SHORTS",
+"cosmetic_f_C_BUTTON",
+"cosmetic_f_C_ROMP",
+"cosmetic_f_L_ROMPER",
+"cosmetic_f_PF_SENTINALOWL",
+"cosmetic_f_N_BOW",
+"cosmetic_f_CR_SHADOW",
+"cosmetic_f_HA_BRD",
+"cosmetic_f_HA_BOB"],
+"silver":99953900,
+"gold":99999977,
+"ward":0,
+"favor":0,
+"aptitude":0,
+"wisdom":0,
+"tutorial":true,
+"type":"character",
+"model":"Character",
+"_id":"5d4343b24952ea4458c6e50a",
+"cooldowns":[],
+"covenInfo":{
+"role":0,
+"coven":"5d4470da42fe8e35a8d5d744",
+"joinedOn":0,
+"title":"",
+"name":"Coven  051"
+},
+"covenInvites":[],
+"covenRequests":[],
+"consumables":[{
+"amount":2,
+"consumable":"consumable_alignmentBoosterSmaller"
+},
+{
+"amount":1,
+"consumable":"consumable_alignmentBoosterMedium"
+}],
+"placeOfPower":null,
+"state":"",
+"tools":[{
+"collectible":"coll_alderCane",
+"count":10000
+},
+{
+"collectible":"coll_alderFlute",
+"count":10000
+},
+{
+"collectible":"coll_amberAmulet",
+"count":10000
+},
+{
+"collectible":"coll_athame",
+"count":10000
+},
+{
+"collectible":"coll_axeHandle",
+"count":10000
+},
+{
+"collectible":"coll_axeHead",
+"count":10000
+},
+{
+"collectible":"coll_aztaxFeather",
+"count":10000
+},
+{
+"collectible":"coll_bambooSymbol",
+"count":10000
+},
+{
+"collectible":"coll_barleyFlour",
+"count":10000
+},
+{
+"collectible":"coll_beerOffering",
+"count":10000
+},
+{
+"collectible":"coll_beeswax",
+"count":10000
+},
+{
+"collectible":"coll_benitier",
+"count":10000
+},
+{
+"collectible":"coll_birdBeak",
+"count":10000
+},
+{
+"collectible":"coll_birdStone",
+"count":10000
+},
+{
+"collectible":"coll_blackCrystal",
+"count":10000
+},
+{
+"collectible":"coll_bloodRibbon",
+"count":10000
+},
+{
+"collectible":"coll_bloodyCloth",
+"count":10000
+},
+{
+"collectible":"coll_bloodyHat",
+"count":10000
+},
+{
+"collectible":"coll_bloodySkin",
+"count":10000
+},
+{
+"collectible":"coll_blueLantern",
+"count":10000
+},
+{
+"collectible":"coll_boiledEdamame",
+"count":10000
+},
+{
+"collectible":"coll_bonePile",
+"count":10000
+},
+{
+"collectible":"coll_bridle",
+"count":10000
+},
+{
+"collectible":"coll_brokenAmulet",
+"count":10000
+},
+{
+"collectible":"coll_brokenMirror",
+"count":10000
+},
+{
+"collectible":"coll_brokenPaddle",
+"count":10000
+},
+{
+"collectible":"coll_brokenVial",
+"count":10000
+},
+{
+"collectible":"coll_broom",
+"count":10000
+},
+{
+"collectible":"coll_butterKnife",
+"count":10000
+},
+{
+"collectible":"coll_cakeBatter",
+"count":10000
+},
+{
+"collectible":"coll_candleBlack",
+"count":10000
+},
+{
+"collectible":"coll_candleBlue",
+"count":10000
+},
+{
+"collectible":"coll_candleRed",
+"count":10000
+},
+{
+"collectible":"coll_candleWhite",
+"count":10000
+},
+{
+"collectible":"coll_candy",
+"count":10000
+},
+{
+"collectible":"coll_carvingKnife",
+"count":10000
+},
+{
+"collectible":"coll_cingulum",
+"count":10000
+},
+{
+"collectible":"coll_coal",
+"count":10000
+},
+{
+"collectible":"coll_cocoaBean",
+"count":10000
+},
+{
+"collectible":"coll_coffeeBeans",
+"count":10000
+},
+{
+"collectible":"coll_copperNugget",
+"count":10000
+},
+{
+"collectible":"coll_crimsonShard",
+"count":10000
+},
+{
+"collectible":"coll_crocTooth",
+"count":10000
+},
+{
+"collectible":"coll_cushaJar",
+"count":10000
+},
+{
+"collectible":"coll_darkCharm",
+"count":10000
+},
+{
+"collectible":"coll_dollWood",
+"count":10000
+},
+{
+"collectible":"coll_dragonScale",
+"count":10000
+},
+{
+"collectible":"coll_dreamcatcher",
+"count":10000
+},
+{
+"collectible":"coll_eagleFeather",
+"count":10000
+},
+{
+"collectible":"coll_earrings",
+"count":10000
+},
+{
+"collectible":"coll_emaBoard",
+"count":10000
+},
+{
+"collectible":"coll_fineSand",
+"count":10000
+},
+{
+"collectible":"coll_fireIron",
+"count":10000
+},
+{
+"collectible":"coll_fireWand",
+"count":10000
+},
+{
+"collectible":"coll_fishOil",
+"count":10000
+},
+{
+"collectible":"coll_flintKnife",
+"count":10000
+},
+{
+"collectible":"coll_floralWreath",
+"count":10000
+},
+{
+"collectible":"coll_foxFur",
+"count":10000
+},
+{
+"collectible":"coll_freshMilk",
+"count":10000
+},
+{
+"collectible":"coll_friedTofu",
+"count":10000
+},
+{
+"collectible":"coll_frogLeg",
+"count":10000
+},
+{
+"collectible":"coll_goatMilk",
+"count":10000
+},
+{
+"collectible":"coll_goheiWand",
+"count":10000
+},
+{
+"collectible":"coll_gourde",
+"count":10000
+},
+{
+"collectible":"coll_greekWine",
+"count":10000
+},
+{
+"collectible":"coll_guilder",
+"count":10000
+},
+{
+"collectible":"coll_handkerchief",
+"count":10000
+},
+{
+"collectible":"coll_hangingScroll",
+"count":10000
+},
+{
+"collectible":"coll_hareFur",
+"count":10000
+},
+{
+"collectible":"coll_harpStrings",
+"count":10000
+},
+{
+"collectible":"coll_headDress",
+"count":10000
+},
+{
+"collectible":"coll_honeyDipper",
+"count":10000
+},
+{
+"collectible":"coll_honeyJar",
+"count":10000
+},
+{
+"collectible":"coll_hourglass",
+"count":9999
+},
+{
+"collectible":"coll_humanHair",
+"count":10000
+},
+{
+"collectible":"coll_hyenaFur",
+"count":10000
+},
+{
+"collectible":"coll_icosahedron",
+"count":10000
+},
+{
+"collectible":"coll_incense",
+"count":10000
+},
+{
+"collectible":"coll_ironCollar",
+"count":10000
+},
+{
+"collectible":"coll_ironKey",
+"count":10000
+},
+{
+"collectible":"coll_ironLock",
+"count":10000
+},
+{
+"collectible":"coll_jaguarSkull",
+"count":10000
+},
+{
+"collectible":"coll_janiceMirror",
+"count":10000
+},
+{
+"collectible":"coll_jokerCard",
+"count":10000
+},
+{
+"collectible":"coll_kaskaraBlade",
+"count":10000
+},
+{
+"collectible":"coll_kimono",
+"count":10000
+},
+{
+"collectible":"coll_kudurru",
+"count":10000
+},
+{
+"collectible":"coll_kurikara",
+"count":10000
+},
+{
+"collectible":"coll_lampOil",
+"count":10000
+},
+{
+"collectible":"coll_lavaLamp",
+"count":10000
+},
+{
+"collectible":"coll_leopardTablet",
+"count":10000
+},
+{
+"collectible":"coll_lightningRod",
+"count":10000
+},
+{
+"collectible":"coll_lionTablet",
+"count":10000
+},
+{
+"collectible":"coll_liqueur",
+"count":10000
+},
+{
+"collectible":"coll_magnet",
+"count":10000
+},
+{
+"collectible":"coll_mayanInk",
+"count":10000
+},
+{
+"collectible":"coll_meteorite",
+"count":10000
+},
+{
+"collectible":"coll_metronome",
+"count":10000
+},
+{
+"collectible":"coll_milkBottle",
+"count":10000
+},
+{
+"collectible":"coll_monkeyTotem",
+"count":10000
+},
+{
+"collectible":"coll_monocle",
+"count":10000
+},
+{
+"collectible":"coll_murkyWater",
+"count":10000
+},
+{
+"collectible":"coll_namazue",
+"count":10000
+},
+{
+"collectible":"coll_navalRum",
+"count":10000
+},
+{
+"collectible":"coll_needle",
+"count":10000
+},
+{
+"collectible":"coll_oilyFeather",
+"count":10000
+},
+{
+"collectible":"coll_oldScroll",
+"count":10000
+},
+{
+"collectible":"coll_onyxAmulet",
+"count":10000
+},
+{
+"collectible":"coll_onyxCirclet",
+"count":10000
+},
+{
+"collectible":"coll_onyxRing",
+"count":9999
+},
+{
+"collectible":"coll_owlTalon",
+"count":10000
+},
+{
+"collectible":"coll_oxHorn",
+"count":10000
+},
+{
+"collectible":"coll_paperDoll",
+"count":10000
+},
+{
+"collectible":"coll_pedang",
+"count":10000
+},
+{
+"collectible":"coll_perfume",
+"count":10000
+},
+{
+"collectible":"coll_petrifiedWood",
+"count":10000
+},
+{
+"collectible":"coll_pineAsh",
+"count":10000
+},
+{
+"collectible":"coll_pineIncense",
+"count":10000
+},
+{
+"collectible":"coll_plagueMask",
+"count":10000
+},
+{
+"collectible":"coll_poisonArrow",
+"count":10000
+},
+{
+"collectible":"coll_pomade",
+"count":10000
+},
+{
+"collectible":"coll_prism",
+"count":10000
+},
+{
+"collectible":"coll_rainwater",
+"count":10000
+},
+{
+"collectible":"coll_ramie",
+"count":10000
+},
+{
+"collectible":"coll_rawMeat",
+"count":10000
+},
+{
+"collectible":"coll_redApple",
+"count":10000
+},
+{
+"collectible":"coll_redDiamond",
+"count":10000
+},
+{
+"collectible":"coll_redFabric",
+"count":10000
+},
+{
+"collectible":"coll_remains",
+"count":10000
+},
+{
+"collectible":"coll_rocksGlass",
+"count":10000
+},
+{
+"collectible":"coll_rottenEgg",
+"count":10000
+},
+{
+"collectible":"coll_rustyFlask",
+"count":10000
+},
+{
+"collectible":"coll_sake",
+"count":10000
+},
+{
+"collectible":"coll_salamanderTail",
+"count":10000
+},
+{
+"collectible":"coll_salt",
+"count":10000
+},
+{
+"collectible":"coll_scentedCandle",
+"count":10000
+},
+{
+"collectible":"coll_seaglass",
+"count":10000
+},
+{
+"collectible":"coll_serpentVenom",
+"count":10000
+},
+{
+"collectible":"coll_sevenBell",
+"count":10000
+},
+{
+"collectible":"coll_shakujo",
+"count":10000
+},
+{
+"collectible":"coll_sharkTooth",
+"count":10000
+},
+{
+"collectible":"coll_sharpMachete",
+"count":10000
+},
+{
+"collectible":"coll_shinyTrinket",
+"count":10000
+},
+{
+"collectible":"coll_shogi",
+"count":10000
+},
+{
+"collectible":"coll_silverAmulet",
+"count":10000
+},
+{
+"collectible":"coll_silverComb",
+"count":9999
+},
+{
+"collectible":"coll_silverHarness",
+"count":10000
+},
+{
+"collectible":"coll_snakeOil",
+"count":10000
+},
+{
+"collectible":"coll_spearHead",
+"count":10000
+},
+{
+"collectible":"coll_spicyRum",
+"count":10000
+},
+{
+"collectible":"coll_spiralKey",
+"count":10000
+},
+{
+"collectible":"coll_starSymbol",
+"count":10000
+},
+{
+"collectible":"coll_stoneCarving",
+"count":10000
+},
+{
+"collectible":"coll_strawStrand",
+"count":10000
+},
+{
+"collectible":"coll_sugarCane",
+"count":10000
+},
+{
+"collectible":"coll_sunHat",
+"count":10000
+},
+{
+"collectible":"coll_sundial",
+"count":10000
+},
+{
+"collectible":"coll_sweetTreat",
+"count":10000
+},
+{
+"collectible":"coll_talisman",
+"count":10000
+},
+{
+"collectible":"coll_tamalera",
+"count":10000
+},
+{
+"collectible":"coll_tankard",
+"count":10000
+},
+{
+"collectible":"coll_tapirTrunk",
+"count":10000
+},
+{
+"collectible":"coll_terracotta",
+"count":10000
+},
+{
+"collectible":"coll_toadHeart",
+"count":10000
+},
+{
+"collectible":"coll_tobaccoPipe",
+"count":10000
+},
+{
+"collectible":"coll_trapelacucha",
+"count":10000
+},
+{
+"collectible":"coll_tribalMask",
+"count":10000
+},
+{
+"collectible":"coll_vialBlood",
+"count":10000
+},
+{
+"collectible":"coll_votiveCandle",
+"count":10000
+},
+{
+"collectible":"coll_whetstone",
+"count":10000
+},
+{
+"collectible":"coll_whiteCrystal",
+"count":10000
+},
+{
+"collectible":"coll_whiteEgg",
+"count":10000
+},
+{
+"collectible":"coll_whiteFur",
+"count":10000
+},
+{
+"collectible":"coll_windChime",
+"count":10000
+},
+{
+"collectible":"coll_wineSpirit",
+"count":10000
+},
+{
+"collectible":"coll_witchettyGrub",
+"count":10000
+},
+{
+"collectible":"coll_wolverineTooth",
+"count":10000
+},
+{
+"collectible":"coll_woodAsh",
+"count":10000
+},
+{
+"collectible":"coll_wootzSteel",
+"count":10000
+},
+{
+"collectible":"coll_yen",
+"count":10000
+}],
+"herbs":[{
+"collectible":"antarcticWort",
+"count":10000
+},
+{
+"collectible":"coll_adderFork",
+"count":10000
+},
+{
+"collectible":"coll_agathosma",
+"count":10000
+},
+{
+"collectible":"coll_agrimony",
+"count":10000
+},
+{
+"collectible":"coll_agueWeed",
+"count":10000
+},
+{
+"collectible":"coll_allspice",
+"count":10000
+},
+{
+"collectible":"coll_althea",
+"count":10000
+},
+{
+"collectible":"coll_angelica",
+"count":10000
+},
+{
+"collectible":"coll_anise",
+"count":10000
+},
+{
+"collectible":"coll_antarcticGrass",
+"count":10000
+},
+{
+"collectible":"coll_asafetida",
+"count":10000
+},
+{
+"collectible":"coll_ayahuasc",
+"count":10000
+},
+{
+"collectible":"coll_ayahusc",
+"count":10000
+},
+{
+"collectible":"coll_barberry",
+"count":10000
+},
+{
+"collectible":"coll_basil",
+"count":10000
+},
+{
+"collectible":"coll_batWool",
+"count":10000
+},
+{
+"collectible":"coll_bayLeaf",
+"count":10000
+},
+{
+"collectible":"coll_bella",
+"count":10000
+},
+{
+"collectible":"coll_bergamot",
+"count":10000
+},
+{
+"collectible":"coll_betony",
+"count":10000
+},
+{
+"collectible":"coll_bindweed",
+"count":10000
+},
+{
+"collectible":"coll_birch",
+"count":10000
+},
+{
+"collectible":"coll_bitDevil",
+"count":10000
+},
+{
+"collectible":"coll_blueberry",
+"count":10000
+},
+{
+"collectible":"coll_borage",
+"count":9999
+},
+{
+"collectible":"coll_broomTop",
+"count":10000
+},
+{
+"collectible":"coll_calamusRoot",
+"count":10000
+},
+{
+"collectible":"coll_camphor",
+"count":10000
+},
+{
+"collectible":"coll_capsicum",
+"count":10000
+},
+{
+"collectible":"coll_carawaySeed",
+"count":10000
+},
+{
+"collectible":"coll_cedar",
+"count":10000
+},
+{
+"collectible":"coll_chamomile",
+"count":10000
+},
+{
+"collectible":"coll_cinnamon",
+"count":10000
+},
+{
+"collectible":"coll_clove",
+"count":10000
+},
+{
+"collectible":"coll_clover",
+"count":10000
+},
+{
+"collectible":"coll_cockComb",
+"count":10000
+},
+{
+"collectible":"coll_coriander",
+"count":10000
+},
+{
+"collectible":"coll_datura",
+"count":10000
+},
+{
+"collectible":"coll_dogBane",
+"count":10000
+},
+{
+"collectible":"coll_dogTongue",
+"count":10000
+},
+{
+"collectible":"coll_dragonBlood",
+"count":10000
+},
+{
+"collectible":"coll_elder",
+"count":10000
+},
+{
+"collectible":"coll_eucalyptus",
+"count":10000
+},
+{
+"collectible":"coll_eyeBright",
+"count":10000
+},
+{
+"collectible":"coll_fennel",
+"count":10000
+},
+{
+"collectible":"coll_fingerGrass",
+"count":10000
+},
+{
+"collectible":"coll_foxGlove",
+"count":10000
+},
+{
+"collectible":"coll_frangipani",
+"count":10000
+},
+{
+"collectible":"coll_frankincense",
+"count":10000
+},
+{
+"collectible":"coll_frogToe",
+"count":10000
+},
+{
+"collectible":"coll_galangal",
+"count":10000
+},
+{
+"collectible":"coll_garlic",
+"count":10000
+},
+{
+"collectible":"coll_geranium",
+"count":10000
+},
+{
+"collectible":"coll_ghostOrchid",
+"count":10000
+},
+{
+"collectible":"coll_gileadBalm",
+"count":10000
+},
+{
+"collectible":"coll_hawthorn",
+"count":10000
+},
+{
+"collectible":"coll_hazel",
+"count":10000
+},
+{
+"collectible":"coll_heather",
+"count":10000
+},
+{
+"collectible":"coll_heliotrope",
+"count":10000
+},
+{
+"collectible":"coll_hellebore",
+"count":10000
+},
+{
+"collectible":"coll_hemlock",
+"count":10000
+},
+{
+"collectible":"coll_henbane",
+"count":10000
+},
+{
+"collectible":"coll_honeySuckle",
+"count":10000
+},
+{
+"collectible":"coll_hyacinth",
+"count":10000
+},
+{
+"collectible":"coll_hyssop",
+"count":9999
+},
+{
+"collectible":"coll_jasmine",
+"count":10000
+},
+{
+"collectible":"coll_johnWort",
+"count":10000
+},
+{
+"collectible":"coll_juniper",
+"count":10000
+},
+{
+"collectible":"coll_juniperBerry",
+"count":10000
+},
+{
+"collectible":"coll_lavender",
+"count":10000
+},
+{
+"collectible":"coll_lemonVerbena",
+"count":10000
+},
+{
+"collectible":"coll_lemongrass",
+"count":10000
+},
+{
+"collectible":"coll_licorice",
+"count":10000
+},
+{
+"collectible":"coll_lilac",
+"count":10000
+},
+{
+"collectible":"coll_lilyValley",
+"count":10000
+},
+{
+"collectible":"coll_lobelia",
+"count":9999
+},
+{
+"collectible":"coll_lotus",
+"count":10000
+},
+{
+"collectible":"coll_mandrake",
+"count":10000
+},
+{
+"collectible":"coll_mangrove",
+"count":10000
+},
+{
+"collectible":"coll_mimosa",
+"count":10000
+},
+{
+"collectible":"coll_mistleToe",
+"count":10000
+},
+{
+"collectible":"coll_moly",
+"count":10000
+},
+{
+"collectible":"coll_motherwort",
+"count":10000
+},
+{
+"collectible":"coll_mugwort",
+"count":10000
+},
+{
+"collectible":"coll_mullein",
+"count":10000
+},
+{
+"collectible":"coll_nettle",
+"count":10000
+},
+{
+"collectible":"coll_newtEye",
+"count":10000
+},
+{
+"collectible":"coll_nightShade",
+"count":10000
+},
+{
+"collectible":"coll_oakmoss",
+"count":10000
+},
+{
+"collectible":"coll_orrisRoot",
+"count":10000
+},
+{
+"collectible":"coll_parisNight",
+"count":10000
+},
+{
+"collectible":"coll_parsley",
+"count":10000
+},
+{
+"collectible":"coll_patchouli",
+"count":10000
+},
+{
+"collectible":"coll_pennyRoyal",
+"count":10000
+},
+{
+"collectible":"coll_pine",
+"count":10000
+},
+{
+"collectible":"coll_poppy",
+"count":10000
+},
+{
+"collectible":"coll_queenMeadow",
+"count":10000
+},
+{
+"collectible":"coll_redAlder",
+"count":10000
+},
+{
+"collectible":"coll_roseGeranium",
+"count":10000
+},
+{
+"collectible":"coll_rosemary",
+"count":10000
+},
+{
+"collectible":"coll_rowan",
+"count":10000
+},
+{
+"collectible":"coll_rue",
+"count":10000
+},
+{
+"collectible":"coll_saltDeadsea",
+"count":10000
+},
+{
+"collectible":"coll_sanPedro",
+"count":10000
+},
+{
+"collectible":"coll_sandalWood",
+"count":10000
+},
+{
+"collectible":"coll_sassafras",
+"count":10000
+},
+{
+"collectible":"coll_shadeBlack",
+"count":10000
+},
+{
+"collectible":"coll_slipperyElm",
+"count":10000
+},
+{
+"collectible":"coll_snakeroot",
+"count":10000
+},
+{
+"collectible":"coll_solomonSeal",
+"count":10000
+},
+{
+"collectible":"coll_spiceBush",
+"count":10000
+},
+{
+"collectible":"coll_thyme",
+"count":10000
+},
+{
+"collectible":"coll_tongueDeer",
+"count":10000
+},
+{
+"collectible":"coll_tormentil",
+"count":10000
+},
+{
+"collectible":"coll_vervain",
+"count":10000
+},
+{
+"collectible":"coll_vetivert",
+"count":10000
+},
+{
+"collectible":"coll_willow",
+"count":10000
+},
+{
+"collectible":"coll_witchEgg",
+"count":10000
+},
+{
+"collectible":"coll_wolfBane",
+"count":10000
+},
+{
+"collectible":"coll_wolfClaw",
+"count":10000
+}],
+"gems":[{
+"collectible":"coll_bloodAgate",
+"count":9998
+},
+{
+"collectible":"coll_brimstone",
+"count":10000
+},
+{
+"collectible":"coll_demonEye",
+"count":10000
+},
+{
+"collectible":"coll_malachite",
+"count":10000
+},
+{
+"collectible":"coll_motherTear",
+"count":9999
+}],
+"lastBlessing":1565617235050,
+"quest":{
+"completed":false,
+"spell":{
+"count":0,
+"completed":false
+},
+"gather":{
+"count":0,
+"completed":false
+},
+"explore":{
+"count":0,
+"completed":false
+},
+"daily":{
+"_id":"5d51537a7748901f64a34db3",
+"active":true,
+"startDate":1565610874946,
+"endDate":1565697274946,
+"spellcraft":{
+"amount":2,
+"country":"AFG",
+"degree":null,
+"ingredient":"herb",
+"relation":"enemy",
+"spell":"spell_hex",
+"type":"spirit"
+},
+"gather":{
+"country":null,
+"type":"herb",
+"amount":15
+},
+"explore":{
+"amount":1,
+"type":"lore_37",
+"location":{
+"type":"Point",
+"coordinates":[35.703015,
+139.729133],
+"_id":"5d51537a7748901f64a34db4"
+}
+},
+"createdOn":"2019-08-12T11:54:34.964Z",
+"modifiedOn":"2019-08-12T11:54:34.964Z",
+"__v":0
+}
+},
+"effects":[{
+"stack":1,
+"stackable":1,
+"spell":"daily",
+"duration":86400,
+"buff":true,
+"modifiers":{
+"ward":2
+},
+"expiresOn":1565206383607
+}],
+"latitude":40.7305222,
+"longitude":-73.93459,
+"male":true,
+"bodyType":2,
+"name":"lucas 052",
+"account":"5d4343ac4952ea4458c6e4c5",
+"dominion":"New York",
+"physicalDominion":"5caf95e12e62b25248fd6291",
+"knownSpirits":[{
+"spirit":"spirit_barghest",
+"banishedOn":1564689330352,
+"dominion":"Washington"
+}],
+"createdOn":1564689330355,
+"modifiedOn":1565695696060,
+"__v":150,
+"physicalLatitude":47.7103233,
+"physicalLongitude":-122.331177,
+"attacking":"5d51cd7ab7d7ff3a90b463e3",
+"lastTarget":{
+"_id":"5d529f1da9bf8925d0547ff1",
+"entity":"5d51cd7ab7d7ff3a90b463e3",
+"type":"Spirit"
+},
+"lastAttackedBy":{
+"_id":"5d529f1da9bf8925d0547ff2",
+"entity":"5d51cd7ab7d7ff3a90b463e3",
+"type":"Spirit"
+},
+"healing":"5d3b3b760574703fe402e016",
+"maxDegree":{
+"shadow":0,
+"white":0
+}
 }

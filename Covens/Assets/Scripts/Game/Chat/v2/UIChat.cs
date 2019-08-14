@@ -386,6 +386,7 @@ namespace Raincrow.Chat.UI
         private void Awake()
         {
             m_Instance = this;
+            _SelectedGlow.gameObject.SetActive(false);
 
             //setup UI to default disabled state
             _loading.gameObject.SetActive(false);
@@ -492,6 +493,7 @@ namespace Raincrow.Chat.UI
             //_inputField.enabled = false;
 
             Debug.Log("[Chat] SetCategory: " + category);
+            ChatCategory previousCategory = _currentCategory;
             _currentCategory = category;
 
             //hide the container
@@ -516,7 +518,7 @@ namespace Raincrow.Chat.UI
 
                 if (category == ChatCategory.COVEN)
                 {
-                    _covenName.text = PlayerDataManager.playerData.covenId;
+                    _covenName.text = PlayerDataManager.playerData.covenInfo.name;
                     _covenName.gameObject.SetActive(true);
                 }
                 else if (category == ChatCategory.DOMINION)
@@ -532,8 +534,15 @@ namespace Raincrow.Chat.UI
             }
             else
             {
-                //show the loading screen
-                ShowLoading(true);
+                if (category == ChatCategory.COVEN && string.IsNullOrEmpty(PlayerDataManager.playerData.covenInfo.coven))
+                {
+                    UICovenSearcher.Instance.Show(() => SetCategory(previousCategory));
+                }
+                else
+                {
+                    //show the loading screen
+                    ShowLoading(true);
+                }
             }
         }
                

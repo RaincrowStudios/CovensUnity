@@ -74,7 +74,7 @@ namespace Raincrow.Chat.UI
         protected void ShowAvatar()
         {
             OnRequestChatLoading?.Invoke(true);
-            TeamPlayerView.ViewCharacter(_chatPlayer.name,
+            TeamPlayerView.ViewCharacter(_chatPlayer.id,
                      (character, error) =>
                      {
                          OnRequestChatLoading?.Invoke(false);

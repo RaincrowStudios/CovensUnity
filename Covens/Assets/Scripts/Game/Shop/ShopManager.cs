@@ -6,10 +6,13 @@ using UnityEngine.UI;
 using TMPro;
 using System;
 using Newtonsoft.Json;
+using Raincrow.Store;
+using Raincrow;
 
 public class ShopManager : ShopBase
 {
-    public static ShopManager Instance { get; set; }
+    private static ShopManager m_Instance;
+
     [SerializeField] private GameObject maskContainer;
     [SerializeField] private Transform itemContainer;
     [SerializeField] private GameObject shopContainer;
@@ -131,12 +134,43 @@ public class ShopManager : ShopBase
         clothing, hairstyles, accessories, skinart
     }
 
+    public static void OpenStore(System.Action onComplete = null)
+    {
+        if (m_Instance != null)
+        {
+            m_Instance.Open();
+            onComplete?.Invoke();
+        }
+        else
+        {
+            LoadingOverlay.Show();
+            SceneManager.LoadSceneAsync(
+                SceneManager.Scene.STORE,
+                UnityEngine.SceneManagement.LoadSceneMode.Additive,
+                (progress) =>
+                {
+                },
+                () =>
+                {
+                    LoadingOverlay.Hide();
+                    m_Instance.Open();
+                    onComplete?.Invoke();
+                });
+        }
+    }
+
+    public static void OpenSilverStore()
+    {
+        OpenStore(() =>
+        {
+            m_Instance.ShowSilver();
+        });
+    }
+
     void Awake()
     {
-        Instance = this;
-    }
-    void Start()
-    {
+        m_Instance = this;
+
         SD = GetComponent<SwipeDetector>();
         hairStylesText = gearHairStylesFilter.GetComponent<TextMeshProUGUI>();
         accessoriesText = gearAccessoriesFilter.GetComponent<TextMeshProUGUI>();
@@ -160,8 +194,8 @@ public class ShopManager : ShopBase
         closeButton.onClick.AddListener(Close);
         buyObjectCloseButton.onClick.AddListener(CloseBuyPopup);
         buyObjectCosmeticCloseButton.onClick.AddListener(CloseCosmeticPopup);
-        SD.SwipeLeft = SwipeLeftStyle;
-        SD.SwipeRight = SwipeRightStyle;
+        SD.SwipeLeft = SwipeRightStyle;
+        SD.SwipeRight = SwipeLeftStyle;
         currentFilter = GearFilter.clothing;
         buyWithSilverBtn = buyWithSilver.GetComponent<Button>();
         buyWithGoldBtn = buyWithGold.GetComponent<Button>();
@@ -186,7 +220,7 @@ public class ShopManager : ShopBase
             itemContainer.localPosition = containerPos;
             currentFilter = GearFilter.accessories;
             SpawnCosmetics();
-            animationFinished();
+            animationFinished?.Invoke();
             accessoriesText.color = Color.white;
             accessoriesText.fontStyle = FontStyles.Underline;
         });
@@ -197,7 +231,7 @@ public class ShopManager : ShopBase
             itemContainer.localPosition = containerPos;
             currentFilter = GearFilter.skinart;
             SpawnCosmetics();
-            animationFinished();
+            animationFinished?.Invoke();
             skinArtText.color = Color.white;
             skinArtText.fontStyle = FontStyles.Underline;
         });
@@ -208,7 +242,7 @@ public class ShopManager : ShopBase
             itemContainer.localPosition = containerPos;
             currentFilter = GearFilter.hairstyles;
             SpawnCosmetics();
-            animationFinished();
+            animationFinished?.Invoke();
             hairStylesText.color = Color.white;
             hairStylesText.fontStyle = FontStyles.Underline;
         });
@@ -234,40 +268,33 @@ public class ShopManager : ShopBase
         title2.color = Color.grey;
         currentFilter = GearFilter.clothing;
         SpawnCosmetics();
-        animationFinished();
+        animationFinished?.Invoke();
         clothingText.color = Color.white;
         clothingText.fontStyle = FontStyles.Underline;
     }
 
     #region MainStoreUI
-
-
-    public void Open()
+    
+    private void Open()
     {
         UIStateManager.Instance.CallWindowChanged(false);
 
         SoundManagerOneShot.Instance.MenuSound();
-        StoreManagerAPI.GetShopItems((string s, int r) =>
-   {
-       if (r == 200)
-       {
-           //    Debug.Log(s);
-           PlayerDataManager.StoreData = JsonConvert.DeserializeObject<StoreApiObject>(s);
-           foreach (var item in PlayerDataManager.StoreData.cosmetics)
-           {
-               Utilities.SetCatagoryApparel(item);
-           }
-       }
-       else
-       {
-           Debug.LogError("Failed to get the store Object : " + s);
-       }
-   });
+
+        foreach (var item in PlayerDataManager.StoreData.cosmetics)
+        {
+            Utilities.SetCatagoryApparel(item);
+        }
 
         if (styleNavContainer.childCount == 0)
         {
+            //char gender = PlayerDataManager.playerData.male ? 'm' : 'f';
+
             foreach (var item in PlayerDataManager.StoreData.styles)
             {
+                //if (item.type[0] != gender)
+                //    continue;
+
                 var g = Utilities.InstantiateObject(navCircle, styleNavContainer);
             }
         }
@@ -356,7 +383,7 @@ public class ShopManager : ShopBase
             fortuna.anchoredPosition = new Vector2(v, fortuna.anchoredPosition.y);
             //itemContainer.GetComponent<GridLayoutGroup>().padding = new RectOffset(60,0,0,0);
 
-        }).setOnComplete(() => { animationFinished(); });
+        }).setOnComplete(() => { animationFinished?.Invoke(); });
         SD.enabled = false;
     }
 
@@ -536,23 +563,41 @@ public class ShopManager : ShopBase
         buyWithGoldBtn.onClick.RemoveAllListeners();
         buyWithSilverBtn.onClick.RemoveAllListeners();
         SetCloseAction(HideStyles);
-        if (st.owned)
+
+        bool owned = st.owned;
+        bool locked = Utilities.TimespanFromJavaTime(st.unlockOn).TotalSeconds > 0;
+
+        buyWithSilverBtn.gameObject.SetActive(owned || !locked);
+        buyWithGoldBtn.gameObject.SetActive(!owned && !locked);
+        styleUnlockOn.gameObject.SetActive(locked);
+        styleIcon.color = locked ? Color.black : Color.white;
+
+        if (styleUnlockOn.gameObject.activeSelf)
         {
-            buyWithGoldBtn.gameObject.SetActive(false);
-            buyWithSilver.text = LocalizeLookUp.GetText("store_gear_owned_upper");
-            buyWithSilver.color = Color.white;
+            styleUnlockOn.text = "This style will be available on " + ShopItem.GetTimeStampDate(st.unlockOn);
         }
-        else
+
+        if (buyWithSilver.gameObject.activeSelf)
         {
-            buyWithGoldBtn.gameObject.SetActive(true);
+            buyWithSilver.text = owned ? LocalizeLookUp.GetText("store_gear_owned_upper") : LocalizeLookUp.GetText("store_buy_silver") + ": " + st.silver.ToString();
+
+            if (owned)
+            {
+                buyWithSilver.color = Color.white;
+            }
+            else
+            {
+                buyWithSilverBtn.onClick.AddListener(() => { OnBuy(st, true); });
+                buyWithSilverBtn.interactable = st.silver <= PlayerDataManager.playerData.silver;
+                buyWithSilver.color = st.silver > PlayerDataManager.playerData.silver ? Color.red : Color.white;
+            }
+        }
+
+        if (buyWithGold.gameObject.activeSelf)
+        {
             buyWithGoldBtn.onClick.AddListener(() => { OnBuy(st, false); });
-            buyWithSilverBtn.onClick.AddListener(() => { OnBuy(st, true); });
-            buyWithSilver.color = st.silver > PlayerDataManager.playerData.silver ? Color.red : Color.white;
-            buyWithGold.color = st.gold > PlayerDataManager.playerData.gold ? Color.red : Utilities.Orange;
-            buyWithGoldBtn.interactable = st.gold <= PlayerDataManager.playerData.gold;
-            buyWithSilverBtn.interactable = st.silver <= PlayerDataManager.playerData.silver;
             buyWithGold.text = LocalizeLookUp.GetText("store_buy_gold") + ": " + st.gold.ToString();
-            buyWithSilver.text = LocalizeLookUp.GetText("store_buy_silver") + ": " + st.silver.ToString();
+            buyWithGold.color = st.gold > PlayerDataManager.playerData.gold ? Color.red : Utilities.Orange;
         }
 
         title.text = LocalizeLookUp.GetStoreTitle(st.id);
@@ -560,23 +605,8 @@ public class ShopManager : ShopBase
 
         ResetNavButtons();
         styleNavContainer.GetChild(currentStyle).GetComponent<Image>().color = Color.white;
-        styleUnlockOn.gameObject.SetActive(false);
-        buyWithSilver.gameObject.SetActive(true);
-        buyWithGold.gameObject.SetActive(true);
-        if (st.unlockOn > 0 && (Utilities.GetTimeRemaining(st.unlockOn) != "" || Utilities.GetTimeRemaining(st.unlockOn) != "unknown"))
-        {
-            Debug.Log(st.iconId);
-            Debug.Log(Utilities.GetTimeRemaining(st.unlockOn) + "||");
-            DownloadedAssets.GetSprite(st.iconId.Replace("_M_", "_P_"), styleIcon);
-            buyWithSilver.gameObject.SetActive(false);
-            buyWithGold.gameObject.SetActive(false);
-            styleUnlockOn.gameObject.SetActive(true);
-            styleUnlockOn.text = "This style will be available on " + ShopItem.GetTimeStampDate(st.unlockOn);
-        }
-        else
-        {
-            DownloadedAssets.GetSprite(st.iconId, styleIcon);
-        }
+
+        DownloadedAssets.GetSprite(st.iconId, styleIcon);        
     }
 
     private void SwipeRightStyle()
@@ -740,59 +770,47 @@ public class ShopManager : ShopBase
 
     private void OnBuy(StoreApiItem item, ShopItemType type)
     {
-        var js = new { purchase = item.id };
-        Debug.Log(item.silver);
-        Debug.Log(PlayerDataManager.playerData.silver);
-        APIManager.Instance.Post("shop/purchase", JsonConvert.SerializeObject(js), (string s, int r) =>
-        {
-            if (r == 200)
+        LoadingOverlay.Show();
+        StoreManagerAPI.Purchase(
+            item.id,
+            item.type,
+            type == ShopItemType.Silver ? null : "silver",
+            (error) =>
             {
-                SoundManagerOneShot.Instance.PlayReward();
-                CloseBuyPopup();
-                buySuccessObject.SetActive(true);
-                buySuccessTitle.text = LocalizeLookUp.GetStoreTitle(item.id);
-                buySuccessSubTitle.text = LocalizeLookUp.GetStoreSubtitle(item.id);
-                DownloadedAssets.GetSprite(item.id, buySuccessIcon, true);
-
-                if (type != ShopItemType.Silver)
+                LoadingOverlay.Hide();
+                if (string.IsNullOrEmpty(error))
                 {
-                    int cur = PlayerDataManager.playerData.silver;
-                    int dif = cur - item.silver;
-                    LeanTween.value(cur, dif, 1f).setOnUpdate((float v) =>
-                    {
-                        playerSilver.text = ((int)v).ToString();
+                    SoundManagerOneShot.Instance.PlayReward();
+                    CloseBuyPopup();
+                    buySuccessObject.SetActive(true);
+                    buySuccessTitle.text = LocalizeLookUp.GetStoreTitle(item.id);
+                    buySuccessSubTitle.text = LocalizeLookUp.GetStoreSubtitle(item.id);
+                    DownloadedAssets.GetSprite(item.id, buySuccessIcon, true);
 
-                    }).setOnComplete(() =>
-                   {
-                       Debug.Log(item.silver);
-                       Debug.Log(PlayerDataManager.playerData.silver);
-                       PlayerDataManager.playerData.silver = dif;
-                       PlayerManagerUI.Instance.UpdateDrachs(false);
-                       playerSilver.text = PlayerDataManager.playerData.silver.ToString();
-
-                   });
-
-                    Debug.LogError("TODO: GET CHAR AFTER PURCHASE???");
-                    //APIManager.Instance.GetData("character/get", (string res, int resp) =>
-                    //{
-                    //    if (resp == 200)
-                    //    {
-                    //        var rawData = JsonConvert.DeserializeObject<PlayerDataDetail>(res);
-                    //        PlayerDataManager.playerData = LoginAPIManager.DictifyData(rawData);
-                    //    }
-                    //});
+                    playerSilver.text = PlayerDataManager.playerData.silver.ToString();
+                    playerGold.text = PlayerDataManager.playerData.gold.ToString();
                 }
-
+                else
+                {
+                    UIGlobalPopup.ShowError(null, APIManager.ParseError(error));
+                }
             }
-        });
+        );
     }
 
-    public void OnBuy()
+    public static void OnBuySilver(StoreApiItem item)
+    {
+        if (m_Instance == null)
+            return;
+
+        m_Instance._OnBuySilver(item);
+    }
+
+    public void _OnBuySilver(StoreApiItem item)
     {
         Debug.Log(PlayerDataManager.playerData.silver);
         Debug.Log("buy silver");
 
-        var item = IAPSilver.selectedSilverPackage;
         CloseBuyPopup();
         buySuccessObject.SetActive(true);
         buySuccessTitle.text = LocalizeLookUp.GetStoreTitle(item.id);
@@ -810,57 +828,67 @@ public class ShopManager : ShopBase
 
     private void OnBuy(CosmeticData item, bool isBuySilver, ShopItem buttonItem = null)
     {
-        var js = new { purchase = item.id, currency = isBuySilver ? "silver" : "gold" };
-        Debug.Log("buy apparel");
-        Debug.Log(item.silver);
-        Debug.Log(PlayerDataManager.playerData.silver);
-        APIManager.Instance.Post("shop/purchase", JsonConvert.SerializeObject(js), (string s, int r) =>
-       {
-           Debug.Log(s);
-           if (r == 200)
-           {
-               SoundManagerOneShot.Instance.PlayReward();
-               CloseCosmeticPopup();
-               buySuccessObject.SetActive(true);
-               buySuccessTitle.text = LocalizeLookUp.GetStoreTitle(item.id);
-               buySuccessSubTitle.text = LocalizeLookUp.GetStoreSubtitle(item.id);
-               DownloadedAssets.GetSprite(item.iconId, buySuccessIcon, true);
-               PlayerDataManager.playerData.inventory.cosmetics.Add(item);
-               item.owned = true;
-               if (buttonItem != null)
-               {
-                   buttonItem.SetBought();
-               }
-               else
-               {
-                   buyWithGoldBtn.gameObject.SetActive(false);
-                   buyWithSilver.text = LocalizeLookUp.GetText("store_gear_owned_upper");
-                   buyWithSilver.color = Color.white;
-               }
-               if (isBuySilver)
-               {
-                   LeanTween.value(PlayerDataManager.playerData.silver, PlayerDataManager.playerData.silver - item.silver, 1f).setOnUpdate((float v) =>
-                   {
-                       playerSilver.text = ((int)v).ToString();
-                   }).setOnComplete(() =>
-                   {
-                       PlayerDataManager.playerData.silver -= item.silver;
-                       PlayerManagerUI.Instance.UpdateDrachs();
-                   });
-               }
-               else
-               {
-                   LeanTween.value(PlayerDataManager.playerData.gold, PlayerDataManager.playerData.gold - item.gold, 1f).setOnUpdate((float v) =>
-                   {
-                       playerGold.text = ((int)v).ToString();
-                   }).setOnComplete(() =>
-                   {
-                       PlayerDataManager.playerData.gold -= item.gold;
-                       PlayerManagerUI.Instance.UpdateDrachs();
-                   }); ;
-               }
-           }
-       });
+        LoadingOverlay.Show();
+
+        StoreManagerAPI.Purchase(
+            item.id,
+            "cosmetics",
+            isBuySilver ? "silver" : "gold",
+            (error) =>
+            {
+                LoadingOverlay.Hide();
+
+                if (string.IsNullOrEmpty(error))
+                {
+                    SoundManagerOneShot.Instance.PlayReward();
+                    CloseCosmeticPopup();
+                    buySuccessObject.SetActive(true);
+                    buySuccessTitle.text = LocalizeLookUp.GetStoreTitle(item.id);
+                    buySuccessSubTitle.text = LocalizeLookUp.GetStoreSubtitle(item.id);
+                    DownloadedAssets.GetSprite(item.iconId, buySuccessIcon, true);
+                    //PlayerDataManager.playerData.inventory.cosmetics.Add(item);
+                    //item.owned = true;
+                    if (buttonItem != null)
+                    {
+                        buttonItem.SetBought();
+                    }
+                    else
+                    {
+                        buyWithGoldBtn.gameObject.SetActive(false);
+                        buyWithSilver.text = LocalizeLookUp.GetText("store_gear_owned_upper");
+                        buyWithSilver.color = Color.white;
+                    }
+                    playerSilver.text = PlayerDataManager.playerData.silver.ToString();
+                    playerGold.text = PlayerDataManager.playerData.gold.ToString();
+                    //if (isBuySilver)
+                    //{
+                    //    //LeanTween.value(PlayerDataManager.playerData.silver, PlayerDataManager.playerData.silver - item.silver, 1f).setOnUpdate((float v) =>
+                    //    //{
+                    //    //    playerSilver.text = ((int)v).ToString();
+                    //    //}).setOnComplete(() =>
+                    //    //{
+                    //    //    //PlayerDataManager.playerData.silver -= item.silver;
+                    //    //    //PlayerManagerUI.Instance.UpdateDrachs();
+                    //    //});
+                    //}
+                    //else
+                    //{
+                    //    //LeanTween.value(PlayerDataManager.playerData.gold, PlayerDataManager.playerData.gold - item.gold, 1f).setOnUpdate((float v) =>
+                    //    //{
+                    //    //    playerGold.text = ((int)v).ToString();
+                    //    //}).setOnComplete(() =>
+                    //    //{
+                    //    //    //PlayerDataManager.playerData.gold -= item.gold;
+                    //    //    //PlayerManagerUI.Instance.UpdateDrachs();
+                    //    //}); ;
+                    //}
+                }
+                else
+                {
+                    UIGlobalPopup.ShowError(null, APIManager.ParseError(error));
+                }
+            }
+        );
     }
 
     #endregion

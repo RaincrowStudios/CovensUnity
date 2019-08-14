@@ -509,15 +509,18 @@ public class TeamManagerUI : MonoBehaviour
             return;
 
         //disable the invite interaction
-        var invites = m_Invites.m_Pool.GetInstances();
-        foreach(TeamInviteItemUI item in invites)
-        {
-            if (item.ItemId == id)
-            {
-                item.Disable(true);
-                break;
-            }
-        }
+        //var invites = m_Invites.m_Pool.GetInstances();
+        //foreach(TeamInviteItemUI item in invites)
+        //{
+        //    if (item.ItemId == id)
+        //    {
+        //        item.Disable(true);
+        //        break;
+        //    }
+        //}
+
+        //reload the invites screen
+        SetupInvites();
     }
     private void OnCovenInviteReceive(CovenInvite covenInvite)
     {
@@ -552,15 +555,18 @@ public class TeamManagerUI : MonoBehaviour
         if (m_CurrentScreen != Screen.MEMBERS)
             return;
 
-        var members = m_Members.m_Pool.GetInstances();
-        foreach(TeamMemberItemUI member in members)
-        {
-            if (member.MemberData.Name == name)
-            {
-                member.Disable(true);
-                break;
-            }
-        }
+        //var members = m_Members.m_Pool.GetInstances();
+        //foreach(TeamMemberItemUI member in members)
+        //{
+        //    if (member.MemberData.Name == name)
+        //    {
+        //        member.Disable(true);
+        //        break;
+        //    }
+        //}
+
+        //reload
+        SetupMembers();
     }
     private void OnMottoChange(string motto)
     {
@@ -585,15 +591,17 @@ public class TeamManagerUI : MonoBehaviour
             return;
 
         //disable the invite interaction
-        var requests = m_Requests.m_Pool.GetInstances();
-        foreach (TeamInviteItemUI item in requests)
-        {
-            if (item.ItemId == id)
-            {
-                item.Disable(true);
-                break;
-            }
-        }
+        //var requests = m_Requests.m_Pool.GetInstances();
+        //foreach (TeamInviteItemUI item in requests)
+        //{
+        //    if (item.ItemId == id)
+        //    {
+        //        item.Disable(true);
+        //        break;
+        //    }
+        //}
+
+        SetupRequests();
     }
     private void OnMemberRefresh(string id)
     {
@@ -947,7 +955,7 @@ public class TeamManagerUI : MonoBehaviour
         if (m_CovenData == null) //show the player's received invitations
         {
             m_CreateCovenButton.gameObject.SetActive(true);
-            m_ViewRequestsButton.gameObject.SetActive(true);
+            //m_ViewRequestsButton.gameObject.SetActive(true);
             m_ViewInvitesButton.gameObject.SetActive(true);
             m_SendRequestButton.gameObject.SetActive(true);
 
@@ -982,7 +990,7 @@ public class TeamManagerUI : MonoBehaviour
         item.Setup(
             covenInvite,
             onAccept: () => Open(null),
-            onReject: () => item.Disable(true)
+            onReject: () => SetupInvites()//item.Disable(true)
         );
         return item;
     }
@@ -992,7 +1000,7 @@ public class TeamManagerUI : MonoBehaviour
         TeamInviteItemUI item = m_Invites.m_Pool.Spawn(m_Invites.m_Container.transform);
         item.Setup(
             pendingInvite,
-            onCancel: () => item.Disable(true));
+            onCancel: () => SetupInvites());//item.Disable(true));
         return item;
     }
 
@@ -1090,8 +1098,8 @@ public class TeamManagerUI : MonoBehaviour
         TeamInviteItemUI item = m_Requests.m_Pool.Spawn(m_Requests.m_Container.transform);
         item.Setup(
             pendingRequest,
-            onAccept: () => item.Disable(true),
-            onReject: () => item.Disable(true)
+            onAccept: () => SetupRequests(),// item.Disable(true),
+            onReject: () => SetupRequests()//item.Disable(true)
         );
         return item;
     }

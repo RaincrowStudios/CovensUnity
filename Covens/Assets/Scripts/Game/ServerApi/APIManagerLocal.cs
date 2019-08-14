@@ -24,7 +24,16 @@ public class APIManagerLocal
         string sContent = LoadFile(endpoint);
         if (sContent != null)
         {
-            CallBack(sContent, sContent.Contains("errorcode") ? 412 : 200);
+            int responseCode = 200;
+            string response = sContent;
+
+            if (response.Contains("errorcode_"))
+            {
+                responseCode = 412;
+                response = response.Substring(response.IndexOf('_') + 1);
+            }
+
+            CallBack(response, responseCode);
         }
         else
         {
@@ -86,7 +95,7 @@ public class APIManagerLocal
         string sFile = string.Format("LocalApi/websocket/{0}", sCommand);
 
         string sContent = LoadFile(sFile);
-        if (!string.IsNullOrWhiteSpace(sContent))
+        if (!string.IsNullOrEmpty(sContent))
         {
             CommandResponse commandReponse = new CommandResponse()
             {

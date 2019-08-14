@@ -77,7 +77,7 @@ public class TeamPlayerView : MonoBehaviour
         _dominion.text = LocalizeLookUp.GetText("lt_dominion") + " " + data.dominion;
         _dominionRank.text = LocalizeLookUp.GetText("lt_dominion_rank") + " " + data.dominionRank;
         _worldRank.text = LocalizeLookUp.GetText("lt_world_rank") + " " + data.worldRank;
-        _coven.text = (string.IsNullOrEmpty(data.covenId) ? LocalizeLookUp.GetText("lt_coven_none") : LocalizeLookUp.GetText("lt_coven") + " " + data.covenId);
+        _coven.text = (string.IsNullOrEmpty(data.coven) ? LocalizeLookUp.GetText("lt_coven_none") : LocalizeLookUp.GetText("lt_coven") + " " + data.coven);
         //_state.text = (data.state == "" ? LocalizeLookUp.GetText("lt_state_normal") : LocalizeLookUp.GetText("lt_state") + " " + data.state);
         _power.text = "<Power>: " + data.power;
         _resilience.text = "<Resilience>: " + data.resilience;
@@ -167,20 +167,23 @@ public class TeamPlayerView : MonoBehaviour
     }
 
 
-    public static void ViewCharacter(string id, System.Action<WitchMarkerData, string> callback)
+    public static void ViewCharacter(string id, System.Action<WitchMarkerData, string> callback, bool searchByName = false)
     {
-        MarkerSpawner.GetMarkerDetails(id, (result, response) =>
-        {
-            if (result == 200)
+        APIManager.Instance.Get(
+            "character/select/" + id + "?selection=chat&name=" + searchByName.ToString().ToLower(),
+            "",
+            (response, result) =>
             {
-                WitchMarkerData character = JsonConvert.DeserializeObject<WitchMarkerData>(response);
-                Instance.Show(character);
-                callback?.Invoke(character, null);
-            }
-            else
-            {
-                callback?.Invoke(null, response);
-            }
-        });
+                if (result == 200)
+                {
+                    WitchMarkerData data = JsonConvert.DeserializeObject<WitchMarkerData>(response);
+                    Instance.Show(data);
+                    callback?.Invoke(data, null);
+                }
+                else
+                {
+                    callback?.Invoke(null, APIManager.ParseError(response));
+                }
+            });
     }
 }
