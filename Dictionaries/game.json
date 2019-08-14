@@ -763,6 +763,21 @@
       "glyph": 10,
       "target": 1,
       "hidden": true
+    },
+    "spell_mirrors": {
+      "id": "spell_mirrors",
+      "level": 5,
+      "glyph": 1,
+      "school": 0,
+      "cost": 100,
+      "states": [
+        "",
+        "vulnerable"
+      ],
+      "target": 1,
+      "align": 2,
+      "xp": 30,
+      "cooldown": 300
     }
   },
   "Spirits": {
