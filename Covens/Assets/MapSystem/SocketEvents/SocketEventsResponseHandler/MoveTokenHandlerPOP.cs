@@ -20,6 +20,7 @@ namespace Raincrow.GameEventResponses
 
         public void HandleResponse(string eventData)
         {
+            Debug.Log(eventData);
             MoveEventDataPOP data = JsonConvert.DeserializeObject<MoveEventDataPOP>(eventData);
             OnMarkerMovePOP?.Invoke(data);
         }

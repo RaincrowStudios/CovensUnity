@@ -42,13 +42,23 @@ public abstract class Token
 
     [JsonIgnore]
     public MarkerSpawner.MarkerType Type { get { return (type == null ? MarkerSpawner.MarkerType.NONE : m_TypeMap[type]); } }
-    
+
     [JsonIgnore]
     public virtual string Id => instance;
-    [JsonIgnore]
+
     public int position;
-    [JsonIgnore]
     public int island;
+    [JsonIgnore]
+    public int popIndex
+    {
+        get
+        {
+            if (island >= 0) return island * 3 + position;
+            else
+                return -1;
+        }
+    }
+
 }
 
 public class CollectableToken : Token
@@ -151,7 +161,7 @@ public class PlayerToken : WitchToken
     {
         get => "character";
     }
-    
+
     public override string instance => PlayerDataManager.playerData.instance;
 
     public override float longitude

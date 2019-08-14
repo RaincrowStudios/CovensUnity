@@ -20,7 +20,7 @@ namespace Raincrow.Chat
         private static string CovenName;
         public static readonly int MaxMessages = 50;
 
-        public static bool Connected { get { return SocketManager != null && SocketManager.Socket != null && SocketManager.Socket.IsOpen; } }        
+        public static bool Connected { get { return SocketManager != null && SocketManager.Socket != null && SocketManager.Socket.IsOpen; } }
 
         private static Dictionary<ChatCategory, int> m_NewMessages = new Dictionary<ChatCategory, int>
         {
@@ -68,8 +68,8 @@ namespace Raincrow.Chat
                     level = PlayerDataManager.playerData.level,
                     name = PlayerDataManager.playerData.name,
                     avatar = PlayerDataManager.playerData.bodyType,
-                }, 
-                covenId, 
+                },
+                covenId,
                 covenName
             );
         }
@@ -94,11 +94,11 @@ namespace Raincrow.Chat
                     SocketManager.Socket.On(SocketIOEventTypes.Error, (a, b, c) => OnError(ChatCategory.NONE, a, b, c));
                     SocketManager.Socket.On(SocketIOEventTypes.Connect, OnConnect);
                     SocketManager.Socket.On(SocketIOEventTypes.Disconnect, OnDisconnect);
-                }                
+                }
 
                 SocketManager.Open();
-            }           
-        }        
+            }
+        }
 
         public static void InitCoven(string covenName, string covenId)
         {
@@ -117,7 +117,7 @@ namespace Raincrow.Chat
                 });
                 CovenSocket.On("join.success", (_socket, _packet, _args) => OnSocketJoinChat(ChatCategory.COVEN, _args));
                 CovenSocket.On("new.message", (_socket, _packet, _args) => OnSocketReceiveMessage(ChatCategory.COVEN, _args));
-                CovenSocket.On("left.success", (_socket, _packet, _args) => 
+                CovenSocket.On("left.success", (_socket, _packet, _args) =>
                     {
                         OnSocketLeaveChat(ChatCategory.COVEN, _args);
                         CovenSocket = null;
@@ -187,13 +187,13 @@ namespace Raincrow.Chat
                 });
                 WorldSocket.On("join.success", (_socket, _packet, _args) => OnSocketJoinChat(ChatCategory.WORLD, _args));
                 WorldSocket.On("new.message", (_socket, _packet, _args) => OnSocketReceiveMessage(ChatCategory.WORLD, _args));
-                WorldSocket.On("left.success", (_socket, _packet, _args) => 
+                WorldSocket.On("left.success", (_socket, _packet, _args) =>
                     {
                         OnSocketLeaveChat(ChatCategory.WORLD, _args);
                         WorldSocket = null;
                     });
                 WorldSocket.On(SocketIOEventTypes.Error, (a, b, c) => OnError(ChatCategory.WORLD, a, b, c));
-            }            
+            }
             //Log("Joining World chat");
             //WorldSocket.Emit("join.chat", Player);
 
@@ -209,7 +209,7 @@ namespace Raincrow.Chat
                 });
                 SupportSocket.On("join.success", (_socket, _packet, _args) => OnSocketJoinChat(ChatCategory.SUPPORT, _args));
                 SupportSocket.On("new.message", (_socket, _packet, _args) => OnSocketReceiveMessage(ChatCategory.SUPPORT, _args));
-                SupportSocket.On("left.success", (_socket, _packet, _args) => 
+                SupportSocket.On("left.success", (_socket, _packet, _args) =>
                     {
                         OnSocketLeaveChat(ChatCategory.SUPPORT, _args);
                         SupportSocket = null;
@@ -225,7 +225,7 @@ namespace Raincrow.Chat
                 }
                 TeamManager.OnJoinCoven += OnJoinCoven;
                 TeamManager.OnLeaveCoven += LeaveCovenChatRequested;
-            }            
+            }
 
             if (DominionSocket == null)
             {
@@ -234,7 +234,7 @@ namespace Raincrow.Chat
                     InitDominion(PlayerDataManager.currentDominion);
                 }
                 MarkerManagerAPI.OnChangeDominion += OnChangeDominion;
-            }            
+            }
         }
 
         private static void OnDisconnect(Socket socket, Packet packet, object[] args)
@@ -242,7 +242,7 @@ namespace Raincrow.Chat
             if (DominionSocket != null)
             {
                 DominionSocket.Disconnect();
-            }            
+            }
             DominionSocket = null;
 
             if (CovenSocket != null)
@@ -304,7 +304,7 @@ namespace Raincrow.Chat
                 m_Messages[category].Add(msg);
                 m_NewMessages[category] += 1;
                 OnReceiveMessage(category, msg);
-            }  
+            }
             else
             {
                 Log("Received Duplicate Message: " + msg._id);
@@ -326,7 +326,7 @@ namespace Raincrow.Chat
                 socket.Disconnect();
 
                 OnLeaveChatRequested?.Invoke(chatCategory);
-            }            
+            }
         }
 
         //GAME EVENTS
@@ -342,7 +342,7 @@ namespace Raincrow.Chat
                 InitCoven(covenName, covenId);
 
                 OnEnterCovenChat?.Invoke(covenId, covenName);
-            }            
+            }
         }
 
         private static void OnChangeDominion(string dominion)
@@ -358,25 +358,25 @@ namespace Raincrow.Chat
             switch (category)
             {
                 case ChatCategory.WORLD:
-                {
-                    return WorldSocket;
-                }
+                    {
+                        return WorldSocket;
+                    }
                 case ChatCategory.SUPPORT:
-                {
-                    return SupportSocket;
-                }
+                    {
+                        return SupportSocket;
+                    }
                 case ChatCategory.DOMINION:
-                {
-                    return DominionSocket;
-                }
+                    {
+                        return DominionSocket;
+                    }
                 case ChatCategory.COVEN:
-                {
-                    return CovenSocket;
-                }
+                    {
+                        return CovenSocket;
+                    }
                 default:
-                {
-                    return null;
-                }
+                    {
+                        return null;
+                    }
             }
         }
 
@@ -470,29 +470,29 @@ namespace Raincrow.Chat
             switch (category)
             {
                 case ChatCategory.COVEN:
-                {
-                    return CovenSocket != null && CovenSocket.IsOpen;
-                }
+                    {
+                        return CovenSocket != null && CovenSocket.IsOpen;
+                    }
                 case ChatCategory.DOMINION:
-                {
-                    return DominionSocket != null && DominionSocket.IsOpen;
-                }
+                    {
+                        return DominionSocket != null && DominionSocket.IsOpen;
+                    }
                 case ChatCategory.NEWS:
-                {
-                    return false;
-                }
+                    {
+                        return false;
+                    }
                 case ChatCategory.SUPPORT:
-                {
-                    return SupportSocket != null && SupportSocket.IsOpen;
-                }
+                    {
+                        return SupportSocket != null && SupportSocket.IsOpen;
+                    }
                 case ChatCategory.WORLD:
-                {
-                    return WorldSocket != null && WorldSocket.IsOpen;
-                }
+                    {
+                        return WorldSocket != null && WorldSocket.IsOpen;
+                    }
                 default:
-                {
-                    return false;
-                }
+                    {
+                        return false;
+                    }
             }
         }
 
@@ -504,7 +504,7 @@ namespace Raincrow.Chat
         public static void ResetNewMessagesCount(ChatCategory category)
         {
             m_NewMessages[category] = 0;
-        }        
+        }
 
         private static void OnApplicationQuitting()
         {
@@ -519,7 +519,7 @@ namespace Raincrow.Chat
 
         public static void LogError(string message)
         {
-            Debug.LogError("<color=#00FF28>[ChatManager]</color> " + message );
+            Debug.LogError("<color=#00FF28>[ChatManager]</color> " + message);
         }
     }
 }

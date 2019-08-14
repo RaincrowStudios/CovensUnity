@@ -59,7 +59,7 @@ public class UIPlayerInfo : UIInfoPanel
     private SelectWitchData_Map m_WitchDetails;
     private float m_PreviousMapZoom;
     public WitchToken WitchToken { get { return m_WitchToken; } }
-    
+
     protected override void Awake()
     {
         m_Instance = this;
@@ -77,6 +77,25 @@ public class UIPlayerInfo : UIInfoPanel
 
     public void Show(WitchMarker witch, WitchToken data)
     {
+        ShowHelper(witch, data);
+        MainUITransition.Instance.HideMainUI();
+
+        MarkerSpawner.HighlightMarker(new List<IMarker> { PlayerManager.marker, m_WitchMarker }, true);
+
+        SpellCastHandler.OnPlayerTargeted += _OnPlayerAttacked;
+        MoveTokenHandler.OnTokenMove += _OnMapTokenMove;
+        SpellCastHandler.OnApplyStatusEffect += _OnStatusEffectApplied;
+        RemoveTokenHandler.OnTokenRemove += _OnMapTokenRemove;
+        MarkerSpawner.OnImmunityChange += _OnImmunityChange;
+        BanishManager.OnBanished += Abort;
+
+        previousMapPosition = MapsAPI.Instance.GetWorldPosition();
+        m_PreviousMapZoom = MapsAPI.Instance.normalizedZoom;
+
+    }
+
+    private void ShowHelper(WitchMarker witch, WitchToken data)
+    {
         if (IsShowing)
             return;
 
@@ -86,19 +105,18 @@ public class UIPlayerInfo : UIInfoPanel
             return;
         }
 
-        MainUITransition.Instance.HideMainUI();
 
         m_WitchMarker = witch;
         m_WitchToken = data;
         m_WitchDetails = null;
 
-        //setup the ui
+        // //setup the ui
         m_DisplayNameText.text = m_WitchToken.displayName;
         m_DegreeSchoolText.text = Utilities.WitchTypeControlSmallCaps(m_WitchToken.degree);
         m_LevelText.text = LocalizeLookUp.GetText("card_witch_level").ToUpper() + " <color=black>" + m_WitchToken.level.ToString() + "</color>";
-        _OnEnergyChange(m_WitchToken.instance, m_WitchToken.energy);
+        // _OnEnergyChange(m_WitchToken.instance, m_WitchToken.energy);
 
-        //sprite and color
+        // //sprite and color
         if (m_WitchToken.degree < 0)
         {
             m_Sigil.sprite = m_ShadowSigilSprite;
@@ -114,24 +132,11 @@ public class UIPlayerInfo : UIInfoPanel
 
         m_CovenText.text = LocalizeLookUp.GetText("chat_coven").ToUpper() + " <color=black>" + LocalizeLookUp.GetText("loading") + "</color>";
 
-        previousMapPosition = MapsAPI.Instance.GetWorldPosition();
-        m_PreviousMapZoom = Mathf.Min(MapsAPI.Instance.normalizedZoom, 0.98f);
-
-        MarkerSpawner.HighlightMarker(new List<IMarker> { PlayerManager.marker, m_WitchMarker }, true);
-
-        //witch.SetTextAlpha(NewMapsMarker.highlightTextAlpha);
-
-        OnMapEnergyChange.OnEnergyChange += _OnEnergyChange;
-        SpellCastHandler.OnPlayerTargeted += _OnPlayerAttacked;
-        MoveTokenHandler.OnTokenMove += _OnMapTokenMove;
-        SpellCastHandler.OnApplyStatusEffect += _OnStatusEffectApplied;
-        RemoveTokenHandler.OnTokenRemove += _OnMapTokenRemove;
-        OnMapEnergyChange.OnPlayerDead += _OnCharacterDead;
-        MarkerSpawner.OnImmunityChange += _OnImmunityChange;
-        BanishManager.OnBanished += Abort;
+        // OnMapEnergyChange.OnEnergyChange += _OnEnergyChange;
+        // OnMapEnergyChange.OnPlayerDead += _OnCharacterDead;
+        m_ConditionsList.show = false;
 
         Show();
-        m_ConditionsList.show = false;
     }
 
     public override void ReOpen()
@@ -139,36 +144,60 @@ public class UIPlayerInfo : UIInfoPanel
         base.ReOpen();
 
         UpdateCanCast();
+        if (!LocationIslandController.isInBattle)
+        {
+            MapsAPI.Instance.allowControl = false;
 
-        MapsAPI.Instance.allowControl = false;
-
-        IMarker marker = MarkerManager.GetMarker(m_WitchToken.instance);
-        if (marker != null)
-            MapCameraUtils.FocusOnMarker(marker.GameObject.transform.position);
-        else
-            Close();
+            IMarker marker = MarkerManager.GetMarker(m_WitchToken.instance);
+            if (marker != null)
+                MapCameraUtils.FocusOnMarker(marker.GameObject.transform.position);
+            else
+                Close();
+        }
     }
 
     public override void Close()
     {
+        CloseHelper();
+        if (!LocationIslandController.isInBattle)
+        {
+            MainUITransition.Instance.ShowMainUI();
+            MapsAPI.Instance.allowControl = true;
+            MapCameraUtils.FocusOnPosition(previousMapPosition, m_PreviousMapZoom, true);
+
+            //m_Witch.SetTextAlpha(NewMapsMarker.defaultTextAlpha);
+
+            MarkerSpawner.HighlightMarker(new List<IMarker> { PlayerManager.marker, m_WitchMarker }, false);
+
+            SpellCastHandler.OnPlayerTargeted -= _OnPlayerAttacked;
+            MoveTokenHandler.OnTokenMove -= _OnMapTokenMove;
+            SpellCastHandler.OnApplyStatusEffect -= _OnStatusEffectApplied;
+            RemoveTokenHandler.OnTokenRemove -= _OnMapTokenRemove;
+            MarkerSpawner.OnImmunityChange -= _OnImmunityChange;
+            BanishManager.OnBanished -= Abort;
+        }
+        else
+        {
+            Debug.Log("Closing Info");
+            LocationUnitSpawner.EnableMarkers();
+        }
+    }
+
+    public void ClosePOP()
+    {
+        CloseHelper();
+    }
+
+    public void ShowPOP(WitchMarker witch, WitchToken data)
+    {
+        ShowHelper(witch, data);
+    }
+
+    private void CloseHelper()
+    {
         base.Close();
-
-        MainUITransition.Instance.ShowMainUI();
-        MapsAPI.Instance.allowControl = true;
-        MapCameraUtils.FocusOnPosition(MapsAPI.Instance.mapCenter.position, m_PreviousMapZoom, true);
-
-        //m_Witch.SetTextAlpha(NewMapsMarker.defaultTextAlpha);
-
-        MarkerSpawner.HighlightMarker(new List<IMarker> { PlayerManager.marker, m_WitchMarker }, false);
-
         OnMapEnergyChange.OnEnergyChange -= _OnEnergyChange;
-        SpellCastHandler.OnPlayerTargeted -= _OnPlayerAttacked;
-        MoveTokenHandler.OnTokenMove -= _OnMapTokenMove;
-        SpellCastHandler.OnApplyStatusEffect -= _OnStatusEffectApplied;
-        RemoveTokenHandler.OnTokenRemove -= _OnMapTokenRemove;
         OnMapEnergyChange.OnPlayerDead -= _OnCharacterDead;
-        MarkerSpawner.OnImmunityChange -= _OnImmunityChange;
-        BanishManager.OnBanished -= Abort;
     }
 
     public void SetupDetails(SelectWitchData_Map details)
@@ -200,6 +229,7 @@ public class UIPlayerInfo : UIInfoPanel
     private void OnClickClose()
     {
         Close();
+
     }
 
     private void OnClickCoven()
@@ -245,11 +275,13 @@ public class UIPlayerInfo : UIInfoPanel
             {
                 Spellcasting.CastSpell(spell, m_WitchMarker, ingredients,
                     (result) => ReOpen(),
-                    () =>  OnClickClose()
+                    () => OnClickClose()
                 );
             },
-            () => this.ReOpen(),
-            () => Close()
+            () =>
+            {
+                this.ReOpen();
+            }
         );
     }
 
@@ -259,7 +291,7 @@ public class UIPlayerInfo : UIInfoPanel
 
         if (spell == null)
             return;
-        
+
         Hide();
 
         //send the cast
@@ -284,7 +316,7 @@ public class UIPlayerInfo : UIInfoPanel
 
         m_CastMenu.UpdateCanCast(m_WitchDetails, m_WitchMarker);
     }
-    
+
     private void _OnPlayerAttacked(string caster, SpellData spell, Raincrow.GameEventResponses.SpellCastHandler.Result result)
     {
         if (caster == m_WitchToken.instance)

@@ -8,15 +8,17 @@ public class RemoveTokenHandlerPOP : IGameEventHandler
     {
         [JsonProperty("_id")]
         public string instance;
+        public int island;
+        public int position;
         public double timestamp;
     }
-    public string EventName => "remove.pop.token";
+    public string EventName => "remove.token.pop";
 
-    public static event System.Action<string> OnRemoveTokenPOP;
+    public static event System.Action<RemoveEventData> OnRemoveTokenPOP;
 
     public void HandleResponse(string eventData)
     {
         RemoveEventData removeData = JsonConvert.DeserializeObject<RemoveEventData>(eventData);
-        OnRemoveTokenPOP?.Invoke(removeData.instance);
+        OnRemoveTokenPOP?.Invoke(removeData);
     }
 }

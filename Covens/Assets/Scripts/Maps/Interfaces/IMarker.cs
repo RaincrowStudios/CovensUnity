@@ -25,6 +25,8 @@ namespace Raincrow.Maps
         void SetCharacterAlpha(float t, float time = 0, System.Action onComplete = null);
         void SetTextAlpha(float a);
         void SetAlpha(float a, float time = 0, System.Action onComplete = null);
+        void InitializePositionPOP();
+        void EnablePopSorting();
         void SetWorldPosition(Vector3 worldPos, float time = 0, System.Action onComplete = null);
         Transform AvatarTransform { get; }
 

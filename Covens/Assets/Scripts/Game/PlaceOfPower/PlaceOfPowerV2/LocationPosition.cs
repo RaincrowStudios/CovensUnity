@@ -1,0 +1,47 @@
+﻿using System.Collections;
+using System.Collections.Generic;
+using UnityEngine;
+
+public class LocationPosition : MonoBehaviour
+{
+    public int position { get; private set; }
+    public int island { get; private set; }
+
+    public void Setup(int position, int island)
+    {
+        this.position = position;
+        this.island = island;
+    }
+
+    public void OnClick()
+    {
+        Debug.Log("onclick");
+        if (CheckEmpty())
+        {
+            var token = new WitchToken();
+            token.position = position;
+            token.island = island;
+
+            if (LocationPlayerAction.CanSelectIsland(token))
+            {
+                LocationUnitSpawner.SetHighlight(token);
+                LocationPlayerAction.MakeVisible();
+                LocationPlayerAction.SetSelectedPosition(this);
+            }
+            else
+            {
+                LocationPlayerAction.ShowMoveCloser();
+            }
+        }
+        else
+        {
+            LocationPlayerAction.MakeTransparent();
+        }
+    }
+
+    private bool CheckEmpty()
+    {
+        return transform.parent.childCount == 1;
+    }
+
+}

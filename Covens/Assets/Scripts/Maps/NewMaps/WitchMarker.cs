@@ -18,6 +18,7 @@ public class WitchMarker : MuskMarker
 
     [SerializeField] private SpriteRenderer m_IconRenderer;
 
+
     public WitchToken witchToken { get => Token as WitchToken; }
 
     private int m_TweenId;
@@ -52,8 +53,8 @@ public class WitchMarker : MuskMarker
 
     public override void Setup(Token data)
     {
+        Debug.Log("Setting up Marker");
         base.Setup(data);
-                
         m_DisplayName.text = witchToken.displayName;
         SetStats();
         UpdateNameplate(m_DisplayName.preferredWidth);
@@ -71,6 +72,12 @@ public class WitchMarker : MuskMarker
             AddDeathFX();
         else
             RemoveDeathFX();
+    }
+
+    public override void EnablePopSorting()
+    {
+        base.EnablePopSorting();
+        m_AvatarRenderer.sortingOrder = 10;
     }
 
     public override void EnablePortait()
@@ -139,7 +146,7 @@ public class WitchMarker : MuskMarker
     {
         if (m_Level == null)
             return;
-        
+
         m_Level.text = witchToken.level.ToString();
     }
 
@@ -316,11 +323,11 @@ public class WitchMarker : MuskMarker
             m_CharacterAlphaMul = 0.38f;
         else
             m_CharacterAlphaMul = 1f;
-        
+
         if (m_CharacterAlphaMul != prevValue)
             SetCharacterAlpha(AvatarAlpha, 1f);
     }
-    
+
 #if UNITY_EDITOR
     [ContextMenu("Update nameplate")]
     private void DebugNameplate()

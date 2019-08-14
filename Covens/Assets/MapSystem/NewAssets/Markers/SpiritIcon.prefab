@@ -128,12 +128,14 @@ MonoBehaviour:
   m_NameBanner: {fileID: 212842153899838362}
   m_StatsContainer: {fileID: 5099072670767435631}
   m_EnergyRing: {fileID: 212454099393779378}
+  m_EnergyRingEmpty: {fileID: 8920900679040479327}
   m_Shadows:
   - {fileID: 212630952619904094}
   - {fileID: 212686033159262028}
   m_DebugFloat: 0
   m_AvatarGroup: {fileID: 4915499845343902}
   m_IconGroup: {fileID: 4527749467080838}
+  m_NamePlate: {fileID: 4338905907238940}
   m_DisplayName: {fileID: 114468071247984912}
   m_Tier: {fileID: 0}
   m_IconRenderer: {fileID: 212061742380053784}

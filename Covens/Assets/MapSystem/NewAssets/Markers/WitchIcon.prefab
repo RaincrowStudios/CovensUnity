@@ -367,6 +367,7 @@ MonoBehaviour:
   m_NameBanner: {fileID: 212143679534135942}
   m_StatsContainer: {fileID: 3213880627018362259}
   m_EnergyRing: {fileID: 212512098840904110}
+  m_EnergyRingEmpty: {fileID: 176596696117358692}
   m_Shadows:
   - {fileID: 212494468505197472}
   - {fileID: 212252664510502532}
