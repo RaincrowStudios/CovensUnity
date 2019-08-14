@@ -94,7 +94,7 @@ public class DownloadManager : MonoBehaviour
     public static bool DictionaryReady { get; set; }
 
 
-    public static void DownloadAssets()
+    public static void DownloadAssets(System.Action dictionaryDownloaded)
     {
         Debug.Log("Requesting asset list from server");
         SplashManager.Instance.SetDownloadMessage("Getting asset list from server", "");
@@ -113,7 +113,7 @@ public class DownloadManager : MonoBehaviour
                     //APIManagerServer.EnableAutoRetry = true;
                     Debug.Log("Assets to download:\n" + s);
                     var d = JsonConvert.DeserializeObject<AssetResponse>(s);
-                    Instance.StartCoroutine(StartDownloads(d));
+                    Instance.StartCoroutine(StartDownloads(d, dictionaryDownloaded, null));
                 }
                 else
                 {
@@ -126,7 +126,7 @@ public class DownloadManager : MonoBehaviour
         getAssets.Invoke();
     }
 
-    private static IEnumerator StartDownloads(AssetResponse assets)
+    private static IEnumerator StartDownloads(AssetResponse assets, System.Action dictionariesDownloaded, System.Action bundlesDownloaded)
     {
         SplashManager.Instance.SetDownloadMessage("", "");
 
@@ -286,7 +286,7 @@ public class DownloadManager : MonoBehaviour
 
         OnDownloadedDictionary?.Invoke();
         DictionaryReady = true;
-
+        dictionariesDownloaded?.Invoke();
 
 
         //download the asset bundles
@@ -419,6 +419,7 @@ public class DownloadManager : MonoBehaviour
         }
 
         OnDownloadsComplete?.Invoke();
+        bundlesDownloaded?.Invoke();
     }
 
     public static bool DeserializeLocalisationDictionary(string json)

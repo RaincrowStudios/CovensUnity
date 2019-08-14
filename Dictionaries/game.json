@@ -129,6 +129,7 @@
   "Spells": {
     "spell_hex": {
       "id": "spell_hex",
+      "level": 1,
       "glyph": 9,
       "school": -1,
       "states": [
@@ -141,6 +142,7 @@
     },
     "spell_sunEater": {
       "id": "spell_sunEater",
+      "level": 1,
       "glyph": 15,
       "school": -1,
       "cost": 2,
@@ -155,6 +157,7 @@
     },
     "spell_bind": {
       "id": "spell_bind",
+      "level": 2,
       "glyph": 2,
       "school": -1,
       "states": [
@@ -168,6 +171,7 @@
     },
     "spell_resurrection": {
       "id": "spell_resurrection",
+      "level": 5,
       "glyph": 12,
       "school": -1,
       "states": [
@@ -180,6 +184,7 @@
     },
     "spell_bless": {
       "id": "spell_bless",
+      "level": 1,
       "glyph": 3,
       "school": 1,
       "states": [
@@ -192,6 +197,7 @@
     },
     "spell_silence": {
       "id": "spell_silence",
+      "level": 2,
       "glyph": 14,
       "school": 1,
       "states": [
@@ -204,6 +210,7 @@
     },
     "spell_whiteFlame": {
       "id": "spell_whiteFlame",
+      "level": 1,
       "glyph": 6,
       "school": 1,
       "cost": 2,
@@ -218,6 +225,7 @@
     },
     "spell_grace": {
       "id": "spell_grace",
+      "level": 3,
       "glyph": 7,
       "school": 1,
       "states": [
@@ -230,6 +238,7 @@
     },
     "spell_seal": {
       "id": "spell_seal",
+      "level": 1,
       "glyph": 13,
       "cost": 10,
       "states": [
@@ -243,6 +252,7 @@
     },
     "spell_invisibility": {
       "id": "spell_invisibility",
+      "level": 1,
       "glyph": 10,
       "states": [
         "",
@@ -254,6 +264,7 @@
     },
     "spell_dispel": {
       "id": "spell_dispel",
+      "level": 1,
       "glyph": 5,
       "states": [
         "",
@@ -266,6 +277,7 @@
     },
     "spell_clarity": {
       "id": "spell_clarity",
+      "level": 6,
       "glyph": 25,
       "states": [
         "",
@@ -278,6 +290,7 @@
     },
     "spell_sealBalance": {
       "id": "spell_sealBalance",
+      "level": 10,
       "glyph": 17,
       "baseSpell": "spell_seal",
       "cost": 30,
@@ -292,11 +305,12 @@
       ],
       "target": 1,
       "align": 5,
-      "xp": 50,
-      "cooldown": 30
+      "xp": 20,
+      "cooldown": 60
     },
     "spell_sealLight": {
       "id": "spell_sealLight",
+      "level": 10,
       "glyph": 18,
       "school": 1,
       "baseSpell": "spell_seal",
@@ -312,11 +326,12 @@
       ],
       "target": 1,
       "align": 5,
-      "xp": 50,
-      "cooldown": 30
+      "xp": 20,
+      "cooldown": 60
     },
     "spell_sealShadow": {
       "id": "spell_sealShadow",
+      "level": 10,
       "glyph": 19,
       "school": -1,
       "baseSpell": "spell_seal",
@@ -332,11 +347,12 @@
       ],
       "target": 1,
       "align": 5,
-      "xp": 50,
-      "cooldown": 30
+      "xp": 20,
+      "cooldown": 60
     },
     "spell_reflectiveWard": {
       "id": "spell_reflectiveWard",
+      "level": 6,
       "glyph": 20,
       "school": 1,
       "baseSpell": "spell_ward",
@@ -357,6 +373,7 @@
     },
     "spell_rageWard": {
       "id": "spell_rageWard",
+      "level": 6,
       "glyph": 21,
       "school": -1,
       "baseSpell": "spell_ward",
@@ -377,6 +394,7 @@
     },
     "spell_greaterSeal": {
       "id": "spell_greaterSeal",
+      "level": 3,
       "glyph": 13,
       "school": 0,
       "baseSpell": "spell_seal",
@@ -397,6 +415,7 @@
     },
     "spell_greaterBless": {
       "id": "spell_greaterBless",
+      "level": 3,
       "glyph": 3,
       "school": 1,
       "baseSpell": "spell_bless",
@@ -417,6 +436,7 @@
     },
     "spell_greaterHex": {
       "id": "spell_greaterHex",
+      "level": 3,
       "glyph": 9,
       "school": -1,
       "baseSpell": "spell_hex",
@@ -437,6 +457,7 @@
     },
     "spell_greaterDispel": {
       "id": "spell_greaterDispel",
+      "level": 3,
       "glyph": 5,
       "baseSpell": "spell_dispel",
       "cost": 30,
@@ -456,6 +477,7 @@
     },
     "spell_banish": {
       "id": "spell_banish",
+      "level": 3,
       "glyph": 4,
       "school": 1,
       "cost": 30,
@@ -475,6 +497,7 @@
     },
     "spell_wither": {
       "id": "spell_wither",
+      "level": 7,
       "glyph": 22,
       "school": -1,
       "baseSpell": "spell_bind",
@@ -494,6 +517,7 @@
     },
     "spell_foolBargain": {
       "id": "spell_foolBargain",
+      "level": 9,
       "glyph": 16,
       "baseSpell": "spell_bargain",
       "cost": 30,
@@ -508,6 +532,7 @@
     },
     "spell_leech": {
       "id": "spell_leech",
+      "level": 5,
       "glyph": 26,
       "school": -1,
       "baseSpell": "spell_sunEater",
@@ -528,6 +553,7 @@
     },
     "spell_confusion": {
       "id": "spell_confusion",
+      "level": 1,
       "glyph": 1,
       "baseSpell": "spell_dispel",
       "target": 1,
@@ -535,6 +561,7 @@
     },
     "spell_burst": {
       "id": "spell_burst",
+      "level": 3,
       "glyph": 27,
       "school": 1,
       "baseSpell": "spell_whiteFlame",
@@ -555,6 +582,7 @@
     },
     "spell_lazurus": {
       "id": "spell_lazurus",
+      "level": 7,
       "glyph": 8,
       "school": 1,
       "baseSpell": "spell_grace",
@@ -574,6 +602,7 @@
     },
     "spell_wail": {
       "id": "spell_wail",
+      "level": 7,
       "glyph": 28,
       "school": -1,
       "baseSpell": "spell_sunEater",
@@ -594,6 +623,7 @@
     },
     "spell_trueSight": {
       "id": "spell_trueSight",
+      "level": 3,
       "glyph": 11,
       "states": [
         "",
@@ -606,6 +636,7 @@
     },
     "spell_crowsEye": {
       "id": "spell_crowsEye",
+      "level": 7,
       "glyph": 24,
       "states": [
         "",
@@ -618,6 +649,7 @@
     },
     "spell_twilightDusk": {
       "id": "spell_twilightDusk",
+      "level": 3,
       "glyph": 30,
       "school": -1,
       "baseSpell": "spell_sunEater",
@@ -638,6 +670,7 @@
     },
     "spell_shadowMark": {
       "id": "spell_shadowMark",
+      "level": 10,
       "glyph": 23,
       "school": -1,
       "baseSpell": "spell_sunEater",
@@ -651,6 +684,7 @@
     },
     "spell_twilightDawn": {
       "id": "spell_twilightDawn",
+      "level": 3,
       "glyph": 31,
       "school": 1,
       "baseSpell": "spell_whiteFlame",
@@ -671,6 +705,7 @@
     },
     "spell_channeling": {
       "id": "spell_channeling",
+      "level": 3,
       "glyph": 10,
       "common": true,
       "cost": 1,
@@ -683,6 +718,7 @@
     },
     "spell_tranquility": {
       "id": "spell_tranquility",
+      "level": 5,
       "glyph": 10,
       "cost": 10,
       "states": [
@@ -694,6 +730,7 @@
     },
     "spell_addledMind": {
       "id": "spell_addledMind",
+      "level": 5,
       "glyph": 10,
       "cost": 10,
       "states": [
@@ -7596,107 +7633,6 @@
       "base": [
         "m_SC_G_ASTRONAUT"
       ]
-    }
-  },
-  "_Styles": {
-    "cosmetic_f_S_HHO": {
-      "id": "cosmetic_f_S_HHO",
-      "type": "female",
-      "position": "style",
-      "iconId": "f_S_M_HHO",
-      "hidden": false,
-      "silver": 8000,
-      "gold": 7
-    },
-    "cosmetic_f_S_HKO": {
-      "id": "cosmetic_f_S_HKO",
-      "type": "female",
-      "position": "style",
-      "iconId": "f_S_M_HKO",
-      "hidden": false,
-      "silver": 8000,
-      "gold": 7
-    },
-    "cosmetic_f_S_HLO": {
-      "id": "cosmetic_f_S_HLO",
-      "type": "female",
-      "position": "style",
-      "iconId": "f_S_M_HLO",
-      "hidden": false,
-      "silver": 8000,
-      "gold": 7
-    },
-    "cosmetic_f_S_SNOWQUEEN": {
-      "id": "cosmetic_f_S_SNOWQUEEN",
-      "type": "female",
-      "position": "style",
-      "iconId": "f_S_M_SNOWQUEEN",
-      "hidden": false,
-      "silver": 8000,
-      "gold": 7
-    },
-    "cosmetic_f_S_LILYOV": {
-      "id": "cosmetic_f_S_LILYOV",
-      "type": "female",
-      "position": "style",
-      "iconId": "f_S_M_LILYOV",
-      "hidden": false,
-      "silver": 8000,
-      "gold": 7
-    },
-    "cosmetic_f_S_MIDSUMMER": {
-      "id": "cosmetic_f_S_MIDSUMMER",
-      "type": "female",
-      "position": "style",
-      "iconId": "f_S_M_MIDSUMMER",
-      "hidden": false,
-      "silver": 8000,
-      "gold": 7
-    },
-    "cosmetic_f_S_THUNDERMOON": {
-      "id": "cosmetic_f_S_THUNDERMOON",
-      "type": "female",
-      "position": "style",
-      "iconId": "f_S_M_THUNDERMOON",
-      "hidden": false,
-      "silver": 8000,
-      "gold": 7
-    },
-    "cosmetic_f_S_ECLIPSE": {
-      "id": "cosmetic_f_S_ECLIPSE",
-      "type": "female",
-      "position": "style",
-      "iconId": "f_S_M_ECLIPSE",
-      "hidden": false,
-      "silver": 8000,
-      "gold": 7
-    },
-    "cosmetic_f_S_CORNMOON": {
-      "id": "cosmetic_f_S_CORNMOON",
-      "type": "female",
-      "position": "style",
-      "iconId": "f_S_M_CORNMOON",
-      "hidden": false,
-      "silver": 8000,
-      "gold": 7
-    },
-    "cosmetic_f_S_BRNNGWTCH": {
-      "id": "cosmetic_f_S_BRNNGWTCH",
-      "type": "female",
-      "position": "style",
-      "iconId": "f_S_M_BRNNGWTCH",
-      "hidden": false,
-      "silver": 8000,
-      "gold": 7
-    },
-    "cosmetic_f_S_CALYPSO": {
-      "id": "cosmetic_f_S_CALYPSO",
-      "type": "female",
-      "position": "style",
-      "iconId": "f_S_M_CALYPSO",
-      "hidden": false,
-      "silver": 8000,
-      "gold": 7
     }
   },
   "Bundles": {

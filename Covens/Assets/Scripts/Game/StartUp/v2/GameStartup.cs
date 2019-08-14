@@ -100,14 +100,11 @@ public class GameStartup : MonoBehaviour
         GetGPS.OnInitialized -= OnGPSReady;
 
         //start downloading the assets
-        DownloadManager.DownloadAssets();
+        DownloadManager.DownloadAssets(TryAutoLogin);
 
         //show the initial logos
         m_LogosReady = false;
         SplashManager.Instance.ShowLogos(OnSplashLogosFinished);
-
-        //try to login
-        TryAutoLogin();
     }
 
     private void OnServerError(int responseCode, string response)

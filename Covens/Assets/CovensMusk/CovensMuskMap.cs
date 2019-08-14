@@ -99,7 +99,7 @@ public class CovensMuskMap : MonoBehaviour
         foreach (Camera _cam in cams)
             _cam.transparencySortMode = TransparencySortMode.Orthographic;
 
-        MapsAPI.Instance.InstantiateMap();
+        //MapsAPI.Instance.InstantiateMap();
 
         DontDestroyOnLoad(this.gameObject);
         //Instance = this;
