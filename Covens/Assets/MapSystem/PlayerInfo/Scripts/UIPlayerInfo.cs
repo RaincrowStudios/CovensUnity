@@ -277,12 +277,11 @@ public class UIPlayerInfo : UIInfoPanel
             },
             () =>
             {
-                this.ReOpen();
+                ReOpen();
             },
             () =>
             {
-                if (LocationIslandController.isInBattle)
-                    Close();
+                Close();
             }
         );
     }
