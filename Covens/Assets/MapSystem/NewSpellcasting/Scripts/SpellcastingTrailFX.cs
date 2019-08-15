@@ -71,12 +71,25 @@ public class SpellcastingTrailFX : MonoBehaviour
         LeanTween.value(0, 1, 0.25f)
             .setOnComplete(() =>
             {
-                LTBezierPath path = new LTBezierPath(new Vector3[] {
+                LTBezierPath path;
+                if (!LocationIslandController.isInBattle)
+                {
+                    path = new LTBezierPath(new Vector3[] {
                     startPosition, //start point
                     targetPosition + Random.onUnitSphere.normalized * Random.Range(distance / 2, distance),
                     startPosition + Random.onUnitSphere.normalized * Random.Range(distance / 2, distance),
                     targetPosition
-                });
+                   });
+                }
+                else
+                {
+                    path = new LTBezierPath(new Vector3[] {
+                    startPosition, //start point
+                    targetPosition + new Vector3(Random.Range(-100,100),Random.Range(-35,35),Random.Range(-100,100)),
+                    startPosition + Random.onUnitSphere.normalized * Random.Range(distance / 2, distance),
+                    targetPosition
+                   });
+                }
 
                 //spawn the trail
                 Transform trail = trailFxPool.Spawn(caster.position + offset, trailTime + 5f);
@@ -85,7 +98,7 @@ public class SpellcastingTrailFX : MonoBehaviour
 
 
                 tweenId = LeanTween.value(0, 1, trailTime) //time for casting
-                    //.setEaseOutExpo()
+                                                           //.setEaseOutExpo()
                     .setOnUpdate((float t) =>
                     {
                         if (target == null || caster == null)

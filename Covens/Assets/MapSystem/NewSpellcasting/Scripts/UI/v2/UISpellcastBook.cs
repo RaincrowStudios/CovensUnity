@@ -156,7 +156,7 @@ public class UISpellcastBook : MonoBehaviour, IEnhancedScrollerDelegate
         SetupTarget(marker, target);
         SetSchool(m_SelectedSchool);
         SetupBottomText();
-               
+
         AnimOpen();
         m_Canvas.enabled = true;
         m_InputRaycaster.enabled = true;
@@ -219,6 +219,7 @@ public class UISpellcastBook : MonoBehaviour, IEnhancedScrollerDelegate
     {
         SoundManagerOneShot.Instance.PlayWhisperFX();
         LeanTween.alphaCanvas(m_ScrollerCanvasGroup, 0f, 0.4f);
+
         //LeanTween.moveLocalX(Container.gameObject, 1308, 0.5f).setEase(LeanTweenType.easeInCubic).setOnComplete(() => { m_Canvas.enabled = false; });
         LeanTween.cancel(m_MoveTweenId);
         m_MoveTweenId = LeanTween.value(Container.anchoredPosition.x, Container.rect.width + 50, 0.5f)
@@ -236,7 +237,11 @@ public class UISpellcastBook : MonoBehaviour, IEnhancedScrollerDelegate
         m_OnConfirmSpell = null;
         m_OnBack = null;
         m_OnClose = null;
-
+        // if (LocationIslandController.isInBattle)
+        // {
+        //     Debug.Log("SpellBookClose");
+        //     LocationUnitSpawner.EnableMarkers();
+        // }
         CloseInventory();
 
         OnSelectCard(null);

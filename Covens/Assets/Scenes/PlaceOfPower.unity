@@ -47257,7 +47257,7 @@ MonoBehaviour:
   m_MinAngle: 10
   m_MaxAngle: 30
   m_DragInertia: 4
-  m_TargetFocusOffset: {x: 19.1266, y: 19.5}
+  m_TargetFocusOffset: {x: 70, y: 65}
   m_ScreenDepth:
     Conversion: 0
     Camera: {fileID: 614580130}

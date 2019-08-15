@@ -104,7 +104,7 @@ public class UIPlayerInfo : UIInfoPanel
             Debug.LogError("null witch");
             return;
         }
-        
+
         m_WitchMarker = witch;
         m_WitchToken = data;
         m_WitchDetails = null;
@@ -180,11 +180,6 @@ public class UIPlayerInfo : UIInfoPanel
             Debug.Log("Closing Info");
             LocationUnitSpawner.EnableMarkers();
         }
-    }
-
-    public void ClosePOP()
-    {
-        CloseHelper();
     }
 
     public void ShowPOP(WitchMarker witch, WitchToken data)
@@ -283,6 +278,11 @@ public class UIPlayerInfo : UIInfoPanel
             () =>
             {
                 this.ReOpen();
+            },
+            () =>
+            {
+                if (LocationIslandController.isInBattle)
+                    Close();
             }
         );
     }

@@ -164,6 +164,9 @@ public class UISpellcasting : UIInfoPanel
 
         if (UIInventory.isOpen)
             UIInventory.Instance.Close();
+
+
+
         o_InventoryButtonTop.SetActive(false);
         m_SelectedHerb = m_SelectedTool = m_SelectedGem = null;
         m_SelectedHerbAmount = m_SelectedToolAmount = m_SelectedGemAmount = 0;
@@ -205,7 +208,7 @@ public class UISpellcasting : UIInfoPanel
             m_PreviousSpell = 0;
             m_InfoGroup.alpha = 0;
             m_SelectedSpellOverlay.gameObject.SetActive(false);
-            
+
             Color color;
             List<CanvasGroup> toHide;
             List<CanvasGroup> toShow;
@@ -239,7 +242,7 @@ public class UISpellcasting : UIInfoPanel
                 cg.gameObject.SetActive(true);
             foreach (CanvasGroup cg in toHide)
                 cg.gameObject.SetActive(false);
-            
+
             //setup spells
             if (m_SetupListCoroutine != null)
             {
@@ -296,10 +299,10 @@ public class UISpellcasting : UIInfoPanel
             item = m_SpellButtons[i];
             int aux = i;
             item.Setup(
-                m_Target, 
-                m_Marker, 
-                spells[i], 
-                (_item, spell) => 
+                m_Target,
+                m_Marker,
+                spells[i],
+                (_item, spell) =>
                 {
                     m_PreviousSpell = aux;
                     OnSelectSpell(_item, spell);
@@ -415,7 +418,7 @@ public class UISpellcasting : UIInfoPanel
                 castText.text = LocalizeLookUp.GetText("card_witch_cant_cast").Replace("{{target}}", displayname);//  "Can't cast on " + m_Target.displayName;
                 break;
         }
-        
+
         foreach (UISpellcastingItem item in m_SpellButtons)
         {
             if (item.Visible == false)
