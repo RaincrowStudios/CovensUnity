@@ -10,44 +10,48 @@ public class LoadPOPManager : MonoBehaviour
     private static LoadPOPManager Instance { get; set; }
     private IMaps map;
     public GameObject[] MainUIDisable;
+    bool isViewVisible = false;
+    static bool sceneLoaded = false;
+
     void Awake()
     {
         Instance = this;
     }
     void OnGUI()
     {
-        if (GUI.Button(new Rect(320, 10, 40, 40), "View"))
+        if (!isViewVisible && GUI.Button(new Rect(320, 10, 40, 40), "View"))
         {
             if (map == null)
             {
                 map = MapsAPI.Instance;
             }
-            APIManager.Instance.Get("place-of-power/view/5d54431515c8ee22cbd6b991", (response, result) =>
+            LocationIslandController.ExitPOP(() =>
             {
-                Debug.Log(response);
-                if (result == 200)
-                {
-                    var popInfo = LocationPOPInfo.Instance;
-                    var data = JsonConvert.DeserializeObject<LocationViewData>(response);
-                    data.battleBeginsOn = GetFakeTime();
-                    Debug.Log(GetFakeTime());
-                    Debug.Log(data.battleBeginsOn);
-                    popInfo.Show(data);
-                }
-                else
-                {
-                    Debug.Log(result);
-                }
+                APIManager.Instance.Get("place-of-power/view/5d54431515c8ee22cbd6b991", (response, result) =>
+                      {
+                          Debug.Log(response);
+                          if (result == 200)
+                          {
+                              var popInfo = LocationPOPInfo.Instance;
+                              var data = JsonConvert.DeserializeObject<LocationViewData>(response);
+                              data.battleBeginsOn = GetFakeTime();
+                              Debug.Log(GetFakeTime());
+                              Debug.Log(data.battleBeginsOn);
+                              popInfo.Show(data);
+                              isViewVisible = true;
+                          }
+                          else
+                          {
+                              Debug.Log(result);
+                          }
 
+                      });
             });
         }
 
-        if (GUI.Button(new Rect(275, 10, 40, 40), "Exit"))
-        {
-            LocationIslandController.ExitPOP();
-        }
 
-        if (GUI.Button(new Rect(365, 10, 40, 40), "Start"))
+
+        if (sceneLoaded && !LocationIslandController.isInBattle && GUI.Button(new Rect(365, 10, 160, 40), "Start POP Battle"))
         {
             if (map == null)
             {
@@ -68,7 +72,11 @@ public class LoadPOPManager : MonoBehaviour
             item.SetActive(false);
         }
         Instance.map.HideMap(true);
-        SceneManager.LoadSceneAsync(SceneManager.Scene.PLACE_OF_POWER, UnityEngine.SceneManagement.LoadSceneMode.Additive, null, onComplete);
+        SceneManager.LoadSceneAsync(SceneManager.Scene.PLACE_OF_POWER, UnityEngine.SceneManagement.LoadSceneMode.Additive, null, () =>
+        {
+            sceneLoaded = true;
+            onComplete();
+        });
     }
 
     private static double GetFakeTime()

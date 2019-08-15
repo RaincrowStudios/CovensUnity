@@ -128,15 +128,14 @@ public class LocationIslandController : MonoBehaviour
           });
     }
 
-    public static void ExitPOP()
+    public static void ExitPOP(System.Action OnComplete)
     {
         AddWitchHandlerPOP.OnWitchAddPOP -= WitchJoined;
         RemoveTokenHandlerPOP.OnRemoveTokenPOP -= WitchRemoved;
         APIManager.Instance.Put($"place-of-power/leave", "{}", (response, result) =>
           {
               isInBattle = false;
-              Debug.Log(result);
-              Debug.Log(response);
+              OnComplete();
           });
     }
 

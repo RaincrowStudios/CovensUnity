@@ -8,10 +8,6 @@ public class LocationControllerInspector : Editor
     {
         base.OnInspectorGUI();
         GUILayout.Space(10);
-        GUILayout.Label("Debug");
-        if (GUILayout.Button("Leave POP"))
-        {
-            LocationIslandController.ExitPOP();
-        }
+
     }
 }
