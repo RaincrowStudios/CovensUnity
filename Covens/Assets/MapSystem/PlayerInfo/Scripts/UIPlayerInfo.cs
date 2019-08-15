@@ -104,8 +104,7 @@ public class UIPlayerInfo : UIInfoPanel
             Debug.LogError("null witch");
             return;
         }
-
-
+        
         m_WitchMarker = witch;
         m_WitchToken = data;
         m_WitchDetails = null;
@@ -267,10 +266,13 @@ public class UIPlayerInfo : UIInfoPanel
     {
         this.Hide();
 
+        List<SpellData> spells = new List<SpellData>(PlayerDataManager.playerData.Spells);
+        spells.RemoveAll(spell => spell.target == SpellData.Target.SELF);
+
         UISpellcastBook.Open(
             m_WitchDetails,
             m_WitchMarker,
-            PlayerDataManager.playerData.Spells,
+            spells,
             (spell, ingredients) =>
             {
                 Spellcasting.CastSpell(spell, m_WitchMarker, ingredients,

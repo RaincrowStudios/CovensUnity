@@ -258,7 +258,7 @@
         "",
         "vulnerable"
       ],
-      "target": 1,
+      "target": 2,
       "xp": 15,
       "cooldown": 120
     },
@@ -303,7 +303,7 @@
         "",
         "vulnerable"
       ],
-      "target": 1,
+      "target": 2,
       "align": 5,
       "xp": 20,
       "cooldown": 60
@@ -324,7 +324,7 @@
         "",
         "vulnerable"
       ],
-      "target": 1,
+      "target": 2,
       "align": 5,
       "xp": 20,
       "cooldown": 60
@@ -345,7 +345,7 @@
         "",
         "vulnerable"
       ],
-      "target": 1,
+      "target": 2,
       "align": 5,
       "xp": 20,
       "cooldown": 60
@@ -366,7 +366,7 @@
         "",
         "vulnerable"
       ],
-      "target": 1,
+      "target": 2,
       "align": 5,
       "xp": 15,
       "cooldown": 600
@@ -629,7 +629,7 @@
         "",
         "vulnerable"
       ],
-      "target": 1,
+      "target": 0,
       "align": 1,
       "xp": 10,
       "cooldown": 120
@@ -642,7 +642,7 @@
         "",
         "vulnerable"
       ],
-      "target": 1,
+      "target": 0,
       "align": 1,
       "xp": 20,
       "cooldown": 120
@@ -725,7 +725,7 @@
         "",
         "vulnerable"
       ],
-      "target": 2,
+      "target": 1,
       "cooldown": 60
     },
     "spell_addledMind": {
@@ -774,7 +774,7 @@
         "",
         "vulnerable"
       ],
-      "target": 1,
+      "target": 0,
       "align": 2,
       "xp": 30,
       "cooldown": 300

@@ -314,25 +314,28 @@ public class PlayerManager : MonoBehaviour
 
     private void OnClickSelf()
     {
-        return;
-        Debug.LogError("TODO: FILTER SPELLS");
-
         MapCameraUtils.FocusOnMarker(witchMarker.transform.position);
         Vector3 previousPosition = MapsAPI.Instance.mapCenter.position;
-        float previousZoom = MapsAPI.Instance.normalizedZoom;
+        float previousZoom = Mathf.Min(0.98f, MapsAPI.Instance.normalizedZoom);
 
-        List<SpellData> spells = PlayerDataManager.playerData.Spells;
-        //UISpellcasting.Instance.Show(null, marker, spells,
-        //    () => { //on closed the cast results
+        List<SpellData> spells = new List<SpellData>(PlayerDataManager.playerData.Spells);
+        spells.RemoveAll(spell => spell.target == SpellData.Target.OTHER);
 
-        //    },
-        //    () => { //on click return (X)
-        //        UISpellcasting.Instance.Close();
-        //        MapCameraUtils.FocusOnPosition(previousPosition, previousZoom, true);
-        //    },
-        //    () => { //on click close (outside the book)
-        //        UISpellcasting.Instance.Close();
-        //        MapCameraUtils.FocusOnPosition(previousPosition, previousZoom, true);
-        //    });
+        UISpellcastBook.Open(PlayerDataManager.playerData, marker, spells,
+            (spell, ingredients) =>
+            { 
+                //on click spell glyph
+                Spellcasting.CastSpell(spell, marker, ingredients,
+                    (result) => { },
+                    () => { });
+            },
+            () =>
+            { //on click return
+                MapCameraUtils.FocusOnPosition(previousPosition, previousZoom, true);
+            },
+            () =>
+            { //on click close
+                MapCameraUtils.FocusOnPosition(previousPosition, previousZoom, true);
+            });
     }
 }

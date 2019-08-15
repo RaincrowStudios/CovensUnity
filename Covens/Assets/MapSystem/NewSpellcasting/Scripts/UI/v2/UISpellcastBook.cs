@@ -43,6 +43,7 @@ public class UISpellcastBook : MonoBehaviour, IEnhancedScrollerDelegate
     private int? m_SelectedSchool = null;
     private SpellData m_SelectedSpell = null;
     private int m_SelectedSpellIndex = 0;
+    private SpellData.Target m_TargetType = SpellData.Target.ANY;
     private CollectableItem m_Herb;
     private CollectableItem m_Tool;
     private CollectableItem m_Gem;
@@ -142,13 +143,20 @@ public class UISpellcastBook : MonoBehaviour, IEnhancedScrollerDelegate
         m_OnBack = onBack;
         m_OnClose = onClose;
 
+        SpellData.Target targetType = marker.IsPlayer ? SpellData.Target.SELF : SpellData.Target.OTHER;
+        if (targetType != m_TargetType)
+        {
+            //target type changed, so the scroller need to be reloaded
+            m_TargetType = targetType;
+            m_ScrollerSpells.Clear();
+            m_SelectedSchool = null;
+        }
+
         m_PlayerSpells = spells;
-        SetSchool(m_SelectedSchool);
         SetupTarget(marker, target);
+        SetSchool(m_SelectedSchool);
         SetupBottomText();
-
-
-
+               
         AnimOpen();
         m_Canvas.enabled = true;
         m_InputRaycaster.enabled = true;
