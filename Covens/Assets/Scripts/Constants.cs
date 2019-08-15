@@ -59,7 +59,7 @@ public class CovenConstants : MonoBehaviour
 #elif UNITY_EDITOR
             if (UnityEditor.EditorPrefs.GetString("ws") == "Local")
             {
-                return "ws://localhost:8084?";
+                return "ws://localhost:8084/socket.io/?";
             }
             else if (UnityEditor.EditorPrefs.GetString("ws") == "Release")
             {
