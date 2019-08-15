@@ -199,6 +199,7 @@ public class WorldMapMarkerManager : MonoBehaviour
     private void OnStopFlying()
     {
         MapsAPI.Instance.OnChangeZoom -= OnMapChangeZoom;
+        m_VisibleMarkers = false;
 
         //stop spawning markers
         if (m_SpawnCoroutine != null)
