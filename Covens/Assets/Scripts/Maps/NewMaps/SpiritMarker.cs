@@ -9,6 +9,7 @@ public class SpiritMarker : MuskMarker
     [Header("Spirit Marker")]
     [SerializeField] private Transform m_AvatarGroup;
     [SerializeField] private Transform m_IconGroup;
+    [SerializeField] private Transform m_NamePlate;
 
     [SerializeField] private TextMeshPro m_DisplayName;
     [SerializeField] private TextMeshPro m_Tier;
@@ -121,6 +122,13 @@ public class SpiritMarker : MuskMarker
                 m_IconGroup.gameObject.SetActive(false);
             })
             .uniqueId;
+    }
+
+    public override void EnablePopSorting()
+    {
+        base.EnablePopSorting();
+        m_NamePlate.transform.localPosition = new Vector3(0, 23, 0);
+        m_NamePlate.transform.localScale = Vector3.one * 2;
     }
 
     public void SetupAvatar()

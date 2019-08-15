@@ -63,20 +63,27 @@ public class SpellcastingTrailFX : MonoBehaviour
         float projectileSpeed = 400f;
         float trailTime = distance / projectileSpeed;
 
+        Vector3 startPosition = caster.position + offset;
+        Vector3 targetPosition = target.position + offset;
+
         //spawn the charge
         chargeFxPool.Spawn(caster.position + offset, 2f).transform.localScale = new Vector3(5, 5, 5);
         LeanTween.value(0, 1, 0.25f)
             .setOnComplete(() =>
             {
+                LTBezierPath path = new LTBezierPath(new Vector3[] {
+                    startPosition, //start point
+                    targetPosition + Random.onUnitSphere.normalized * Random.Range(distance / 2, distance),
+                    startPosition + Random.onUnitSphere.normalized * Random.Range(distance / 2, distance),
+                    targetPosition
+                });
+
                 //spawn the trail
                 Transform trail = trailFxPool.Spawn(caster.position + offset, trailTime + 5f);
                 trail.localScale = new Vector3(4, 4, 4);
                 int tweenId = -1;
-                //var u = Vector2.Distance(new Vector2 (caster.position.x, caster.position.y), new Vector2(target.position.x, target.position.y));                       // MapsAPI.Instance.DistanceBetweenPointsD(new Vector2 (caster.position.x, caster.position.y), new Vector2(target.position.x, target.position.y));
-                //var dist = (MapUtils.scale(0.35f,1.5f, 0f, 1000f, (float)u));
-               // Debug.Log("float u: " + (float)u);
-               // Debug.Log("dist: " + dist);
-                //var dist = Mathf.Abs(((caster.position.x * target.position.x)/2f) + ((caster.position.y * target.position.y)/2f)); 
+
+
                 tweenId = LeanTween.value(0, 1, trailTime) //time for casting
                     //.setEaseOutExpo()
                     .setOnUpdate((float t) =>
@@ -88,7 +95,7 @@ public class SpellcastingTrailFX : MonoBehaviour
                         }
                         //animate the trail
                         trail.LookAt(target);
-                        trail.position = Vector3.Lerp(caster.position + offset, target.position + offset, t);
+                        trail.position = path.point(t);// Vector3.Lerp(caster.position + offset, target.position + offset, t);
                     })
                     .setOnComplete(() =>
                     {

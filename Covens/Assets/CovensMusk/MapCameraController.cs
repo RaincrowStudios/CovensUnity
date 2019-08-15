@@ -232,7 +232,7 @@ public class MapCameraController : MonoBehaviour
     {
         m_PositionChanged = m_ZoomChanged = m_RotationChanged = false;
 
-        if (controlEnabled && !lockControls())
+        if (m_Camera.isActiveAndEnabled && controlEnabled && !lockControls())
         {
             HandlePan();
             HandlePinch();
@@ -356,6 +356,9 @@ public class MapCameraController : MonoBehaviour
 
     private void OnFingerUp(LeanFinger finger)
     {
+        if (!m_Camera.isActiveAndEnabled)
+            return;
+
         if (!controlEnabled)
             return;
 

@@ -107,28 +107,28 @@ public class CovenConstants : MonoBehaviour
         get
         {
 #if GUSTAVO_LOCAL
-                return "http://192.168.0.110:8083/socket.io/?";
+                return "http://192.168.0.110:8083/socket.io/";
 #elif UNITY_EDITOR
             if (UnityEditor.EditorPrefs.GetString("chat") == "Local")
             {
-                return "http://localhost:8083/socket.io/?";
+                return "http://localhost:8083/socket.io/";
             }
             else if (UnityEditor.EditorPrefs.GetString("chat") == "Release")
             {
-                return "http://35.227.88.204:8083/socket.io/?";
+                return "http://35.227.88.204:8083/socket.io/";
             }
             else if (UnityEditor.EditorPrefs.GetString("chat") == "Gustavo")
             {
-                return "http://192.168.0.110:8083/socket.io/?";
+                return "http://192.168.0.110:8083/socket.io/";
             }
             else
             {
-                return "http://34.73.145.51:8083/socket.io/?";
+                return "http://34.73.145.51:8083/socket.io/";
             }
 #elif PRODUCTION
-            return "http://35.227.88.204:8083/socket.io/?";
+            return "http://35.227.88.204:8083/socket.io/";
 #else
-            return "http://34.73.145.51:8083/socket.io/?";
+            return "http://34.73.145.51:8083/socket.io/";
 #endif
         }
     }

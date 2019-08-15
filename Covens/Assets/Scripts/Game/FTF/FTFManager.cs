@@ -10,7 +10,7 @@ using Raincrow.Chat;
 public class FTFManager : MonoBehaviour
 {
     public static FTFManager Instance { get; set; }
-    public static bool InFTF { get; private set; }
+    public static bool InFTF => PlayerDataManager.IsFTF;
     
     private int m_CurrentIndex = 0;
     public int curIndex
@@ -173,19 +173,15 @@ public class FTFManager : MonoBehaviour
         camCenterPoint = cameraTransform.parent.parent;
         Utilities.allowMapControl(false);
 
-        Debug.LogError("TODO:SET FTF DOMINION");
-        //currentDominion.text = LocalizeLookUp.GetText("dominion_location") + " " + PlayerDataManager.config.dominion;
-        //strongestWitch.text = LocalizeLookUp.GetText("strongest_witch_dominion") + " " + PlayerDataManager.config.strongestWitch;
-        //strongestCoven.text = LocalizeLookUp.GetText("strongest_coven_dominion") + " " + PlayerDataManager.config.strongestCoven;
+        currentDominion.text = LocalizeLookUp.GetText("dominion_location") + " " + GameStartup.Dominion;
+        strongestWitch.text = LocalizeLookUp.GetText("strongest_witch_dominion") + " " + GameStartup.TopPlayer;
+        strongestCoven.text = LocalizeLookUp.GetText("strongest_coven_dominion") + " " + GameStartup.TopCoven;
 
         //StartRotation();
         MapCameraUtils.SetRotation(-180f, 90f, true, () => { });
         zoomCamera(-360f, 60f);
         UIStateManager.Instance.CallWindowChanged(true);
-
-        Debug.LogError("TODO: ENABLE MAIN UI");
-        //LoginUIManager.Instance.mainUI.SetActive(true);
-
+        
         if (PlayerDataManager.playerData.GetIngredient("coll_ironCollar") == 0)
             PlayerDataManager.playerData.SetIngredient("coll_ironCollar", 1);
 
@@ -554,7 +550,7 @@ public class FTFManager : MonoBehaviour
 
             continueButton.SetActive(false);
             //    Debug.Log(dialogues[dialogueIndex]);
-            dialogueText.text = LocalizeLookUp.GetFtfDialog(dialogueIndex).Replace("{{Location}}", "<color=#FF8400>" + PlayerDataManager.playerData.dominion + "</color>");
+            dialogueText.text = LocalizeLookUp.GetFtfDialog(dialogueIndex).Replace("{{Location}}", "<color=#FF8400>" + GameStartup.Dominion + "</color>");
             //      Debug.Log(dialogueText.text);
             //brigidPrefab.SetActive (true);
             //continueButton.SetActive(false);
@@ -1150,30 +1146,33 @@ public class FTFManager : MonoBehaviour
             });
             //storePrefab.SetActive(false);
 
-            Debug.LogError("TODO: SET FTF TRIBUNAL");
-            //string tribunal = "";
+            string tribunal = "";
 
-            ////  Debug.Log("replacing season and days here");
-            //if (PlayerDataManager.config.tribunal == 1)
-            //{
-            //    tribunal = LocalizeLookUp.GetText(LocalizationManager.ftf_summer);
-            //}
-            //else if (PlayerDataManager.config.tribunal == 2)
-            //{
-            //    tribunal = LocalizeLookUp.GetText(LocalizationManager.ftf_spring);
-            //}
-            //else if (PlayerDataManager.config.tribunal == 3)
-            //{
-            //    tribunal = LocalizeLookUp.GetText(LocalizationManager.ftf_autumn);
-            //}
-            //else
-            //{
-            //    tribunal = LocalizeLookUp.GetText(LocalizationManager.ftf_winter);
-            //}
+            //  Debug.Log("replacing season and days here");
+            if (PlayerDataManager.tribunal == 1)
+            {
+                tribunal = LocalizeLookUp.GetText(LocalizationManager.ftf_summer);
+            }
+            else if (PlayerDataManager.tribunal == 2)
+            {
+                tribunal = LocalizeLookUp.GetText(LocalizationManager.ftf_spring);
+            }
+            else if (PlayerDataManager.tribunal == 3)
+            {
+                tribunal = LocalizeLookUp.GetText(LocalizationManager.ftf_autumn);
+            }
+            else
+            {
+                tribunal = LocalizeLookUp.GetText(LocalizationManager.ftf_winter);
+            }
 
-            //dialogueText.text = LocalizeLookUp.GetFtfDialog(dialogueIndex).Replace("{{Season}}", tribunal);
-            //dialogueText.text = dialogueText.text.Replace("{{Number}}", PlayerDataManager.config.daysRemaining.ToString())
-            //                .Replace("{{Season}}", tribunal);
+            System.DateTime dtDateTime = new System.DateTime(1970, 1, 1, 0, 0, 0, 0, System.DateTimeKind.Utc);
+            dtDateTime = dtDateTime.AddSeconds(PlayerDataManager.tribunalStamps[PlayerDataManager.tribunal]).ToUniversalTime();
+            var timeSpan = dtDateTime.Subtract(System.DateTime.UtcNow);
+
+            dialogueText.text = LocalizeLookUp.GetFtfDialog(dialogueIndex).Replace("{{Season}}", tribunal);
+            dialogueText.text = dialogueText.text.Replace("{{Number}}", ((int)timeSpan.TotalDays).ToString())
+                            .Replace("{{Season}}", tribunal);
             //exit out of store and purchase screen.
             //slide 55
         }

@@ -64,9 +64,15 @@ public class CosmeticData
         public List<string> white;
     }
 
+    [System.ComponentModel.DefaultValue("")]
     public string id;
+    [System.ComponentModel.DefaultValue("")]
     public string position;
+    [System.ComponentModel.DefaultValue("")]
     public string iconId;
+    [System.ComponentModel.DefaultValue("")]
+    public string type;
+
     [JsonProperty("base")]
     public string[] baseAssets;
     [JsonProperty("shadow")]

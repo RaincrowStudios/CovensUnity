@@ -14,7 +14,11 @@ public class GameStartup : MonoBehaviour
     private bool m_DownloadsReady;
     private bool m_LogosReady;
     private bool m_LoginReady;
-    private bool m_GameConfigReady;
+    private bool m_ConfigReady;
+
+    public static string Dominion { get; private set; }
+    public static string TopPlayer { get; private set; }
+    public static string TopCoven { get; private set; }
 
     private void OnEnable()
     {
@@ -81,6 +85,8 @@ public class GameStartup : MonoBehaviour
             AppsFlyer.init("Wdx4jw7TTNEEJYUh5UnaDB", "AppsFlyerTrackerCallbacks");
         }
 #endif
+        //show loading screen
+        SplashManager.Instance.ShowLoading(0);
 
         //wait for the gps/network
         GetGPS.OnInitialized += OnGPSReady;
@@ -90,20 +96,15 @@ public class GameStartup : MonoBehaviour
 
     private void OnGPSReady()
     {
+        SplashManager.Instance.ShowLoading(1);
         GetGPS.OnInitialized -= OnGPSReady;
 
         //start downloading the assets
-        DownloadManager.DownloadAssets();
+        DownloadManager.DownloadAssets(TryAutoLogin);
 
         //show the initial logos
         m_LogosReady = false;
         SplashManager.Instance.ShowLogos(OnSplashLogosFinished);
-
-        //try to login
-        TryAutoLogin();
-
-        //get tribunal/sun/moon data
-        GetGameConfigurations();
     }
 
     private void OnServerError(int responseCode, string response)
@@ -185,25 +186,7 @@ public class GameStartup : MonoBehaviour
          m_DownloadsReady = true;
         CompleteStartup();
     }
-
-
-
-    private void GetGameConfigurations()
-    {
-        m_GameConfigReady = false;
-
-        LoginAPIManager.GetConfigurations(
-            GetGPS.longitude,
-            GetGPS.latitude,
-            (result, response) =>
-            {
-                m_GameConfigReady = true;
-            });
-
-        ////cache the leaderboard
-        //Leaderboards.GetLeaderboards(null, null, false);
-    }
-
+    
     private void OnSplashLogosFinished()
     {
         m_LogosReady = true;
@@ -212,6 +195,7 @@ public class GameStartup : MonoBehaviour
 
     private void TryAutoLogin()
     {
+        m_ConfigReady = false;
         m_LoginReady = false;
 
         //try auto login
@@ -237,25 +221,28 @@ public class GameStartup : MonoBehaviour
 
     private void CompleteStartup()
     {
+        //wait for logos finish 
         if (m_LogosReady == false)
         {
             return;
         }
         else
         {
-            //show hints
-            if (SplashManager.Instance.IsShowingHints == false)
-                SplashManager.Instance.ShowHints(null);
-
-            if (m_LoginReady == false)
-                return;
+            //wait for downloads to finish
             if (m_DownloadsReady == false)
                 return;
+
+            //wait for the auto login result
+            if (m_LoginReady == false)
+            {
+                if (SplashManager.Instance.IsShowingHints == false)
+                    SplashManager.Instance.ShowHints(null);
+                return;
+            }
         }
 
         if (LoginAPIManager.characterLoggedIn)
         {
-            //the character is ready, go to game
             StartGame();
         }
         else
@@ -282,19 +269,23 @@ public class GameStartup : MonoBehaviour
 
     private void StartGame()
     {
-        if (m_GameConfigReady == false)
+        if (m_ConfigReady == false)
         {
-            //show hints, wait one second, try again
-            if (SplashManager.Instance.IsShowingHints)
+            SplashManager.Instance.ShowLoading(0);
+            LoginAPIManager.GetConfigurations(PlayerDataManager.playerData.longitude, PlayerDataManager.playerData.latitude, (config, error) =>
             {
-                LeanTween.value(0, 0, 1).setOnComplete(StartGame);
-            }
-            else
-            {
-                SplashManager.Instance.ShowLoading(0);
-                SplashManager.Instance.ShowHints(() => LeanTween.value(0, 0, 1).setOnComplete(StartGame));
-            }
+                SplashManager.Instance.ShowLoading(1);
 
+                m_ConfigReady = true;
+                if (string.IsNullOrEmpty(error) == false)
+                    Debug.LogError("GetConfig failed\n" + error);
+
+                Dominion = config.dominion;
+                TopPlayer = config.dominionRank.topPlayer;
+                TopCoven = config.dominionRank.topCoven;
+
+                StartGame();
+            });
             return;
         }
 
@@ -303,34 +294,22 @@ public class GameStartup : MonoBehaviour
         //show the tribunal screen and load the gamescene
         SplashManager.Instance.ShowTribunal(() =>
         {
-            //go to tutorial or go to game
-            Debug.LogError("TODO: SHOW DOMINION INFO");
-
             Debug.Log("Initializing the map at lat" + PlayerDataManager.playerData.latitude + " lon" + PlayerDataManager.playerData.longitude);
             MapsAPI.Instance.InitMap(PlayerDataManager.playerData.longitude, PlayerDataManager.playerData.latitude, 1, null, false);
 
             Debug.Log("Loading the game scene");
-            //if (Application.isEditor)
-            //{
-            //    SceneManager.LoadSceneAsync(
-            //       (SceneManager.Scene)PlayerPrefs.GetInt("DEBUGSCENE", 2),
-            //       UnityEngine.SceneManagement.LoadSceneMode.Single,
-            //       (progress) => SplashManager.Instance.ShowLoading(progress),
-            //       null);
-            //}
-            //else
-            //{
-                SceneManager.LoadSceneAsync(
-                   SceneManager.Scene.GAME,
-                   UnityEngine.SceneManagement.LoadSceneMode.Single,
-                   (progress) => SplashManager.Instance.ShowLoading(progress),
-                   OnGameSceneLoaded);
-            //}
+            SceneManager.LoadSceneAsync(
+                SceneManager.Scene.GAME,
+                UnityEngine.SceneManagement.LoadSceneMode.Single,
+                (progress) => SplashManager.Instance.ShowLoading(progress),
+                OnGameSceneLoaded);
         });
     }
 
     private void OnGameSceneLoaded()
     {
+        //SplashManager.Instance.HideTribunal(() => SceneManager.UnloadScene(SceneManager.Scene.START, null, null));
+
         if (PlayerDataManager.IsFTF)
         {
             LoadingOverlay.Show();
@@ -339,9 +318,10 @@ public class GameStartup : MonoBehaviour
         }
         else
         {
-            BlessingManager.CheckDailyBlessing();
             SocketClient.Instance.InitiateSocketConnection();
             ChatManager.InitChat();
+
+            UIDominionSplash.Instance.Show(() => BlessingManager.CheckDailyBlessing());
         }
     }
 }

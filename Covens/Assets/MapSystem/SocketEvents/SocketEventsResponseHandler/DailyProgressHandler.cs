@@ -48,7 +48,7 @@ namespace Raincrow.GameEventResponses
                 PlayerDataManager.playerData.silver += data.silver;
                 PlayerManagerUI.Instance.UpdateDrachs();
             }
-            
+
             ShowNotification(data.daily, data.silver, data.count);
         }
 
@@ -60,16 +60,16 @@ namespace Raincrow.GameEventResponses
             {
                 if (quest == "gather")
                 {
-                    message = 
-                        LocalizeLookUp.GetText("daily_quest_progress") + " " + 
-                        LocalizeLookUp.GetText("daily_gather") + "\n" + 
+                    message =
+                        LocalizeLookUp.GetText("daily_quest_progress") + " " +
+                        LocalizeLookUp.GetText("daily_gather") + "\n" +
                         LocalizeLookUp.GetText("daily_completed") + " " + count.ToString() + "/" + QuestsController.Quests.gather.amount.ToString();
                 }
                 else if (quest == "spellcraft")
                 {
-                    message = 
-                        LocalizeLookUp.GetText("daily_quest_progress") + " " + 
-                        LocalizeLookUp.GetText("daily_spell") + "\n" + 
+                    message =
+                        LocalizeLookUp.GetText("daily_quest_progress") + " " +
+                        LocalizeLookUp.GetText("daily_spell") + "\n" +
                         LocalizeLookUp.GetText("daily_completed") + " " + count.ToString() + "/" + QuestsController.Quests.spellcraft.amount.ToString();
                 }
             }
@@ -77,17 +77,17 @@ namespace Raincrow.GameEventResponses
             {
                 if (quest == "gather")
                 {
-                    message = LocalizeLookUp.GetText("daily_completed_gather") + "\n"+ 
+                    message = LocalizeLookUp.GetText("daily_completed_gather") + "\n" +
                         "+ " + silver.ToString() + " " + LocalizeLookUp.GetText("store_silver");
                 }
                 else if (quest == "spellcraft")
                 {
-                    message = LocalizeLookUp.GetText("daily_completed_spellcraft") + "\n" + 
+                    message = LocalizeLookUp.GetText("daily_completed_spellcraft") + "\n" +
                         "+ " + silver.ToString() + " " + LocalizeLookUp.GetText("store_silver");
                 }
                 else
                 {
-                    message = LocalizeLookUp.GetText("daily_completed_explore") + "\n" + 
+                    message = LocalizeLookUp.GetText("daily_completed_explore") + "\n" +
                         "+ " + silver.ToString() + " " + LocalizeLookUp.GetText("store_silver");
                 }
             }

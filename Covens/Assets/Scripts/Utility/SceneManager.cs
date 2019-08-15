@@ -82,7 +82,10 @@ namespace Raincrow
             }
 
             AsyncOperation asyncOp = UnitySceneManager.LoadSceneAsync(sceneName, mode);
-            asyncOp.completed += op => onComplete?.Invoke();
+            asyncOp.completed += op =>
+            {
+                onComplete?.Invoke();
+            };
             Instance.StartCoroutine(AsyncOperationCoroutine(asyncOp, onProgress));
             return asyncOp;
         }

@@ -204,10 +204,13 @@ public class UISpiritInfo : UIInfoPanel
     {
         this.Hide();
 
+        List<SpellData> spells = new List<SpellData>(PlayerDataManager.playerData.Spells);
+        spells.RemoveAll(spell => spell.target == SpellData.Target.SELF);
+
         UISpellcastBook.Open(
             m_SpiritDetails,
             m_SpiritMarker,
-            PlayerDataManager.playerData.Spells,
+            spells,
             (spell, ingredients) =>
             {
                 Spellcasting.CastSpell(spell, m_SpiritMarker, ingredients,

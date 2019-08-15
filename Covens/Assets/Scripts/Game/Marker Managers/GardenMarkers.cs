@@ -81,7 +81,7 @@ public class GardenMarkers : MonoBehaviour
 
         map.OnExitStreetLevel += OnStartFlying;
         map.OnEnterStreetLevel += OnStopFlying;
-        
+
         foreach (var item in DownloadedAssets.gardenDict)
         {
             var g = Utilities.InstantiateObject(gardenPrefab, map.trackedContainer, 0);
@@ -121,6 +121,7 @@ public class GardenMarkers : MonoBehaviour
 
     private void SetupExplore(QuestsController.CovenDaily.Explore lore)
     {
+
         if (PlayerDataManager.playerData.quest.explore.completed)
             return;
 
@@ -157,7 +158,7 @@ public class GardenMarkers : MonoBehaviour
 
         Debug.Log("check lore on land:\n" + map.position + "\n" + loreMarker.Coords);
 
-        if (!PlayerDataManager.playerData.quest.explore.completed && 
+        if (!PlayerDataManager.playerData.quest.explore.completed &&
             map.DistanceBetweenPointsD(map.position, new Vector2(loreMarker.Coords.x, loreMarker.Coords.y)) < 8)
         {
             SendQuestLore();
@@ -238,6 +239,7 @@ public class GardenMarkers : MonoBehaviour
         {
             if (string.IsNullOrEmpty(error))
             {
+
                 if (loreMarker == null)
                     return;
 

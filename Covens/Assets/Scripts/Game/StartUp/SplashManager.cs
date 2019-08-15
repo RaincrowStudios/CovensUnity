@@ -51,7 +51,6 @@ public class SplashManager : MonoBehaviour
     [SerializeField] private GameObject playstoreIcon;
     [SerializeField] private GameObject appleIcon;
     
-    private double[] tribunalStamps = new double[] { 1553040000, 1561075200, 1569196800, 1576972800, 1584662400, 1592697600 };
     private int[] tribunals = new int[] { 1, 2, 3, 4, 1, 2 };
 
     private float m_LogoSpeed = 1;
@@ -234,13 +233,19 @@ public class SplashManager : MonoBehaviour
 
     public void HideHints(float time, System.Action onComplete)
     {
+        if (IsShowingHints == false)
+        {
+            onComplete?.Invoke();
+            return;
+        }
+
         IsShowingHints = false;
 
-        if (m_HintsCoroutine == null)
-            return;
-
-        StopCoroutine(m_HintsCoroutine);
-        m_HintsCoroutine = null;
+        if (m_HintsCoroutine != null)
+        {
+            StopCoroutine(m_HintsCoroutine);
+            m_HintsCoroutine = null;
+        }
 
         m_HintTweenId = LeanTween.alphaCanvas(m_HintScreen, time, 0f)
             .setOnComplete(() =>
@@ -325,6 +330,11 @@ public class SplashManager : MonoBehaviour
         m_TribunalCoroutine = StartCoroutine(TribunalCoroutine(onStart));
     }
 
+    public void HideTribunal(System.Action onComplete)
+    {
+        LeanTween.alphaCanvas(m_TribualScreen, 0f, 1f).setEaseOutCubic().setOnComplete(onComplete);
+    }
+
     private IEnumerator TribunalCoroutine(System.Action onShow)
     {
         m_TribualScreen.alpha = 0;
@@ -332,18 +342,19 @@ public class SplashManager : MonoBehaviour
 
         //setup the UI
 
-        double currentTime = (double)System.DateTimeOffset.UtcNow.ToUnixTimeSeconds();
-        int currentI = 0;
-        for (int i = 0; i < tribunalStamps.Length; i++)
-        {
-            if (tribunalStamps[i] > currentTime)
-            {
-                currentI = --i;
-                break;
-            }
-        }
+        //double currentTime = (double)System.DateTimeOffset.UtcNow.ToUnixTimeSeconds();
+        //int currentI = 0;
+        //for (int i = 0; i < PlayerDataManager.tribunalStamps.Length; i++)
+        //{
+        //    if (PlayerDataManager.tribunalStamps[i] > currentTime)
+        //    {
+        //        currentI = --i;
+        //        break;
+        //    }
+        //}
 
-        int tribunal = tribunals[currentI];
+        //int tribunal = tribunals[currentI];
+        int tribunal = PlayerDataManager.tribunal;
 
         //tribunal title
         if (tribunal == 2)
@@ -357,7 +368,7 @@ public class SplashManager : MonoBehaviour
 
         //tribunal timer
         System.DateTime dtDateTime = new System.DateTime(1970, 1, 1, 0, 0, 0, 0, System.DateTimeKind.Utc);
-        dtDateTime = dtDateTime.AddSeconds(tribunalStamps[currentI + 1]).ToUniversalTime();
+        dtDateTime = dtDateTime.AddSeconds(PlayerDataManager.tribunalStamps[PlayerDataManager.tribunal]).ToUniversalTime();
         var timeSpan = dtDateTime.Subtract(System.DateTime.UtcNow);
         tribunalTimer.text = timeSpan.TotalDays.ToString("N0");
         

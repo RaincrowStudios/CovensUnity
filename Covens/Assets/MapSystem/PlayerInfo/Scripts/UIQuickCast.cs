@@ -44,6 +44,7 @@ public class UIQuickCast : MonoBehaviour
         {
             m_QuickBless.interactable = m_QuickHex.interactable = m_QuickSeal.interactable = m_MoreSpells.interactable = false;
             m_CastText.text = LocalizeLookUp.GetText("spellbook_more_spells") + " (" + LocalizeLookUp.GetText("loading") + ")";
+            return;
         }
 
         //quick cast

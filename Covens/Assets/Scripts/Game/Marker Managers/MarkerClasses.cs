@@ -182,7 +182,7 @@ public class PlayerData : WitchMarkerData
     public bool whiteMastery;
     public bool shadowMastery;
     public bool greyMastery;
-        
+
     public int silver;
     public int gold;
     public int foxus;
@@ -213,15 +213,14 @@ public class PlayerData : WitchMarkerData
     [JsonIgnore] private Dictionary<string, int> m_ToolsDict = null;
     [JsonIgnore] private Dictionary<string, int> m_GemsDict = null;
     [JsonIgnore] private Inventory m_Inventory = null;
-    
+    [JsonIgnore] private List<SpellData> m_Spells;
+
     public List<string> spirits;
     public List<KnownSpirits> knownSpirits;
     public List<CovenInvite> covenInvites;
     public List<CovenRequest> covenRequests;
     public HashSet<string> immunities;
     public HashSet<string> firsts;
-
-    private List<SpellData> m_Spells = null;
 
     [JsonIgnore]
     public ulong xpToLevelUp
@@ -234,7 +233,7 @@ public class PlayerData : WitchMarkerData
             return 0;
         }
     }
-    
+
     public void Setup()
     {
         m_HerbsDict = new Dictionary<string, int>();
@@ -247,18 +246,6 @@ public class PlayerData : WitchMarkerData
             m_ToolsDict[item.id] = item.count;
         foreach (var item in m_Gems)
             m_GemsDict[item.id] = item.count;
-        
-        m_Spells = new List<SpellData>();
-        var allSpells = new List<SpellData>(DownloadedAssets.spellDictData.Values);
-        allSpells.Sort(new System.Comparison<SpellData> ((a,b) => a.Name.CompareTo(b.Name)));
-
-        foreach (var spellData in allSpells)
-        {
-            if (spellData.hidden)
-                continue;
-
-            m_Spells.Add(spellData);
-        }
 
         foreach (var cooldown in cooldowns)
         {
@@ -269,6 +256,23 @@ public class PlayerData : WitchMarkerData
 
             CooldownManager.AddCooldown(cooldown.id, cooldown.cooldown, total);
         }
+
+        UpdateSpells();
+    }
+
+    public void UpdateSpells()
+    {
+        m_Spells = new List<SpellData>();
+        foreach (var item in DownloadedAssets.spellDictData.Values)
+        {
+            if (item.hidden)
+                continue;
+            if (item.level > level)
+                continue;
+
+            m_Spells.Add(item);
+        }
+        m_Spells.Sort(new System.Comparison<SpellData>((a, b) => a.Name.CompareTo(b.Name)));
     }
 
     public int GetIngredient(string id)
@@ -346,7 +350,7 @@ public class PlayerData : WitchMarkerData
             dict = new Dictionary<string, int>();
 
         List<CollectableItem> result = new List<CollectableItem>();
-        foreach(var pair in dict)
+        foreach (var pair in dict)
         {
             if (pair.Value <= 0)
                 continue;
@@ -387,7 +391,7 @@ public class PlayerData : WitchMarkerData
                         m_Inventory.cosmetics.Add(cosmetic);
                 }
 
-                foreach(var item in m_Consumables)
+                foreach (var item in m_Consumables)
                 {
                     m_Inventory.consumables.Add(new Item
                     {
@@ -400,7 +404,7 @@ public class PlayerData : WitchMarkerData
             return m_Inventory;
         }
     }
-    
+
     [JsonIgnore]
     public double lastEnergyUpdate;
 

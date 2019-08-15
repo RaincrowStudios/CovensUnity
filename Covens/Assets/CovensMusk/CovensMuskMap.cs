@@ -99,7 +99,7 @@ public class CovensMuskMap : MonoBehaviour
         foreach (Camera _cam in cams)
             _cam.transparencySortMode = TransparencySortMode.Orthographic;
 
-        MapsAPI.Instance.InstantiateMap();
+        //MapsAPI.Instance.InstantiateMap();
 
         DontDestroyOnLoad(this.gameObject);
         //Instance = this;
@@ -461,6 +461,7 @@ public class CovensMuskMap : MonoBehaviour
     public void HideMap(bool hide)
     {
         m_Camera.gameObject.SetActive(!hide);
+        m_TrackedObjectsContainer.SetActive(!hide);
     }
 
     public bool IsVisible()

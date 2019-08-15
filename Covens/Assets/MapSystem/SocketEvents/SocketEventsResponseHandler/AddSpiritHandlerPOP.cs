@@ -13,4 +13,9 @@ public class AddSpiritHandlerPOP : IGameEventHandler
         var spiritToken = JsonConvert.DeserializeObject<SpiritToken>(eventData);
         OnSpiritAddPOP?.Invoke(spiritToken);
     }
+
+    public static void RaiseEvent(SpiritToken spirit)
+    {
+        OnSpiritAddPOP?.Invoke(spirit);
+    }
 }
