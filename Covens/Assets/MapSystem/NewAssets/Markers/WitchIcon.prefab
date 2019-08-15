@@ -378,8 +378,6 @@ MonoBehaviour:
   m_DisplayName: {fileID: 114174510990242188}
   m_Level: {fileID: 114955874805477328}
   m_IconRenderer: {fileID: 212460677584067914}
-  m_latitude: 0
-  m_longitude: 0
 --- !u!1 &1357364774846178
 GameObject:
   m_ObjectHideFlags: 0

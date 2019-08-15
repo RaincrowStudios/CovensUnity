@@ -1,3 +1,4 @@
+using System.Security.Cryptography.X509Certificates;
 using System.Threading.Tasks;
 using System.Runtime.CompilerServices;
 using System;
@@ -17,6 +18,7 @@ public class LocationPlayerAction : MonoBehaviour
     [SerializeField] private Button m_FlightBtn;
     [SerializeField] private GameObject m_MoveCloser;
     [SerializeField] private Button m_MoveCloserCloseBtn;
+    [SerializeField] private Button m_CenterOnPlayerBtn;
 
     public const float MOVE_TIMER = 5;
     public const float SUMMON_TIMER = 30;
@@ -58,6 +60,15 @@ public class LocationPlayerAction : MonoBehaviour
         m_MoveActionCG.alpha = .25f;
         InitializeMoveActions(m_SummonCountDown, m_SummonBtn);
         InitializeMoveActions(m_FlightCountDown, m_FlightBtn);
+        m_CenterOnPlayerBtn.onClick.AddListener(CenterOnPlayer);
+    }
+
+    private static void CenterOnPlayer()
+    {
+        if (!UIPlayerInfo.Instance.IsShowing && !UISpellcastBook.IsOpen)
+        {
+            LocationIslandController.moveCamera(playerMarker.AvatarTransform.position);
+        }
     }
 
     public static void SetPlayerMarker(IMarker m)
@@ -103,7 +114,6 @@ public class LocationPlayerAction : MonoBehaviour
             SetButtonState(MOVE_TIMER, m_FlightCountDown, m_FlightBtn);
         });
     }
-
 
     private void Summon()
     {

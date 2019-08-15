@@ -19,6 +19,8 @@ public class LocationUnitSpawner : MonoBehaviour
     public static IMarker guardianMarker { get; private set; }
     [SerializeField] private Transform m_CenterSpiritTransform;
     [SerializeField] private Transform m_PlayerHighlight;
+    [SerializeField] private Transform m_SelfSelectionRing;
+    [SerializeField] private Transform m_FlightFX;
 
     private static SimplePool<Transform> m_WitchPool;
     private static SimplePool<Transform> m_SpiritPool;
@@ -44,6 +46,7 @@ public class LocationUnitSpawner : MonoBehaviour
 
             if (token.Type == MarkerType.WITCH)
             {
+
                 go = m_WitchPool.Spawn().gameObject;
                 go.name = "[witch] " + (token as WitchToken).displayName + " [" + token.instance + "]";
             }
@@ -69,7 +72,18 @@ public class LocationUnitSpawner : MonoBehaviour
                 Setup(go, marker, token);
             marker.OnClick += onClickMarker;
             Markers.Add(token.instance, marker);
-            if (token.instance == PlayerDataManager.playerData.instance) LocationPlayerAction.SetPlayerMarker(marker);
+            if (token.instance == PlayerDataManager.playerData.instance)
+            {
+                LocationPlayerAction.SetPlayerMarker(marker);
+                m_SelfSelectionRing.gameObject.SetActive(true);
+                m_SelfSelectionRing.SetParent(go.transform.GetChild(0));
+                m_SelfSelectionRing.localPosition = Vector3.zero;
+                m_SelfSelectionRing.localScale = Vector3.one * 1.5f;
+                m_FlightFX.SetParent(go.transform.GetChild(0));
+                m_FlightFX.localPosition = Vector3.zero;
+                m_FlightFX.localScale = Vector3.one * 1.2f;
+                SetSelfDegreeRing();
+            }
         }
         else
         {
@@ -217,19 +231,25 @@ public class LocationUnitSpawner : MonoBehaviour
         var data = new { island = island, position = position };
         LocationPlayerAction.SetMoveActionState(false);
         APIManager.Instance.Post("character/move", JsonConvert.SerializeObject(data),
-            (s, r) =>
+            async (s, r) =>
             {
                 Debug.Log(s);
                 Debug.Log(r);
                 if (r == 200)
                 {
                     LocationPlayerAction.SetMoveActionState(true);
+                    LocationPlayerAction.playerMarker.SetAlpha(0, 1);
+                    await Task.Delay(600);
+                    ShowFlightFX();
+                    await Task.Delay(400);
+
                     MoveEventDataPOP moveData = new MoveEventDataPOP
                     {
                         instance = LocationPlayerAction.playerWitchToken.instance,
                         island = island,
                         position = position,
                     };
+                    LocationPlayerAction.playerMarker.SetAlpha(1, 1);
                     Instance.MoveMarker(moveData);
                     LocationIslandController.SetActiveIslands();
                     LocationPlayerAction.MakeTransparent();
@@ -255,10 +275,49 @@ public class LocationUnitSpawner : MonoBehaviour
         m.Setup(t);
         m.EnableAvatar();
         m.AvatarTransform.localScale = Vector3.one * 1.3f;
+        Debug.Log(g.name);
         g.transform.SetParent(GetTransform(t));
         m.InitializePositionPOP();
         m.EnablePopSorting();
         m.GameObject.SetActive(true);
+
+    }
+
+    private async static void ShowFlightFX()
+    {
+
+        var selfToken = LocationPlayerAction.playerWitchToken;
+        var FlightFX = LocationPlayerAction.playerMarker.GameObject.transform.GetChild(0).GetChild(5);
+        if (FlightFX.gameObject.activeInHierarchy)
+            FlightFX.gameObject.SetActive(false);
+
+        FlightFX.gameObject.SetActive(true);
+        await Task.Delay(5000);
+        FlightFX.gameObject.SetActive(false);
+    }
+
+
+    private static void SetSelfDegreeRing()
+    {
+        var selfToken = LocationPlayerAction.playerWitchToken;
+        var SelectionRing = LocationPlayerAction.playerMarker.GameObject.transform.GetChild(0).GetChild(4);
+        Debug.Log(SelectionRing.name);
+        foreach (Transform item in SelectionRing)
+        {
+            item.gameObject.SetActive(false);
+        }
+        if (selfToken.degree > 0)
+        {
+            SelectionRing.GetChild(2).gameObject.SetActive(true);
+        }
+        else if (selfToken.degree < 0)
+        {
+            SelectionRing.GetChild(0).gameObject.SetActive(true);
+        }
+        else
+        {
+            SelectionRing.GetChild(1).gameObject.SetActive(true);
+        }
     }
 
     private void SetupCenterSpirit(GameObject g, IMarker m, Token t)

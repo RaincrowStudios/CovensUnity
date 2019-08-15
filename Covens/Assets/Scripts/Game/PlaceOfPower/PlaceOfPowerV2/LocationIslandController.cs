@@ -13,7 +13,6 @@ public class LocationIslandController : MonoBehaviour
     public static Dictionary<int, LocationIsland> locationIslands { get; private set; }
     public static event System.Action<WitchToken> OnWitchEnter;
     public static event System.Action<WitchToken> OnWitchExit;
-
     private static bool m_IsInBattle = false;
     private Vector2 m_MouseDownPosition;
 
@@ -189,11 +188,6 @@ public class LocationIslandController : MonoBehaviour
         activePositions.Add(LocationPlayerAction.getCurrentIsland);
         activePositions.Add(LocationPlayerAction.getCurrentIsland - 1 >= 0 ? LocationPlayerAction.getCurrentIsland - 1 : locationIslands.Count - 1);
         activePositions.Add(LocationPlayerAction.getCurrentIsland + 1 < locationIslands.Count ? LocationPlayerAction.getCurrentIsland + 1 : 0);
-
-        foreach (var item in activePositions)
-        {
-            Debug.Log("Active island " + item);
-        }
 
         foreach (var item in locationIslands)
         {

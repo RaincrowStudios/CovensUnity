@@ -73,7 +73,7 @@ namespace Raincrow.DynamicPlacesOfPower
             panEnabled = true;
             zoomEnabled = true;
             twistEnabled = true;
-            SetCameraBounds(Vector3.zero, 360);
+            SetCameraBounds(Vector3.zero, 400);
         }
 
         private void OnFingerUp(LeanFinger finger)

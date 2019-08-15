@@ -7,8 +7,14 @@ public class LocationIsland : MonoBehaviour
     [SerializeField] private LeanTweenType leanType;
     [SerializeField] private LineRenderer m_Renderer;
     [SerializeField] private Transform[] spots;
+    [Header("Highlight")]
     [SerializeField] private GameObject m_Highlight;
+    [SerializeField] private Transform m_HighlightEdge;
+    [SerializeField] private Transform m_HighlightRune;
+    [SerializeField] private Transform m_HighlightGlow;
+    [SerializeField] private Transform m_HighlightCylinde;
 
+    private bool isActive = false;
 
     public Transform[] Setup(float distance, int islandIndex)
     {
@@ -16,7 +22,6 @@ public class LocationIsland : MonoBehaviour
         distance += Random.Range(-30, 30);
         LeanTween.value(0, 1, 1).setOnUpdate((float value) =>
          {
-
              moveTransform.localPosition = new Vector3(Mathf.Lerp(0, distance, value), 0, 0);
              moveTransform.localScale = Vector3.one * Mathf.Lerp(.2f, 1, value);
          }).setEase(leanType);
@@ -41,9 +46,30 @@ public class LocationIsland : MonoBehaviour
         }
     }
 
-    public void ActivateIsland(bool isActive)
+    public void ActivateIsland(bool active)
     {
-        m_Highlight.SetActive(isActive);
+        m_Highlight.SetActive(active);
+
+        if (!isActive && active) //island activated
+        {
+            AnimateHighlight(true);
+        }
+        else if (isActive && !active)
+        {
+            AnimateHighlight(false);
+        }
+
+        isActive = active;
     }
 
+    private void AnimateHighlight(bool forward)
+    {
+        LeanTween.value(forward ? 0 : 1, forward ? 1 : 0, 1.5f).setOnUpdate((float v) =>
+        {
+            m_HighlightCylinde.localScale = new Vector3(51.5f, Mathf.Lerp(0, 5.7f, v), 51.5f);
+            m_HighlightRune.transform.localRotation = Quaternion.Euler(new Vector3(-90, 0, Mathf.Lerp(0, 60, v)));
+            m_HighlightGlow.localScale = Vector3.one * Mathf.Lerp(40, 65, v);
+            m_HighlightEdge.localScale = Vector3.one * Mathf.Lerp(11, 13, v);
+        }).setEase(LeanTweenType.easeInOutQuad);
+    }
 }
