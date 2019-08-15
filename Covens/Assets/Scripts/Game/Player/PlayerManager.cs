@@ -29,10 +29,32 @@ public class PlayerManager : MonoBehaviour
 
     public Image playerFlyIcon;
 
-    public static IMarker marker { get; private set; }                //actual marker
+    private static IMarker m_Marker;
+
+    public static IMarker marker
+    {
+        get
+        {
+            if (!LocationIslandController.isInBattle)
+                return m_Marker;
+            else
+                return LocationPlayerAction.playerMarker;
+
+        }
+    }                //actual marker
     public static IMarker physicalMarker { get; set; }       // gyro marker
-    public static WitchMarker witchMarker { get => marker as WitchMarker; }
-    
+    public static WitchMarker witchMarker
+    {
+        get
+        {
+            if (!LocationIslandController.isInBattle)
+                return marker as WitchMarker;
+            else
+                return LocationPlayerAction.playerMarker as WitchMarker;
+
+        }
+    }
+
     [SerializeField] private GameObject selectionRing;
 
     public static bool inSpiritForm { get => MarkerManagerAPI.IsSpiritForm; }
@@ -50,7 +72,7 @@ public class PlayerManager : MonoBehaviour
     Vector2 currentPos;
 
     public bool SnapMapToPosition = true;
-        
+
     GameObject atLocationObject;
 
     public static event Action onStartFlight;
@@ -68,7 +90,7 @@ public class PlayerManager : MonoBehaviour
         MapsAPI.Instance.OnExitStreetLevel += OnStartFlying;
 
         CreatePlayerStart();
-    }           
+    }
 
     private void CreatePlayerStart()
     {
@@ -97,7 +119,7 @@ public class PlayerManager : MonoBehaviour
     {
         Vector2 pos = new Vector2(x, y);
         GameObject markerGo = GameObject.Instantiate(markerPrefab);
-        marker = MapsAPI.Instance.AddMarker(pos, markerGo);
+        m_Marker = MapsAPI.Instance.AddMarker(pos, markerGo);
         marker.GameObject.name += "_MyMarker";
         marker.inMapView = true;
         marker.Coords = pos;
@@ -323,7 +345,7 @@ public class PlayerManager : MonoBehaviour
 
         UISpellcastBook.Open(PlayerDataManager.playerData, marker, spells,
             (spell, ingredients) =>
-            { 
+            {
                 //on click spell glyph
                 Spellcasting.CastSpell(spell, marker, ingredients,
                     (result) => { },

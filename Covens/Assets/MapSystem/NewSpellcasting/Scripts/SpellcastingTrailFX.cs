@@ -22,6 +22,8 @@ public class SpellcastingTrailFX : MonoBehaviour
 
     public static void SpawnTrail(int degree, IMarker caster, IMarker target, System.Action onStart, System.Action onComplete)
     {
+        Debug.Log(((WitchToken)caster.Token).displayName);
+        Debug.Log(((WitchToken)target.Token).displayName);
         if (caster == null || target == null || caster.isNull || target.isNull)
         {
             LeanTween.value(0, 0, 0.6f)
@@ -31,6 +33,7 @@ public class SpellcastingTrailFX : MonoBehaviour
         else
         {
             LeanTween.value(0, 0, 0.15f).setOnComplete(onStart);
+            Debug.Log(caster.AvatarTransform.position);
             SpawnTrail(degree, caster.AvatarTransform, target.AvatarTransform, onComplete);
         }
     }
@@ -86,7 +89,7 @@ public class SpellcastingTrailFX : MonoBehaviour
                     path = new LTBezierPath(new Vector3[] {
                     startPosition, //start point
                     targetPosition + new Vector3(Random.Range(-100,100),Random.Range(-35,35),Random.Range(-100,100)),
-                    startPosition + Random.onUnitSphere.normalized * Random.Range(distance / 2, distance),
+                    startPosition + new Vector3(Random.Range(-100,100),Random.Range(-35,35),Random.Range(-100,100)),
                     targetPosition
                    });
                 }

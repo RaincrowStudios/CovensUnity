@@ -19,7 +19,7 @@ public class LoadPOPManager : MonoBehaviour
     }
     void OnGUI()
     {
-        if (!isViewVisible && GUI.Button(new Rect(320, 10, 40, 40), "View"))
+        if (!isViewVisible && GUI.Button(new Rect(320, 10, 80, 40), "View POP"))
         {
             if (map == null)
             {
@@ -27,7 +27,7 @@ public class LoadPOPManager : MonoBehaviour
             }
             LocationIslandController.ExitPOP(() =>
             {
-                APIManager.Instance.Get("place-of-power/view/5d54431515c8ee22cbd6b991", (response, result) =>
+                APIManager.Instance.Get("place-of-power/view/5d559de54e140a0bebd54e57", (response, result) =>
                       {
                           Debug.Log(response);
                           if (result == 200)
@@ -57,7 +57,7 @@ public class LoadPOPManager : MonoBehaviour
             {
                 map = MapsAPI.Instance;
             }
-            APIManager.Instance.Post("place-of-power/start/5d54431515c8ee22cbd6b991", "{}", (response, result) =>
+            APIManager.Instance.Post("place-of-power/start/5d559de54e140a0bebd54e57", "{}", (response, result) =>
              {
                  Debug.Log(response);
              });
