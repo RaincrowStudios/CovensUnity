@@ -23,11 +23,19 @@ public class MarkerManager : MonoBehaviour
     }
 
     public static Dictionary<string, List<IMarker>> Markers = new Dictionary<string, List<IMarker>>();
-    
+
     public static IMarker GetMarker(string instance)
     {
-        if (Markers.ContainsKey(instance))
-            return Markers[instance][0];
+        if (!LocationIslandController.isInBattle)
+        {
+            if (Markers.ContainsKey(instance))
+                return Markers[instance][0];
+        }
+        else
+        {
+            if (LocationUnitSpawner.Markers.ContainsKey(instance))
+                return LocationUnitSpawner.Markers[instance];
+        }
         return null;
     }
 }

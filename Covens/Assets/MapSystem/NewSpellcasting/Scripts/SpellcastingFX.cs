@@ -130,7 +130,7 @@ public static class SpellcastingFX
         if (string.IsNullOrEmpty(baseSpell))
             baseSpell = spell.id;
         DownloadedAssets.GetSprite(baseSpell, (spr) => { glyph.GetChild(0).GetChild(5).GetComponent<UnityEngine.UI.Image>().overrideSprite = spr; });
-        
+
         //spawn aura
         Transform aura = auraPool.Spawn(target.GameObject.transform, 3f);
         aura.localPosition = new Vector3(0, 0, 0f);
@@ -159,7 +159,8 @@ public static class SpellcastingFX
         textObj.text = text;
         textObj.transform.localScale = Vector3.one;
         textObj.transform.localRotation = Quaternion.identity;
-
+        if (LocationIslandController.isInBattle)
+            textObj.transform.Translate(0, 61, 0);
         //animate the text
         Vector3 pos;
         LeanTween.value(0, 1, 2f)
