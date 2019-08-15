@@ -7,7 +7,7 @@ using UnityEngine.UI;
 using Raincrow.Maps;
 using static CooldownManager;
 
-public class UISpellcard : EnhancedScrollerCellView
+public class UISpellcard : MonoBehaviour// : EnhancedScrollerCellView
 {
     [SerializeField] private CanvasGroup m_CanvasGroup;
     [SerializeField] private TextMeshProUGUI m_SpellName;
@@ -34,6 +34,8 @@ public class UISpellcard : EnhancedScrollerCellView
     [SerializeField] private Sprite m_WhiteCrest;
 
     public SpellData Spell { get; private set; }
+    public RectTransform RectTransform { get; private set; }
+
     private System.Action<int> m_OnClickSchool;
     private System.Action<UISpellcard> m_OnClickCard;
     private System.Action<UISpellcard> m_OnClickGlyph;
@@ -48,6 +50,13 @@ public class UISpellcard : EnhancedScrollerCellView
         m_CardButton.onClick.AddListener(OnClickCard);
         m_SpellButton.onClick.AddListener(OnClickGlyph);
         m_CooldownTex.text = "";
+
+        RectTransform = GetComponent<RectTransform>();
+    }
+
+    private void OnEnable()
+    {
+        transform.localScale = Vector3.one;
     }
 
     public void SetData(
