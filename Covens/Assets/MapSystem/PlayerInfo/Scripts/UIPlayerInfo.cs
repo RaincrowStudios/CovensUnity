@@ -80,7 +80,7 @@ public class UIPlayerInfo : UIInfoPanel
         ShowHelper(witch, data);
         MainUITransition.Instance.HideMainUI();
 
-        MarkerSpawner.HighlightMarker(new List<IMarker> { PlayerManager.marker, m_WitchMarker }, true);
+        MarkerSpawner.HighlightMarker(new List<IMarker> { PlayerManager.marker, m_WitchMarker });
 
         SpellCastHandler.OnPlayerTargeted += _OnPlayerAttacked;
         MoveTokenHandler.OnTokenMove += _OnMapTokenMove;
@@ -166,7 +166,7 @@ public class UIPlayerInfo : UIInfoPanel
 
             //m_Witch.SetTextAlpha(NewMapsMarker.defaultTextAlpha);
 
-            MarkerSpawner.HighlightMarker(new List<IMarker> { PlayerManager.marker, m_WitchMarker }, false);
+            MarkerSpawner.HighlightMarker(new List<IMarker> { });
 
             SpellCastHandler.OnPlayerTargeted -= _OnPlayerAttacked;
             MoveTokenHandler.OnTokenMove -= _OnMapTokenMove;

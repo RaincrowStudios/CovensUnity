@@ -97,7 +97,7 @@ public class UISpiritInfo : UIInfoPanel
 
         MainUITransition.Instance.HideMainUI();
 
-        MarkerSpawner.HighlightMarker(new List<IMarker> { PlayerManager.marker, m_SpiritMarker }, true);
+        MarkerSpawner.HighlightMarker(new List<IMarker> { PlayerManager.marker, m_SpiritMarker });
 
         OnMapEnergyChange.OnPlayerDead += _OnCharacterDead;
         OnMapEnergyChange.OnEnergyChange += _OnMapEnergyChange;
@@ -145,7 +145,7 @@ public class UISpiritInfo : UIInfoPanel
         MapCameraUtils.FocusOnPosition(MapsAPI.Instance.mapCenter.position, m_PreviousMapZoom, true);
         MainUITransition.Instance.ShowMainUI();
 
-        MarkerSpawner.HighlightMarker(new List<IMarker> { PlayerManager.marker, m_SpiritMarker }, false);
+        MarkerSpawner.HighlightMarker(new List<IMarker> {  });
     }
 
     public void SetupDetails(SelectSpiritData_Map details)

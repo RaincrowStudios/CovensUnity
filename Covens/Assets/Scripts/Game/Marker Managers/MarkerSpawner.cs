@@ -455,10 +455,11 @@ public class MarkerSpawner : MarkerManager
         }
         else
         {
-            List<List<IMarker>> markerList = new List<List<IMarker>>(Markers.Values);
-            foreach (List<IMarker> _marker in markerList)
+            IMarker aux;
+            foreach (var item in Markers)
             {
-                UpdateMarker(_marker[0]);
+                aux = item.Value[0];
+                UpdateMarker(aux);
             }
         }
     }
@@ -502,27 +503,25 @@ public class MarkerSpawner : MarkerManager
     private static bool m_Highlighting = false;
     private static List<IMarker> m_HighlightedMarkers = new List<IMarker>();
 
-    public static void HighlightMarker(List<IMarker> targets, bool highlight)
+    public static void HighlightMarker(List<IMarker> targets)
     {
-        if (highlight)
-            return;
-
-        //m_Highlighting = highlight;
-        //m_HighlightedMarkers = targets;
+        m_Highlighting = targets.Count > 0;
+        m_HighlightedMarkers = targets;
         //MapsAPI.Instance.EnableBuildingIcons(!highlight);
 
-        //List<List<IMarker>> markers = new List<List<IMarker>>(Markers.Values);
-        //foreach (List<IMarker> _marker in markers)
-        //{
-        //    if (_marker[0].inMapView && !targets.Contains(_marker[0]))
-        //        _marker[0].SetAlpha(highlight ? 0 : 1, 1f);
-        //}
+        IMarker aux;
+        foreach (var item in Markers)
+        {
+            aux = item.Value[0];
+            if (aux.inMapView && !targets.Contains(aux))
+                aux.SetAlpha(m_Highlighting ? 0.05f : 1, 1f);
+        }
 
-        //foreach (IMarker _marker in targets)
-        //{
-        //    if (_marker.inMapView)
-        //        _marker?.SetAlpha(1, 1f);
-        //}
+        foreach (IMarker _marker in targets)
+        {
+            _marker.inMapView = true;
+            _marker?.SetAlpha(1, 1f);
+        }
     }
 
     //click controller
