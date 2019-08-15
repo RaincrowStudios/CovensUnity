@@ -267,8 +267,8 @@ public class PlayerData : WitchMarkerData
         {
             if (item.hidden)
                 continue;
-            if (item.level > level)
-                continue;
+            //if (item.level > level)
+            //    continue;
 
             m_Spells.Add(item);
         }
@@ -407,10 +407,7 @@ public class PlayerData : WitchMarkerData
 
     [JsonIgnore]
     public double lastEnergyUpdate;
-
-    [JsonIgnore]
-    public int avatar => bodyType;
-
+    
     [JsonIgnore]
     public List<SpellData> Spells => m_Spells;
 
