@@ -35,6 +35,8 @@ namespace Raincrow.Maps
 
         public bool IsPlayer { get { return (Object)PlayerManager.marker == this; } }
 
+        public virtual string Name => "";
+
 
         protected List<SpriteRenderer> m_Renderers;
         protected List<SpriteRenderer> m_CharacterRenderers;

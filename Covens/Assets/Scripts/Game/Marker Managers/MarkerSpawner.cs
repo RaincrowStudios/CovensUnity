@@ -507,47 +507,23 @@ public class MarkerSpawner : MarkerManager
         if (highlight)
             return;
 
-        m_Highlighting = highlight;
-        m_HighlightedMarkers = targets;
-        MapsAPI.Instance.EnableBuildingIcons(!highlight);
+        //m_Highlighting = highlight;
+        //m_HighlightedMarkers = targets;
+        //MapsAPI.Instance.EnableBuildingIcons(!highlight);
 
-        List<List<IMarker>> markers = new List<List<IMarker>>(Markers.Values);
-        foreach (List<IMarker> _marker in markers)
-        {
-            if (_marker[0].inMapView && !targets.Contains(_marker[0]))
-                _marker[0].SetAlpha(highlight ? 0 : 1, 1f);
-        }
+        //List<List<IMarker>> markers = new List<List<IMarker>>(Markers.Values);
+        //foreach (List<IMarker> _marker in markers)
+        //{
+        //    if (_marker[0].inMapView && !targets.Contains(_marker[0]))
+        //        _marker[0].SetAlpha(highlight ? 0 : 1, 1f);
+        //}
 
-        foreach (IMarker _marker in targets)
-        {
-            if (_marker.inMapView)
-                _marker?.SetAlpha(1, 1f);
-        }
+        //foreach (IMarker _marker in targets)
+        //{
+        //    if (_marker.inMapView)
+        //        _marker?.SetAlpha(1, 1f);
+        //}
     }
-
-    public static void HideVisibleMarkers(float time, bool player)
-    {
-        List<List<IMarker>> markersList = new List<List<IMarker>>(Markers.Values);
-
-        IMarker marker;
-        foreach (List<IMarker> _marker in markersList)
-        {
-            marker = _marker[0];
-            if (marker.inMapView)
-            {
-                marker.inMapView = false; //so it wont be detected by MarkerSpawner.HighlightMarker
-                marker.SetAlpha(0, time, () =>
-                {
-                    marker.GameObject.SetActive(false);
-                });
-            }
-        }
-
-        if (player)
-            PlayerManager.marker.SetAlpha(0, time);
-    }
-
-
 
     //click controller
 

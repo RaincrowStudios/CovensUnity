@@ -1,27 +1,29 @@
 ﻿using Newtonsoft.Json;
-using Raincrow.GameEventResponses;
 using Raincrow.Maps;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class CharacterEquiphandler : IGameEventHandler
+namespace Raincrow.GameEventResponses
 {
-    public string EventName => "character.equip";
-
-    private struct EquipEventData
+    public class CharacterEquiphandler : IGameEventHandler
     {
-        public string character;
-        public List<EquippedApparel> equips;
-    }
+        public string EventName => "character.equip";
 
-    public void HandleResponse(string eventData)
-    {
-        EquipEventData data = JsonConvert.DeserializeObject<EquipEventData>(eventData);
-        IMarker marker = MarkerSpawner.GetMarker(data.character);
+        private struct EquipEventData
+        {
+            public string character;
+            public List<EquippedApparel> equips;
+        }
 
-        if (marker.Type != MarkerManager.MarkerType.WITCH)
-            return;
+        public void HandleResponse(string eventData)
+        {
+            EquipEventData data = JsonConvert.DeserializeObject<EquipEventData>(eventData);
+            IMarker marker = MarkerSpawner.GetMarker(data.character);
 
-        (marker as WitchMarker).UpdateEquips(data.equips);
+            if (marker.Type != MarkerManager.MarkerType.WITCH)
+                return;
+
+            (marker as WitchMarker).UpdateEquips(data.equips);
+        }
     }
 }

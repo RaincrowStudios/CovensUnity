@@ -14,6 +14,7 @@ namespace Raincrow.Maps
         MarkerSpawner.MarkerType Type { get; }
         Token Token { get; }
         bool IsPlayer { get; }
+        string Name { get; }
 
         bool IsShowingIcon { get; }
         bool IsShowingAvatar { get; }

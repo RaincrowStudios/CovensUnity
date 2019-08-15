@@ -372,8 +372,8 @@ public class FTFManager : MonoBehaviour
             LeanTween.value(440, 36, 1f).setOnUpdate((float f) =>
             {
                 f = (int)f;
-                energy.text = LocalizeLookUp.GetText(LocalizationManager.lt_energy) + " <b><color=#4C80FD>" + f.ToString() + "</color></b>";
-                energy2.text = LocalizeLookUp.GetText(LocalizationManager.lt_energy) + " <color=black>" + f.ToString();
+                energy.text = LocalizeLookUp.GetText("lt_energy") + " <b><color=#4C80FD>" + f.ToString() + "</color></b>";
+                energy2.text = LocalizeLookUp.GetText("lt_energy") + " <color=black>" + f.ToString();
             });
             yield return new WaitForSeconds(1.2f);
             continueButton.SetActive(false);
@@ -443,8 +443,8 @@ public class FTFManager : MonoBehaviour
             LeanTween.value(36, 0, 1f).setOnUpdate((float f) =>
             {
                 f = (int)f;
-                energy.text = LocalizeLookUp.GetText(LocalizationManager.lt_energy) + " <b><color=#4C80FD>" + f.ToString() + "</color></b>";
-                energy2.text = LocalizeLookUp.GetText(LocalizationManager.lt_energy) + " <color=black>" + f.ToString();
+                energy.text = LocalizeLookUp.GetText("lt_energy") + " <b><color=#4C80FD>" + f.ToString() + "</color></b>";
+                energy2.text = LocalizeLookUp.GetText("lt_energy") + " <color=black>" + f.ToString();
             });
             StartCoroutine(BarghestWildDefeat());
             moveCamera(PlayerManager.marker.GameObject.transform.position, 2f);
@@ -674,8 +674,8 @@ public class FTFManager : MonoBehaviour
             LeanTween.value(22244, 22224, 1f).setOnUpdate((float f) =>
             {
                 f = (int)f;
-                //energy.text = LocalizeLookUp.GetText(LocalizationManager.lt_energy) + " <b><color=#F48D00>" + f.ToString() + "</color></b>\nlvl: <b><color=#F48D00>8</color></b>";
-                energy2.text = LocalizeLookUp.GetText(LocalizationManager.lt_energy) + " <color=black>" + f.ToString();
+                //energy.text = LocalizeLookUp.GetText("lt_energy") + " <b><color=#F48D00>" + f.ToString() + "</color></b>\nlvl: <b><color=#F48D00>8</color></b>";
+                energy2.text = LocalizeLookUp.GetText("lt_energy") + " <color=black>" + f.ToString();
             }).setOnComplete(() => { LeanTween.alphaCanvas(gypsyHandCG, 1f, .5f); });
 
             continueButton.SetActive(true);
@@ -769,13 +769,13 @@ public class FTFManager : MonoBehaviour
             StartCoroutine(FadeInFocus(dialogueCG));
             if (PlayerDataManager.playerData.male)
             {
-                dialogueText.text = dialogueText.text.Replace("{{him/her}}", LocalizeLookUp.GetText(LocalizationManager.ftf_him))
-                    .Replace("{{he/she}}", LocalizeLookUp.GetText(LocalizationManager.ftf_he));
+                dialogueText.text = dialogueText.text.Replace("{{him/her}}", LocalizeLookUp.GetText("ftf_him"))
+                    .Replace("{{he/she}}", LocalizeLookUp.GetText("ftf_he"));
             }
             else
             {
-                dialogueText.text = dialogueText.text.Replace("{{him/her}}", LocalizeLookUp.GetText(LocalizationManager.ftf_her))
-                    .Replace("{{he/she}}", LocalizeLookUp.GetText(LocalizationManager.ftf_she));
+                dialogueText.text = dialogueText.text.Replace("{{him/her}}", LocalizeLookUp.GetText("ftf_her"))
+                    .Replace("{{he/she}}", LocalizeLookUp.GetText("ftf_she"));
             }
             //slide savannah in with bottom text and next arrow active
         }
@@ -783,11 +783,11 @@ public class FTFManager : MonoBehaviour
         {
             if (PlayerDataManager.playerData.male)
             {
-                dialogueText.text = dialogueText.text.Replace("{{his/her}}", LocalizeLookUp.GetText(LocalizationManager.ftf_his));
+                dialogueText.text = dialogueText.text.Replace("{{his/her}}", LocalizeLookUp.GetText("ftf_his"));
             }
             else
             {
-                dialogueText.text = dialogueText.text.Replace("{{his/her}}", LocalizeLookUp.GetText(LocalizationManager.ftf_her));
+                dialogueText.text = dialogueText.text.Replace("{{his/her}}", LocalizeLookUp.GetText("ftf_her"));
             }
             StartCoroutine(FadeOutFocus(savannahCG));
             StartCoroutine(FadeInFocus(brigidCG));
@@ -1040,13 +1040,13 @@ public class FTFManager : MonoBehaviour
             dialogueText.text = dialogueText.text.Replace("{{Player Name}}", PlayerDataManager.playerData.name);
             if (PlayerDataManager.playerData.male)
             {
-                dialogueText.text = dialogueText.text.Replace("{{his/her}}", LocalizeLookUp.GetText(LocalizationManager.ftf_his))
-                    .Replace("{{he/she}}", LocalizeLookUp.GetText(LocalizationManager.ftf_he));
+                dialogueText.text = dialogueText.text.Replace("{{his/her}}", LocalizeLookUp.GetText("ftf_his"))
+                    .Replace("{{he/she}}", LocalizeLookUp.GetText("ftf_he"));
             }
             else
             {
-                dialogueText.text = dialogueText.text.Replace("{{his/her}}", LocalizeLookUp.GetText(LocalizationManager.ftf_her))
-                    .Replace("{{he/she}}", LocalizeLookUp.GetText(LocalizationManager.ftf_she));
+                dialogueText.text = dialogueText.text.Replace("{{his/her}}", LocalizeLookUp.GetText("ftf_her"))
+                    .Replace("{{he/she}}", LocalizeLookUp.GetText("ftf_she"));
             }
             //slide savannah in and brigid out
             //disable next button and highlight store
@@ -1057,13 +1057,13 @@ public class FTFManager : MonoBehaviour
             dialogueText.text = dialogueText.text.Replace("{{Player Name}}", PlayerDataManager.playerData.name);
             if (PlayerDataManager.playerData.male)
             {
-                dialogueText.text = dialogueText.text.Replace("{{his/her}}", LocalizeLookUp.GetText(LocalizationManager.ftf_him))
-                    .Replace("{{he/she}}", LocalizeLookUp.GetText(LocalizationManager.ftf_he));
+                dialogueText.text = dialogueText.text.Replace("{{his/her}}", LocalizeLookUp.GetText("ftf_him"))
+                    .Replace("{{he/she}}", LocalizeLookUp.GetText("ftf_he"));
             }
             else
             {
-                dialogueText.text = dialogueText.text.Replace("{{his/her}}", LocalizeLookUp.GetText(LocalizationManager.ftf_her))
-                    .Replace("{{he/she}}", LocalizeLookUp.GetText(LocalizationManager.ftf_she));
+                dialogueText.text = dialogueText.text.Replace("{{his/her}}", LocalizeLookUp.GetText("ftf_her"))
+                    .Replace("{{he/she}}", LocalizeLookUp.GetText("ftf_she"));
             }
 
         }
@@ -1151,19 +1151,19 @@ public class FTFManager : MonoBehaviour
             //  Debug.Log("replacing season and days here");
             if (PlayerDataManager.tribunal == 1)
             {
-                tribunal = LocalizeLookUp.GetText(LocalizationManager.ftf_summer);
+                tribunal = LocalizeLookUp.GetText("ftf_summer");
             }
             else if (PlayerDataManager.tribunal == 2)
             {
-                tribunal = LocalizeLookUp.GetText(LocalizationManager.ftf_spring);
+                tribunal = LocalizeLookUp.GetText("ftf_spring");
             }
             else if (PlayerDataManager.tribunal == 3)
             {
-                tribunal = LocalizeLookUp.GetText(LocalizationManager.ftf_autumn);
+                tribunal = LocalizeLookUp.GetText("ftf_autumn");
             }
             else
             {
-                tribunal = LocalizeLookUp.GetText(LocalizationManager.ftf_winter);
+                tribunal = LocalizeLookUp.GetText("ftf_winter");
             }
 
             System.DateTime dtDateTime = new System.DateTime(1970, 1, 1, 0, 0, 0, 0, System.DateTimeKind.Utc);

@@ -53,10 +53,10 @@ public static class SpellcastingFX
     //    });
     //}
 
-    public static void SpawnBanish(IMarker target, float delay)
+    public static void SpawnBanish(IMarker target)
     {
-        LeanTween.value(0, 1, delay).setOnComplete(() =>
-        {
+        //LeanTween.value(0, 1, delay).setOnComplete(() =>
+        //{
             Transform glyph = m_BanishGlyph.Spawn();
             Transform aura = m_BanishAura.Spawn();
 
@@ -75,7 +75,7 @@ public static class SpellcastingFX
                 m_BanishGlyph.Despawn(glyph);
                 m_BanishAura.Despawn(aura);
             });
-        });
+        //});
     }
 
     public static void SpawnFail(IMarker target, bool shake = true)
