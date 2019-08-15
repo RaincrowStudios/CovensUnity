@@ -17,9 +17,10 @@ public class WitchMarker : MuskMarker
     [SerializeField] private TextMeshPro m_Level;
 
     [SerializeField] private SpriteRenderer m_IconRenderer;
-
-
+    
     public WitchToken witchToken { get => Token as WitchToken; }
+
+    public override string Name => m_DisplayName.text;
 
     private int m_TweenId;
     private Transform m_DeathIcon;

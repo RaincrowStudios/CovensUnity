@@ -3,6 +3,7 @@ using UnityEngine.UI;
 using System.Collections;
 using TMPro;
 using Raincrow.GameEventResponses;
+using Raincrow.Maps;
 
 public class BanishManager : MonoBehaviour
 {
@@ -26,89 +27,70 @@ public class BanishManager : MonoBehaviour
         Instance = this;
     }
 
-    public void Banish(double lng, double lat, string caster)
+    public static void Banish(SpellCastHandler.SpellCastEventData data, IMarker caster, IMarker target)
     {
-        StartCoroutine(BanishHelper(caster, lng, lat));
-    }
+        double longitude = data.result.moveCharacter.Value.longitude;
+        double latitude = data.result.moveCharacter.Value.latitude;
+             
 
-    IEnumerator BanishHelper(string caster, double lng, double lat)
-    {
-        //if (PlaceOfPower.IsInsideLocation)
-        //{
-        //    //dont send the leave request (server already removed the player from the pop)
-        //    PlaceOfPower.LeavePoP(false);
-        //    yield return new WaitForSeconds(1f);
-
-        //    OnBanished?.Invoke();
-        //    UIPlayerBanished.Show(caster);
-        //    yield return 1;
-        //    yield return new WaitForSeconds(2f);
-
-        //    //load the map at the new position
-        //    MapsAPI.Instance.InitMap(lng, lat, MapsAPI.Instance.normalizedZoom, null, true);
-        //}
-        //else
+        if (target != null)
         {
-            OnBanished?.Invoke();
-            UIPlayerBanished.Show(caster);
-
-            yield return 1;
-            yield return new WaitForSeconds(2);
-
-            //get markers
-            MarkerManagerAPI.GetMarkers(
-                (float)lng,
-                (float)lat,
-                null,
-                true,
-                false,
-                true
-            );
-        }
-
-        yield return 0;
-        yield return new WaitForSeconds(2f);
-    }
-
-    public void Bind(Condition condition)
-    {
-        isBind = true;
-        bindTimeStamp = condition.expiresOn;
-        
-        flyButton.SetActive(false);
-        bindLock.SetActive(true);
-        recallButton.interactable = false;
-
-        StartCoroutine(BindHelper());
-    }
-
-    private IEnumerator BindHelper()
-    {
-        PlayerManager.Instance.CancelFlight();
-        yield return new WaitForSeconds(1f);
-        yield return 0;
-
-        while (isBind)
-        {
-            yield return 0;
+            if (target.IsPlayer)
+            {
+                OnBanished?.Invoke();
+                UIPlayerBanished.Show(caster == null ? "" : caster.Name);
+                //let the move.realocate socket event handle the rest
+            }
+            else
+            {
+                SpellcastingFX.SpawnBanish(target);
+                MarkerSpawner.DeleteMarker(data.target.id);
+                
+                //move the marker in the direction he was banished
+                Vector3 targetPos = MapsAPI.Instance.GetWorldPosition(longitude, latitude);
+                Vector3 direction = Vector3.up * 10;
+                LeanTween.value(0,0,0.05f).setOnComplete(() =>
+                {
+                    target.SetWorldPosition(target.GameObject.transform.position + direction, 2f);
+                    target.SetAlpha(0, 1);
+                });
+            }
         }
     }
 
-    public void ShowBindScreen(Raincrow.GameEventResponses.SpellCastHandler.SpellCastEventData response)
+    public static void Bind(SpellCastHandler.SpellCastEventData data, IMarker caster, IMarker target)
     {
-        string casterId = string.Empty;
-        if (response.caster.Type == MarkerSpawner.MarkerType.WITCH)
+        if (target != null)
         {
-            casterId = response.caster.id;
+            if (target.IsPlayer)
+            {
+                isBind = true;
+                PlayerManager.Instance.CancelFlight();
+                //bindTimeStamp = condition.expiresOn;
+                Instance.flyButton.SetActive(false);
+                Instance.bindLock.SetActive(true);
+                Instance.recallButton.interactable = false;
+
+                UIPlayerBound.Show(caster == null ? "" : caster.Name);
+            }
         }
-        else if (response.caster.Type == MarkerSpawner.MarkerType.SPIRIT)
+    }
+
+    public static void Silence(SpellCastHandler.SpellCastEventData data, IMarker caster, IMarker target)
+    {
+        if (target != null)
         {
-            casterId = LocalizeLookUp.GetSpiritName(response.caster.id);
+            if (target.IsPlayer)
+            {
+                isSilenced = true;
+                UIPlayerSilenced.Show(caster == null ? "" : caster.Name);
+            }
+            else
+            {
+                SpellData spell = DownloadedAssets.GetSpell(data.spell);
+                SpellcastingFX.SpawnGlyph(target, spell, spell.baseSpell);
+            }
         }
-
-        UIPlayerBound.Show(casterId);
-
-        this.CancelInvoke();
     }
 
     public void Unbind()
@@ -119,24 +101,7 @@ public class BanishManager : MonoBehaviour
         flyButton.SetActive(true);
         bindLock.SetActive(false);
         PlayerNotificationManager.Instance.ShowNotification("You are no longer bound. You are now able to fly.", PlayerNotificationManager.Instance.spellBookIcon);
-    }
-
-    public void Silenced(Raincrow.GameEventResponses.SpellCastHandler.SpellCastEventData response)
-    {
-        isSilenced = true;
-
-        string casterId = string.Empty;
-        if (response.caster.Type == MarkerSpawner.MarkerType.WITCH)
-        {
-            casterId = response.caster.id;
-        }
-        else if (response.caster.Type == MarkerSpawner.MarkerType.SPIRIT)
-        {
-            casterId = LocalizeLookUp.GetSpiritName(response.caster.Type);
-        }
-
-        UIPlayerSilenced.Show(casterId);
-    }
+    }    
 
     public void UnSilenced()
     {

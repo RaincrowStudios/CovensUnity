@@ -24,10 +24,10 @@ public class LocalizeLookUpEditor : Editor
         GUILayout.BeginVertical();
         GUILayout.Space(15);
 
-        if (GUILayout.Button("Refresh Local IDs", ButtonLabel, GUILayout.MaxWidth(150)))
-        {
-            LocalizationManager.RefreshIDS();
-        }
+        //if (GUILayout.Button("Refresh Local IDs", ButtonLabel, GUILayout.MaxWidth(150)))
+        //{
+        //    LocalizationManager.RefreshIDS();
+        //}
 
         GUILayout.Label("Filter: ");
         string filerID = GUILayout.TextField(search);

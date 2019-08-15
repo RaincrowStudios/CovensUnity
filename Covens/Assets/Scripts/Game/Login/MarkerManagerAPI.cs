@@ -81,22 +81,7 @@ public class MarkerManagerAPI : MonoBehaviour
         //pre-move the player marker and load the map at the target position
         if (loadMap)
         {
-            MapsAPI.Instance.InitMap(
-                longitude,
-                latitude,
-                MapsAPI.Instance.normalizedZoom,
-                () =>
-                {
-                    LeanTween.cancel(m_MoveTweenId);
-                    Vector3 targetPosition = MapsAPI.Instance.GetWorldPosition(longitude, latitude);
-                    if (Vector3.Distance(targetPosition, PlayerManager.marker.GameObject.transform.position) < 200)
-                        m_MoveTweenId = LeanTween.move(PlayerManager.marker.GameObject, targetPosition, 1f).setEaseOutCubic().uniqueId;
-                    else
-                        PlayerManager.marker.GameObject.transform.position = targetPosition;
-
-                    requestMarkers();
-                },
-                animateMap);
+            LoadMap(longitude, latitude, animateMap, requestMarkers);
         }
         else
         {
@@ -154,12 +139,38 @@ public class MarkerManagerAPI : MonoBehaviour
         PlayerDataManager.playerData.latitude = latitude;
         
         MapMoveResponse moveResponse = JsonConvert.DeserializeObject<MapMoveResponse>(result);
+        
+        UpdateDominion(moveResponse.location);
+        SpawnMarkers(moveResponse.characters, moveResponse.spirits, moveResponse.items);
+    }
 
+    public static void LoadMap(double longitude, double latitude, bool animate, System.Action onComplete = null)
+    {
+        MapsAPI.Instance.InitMap(
+                longitude,
+                latitude,
+                MapsAPI.Instance.normalizedZoom,
+                () =>
+                {
+                    LeanTween.cancel(m_MoveTweenId);
+                    Vector3 targetPosition = MapsAPI.Instance.GetWorldPosition(longitude, latitude);
+                    if (Vector3.Distance(targetPosition, PlayerManager.marker.GameObject.transform.position) < 200)
+                        m_MoveTweenId = LeanTween.move(PlayerManager.marker.GameObject, targetPosition, 1f).setEaseOutCubic().uniqueId;
+                    else
+                        PlayerManager.marker.GameObject.transform.position = targetPosition;
+
+                    onComplete?.Invoke();
+                },
+                animate);
+    }
+
+    public static void UpdateDominion(MapMoveResponse.Location location)
+    {
         //update soundtrack
-        if (string.IsNullOrWhiteSpace(moveResponse.location.garden))
+        if (string.IsNullOrWhiteSpace(location.garden))
         {
-            PlayerDataManager.soundTrack = moveResponse.location.music;
-            SoundManagerOneShot.Instance.SetBGTrack(moveResponse.location.music);
+            PlayerDataManager.soundTrack = location.music;
+            SoundManagerOneShot.Instance.SetBGTrack(location.music);
         }
         else
         {
@@ -168,26 +179,29 @@ public class MarkerManagerAPI : MonoBehaviour
         }
 
         //update zone and dominion
-        PlayerDataManager.zone = moveResponse.location.zone;
-        if (moveResponse.location.dominion != PlayerDataManager.currentDominion)
+        PlayerDataManager.zone = location.zone;
+        if (location.dominion != PlayerDataManager.currentDominion)
         {
-            PlayerDataManager.currentDominion = moveResponse.location.dominion;
-            OnChangeDominion?.Invoke(moveResponse.location.dominion);
-            if (string.IsNullOrWhiteSpace(moveResponse.location.garden))
+            PlayerDataManager.currentDominion = location.dominion;
+            OnChangeDominion?.Invoke(location.dominion);
+            if (string.IsNullOrWhiteSpace(location.garden))
             {
                 PlayerManagerUI.Instance.ShowDominion(PlayerDataManager.currentDominion);
             }
             else
             {
-                PlayerManagerUI.Instance.ShowGarden(moveResponse.location.garden);
+                PlayerManagerUI.Instance.ShowGarden(location.garden);
             }
         }
+    }
 
+    public static void SpawnMarkers(WitchToken[] witches, SpiritToken[] spirits, CollectableToken[] items)
+    {
         //finaly add/update markers
         if (m_SpawnCoroutine != null)
             m_Instance.StopCoroutine(m_SpawnCoroutine);
-            
-        m_SpawnCoroutine = m_Instance.StartCoroutine(SpawnMarkersCoroutine(moveResponse.characters, moveResponse.spirits, moveResponse.items));
+
+        m_SpawnCoroutine = m_Instance.StartCoroutine(SpawnMarkersCoroutine(witches, spirits, items));
     }
 
     private static IEnumerator SpawnMarkersCoroutine(WitchToken[] witches, SpiritToken[] spirits, CollectableToken[] items)

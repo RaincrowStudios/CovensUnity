@@ -1,5 +1,6 @@
 ﻿using Newtonsoft.Json;
 using Raincrow.Maps;
+using System.Collections.Generic;
 using UnityEngine;
 
 namespace Raincrow.GameEventResponses
@@ -19,12 +20,23 @@ namespace Raincrow.GameEventResponses
 
         public struct Result
         {
+            public struct MoveData
+            {
+                [JsonProperty("newLongitude")]
+                public double longitude;
+                [JsonProperty("newLatitude")]
+                public double latitude;
+            }
+
             public int damage;
             public bool isCritical;
             public bool isSuccess;
 
             [JsonProperty("appliedEffect")]
             public StatusEffect statusEffect;
+
+            [JsonProperty("moveCharacter")]
+            public MoveData? moveCharacter;
         }
 
         public struct SpellCastEventData
@@ -44,6 +56,14 @@ namespace Raincrow.GameEventResponses
 
         public static event System.Action<string, string, SpellData, Result> OnSpellCast;
         public static event System.Action<string, StatusEffect> OnApplyStatusEffect;
+
+        private static Dictionary<string, System.Action<SpellCastEventData, IMarker, IMarker>> m_SpellBehaviorDict = new Dictionary<string, System.Action<SpellCastEventData, IMarker, IMarker>>()
+        {
+            { "spell_banish",   BanishManager.Banish },
+            { "spell_bind",     BanishManager.Bind },
+            { "spell_silence",  BanishManager.Silence }
+        };
+
 
         public void HandleResponse(string eventData)
         {
@@ -84,28 +104,25 @@ namespace Raincrow.GameEventResponses
                 }
 
                 PlayerDataManager.playerData.alignment += alignmentChange;
+
+                if (data.result.isSuccess)
+                {
+                    PlayerDataManager.playerData.xp += (ulong)spell.xp;
+                    PlayerManagerUI.Instance.setupXP();
+                }
             }
 
             SpellcastingTrailFX.SpawnTrail(spell.school, caster, target,
                 onStart: () =>
                 {
                     onTrailStart?.Invoke();
-
-                    //update the player exp
-                    if (playerIsCaster && data.result.isSuccess)
-                    {
-                        PlayerDataManager.playerData.xp += (ulong)spell.xp;
-                        PlayerManagerUI.Instance.setupXP();
-                    }
-
+                    
                     //trigger a map_energy_change event for the caster
                     LeanTween.value(0, 0, 0.25f).setOnComplete(() => OnMapEnergyChange.ForceEvent(caster, casterNewEnergy, data.timestamp));
 
                     //spell text for the energy lost casting the spell
                     if (playerIsCaster && caster != null)
-                    {
                         SpellcastingFX.SpawnDamage(caster, -spell.cost);
-                    }
 
                     //localy remove the immunity so you may attack again
                     if (playerIsTarget)
@@ -152,37 +169,16 @@ namespace Raincrow.GameEventResponses
                             (target as WitchMarker).AddImmunityFX();
                     }
 
+                    //
                     if (target != null)
                     {
                         if (data.result.isSuccess)
                         {
-                            Debug.LogError("todo: move spell specific behavior to its own classes");
-
-                            if (playerIsTarget)
+                            if (m_SpellBehaviorDict.ContainsKey(spell.id))
                             {
-                                if (data.spell == "spell_bind")
-                                {
-                                    BanishManager.Instance.ShowBindScreen(data);
-                                }
-                                else if (data.spell == "spell_silence")
-                                {
-                                    BanishManager.Instance.Silenced(data);
-                                }
+                                m_SpellBehaviorDict[spell.id].Invoke(data, caster, target);
                             }
                             else
-                            {
-                                //spawn the banish fx and remove the marker
-                                if (data.spell == "spell_banish")
-                                {
-                                    target.Interactable = false;
-                                    SpellcastingFX.SpawnBanish(target, 0);
-                                    //make sure marker is removed in case the server doesnt send the map_token_remove
-                                    RemoveTokenHandler.ForceEvent(data.target.id);
-                                }
-                            }
-
-                            //spawn the spell glyph
-                            if (data.spell != "spell_banish")
                             {
                                 SpellcastingFX.SpawnGlyph(target, spell, data.spell);
                                 SpellcastingFX.SpawnDamage(target, damage);

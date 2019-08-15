@@ -20,6 +20,8 @@ public class SpiritMarker : MuskMarker
     public SpiritToken spiritToken { get => Token as SpiritToken; }
     private int m_TweenId;
 
+    public override string Name => m_DisplayName.text;
+
     public override Transform AvatarTransform
     {
         get
