@@ -224,7 +224,7 @@ public static class LoginAPIManager
             false);
     }
 
-    public static void CreateCharacter(string name, int bodyType, bool male, System.Action<int, string> callback)
+    public static void CreateCharacter(string name, int bodyType, bool male, System.Action<int, LoginResponse> callback)
     {
         Dictionary<string, object> data = new Dictionary<string, object>();
         data.Add("name", name);
@@ -238,14 +238,29 @@ public static class LoginAPIManager
             {
                 if (result == 200)
                 {
-                    PlayerDataManager.playerData = ParsePlayerData(response);
-                    OnCharacterReceived?.Invoke();
-                    callback?.Invoke(result, response);
+                    //PlayerDataManager.playerData = ParsePlayerData(response);
+                    //OnCharacterReceived?.Invoke();
+                    //callback?.Invoke(result, response);
+                    Debug.LogError("TEMP FIX - SOCKET NOT WORKING AFTER CREATING A NEW ACCOUNT/CHARACTER");
+
+                    loginToken = null;
+                    wssToken = null;
+
+                    LoginAPIManager.Login((_loginCode, _loginResponse) =>
+                    {
+                        if (_loginCode == 200)
+                        {
+                            PlayerDataManager.playerData = ParsePlayerData(response);
+                            OnCharacterReceived?.Invoke();
+                        }
+                        callback?.Invoke(_loginCode, _loginResponse);
+                    });
                 }
                 else
                 {
-                    callback?.Invoke(result, response);
+                    callback?.Invoke(result, new LoginResponse() { error = response });
                 }
+
             });
     }
 

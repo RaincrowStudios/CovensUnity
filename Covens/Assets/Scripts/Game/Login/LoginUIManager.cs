@@ -523,12 +523,12 @@ public class LoginUIManager : MonoBehaviour
             }
             else
             {
-                createCharacterError.text = APIManager.ParseError(response);
+                createCharacterError.text = APIManager.ParseError(response.error);
                 ShowLoading(false);
 
-                if (response == "1006")
+                if (response.error == "1006")
                 {
-                    UIGlobalPopup.ShowError(() => SetScreen(Screen.WELCOME), APIManager.ParseError(response));
+                    UIGlobalPopup.ShowError(() => SetScreen(Screen.WELCOME), APIManager.ParseError(response.error));
                 }
             }
         });
