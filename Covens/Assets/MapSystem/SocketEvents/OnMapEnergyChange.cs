@@ -40,6 +40,7 @@ public static class OnMapEnergyChange
             {
                 player.state = newState;
                 player.energy = newEnergy;
+                PlayerManager.witchMarker.RemoveDeathFX();
                 DeathState.Instance.Revived();
             }
 
@@ -47,6 +48,7 @@ public static class OnMapEnergyChange
             {
                 if (newState == "dead")
                 {
+                    PlayerManager.witchMarker.AddDeathFX();
                     DeathState.Instance.ShowDeath();
                     OnPlayerDead?.Invoke();
                 }
@@ -125,11 +127,10 @@ public static class OnMapEnergyChange
             baseEnergy = (marker.Token as CharacterToken).baseEnergy;
         }
 
-        string newState;
-        if (newEnergy < baseEnergy * 0.2f)
-            newState = "vulnerable";
-        else if (newEnergy <= 0)
+        string newState; if (newEnergy <= 0)
             newState = "dead";
+        else if (newEnergy < baseEnergy * 0.2f)
+            newState = "vulnerable";
         else
             newState = "";
         
