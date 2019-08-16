@@ -273,8 +273,6 @@ public class PlayerManagerUI : UIAnimationManager
                 i = (int)i;
                 silverDrachs.text = i.ToString();
             });
-            Debug.Log("p: " + p);
-            Debug.Log("s: " + s);
 
 
             //running Lerp if you are in the store

@@ -95,6 +95,7 @@ public class UISpiritInfo : UIInfoPanel
         previousMapPosition = MapsAPI.Instance.GetWorldPosition();
         m_PreviousMapZoom = Mathf.Min(0.98f, MapsAPI.Instance.normalizedZoom);
 
+
         OnMapEnergyChange.OnPlayerDead += _OnCharacterDead;
         OnMapEnergyChange.OnEnergyChange += _OnMapEnergyChange;
 
@@ -105,7 +106,7 @@ public class UISpiritInfo : UIInfoPanel
         if (!LocationIslandController.isInBattle)
         {
             MainUITransition.Instance.HideMainUI();
-            MarkerSpawner.HighlightMarker(new List<IMarker> { PlayerManager.marker, m_SpiritMarker }, true);
+            MarkerSpawner.HighlightMarker(new List<IMarker> { PlayerManager.marker, m_SpiritMarker });
             MoveTokenHandler.OnTokenMove += _OnMapTokenMove;
             SpellCastHandler.OnApplyStatusEffect += _OnStatusEffectApplied;
             MarkerSpawner.OnImmunityChange += _OnImmunityChange;
@@ -143,6 +144,7 @@ public class UISpiritInfo : UIInfoPanel
 
         OnMapEnergyChange.OnPlayerDead -= _OnCharacterDead;
         OnMapEnergyChange.OnEnergyChange -= _OnMapEnergyChange;
+
         if (!LocationIslandController.isInBattle)
         {
             MoveTokenHandler.OnTokenMove -= _OnMapTokenMove;
@@ -154,12 +156,13 @@ public class UISpiritInfo : UIInfoPanel
             MapsAPI.Instance.allowControl = true;
             MapCameraUtils.FocusOnPosition(MapsAPI.Instance.mapCenter.position, m_PreviousMapZoom, true);
             MainUITransition.Instance.ShowMainUI();
-            MarkerSpawner.HighlightMarker(new List<IMarker> { PlayerManager.marker, m_SpiritMarker }, false);
+            MarkerSpawner.HighlightMarker(new List<IMarker> { });
         }
         else
         {
             LocationUnitSpawner.EnableMarkers();
         }
+
     }
 
     public void SetupDetails(SelectSpiritData_Map details)

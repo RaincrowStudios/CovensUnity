@@ -49,6 +49,7 @@ public class UIPlayerConditions : MonoBehaviour
     {
         SetupCounter();
         SpellCastHandler.OnPlayerApplyStatusEffect += AddCondition;
+        OnMapEnergyChange.OnPlayerDead += SetupCounter;
     }
 
     public void Open()
@@ -150,6 +151,7 @@ public class UIPlayerConditions : MonoBehaviour
         {
             if (_item.condition.spell == condition)
             {
+                _item.condition.Expire();
                 m_ItemPool.Despawn(_item);
                 break;
             }

@@ -50,16 +50,10 @@ public class DeathState : MonoBehaviour
         PlayerManager.marker.GameObject.transform.GetChild(0).GetChild(0).GetChild(1).gameObject.SetActive(true);
         PlayerManager.marker.SetCharacterAlpha(.56f);
 
+        foreach (var se in PlayerDataManager.playerData.effects)
+            se.Expire();
         PlayerDataManager.playerData.effects.Clear();
 
-        if (BanishManager.isBind)
-        {
-            BanishManager.Instance.Unbind();
-        }
-        if (BanishManager.isSilenced)
-        {
-            BanishManager.Instance.UnSilenced();
-        }
         flyDead.SetActive(true);
         foreach (var item in turnOffInteraction)
         {
@@ -97,8 +91,10 @@ public class DeathState : MonoBehaviour
         if (!IsDead)
             return;
 
+        HideDeath();
         IsDead = false;
         PlayerManager.marker.GameObject.transform.GetChild(0).GetChild(0).GetChild(1).gameObject.SetActive(false);
+        PlayerManager.witchMarker.RemoveDeathFX();
         PlayerManager.marker.SetCharacterAlpha(1);
 
         MarkerManagerAPI.GetMarkers(true, false, () =>
@@ -118,11 +114,11 @@ public class DeathState : MonoBehaviour
     void HideDeath()
     {
         //		Particles.SetActive (false);
-        FlightGlowFX.SetActive(true);
+        //FlightGlowFX.SetActive(true);
         DeathContainer.GetComponent<Fade>().FadeOutHelper();
         StartCoroutine(EndDeathState());
         Utilities.allowMapControl(true);
-        MapFlightTransition.Instance.RecallHome();
+        //MapFlightTransition.Instance.RecallHome();
     }
 
     public void FTFDeathState(bool show)

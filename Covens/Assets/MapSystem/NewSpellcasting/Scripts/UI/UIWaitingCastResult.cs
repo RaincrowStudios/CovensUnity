@@ -286,10 +286,6 @@ public class UIWaitingCastResult : UIInfoPanel
         long OldMin = 0;
         long OldMax = 0;
         int OldVal = 0;
-        Debug.Log("DegreeSetup");
-        Debug.Log(PlayerDataManager.playerData.alignment + " is current Align");
-        Debug.Log(PlayerDataManager.playerData.maxAlignment + " is max Align");
-        Debug.Log(PlayerDataManager.playerData.minAlignment + " is min Align");
         var initialFill = BarFillSlider.value;
         if (CurrentDegree == null || NextDegree == null)
         {
@@ -298,7 +294,6 @@ public class UIWaitingCastResult : UIInfoPanel
         }
         if (PlayerDataManager.playerData.degree == 0) //setting up the Degree Bar UI if the witch is grey
         {
-            Debug.Log("Witch is Grey");
             OldMin = -PlayerDataManager.playerData.maxAlignment;
             OldMax = PlayerDataManager.playerData.maxAlignment;
             OldVal = PlayerDataManager.playerData.alignment;

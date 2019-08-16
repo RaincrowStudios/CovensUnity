@@ -80,7 +80,7 @@ public class UIPlayerInfo : UIInfoPanel
         ShowHelper(witch, data);
         MainUITransition.Instance.HideMainUI();
 
-        MarkerSpawner.HighlightMarker(new List<IMarker> { PlayerManager.marker, m_WitchMarker }, true);
+        MarkerSpawner.HighlightMarker(new List<IMarker> { PlayerManager.marker, m_WitchMarker });
 
         SpellCastHandler.OnPlayerTargeted += _OnPlayerAttacked;
         MoveTokenHandler.OnTokenMove += _OnMapTokenMove;
@@ -88,6 +88,8 @@ public class UIPlayerInfo : UIInfoPanel
         RemoveTokenHandler.OnTokenRemove += _OnMapTokenRemove;
         MarkerSpawner.OnImmunityChange += _OnImmunityChange;
         BanishManager.OnBanished += Abort;
+        OnMapEnergyChange.OnEnergyChange += _OnEnergyChange;
+        OnMapEnergyChange.OnPlayerDead += _OnCharacterDead;
 
         previousMapPosition = MapsAPI.Instance.GetWorldPosition();
         m_PreviousMapZoom = MapsAPI.Instance.normalizedZoom;
@@ -113,7 +115,7 @@ public class UIPlayerInfo : UIInfoPanel
         m_DisplayNameText.text = m_WitchToken.displayName;
         m_DegreeSchoolText.text = Utilities.WitchTypeControlSmallCaps(m_WitchToken.degree);
         m_LevelText.text = LocalizeLookUp.GetText("card_witch_level").ToUpper() + " <color=black>" + m_WitchToken.level.ToString() + "</color>";
-        // _OnEnergyChange(m_WitchToken.instance, m_WitchToken.energy);
+        _OnEnergyChange(m_WitchToken.instance, m_WitchToken.energy);
 
         // //sprite and color
         if (m_WitchToken.degree < 0)
@@ -131,8 +133,6 @@ public class UIPlayerInfo : UIInfoPanel
 
         m_CovenText.text = LocalizeLookUp.GetText("chat_coven").ToUpper() + " <color=black>" + LocalizeLookUp.GetText("loading") + "</color>";
 
-        // OnMapEnergyChange.OnEnergyChange += _OnEnergyChange;
-        // OnMapEnergyChange.OnPlayerDead += _OnCharacterDead;
         m_ConditionsList.show = false;
 
         Show();
@@ -166,7 +166,7 @@ public class UIPlayerInfo : UIInfoPanel
 
             //m_Witch.SetTextAlpha(NewMapsMarker.defaultTextAlpha);
 
-            MarkerSpawner.HighlightMarker(new List<IMarker> { PlayerManager.marker, m_WitchMarker }, false);
+            MarkerSpawner.HighlightMarker(new List<IMarker> { });
 
             SpellCastHandler.OnPlayerTargeted -= _OnPlayerAttacked;
             MoveTokenHandler.OnTokenMove -= _OnMapTokenMove;
@@ -177,7 +177,6 @@ public class UIPlayerInfo : UIInfoPanel
         }
         else
         {
-            Debug.Log("Closing Info");
             LocationUnitSpawner.EnableMarkers();
         }
     }

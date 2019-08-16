@@ -21,36 +21,36 @@ public static class OnMapEnergyChange
     /// </summary>
     public static event System.Action OnPlayerDead;
 
-    public static void HandleEvent(WSData data)
+    public static void HandleEvent(string instance, int newEnergy, string newState, double timestamp)
     {
         PlayerData player = PlayerDataManager.playerData;
         IMarker marker;
         int energy;
 
-        if (data.instance == player.instance) //update the players energy
+        if (instance == player.instance) //update the players energy
         {
-            if (player.lastEnergyUpdate > data.timestamp)
+            if (player.lastEnergyUpdate > timestamp)
                 return;
 
             marker = PlayerManager.marker;
-            player.lastEnergyUpdate = data.timestamp;
-            energy = player.energy = data.newEnergy;
+            player.lastEnergyUpdate = timestamp;
+            energy = player.energy = newEnergy;
             
-            if (player.state == "dead" && data.newState != "dead")
+            if (player.state == "dead" && newState != "dead")
             {
-                player.state = data.newState;
-                player.energy = data.newEnergy;
+                player.state = newState;
+                player.energy = newEnergy;
                 DeathState.Instance.Revived();
             }
 
-            if (data.newState != player.state)
+            if (newState != player.state)
             {
-                if (data.newState == "dead")
+                if (newState == "dead")
                 {
-                    OnPlayerDead?.Invoke();
                     DeathState.Instance.ShowDeath();
+                    OnPlayerDead?.Invoke();
                 }
-                else if (data.newState == "vulnerable")
+                else if (newState == "vulnerable")
                 {
                     if (LowEnergyPopup.Instance == null)
                     {
@@ -58,7 +58,7 @@ public static class OnMapEnergyChange
                     }
                 }
 
-                player.state = data.newState;
+                player.state = newState;
             }
 
             //Making sure energy not over 2x base
@@ -69,33 +69,33 @@ public static class OnMapEnergyChange
         }
         else //update another witch's energy
         {
-            marker = MarkerManager.GetMarker(data.instance);
+            marker = MarkerManager.GetMarker(instance);
             if (marker == null)
                 return;
 
-            if (marker.Token.lastEnergyUpdate > data.timestamp)
+            if (marker.Token.lastEnergyUpdate > timestamp)
                 return;
             
             CharacterToken token = marker.Token as CharacterToken;
-            token.lastEnergyUpdate = data.timestamp;
-            energy = token.energy = data.newEnergy;
+            token.lastEnergyUpdate = timestamp;
+            energy = token.energy = newEnergy;
             marker.UpdateEnergy();
 
             //update the state
-            if (data.newState == "dead" || data.newEnergy <= 0)
+            if (newState == "dead" || newEnergy <= 0)
             {
                 token.state = "dead";
 
                 if (token.Type == MarkerSpawner.MarkerType.WITCH)
                     (marker as WitchMarker).AddDeathFX();
                 else if (marker.Type == MarkerSpawner.MarkerType.SPIRIT)
-                    RemoveTokenHandler.ForceEvent(data.instance);
+                    RemoveTokenHandler.ForceEvent(instance);
             }
             else
             {
                 if (token.state == "dead")
                 {
-                    token.state = data.newState;
+                    token.state = newState;
 
                     if (token.Type == MarkerSpawner.MarkerType.WITCH)
                         (marker as WitchMarker).RemoveDeathFX();
@@ -103,10 +103,10 @@ public static class OnMapEnergyChange
             }
         }
 
-        OnEnergyChange?.Invoke(data.instance, energy);
+        OnEnergyChange?.Invoke(instance, energy);
     }
 
-    public static void ForceEvent(IMarker marker,  int newEnergy, double timestamp)
+    public static void ForceEvent(IMarker marker, int newEnergy, double timestamp)
     {
         if (marker == null || marker.isNull)
             return;
@@ -132,15 +132,7 @@ public static class OnMapEnergyChange
             newState = "dead";
         else
             newState = "";
-
-        WSData data = new WSData
-        {
-            instance = instance,
-            newEnergy = newEnergy,
-            newState = newState,
-            timestamp = timestamp,
-        };
-
-        HandleEvent(data);
+        
+        HandleEvent(instance, newEnergy, newState, timestamp);
     }
 }

@@ -28,7 +28,7 @@ namespace Raincrow.GameEventResponses
                 public double latitude;
             }
 
-            public int damage;
+            public long damage;
             public bool isCritical;
             public bool isSuccess;
 
@@ -53,6 +53,7 @@ namespace Raincrow.GameEventResponses
         public string EventName => "cast.spell";
         public static event System.Action<string, SpellData, Result> OnPlayerTargeted;
         public static event System.Action<StatusEffect> OnPlayerApplyStatusEffect;
+        public static System.Action<StatusEffect> OnPlayerExpireStatusEffect;
 
         public static event System.Action<string, string, SpellData, Result> OnSpellCast;
         public static event System.Action<string, StatusEffect> OnApplyStatusEffect;
@@ -80,7 +81,7 @@ namespace Raincrow.GameEventResponses
                             
             IMarker caster = playerIsCaster ? PlayerManager.marker : MarkerManager.GetMarker(data.caster.id);
             IMarker target = playerIsTarget ? PlayerManager.marker : MarkerManager.GetMarker(data.target.id);
-            int damage = data.result.damage;
+            int damage = (int)data.result.damage;
             int casterNewEnergy = data.caster.energy;
             int targetNewEnergy = data.target.energy;
             
@@ -158,6 +159,9 @@ namespace Raincrow.GameEventResponses
                             }
                             PlayerDataManager.playerData.effects.Add(data.result.statusEffect);
                             OnPlayerApplyStatusEffect?.Invoke(data.result.statusEffect);
+
+                            //schedule expiration
+                            data.result.statusEffect.ScheduleExpiration();
                         }
                     }
 
