@@ -59,6 +59,14 @@ public class UISpellcard : MonoBehaviour// : EnhancedScrollerCellView
         transform.localScale = Vector3.one;
     }
 
+    //public void ClearData()
+    //{
+    //    m_SpellIcon.overrideSprite = m_CooldownIcon.overrideSprite = m_SchoolIcon.overrideSprite = null;
+    //    m_SpellName.text = "";
+    //    m_SpellCost.text = "";
+    //    m_SpellDescription.text = "";
+    //}
+
     public void SetData(
         SpellData spell,
         System.Action<int> onClickSchool,

@@ -43,13 +43,7 @@ public class DeathState : MonoBehaviour
     public void ShowDeath()
     {
         IsDead = true;
-
-        if (map == null) map = MapsAPI.Instance;
-        map.SetPosition(GetGPS.longitude, GetGPS.latitude);
-
-        PlayerManager.marker.GameObject.transform.GetChild(0).GetChild(0).GetChild(1).gameObject.SetActive(true);
-        PlayerManager.marker.SetCharacterAlpha(.56f);
-
+                
         foreach (var se in PlayerDataManager.playerData.effects)
             se.Expire();
         PlayerDataManager.playerData.effects.Clear();
@@ -57,33 +51,25 @@ public class DeathState : MonoBehaviour
         flyDead.SetActive(true);
         foreach (var item in turnOffInteraction)
         {
-            item.interactable = false;
+            if (item != null)
+                item.interactable = false;
         }
         SoundManagerOneShot.Instance.PlaySpellFX();
         DeathPersist.SetActive(true);
-        //        mapDarkBox.SetActive(true);
 
 
-        //if (MapSelection.currentView == CurrentView.MapView)
-        {
-            //if (!PlayerManager.Instance.fly)
-            //    PlayerManager.Instance.Fly();
-            FlightGlowFX.SetActive(false);
-            //		Particles.SetActive (true);
-            DeathContainer.SetActive(true);
-            if (gameObject.activeInHierarchy)
-                StartCoroutine(BeginDeathState());
-            else
-                isDead = true;
-            Utilities.allowMapControl(false);
-            Invoke("HideDeath", 3f);
-            // if (!PlayerDataManager.tutorial)
-            //     PlayerManagerUI.Instance.ShowElixirVulnerable(true);
-            if (SummoningManager.isOpen)
-            {
-                SummoningController.Instance.Close();
-            }
-        }
+        PlayerManager.Instance.CancelFlight();
+        FlightGlowFX.SetActive(false);
+        DeathContainer.SetActive(true);
+        if (gameObject.activeInHierarchy)
+            StartCoroutine(BeginDeathState());
+        else
+            isDead = true;
+        Invoke("HideDeath", 3f);
+        // if (!PlayerDataManager.tutorial)
+        //     PlayerManagerUI.Instance.ShowElixirVulnerable(true);
+        if (SummoningManager.isOpen)
+            SummoningController.Instance.Close();
     }
 
     public void Revived()
@@ -93,22 +79,16 @@ public class DeathState : MonoBehaviour
 
         HideDeath();
         IsDead = false;
-        PlayerManager.marker.GameObject.transform.GetChild(0).GetChild(0).GetChild(1).gameObject.SetActive(false);
-        PlayerManager.witchMarker.RemoveDeathFX();
-        PlayerManager.marker.SetCharacterAlpha(1);
+        
+        flyDead.SetActive(false);
 
-        MarkerManagerAPI.GetMarkers(true, false, () =>
+        foreach (var item in turnOffInteraction)
         {
-            flyDead.SetActive(false);
-            //        mapDarkBox.SetActive(false);
-
-            foreach (var item in turnOffInteraction)
-            {
+            if (item != null)
                 item.interactable = true;
-            }
-            DeathPersist.SetActive(false);
-            PlayerManagerUI.Instance.Revived();
-        });
+        }
+        DeathPersist.SetActive(false);
+        PlayerManagerUI.Instance.Revived();
     }
 
     void HideDeath()
@@ -117,7 +97,6 @@ public class DeathState : MonoBehaviour
         //FlightGlowFX.SetActive(true);
         DeathContainer.GetComponent<Fade>().FadeOutHelper();
         StartCoroutine(EndDeathState());
-        Utilities.allowMapControl(true);
         //MapFlightTransition.Instance.RecallHome();
     }
 

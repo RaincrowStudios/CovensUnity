@@ -125,7 +125,7 @@ public class UISpellcastBook : MonoBehaviour//, IEnhancedScrollerDelegate
         DownloadedAssets.OnWillUnloadAssets += DownloadedAssets_OnWillUnloadAssets;
         Container.anchoredPosition = Vector3.right * Container.rect.width;
 
-        m_CardPool = new SimplePool<UISpellcard>(m_CardPrefab, 5);
+        m_CardPool = new SimplePool<UISpellcard>(m_CardPrefab, 38);
 
         int padding = (int)(m_Canvas.GetComponent<RectTransform>().sizeDelta.x / 2f) - (int)(m_CardPrefab.GetComponent<RectTransform>().sizeDelta.x / 2f);
         m_ScrollLayoutGroup.padding = new RectOffset(padding, padding, 0, 0);
@@ -170,8 +170,8 @@ public class UISpellcastBook : MonoBehaviour//, IEnhancedScrollerDelegate
 
         m_PlayerSpells = spells;
         SetupTarget(marker, target);
-        SpawnCards();
         SetSchool(m_SelectedSchool);
+        SpawnCards();
         SetupBottomText();
 
         AnimOpen();
@@ -280,14 +280,51 @@ public class UISpellcastBook : MonoBehaviour//, IEnhancedScrollerDelegate
         foreach (SpellData spell in m_PlayerSpells)
         {
             card = m_CardPool.Spawn(m_ScrollContainer);
+            card.SetAlpha(0);
+            m_Cards.Add(card);
+        }
+        
+        //StopCoroutine("SetupCardsCoroutine");
+        StartCoroutine(SetupCardsCoroutine());
+    }
+
+    private IEnumerator SetupCardsCoroutine()
+    {
+        System.Action<SpellData, UISpellcard> setupCard = (spell, card) =>
+        {
             card.SetData(spell, OnSelectSchool, OnSelectCard, OnClickCast);
             card.UpdateCancast(m_TargetData, m_TargetMarker);
-            if (m_SelectedSpell == null || spell.id == m_SelectedSpell.id)
-                card.SetAlpha(1);
-            else
-                card.SetAlpha(0.15f);
 
-            m_Cards.Add(card);
+            if (m_SelectedSchool != null && spell.school != m_SelectedSchool.Value)
+            {
+                card.SetAlpha(0);
+                card.gameObject.SetActive(false);
+            }
+            else
+            {
+                if (m_SelectedSpell == null || spell.id == m_SelectedSpell.id)
+                    card.SetAlpha(1, 1f);
+                else
+                    card.SetAlpha(0.15f, 1f);
+            }
+        };
+
+        int i = m_PlayerSpells.Count / 2;
+        int left = i;
+        int right = i + 1;
+        
+        while (left >= 0 || right < m_PlayerSpells.Count)
+        {
+            if (left >= 0)
+                setupCard(m_PlayerSpells[left], m_Cards[left]);
+            yield return new WaitForSeconds(0.1f);
+
+            if (right < m_PlayerSpells.Count)
+                setupCard(m_PlayerSpells[right], m_Cards[right]);
+            yield return new WaitForSeconds(0.1f);
+
+            left -= 1;
+            right += 1;
         }
     }
 
@@ -393,6 +430,9 @@ public class UISpellcastBook : MonoBehaviour//, IEnhancedScrollerDelegate
         //disable unselected cards
         foreach (UISpellcard _card in m_Cards)
         {
+            if (_card.Spell == null)
+                continue;
+
             if (m_SelectedSpell == null || _card.Spell.id == m_SelectedSpell.id)
                 _card.SetAlpha(1, 1);
             else

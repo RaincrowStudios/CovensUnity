@@ -303,10 +303,8 @@ public class WitchMarker : MuskMarker
         if (m_DeathIcon != null)
         {
             SpellcastingFX.DeathIconPool.Despawn(m_DeathIcon);
-            return;
+            UpdateRenderers();
         }
-
-        UpdateRenderers();
         UpdateCharacterAlphaMul();
     }
 

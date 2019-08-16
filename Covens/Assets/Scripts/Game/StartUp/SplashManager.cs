@@ -247,7 +247,8 @@ public class SplashManager : MonoBehaviour
             m_HintsCoroutine = null;
         }
 
-        m_HintTweenId = LeanTween.alphaCanvas(m_HintScreen, time, 0f)
+        LeanTween.cancel(m_HintTweenId, true);
+        m_HintTweenId = LeanTween.alphaCanvas(m_HintScreen, 0, time)
             .setOnComplete(() =>
             {
                 m_HintScreen.gameObject.SetActive(false);
@@ -275,8 +276,12 @@ public class SplashManager : MonoBehaviour
         while (true)
         {
             if (Input.GetMouseButtonDown(0))
-                HideHints(0.5f, ShowNewHint);
-
+            {
+                LeanTween.alphaCanvas(m_HintScreen, 0, 0.25f)
+                    .setEaseOutCubic()
+                    .setOnComplete(ShowNewHint);
+                //HideHints(0.5f, ShowNewHint);
+            }
             yield return 0;
         }
     }

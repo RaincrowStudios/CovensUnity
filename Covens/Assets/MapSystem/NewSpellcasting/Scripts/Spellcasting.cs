@@ -63,6 +63,9 @@ public class Spellcasting
         /// player does not meet the spell's levev requirement
         /// </summary>
         NoLevel,
+
+
+        InvalidTarget,
     }
     
     private static Dictionary <string, System.Action<SpellData, IMarker, List<spellIngredientsData>, System.Action<Raincrow.GameEventResponses.SpellCastHandler.Result>, System.Action>> m_SpecialSpells = 
@@ -101,10 +104,14 @@ public class Spellcasting
 
             if (target == PlayerManager.marker)
             {
-
+                if (spell != null && spell.target == SpellData.Target.OTHER)
+                    return SpellState.InvalidTarget;
             }
             else
             {
+                if (spell != null && spell.target == SpellData.Target.SELF)
+                    return SpellState.InvalidTarget;
+
                 if (token.Type == MarkerSpawner.MarkerType.WITCH)
                 {
                     //immunity

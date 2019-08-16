@@ -341,7 +341,7 @@ public class PlayerManager : MonoBehaviour
         float previousZoom = Mathf.Min(0.98f, MapsAPI.Instance.normalizedZoom);
 
         List<SpellData> spells = new List<SpellData>(PlayerDataManager.playerData.Spells);
-        spells.RemoveAll(spell => spell.target == SpellData.Target.OTHER);
+        //spells.RemoveAll(spell => spell.target == SpellData.Target.OTHER);
 
         UISpellcastBook.Open(PlayerDataManager.playerData, marker, spells,
             (spell, ingredients) =>
