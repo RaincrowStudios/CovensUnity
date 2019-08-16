@@ -110,7 +110,6 @@ public class LocationUnitSpawner : MonoBehaviour
 
     }
 
-
     private void onClickMarker(IMarker m)
     {
         var token = m.Token as Token;
@@ -169,8 +168,18 @@ public class LocationUnitSpawner : MonoBehaviour
 
     public static void SetHighlight(Token token)
     {
-        Instance.m_PlayerHighlight.SetParent(Instance.GetTransform(token));
-        Instance.m_PlayerHighlight.localPosition = Vector3.zero;
+        if (token.popIndex != -1)
+        {
+            Instance.m_PlayerHighlight.SetParent(Instance.GetTransform(token));
+            Instance.m_PlayerHighlight.localScale = Vector3.one;
+            Instance.m_PlayerHighlight.localPosition = Vector3.zero;
+        }
+        else
+        {
+            Instance.m_PlayerHighlight.SetParent(Instance.GetTransform(token).GetChild(0));
+            Instance.m_PlayerHighlight.localPosition = Vector3.zero;
+            Instance.m_PlayerHighlight.localScale = new Vector3(7.5f, 3.8f, 7.6f);
+        }
         Instance.m_PlayerHighlight.gameObject.SetActive(true);
     }
 
@@ -181,7 +190,6 @@ public class LocationUnitSpawner : MonoBehaviour
                     "",
                     (response, result) => callback(result, response));
     }
-
 
     public async void RemoveMarker(string instance)
     {
@@ -199,12 +207,18 @@ public class LocationUnitSpawner : MonoBehaviour
         }
     }
 
-    public void MoveMarker(MoveEventDataPOP data)
+    public async void MoveMarker(MoveEventDataPOP data)
     {
         if (Markers.ContainsKey(data.instance))
         {
             var marker = GetMarker(data.instance);
             // TODO add fx
+            if (data.instance != PlayerDataManager.playerData.instance)
+            {
+                marker.SetAlpha(0, .7f);
+                await Task.Delay(700);
+                marker.SetAlpha(1, .7f);
+            }
             var mToken = marker.Token as Token;
             mToken.position = data.position;
             mToken.island = data.island;
@@ -239,9 +253,8 @@ public class LocationUnitSpawner : MonoBehaviour
                 {
                     LocationPlayerAction.SetMoveActionState(true);
                     LocationPlayerAction.playerMarker.SetAlpha(0, 1);
-                    await Task.Delay(600);
                     ShowFlightFX();
-                    await Task.Delay(400);
+                    await Task.Delay(600);
 
                     MoveEventDataPOP moveData = new MoveEventDataPOP
                     {
@@ -285,7 +298,10 @@ public class LocationUnitSpawner : MonoBehaviour
 
     private async static void ShowFlightFX()
     {
-
+        var SelectionRing = LocationPlayerAction.playerMarker.GameObject.transform.GetChild(0).GetChild(4);
+        LeanTween.scale(SelectionRing.gameObject, Vector3.zero, .6f).setEase(LeanTweenType.easeInOutQuad);
+        await Task.Delay(600);
+        LeanTween.scale(SelectionRing.gameObject, Vector3.one, .6f).setEase(LeanTweenType.easeInOutQuad);
         var selfToken = LocationPlayerAction.playerWitchToken;
         var FlightFX = LocationPlayerAction.playerMarker.GameObject.transform.GetChild(0).GetChild(5);
         if (FlightFX.gameObject.activeInHierarchy)
@@ -296,12 +312,10 @@ public class LocationUnitSpawner : MonoBehaviour
         FlightFX.gameObject.SetActive(false);
     }
 
-
     private static void SetSelfDegreeRing()
     {
         var selfToken = LocationPlayerAction.playerWitchToken;
         var SelectionRing = LocationPlayerAction.playerMarker.GameObject.transform.GetChild(0).GetChild(4);
-        Debug.Log(SelectionRing.name);
         foreach (Transform item in SelectionRing)
         {
             item.gameObject.SetActive(false);
@@ -325,7 +339,7 @@ public class LocationUnitSpawner : MonoBehaviour
         m.Interactable = true;
         m.Setup(t);
         m.EnableAvatar();
-        m.AvatarTransform.localScale = Vector3.one * 3.1f;
+        m.AvatarTransform.localScale = Vector3.one * 2.5f;
         g.transform.SetParent(m_CenterSpiritTransform);
         m.InitializePositionPOP();
         m.EnablePopSorting();

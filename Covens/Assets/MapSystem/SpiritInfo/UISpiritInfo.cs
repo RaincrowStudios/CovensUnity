@@ -91,25 +91,28 @@ public class UISpiritInfo : UIInfoPanel
             default: tier = "?"; break;
         };
         m_Tier.text = tier;
-                        
+
         previousMapPosition = MapsAPI.Instance.GetWorldPosition();
         m_PreviousMapZoom = Mathf.Min(0.98f, MapsAPI.Instance.normalizedZoom);
 
-        MainUITransition.Instance.HideMainUI();
-
-        MarkerSpawner.HighlightMarker(new List<IMarker> { PlayerManager.marker, m_SpiritMarker }, true);
-
         OnMapEnergyChange.OnPlayerDead += _OnCharacterDead;
         OnMapEnergyChange.OnEnergyChange += _OnMapEnergyChange;
-        MoveTokenHandler.OnTokenMove += _OnMapTokenMove;
-        SpellCastHandler.OnApplyStatusEffect += _OnStatusEffectApplied;
-        MarkerSpawner.OnImmunityChange += _OnImmunityChange;
-        RemoveTokenHandler.OnTokenRemove += _OnMapTokenRemove;
-        BanishManager.OnBanished += Abort;
 
         Show();
         m_ConditionList.show = false;
         SoundManagerOneShot.Instance.PlaySpiritSelectedSpellbook();
+
+        if (!LocationIslandController.isInBattle)
+        {
+            MainUITransition.Instance.HideMainUI();
+            MarkerSpawner.HighlightMarker(new List<IMarker> { PlayerManager.marker, m_SpiritMarker }, true);
+            MoveTokenHandler.OnTokenMove += _OnMapTokenMove;
+            SpellCastHandler.OnApplyStatusEffect += _OnStatusEffectApplied;
+            MarkerSpawner.OnImmunityChange += _OnImmunityChange;
+            RemoveTokenHandler.OnTokenRemove += _OnMapTokenRemove;
+            BanishManager.OnBanished += Abort;
+        }
+
     }
 
     public override void ReOpen()
@@ -117,16 +120,21 @@ public class UISpiritInfo : UIInfoPanel
         base.ReOpen();
 
         UpdateCanCast();
-
-        MapsAPI.Instance.allowControl = false;
-
         IMarker spirit = MarkerManager.GetMarker(m_SpiritToken.instance);
 
-        //if the spirit was destroyed, close the ui
-        if (spirit != null)
-            MapCameraUtils.FocusOnMarker(spirit.GameObject.transform.position);
+        if (!LocationIslandController.isInBattle)
+        {
+            MapsAPI.Instance.allowControl = false;
+            //if the spirit was destroyed, close the ui
+            if (spirit != null)
+                MapCameraUtils.FocusOnMarker(spirit.GameObject.transform.position);
+            else
+                Close();
+        }
         else
-            Close();
+        {
+            if (spirit == null) Close();
+        }
     }
 
     public override void Close()
@@ -135,17 +143,23 @@ public class UISpiritInfo : UIInfoPanel
 
         OnMapEnergyChange.OnPlayerDead -= _OnCharacterDead;
         OnMapEnergyChange.OnEnergyChange -= _OnMapEnergyChange;
-        MoveTokenHandler.OnTokenMove -= _OnMapTokenMove;
-        MarkerSpawner.OnImmunityChange -= _OnImmunityChange;
-        SpellCastHandler.OnApplyStatusEffect -= _OnStatusEffectApplied;
-        RemoveTokenHandler.OnTokenRemove -= _OnMapTokenRemove;
-        BanishManager.OnBanished -= Abort;
+        if (!LocationIslandController.isInBattle)
+        {
+            MoveTokenHandler.OnTokenMove -= _OnMapTokenMove;
+            MarkerSpawner.OnImmunityChange -= _OnImmunityChange;
+            SpellCastHandler.OnApplyStatusEffect -= _OnStatusEffectApplied;
+            RemoveTokenHandler.OnTokenRemove -= _OnMapTokenRemove;
+            BanishManager.OnBanished -= Abort;
 
-        MapsAPI.Instance.allowControl = true;
-        MapCameraUtils.FocusOnPosition(MapsAPI.Instance.mapCenter.position, m_PreviousMapZoom, true);
-        MainUITransition.Instance.ShowMainUI();
-
-        MarkerSpawner.HighlightMarker(new List<IMarker> { PlayerManager.marker, m_SpiritMarker }, false);
+            MapsAPI.Instance.allowControl = true;
+            MapCameraUtils.FocusOnPosition(MapsAPI.Instance.mapCenter.position, m_PreviousMapZoom, true);
+            MainUITransition.Instance.ShowMainUI();
+            MarkerSpawner.HighlightMarker(new List<IMarker> { PlayerManager.marker, m_SpiritMarker }, false);
+        }
+        else
+        {
+            LocationUnitSpawner.EnableMarkers();
+        }
     }
 
     public void SetupDetails(SelectSpiritData_Map details)
@@ -157,7 +171,7 @@ public class UISpiritInfo : UIInfoPanel
         }
 
         m_SpiritDetails = details;
-        
+
         if (string.IsNullOrEmpty(m_SpiritDetails.owner))
         {
             if (m_SpiritData.tier == 1)
@@ -270,13 +284,13 @@ public class UISpiritInfo : UIInfoPanel
     {
         TeamManagerUI.OpenName(m_SpiritDetails.coven);
     }
-    
+
     private void Abort()
     {
         //wait for the result screen (UIspellcasting  will call OnFinishFlow)
         if (UIWaitingCastResult.isOpen)
             return;
-        
+
         Close();
     }
 
@@ -343,7 +357,7 @@ public class UISpiritInfo : UIInfoPanel
         if (character != this.m_SpiritToken.instance)
             return;
 
-        foreach(StatusEffect item in m_SpiritDetails.effects)
+        foreach (StatusEffect item in m_SpiritDetails.effects)
         {
             if (item.spell == statusEffect.spell)
             {
