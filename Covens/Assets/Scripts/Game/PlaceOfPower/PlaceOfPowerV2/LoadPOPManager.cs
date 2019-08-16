@@ -27,7 +27,7 @@ public class LoadPOPManager : MonoBehaviour
             }
             LocationIslandController.ExitPOP(() =>
             {
-                APIManager.Instance.Get("place-of-power/view/5d559de54e140a0bebd54e57", (response, result) =>
+                APIManager.Instance.Get("place-of-power/view/5d56ebd18aca90617dc3b5fa", (response, result) =>
                       {
                           Debug.Log(response);
                           if (result == 200)
@@ -57,7 +57,7 @@ public class LoadPOPManager : MonoBehaviour
             {
                 map = MapsAPI.Instance;
             }
-            APIManager.Instance.Post("place-of-power/start/5d559de54e140a0bebd54e57", "{}", (response, result) =>
+            APIManager.Instance.Post("place-of-power/start/5d56ebd18aca90617dc3b5fa", "{}", (response, result) =>
              {
                  Debug.Log(response);
              });
