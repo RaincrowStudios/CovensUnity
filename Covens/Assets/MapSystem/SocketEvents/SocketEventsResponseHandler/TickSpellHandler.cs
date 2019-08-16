@@ -30,13 +30,13 @@ namespace Raincrow.GameEventResponses
             {
                 //sohw effect on player marker
                 if (spell != null)
-                    SpawnFx(PlayerManager.marker, spell.school, response.result.damage);
+                    SpawnFx(PlayerManager.marker, spell.school, (int)response.result.damage);
             }
             else
             {
                 //if target marker is on screen, show it
                 if (spell != null && target != null && target.inMapView && target.IsShowingAvatar)
-                    SpawnFx(target, spell.school, response.result.damage);
+                    SpawnFx(target, spell.school, (int)response.result.damage);
             }
         }
 

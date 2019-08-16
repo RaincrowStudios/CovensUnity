@@ -14,7 +14,7 @@ public static class SpellcastingTextFeedback
         string casterName, targetName;
         string casterColor, targetColor;
         string casterDegree, targetDegree;
-        int damage = Mathf.Abs(response.result.damage);
+        int damage = Mathf.Abs((int)response.result.damage);
 
         //setup spirit/witch specific info
         if (caster == PlayerManager.marker)

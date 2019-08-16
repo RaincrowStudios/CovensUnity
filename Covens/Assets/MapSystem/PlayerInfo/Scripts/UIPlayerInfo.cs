@@ -88,6 +88,8 @@ public class UIPlayerInfo : UIInfoPanel
         RemoveTokenHandler.OnTokenRemove += _OnMapTokenRemove;
         MarkerSpawner.OnImmunityChange += _OnImmunityChange;
         BanishManager.OnBanished += Abort;
+        OnMapEnergyChange.OnEnergyChange += _OnEnergyChange;
+        OnMapEnergyChange.OnPlayerDead += _OnCharacterDead;
 
         previousMapPosition = MapsAPI.Instance.GetWorldPosition();
         m_PreviousMapZoom = MapsAPI.Instance.normalizedZoom;
@@ -131,8 +133,6 @@ public class UIPlayerInfo : UIInfoPanel
 
         m_CovenText.text = LocalizeLookUp.GetText("chat_coven").ToUpper() + " <color=black>" + LocalizeLookUp.GetText("loading") + "</color>";
 
-        // OnMapEnergyChange.OnEnergyChange += _OnEnergyChange;
-        // OnMapEnergyChange.OnPlayerDead += _OnCharacterDead;
         m_ConditionsList.show = false;
 
         Show();

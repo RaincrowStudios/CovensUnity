@@ -28,7 +28,7 @@ namespace Raincrow.GameEventResponses
                 public double latitude;
             }
 
-            public int damage;
+            public long damage;
             public bool isCritical;
             public bool isSuccess;
 
@@ -81,7 +81,7 @@ namespace Raincrow.GameEventResponses
                             
             IMarker caster = playerIsCaster ? PlayerManager.marker : MarkerManager.GetMarker(data.caster.id);
             IMarker target = playerIsTarget ? PlayerManager.marker : MarkerManager.GetMarker(data.target.id);
-            int damage = data.result.damage;
+            int damage = (int)data.result.damage;
             int casterNewEnergy = data.caster.energy;
             int targetNewEnergy = data.target.energy;
             
