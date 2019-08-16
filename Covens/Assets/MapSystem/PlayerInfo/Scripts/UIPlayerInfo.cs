@@ -113,7 +113,7 @@ public class UIPlayerInfo : UIInfoPanel
         m_DisplayNameText.text = m_WitchToken.displayName;
         m_DegreeSchoolText.text = Utilities.WitchTypeControlSmallCaps(m_WitchToken.degree);
         m_LevelText.text = LocalizeLookUp.GetText("card_witch_level").ToUpper() + " <color=black>" + m_WitchToken.level.ToString() + "</color>";
-        // _OnEnergyChange(m_WitchToken.instance, m_WitchToken.energy);
+        _OnEnergyChange(m_WitchToken.instance, m_WitchToken.energy);
 
         // //sprite and color
         if (m_WitchToken.degree < 0)
@@ -177,7 +177,6 @@ public class UIPlayerInfo : UIInfoPanel
         }
         else
         {
-            Debug.Log("Closing Info");
             LocationUnitSpawner.EnableMarkers();
         }
     }

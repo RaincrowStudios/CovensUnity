@@ -65,6 +65,7 @@ public class BanishManager : MonoBehaviour
             if (target.IsPlayer)
             {
                 isBind = true;
+
                 PlayerManager.Instance.CancelFlight();
                 //bindTimeStamp = condition.expiresOn;
                 Instance.flyButton.SetActive(false);
@@ -72,6 +73,32 @@ public class BanishManager : MonoBehaviour
                 Instance.recallButton.interactable = false;
 
                 UIPlayerBound.Show(caster == null ? "" : caster.Name);
+
+                System.Action<StatusEffect> waitExpiration = (se) => { };
+                waitExpiration = (statusEffect) =>
+                {
+                    if (statusEffect.spell != "spell_bind")
+                        return;
+
+                    SpellCastHandler.OnPlayerExpireStatusEffect -= waitExpiration;
+
+                    isBind = false;
+
+                    Instance.recallButton.interactable = true;
+                    Instance.flyButton.SetActive(true);
+                    Instance.bindLock.SetActive(false);
+                    PlayerNotificationManager.Instance.ShowNotification(
+                        LocalizeLookUp.GetText("spell_bound_null"), 
+                        PlayerNotificationManager.Instance.spellBookIcon);
+                };
+
+                SpellCastHandler.OnPlayerExpireStatusEffect += waitExpiration;
+            }
+            else
+            {
+
+                SpellData spell = DownloadedAssets.GetSpell(data.spell);
+                SpellcastingFX.SpawnGlyph(target, spell, spell.baseSpell);
             }
         }
     }
@@ -84,6 +111,23 @@ public class BanishManager : MonoBehaviour
             {
                 isSilenced = true;
                 UIPlayerSilenced.Show(caster == null ? "" : caster.Name);
+
+                System.Action<StatusEffect> waitExpiration = (se) => { };
+                waitExpiration = (statusEffect) =>
+                {
+                    if (statusEffect.spell != "spell_silence")
+                        return;
+
+                    SpellCastHandler.OnPlayerExpireStatusEffect -= waitExpiration;
+
+                    isSilenced = false;
+                    PlayerNotificationManager.Instance.ShowNotification(
+                        LocalizeLookUp.GetText("spell_silenced_null"),
+                        PlayerNotificationManager.Instance.spellBookIcon
+                    );
+                };
+
+                SpellCastHandler.OnPlayerExpireStatusEffect += waitExpiration;
             }
             else
             {
@@ -91,22 +135,6 @@ public class BanishManager : MonoBehaviour
                 SpellcastingFX.SpawnGlyph(target, spell, spell.baseSpell);
             }
         }
-    }
-
-    public void Unbind()
-    {
-        isBind = false;
-
-        recallButton.interactable = true;
-        flyButton.SetActive(true);
-        bindLock.SetActive(false);
-        PlayerNotificationManager.Instance.ShowNotification("You are no longer bound. You are now able to fly.", PlayerNotificationManager.Instance.spellBookIcon);
-    }    
-
-    public void UnSilenced()
-    {
-        isSilenced = false;
-        PlayerNotificationManager.Instance.ShowNotification("You have been unsilenced. You are now able to cast spells.", PlayerNotificationManager.Instance.spellBookIcon);
-    }
+    } 
 }
 

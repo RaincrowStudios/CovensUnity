@@ -47,8 +47,8 @@ public static class OnMapEnergyChange
             {
                 if (data.newState == "dead")
                 {
-                    OnPlayerDead?.Invoke();
                     DeathState.Instance.ShowDeath();
+                    OnPlayerDead?.Invoke();
                 }
                 else if (data.newState == "vulnerable")
                 {

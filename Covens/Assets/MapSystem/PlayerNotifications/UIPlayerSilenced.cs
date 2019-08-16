@@ -11,8 +11,8 @@ public class UIPlayerSilenced : MonoBehaviour
     public static void Show(string caster)
     {
         UIPlayerSilenced instance = Instantiate(Resources.Load<UIPlayerSilenced>("UIPlayerSilenced"));
-        instance.m_Title.text = "Silenced";
-        instance.m_Subtitle.text = "You have been silenced by " + caster;
+        instance.m_Title.text = LocalizeLookUp.GetSpellName("spell_silence");
+        instance.m_Subtitle.text = LocalizeLookUp.GetText("spell_silenced_witch").Replace("{{Caster}}", caster);
         instance.gameObject.SetActive(true);
         Destroy(instance.gameObject, 5f);
     }

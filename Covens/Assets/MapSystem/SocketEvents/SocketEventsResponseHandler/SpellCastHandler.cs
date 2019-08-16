@@ -53,6 +53,7 @@ namespace Raincrow.GameEventResponses
         public string EventName => "cast.spell";
         public static event System.Action<string, SpellData, Result> OnPlayerTargeted;
         public static event System.Action<StatusEffect> OnPlayerApplyStatusEffect;
+        public static System.Action<StatusEffect> OnPlayerExpireStatusEffect;
 
         public static event System.Action<string, string, SpellData, Result> OnSpellCast;
         public static event System.Action<string, StatusEffect> OnApplyStatusEffect;
@@ -158,6 +159,9 @@ namespace Raincrow.GameEventResponses
                             }
                             PlayerDataManager.playerData.effects.Add(data.result.statusEffect);
                             OnPlayerApplyStatusEffect?.Invoke(data.result.statusEffect);
+
+                            //schedule expiration
+                            data.result.statusEffect.ScheduleExpiration();
                         }
                     }
 

@@ -54,7 +54,6 @@ public class WitchMarker : MuskMarker
 
     public override void Setup(Token data)
     {
-        Debug.Log("Setting up Marker");
         base.Setup(data);
         m_DisplayName.text = witchToken.displayName;
         SetStats();

@@ -9,7 +9,7 @@ public struct PlayerRank
     public int dominion;
 }
 
-public struct StatusEffect
+public class StatusEffect
 {
     public struct Modifier
     {
@@ -28,6 +28,24 @@ public struct StatusEffect
     public int stack;
     public int stackable;
     public double expiresOn;
+
+    private int m_ExpireTimerId;
+    public void ScheduleExpiration()
+    {
+        LeanTween.cancel(m_ExpireTimerId, false);
+
+        if (expiresOn == 0)
+            return;
+
+        float duration = (float)Utilities.TimespanFromJavaTime(expiresOn).TotalSeconds;
+        LeanTween.value(0, 0, duration).setOnComplete(Expire);
+    }
+
+    public void Expire()
+    {
+        LeanTween.cancel(m_ExpireTimerId);
+        Raincrow.GameEventResponses.SpellCastHandler.OnPlayerExpireStatusEffect?.Invoke(this);
+    }
 }
 
 public abstract class MarkerData

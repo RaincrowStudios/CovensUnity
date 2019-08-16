@@ -67,6 +67,10 @@ public class UIConditionItem : MonoBehaviour
     {
         while (true)
         {
+            while (condition == null)
+            {
+                yield return 0;
+            }
 
             if (this.condition.expiresOn == 0)
             {

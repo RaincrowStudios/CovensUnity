@@ -11,8 +11,8 @@ public class UIPlayerBound : MonoBehaviour
     public static void Show(string caster)
     {
         UIPlayerBound instance = Instantiate(Resources.Load<UIPlayerBound>("UIPlayerBound"));
-        instance.m_Title.text = "Bind";
-        instance.m_Subtitle.text = "You have been bound by " + caster;
+        instance.m_Title.text = LocalizeLookUp.GetSpellName("spell_bind");
+        instance.m_Subtitle.text = LocalizeLookUp.GetText("spell_bound_witch").Replace("{{Caster}}", caster);
         instance.gameObject.SetActive(true);
         Destroy(instance.gameObject, 3.5f);
     }

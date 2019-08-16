@@ -42,6 +42,11 @@ public static class BlessingManager
                 {
                     int energyGained = PlayerDataManager.playerData.baseEnergy - PlayerDataManager.playerData.energy;
                     PlayerDataManager.playerData.energy = PlayerDataManager.playerData.baseEnergy;
+
+                    if (PlayerDataManager.playerData.state == "dead")
+                        DeathState.Instance.Revived();
+                    PlayerDataManager.playerData.state = "";
+
                     UIDailyBlessing.Show(energyGained);
 
                     Debug.Log("<color=magenta>daily blessing received</color>");
