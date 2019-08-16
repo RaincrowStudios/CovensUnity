@@ -13,7 +13,7 @@ public class BanishManager : MonoBehaviour
     public GameObject flyButton;
     public GameObject bindLock;
     public Text countDown;
-    
+
     public static double bindTimeStamp { get; private set; }
     public static double silenceTimeStamp { get; private set; }
 
@@ -31,7 +31,7 @@ public class BanishManager : MonoBehaviour
     {
         double longitude = data.result.moveCharacter.Value.longitude;
         double latitude = data.result.moveCharacter.Value.latitude;
-             
+
 
         if (target != null)
         {
@@ -45,15 +45,15 @@ public class BanishManager : MonoBehaviour
             {
                 SpellcastingFX.SpawnBanish(target);
                 MarkerSpawner.DeleteMarker(data.target.id);
-                
+
                 //move the marker in the direction he was banished
                 Vector3 targetPos = MapsAPI.Instance.GetWorldPosition(longitude, latitude);
                 Vector3 direction = Vector3.up * 10;
-                LeanTween.value(0,0,0.05f).setOnComplete(() =>
-                {
-                    target.SetWorldPosition(target.GameObject.transform.position + direction, 2f);
-                    target.SetAlpha(0, 1);
-                });
+                LeanTween.value(0, 0, 0.05f).setOnComplete(() =>
+                  {
+                      target.SetWorldPosition(target.GameObject.transform.position + direction, 2f);
+                      target.SetAlpha(0, 1);
+                  });
             }
         }
     }
@@ -88,7 +88,7 @@ public class BanishManager : MonoBehaviour
                     Instance.flyButton.SetActive(true);
                     Instance.bindLock.SetActive(false);
                     PlayerNotificationManager.Instance.ShowNotification(
-                        LocalizeLookUp.GetText("spell_bound_null"), 
+                        LocalizeLookUp.GetText("spell_bound_null"),
                         PlayerNotificationManager.Instance.spellBookIcon);
                 };
 
@@ -98,7 +98,7 @@ public class BanishManager : MonoBehaviour
             {
 
                 SpellData spell = DownloadedAssets.GetSpell(data.spell);
-                SpellcastingFX.SpawnGlyph(target, spell, spell.baseSpell);
+                //SpellcastingFX.SpawnGlyph(target, spell, spell.baseSpell);
             }
         }
     }
@@ -132,9 +132,9 @@ public class BanishManager : MonoBehaviour
             else
             {
                 SpellData spell = DownloadedAssets.GetSpell(data.spell);
-                SpellcastingFX.SpawnGlyph(target, spell, spell.baseSpell);
+                //SpellcastingFX.SpawnGlyph(target, spell, spell.baseSpell);
             }
         }
-    } 
+    }
 }
 
