@@ -261,7 +261,7 @@ public class UIPlayerInfo : UIInfoPanel
         this.Hide();
 
         List<SpellData> spells = new List<SpellData>(PlayerDataManager.playerData.Spells);
-        spells.RemoveAll(spell => spell.target == SpellData.Target.SELF);
+        //spells.RemoveAll(spell => spell.target == SpellData.Target.SELF);
 
         UISpellcastBook.Open(
             m_WitchDetails,
