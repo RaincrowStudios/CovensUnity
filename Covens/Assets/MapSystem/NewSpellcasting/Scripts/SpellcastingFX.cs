@@ -57,24 +57,24 @@ public static class SpellcastingFX
     {
         //LeanTween.value(0, 1, delay).setOnComplete(() =>
         //{
-            Transform glyph = m_BanishGlyph.Spawn();
-            Transform aura = m_BanishAura.Spawn();
+        Transform glyph = m_BanishGlyph.Spawn();
+        Transform aura = m_BanishAura.Spawn();
 
-            glyph.localScale = target.AvatarTransform.lossyScale;
-            glyph.rotation = target.AvatarTransform.rotation;
-            glyph.position = target.GameObject.transform.position + target.AvatarTransform.up * 37.30935f - target.AvatarTransform.forward;
+        glyph.localScale = target.AvatarTransform.lossyScale;
+        glyph.rotation = target.AvatarTransform.rotation;
+        glyph.position = target.GameObject.transform.position + target.AvatarTransform.up * 37.30935f - target.AvatarTransform.forward;
 
-            aura.position = target.GameObject.transform.position;
-            aura.localScale = target.GameObject.transform.lossyScale;
+        aura.position = target.GameObject.transform.position;
+        aura.localScale = target.GameObject.transform.lossyScale;
 
-            glyph.gameObject.SetActive(true);
-            aura.gameObject.SetActive(true);
+        glyph.gameObject.SetActive(true);
+        aura.gameObject.SetActive(true);
 
-            LeanTween.value(0, 0, 3f).setOnComplete(() =>
-            {
-                m_BanishGlyph.Despawn(glyph);
-                m_BanishAura.Despawn(aura);
-            });
+        LeanTween.value(0, 0, 3f).setOnComplete(() =>
+        {
+            m_BanishGlyph.Despawn(glyph);
+            m_BanishAura.Despawn(aura);
+        });
         //});
     }
 
@@ -148,7 +148,8 @@ public static class SpellcastingFX
 
         SpawnText(
             target,
-            LocalizeLookUp.GetText("moon_energy").Replace("{{Amount}}", "<color=" + color + ">" + amount.ToString("+#;-#") + "</color>"),
+            amount.ToString("+#;-#"),
+            //LocalizeLookUp.GetText("moon_energy").Replace("{{Amount}}", "<color=" + color + ">" + amount.ToString("+#;-#") + "</color>"),
             m_QueueGlyphs
         );//$"<color={color}>{amount.ToString("+#;-#")}</color> Energy");
     }
@@ -159,10 +160,23 @@ public static class SpellcastingFX
         textObj.text = text;
         textObj.transform.localScale = Vector3.one;
         textObj.transform.localRotation = Quaternion.identity;
+
         if (LocationIslandController.isInBattle)
-            textObj.transform.Translate(0, 61, 0);
+            textObj.transform.Translate(Random.Range(-7, -25), 61, 0);
+        if (text.Contains("-") == true)
+        {
+            textObj.color = Utilities.Red;
+        }
         //animate the text
-        Vector3 pos;
+        textObj.transform.position = new Vector3(target.AvatarTransform.position.x, target.AvatarTransform.position.y + 22, target.AvatarTransform.position.z);
+        var RandomSpacing = new Vector3(Random.Range(-7, 7), textObj.transform.localPosition.y + 22, textObj.transform.localPosition.z);
+        textObj.transform.Translate(RandomSpacing);
+        LeanTween.moveLocalY(textObj.gameObject, textObj.transform.localPosition.y + 8, 2f).setEaseOutCubic();
+        LeanTween.value(1f, 0f, 2f).setOnUpdate((float a) =>
+        {
+            textObj.alpha = a;
+        });
+        /*Vector3 pos;
         LeanTween.value(0, 1, 2f)
             .setEaseOutCubic()
             .setOnUpdate((float t) =>
@@ -170,6 +184,6 @@ public static class SpellcastingFX
                 textObj.alpha = (1 - t) * 2f;
                 pos = textObj.transform.up * (40 + t * 10);
                 textObj.transform.position = target.AvatarTransform.position + pos;
-            });
+            });*/
     }
 }
