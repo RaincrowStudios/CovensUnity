@@ -301,7 +301,7 @@ public class LocationUnitSpawner : MonoBehaviour
         var SelectionRing = LocationPlayerAction.playerMarker.GameObject.transform.GetChild(0).GetChild(4);
         LeanTween.scale(SelectionRing.gameObject, Vector3.zero, .6f).setEase(LeanTweenType.easeInOutQuad);
         await Task.Delay(600);
-        LeanTween.scale(SelectionRing.gameObject, Vector3.one, .6f).setEase(LeanTweenType.easeInOutQuad);
+        LeanTween.scale(SelectionRing.gameObject, Vector3.one * 1.5f, .6f).setEase(LeanTweenType.easeInOutQuad);
         var selfToken = LocationPlayerAction.playerWitchToken;
         var FlightFX = LocationPlayerAction.playerMarker.GameObject.transform.GetChild(0).GetChild(5);
         if (FlightFX.gameObject.activeInHierarchy)
