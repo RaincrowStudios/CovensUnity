@@ -82,6 +82,11 @@ public class UIInventoryWheel : MonoBehaviour
         }
     }
 
+    private void OnDestroy()
+    {
+        m_PickerPool.DestroyAll();
+    }
+
     private void LateUpdate()
     {
         if (Input.GetMouseButtonDown(0) && m_IngredientLocked == false)

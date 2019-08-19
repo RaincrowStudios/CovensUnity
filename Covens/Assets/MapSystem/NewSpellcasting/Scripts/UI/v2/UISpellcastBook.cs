@@ -140,7 +140,7 @@ public class UISpellcastBook : MonoBehaviour//, IEnhancedScrollerDelegate
         DownloadedAssets.OnWillUnloadAssets -= DownloadedAssets_OnWillUnloadAssets;
 
         //m_Scroller.ClearAll();
-        m_CardPool.DespawnAll();
+        m_CardPool.DestroyAll();
         SceneManager.UnloadScene(SceneManager.Scene.SPELLCAST_BOOK, null, null);
     }
 

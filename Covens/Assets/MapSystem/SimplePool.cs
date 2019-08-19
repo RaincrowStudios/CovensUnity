@@ -109,6 +109,15 @@ public class SimplePool<T> where T : Component
         m_UnavailablePool.Clear();
     }
 
+    public void DestroyAll()
+    {
+        DespawnAll();
+        foreach (T _instance in m_AvailablePool)
+        {
+            GameObject.Destroy(_instance.gameObject);
+        }
+    }
+
     public List<T> GetInstances()
     {
         return new List<T>(m_UnavailablePool);

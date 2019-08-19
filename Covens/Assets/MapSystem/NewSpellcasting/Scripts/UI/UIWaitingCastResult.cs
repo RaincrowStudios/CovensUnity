@@ -95,6 +95,7 @@ public class UIWaitingCastResult : UIInfoPanel
 
         m_ContinueButton.onClick.AddListener(OnClickContinue);
         m_CloseButton.onClick.AddListener(OnClickClose);
+        DegreeSetup();
     }
 
     public void Show(IMarker target, SpellData spell, List<spellIngredientsData> ingredients, System.Action<Raincrow.GameEventResponses.SpellCastHandler.Result> onContinue, System.Action onClose = null)

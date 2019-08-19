@@ -311,6 +311,9 @@ public class TeamManagerUI : MonoBehaviour
             return;
 
         DownloadedAssets.OnWillUnloadAssets -= DownloadedAssets_OnWillUnloadAssets;
+        m_Members.m_Pool.DestroyAll();
+        m_Invites.m_Pool.DestroyAll();
+        m_Requests.m_Pool.DestroyAll();
         SceneManager.UnloadScene(SceneManager.Scene.COVEN_MANAGEMENT, null, null);
     }
 

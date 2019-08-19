@@ -285,12 +285,12 @@ namespace Raincrow.Test
             {
                 CentralizedLabel("Editor");
 
-                Raincrow.SceneManager.Scene scene = (Raincrow.SceneManager.Scene)EditorGUILayout.EnumPopup("start scene", m_StartScene);
-                if (scene != m_StartScene)
-                {
-                    m_StartScene = scene;
-                    PlayerPrefs.SetInt("DEBUGSCENE", (int)m_StartScene);
-                }
+                //Raincrow.SceneManager.Scene scene = (Raincrow.SceneManager.Scene)EditorGUILayout.EnumPopup("start scene", m_StartScene);
+                //if (scene != m_StartScene)
+                //{
+                //    m_StartScene = scene;
+                //    PlayerPrefs.SetInt("DEBUGSCENE", (int)m_StartScene);
+                //}
 
                 bool debugLocation = true;
 #if DEBUG_LOCATION == false
@@ -365,13 +365,20 @@ namespace Raincrow.Test
             {
                 CentralizedLabel("Others");
 
+                EditorGUI.BeginDisabledGroup(EditorApplication.isPlaying == false);
+
                 GUILayout.Space(10);
+
+                if (GUILayout.Button("login"))
+                {
+                    DownloadManager.OnDownloadsComplete += () => LoginAPIManager.Login((result, response) => LoginAPIManager.GetCharacter(null));
+                    DownloadManager.DownloadAssets(null);
+                }
+
                 if (GUILayout.Button("SpiritForm?"))
                 {
                     Debug.Log(PlayerManager.inSpiritForm);
                 }
-
-                GUILayout.Space(10);
 
                 if (GUILayout.Button("notification"))
                 {
@@ -389,15 +396,11 @@ namespace Raincrow.Test
                         });
                 }
 
-                GUILayout.Space(10);
                 if (GUILayout.Button("Skip tutorial"))
                 {
                     FTFManager.SkipFTF();
                 }
 
-                GUILayout.Space(5);
-
-                EditorGUI.BeginDisabledGroup(EditorApplication.isPlaying == false);
                 m_SpellId = EditorGUILayout.TextField("spell id", m_SpellId);
                 if (GUILayout.Button(m_SpellId.Replace("spell_", "").ToUpper() + " EVERYONE!"))
                 {

@@ -94,13 +94,31 @@ public static class SpellcastingFX
                 1f
             );
         }
-
-        SpawnText(target, "Spell failed!", m_QueueGlyphs);
+        var f = LocalizeLookUp.GetText("spell_fail");
+        SpawnText(target, f, false, m_QueueGlyphs);
     }
 
     public static void SpawnGlyph(IMarker target, SpellData spell, string baseSpell)
     {
-        Token token = target.Token;
+        if (string.IsNullOrEmpty(baseSpell))
+            baseSpell = spell.id;
+
+        string[] array = { "spell_bind", "spell_silence", "spell_seal", "spell_invisibility", "spell_dispel", "spell_clarity", "spell_sealBalance", "spell_sealLight", "spell_sealShadow", "spell_reflectiveWard", "spell_rageWard", "spell_greaterSeal", "spell_greaterDispel", "spell_banish", "spell_mirrors", "spell_trueSight", "spell_crowsEye", "spell_shadowMark", "spell_channeling", "spell_transquility", "spell_addledMind", "spell_whiteRain" }; //list of all nondamaging spells to display in oblique text
+        if (array.Contains(spell.id))
+        {
+            var s = LocalizeLookUp.GetSpellName(spell.id);
+
+            LeanTween.value(0f, 1f, 0.25f).setOnComplete(() => //slight delay
+              {
+                  SpawnText(
+                      target,
+                      s,
+                      false,
+                      m_QueueGlyphs
+                  );
+              });
+        }
+        /* Token token = target.Token;
         SimplePool<Transform> glyphPool;
         SimplePool<Transform> auraPool;
 
@@ -136,9 +154,10 @@ public static class SpellcastingFX
         aura.localPosition = new Vector3(0, 0, 0f);
         aura.localScale = Vector3.one;
         aura.localRotation = Quaternion.identity;
+        */
     }
 
-    public static void SpawnDamage(IMarker target, int amount, string color = null)
+    public static void SpawnDamage(IMarker target, int amount, bool crit, string color = null)
     {
         if (amount == 0)
             return;
@@ -148,31 +167,42 @@ public static class SpellcastingFX
 
         SpawnText(
             target,
-            LocalizeLookUp.GetText("moon_energy").Replace("{{Amount}}", "<color=" + color + ">" + amount.ToString("+#;-#") + "</color>"),
+            amount.ToString("+#;-#"),
+            //LocalizeLookUp.GetText("moon_energy").Replace("{{Amount}}", "<color=" + color + ">" + amount.ToString("+#;-#") + "</color>"),
+            crit,
             m_QueueGlyphs
         );//$"<color={color}>{amount.ToString("+#;-#")}</color> Energy");
     }
 
-    public static void SpawnText(IMarker target, string text, bool queued)
+    public static void SpawnText(IMarker target, string text, bool crit, bool queued)
     {
         TextMeshPro textObj = m_TextPopupPool.Spawn(target.AvatarTransform, 3f).GetComponent<TextMeshPro>();
         textObj.text = text;
+        textObj.fontSize = 45;
+        textObj.color = new Color(1, 1, 1);
         textObj.transform.localScale = Vector3.one;
         textObj.transform.localRotation = Quaternion.identity;
+
         if (LocationIslandController.isInBattle)
-            textObj.transform.Translate(0, 61, 0);
+            textObj.transform.Translate(Random.Range(-7, -25), 61, 0);
+        if (text.Contains("-") == true)
+        {
+            textObj.color = Utilities.Red; //make it red for damage
+        }
+        if (crit == true)
+        {
+            textObj.fontSize = 65; //big text for crit
+        }
         //animate the text
-        Vector3 pos;
-        LeanTween.value(0, 1, 2f)
-            .setEaseOutCubic()
-            .setOnUpdate((float t) =>
-            {
-                if (textObj != null)
-                {
-                    textObj.alpha = (1 - t) * 2f;
-                    pos = textObj.transform.up * (40 + t * 10);
-                    textObj.transform.position = target.AvatarTransform.position + pos;
-                }
-            });
+        textObj.transform.position = new Vector3(target.AvatarTransform.position.x, target.AvatarTransform.position.y + 22, target.AvatarTransform.position.z);
+        var RandomSpacing = new Vector3(Random.Range(-7, 7), textObj.transform.localPosition.y + Random.Range(20, 24), textObj.transform.localPosition.z);
+        textObj.transform.Translate(RandomSpacing);
+        LeanTween.moveLocalY(textObj.gameObject, textObj.transform.localPosition.y + Random.Range(8, 11), 2f).setEaseOutCubic();
+        LeanTween.value(1f, 0f, 2f).setOnUpdate((float a) =>
+        {
+            if (textObj != null)
+                textObj.alpha = a;
+        });
+
     }
 }

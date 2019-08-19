@@ -22,6 +22,7 @@ namespace Raincrow
             STORE,
             DAILY_BLESSING,
             GREY_HAND_OFFICE,
+            QUICKCAST_PICKER,
         }
 
         private static Dictionary<Scene, string> m_SceneNames = new Dictionary<Scene, string>
@@ -36,7 +37,8 @@ namespace Raincrow
             {Scene.CHAT,                "Chat" },
             {Scene.STORE,               "Store" },
             {Scene.DAILY_BLESSING,      "DailyBlessing" },
-            {Scene.GREY_HAND_OFFICE,    "GreyHandOffice" }
+            {Scene.GREY_HAND_OFFICE,    "GreyHandOffice" },
+            {Scene.QUICKCAST_PICKER,    "QuickCastPicker" },
         };
 
         private static SceneManager m_Instance;
