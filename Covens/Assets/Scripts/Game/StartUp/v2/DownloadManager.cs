@@ -97,7 +97,9 @@ public class DownloadManager : MonoBehaviour
     public static void DownloadAssets(System.Action dictionaryDownloaded)
     {
         Debug.Log("Requesting asset list from server");
-        SplashManager.Instance.SetDownloadMessage("Getting asset list from server", "");
+
+        if (SplashManager.Instance)
+            SplashManager.Instance.SetDownloadMessage("Getting asset list from server", "");
 
         //APIManagerServer.EnableAutoRetry = false;
 
@@ -128,7 +130,8 @@ public class DownloadManager : MonoBehaviour
 
     private static IEnumerator StartDownloads(AssetResponse assets, System.Action dictionariesDownloaded, System.Action bundlesDownloaded)
     {
-        SplashManager.Instance.SetDownloadMessage("", "");
+        if (SplashManager.Instance)
+            SplashManager.Instance.SetDownloadMessage("", "");
 
         //check if server is under maintenance
         if (assets.maintenance)
@@ -477,7 +480,10 @@ public class DownloadManager : MonoBehaviour
     {
         try
         {
-            StoreManagerAPI.Store = JsonConvert.DeserializeObject<StoreData>(json);
+            StoreManagerAPI.Store = JsonConvert.DeserializeObject<StoreData>(json, new JsonSerializerSettings
+            {
+                DefaultValueHandling = DefaultValueHandling.Populate
+            });
             return true;
         }
         catch (System.Exception e)

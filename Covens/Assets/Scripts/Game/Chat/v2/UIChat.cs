@@ -437,8 +437,14 @@ namespace Raincrow.Chat.UI
                 return;
 
             DownloadedAssets.OnWillUnloadAssets -= DownloadedAssets_OnWillUnloadAssets;
-            SceneManager.UnloadScene(SceneManager.Scene.CHAT, null, null);
 
+            _chatLocationPool.DestroyAll();
+            _chatImagePool.DestroyAll();
+            _chatMessagePool.DestroyAll();
+            _chatHelpPlayerPool.DestroyAll();
+            _chatHelpCrowPool.DestroyAll();
+
+            SceneManager.UnloadScene(SceneManager.Scene.CHAT, null, null);
         }
 
         private void AnimateShow(System.Action onComplete)

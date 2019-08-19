@@ -40,6 +40,9 @@ public class EditorScenes : MonoBehaviour
     [MenuItem("Scenes/Screens/Grey Hand Office")]
     static void GreyHandOfficeScene() => OpenScene("GreyHandOffice");
 
+    [MenuItem("Scenes/Screens/QuickCast Picker")]
+    static void QuickCastPickerScene() => OpenScene("QuickCastPicker");
+
     private static void OpenScene(string name)
     {
         if (EditorSceneManager.SaveCurrentModifiedScenesIfUserWantsTo())

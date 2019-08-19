@@ -38,7 +38,7 @@ EditorBuildSettings:
   - enabled: 1
     path: Assets/Scenes/GreyHandOffice.unity
     guid: e72b5c474b7283046bfe2aae8cc9599a
-  - enabled: 0
-    path: Assets/CovensMusk/testscene.unity
-    guid: c7255549eac8cba49a3ef710473b6c6e
+  - enabled: 1
+    path: Assets/Scenes/QuickCastPicker.unity
+    guid: 2489921cc25308f4f94ee0fdaa0bbb4a
   m_configObjects: {}
