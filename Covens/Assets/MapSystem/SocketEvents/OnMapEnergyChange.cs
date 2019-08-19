@@ -35,7 +35,7 @@ public static class OnMapEnergyChange
             marker = PlayerManager.marker;
             player.lastEnergyUpdate = timestamp;
             energy = player.energy = newEnergy;
-            
+
             if (player.state == "dead" && newState != "dead")
             {
                 player.state = newState;
@@ -48,15 +48,26 @@ public static class OnMapEnergyChange
             {
                 if (newState == "dead")
                 {
-                    PlayerManager.witchMarker.AddDeathFX();
-                    DeathState.Instance.ShowDeath();
-                    OnPlayerDead?.Invoke();
+                    if (!LocationIslandController.isInBattle)
+                    {
+                        PlayerManager.witchMarker.AddDeathFX();
+                        DeathState.Instance.ShowDeath();
+                        OnPlayerDead?.Invoke();
+                    }
+                    else
+                    {
+                        // dead in a location
+                        LoadPOPManager.UnloadScene(null);
+                    }
                 }
                 else if (newState == "vulnerable")
                 {
                     if (LowEnergyPopup.Instance == null)
                     {
-                        Utilities.InstantiateObject(Resources.Load<GameObject>("UILowEnergyPopUp"), DeathState.Instance.transform);
+                        if (!LocationIslandController.isInBattle)
+                        {
+                            Utilities.InstantiateObject(Resources.Load<GameObject>("UILowEnergyPopUp"), DeathState.Instance.transform);
+                        }
                     }
                 }
 
@@ -77,7 +88,7 @@ public static class OnMapEnergyChange
 
             if (marker.Token.lastEnergyUpdate > timestamp)
                 return;
-            
+
             CharacterToken token = marker.Token as CharacterToken;
             token.lastEnergyUpdate = timestamp;
             energy = token.energy = newEnergy;
@@ -133,7 +144,7 @@ public static class OnMapEnergyChange
             newState = "vulnerable";
         else
             newState = "";
-        
+
         HandleEvent(instance, newEnergy, newState, timestamp);
     }
 }

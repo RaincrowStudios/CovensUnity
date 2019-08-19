@@ -74,17 +74,39 @@ namespace Raincrow.GameEventResponses
 
         public static void HandleEvent(SpellCastEventData data, System.Action onTrailStart = null, System.Action onTrailEnd = null)
         {
+
+            if (LocationIslandController.isInBattle)
+            {
+                if (data.caster.Type == MarkerManager.MarkerType.WITCH)
+                {
+
+                    if (data.target.Type == MarkerManager.MarkerType.SPIRIT && data.target.id == LocationUnitSpawner.guardianInstance)
+                    {
+
+                        int island = LocationUnitSpawner.GetIsland(data.caster.id);
+                        Debug.Log(island);
+                        if (LocationIslandController.locationIslands.ContainsKey(island))
+                        {
+                            if (!LocationIslandController.locationIslands[island].IsConnected)
+                            {
+                                LocationIslandController.locationIslands[island].SetSpiritConnection(true);
+                            }
+                        }
+                    }
+                }
+            }
+
             PlayerData player = PlayerDataManager.playerData;
             SpellData spell = DownloadedAssets.GetSpell(data.spell);
             bool playerIsCaster = data.caster.id == player.instance;
             bool playerIsTarget = data.target.id == player.instance;
-                            
+
             IMarker caster = playerIsCaster ? PlayerManager.marker : MarkerManager.GetMarker(data.caster.id);
             IMarker target = playerIsTarget ? PlayerManager.marker : MarkerManager.GetMarker(data.target.id);
             int damage = (int)data.result.damage;
             int casterNewEnergy = data.caster.energy;
             int targetNewEnergy = data.target.energy;
-            
+
             OnSpellCast?.Invoke(data.caster.id, data.target.id, spell, data.result);
 
             if (playerIsCaster)
@@ -117,7 +139,7 @@ namespace Raincrow.GameEventResponses
                 onStart: () =>
                 {
                     onTrailStart?.Invoke();
-                    
+
                     //trigger a map_energy_change event for the caster
                     LeanTween.value(0, 0, 0.25f).setOnComplete(() => OnMapEnergyChange.ForceEvent(caster, casterNewEnergy, data.timestamp));
 
@@ -141,7 +163,7 @@ namespace Raincrow.GameEventResponses
 
                     //trigger a map_energy_change event for the target
                     LeanTween.value(0, 0, 0.25f).setOnComplete(() => OnMapEnergyChange.ForceEvent(target, targetNewEnergy, data.timestamp));
-                    
+
                     //add status effects to PlayerDataManager.playerData
                     if (string.IsNullOrEmpty(data.result.statusEffect.spell) == false)
                     {
@@ -166,7 +188,7 @@ namespace Raincrow.GameEventResponses
                     }
 
                     //add the immunity if the server said so
-                    if (data.immunity && !playerIsTarget) 
+                    if (data.immunity && !playerIsTarget)
                     {
                         MarkerSpawner.AddImmunity(data.caster.id, data.target.id);
                         if (target != null && target is WitchMarker)

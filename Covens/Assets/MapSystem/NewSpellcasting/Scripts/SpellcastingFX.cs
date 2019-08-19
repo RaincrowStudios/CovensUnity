@@ -57,24 +57,24 @@ public static class SpellcastingFX
     {
         //LeanTween.value(0, 1, delay).setOnComplete(() =>
         //{
-            Transform glyph = m_BanishGlyph.Spawn();
-            Transform aura = m_BanishAura.Spawn();
+        Transform glyph = m_BanishGlyph.Spawn();
+        Transform aura = m_BanishAura.Spawn();
 
-            glyph.localScale = target.AvatarTransform.lossyScale;
-            glyph.rotation = target.AvatarTransform.rotation;
-            glyph.position = target.GameObject.transform.position + target.AvatarTransform.up * 37.30935f - target.AvatarTransform.forward;
+        glyph.localScale = target.AvatarTransform.lossyScale;
+        glyph.rotation = target.AvatarTransform.rotation;
+        glyph.position = target.GameObject.transform.position + target.AvatarTransform.up * 37.30935f - target.AvatarTransform.forward;
 
-            aura.position = target.GameObject.transform.position;
-            aura.localScale = target.GameObject.transform.lossyScale;
+        aura.position = target.GameObject.transform.position;
+        aura.localScale = target.GameObject.transform.lossyScale;
 
-            glyph.gameObject.SetActive(true);
-            aura.gameObject.SetActive(true);
+        glyph.gameObject.SetActive(true);
+        aura.gameObject.SetActive(true);
 
-            LeanTween.value(0, 0, 3f).setOnComplete(() =>
-            {
-                m_BanishGlyph.Despawn(glyph);
-                m_BanishAura.Despawn(aura);
-            });
+        LeanTween.value(0, 0, 3f).setOnComplete(() =>
+        {
+            m_BanishGlyph.Despawn(glyph);
+            m_BanishAura.Despawn(aura);
+        });
         //});
     }
 
@@ -167,9 +167,12 @@ public static class SpellcastingFX
             .setEaseOutCubic()
             .setOnUpdate((float t) =>
             {
-                textObj.alpha = (1 - t) * 2f;
-                pos = textObj.transform.up * (40 + t * 10);
-                textObj.transform.position = target.AvatarTransform.position + pos;
+                if (textObj != null)
+                {
+                    textObj.alpha = (1 - t) * 2f;
+                    pos = textObj.transform.up * (40 + t * 10);
+                    textObj.transform.position = target.AvatarTransform.position + pos;
+                }
             });
     }
 }

@@ -78,6 +78,7 @@ namespace Raincrow.DynamicPlacesOfPower
 
         private void OnFingerUp(LeanFinger finger)
         {
+            if (!LocationIslandController.isInBattle) return;
             if (!controlEnabled)
                 return;
 

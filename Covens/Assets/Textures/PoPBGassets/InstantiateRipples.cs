@@ -10,21 +10,24 @@ public class InstantiateRipples : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        Timer();
+        // Timer();
     }
     void Timer()
     {
-        LeanTween.value(0f, 1f, Random.Range(0.2f, 1f)).setOnComplete(() =>
-        {
-            Spawn();
-            Timer();
-        });
+        // LeanTween.value(0f, 1f, Random.Range(0.2f, 1f)).setOnComplete(() =>
+        // {
+        //     Spawn();
+        //     Timer();
+        // });
     }
 
     // Update is called once per frame
     void Spawn()
     {
-        var p = Utilities.InstantiateObject(ripple, transform, scale);
-        LeanTween.moveLocal(p, (new Vector3(Random.Range(-distance, distance), Random.Range(-distance, distance), 0)), 0.01f);
+        // if (ripple != null)
+        // {
+        //     var p = Utilities.InstantiateObject(ripple, transform, scale);
+        //     LeanTween.moveLocal(p, (new Vector3(Random.Range(-distance, distance), Random.Range(-distance, distance), 0)), 0.01f);
+        // }
     }
 }

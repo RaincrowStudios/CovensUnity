@@ -70,7 +70,6 @@ public class UISpiritInfo : UIInfoPanel
     {
         if (isOpen)
             return;
-
         m_SpiritMarker = spirit as SpiritMarker;
         m_SpiritToken = token as SpiritToken;
         m_SpiritData = DownloadedAssets.spiritDict[m_SpiritToken.spiritId];

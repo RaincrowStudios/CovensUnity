@@ -14,7 +14,12 @@ public class LocationIsland : MonoBehaviour
     [SerializeField] private Transform m_HighlightGlow;
     [SerializeField] private Transform m_HighlightCylinde;
 
+    private bool isConnected = false;
+
     private bool isActive = false;
+
+    public bool IsActive { get => isActive; private set => isActive = value; }
+    public bool IsConnected { get => isConnected; set => isConnected = value; }
 
     public Transform[] Setup(float distance, int islandIndex)
     {
@@ -39,27 +44,29 @@ public class LocationIsland : MonoBehaviour
         if (isActive)
         {
             m_Renderer.positionCount = 2;
+            var childTransform = transform.GetChild(0);
             LeanTween.value(0, 1, 1).setOnUpdate((float value) =>
             {
-                m_Renderer.SetPosition(1, Vector3.Lerp(transform.position, Vector3.zero, value));
+                m_Renderer.SetPosition(1, Vector3.Lerp(Vector3.zero, childTransform.position, value));
             });
         }
+        isConnected = isActive;
     }
 
     public void ActivateIsland(bool active)
     {
         m_Highlight.SetActive(active);
 
-        if (!isActive && active) //island activated
+        if (!IsActive && active)
         {
             AnimateHighlight(true);
         }
-        else if (isActive && !active)
+        else if (IsActive && !active)
         {
             AnimateHighlight(false);
         }
 
-        isActive = active;
+        IsActive = active;
     }
 
     private void AnimateHighlight(bool forward)

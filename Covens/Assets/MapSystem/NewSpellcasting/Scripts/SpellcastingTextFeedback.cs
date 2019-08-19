@@ -8,8 +8,6 @@ public static class SpellcastingTextFeedback
 {
     public static string CreateSpellFeedback(IMarker caster, IMarker target, Raincrow.GameEventResponses.SpellCastHandler.SpellCastEventData response)
     {
-        Debug.Log(JsonUtility.ToJson(response));
-
         //basic caster/target info
         string casterName, targetName;
         string casterColor, targetColor;
@@ -41,7 +39,7 @@ public static class SpellcastingTextFeedback
         else if (target.Type == MarkerSpawner.MarkerType.SPIRIT)
         {
             targetName = LocalizeLookUp.GetSpiritName((target.Token as SpiritToken).spiritId);
-			targetColor = LocalizeLookUp.GetText ("lt_spirit_s");//"spirit";
+            targetColor = LocalizeLookUp.GetText("lt_spirit_s");//"spirit";
             targetDegree = "";
         }
         else
@@ -57,17 +55,17 @@ public static class SpellcastingTextFeedback
 
             if (target == PlayerManager.marker)
             {
-				if (spellData != null)
-					return LocalizeLookUp.GetText ("spell_caster_tried_spell_failed").Replace ("{{Color}}", casterColor).Replace ("{{Target Name}}", targetName).Replace ("{{Spell Name}}", spellData.Name);//"The " + casterColor + " " + targetName + " tried to cast " + spellData.spellName + " on you but failed.";
+                if (spellData != null)
+                    return LocalizeLookUp.GetText("spell_caster_tried_spell_failed").Replace("{{Color}}", casterColor).Replace("{{Target Name}}", targetName).Replace("{{Spell Name}}", spellData.Name);//"The " + casterColor + " " + targetName + " tried to cast " + spellData.spellName + " on you but failed.";
                 else
-					return LocalizeLookUp.GetText ("spell_caster_tried_failed").Replace ("{{Color}}", casterColor).Replace ("{{Target Name}}", targetName);//"The " + casterColor + " " + targetName + " tried to cast a spell on you but failed.";
+                    return LocalizeLookUp.GetText("spell_caster_tried_failed").Replace("{{Color}}", casterColor).Replace("{{Target Name}}", targetName);//"The " + casterColor + " " + targetName + " tried to cast a spell on you but failed.";
             }
             else
             {
-				if (spellData != null)
-					return LocalizeLookUp.GetText ("spell_you_cast_spell_failed").Replace ("{{Spell Name}}", spellData.Name).Replace ("{{Color}}", casterColor).Replace ("{{Target Name}}", targetName);//"You tried to cast " + spellData.spellName + " on the " + casterColor + " " + targetName + " and failed.";
+                if (spellData != null)
+                    return LocalizeLookUp.GetText("spell_you_cast_spell_failed").Replace("{{Spell Name}}", spellData.Name).Replace("{{Color}}", casterColor).Replace("{{Target Name}}", targetName);//"You tried to cast " + spellData.spellName + " on the " + casterColor + " " + targetName + " and failed.";
                 else
-					return LocalizeLookUp.GetText ("spell_you_cast_failed").Replace ("{{Color}}", casterColor).Replace ("{{Target Name}}", targetName);//"You tried to cast a spell on the " + casterColor + " " + targetName + " and failed.";
+                    return LocalizeLookUp.GetText("spell_you_cast_failed").Replace("{{Color}}", casterColor).Replace("{{Target Name}}", targetName);//"You tried to cast a spell on the " + casterColor + " " + targetName + " and failed.";
             }
         }
 
@@ -116,14 +114,14 @@ public static class SpellcastingTextFeedback
                     targetDegree,
                     damage,
                     damage
-                    //response.result.resilienceChanged.ToString(),//power
-                    //response.result.successChance.ToString(),//resilience
-                    //intensityModifier,
-                    //"1 min",
-                    //response.result.newResilience.ToString(),
-                    //response.result.newPower.ToString(),
-                    //response.result.powerChanged.ToString(),
-                    //response.result.selfEnergy.ToString()
+                //response.result.resilienceChanged.ToString(),//power
+                //response.result.successChance.ToString(),//resilience
+                //intensityModifier,
+                //"1 min",
+                //response.result.newResilience.ToString(),
+                //response.result.newPower.ToString(),
+                //response.result.powerChanged.ToString(),
+                //response.result.selfEnergy.ToString()
                 );
             }
             catch (System.Exception e)
@@ -143,11 +141,11 @@ public static class SpellcastingTextFeedback
             {
                 if (target == PlayerManager.marker)
                 {
-					if (response.result.damage > 0)
+                    if (response.result.damage > 0)
                     {
                         return LocalizeLookUp.GetText("spell_caster_spell_gain").Replace("{{Caster Name}}", casterName).Replace("{{Spell Name}}", spellData.Name).Replace("{{amount}}", "<color=yellow>" + damage + "</color>");
                         //$"{casterName} cast {spellData.spellName} on you. You gain <color=yellow>{damage}</color> Energy.";
-                    }						
+                    }
                     else if (response.result.damage < 0)
                     {
                         return LocalizeLookUp.GetText("spell_caster_spell_lose").Replace("{{Caster Name}}", casterName).Replace("{{Spell Name}}", spellData.Name).Replace("{{amount}}", "<color=red>" + damage + "</color>");

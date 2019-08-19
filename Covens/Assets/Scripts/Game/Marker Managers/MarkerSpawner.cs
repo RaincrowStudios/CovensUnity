@@ -313,6 +313,7 @@ public class MarkerSpawner : MarkerManager
     {
         if (code == 200)
         {
+
             switch (marker.Type)
             {
                 case MarkerType.WITCH:
@@ -331,7 +332,9 @@ public class MarkerSpawner : MarkerManager
                     spirit.token = marker.Token as SpiritToken;
 
                     if (UISpiritInfo.isOpen && UISpiritInfo.Instance.SpiritToken.instance == instance)
+                    {
                         UISpiritInfo.Instance.SetupDetails(spirit);
+                    }
 
                     if (spirit.state == "dead")
                         RemoveTokenHandler.ForceEvent(instance);
@@ -558,14 +561,15 @@ public class MarkerSpawner : MarkerManager
             m_MouseDownPosition = new Vector2(-Screen.width, -Screen.height);
 
             Camera cam = MapsAPI.Instance.camera;
-
             RaycastHit hit;
             if (Physics.Raycast(cam.ScreenPointToRay(Input.mousePosition), out hit, Mathf.Infinity, 1 << 20))
             {
+
                 IMarker marker = hit.transform.GetComponentInParent<IMarker>();
                 if (marker != null)
                 {
                     marker.OnClick?.Invoke(marker);
+
                     return;
                 }
             }
