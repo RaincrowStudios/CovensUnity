@@ -28,6 +28,7 @@ public class UIDominionSplash : MonoBehaviour
         else
         {
             Instance = this;
+            m_CloseButton.gameObject.SetActive(false);
             m_CloseButton.onClick.AddListener(Close);
 
             m_InputRaycaster.enabled = true;
@@ -41,15 +42,17 @@ public class UIDominionSplash : MonoBehaviour
         m_OnClose = onClose;
         m_Dominion.text = m_TopWitch.text = m_TopCoven.text = "";
         m_Dominion.alpha = m_TopWitch.alpha = m_TopCoven.alpha = 0;
-
+        float time = 2.5f;
         m_Dominion.text = LocalizeLookUp.GetText("dominion_location") + " " + GameStartup.Dominion;
         LeanTween.value(0, 1f, 2f).setOnUpdate((float a) => m_Dominion.alpha = a).setDelay(0.25f).setEaseOutCubic();
-
+        Debug.Log("Top Player" + GameStartup.TopPlayer);
+        Debug.Log("Top Coven" + GameStartup.TopCoven);
         if (string.IsNullOrEmpty(GameStartup.TopPlayer) == false)
         {
             m_TopWitch.gameObject.SetActive(true);
             m_TopWitch.text = LocalizeLookUp.GetText("strongest_witch_dominion") + " " + GameStartup.TopPlayer;
             LeanTween.value(0, 1f, 2f).setOnUpdate((float a) => m_TopWitch.alpha = a).setDelay(1.25f).setEaseOutCubic();
+            time++;
         }
         else
         {
@@ -61,11 +64,16 @@ public class UIDominionSplash : MonoBehaviour
             m_TopCoven.gameObject.SetActive(true);
             m_TopCoven.text = LocalizeLookUp.GetText("strongest_coven_dominion") + " " + GameStartup.TopCoven;
             LeanTween.value(0, 1f, 2f).setOnUpdate((float a) => m_TopCoven.alpha = a).setDelay(2.25f).setEaseOutCubic();
+            time++;
         }
         else
         {
             m_TopCoven.gameObject.SetActive(false);
         }
+        LeanTween.value(0f, 1f, time).setOnComplete(() =>
+          {
+              Close();
+          });
     }
 
     private void Close()

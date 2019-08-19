@@ -79,10 +79,10 @@ public class TeamPlayerView : MonoBehaviour
         _worldRank.text = LocalizeLookUp.GetText("lt_world_rank") + " " + data.worldRank;
         _coven.text = (string.IsNullOrEmpty(data.coven) ? LocalizeLookUp.GetText("lt_coven_none") : LocalizeLookUp.GetText("lt_coven") + " " + data.coven);
         //_state.text = (data.state == "" ? LocalizeLookUp.GetText("lt_state_normal") : LocalizeLookUp.GetText("lt_state") + " " + data.state);
-        _power.text = "<Power>: " + data.power;
-        _resilience.text = "<Resilience>: " + data.resilience;
+        _power.text = LocalizeLookUp.GetText("generic_power") + ": " + data.power;
+        _resilience.text = LocalizeLookUp.GetText("generic_resilience") + ": " + data.resilience;
         _energy.text = LocalizeLookUp.GetText("lt_energy") + " " + data.energy.ToString() + "/" + data.baseEnergy.ToString();
-        
+
         m_OnFly = onFly;
         m_OnCoven = onCoven;
         m_OnClose = onClose;
@@ -105,7 +105,7 @@ public class TeamPlayerView : MonoBehaviour
         //LTDescr descrAlpha = LeanTween.alphaCanvas(m_CanvasGroup, 1, .28f).setEase(LeanTweenType.easeInOutSine);
         //LTDescr descrScale = LeanTween.scale(m_CanvasGroup.gameObject.GetComponent<RectTransform>(), Vector3.one, .4f).setEase(LeanTweenType.easeInOutSine);
     }
-    
+
     public void Close()
     {
         m_OnFly = null;
