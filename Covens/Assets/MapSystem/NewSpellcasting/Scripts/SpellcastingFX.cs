@@ -179,6 +179,7 @@ public static class SpellcastingFX
         TextMeshPro textObj = m_TextPopupPool.Spawn(target.AvatarTransform, 3f).GetComponent<TextMeshPro>();
         textObj.text = text;
         textObj.fontSize = 45;
+        textObj.color = new Color(1, 1, 1);
         textObj.transform.localScale = Vector3.one;
         textObj.transform.localRotation = Quaternion.identity;
 
