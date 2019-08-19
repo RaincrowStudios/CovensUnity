@@ -123,7 +123,7 @@ namespace Raincrow.GameEventResponses
 
                     //spell text for the energy lost casting the spell
                     if (playerIsCaster && caster != null)
-                        SpellcastingFX.SpawnDamage(caster, -spell.cost);
+                        SpellcastingFX.SpawnDamage(caster, -spell.cost, false);
 
                     //localy remove the immunity so you may attack again
                     if (playerIsTarget)
@@ -184,10 +184,11 @@ namespace Raincrow.GameEventResponses
                             }
                             else
                             {
-                                //SpellcastingFX.SpawnGlyph(target, spell, data.spell);
-                                SpellcastingFX.SpawnDamage(target, damage);
+                                SpellcastingFX.SpawnGlyph(target, spell, data.spell);
+                                SpellcastingFX.SpawnDamage(target, damage, data.result.isCritical);
                             }
                         }
+
                         else
                         {
                             SpellcastingFX.SpawnFail(target);
