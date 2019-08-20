@@ -92,6 +92,18 @@ public class UIQuickCast : MonoBehaviour
         m_OnClose += onClose;
     }
 
+    public static void EnableQuickcastButtons(bool enable)
+    {
+        if (m_Instance == null)
+            return;
+
+        for (int i = 0; i < m_Instance.m_Buttons.Count; i++)
+        {
+            m_Instance.m_Buttons[i].Show(enable);
+        }
+
+        m_Instance.m_MoreSpells.gameObject.SetActive(enable);
+    }
 
     private void Awake()
     {
@@ -174,7 +186,7 @@ public class UIQuickCast : MonoBehaviour
         this._Close();
         Spellcasting.CastSpell(spell, m_Target, new List<spellIngredientsData>(), 
             (result) => this._Open(),
-            null);
+            this._Open);
     }
 
     private void OnHoldSpell(UIQuickcastButton button)
@@ -226,7 +238,7 @@ public class UIQuickCast : MonoBehaviour
                 );
             },
             () => this._Open(),
-            null //() => this._Close()
+            () => this._Open()
         );
     }
 

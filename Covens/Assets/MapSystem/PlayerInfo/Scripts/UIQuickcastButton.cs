@@ -109,6 +109,11 @@ public class UIQuickcastButton : MonoBehaviour, IPointerDownHandler, IPointerUpH
         m_Highlight.gameObject.SetActive(highlight);   
     }
 
+    public void Show(bool show)
+    {
+        gameObject.SetActive(show);
+    }
+
     public void SetFillAmount(float value)
     {
         m_SpellIcon_B.fillAmount = m_CooldownFill.fillAmount = value;
