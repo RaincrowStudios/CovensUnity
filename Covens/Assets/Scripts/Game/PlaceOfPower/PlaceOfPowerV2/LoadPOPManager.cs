@@ -70,6 +70,8 @@ public class LoadPOPManager : MonoBehaviour
     {
         previousEnergy = PlayerDataManager.playerData.energy;
         previousState = PlayerDataManager.playerData.state;
+        UIQuickCast.Close();
+
         foreach (var item in Instance.MainUIDisable)
         {
             item.SetActive(false);

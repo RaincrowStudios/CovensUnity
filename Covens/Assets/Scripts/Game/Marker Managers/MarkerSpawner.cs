@@ -238,7 +238,6 @@ public class MarkerSpawner : MarkerManager
         selectedType = Data.Type;
 
         //show the basic available info, and waut for the map/select response to fill the details
-
         if (Data.Type == MarkerType.WITCH)
         {
             UIQuickCast.Open();
@@ -254,7 +253,7 @@ public class MarkerSpawner : MarkerManager
             PickUpCollectibleAPI.PickUpCollectable(m as CollectableMarker);
             return;
         }
-        
+
         if (selectedType == MarkerType.ENERGY && lastEnergyInstance != instanceID)
         {
             if (PlayerDataManager.playerData.energy >= (PlayerDataManager.playerData.baseEnergy * 2))

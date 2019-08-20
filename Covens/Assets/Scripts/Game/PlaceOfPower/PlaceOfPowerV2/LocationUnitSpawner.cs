@@ -141,12 +141,15 @@ public class LocationUnitSpawner : MonoBehaviour
             DisableMarkers(token.instance);
             return;
         }
+        LocationPlayerAction.HideActions();
         if (token.Type == MarkerType.WITCH)
         {
+            LocationPlayerAction.ShowSpells();
             UIPlayerInfo.Show(m as WitchMarker, token as WitchToken);
         }
         else if (token.Type == MarkerType.SPIRIT)
         {
+            LocationPlayerAction.ShowSpells();
             UISpiritInfo.Show(m as SpiritMarker, token as SpiritToken);
         }
         SetHighlight(token);
@@ -163,7 +166,10 @@ public class LocationUnitSpawner : MonoBehaviour
                     witch.token = token as WitchToken;
 
                     if (UIPlayerInfo.isShowing && UIPlayerInfo.WitchToken.instance == token.instance)
+                    {
                         UIPlayerInfo.SetupDetails(witch);
+                        UIQuickCast.UpdateCanCast(m, witch);
+                    }
                 }
                 else if (m.Type == MarkerType.SPIRIT)
                 {
@@ -171,7 +177,10 @@ public class LocationUnitSpawner : MonoBehaviour
                     spirit.token = token as SpiritToken;
 
                     if (UISpiritInfo.isOpen && UISpiritInfo.SpiritToken.instance == token.instance)
+                    {
                         UISpiritInfo.SetupDetails(spirit);
+                        UIQuickCast.UpdateCanCast(m, spirit);
+                    }
 
                     if (spirit.state == "dead")
                     {
@@ -269,19 +278,15 @@ public class LocationUnitSpawner : MonoBehaviour
         }
     }
 
-    public static void MoveWitch(int island, int position, System.Action onComplete)
+    public static void MoveWitch(int island, int position)
     {
         Debug.Log("requesting move");
         var data = new { island = island, position = position };
-        LocationPlayerAction.SetMoveActionState(false);
         APIManager.Instance.Post("character/move", JsonConvert.SerializeObject(data),
             async (s, r) =>
             {
-                Debug.Log(s);
-                Debug.Log(r);
                 if (r == 200)
                 {
-                    LocationPlayerAction.SetMoveActionState(true);
                     LocationPlayerAction.playerMarker.SetAlpha(0, 1);
                     ShowFlightFX();
                     await Task.Delay(600);
@@ -295,12 +300,6 @@ public class LocationUnitSpawner : MonoBehaviour
                     LocationPlayerAction.playerMarker.SetAlpha(1, 1);
                     Instance.MoveMarker(moveData);
                     LocationIslandController.SetActiveIslands();
-                    LocationPlayerAction.MakeTransparent();
-                    onComplete();
-                }
-                else
-                {
-                    LocationPlayerAction.SetMoveActionState(true);
                 }
             });
     }
@@ -427,7 +426,7 @@ public class LocationUnitSpawner : MonoBehaviour
 
     public static void EnableMarkers()
     {
-
+        UIQuickCast.Close();
         foreach (var item in Markers)
         {
             item.Value.SetAlpha(1, 1);

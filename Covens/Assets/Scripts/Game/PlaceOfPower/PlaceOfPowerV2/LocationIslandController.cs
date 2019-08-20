@@ -246,7 +246,6 @@ public class LocationIslandController : MonoBehaviour
                 if (marker != null)
                 {
                     marker.OnClick?.Invoke(marker);
-                    LocationPlayerAction.MakeTransparent();
                     return;
                 }
                 LocationPosition LP = hit.transform.GetComponent<LocationPosition>();

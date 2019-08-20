@@ -8,27 +8,27 @@ using UnityEngine.UI;
 
 public class LocationPlayerAction : MonoBehaviour
 {
-
     private static LocationPlayerAction Instance { get; set; }
 
-    [SerializeField] private CanvasGroup m_MoveActionCG;
-    [SerializeField] private Image[] m_SummonCountDown;
-    [SerializeField] private Image[] m_FlightCountDown;
-    [SerializeField] private Button m_SummonBtn;
-    [SerializeField] private Button m_FlightBtn;
     [SerializeField] private GameObject m_MoveCloser;
     [SerializeField] private Button m_MoveCloserCloseBtn;
     [SerializeField] private Button m_CenterOnPlayerBtn;
 
-    public const float MOVE_TIMER = 5;
-    public const float SUMMON_TIMER = 30;
+    [SerializeField] private LocationActionButton m_ActionBtn;
+    [SerializeField] private Sprite m_flySprite;
+    [SerializeField] private Sprite m_CloakSprite;
+    [SerializeField] private Sprite m_SummonSprite;
 
+    private const int MOVE_TIMER = 5;
+    private const int SUMMON_TIMER = 30;
+    private const int CLOAK_TIMER = 60;
+
+    private static LocationActionButton[] m_BtnArr = new LocationActionButton[3];
     public static IMarker playerMarker { get; private set; }
     public static LocationPosition selectedPosition { get; private set; }
     public static int getCurrentIsland => playerWitchToken.island;
     public static int playerPopIndex => playerWitchToken.popIndex;
     public static WitchToken playerWitchToken => playerMarker.Token as WitchToken;
-
 
     public static void SetSelectedPosition(LocationPosition locationPosition)
     {
@@ -53,14 +53,24 @@ public class LocationPlayerAction : MonoBehaviour
 
     private void Awake()
     {
-        m_MoveCloserCloseBtn.onClick.AddListener(HideMoveCloser);
         Instance = this;
-        m_FlightBtn.onClick.AddListener(Move);
-        SetMoveActionState(false);
-        m_MoveActionCG.alpha = .25f;
-        InitializeMoveActions(m_SummonCountDown, m_SummonBtn);
-        InitializeMoveActions(m_FlightCountDown, m_FlightBtn);
+        m_MoveCloserCloseBtn.onClick.AddListener(HideMoveCloser);
         m_CenterOnPlayerBtn.onClick.AddListener(CenterOnPlayer);
+        LocationActionButton btn;
+        btn = Instantiate(m_ActionBtn, transform) as LocationActionButton;
+        btn.Setup(MOVE_TIMER, m_flySprite, () =>
+        {
+            LocationUnitSpawner.MoveWitch(selectedPosition.island, selectedPosition.position);
+        });
+        m_BtnArr[1] = btn;
+
+        btn = Instantiate(m_ActionBtn, transform) as LocationActionButton;
+        btn.Setup(SUMMON_TIMER, m_SummonSprite, () => { });
+        m_BtnArr[2] = btn;
+
+        btn = Instantiate(m_ActionBtn, transform) as LocationActionButton;
+        btn.Setup(CLOAK_TIMER, m_CloakSprite, () => { });
+        m_BtnArr[0] = btn;
     }
 
     private static void CenterOnPlayer()
@@ -88,55 +98,56 @@ public class LocationPlayerAction : MonoBehaviour
         else return true;
     }
 
-    public static void SetMoveActionState(bool interactable)
+    public static void ShowActions()
     {
-        Instance.m_MoveActionCG.interactable = interactable;
-    }
-
-    public static void MakeVisible()
-    {
-        Instance.m_MoveActionCG.blocksRaycasts = true;
-        SetMoveActionState(true);
-        Instance.m_MoveActionCG.alpha = 1;
-    }
-
-    public static void MakeTransparent()
-    {
-        Instance.m_MoveActionCG.alpha = .25f;
-        Instance.m_MoveActionCG.blocksRaycasts = false;
-    }
-
-    private void Move()
-    {
-        Debug.Log("Move button click");
-        LocationUnitSpawner.MoveWitch(selectedPosition.island, selectedPosition.position, () =>
+        UIQuickCast.Open(() =>
         {
-            SetButtonState(MOVE_TIMER, m_FlightCountDown, m_FlightBtn);
+            UIQuickCast.EnableQuickcastButtons(false);
+            for (int i = 0; i < m_BtnArr.Length; i++)
+            {
+                UIQuickCast.AddItem(m_BtnArr[i].gameObject, i, () =>
+                {
+
+                    if (i < m_BtnArr.Length && m_BtnArr[i].gameObject.activeInHierarchy)
+                    {
+                        m_BtnArr[i].gameObject.SetActive(false);
+                        m_BtnArr[i].transform.SetParent(Instance.transform);
+                    }
+
+                });
+                m_BtnArr[i].gameObject.SetActive(true);
+            }
         });
     }
 
-    private void Summon()
+    public static void HideActions()
     {
-        SetButtonState(MOVE_TIMER, Instance.m_FlightCountDown, Instance.m_FlightBtn);
+        UIQuickCast.EnableQuickcastButtons(true);
+        for (int i = 0; i < m_BtnArr.Length; i++)
+        {
+            if (m_BtnArr[i].gameObject.activeInHierarchy)
+            {
+                m_BtnArr[i].gameObject.SetActive(false);
+                m_BtnArr[i].transform.SetParent(Instance.transform);
+            }
+        }
     }
 
-    private static void SetButtonState(float timer, Image[] imgArr, Button btn)
+    public static void ShowSpells()
     {
-        btn.interactable = false;
-        LeanTween.value(1, 0, timer).setOnUpdate((float v) =>
+        UIQuickCast.Open(() =>
         {
-            imgArr[0].fillAmount = v;
-            imgArr[1].fillAmount = v;
-        }).setOnComplete(() =>
-        {
-            btn.interactable = true;
+            UIQuickCast.EnableQuickcastButtons(true);
+            UIQuickCast.AddItem(m_BtnArr[0].gameObject, 0, () =>
+                    {
+                        if (m_BtnArr[0].gameObject.activeInHierarchy)
+                        {
+                            m_BtnArr[0].gameObject.SetActive(false);
+                            m_BtnArr[0].transform.SetParent(Instance.transform);
+                        }
+                    });
+            m_BtnArr[0].gameObject.SetActive(true);
         });
-    }
 
-    private void InitializeMoveActions(Image[] imgArr, Button btn)
-    {
-        imgArr[0].fillAmount = 0;
-        imgArr[1].fillAmount = 0;
-        btn.interactable = true;
     }
 }

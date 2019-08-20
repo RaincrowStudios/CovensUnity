@@ -121,9 +121,9 @@ public class UIPlayerInfo : UIInfoPanel
             m_MaleView.ResetApparel();
             m_FemaleView.InitializeChar(data.equipped);
         }
-        
+
         if (!LocationIslandController.isInBattle)
-        { 
+        {
             MainUITransition.Instance.HideMainUI();
             MarkerSpawner.HighlightMarker(new List<IMarker> { PlayerManager.marker, WitchMarker });
             previousMapPosition = MapsAPI.Instance.GetWorldPosition();
@@ -131,7 +131,7 @@ public class UIPlayerInfo : UIInfoPanel
 
             MoveTokenHandler.OnTokenMove += _OnMapTokenMove;
         }
-        
+
         RemoveTokenHandler.OnTokenRemove += _OnMapTokenRemove;
         SpellCastHandler.OnApplyStatusEffect += _OnStatusEffectApplied;
         BanishManager.OnBanished += Abort;
@@ -184,7 +184,7 @@ public class UIPlayerInfo : UIInfoPanel
             MainUITransition.Instance.ShowMainUI();
             MapsAPI.Instance.allowControl = true;
             MapCameraUtils.FocusOnPosition(previousMapPosition, m_PreviousMapZoom, true);
-            MarkerSpawner.HighlightMarker(new List<IMarker> { });            
+            MarkerSpawner.HighlightMarker(new List<IMarker> { });
         }
         else
         {
@@ -205,7 +205,7 @@ public class UIPlayerInfo : UIInfoPanel
 
         m_ConditionsList.Setup(m_WitchDetails.effects);
     }
-    
+
     private void OnClickClose()
     {
         Close();
@@ -242,7 +242,7 @@ public class UIPlayerInfo : UIInfoPanel
     {
         TeamPlayerView.Instance.Show(m_WitchDetails);
     }
-    
+
 
     private void _OnEnergyChange(string instance, int newEnergy)
     {
@@ -290,7 +290,7 @@ public class UIPlayerInfo : UIInfoPanel
         m_WitchDetails.effects.Add(statusEffect);
         m_ConditionsList.AddCondition(statusEffect);
     }
-    
+
     private void Abort()
     {
         Close();

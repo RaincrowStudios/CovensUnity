@@ -94,7 +94,7 @@ public class UISpiritInfo : UIInfoPanel
         m_SpiritData = DownloadedAssets.spiritDict[SpiritToken.spiritId];
         m_SpiritDetails = null;
         m_OwnerButton.onClick.RemoveAllListeners();
-        
+
         m_SpiritName.text = m_SpiritData.Name;
         m_Level.text = "";
         m_Energy.text = LocalizeLookUp.GetText("cast_energy").ToUpper() + " <color=black>" + SpiritToken.energy.ToString() + " / " + SpiritToken.baseEnergy.ToString() + "</color>";
@@ -139,7 +139,7 @@ public class UISpiritInfo : UIInfoPanel
     public override void ReOpen()
     {
         base.ReOpen();
-        
+
         IMarker spirit = MarkerManager.GetMarker(SpiritToken.instance);
 
         if (!LocationIslandController.isInBattle)
@@ -230,7 +230,7 @@ public class UISpiritInfo : UIInfoPanel
 
         m_ConditionList.Setup(m_SpiritDetails.effects);
     }
-    
+
     private void OnClickClose()
     {
         Close();
