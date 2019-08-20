@@ -88,6 +88,7 @@ public class UIQuickCastPicker : MonoBehaviour
             item.SetParent(m_GreyContainer);
 
         item.localScale = Vector3.one;
+        item.gameObject.SetActive(true);
 
         Button button = item.GetComponent<Button>();
         TextMeshProUGUI title = item.GetComponentInChildren<TextMeshProUGUI>();
