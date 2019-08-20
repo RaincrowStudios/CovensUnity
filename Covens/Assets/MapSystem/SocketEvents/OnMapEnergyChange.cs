@@ -17,7 +17,6 @@ public static class OnMapEnergyChange
     public static event System.Action<string, int> OnEnergyChange;
     public static event System.Action<IMarker, int> OnMarkerEnergyChange;
 
-    
     /// <summary>
     /// triggered when the local player dies
     /// </summary>

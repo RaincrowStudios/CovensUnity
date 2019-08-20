@@ -13,6 +13,10 @@ public class LocationIslandController : MonoBehaviour
     public static Dictionary<int, LocationIsland> locationIslands { get; private set; }
     public static event System.Action<WitchToken> OnWitchEnter;
     public static event System.Action<WitchToken> OnWitchExit;
+
+    public static event System.Action OnEnterLocation;
+    public static event System.Action OnExitLocation;
+
     private static bool m_IsInBattle = false;
     private Vector2 m_MouseDownPosition;
 
@@ -43,9 +47,15 @@ public class LocationIslandController : MonoBehaviour
         instance = this;
     }
 
+    private void CheckMarkerState()
+    {
+
+    }
+
     private void BattleBeginPOP(SpiritToken guardianSpirit)
     {
         isInBattle = true;
+        OnEnterLocation?.Invoke();
         MoveTokenHandlerPOP.OnMarkerMovePOP += instance.locationUnitSpawner.MoveMarker;
         AddSpiritHandlerPOP.OnSpiritAddPOP += instance.locationUnitSpawner.AddMarker;
         CreateIslands(m_LocationData);
@@ -70,6 +80,7 @@ public class LocationIslandController : MonoBehaviour
 
     public static void BattleStopPOP()
     {
+        OnExitLocation?.Invoke();
         MoveTokenHandlerPOP.OnMarkerMovePOP -= instance.locationUnitSpawner.MoveMarker;
         AddSpiritHandlerPOP.OnSpiritAddPOP -= instance.locationUnitSpawner.AddMarker;
         instance.popCameraController.onUpdate -= UpdateMarkers;
@@ -115,10 +126,11 @@ public class LocationIslandController : MonoBehaviour
                   await Task.Delay(2200);
                   LoadPOPManager.LoadScene(() =>
                   {
+                      OnMapEnergyChange.OnPlayerDead += LoadPOPManager.UnloadScene;
+                      OnMapEnergyChange.OnMarkerEnergyChange += LocationUnitSpawner.OnEnergyChange;
                       LocationBattleStart.OnLocationBattleStart += instance.BattleBeginPOP;
                       LocationBattleEnd.OnLocationBattleEnd += BattleStopPOP;
                   });
-
               }
               else
               {

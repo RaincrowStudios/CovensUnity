@@ -1,3 +1,4 @@
+using System.Security.Principal;
 using System.Threading.Tasks;
 using System;
 using System.Collections.Generic;
@@ -235,6 +236,16 @@ public class LocationUnitSpawner : MonoBehaviour
             if (marker.Type == MarkerType.WITCH) m_WitchPool.Despawn(marker.GameObject.transform);
             else if (marker.Type == MarkerType.SPIRIT) m_SpiritPool.Despawn(marker.GameObject.transform);
             else throw new NotImplementedException("Unhandled Marker Type: " + marker.Type);
+        }
+    }
+
+    public static void OnEnergyChange(IMarker m, int energy)
+    {
+        string instance = ((Token)m.Token).instance;
+        if (energy <= 0 && Markers.ContainsKey(instance) && PlayerDataManager.playerData.instance != instance)
+        {
+            Debug.Log("Removing Marker");
+            Instance.RemoveMarker(instance);
         }
     }
 

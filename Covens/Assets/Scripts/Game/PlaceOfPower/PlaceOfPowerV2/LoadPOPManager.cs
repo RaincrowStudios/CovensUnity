@@ -70,7 +70,6 @@ public class LoadPOPManager : MonoBehaviour
     {
         previousEnergy = PlayerDataManager.playerData.energy;
         previousState = PlayerDataManager.playerData.state;
-        UIQuickCast.Close();
 
         foreach (var item in Instance.MainUIDisable)
         {
@@ -84,10 +83,9 @@ public class LoadPOPManager : MonoBehaviour
         });
     }
 
-    public static void UnloadScene(System.Action onComplete)
+    public static void UnloadScene()
     {
-        PlayerDataManager.playerData.energy = previousEnergy;
-        PlayerDataManager.playerData.state = previousState;
+
         foreach (var item in Instance.MainUIDisable)
         {
             item.SetActive(true);
@@ -99,9 +97,14 @@ public class LoadPOPManager : MonoBehaviour
        {
            sceneLoaded = false;
            var t = LocationExitInfo.Instance;
+           UIQuickCast.Close();
            t.ShowUI();
+           PlayerDataManager.playerData.energy = previousEnergy;
+           PlayerDataManager.playerData.state = previousState;
            //onComplete();
        });
+        OnMapEnergyChange.OnPlayerDead -= LoadPOPManager.UnloadScene;
+        OnMapEnergyChange.OnMarkerEnergyChange -= LocationUnitSpawner.OnEnergyChange;
     }
 
     private static double GetFakeTime()
