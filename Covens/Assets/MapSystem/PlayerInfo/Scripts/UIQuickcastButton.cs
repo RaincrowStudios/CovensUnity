@@ -182,7 +182,7 @@ public class UIQuickcastButton : MonoBehaviour, IPointerDownHandler, IPointerUpH
             }
         }
 
-        if (time < 0.25f && m_CastStatus == Spellcasting.SpellState.CanCast)
+        if (time < 0.25f)
             m_OnClick?.Invoke();
     }
 }

@@ -16,11 +16,13 @@ public class UIQuickCastPicker : MonoBehaviour
     [SerializeField] private RectTransform m_GreyContainer;
     [SerializeField] private RectTransform m_ShadowContainer;
     private CanvasGroup UIQCPCanvasGroup;
-
+    
     private bool m_SpellsSpawned = false;
     private string m_SelectedSpell = null;
     private System.Action<string> m_OnSelectSpell;
     private System.Action m_OnClose;
+
+    public bool IsOpen { get; private set; }
 
     private void Awake()
     {
@@ -37,6 +39,11 @@ public class UIQuickCastPicker : MonoBehaviour
         m_OnSelectSpell = onSelect;
         m_OnClose = onClose;
 
+        if (IsOpen)
+            return;
+
+        IsOpen = true;
+
         if (!m_SpellsSpawned)
         {
             StartCoroutine(SpawnSpellsCoroutine());
@@ -51,6 +58,7 @@ public class UIQuickCastPicker : MonoBehaviour
 
     private void Hide()
     {
+        IsOpen = false;
         m_OnClose?.Invoke();
         m_OnClose = null;
         LeanTween.alphaCanvas(UIQCPCanvasGroup, 0f, 0.4f).setEaseInCubic().setOnComplete(() =>

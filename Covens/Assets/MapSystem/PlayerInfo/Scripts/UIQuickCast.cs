@@ -204,9 +204,17 @@ public class UIQuickCast : MonoBehaviour
 
     private void OnClickSpell(UIQuickcastButton button)
     {
-        Debug.Log("on click spell " + button.Spell);
-        if (string.IsNullOrEmpty(button.Spell))
+        if (m_Picker.IsOpen)
+        {
+            OnHoldSpell(button);
             return;
+        }
+
+        if (string.IsNullOrEmpty(button.Spell))
+        {
+            UIGlobalPopup.ShowPopUp(null, "hold to set a spell");
+            return;
+        }
 
         SpellData spell = DownloadedAssets.GetSpell(button.Spell);
 
@@ -218,9 +226,10 @@ public class UIQuickCast : MonoBehaviour
 
     private void OnHoldSpell(UIQuickcastButton button)
     {
-        Debug.Log("on hold spell " + button.Spell);
-
-        button.Hightlight(true);
+        foreach(UIQuickcastButton _item in m_Buttons)
+        {
+            _item.Hightlight(_item == button);
+        }
 
         m_Picker.Show(
             button.Spell,
