@@ -22,7 +22,7 @@ public class UIQuickCast : MonoBehaviour
     private static UIQuickCast m_Instance;
     private static event System.Action m_OnClose;
     public static bool IsOpen { get; private set; }
-    
+
     private List<UIQuickcastButton> m_Buttons = new List<UIQuickcastButton>();
     private static IMarker m_Target;
     private static CharacterMarkerData m_TargetData;
@@ -52,7 +52,7 @@ public class UIQuickCast : MonoBehaviour
                 });
         }
     }
-    
+
     public static void Close()
     {
         if (m_Instance == null)
@@ -71,7 +71,7 @@ public class UIQuickCast : MonoBehaviour
         m_Instance._UpdateCanCast(marker, details);
         //Spellcasting.SpellState canCast = Spellcasting.CanCast((SpellData)null, marker, data);
     }
-    
+
     /// <summary>
     /// 
     /// </summary>
@@ -108,6 +108,7 @@ public class UIQuickCast : MonoBehaviour
     private void Awake()
     {
         m_Instance = this;
+        LeanTween.moveLocalY(m_SpellContainer.gameObject, -138f, 0.1f);
         m_ButtonPrefab.gameObject.SetActive(false);
         m_MoreSpells.onClick.AddListener(OnClickMoreSpells);
 
@@ -179,12 +180,16 @@ public class UIQuickCast : MonoBehaviour
     private void AnimOpen()
     {
         m_Canvas.enabled = true;
+        LeanTween.moveLocalY(m_SpellContainer.gameObject, 0f, 0.6f).setEaseOutCubic();
         m_InputRaycaster.enabled = true;
     }
 
     private void AnimHide()
     {
-        m_Canvas.enabled = false;
+        LeanTween.moveLocalY(m_SpellContainer.gameObject, -138f, 0.4f).setOnComplete(() =>
+        {
+            m_Canvas.enabled = false;
+        }).setEaseOutCubic();
         m_InputRaycaster.enabled = false;
     }
 
@@ -199,23 +204,32 @@ public class UIQuickCast : MonoBehaviour
 
     private void OnClickSpell(UIQuickcastButton button)
     {
-        Debug.Log("on click spell " + button.Spell);
-        if (string.IsNullOrEmpty(button.Spell))
+        if (m_Picker.IsOpen)
+        {
+            OnHoldSpell(button);
             return;
+        }
+
+        if (string.IsNullOrEmpty(button.Spell))
+        {
+            UIGlobalPopup.ShowPopUp(null, "hold to set a spell");
+            return;
+        }
 
         SpellData spell = DownloadedAssets.GetSpell(button.Spell);
 
         this._Hide(true);
-        Spellcasting.CastSpell(spell, m_Target, new List<spellIngredientsData>(), 
+        Spellcasting.CastSpell(spell, m_Target, new List<spellIngredientsData>(),
             (result) => this._Hide(false),
             () => this._Hide(false));
     }
 
     private void OnHoldSpell(UIQuickcastButton button)
     {
-        Debug.Log("on hold spell " + button.Spell);
-
-        button.Hightlight(true);
+        foreach(UIQuickcastButton _item in m_Buttons)
+        {
+            _item.Hightlight(_item == button);
+        }
 
         m_Picker.Show(
             button.Spell,
@@ -232,7 +246,7 @@ public class UIQuickCast : MonoBehaviour
                 PlayerManager.SetQuickcastSpell(button.QuickcastIndex, spell);
 
                 button.Setup(
-                    button.QuickcastIndex, 
+                    button.QuickcastIndex,
                     () => OnClickSpell(button),
                     () => OnHoldSpell(button));
                 button.UpdateCanCast(m_Target, m_TargetData);
@@ -313,7 +327,7 @@ public class UIQuickCast : MonoBehaviour
 
         if (instance != m_Target.Token.instance)
             return;
-        
+
         if (newEnergy == 0 && m_Target.Type == MarkerManager.MarkerType.SPIRIT)
         {
             if (LocationIslandController.isInBattle)

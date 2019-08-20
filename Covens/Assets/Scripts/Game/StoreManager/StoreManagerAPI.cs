@@ -39,15 +39,17 @@ namespace Raincrow.Store
         public double unlockOn;
         [DefaultValue("")]
         public string tooltip;
+        public int silver;
+        public int gold;
     }
 
     public struct StoreData
     {
-        public StoreItem[] Bundles;
-        public StoreItem[] Consumables;
-        public StoreItem[] Silver;
-        public StoreItem[] Cosmetics;
-        public StoreItem[] Styles;
+        public List<StoreItem> Bundles;
+        public List<StoreItem> Consumables;
+        public List<StoreItem> Silver;
+        public List<StoreItem> Cosmetics;
+        public List<StoreItem> Styles;
     }
 
 

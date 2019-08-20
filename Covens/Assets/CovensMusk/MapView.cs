@@ -20,10 +20,7 @@ public class MapView : MonoBehaviour
     {
         m_Instance = this;
         OnLeavePoP();
-
-        //PlaceOfPower.OnEnterPlaceOfPower += OnEnterPoP;
-        //PlaceOfPower.OnLeavePlaceOfPower += OnLeavePoP;
-
+        
         //get the markers at the current position
         MarkerManagerAPI.GetMarkers(
             PlayerDataManager.playerData.longitude,
@@ -37,19 +34,36 @@ public class MapView : MonoBehaviour
         LineRendererBasedDome.Instance.Setup(PlayerDataManager.DisplayRadius * MapsAPI.Instance.OneKmInWorldspace);
     }
 
+
+    private void _OnPlayerEnergyUpdated(int energy)
+    {
+        PlayerManagerUI.Instance.UpdateEnergy();
+    }
+
+    private void _OnPlayerDead()
+    {
+        PlayerManager.witchMarker.AddDeathFX();
+        DeathState.Instance.ShowDeath();
+
+        MapFlightTransition.Instance.RecallHome(true);
+    }
+
+    private void _OnPlayerRevived()
+    {
+        PlayerManager.witchMarker.RemoveDeathFX();
+        DeathState.Instance.Revived();
+    }
+
+    private void _OnPlayerVulnerable()
+    {
+        if (LowEnergyPopup.Instance == null)
+            Utilities.InstantiateObject(Resources.Load<GameObject>("UILowEnergyPopUp"), DeathState.Instance.transform);
+    }
+
     private void _OnMapTokenAdd(IMarker marker)
     {
         Token token = marker.Token;
-
-        //token is in PoP
-        if (token.position != 0)
-            return;
-
-        //TODO: ONLY FOCUS ON THE PORTAL IF IT WAS JUST SUMMONED (CURRENTLY IT WILL FOCUS ON THE PORTAL IF IT WAS RESULT OF /MOVE REQUEST)
-        ////focus camera on marker if it is a portal summoned by me
-        //if (marker.type == MarkerSpawner.MarkerType.portal && token.owner == PlayerDataManager.playerData.instance)
-        //    MapCameraUtils.FocusOnPosition(marker.gameObject.transform.position, true, 2f);
-
+                
         marker.Interactable = true;
         if (marker.inMapView)
         {
@@ -78,10 +92,26 @@ public class MapView : MonoBehaviour
         marker.SetWorldPosition(position, 2f);
     }
 
-    //private void _OnMapTokenEscape(IMarker marker)
-    //{
-    //    //do nothing, OnMapTokenEscape will now trigger a OnMapTokenRemove at the end
-    //}
+    private void _OnMapTokenEnergyUpdated(IMarker marker, int energy)
+    {
+        marker.UpdateEnergy();
+
+        CharacterToken token = marker.Token as CharacterToken;
+
+        if (energy <= 0 || token.state == "dead")
+        {
+            if (token.Type == MarkerSpawner.MarkerType.WITCH)
+                (marker as WitchMarker).AddDeathFX();
+            else if (marker.Type == MarkerSpawner.MarkerType.SPIRIT)
+                RemoveTokenHandler.ForceEvent(token.instance);
+        }
+        else
+        {
+            if (token.Type == MarkerSpawner.MarkerType.WITCH)
+                (marker as WitchMarker).RemoveDeathFX();
+        }
+    }
+
 
     private void OnStartFlight()
     {
@@ -95,10 +125,14 @@ public class MapView : MonoBehaviour
 
     private void OnEnterPoP()
     {
+        OnMapEnergyChange.OnPlayerEnergyChange -= _OnPlayerEnergyUpdated;
+        OnMapEnergyChange.OnPlayerDead -= _OnPlayerDead;
+        OnMapEnergyChange.OnPlayerRevived -= _OnPlayerRevived;
+        OnMapEnergyChange.OnPlayerVulnerable -= _OnPlayerVulnerable;
+
         AddTokenHandler.OnMarkerAdd -= _OnMapTokenAdd;
         RemoveTokenHandler.OnMarkerRemove -= _OnMapTokenRemove;
         MoveTokenHandler.OnMarkerMove -= _OnMapTokenMove;
-        //OnMapTokenMove.OnMarkerEscaped -= _OnMapTokenEscape;
 
         MapsAPI.Instance.OnCameraUpdate -= OnMapUpdate;
         PlayerManager.onStartFlight -= OnStartFlight;
@@ -109,10 +143,15 @@ public class MapView : MonoBehaviour
         //make sure no event is subscribed
         OnEnterPoP();
 
+        OnMapEnergyChange.OnPlayerEnergyChange += _OnPlayerEnergyUpdated;
+        OnMapEnergyChange.OnPlayerDead += _OnPlayerDead;
+        OnMapEnergyChange.OnPlayerRevived += _OnPlayerRevived;
+        OnMapEnergyChange.OnPlayerVulnerable += _OnPlayerVulnerable;
+
         AddTokenHandler.OnMarkerAdd += _OnMapTokenAdd;
         RemoveTokenHandler.OnMarkerRemove += _OnMapTokenRemove;
         MoveTokenHandler.OnMarkerMove += _OnMapTokenMove;
-        //OnMapTokenMove.OnMarkerEscaped += _OnMapTokenEscape;
+        OnMapEnergyChange.OnMarkerEnergyChange += _OnMapTokenEnergyUpdated;
 
         MapsAPI.Instance.OnCameraUpdate += OnMapUpdate;
         PlayerManager.onStartFlight += OnStartFlight;

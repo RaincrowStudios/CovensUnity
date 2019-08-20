@@ -198,8 +198,8 @@ public class UIPlayerInfo : UIInfoPanel
 
         if (string.IsNullOrEmpty(details.coven) == false)
             m_CovenText.text = LocalizeLookUp.GetText("chat_coven").ToUpper() + " <color=black>" + details.coven + "</color>";
-        else if (string.IsNullOrEmpty(TeamManager.MyCovenId) == false)
-            m_CovenText.text = LocalizeLookUp.GetText("invite_coven").ToUpper();
+        //else if (string.IsNullOrEmpty(TeamManager.MyCovenId) == false)
+        //    m_CovenText.text = LocalizeLookUp.GetText("invite_coven").ToUpper();
         else
             m_CovenText.text = LocalizeLookUp.GetText("chat_screen_no_coven");
 
@@ -220,7 +220,7 @@ public class UIPlayerInfo : UIInfoPanel
         }
 
         //invite to my coven
-        else if (string.IsNullOrEmpty(TeamManager.MyCovenId) == false)
+        /*else if (string.IsNullOrEmpty(TeamManager.MyCovenId) == false)
         {
             LoadingOverlay.Show();
             TeamManager.SendInvite(WitchToken.Id, false, (invite, error) =>
@@ -235,7 +235,7 @@ public class UIPlayerInfo : UIInfoPanel
                     UIGlobalPopup.ShowError(null, error);
                 }
             });
-        }
+        }*/
     }
 
     private void OnClickPlayer()
