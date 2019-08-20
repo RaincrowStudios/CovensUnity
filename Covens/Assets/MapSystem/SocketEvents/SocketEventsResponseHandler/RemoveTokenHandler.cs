@@ -7,8 +7,8 @@ namespace Raincrow.GameEventResponses
     public class RemoveTokenHandler : IGameEventHandler
     {
         public string EventName => "remove.token";
-        public static event System.Action<string> OnTokenRemove;
-        public static event System.Action<IMarker> OnMarkerRemove;
+        public static System.Action<string> OnTokenRemove;
+        public static System.Action<IMarker> OnMarkerRemove;
 
         public struct RemoveEventData
         {

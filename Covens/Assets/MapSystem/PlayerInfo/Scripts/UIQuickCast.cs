@@ -145,9 +145,9 @@ public class UIQuickCast : MonoBehaviour
         SpellCastHandler.OnApplyStatusEffect += _OnStatusEffectApplied;
         BanishManager.OnBanished += _OnBanished;
         OnMapEnergyChange.OnEnergyChange += _OnEnergyChange;
+        RemoveTokenHandler.OnTokenRemove += _OnMapTokenRemove;
 
-        m_Canvas.enabled = true;
-        m_InputRaycaster.enabled = true;
+        AnimOpen();
     }
 
     private void _Close()
@@ -157,13 +157,35 @@ public class UIQuickCast : MonoBehaviour
         SpellCastHandler.OnApplyStatusEffect -= _OnStatusEffectApplied;
         BanishManager.OnBanished -= _OnBanished;
         OnMapEnergyChange.OnEnergyChange -= _OnEnergyChange;
+        RemoveTokenHandler.OnTokenRemove -= _OnMapTokenRemove;
 
         IsOpen = false;
-        m_Canvas.enabled = false;
-        m_InputRaycaster.enabled = false;
-
+        AnimHide();
         m_OnClose?.Invoke();
         m_OnClose = null;
+    }
+
+    private void _Hide(bool hide)
+    {
+        if (IsOpen == false)
+            return;
+
+        if (hide)
+            AnimHide();
+        else
+            AnimOpen();
+    }
+
+    private void AnimOpen()
+    {
+        m_Canvas.enabled = true;
+        m_InputRaycaster.enabled = true;
+    }
+
+    private void AnimHide()
+    {
+        m_Canvas.enabled = false;
+        m_InputRaycaster.enabled = false;
     }
 
     private void _UpdateCanCast(IMarker marker, CharacterMarkerData data)
@@ -183,10 +205,10 @@ public class UIQuickCast : MonoBehaviour
 
         SpellData spell = DownloadedAssets.GetSpell(button.Spell);
 
-        this._Close();
+        this._Hide(true);
         Spellcasting.CastSpell(spell, m_Target, new List<spellIngredientsData>(), 
-            (result) => this._Open(),
-            this._Open);
+            (result) => this._Hide(false),
+            () => this._Hide(false));
     }
 
     private void OnHoldSpell(UIQuickcastButton button)
@@ -224,7 +246,7 @@ public class UIQuickCast : MonoBehaviour
         if (m_Target == null || m_TargetData == null)
             return;
 
-        this._Close();
+        this._Hide(true);
 
         UISpellcastBook.Open(
             m_TargetData,
@@ -233,12 +255,12 @@ public class UIQuickCast : MonoBehaviour
             (spell, ingredients) =>
             {
                 Spellcasting.CastSpell(spell, m_Target, ingredients,
-                    (result) => this._Open(),
-                    null//() => this._Close()
+                    (result) => this._Hide(false),
+                    () => this._Hide(false)
                 );
             },
-            () => this._Open(),
-            () => this._Open()
+            () => this._Hide(false),
+            () => this._Hide(false)
         );
     }
 
@@ -291,17 +313,56 @@ public class UIQuickCast : MonoBehaviour
 
         if (instance != m_Target.Token.instance)
             return;
+        
+        if (newEnergy == 0 && m_Target.Type == MarkerManager.MarkerType.SPIRIT)
+        {
+            if (LocationIslandController.isInBattle)
+            {
 
-        UpdateCanCast(m_Target, m_TargetData);
+            }
+            else
+            {
+                _Close();
+            }
+        }
+        else
+        {
+            UpdateCanCast(m_Target, m_TargetData);
+        }
     }
 
     private void _OnBanished()
     {
-        UpdateCanCast(null, null);
+        if (LocationIslandController.isInBattle)
+        {
+
+        }
+        else
+        {
+            _Close();
+        }
     }
 
     private void _OnPlayerDead()
     {
         UpdateCanCast(null, null);
+    }
+
+    private void _OnMapTokenRemove(string instance)
+    {
+        if (m_Target == null || m_TargetData == null)
+            return;
+
+        if (instance != m_Target.Token.instance)
+            return;
+
+        if (LocationIslandController.isInBattle)
+        {
+
+        }
+        else
+        {
+            _Close();
+        }
     }
 }
