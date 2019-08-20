@@ -180,8 +180,10 @@ public class UIWaitingCastResult : UIInfoPanel
 
     public void ShowResults(SpellData spell, Raincrow.GameEventResponses.SpellCastHandler.Result result)
     {
-        DegreeSetup();
-
+        if (result.isSuccess)
+        {
+            DegreeSetup();
+        }
         m_OnClickContinue = () => m_OnContinueCallback?.Invoke(result);
 
         LeanTween.cancel(m_ResultsTweenId);
