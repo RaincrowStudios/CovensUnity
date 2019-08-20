@@ -32,6 +32,9 @@ public class MapView : MonoBehaviour
         );
 
         LineRendererBasedDome.Instance.Setup(PlayerDataManager.DisplayRadius * MapsAPI.Instance.OneKmInWorldspace);
+
+        LocationIslandController.OnEnterLocation += OnEnterPoP;
+        LocationIslandController.OnExitLocation += OnLeavePoP;
     }
 
 
