@@ -26,6 +26,7 @@ public class UIQuickCastPicker : MonoBehaviour
         m_Canvas.enabled = false;
         m_InputRaycaster.enabled = false;
         m_CloseButton.onClick.AddListener(Hide);
+        m_ItemPrefab.gameObject.SetActive(false);
     }
 
     public void Show(string selected, System.Action<string> onSelect, System.Action onClose)
