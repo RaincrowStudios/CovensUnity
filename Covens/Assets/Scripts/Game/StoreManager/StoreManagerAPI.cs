@@ -9,16 +9,12 @@ namespace Raincrow.Store
 {
     public struct IngredientBundleData
     {
-        public int silver;
-        public int gold;
         public string[] collectables;
         public int[] amount;
     }
 
     public struct ConsumableData
     {
-        public int silver;
-        public int gold;
         public float duration;
     }
 
@@ -43,13 +39,36 @@ namespace Raincrow.Store
         public int gold;
     }
 
-    public struct StoreData
+    public class StoreData
     {
         public List<StoreItem> Bundles;
         public List<StoreItem> Consumables;
         public List<StoreItem> Silver;
         public List<StoreItem> Cosmetics;
         public List<StoreItem> Styles;
+
+        public int GetPrice(string type, string id, bool IsSilver)
+        {
+            List<StoreItem> items = null;
+            switch (type)
+            {
+                case "silver":      items = new List<StoreItem>(Silver); break;
+                case "cosmetics":   items = new List<StoreItem>(Cosmetics); items.AddRange(Styles); break;
+                case "bundles":     items = new List<StoreItem>(Bundles); break;
+                case "consumables": items = new List<StoreItem>(Consumables); break;
+            }
+
+            if (items == null)
+                return 0;
+
+            foreach (var item in items)
+            {
+                if (item.id == id)
+                    return IsSilver ? item.silver : item.gold;
+            }
+
+            return 0;
+        }
     }
 
 
@@ -166,9 +185,9 @@ namespace Raincrow.Store
 
                             //get the price
                             if (currency == "silver")
-                                silver = bundle.silver;
+                                silver = Store.GetPrice(type, id, true);
                             if (currency == "gold")
-                                gold = bundle.gold;
+                                gold = Store.GetPrice(type, id, false);
 
                             //add the ingredients to the inventory
                             for (int i = 0; i < bundle.collectables.Length; i++)
@@ -186,9 +205,9 @@ namespace Raincrow.Store
 
                             //get the price
                             if (currency == "silver")
-                                silver = consumable.silver;
+                                silver = Store.GetPrice(type, id, true);
                             if (currency == "gold")
-                                gold = consumable.gold;
+                                gold = Store.GetPrice(type, id, false);
 
                             //add to the inventory
                             if (item == null || string.IsNullOrEmpty(item.id))
@@ -284,8 +303,8 @@ namespace Raincrow.Store
                 StoreApiItem aux = new StoreApiItem();
                 aux.id = item.id;
                 aux.type = "bundles";
-                aux.silver = bundle.silver;
-                aux.gold = bundle.gold;
+                aux.silver = item.silver;
+                aux.gold = item.gold;
 
                 if (bundle.collectables != null)
                 {
@@ -312,8 +331,8 @@ namespace Raincrow.Store
                 StoreApiItem aux = new StoreApiItem();
                 aux.id = item.id;
                 aux.type = "consumables";
-                aux.silver = consumable.silver;
-                aux.gold = consumable.gold;
+                aux.silver = item.silver;
+                aux.gold = item.gold;
 
                 OldStore.consumables.Add(aux);
             }
@@ -349,6 +368,8 @@ namespace Raincrow.Store
 
                 aux.unlockOn = item.unlockOn;
                 aux.tooltip = item.tooltip;
+                aux.silver = item.silver;
+                aux.gold = item.gold;
                 m_OldStore.cosmetics.Add(aux);
             }
 
@@ -366,6 +387,8 @@ namespace Raincrow.Store
 
                 aux.unlockOn = item.unlockOn;
                 aux.tooltip = item.tooltip;
+                aux.silver = item.silver;
+                aux.gold = item.gold;
                 m_OldStore.styles.Add(aux);
             }
         }

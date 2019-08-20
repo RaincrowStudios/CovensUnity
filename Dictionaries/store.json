@@ -1,39 +1,50 @@
 {
   "Bundles": [
     {
-      "id": "bundle_abondiasBest"
+      "id": "bundle_abondiasBest",
+      "silver": 300
     },
     {
-      "id": "bundle_sapphosChoice"
+      "id": "bundle_sapphosChoice",
+      "silver": 300
     },
     {
-      "id": "bundle_hermeticCollection"
+      "id": "bundle_hermeticCollection",
+      "silver": 300
     }
   ],
   "Consumables": [
     {
-      "id": "consumable_alignmentBoosterSmaller"
+      "id": "consumable_alignmentBoosterSmaller",
+      "silver": 100
     },
     {
-      "id": "consumable_alignmentBoosterMedium"
+      "id": "consumable_alignmentBoosterMedium",
+      "silver": 300
     },
     {
-      "id": "consumable_alignmentBoosterGreater"
+      "id": "consumable_alignmentBoosterGreater",
+      "silver": 500
     },
     {
-      "id": "consumable_xpBoosterSmaller"
+      "id": "consumable_xpBoosterSmaller",
+      "silver": 100
     },
     {
-      "id": "consumable_xpBoosterMedium"
+      "id": "consumable_xpBoosterMedium",
+      "silver": 300
     },
     {
-      "id": "consumable_xpBoosterGreater"
+      "id": "consumable_xpBoosterGreater",
+      "silver": 500
     },
     {
-      "id": "consumable_invisible"
+      "id": "consumable_invisible",
+      "silver": 200
     },
     {
-      "id": "consumable_truesight"
+      "id": "consumable_truesight",
+      "silver": 200
     }
   ],
   "Silver": [
@@ -60,238 +71,388 @@
     {
       "id": "cosmetic_f_PF_WENDIGO",
       "unlockOn": 1561680000000,
-      "tooltip": "shop_locked_wndg"
+      "tooltip": "shop_locked_wndg",
+      "silver": 1000,
+      "gold": 10
     },
     {
       "id": "cosmetic_f_PF_BARGHEST",
       "unlockOn": 1561680000000,
-      "tooltip": "shop_locked_barg"
+      "tooltip": "shop_locked_barg",
+      "silver": 1000,
+      "gold": 10
     },
     {
       "id": "cosmetic_f_PF_CATSIDHE",
       "unlockOn": 1561680000000,
-      "tooltip": "shop_locked_sidh"
+      "tooltip": "shop_locked_sidh",
+      "silver": 1000,
+      "gold": 10
     },
     {
       "id": "cosmetic_f_PF_GRINDYLOW",
       "unlockOn": 1561680000000,
-      "tooltip": "shop_locked_grdlw"
+      "tooltip": "shop_locked_grdlw",
+      "silver": 1000,
+      "gold": 10
     },
     {
       "id": "cosmetic_f_PF_SENTINALOWL",
       "unlockOn": 1561680000000,
-      "tooltip": "shop_locked_owl"
+      "tooltip": "shop_locked_owl",
+      "silver": 1000,
+      "gold": 10
     },
     {
-      "id": "cosmetic_f_HE_DWO"
+      "id": "cosmetic_f_HE_DWO",
+      "silver": 800,
+      "gold": 8
     },
     {
-      "id": "cosmetic_f_HE_HDWO"
+      "id": "cosmetic_f_HE_HDWO",
+      "silver": 900,
+      "gold": 9
     },
     {
-      "id": "cosmetic_f_HE_HBH"
+      "id": "cosmetic_f_HE_HBH",
+      "silver": 850,
+      "gold": 8
     },
     {
-      "id": "cosmetic_f_HE_HBO"
+      "id": "cosmetic_f_HE_HBO",
+      "silver": 500,
+      "gold": 5
     },
     {
-      "id": "cosmetic_f_HE_HHO"
+      "id": "cosmetic_f_HE_HHO",
+      "silver": 600,
+      "gold": 6
     },
     {
-      "id": "cosmetic_f_HE_HNO"
+      "id": "cosmetic_f_HE_HNO",
+      "silver": 800,
+      "gold": 8
     },
     {
-      "id": "cosmetic_f_HE_CEH"
+      "id": "cosmetic_f_HE_CEH",
+      "silver": 850,
+      "gold": 8
     },
     {
-      "id": "cosmetic_f_HE_CES"
+      "id": "cosmetic_f_HE_CES",
+      "silver": 850,
+      "gold": 8
     },
     {
-      "id": "cosmetic_f_HE_FLOWER"
+      "id": "cosmetic_f_HE_FLOWER",
+      "silver": 500,
+      "gold": 5
     },
     {
       "id": "cosmetic_f_HE_BDH",
-      "tooltip": "shop_locked_rrc"
+      "tooltip": "shop_locked_rrc",
+      "silver": 900,
+      "gold": 9
     },
     {
-      "id": "cosmetic_f_HA_DWO"
+      "id": "cosmetic_f_HA_DWO",
+      "silver": 300,
+      "gold": 3
     },
     {
-      "id": "cosmetic_f_HA_FKFO"
+      "id": "cosmetic_f_HA_FKFO",
+      "silver": 450,
+      "gold": 4
     },
     {
-      "id": "cosmetic_f_HA_KSO"
+      "id": "cosmetic_f_HA_KSO",
+      "silver": 450,
+      "gold": 4
     },
     {
-      "id": "cosmetic_f_HA_CGH"
+      "id": "cosmetic_f_HA_CGH",
+      "silver": 300,
+      "gold": 3
     },
     {
-      "id": "cosmetic_f_HA_PNY"
+      "id": "cosmetic_f_HA_PNY",
+      "silver": 500,
+      "gold": 5
     },
     {
-      "id": "cosmetic_f_HA_SNWDRP"
+      "id": "cosmetic_f_HA_SNWDRP",
+      "silver": 550,
+      "gold": 5
     },
     {
-      "id": "cosmetic_f_HA_BUN"
+      "id": "cosmetic_f_HA_BUN",
+      "silver": 350,
+      "gold": 3
     },
     {
-      "id": "cosmetic_f_HA_BRD"
+      "id": "cosmetic_f_HA_BRD",
+      "silver": 450,
+      "gold": 4
     },
     {
-      "id": "cosmetic_f_HA_SPK"
+      "id": "cosmetic_f_HA_SPK",
+      "silver": 400,
+      "gold": 4
     },
     {
-      "id": "cosmetic_f_HA_BZZ"
+      "id": "cosmetic_f_HA_BZZ",
+      "silver": 300,
+      "gold": 3
     },
     {
-      "id": "cosmetic_f_HA_CURL"
+      "id": "cosmetic_f_HA_CURL",
+      "silver": 500,
+      "gold": 5
     },
     {
-      "id": "cosmetic_f_HA_WAVE"
+      "id": "cosmetic_f_HA_WAVE",
+      "silver": 350,
+      "gold": 3
     },
     {
-      "id": "cosmetic_f_HA_BOB"
+      "id": "cosmetic_f_HA_BOB",
+      "silver": 300,
+      "gold": 3
     },
     {
-      "id": "cosmetic_f_N_DWO"
+      "id": "cosmetic_f_N_DWO",
+      "silver": 250,
+      "gold": 2
     },
     {
-      "id": "cosmetic_f_N_KSO"
+      "id": "cosmetic_f_N_KSO",
+      "silver": 250,
+      "gold": 2
     },
     {
-      "id": "cosmetic_f_N_FANCYCHOKER"
+      "id": "cosmetic_f_N_FANCYCHOKER",
+      "silver": 250,
+      "gold": 2
     },
     {
-      "id": "cosmetic_f_N_MOONNECKLACE"
+      "id": "cosmetic_f_N_MOONNECKLACE",
+      "silver": 250,
+      "gold": 2
     },
     {
-      "id": "cosmetic_f_N_BOW"
+      "id": "cosmetic_f_N_BOW",
+      "silver": 250,
+      "gold": 2
     },
     {
-      "id": "cosmetic_f_C_DWO"
+      "id": "cosmetic_f_C_DWO",
+      "silver": 1200,
+      "gold": 12
     },
     {
-      "id": "cosmetic_f_C_KFO"
+      "id": "cosmetic_f_C_KFO",
+      "silver": 950,
+      "gold": 9
     },
     {
-      "id": "cosmetic_f_C_KSO"
+      "id": "cosmetic_f_C_KSO",
+      "silver": 950,
+      "gold": 9
     },
     {
-      "id": "cosmetic_f_C_PPS"
+      "id": "cosmetic_f_C_PPS",
+      "silver": 1200,
+      "gold": 12
     },
     {
-      "id": "cosmetic_f_C_SCT"
+      "id": "cosmetic_f_C_SCT",
+      "silver": 950,
+      "gold": 9
     },
     {
-      "id": "cosmetic_f_C_MESHDRESS"
+      "id": "cosmetic_f_C_MESHDRESS",
+      "silver": 1200,
+      "gold": 12
     },
     {
-      "id": "cosmetic_f_C_TN"
+      "id": "cosmetic_f_C_TN",
+      "silver": 900,
+      "gold": 9
     },
     {
-      "id": "cosmetic_f_C_MESHTOP"
+      "id": "cosmetic_f_C_MESHTOP",
+      "silver": 950,
+      "gold": 9
     },
     {
-      "id": "cosmetic_f_C_WRAP"
+      "id": "cosmetic_f_C_WRAP",
+      "silver": 900,
+      "gold": 9
     },
     {
-      "id": "cosmetic_f_C_ROMP"
+      "id": "cosmetic_f_C_ROMP",
+      "silver": 950,
+      "gold": 9
     },
     {
-      "id": "cosmetic_f_C_BUTTON"
+      "id": "cosmetic_f_C_BUTTON",
+      "silver": 1200,
+      "gold": 12
     },
     {
-      "id": "cosmetic_f_C_WBYE"
+      "id": "cosmetic_f_C_WBYE",
+      "silver": 900,
+      "gold": 9
     },
     {
-      "id": "cosmetic_f_C_WITCHCO"
+      "id": "cosmetic_f_C_WITCHCO",
+      "silver": 900,
+      "gold": 9
     },
     {
-      "id": "cosmetic_f_C_MAGICINK"
+      "id": "cosmetic_f_C_MAGICINK",
+      "silver": 900,
+      "gold": 9
     },
     {
-      "id": "cosmetic_f_WL_DWO"
+      "id": "cosmetic_f_WL_DWO",
+      "silver": 150,
+      "gold": 1
     },
     {
-      "id": "cosmetic_f_WL_KFO"
+      "id": "cosmetic_f_WL_KFO",
+      "silver": 150,
+      "gold": 1
     },
     {
-      "id": "cosmetic_f_WR_DWO"
+      "id": "cosmetic_f_WR_DWO",
+      "silver": 150,
+      "gold": 1
     },
     {
-      "id": "cosmetic_f_WR_KFO"
+      "id": "cosmetic_f_WR_KFO",
+      "silver": 150,
+      "gold": 1
     },
     {
-      "id": "cosmetic_f_H_DWO"
+      "id": "cosmetic_f_H_DWO",
+      "silver": 300,
+      "gold": 3
     },
     {
-      "id": "cosmetic_f_H_BH"
+      "id": "cosmetic_f_H_BH",
+      "silver": 300,
+      "gold": 3
     },
     {
-      "id": "cosmetic_f_FL_KSO"
+      "id": "cosmetic_f_FL_KSO",
+      "silver": 150,
+      "gold": 1
     },
     {
-      "id": "cosmetic_f_FL_HFR"
+      "id": "cosmetic_f_FL_HFR",
+      "silver": 150,
+      "gold": 1
     },
     {
-      "id": "cosmetic_f_FR_KSO"
+      "id": "cosmetic_f_FR_KSO",
+      "silver": 150,
+      "gold": 1
     },
     {
-      "id": "cosmetic_f_L_DWO"
+      "id": "cosmetic_f_L_DWO",
+      "silver": 550,
+      "gold": 5
     },
     {
-      "id": "cosmetic_f_L_KFO"
+      "id": "cosmetic_f_L_KFO",
+      "silver": 600,
+      "gold": 6
     },
     {
-      "id": "cosmetic_f_L_KSO"
+      "id": "cosmetic_f_L_KSO",
+      "silver": 550,
+      "gold": 5
     },
     {
-      "id": "cosmetic_f_L_PPS"
+      "id": "cosmetic_f_L_PPS",
+      "silver": 600,
+      "gold": 6
     },
     {
-      "id": "cosmetic_f_L_LS"
+      "id": "cosmetic_f_L_LS",
+      "silver": 600,
+      "gold": 6
     },
     {
-      "id": "cosmetic_f_L_SS"
+      "id": "cosmetic_f_L_SS",
+      "silver": 600,
+      "gold": 6
     },
     {
-      "id": "cosmetic_f_L_TIGHT"
+      "id": "cosmetic_f_L_TIGHT",
+      "silver": 500,
+      "gold": 5
     },
     {
-      "id": "cosmetic_f_L_HEAVYSKIRT"
+      "id": "cosmetic_f_L_HEAVYSKIRT",
+      "silver": 600,
+      "gold": 6
     },
     {
-      "id": "cosmetic_f_L_SHORTS"
+      "id": "cosmetic_f_L_SHORTS",
+      "silver": 550,
+      "gold": 5
     },
     {
-      "id": "cosmetic_f_L_ROMPER"
+      "id": "cosmetic_f_L_ROMPER",
+      "silver": 550,
+      "gold": 5
     },
     {
-      "id": "cosmetic_f_L_LACELEG"
+      "id": "cosmetic_f_L_LACELEG",
+      "silver": 600,
+      "gold": 6
     },
     {
-      "id": "cosmetic_f_F_BDWO"
+      "id": "cosmetic_f_F_BDWO",
+      "silver": 450,
+      "gold": 4
     },
     {
-      "id": "cosmetic_f_F_SBDWO"
+      "id": "cosmetic_f_F_SBDWO",
+      "silver": 450,
+      "gold": 4
     },
     {
-      "id": "cosmetic_f_F_SDWO"
+      "id": "cosmetic_f_F_SDWO",
+      "silver": 400,
+      "gold": 4
     },
     {
-      "id": "cosmetic_f_F_KFO"
+      "id": "cosmetic_f_F_KFO",
+      "silver": 450,
+      "gold": 4
     },
     {
-      "id": "cosmetic_f_F_KSO"
+      "id": "cosmetic_f_F_KSO",
+      "silver": 450,
+      "gold": 4
     },
     {
-      "id": "cosmetic_f_F_TIED"
+      "id": "cosmetic_f_F_TIED",
+      "silver": 450,
+      "gold": 4
     },
     {
-      "id": "cosmetic_f_F_BOW"
+      "id": "cosmetic_f_F_BOW",
+      "silver": 450,
+      "gold": 4
     },
     {
-      "id": "cosmetic_f_F_FUR"
+      "id": "cosmetic_f_F_FUR",
+      "silver": 450,
+      "gold": 4
     },
     {
       "id": "cosmetic_f_CR_DWO",
@@ -306,598 +467,966 @@
       "tooltip": "shop_locked_beta"
     },
     {
-      "id": "cosmetic_f_CR_PRIMAVERA"
+      "id": "cosmetic_f_CR_PRIMAVERA",
+      "silver": 1200,
+      "gold": 12
     },
     {
       "id": "cosmetic_f_CR_KIM",
       "unlockOn": 1564617600000,
-      "tooltip": "shop_locked_top"
+      "tooltip": "shop_locked_top",
+      "silver": 1200,
+      "gold": 12
     },
     {
-      "id": "cosmetic_f_CR_SMMRSOL"
+      "id": "cosmetic_f_CR_SMMRSOL",
+      "silver": 1200,
+      "gold": 12
     },
     {
       "id": "cosmetic_f_CR_SHADOW",
-      "tooltip": "shop_locked_shadow"
+      "tooltip": "shop_locked_shadow",
+      "silver": 1200,
+      "gold": 12
     },
     {
       "id": "cosmetic_f_CR_GRAY",
-      "tooltip": "shop_locked_gray"
+      "tooltip": "shop_locked_gray",
+      "silver": 1200,
+      "gold": 12
     },
     {
       "id": "cosmetic_f_CR_WHITE",
-      "tooltip": "shop_locked_white"
+      "tooltip": "shop_locked_white",
+      "silver": 1200,
+      "gold": 12
     },
     {
-      "id": "cosmetic_f_SF_HSF"
+      "id": "cosmetic_f_SF_HSF",
+      "silver": 800,
+      "gold": 8
     },
     {
-      "id": "cosmetic_f_SF_HSS"
+      "id": "cosmetic_f_SF_HSS",
+      "silver": 800,
+      "gold": 8
     },
     {
-      "id": "cosmetic_f_SF_HST"
+      "id": "cosmetic_f_SF_HST",
+      "silver": 800,
+      "gold": 8
     },
     {
-      "id": "cosmetic_f_SF_GLSS"
+      "id": "cosmetic_f_SF_GLSS",
+      "silver": 600,
+      "gold": 6
     },
     {
-      "id": "cosmetic_f_SF_HOOPS"
+      "id": "cosmetic_f_SF_HOOPS",
+      "silver": 600,
+      "gold": 6
     },
     {
-      "id": "cosmetic_f_SS_CROWSKULL"
+      "id": "cosmetic_f_SS_CROWSKULL",
+      "silver": 850,
+      "gold": 8
     },
     {
-      "id": "cosmetic_f_SS_HAT"
+      "id": "cosmetic_f_SS_HAT",
+      "silver": 550,
+      "gold": 5
     },
     {
-      "id": "cosmetic_f_SS_HBT"
+      "id": "cosmetic_f_SS_HBT",
+      "silver": 850,
+      "gold": 8
     },
     {
-      "id": "cosmetic_f_SS_HFT"
+      "id": "cosmetic_f_SS_HFT",
+      "silver": 650,
+      "gold": 6
     },
     {
-      "id": "cosmetic_f_SS_HMT"
+      "id": "cosmetic_f_SS_HMT",
+      "silver": 550,
+      "gold": 5
     },
     {
-      "id": "cosmetic_f_SS_HST"
+      "id": "cosmetic_f_SS_HST",
+      "silver": 1250,
+      "gold": 12
     },
     {
-      "id": "cosmetic_f_SS_JET"
+      "id": "cosmetic_f_SS_JET",
+      "silver": 1000,
+      "gold": 10
     },
     {
-      "id": "cosmetic_f_SS_DWO"
+      "id": "cosmetic_f_SS_DWO",
+      "silver": 500,
+      "gold": 5
     },
     {
-      "id": "cosmetic_f_SS_MOLOTOV"
+      "id": "cosmetic_f_SS_MOLOTOV",
+      "silver": 1250,
+      "gold": 12
     },
     {
-      "id": "cosmetic_f_SS_PYRAMIDS"
+      "id": "cosmetic_f_SS_PYRAMIDS",
+      "silver": 700,
+      "gold": 7
     },
     {
-      "id": "cosmetic_f_SS_UNICORN"
+      "id": "cosmetic_f_SS_UNICORN",
+      "silver": 1250,
+      "gold": 12
     },
     {
-      "id": "cosmetic_f_SC_COFFIN"
+      "id": "cosmetic_f_SC_COFFIN",
+      "silver": 1200,
+      "gold": 12
     },
     {
-      "id": "cosmetic_f_SC_CROWN"
+      "id": "cosmetic_f_SC_CROWN",
+      "silver": 1200,
+      "gold": 12
     },
     {
-      "id": "cosmetic_f_SC_SPIDER"
+      "id": "cosmetic_f_SC_SPIDER",
+      "silver": 1250,
+      "gold": 12
     },
     {
-      "id": "cosmetic_f_SC_DWO"
+      "id": "cosmetic_f_SC_DWO",
+      "silver": 900,
+      "gold": 9
     },
     {
-      "id": "cosmetic_f_SC_HRT"
+      "id": "cosmetic_f_SC_HRT",
+      "silver": 1100,
+      "gold": 11
     },
     {
-      "id": "cosmetic_f_SC_JBT"
+      "id": "cosmetic_f_SC_JBT",
+      "silver": 1200,
+      "gold": 12
     },
     {
-      "id": "cosmetic_f_SC_JSET"
+      "id": "cosmetic_f_SC_JSET",
+      "silver": 1100,
+      "gold": 11
     },
     {
-      "id": "cosmetic_f_SA_FLWR"
+      "id": "cosmetic_f_SA_FLWR",
+      "silver": 1250,
+      "gold": 12
     },
     {
-      "id": "cosmetic_f_SA_HWT"
+      "id": "cosmetic_f_SA_HWT",
+      "silver": 1250,
+      "gold": 12
     },
     {
-      "id": "cosmetic_f_SA_JDT"
+      "id": "cosmetic_f_SA_JDT",
+      "silver": 1100,
+      "gold": 11
     },
     {
-      "id": "cosmetic_f_SA_JGT"
+      "id": "cosmetic_f_SA_JGT",
+      "silver": 1100,
+      "gold": 11
     },
     {
-      "id": "cosmetic_f_SA_JWT"
+      "id": "cosmetic_f_SA_JWT",
+      "silver": 1100,
+      "gold": 11
     },
     {
-      "id": "cosmetic_f_SA_TRIBE"
+      "id": "cosmetic_f_SA_TRIBE",
+      "silver": 1100,
+      "gold": 11
     },
     {
-      "id": "cosmetic_f_SA_LEOPARD"
+      "id": "cosmetic_f_SA_LEOPARD",
+      "silver": 1200,
+      "gold": 12
     },
     {
       "id": "cosmetic_f_SS_BALLET",
       "unlockOn": 1566705600000,
-      "tooltip": "shop_locked_bm"
+      "tooltip": "shop_locked_bm",
+      "silver": 550,
+      "gold": 5
     },
     {
       "id": "cosmetic_f_SS_BUTTERFLY",
       "unlockOn": 1566705600000,
-      "tooltip": "shop_locked_bm"
+      "tooltip": "shop_locked_bm",
+      "silver": 700,
+      "gold": 7
     },
     {
       "id": "cosmetic_f_SS_COUPLE",
       "unlockOn": 1566705600000,
-      "tooltip": "shop_locked_bm"
+      "tooltip": "shop_locked_bm",
+      "silver": 800,
+      "gold": 8
     },
     {
       "id": "cosmetic_f_SS_JOKER",
       "unlockOn": 1566705600000,
-      "tooltip": "shop_locked_bm"
+      "tooltip": "shop_locked_bm",
+      "silver": 1250,
+      "gold": 12
     },
     {
       "id": "cosmetic_f_SS_PUPPET",
       "unlockOn": 1566705600000,
-      "tooltip": "shop_locked_bm"
+      "tooltip": "shop_locked_bm",
+      "silver": 700,
+      "gold": 7
     },
     {
       "id": "cosmetic_f_SC_ASTRONAUT",
       "unlockOn": 1566705600000,
-      "tooltip": "shop_locked_bm"
+      "tooltip": "shop_locked_bm",
+      "silver": 1100,
+      "gold": 11
     },
     {
       "id": "cosmetic_f_SC_BIRDCAGE",
       "unlockOn": 1566705600000,
-      "tooltip": "shop_locked_bm"
+      "tooltip": "shop_locked_bm",
+      "silver": 1100,
+      "gold": 11
     },
     {
       "id": "cosmetic_f_SC_ELEPHANT",
       "unlockOn": 1566705600000,
-      "tooltip": "shop_locked_bm"
+      "tooltip": "shop_locked_bm",
+      "silver": 1200,
+      "gold": 12
     },
     {
       "id": "cosmetic_f_SC_SUN",
       "unlockOn": 1566705600000,
-      "tooltip": "shop_locked_bm"
+      "tooltip": "shop_locked_bm",
+      "silver": 1200,
+      "gold": 12
     },
     {
-      "id": "cosmetic_m_HE_CES"
+      "id": "cosmetic_m_HE_CES",
+      "silver": 850,
+      "gold": 8
     },
     {
-      "id": "cosmetic_m_HA_DTO"
+      "id": "cosmetic_m_HA_DTO",
+      "silver": 450,
+      "gold": 4
     },
     {
-      "id": "cosmetic_m_C_DWO"
+      "id": "cosmetic_m_C_DWO",
+      "silver": 1200,
+      "gold": 12
     },
     {
-      "id": "cosmetic_m_F_DWO"
+      "id": "cosmetic_m_F_DWO",
+      "silver": 450,
+      "gold": 4
     },
     {
-      "id": "cosmetic_m_SF_HSS"
+      "id": "cosmetic_m_SF_HSS",
+      "silver": 800,
+      "gold": 8
     },
     {
-      "id": "cosmetic_m_SS_DWO"
+      "id": "cosmetic_m_SS_DWO",
+      "silver": 500,
+      "gold": 5
     },
     {
-      "id": "cosmetic_m_SS_HST"
+      "id": "cosmetic_m_SS_HST",
+      "silver": 1250,
+      "gold": 12
     },
     {
-      "id": "cosmetic_m_SA_TRIBE"
+      "id": "cosmetic_m_SA_TRIBE",
+      "silver": 1100,
+      "gold": 11
     },
     {
-      "id": "cosmetic_m_HE_HBH"
+      "id": "cosmetic_m_HE_HBH",
+      "silver": 850,
+      "gold": 8
     },
     {
       "id": "cosmetic_m_HE_GLSS"
     },
     {
-      "id": "cosmetic_m_HE_HDWO"
+      "id": "cosmetic_m_HE_HDWO",
+      "silver": 900,
+      "gold": 9
     },
     {
-      "id": "cosmetic_m_HA_CGH"
+      "id": "cosmetic_m_HA_CGH",
+      "silver": 300,
+      "gold": 3
     },
     {
-      "id": "cosmetic_m_HA_DWO"
+      "id": "cosmetic_m_HA_DWO",
+      "silver": 300,
+      "gold": 3
     },
     {
-      "id": "cosmetic_m_HE_CEH"
+      "id": "cosmetic_m_HE_CEH",
+      "silver": 850,
+      "gold": 8
     },
     {
-      "id": "cosmetic_m_HA_DSO"
+      "id": "cosmetic_m_HA_DSO",
+      "silver": 450,
+      "gold": 4
     },
     {
-      "id": "cosmetic_m_N_KSO"
+      "id": "cosmetic_m_N_KSO",
+      "silver": 250,
+      "gold": 2
     },
     {
-      "id": "cosmetic_m_FR_HSR"
+      "id": "cosmetic_m_FR_HSR",
+      "silver": 150,
+      "gold": 1
     },
     {
-      "id": "cosmetic_m_WR_KSO"
+      "id": "cosmetic_m_WR_KSO",
+      "silver": 150,
+      "gold": 1
     },
     {
-      "id": "cosmetic_m_FR_HGR"
+      "id": "cosmetic_m_FR_HGR",
+      "silver": 150,
+      "gold": 1
     },
     {
-      "id": "cosmetic_m_WL_KSO"
+      "id": "cosmetic_m_WL_KSO",
+      "silver": 150,
+      "gold": 1
     },
     {
-      "id": "cosmetic_m_F_DSO"
+      "id": "cosmetic_m_F_DSO",
+      "silver": 450,
+      "gold": 4
     },
     {
-      "id": "cosmetic_m_F_CHFO"
+      "id": "cosmetic_m_F_CHFO",
+      "silver": 450,
+      "gold": 4
     },
     {
-      "id": "cosmetic_m_F_DTO"
+      "id": "cosmetic_m_F_DTO",
+      "silver": 450,
+      "gold": 4
     },
     {
-      "id": "cosmetic_m_SF_DBB"
+      "id": "cosmetic_m_SF_DBB",
+      "silver": 500,
+      "gold": 5
     },
     {
-      "id": "cosmetic_m_SF_HST"
+      "id": "cosmetic_m_SF_HST",
+      "silver": 800,
+      "gold": 8
     },
     {
-      "id": "cosmetic_m_SS_HBT"
+      "id": "cosmetic_m_SS_HBT",
+      "silver": 850,
+      "gold": 8
     },
     {
-      "id": "cosmetic_m_SF_DBM"
+      "id": "cosmetic_m_SF_DBM",
+      "silver": 500,
+      "gold": 5
     },
     {
-      "id": "cosmetic_m_SS_HAT"
+      "id": "cosmetic_m_SS_HAT",
+      "silver": 550,
+      "gold": 5
     },
     {
-      "id": "cosmetic_m_F_HFO"
+      "id": "cosmetic_m_F_HFO",
+      "silver": 450,
+      "gold": 4
     },
     {
-      "id": "cosmetic_m_SS_HFT"
+      "id": "cosmetic_m_SS_HFT",
+      "silver": 650,
+      "gold": 6
     },
     {
-      "id": "cosmetic_m_SS_JET"
+      "id": "cosmetic_m_SS_JET",
+      "silver": 1000,
+      "gold": 10
     },
     {
-      "id": "cosmetic_m_SA_JDT"
+      "id": "cosmetic_m_SA_JDT",
+      "silver": 1100,
+      "gold": 11
     },
     {
-      "id": "cosmetic_m_SC_JSET"
+      "id": "cosmetic_m_SC_JSET",
+      "silver": 1100,
+      "gold": 11
     },
     {
-      "id": "cosmetic_m_SF_HSF"
+      "id": "cosmetic_m_SF_HSF",
+      "silver": 800,
+      "gold": 8
     },
     {
-      "id": "cosmetic_m_SA_HWT"
+      "id": "cosmetic_m_SA_HWT",
+      "silver": 1250,
+      "gold": 12
     },
     {
-      "id": "cosmetic_m_SC_HRT"
+      "id": "cosmetic_m_SC_HRT",
+      "silver": 1100,
+      "gold": 11
     },
     {
-      "id": "cosmetic_m_SA_JWT"
+      "id": "cosmetic_m_SA_JWT",
+      "silver": 1100,
+      "gold": 11
     },
     {
-      "id": "cosmetic_m_SA_FLWR"
+      "id": "cosmetic_m_SA_FLWR",
+      "silver": 1250,
+      "gold": 12
     },
     {
-      "id": "cosmetic_m_SS_HMT"
+      "id": "cosmetic_m_SS_HMT",
+      "silver": 550,
+      "gold": 5
     },
     {
-      "id": "cosmetic_m_SC_JBT"
+      "id": "cosmetic_m_SC_JBT",
+      "silver": 1200,
+      "gold": 12
     },
     {
-      "id": "cosmetic_m_SA_JGT"
+      "id": "cosmetic_m_SA_JGT",
+      "silver": 1100,
+      "gold": 11
     },
     {
-      "id": "cosmetic_m_F_SANDALS"
+      "id": "cosmetic_m_F_SANDALS",
+      "silver": 400,
+      "gold": 4
     },
     {
-      "id": "cosmetic_m_SC_CROWN"
+      "id": "cosmetic_m_SC_CROWN",
+      "silver": 1200,
+      "gold": 12
     },
     {
-      "id": "cosmetic_m_C_HOOD"
+      "id": "cosmetic_m_C_HOOD",
+      "silver": 1100,
+      "gold": 11
     },
     {
-      "id": "cosmetic_m_SF_GOATEE"
+      "id": "cosmetic_m_SF_GOATEE",
+      "silver": 500,
+      "gold": 5
     },
     {
-      "id": "cosmetic_m_SF_GLSS"
+      "id": "cosmetic_m_SF_GLSS",
+      "silver": 600,
+      "gold": 6
     },
     {
-      "id": "cosmetic_m_SC_DWO"
+      "id": "cosmetic_m_SC_DWO",
+      "silver": 900,
+      "gold": 9
     },
     {
-      "id": "cosmetic_m_C_WITCHCO"
+      "id": "cosmetic_m_C_WITCHCO",
+      "silver": 900,
+      "gold": 9
     },
     {
-      "id": "cosmetic_m_C_SSBUTTON"
+      "id": "cosmetic_m_C_SSBUTTON",
+      "silver": 1100,
+      "gold": 11
     },
     {
-      "id": "cosmetic_m_C_MAGICINK"
+      "id": "cosmetic_m_C_MAGICINK",
+      "silver": 900,
+      "gold": 9
     },
     {
-      "id": "cosmetic_m_L_TRAVEL"
+      "id": "cosmetic_m_L_TRAVEL",
+      "silver": 550,
+      "gold": 5
     },
     {
-      "id": "cosmetic_m_L_SHORTS"
+      "id": "cosmetic_m_L_SHORTS",
+      "silver": 550,
+      "gold": 5
     },
     {
-      "id": "cosmetic_m_HE_DWO"
+      "id": "cosmetic_m_HE_DWO",
+      "silver": 800,
+      "gold": 8
     },
     {
-      "id": "cosmetic_m_HE_HNO"
+      "id": "cosmetic_m_HE_HNO",
+      "silver": 800,
+      "gold": 8
     },
     {
-      "id": "cosmetic_m_C_DSO"
+      "id": "cosmetic_m_C_DSO",
+      "silver": 950,
+      "gold": 9
     },
     {
-      "id": "cosmetic_m_C_OPEN"
+      "id": "cosmetic_m_C_OPEN",
+      "silver": 950,
+      "gold": 9
     },
     {
-      "id": "cosmetic_m_WR_DWO"
+      "id": "cosmetic_m_WR_DWO",
+      "silver": 150,
+      "gold": 1
     },
     {
-      "id": "cosmetic_m_L_DSO"
+      "id": "cosmetic_m_L_DSO",
+      "silver": 550,
+      "gold": 5
     },
     {
-      "id": "cosmetic_m_L_PUFF"
+      "id": "cosmetic_m_L_PUFF",
+      "silver": 600,
+      "gold": 6
     },
     {
-      "id": "cosmetic_m_SF_SPARSEMUSTACHE"
+      "id": "cosmetic_m_SF_SPARSEMUSTACHE",
+      "silver": 200,
+      "gold": 2
     },
     {
-      "id": "cosmetic_m_HE_KSO"
+      "id": "cosmetic_m_HE_KSO",
+      "silver": 600,
+      "gold": 6
     },
     {
-      "id": "cosmetic_m_C_DTO"
+      "id": "cosmetic_m_C_DTO",
+      "silver": 1100,
+      "gold": 11
     },
     {
-      "id": "cosmetic_m_C_WBYE"
+      "id": "cosmetic_m_C_WBYE",
+      "silver": 900,
+      "gold": 9
     },
     {
-      "id": "cosmetic_m_H_BH"
+      "id": "cosmetic_m_H_BH",
+      "silver": 300,
+      "gold": 3
     },
     {
-      "id": "cosmetic_m_L_DWO"
+      "id": "cosmetic_m_L_DWO",
+      "silver": 550,
+      "gold": 5
     },
     {
-      "id": "cosmetic_m_L_DTO"
+      "id": "cosmetic_m_L_DTO",
+      "silver": 550,
+      "gold": 5
     },
     {
-      "id": "cosmetic_m_L_LOOSE"
+      "id": "cosmetic_m_L_LOOSE",
+      "silver": 550,
+      "gold": 5
     },
     {
-      "id": "cosmetic_m_HA_BRDPNY"
+      "id": "cosmetic_m_HA_BRDPNY",
+      "silver": 400,
+      "gold": 4
     },
     {
-      "id": "cosmetic_m_HE_BKSO"
+      "id": "cosmetic_m_HE_BKSO",
+      "silver": 500,
+      "gold": 5
     },
     {
-      "id": "cosmetic_m_C_HFO"
+      "id": "cosmetic_m_C_HFO",
+      "silver": 950,
+      "gold": 9
     },
     {
-      "id": "cosmetic_m_SF_ANCHORBEARD"
+      "id": "cosmetic_m_SF_ANCHORBEARD",
+      "silver": 500,
+      "gold": 5
     },
     {
-      "id": "cosmetic_m_SF_SPARSEBEARD"
+      "id": "cosmetic_m_SF_SPARSEBEARD",
+      "silver": 500,
+      "gold": 5
     },
     {
-      "id": "cosmetic_m_HA_ZEFRON"
+      "id": "cosmetic_m_HA_ZEFRON",
+      "silver": 350,
+      "gold": 3
     },
     {
-      "id": "cosmetic_m_C_KSO"
+      "id": "cosmetic_m_C_KSO",
+      "silver": 950,
+      "gold": 9
     },
     {
-      "id": "cosmetic_m_WL_DWO"
+      "id": "cosmetic_m_WL_DWO",
+      "silver": 150,
+      "gold": 1
     },
     {
-      "id": "cosmetic_m_C_TUNIC"
+      "id": "cosmetic_m_C_TUNIC",
+      "silver": 950,
+      "gold": 9
     },
     {
-      "id": "cosmetic_m_FL_HFR"
+      "id": "cosmetic_m_FL_HFR",
+      "silver": 150,
+      "gold": 1
     },
     {
-      "id": "cosmetic_m_L_KSO"
+      "id": "cosmetic_m_L_KSO",
+      "silver": 600,
+      "gold": 6
     },
     {
-      "id": "cosmetic_m_L_HFO"
+      "id": "cosmetic_m_L_HFO",
+      "silver": 550,
+      "gold": 5
     },
     {
-      "id": "cosmetic_m_SS_BUTTERFLY"
+      "id": "cosmetic_m_SS_BUTTERFLY",
+      "silver": 700,
+      "gold": 7
     },
     {
-      "id": "cosmetic_m_PF_SENTINALOWL"
+      "id": "cosmetic_m_PF_SENTINALOWL",
+      "silver": 1000,
+      "gold": 10
     },
     {
-      "id": "cosmetic_m_PF_WENDIGO"
+      "id": "cosmetic_m_PF_WENDIGO",
+      "silver": 1000,
+      "gold": 10
     },
     {
-      "id": "cosmetic_m_HA_LT"
+      "id": "cosmetic_m_HA_LT",
+      "silver": 500,
+      "gold": 5
     },
     {
-      "id": "cosmetic_m_N_WOLFAMULET"
+      "id": "cosmetic_m_N_WOLFAMULET",
+      "silver": 250,
+      "gold": 2
     },
     {
-      "id": "cosmetic_m_PF_BARGHEST"
+      "id": "cosmetic_m_PF_BARGHEST",
+      "silver": 1000,
+      "gold": 10
     },
     {
-      "id": "cosmetic_m_PF_GRINDYLOW"
+      "id": "cosmetic_m_PF_GRINDYLOW",
+      "silver": 1000,
+      "gold": 10
     },
     {
-      "id": "cosmetic_m_PF_CATSIDHE"
+      "id": "cosmetic_m_PF_CATSIDHE",
+      "silver": 1000,
+      "gold": 10
     },
     {
-      "id": "cosmetic_m_HE_BIRDSKULL"
+      "id": "cosmetic_m_HE_BIRDSKULL",
+      "silver": 500,
+      "gold": 5
     },
     {
-      "id": "cosmetic_m_HE_BDH"
+      "id": "cosmetic_m_HE_BDH",
+      "silver": 900,
+      "gold": 9
     },
     {
-      "id": "cosmetic_m_HA_LNG"
+      "id": "cosmetic_m_HA_LNG",
+      "silver": 300,
+      "gold": 3
     },
     {
-      "id": "cosmetic_m_HA_BUN"
+      "id": "cosmetic_m_HA_BUN",
+      "silver": 400,
+      "gold": 4
     },
     {
-      "id": "cosmetic_m_CL_KIM"
+      "id": "cosmetic_m_CL_KIM",
+      "silver": 1200,
+      "gold": 12
     },
     {
-      "id": "cosmetic_m_HA_AFRO"
+      "id": "cosmetic_m_HA_AFRO",
+      "silver": 450,
+      "gold": 4
     },
     {
-      "id": "cosmetic_m_N_CROWAMULET"
+      "id": "cosmetic_m_N_CROWAMULET",
+      "silver": 250,
+      "gold": 2
     },
     {
-      "id": "cosmetic_m_C_PC"
+      "id": "cosmetic_m_C_PC",
+      "silver": 1200,
+      "gold": 12
     },
     {
-      "id": "cosmetic_m_C_TT"
+      "id": "cosmetic_m_C_TT",
+      "silver": 900,
+      "gold": 9
     },
     {
-      "id": "cosmetic_m_SS_PYRAMIDS"
+      "id": "cosmetic_m_SS_PYRAMIDS",
+      "silver": 700,
+      "gold": 7
     },
     {
       "id": "cosmetic_m_CL_DWO"
     },
     {
-      "id": "cosmetic_m_CL_SMMRSOL"
+      "id": "cosmetic_m_CL_SMMRSOL",
+      "silver": 1200,
+      "gold": 12
     },
     {
       "id": "cosmetic_m_CL_DTO"
     },
     {
-      "id": "cosmetic_m_CL_GRAY"
+      "id": "cosmetic_m_CL_GRAY",
+      "silver": 1200,
+      "gold": 12
     },
     {
-      "id": "cosmetic_m_F_STRAPPEDSHOES"
+      "id": "cosmetic_m_F_STRAPPEDSHOES",
+      "silver": 450,
+      "gold": 4
     },
     {
       "id": "cosmetic_m_CL_DSO"
     },
     {
-      "id": "cosmetic_m_CL_PRIMAVERA"
+      "id": "cosmetic_m_CL_PRIMAVERA",
+      "silver": 1200,
+      "gold": 12
     },
     {
-      "id": "cosmetic_m_CL_SHADOW"
+      "id": "cosmetic_m_CL_SHADOW",
+      "silver": 1200,
+      "gold": 12
     },
     {
-      "id": "cosmetic_m_CL_WHITE"
+      "id": "cosmetic_m_CL_WHITE",
+      "silver": 1200,
+      "gold": 12
     },
     {
-      "id": "cosmetic_m_SS_BALLET"
+      "id": "cosmetic_m_SS_BALLET",
+      "silver": 550,
+      "gold": 5
     },
     {
-      "id": "cosmetic_m_SF_SUNGLASSES"
+      "id": "cosmetic_m_SF_SUNGLASSES",
+      "silver": 900,
+      "gold": 9
     },
     {
-      "id": "cosmetic_m_SS_CROWSKULL"
+      "id": "cosmetic_m_SS_CROWSKULL",
+      "silver": 850,
+      "gold": 8
     },
     {
-      "id": "cosmetic_m_SC_BIRDCAGE"
+      "id": "cosmetic_m_SC_BIRDCAGE",
+      "silver": 1100,
+      "gold": 11
     },
     {
-      "id": "cosmetic_m_SS_UNICORN"
+      "id": "cosmetic_m_SS_UNICORN",
+      "silver": 1250,
+      "gold": 12
     },
     {
-      "id": "cosmetic_m_SC_SPIDER"
+      "id": "cosmetic_m_SC_SPIDER",
+      "silver": 1250,
+      "gold": 12
     },
     {
-      "id": "cosmetic_m_SS_MOLOTOV"
+      "id": "cosmetic_m_SS_MOLOTOV",
+      "silver": 1250,
+      "gold": 12
     },
     {
-      "id": "cosmetic_m_SC_COFFIN"
+      "id": "cosmetic_m_SC_COFFIN",
+      "silver": 1200,
+      "gold": 12
     },
     {
-      "id": "cosmetic_m_SA_LEOPARD"
+      "id": "cosmetic_m_SA_LEOPARD",
+      "silver": 1200,
+      "gold": 12
     },
     {
-      "id": "cosmetic_m_SC_ELEPHANT"
+      "id": "cosmetic_m_SC_ELEPHANT",
+      "silver": 1200,
+      "gold": 12
     },
     {
-      "id": "cosmetic_m_SS_JOKER"
+      "id": "cosmetic_m_SS_JOKER",
+      "silver": 1250,
+      "gold": 12
     },
     {
-      "id": "cosmetic_m_SS_COUPLE"
+      "id": "cosmetic_m_SS_COUPLE",
+      "silver": 800,
+      "gold": 8
     },
     {
-      "id": "cosmetic_m_SC_SUN"
+      "id": "cosmetic_m_SC_SUN",
+      "silver": 1200,
+      "gold": 12
     },
     {
-      "id": "cosmetic_m_SS_PUPPET"
+      "id": "cosmetic_m_SS_PUPPET",
+      "silver": 700,
+      "gold": 7
     },
     {
-      "id": "cosmetic_m_SC_ASTRONAUT"
+      "id": "cosmetic_m_SC_ASTRONAUT",
+      "silver": 1100,
+      "gold": 11
     }
   ],
   "Styles": [
     {
-      "id": "cosmetic_f_S_HHO"
+      "id": "cosmetic_f_S_HHO",
+      "silver": 8000,
+      "gold": "7"
     },
     {
-      "id": "cosmetic_f_S_HKO"
+      "id": "cosmetic_f_S_HKO",
+      "silver": 8000,
+      "gold": "7"
     },
     {
-      "id": "cosmetic_f_S_HLO"
+      "id": "cosmetic_f_S_HLO",
+      "silver": 8000,
+      "gold": "7"
     },
     {
-      "id": "cosmetic_f_S_SNOWQUEEN"
+      "id": "cosmetic_f_S_SNOWQUEEN",
+      "silver": 8000,
+      "gold": "7"
     },
     {
-      "id": "cosmetic_f_S_LILYOV"
+      "id": "cosmetic_f_S_LILYOV",
+      "silver": 8000,
+      "gold": "7"
     },
     {
-      "id": "cosmetic_f_S_MIDSUMMER"
+      "id": "cosmetic_f_S_MIDSUMMER",
+      "silver": 8000,
+      "gold": "7"
     },
     {
       "id": "cosmetic_f_S_THUNDERMOON",
-      "unlockOn": 1563249600000
+      "unlockOn": 1563249600000,
+      "silver": 8000,
+      "gold": "7"
     },
     {
       "id": "cosmetic_f_S_ECLIPSE",
-      "unlockOn": 1562040000000
+      "unlockOn": 1562040000000,
+      "silver": 8000,
+      "gold": "7"
     },
     {
       "id": "cosmetic_f_S_CORNMOON",
-      "unlockOn": 1565841600000
+      "unlockOn": 1565841600000,
+      "silver": 8000,
+      "gold": "7"
     },
     {
       "id": "cosmetic_f_S_BRNNGWTCH",
-      "unlockOn": 1566705600000
+      "unlockOn": 1566705600000,
+      "silver": 8000,
+      "gold": "7"
     },
     {
       "id": "cosmetic_f_S_CALYPSO",
-      "unlockOn": 1564977600000
+      "unlockOn": 1564977600000,
+      "silver": 8000,
+      "gold": "7"
     },
     {
-      "id": "cosmetic_m_S_HKO"
+      "id": "cosmetic_m_S_HKO",
+      "silver": 8000,
+      "gold": "7"
     },
     {
-      "id": "cosmetic_m_S_HHO"
+      "id": "cosmetic_m_S_HHO",
+      "silver": 8000,
+      "gold": "7"
     },
     {
-      "id": "cosmetic_m_S_HLO"
+      "id": "cosmetic_m_S_HLO",
+      "silver": 8000,
+      "gold": "7"
     },
     {
-      "id": "cosmetic_m_S_JACKFROST"
+      "id": "cosmetic_m_S_JACKFROST",
+      "silver": 8000,
+      "gold": "7"
     },
     {
-      "id": "cosmetic_m_S_MIDSUMMER"
+      "id": "cosmetic_m_S_MIDSUMMER",
+      "silver": 8000,
+      "gold": "7"
     },
     {
-      "id": "cosmetic_m_S_CORNMOON"
+      "id": "cosmetic_m_S_CORNMOON",
+      "silver": 8000,
+      "gold": "7"
     },
     {
-      "id": "cosmetic_m_S_CALYPSO"
+      "id": "cosmetic_m_S_CALYPSO",
+      "silver": 8000,
+      "gold": "7"
     },
     {
-      "id": "cosmetic_m_S_FIREDANCER"
+      "id": "cosmetic_m_S_FIREDANCER",
+      "silver": 8000,
+      "gold": "7"
     },
     {
-      "id": "cosmetic_m_S_BRNNGWTCH"
+      "id": "cosmetic_m_S_BRNNGWTCH",
+      "silver": 8000,
+      "gold": "7"
     },
     {
-      "id": "cosmetic_m_S_ECLIPSE"
+      "id": "cosmetic_m_S_ECLIPSE",
+      "silver": 8000,
+      "gold": "7"
     },
     {
-      "id": "cosmetic_m_S_THUNDERMOON"
+      "id": "cosmetic_m_S_THUNDERMOON",
+      "silver": 8000,
+      "gold": "7"
     }
   ]
 }
