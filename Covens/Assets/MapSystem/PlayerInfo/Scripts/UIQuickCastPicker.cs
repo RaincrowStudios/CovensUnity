@@ -15,18 +15,21 @@ public class UIQuickCastPicker : MonoBehaviour
     [SerializeField] private RectTransform m_WhiteContainer;
     [SerializeField] private RectTransform m_GreyContainer;
     [SerializeField] private RectTransform m_ShadowContainer;
-    
+    private CanvasGroup UIQCPCanvasGroup;
+
     private bool m_SpellsSpawned = false;
     private string m_SelectedSpell = null;
     private System.Action<string> m_OnSelectSpell;
     private System.Action m_OnClose;
-    
+
     private void Awake()
     {
         m_Canvas.enabled = false;
         m_InputRaycaster.enabled = false;
         m_CloseButton.onClick.AddListener(Hide);
         m_ItemPrefab.gameObject.SetActive(false);
+        UIQCPCanvasGroup = this.GetComponent<CanvasGroup>();
+        UIQCPCanvasGroup.alpha = 0f;
     }
 
     public void Show(string selected, System.Action<string> onSelect, System.Action onClose)
@@ -40,15 +43,20 @@ public class UIQuickCastPicker : MonoBehaviour
         }
 
         m_Canvas.enabled = true;
-        m_InputRaycaster.enabled = true;
+        LeanTween.alphaCanvas(UIQCPCanvasGroup, 1f, 0.6f).setEaseOutCubic().setOnComplete(() =>
+        {
+            m_InputRaycaster.enabled = true;
+        });
     }
 
     private void Hide()
     {
         m_OnClose?.Invoke();
         m_OnClose = null;
-
-        m_Canvas.enabled = false;
+        LeanTween.alphaCanvas(UIQCPCanvasGroup, 0f, 0.4f).setEaseInCubic().setOnComplete(() =>
+        {
+            m_Canvas.enabled = false;
+        });
         m_InputRaycaster.enabled = false;
     }
 
@@ -97,5 +105,5 @@ public class UIQuickCastPicker : MonoBehaviour
         button.onClick.AddListener(() => OnClickSpell(spell.id));
         title.text = spell.Name;
         DownloadedAssets.GetSprite(spell.id, icon);
-    }  
+    }
 }
