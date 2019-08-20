@@ -98,7 +98,7 @@ public class BanishManager : MonoBehaviour
             {
 
                 SpellData spell = DownloadedAssets.GetSpell(data.spell);
-                //SpellcastingFX.SpawnGlyph(target, spell, spell.baseSpell);
+                SpellcastingFX.SpawnGlyph(target, spell, spell.baseSpell);
             }
         }
     }
@@ -132,7 +132,7 @@ public class BanishManager : MonoBehaviour
             else
             {
                 SpellData spell = DownloadedAssets.GetSpell(data.spell);
-                //SpellcastingFX.SpawnGlyph(target, spell, spell.baseSpell);
+                SpellcastingFX.SpawnGlyph(target, spell, spell.baseSpell);
             }
         }
     }

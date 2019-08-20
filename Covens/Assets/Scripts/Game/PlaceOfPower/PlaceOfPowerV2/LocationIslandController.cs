@@ -68,12 +68,12 @@ public class LocationIslandController : MonoBehaviour
         }
     }
 
-    private void BattleStopPOP()
+    public static void BattleStopPOP()
     {
         MoveTokenHandlerPOP.OnMarkerMovePOP -= instance.locationUnitSpawner.MoveMarker;
         AddSpiritHandlerPOP.OnSpiritAddPOP -= instance.locationUnitSpawner.AddMarker;
-        popCameraController.onUpdate -= UpdateMarkers;
-        LocationBattleStart.OnLocationBattleStart -= BattleBeginPOP;
+        instance.popCameraController.onUpdate -= UpdateMarkers;
+        LocationBattleStart.OnLocationBattleStart -= instance.BattleBeginPOP;
         LocationBattleEnd.OnLocationBattleEnd -= BattleStopPOP;
         isInBattle = false;
     }
@@ -116,7 +116,7 @@ public class LocationIslandController : MonoBehaviour
                   LoadPOPManager.LoadScene(() =>
                   {
                       LocationBattleStart.OnLocationBattleStart += instance.BattleBeginPOP;
-                      LocationBattleEnd.OnLocationBattleEnd += instance.BattleStopPOP;
+                      LocationBattleEnd.OnLocationBattleEnd += BattleStopPOP;
                   });
 
               }

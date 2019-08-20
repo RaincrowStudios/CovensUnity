@@ -17,6 +17,15 @@ public class LocationUnitSpawner : MonoBehaviour
     [Header("Spirits")]
     public GameObject spiritIcon;
     public static IMarker guardianMarker { get; private set; }
+
+    public static string guardianInstance
+    {
+        get
+        {
+            return ((SpiritToken)guardianMarker.Token).instance;
+        }
+    }
+
     [SerializeField] private Transform m_CenterSpiritTransform;
     [SerializeField] private Transform m_PlayerHighlight;
     [SerializeField] private Transform m_SelfSelectionRing;
@@ -35,6 +44,18 @@ public class LocationUnitSpawner : MonoBehaviour
         m_WitchPool = new SimplePool<Transform>(witchIcon.transform, 10);
         m_SpiritPool = new SimplePool<Transform>(spiritIcon.transform, 2);
         m_EnergyPool = new SimplePool<Transform>(witchIcon.transform, 1);
+    }
+
+    public static int GetIsland(string id)
+    {
+        if (Markers.ContainsKey(id))
+        {
+            return ((Token)Markers[id].Token).island;
+        }
+        else
+        {
+            return -1;
+        }
     }
 
     public void AddMarker(Token token)
@@ -200,11 +221,20 @@ public class LocationUnitSpawner : MonoBehaviour
             marker.Interactable = false;
             Markers.Remove(instance);
             await Task.Delay(2000);
+            Debug.Log("Despawning");
             marker.OnDespawn();
             if (marker.Type == MarkerType.WITCH) m_WitchPool.Despawn(marker.GameObject.transform);
             else if (marker.Type == MarkerType.SPIRIT) m_SpiritPool.Despawn(marker.GameObject.transform);
             else throw new NotImplementedException("Unhandled Marker Type: " + marker.Type);
         }
+    }
+
+    public static void UnloadScene()
+    {
+        m_WitchPool.DespawnAll();
+        m_SpiritPool.DespawnAll();
+        m_EnergyPool.DespawnAll();
+        Markers.Clear();
     }
 
     public async void MoveMarker(MoveEventDataPOP data)

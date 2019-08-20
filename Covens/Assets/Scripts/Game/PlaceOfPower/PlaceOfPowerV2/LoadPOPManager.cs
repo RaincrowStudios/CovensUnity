@@ -12,7 +12,8 @@ public class LoadPOPManager : MonoBehaviour
     public GameObject[] MainUIDisable;
     bool isViewVisible = false;
     static bool sceneLoaded = false;
-
+    private static int previousEnergy = 0;
+    private static string previousState = "";
     void Awake()
     {
         Instance = this;
@@ -67,6 +68,8 @@ public class LoadPOPManager : MonoBehaviour
 
     public static void LoadScene(System.Action onComplete)
     {
+        previousEnergy = PlayerDataManager.playerData.energy;
+        previousState = PlayerDataManager.playerData.state;
         foreach (var item in Instance.MainUIDisable)
         {
             item.SetActive(false);
@@ -77,6 +80,26 @@ public class LoadPOPManager : MonoBehaviour
             sceneLoaded = true;
             onComplete();
         });
+    }
+
+    public static void UnloadScene(System.Action onComplete)
+    {
+        PlayerDataManager.playerData.energy = previousEnergy;
+        PlayerDataManager.playerData.state = previousState;
+        foreach (var item in Instance.MainUIDisable)
+        {
+            item.SetActive(true);
+        }
+        Instance.map.HideMap(false);
+        LocationIslandController.BattleStopPOP();
+        LocationUnitSpawner.UnloadScene();
+        SceneManager.UnloadScene(SceneManager.Scene.PLACE_OF_POWER, null, () =>
+       {
+           sceneLoaded = false;
+           var t = LocationExitInfo.Instance;
+           t.ShowUI();
+           //onComplete();
+       });
     }
 
     private static double GetFakeTime()
