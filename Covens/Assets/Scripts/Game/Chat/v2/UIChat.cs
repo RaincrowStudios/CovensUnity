@@ -4,6 +4,7 @@ using UnityEngine;
 using UnityEngine.UI;
 using Newtonsoft.Json;
 using System.Linq;
+using TMPro;
 
 namespace Raincrow.Chat.UI
 {
@@ -21,7 +22,7 @@ namespace Raincrow.Chat.UI
         [SerializeField] private Button _reconnectChatButton;
 
         [Header("Header UI")]
-        [SerializeField] private Text _covenName;
+        [SerializeField] private TextMeshProUGUI _covenName;
         [SerializeField] private GameObject _sendScreenshotButton;
 
         [Header("Input UI")]
@@ -409,7 +410,7 @@ namespace Raincrow.Chat.UI
             _closeButton.onClick.AddListener(_OnClickClose);
             _sendButton.onClick.AddListener(_OnClickSend);
             _shareLocationButton.onClick.AddListener(_OnClickShareLocation);
-            _sendScreenshotButton.GetComponent<Button>().onClick.AddListener(() => { SendEmail(); });            
+            _sendScreenshotButton.GetComponent<Button>().onClick.AddListener(() => { SendEmail(); });
 
             m_HeaderButtons = new Dictionary<ChatCategory, TMPro.TextMeshProUGUI>
             {
@@ -507,7 +508,7 @@ namespace Raincrow.Chat.UI
 
             //despawn previous items
             ClearItems();
-            
+
             if (ChatManager.IsConnected(category) && ChatManager.HasJoinedChat(category))
             {
                 //setup the UI with the available messages
@@ -551,7 +552,7 @@ namespace Raincrow.Chat.UI
                 }
             }
         }
-               
+
         private void ClearItems()
         {
             if (m_SpawnCoroutine != null)
@@ -742,7 +743,7 @@ namespace Raincrow.Chat.UI
                     _enableInputUI.enabled = false;
 
                     m_WaitInputCooldownCoroutine = StartCoroutine(WaitCooldownInput());
-                }                
+                }
             }
         }
 
@@ -837,7 +838,7 @@ namespace Raincrow.Chat.UI
                 }
                 else
                 {
-                    entry.Value.fontStyle = TMPro.FontStyles.Normal;                    
+                    entry.Value.fontStyle = TMPro.FontStyles.Normal;
                 }
             }
         }
