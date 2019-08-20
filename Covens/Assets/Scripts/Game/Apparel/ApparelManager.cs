@@ -83,7 +83,11 @@ public class CosmeticData
     public string[] whiteAssets;
 
     public bool hidden;
+
+    [JsonIgnore]
     public int silver;
+
+    [JsonIgnore]
     public int gold;
 
 

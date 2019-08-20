@@ -216,7 +216,7 @@ public class UIPlayerInfo : UIInfoPanel
         //show the witche's coven
         if (string.IsNullOrEmpty(m_WitchDetails.coven) == false)
         {
-            TeamManagerUI.OpenName(m_WitchDetails.covenId);
+            TeamManagerUI.OpenName(m_WitchDetails.coven);
         }
 
         //invite to my coven

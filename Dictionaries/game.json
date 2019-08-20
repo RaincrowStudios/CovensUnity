@@ -4653,9 +4653,7 @@
       "iconId": "f_HA_G_FKFO",
       "base": [
         "f_HA_G_FKFO"
-      ],
-      "silver": 2500,
-      "gold": 2
+      ]
     },
     "cosmetic_m_HA_DTO": {
       "id": "cosmetic_m_HA_DTO",
@@ -4673,9 +4671,7 @@
       "iconId": "f_N_G_KSO",
       "base": [
         "f_N_G_KSO"
-      ],
-      "silver": 600,
-      "gold": 0
+      ]
     },
     "cosmetic_m_C_DWO": {
       "id": "cosmetic_m_C_DWO",
@@ -4702,9 +4698,7 @@
       "iconId": "f_C_G_PPS",
       "base": [
         "f_C_G_PPS"
-      ],
-      "silver": 2500,
-      "gold": 2
+      ]
     },
     "cosmetic_f_WR_DWO": {
       "id": "cosmetic_f_WR_DWO",
@@ -4713,9 +4707,7 @@
       "iconId": "f_WR_W_DWO",
       "base": [
         "f_WR_W_DWO"
-      ],
-      "silver": 500,
-      "gold": 0
+      ]
     },
     "cosmetic_f_F_BDWO": {
       "id": "cosmetic_f_F_BDWO",
@@ -4724,9 +4716,7 @@
       "iconId": "f_F_S_BDWO",
       "base": [
         "f_F_S_BDWO"
-      ],
-      "silver": 4000,
-      "gold": 3
+      ]
     },
     "cosmetic_m_F_DWO": {
       "id": "cosmetic_m_F_DWO",
@@ -4753,9 +4743,7 @@
       "iconId": "f_SS_G_HAT",
       "base": [
         "f_SS_G_HAT"
-      ],
-      "silver": 550,
-      "gold": 0
+      ]
     },
     "cosmetic_m_SS_DWO": {
       "id": "cosmetic_m_SS_DWO",
@@ -4782,9 +4770,7 @@
       "iconId": "f_SC_S_JBT",
       "base": [
         "f_SC_S_JBT"
-      ],
-      "silver": 3500,
-      "gold": 2
+      ]
     },
     "cosmetic_f_SA_HWT": {
       "id": "cosmetic_f_SA_HWT",
@@ -4793,9 +4779,7 @@
       "iconId": "f_SA_G_HWT",
       "base": [
         "f_SA_G_HWT"
-      ],
-      "silver": 3000,
-      "gold": 3
+      ]
     },
     "cosmetic_f_SA_JGT": {
       "id": "cosmetic_f_SA_JGT",
@@ -4804,9 +4788,7 @@
       "iconId": "f_SA_G_JGT",
       "base": [
         "f_SA_G_JGT"
-      ],
-      "silver": 2500,
-      "gold": 2
+      ]
     },
     "cosmetic_m_SA_TRIBE": {
       "id": "cosmetic_m_SA_TRIBE",
@@ -4821,9 +4803,7 @@
       "id": "cosmetic_f_S_SNOWQUEEN",
       "type": "female",
       "position": "style",
-      "iconId": "f_S_M_SNOWQUEEN",
-      "silver": 8000,
-      "gold": 7
+      "iconId": "f_S_M_SNOWQUEEN"
     },
     "cosmetic_f_HE_HBH": {
       "id": "cosmetic_f_HE_HBH",
@@ -4832,9 +4812,7 @@
       "iconId": "f_HE_G_HBH",
       "base": [
         "f_HE_G_HBH"
-      ],
-      "silver": 1500,
-      "gold": 1
+      ]
     },
     "cosmetic_f_HE_CES": {
       "id": "cosmetic_f_HE_CES",
@@ -4843,9 +4821,7 @@
       "iconId": "f_HE_G_CES",
       "base": [
         "f_HE_G_CES"
-      ],
-      "silver": 500,
-      "gold": 0
+      ]
     },
     "cosmetic_f_HE_HDWO": {
       "id": "cosmetic_f_HE_HDWO",
@@ -4854,9 +4830,7 @@
       "iconId": "f_HE_S_HDWO",
       "base": [
         "f_HE_S_HDWO"
-      ],
-      "silver": 5250,
-      "gold": 4
+      ]
     },
     "cosmetic_f_HE_CEH": {
       "id": "cosmetic_f_HE_CEH",
@@ -4865,9 +4839,7 @@
       "iconId": "f_HE_G_CEH",
       "base": [
         "f_HE_G_CEH"
-      ],
-      "silver": 500,
-      "gold": 0
+      ]
     },
     "cosmetic_m_HE_HBH": {
       "id": "cosmetic_m_HE_HBH",
@@ -4894,9 +4866,7 @@
       "iconId": "f_HA_G_CGH",
       "base": [
         "f_HA_G_CGH"
-      ],
-      "silver": 900,
-      "gold": 0
+      ]
     },
     "cosmetic_f_HE_GLSS": {
       "id": "cosmetic_f_HE_GLSS",
@@ -4933,9 +4903,7 @@
       "iconId": "f_HA_G_KSO",
       "base": [
         "f_HA_G_KSO"
-      ],
-      "silver": 2000,
-      "gold": 1
+      ]
     },
     "cosmetic_f_HA_BZZ": {
       "id": "cosmetic_f_HA_BZZ",
@@ -4944,9 +4912,7 @@
       "iconId": "f_HA_G_BZZ",
       "base": [
         "f_HA_G_BZZ"
-      ],
-      "silver": 500,
-      "gold": 0
+      ]
     },
     "cosmetic_m_HA_CGH": {
       "id": "cosmetic_m_HA_CGH",
@@ -5009,9 +4975,7 @@
       "iconId": "f_WL_G_KFO",
       "base": [
         "f_WL_G_KFO"
-      ],
-      "silver": 400,
-      "gold": 0
+      ]
     },
     "cosmetic_f_WL_DWO": {
       "id": "cosmetic_f_WL_DWO",
@@ -5020,9 +4984,7 @@
       "iconId": "f_WL_S_DWO",
       "base": [
         "f_WL_S_DWO"
-      ],
-      "silver": 300,
-      "gold": 0
+      ]
     },
     "cosmetic_f_H_NAIL": {
       "id": "cosmetic_f_H_NAIL",
@@ -5040,9 +5002,7 @@
       "iconId": "f_N_W_DWO",
       "base": [
         "f_N_W_DWO"
-      ],
-      "silver": 400,
-      "gold": 0
+      ]
     },
     "cosmetic_f_WR_KFO": {
       "id": "cosmetic_f_WR_KFO",
@@ -5051,9 +5011,7 @@
       "iconId": "f_WR_G_KFO",
       "base": [
         "f_WR_G_KFO"
-      ],
-      "silver": 400,
-      "gold": 0
+      ]
     },
     "cosmetic_m_FR_HSR": {
       "id": "cosmetic_m_FR_HSR",
@@ -5080,9 +5038,7 @@
       "iconId": "f_FL_G_KSO",
       "base": [
         "f_FL_G_KSO"
-      ],
-      "silver": 300,
-      "gold": 0
+      ]
     },
     "cosmetic_m_FR_HGR": {
       "id": "cosmetic_m_FR_HGR",
@@ -5100,9 +5056,7 @@
       "iconId": "f_F_W_SDWO",
       "base": [
         "f_F_W_SDWO"
-      ],
-      "silver": 500,
-      "gold": 0
+      ]
     },
     "cosmetic_m_WL_KSO": {
       "id": "cosmetic_m_WL_KSO",
@@ -5120,9 +5074,7 @@
       "iconId": "f_L_G_PPS",
       "base": [
         "f_L_G_PPS"
-      ],
-      "silver": 1500,
-      "gold": 1
+      ]
     },
     "cosmetic_m_F_DSO": {
       "id": "cosmetic_m_F_DSO",
@@ -5140,9 +5092,7 @@
       "iconId": "f_F_G_SBDWO",
       "base": [
         "f_F_G_SBDWO"
-      ],
-      "silver": 2000,
-      "gold": 2
+      ]
     },
     "cosmetic_f_F_KFO": {
       "id": "cosmetic_f_F_KFO",
@@ -5151,9 +5101,7 @@
       "iconId": "f_F_S_KFO",
       "base": [
         "f_F_S_KFO"
-      ],
-      "silver": 1500,
-      "gold": 1
+      ]
     },
     "cosmetic_m_F_CHFO": {
       "id": "cosmetic_m_F_CHFO",
@@ -5171,9 +5119,7 @@
       "iconId": "f_SF_G_HSS",
       "base": [
         "f_SF_G_HSS"
-      ],
-      "silver": 800,
-      "gold": 0
+      ]
     },
     "cosmetic_m_F_DTO": {
       "id": "cosmetic_m_F_DTO",
@@ -5200,9 +5146,7 @@
       "iconId": "f_SF_G_HSF",
       "base": [
         "f_SF_G_HSF"
-      ],
-      "silver": 800,
-      "gold": 0
+      ]
     },
     "cosmetic_f_SS_HFT": {
       "id": "cosmetic_f_SS_HFT",
@@ -5211,9 +5155,7 @@
       "iconId": "f_SS_G_HFT",
       "base": [
         "f_SS_G_HFT"
-      ],
-      "silver": 650,
-      "gold": 0
+      ]
     },
     "cosmetic_f_SF_HST": {
       "id": "cosmetic_f_SF_HST",
@@ -5222,9 +5164,7 @@
       "iconId": "f_SF_G_HST",
       "base": [
         "f_SF_G_HST"
-      ],
-      "silver": 800,
-      "gold": 0
+      ]
     },
     "cosmetic_m_SF_HST": {
       "id": "cosmetic_m_SF_HST",
@@ -5242,9 +5182,7 @@
       "iconId": "f_L_G_TIGHT",
       "base": [
         "f_L_G_TIGHT"
-      ],
-      "silver": 500,
-      "gold": 0
+      ]
     },
     "cosmetic_m_SS_HBT": {
       "id": "cosmetic_m_SS_HBT",
@@ -5271,9 +5209,7 @@
       "iconId": "f_SS_G_HBT",
       "base": [
         "f_SS_G_HBT"
-      ],
-      "silver": 1000,
-      "gold": 1
+      ]
     },
     "cosmetic_f_F_KSO": {
       "id": "cosmetic_f_F_KSO",
@@ -5282,9 +5218,7 @@
       "iconId": "f_F_S_KSO",
       "base": [
         "f_F_S_KSO"
-      ],
-      "silver": 1500,
-      "gold": 1
+      ]
     },
     "cosmetic_f_SS_JET": {
       "id": "cosmetic_f_SS_JET",
@@ -5293,9 +5227,7 @@
       "iconId": "f_SS_G_JET",
       "base": [
         "f_SS_G_JET"
-      ],
-      "silver": 1000,
-      "gold": 1
+      ]
     },
     "cosmetic_f_SS_HMT": {
       "id": "cosmetic_f_SS_HMT",
@@ -5304,9 +5236,7 @@
       "iconId": "f_SS_G_HMT",
       "base": [
         "f_SS_G_HMT"
-      ],
-      "silver": 550,
-      "gold": 0
+      ]
     },
     "cosmetic_m_SS_HAT": {
       "id": "cosmetic_m_SS_HAT",
@@ -5333,9 +5263,7 @@
       "iconId": "f_SC_S_JSET",
       "base": [
         "f_SC_S_JSET"
-      ],
-      "silver": 2000,
-      "gold": 1
+      ]
     },
     "cosmetic_m_SS_HFT": {
       "id": "cosmetic_m_SS_HFT",
@@ -5380,9 +5308,7 @@
       "iconId": "f_SC_S_DWO",
       "base": [
         "f_SC_S_DWO"
-      ],
-      "silver": 2000,
-      "gold": 1
+      ]
     },
     "cosmetic_m_SF_HSF": {
       "id": "cosmetic_m_SF_HSF",
@@ -5400,9 +5326,7 @@
       "iconId": "f_SA_G_JWT",
       "base": [
         "f_SA_G_JWT"
-      ],
-      "silver": 2500,
-      "gold": 2
+      ]
     },
     "cosmetic_m_SA_HWT": {
       "id": "cosmetic_m_SA_HWT",
@@ -5429,17 +5353,13 @@
       "iconId": "f_SS_S_DWO",
       "base": [
         "f_SS_S_DWO"
-      ],
-      "silver": 500,
-      "gold": 0
+      ]
     },
     "cosmetic_f_S_HHO": {
       "id": "cosmetic_f_S_HHO",
       "type": "female",
       "position": "style",
-      "iconId": "f_S_M_HHO",
-      "silver": 8000,
-      "gold": 7
+      "iconId": "f_S_M_HHO"
     },
     "cosmetic_m_SA_JWT": {
       "id": "cosmetic_m_SA_JWT",
@@ -5457,9 +5377,7 @@
       "iconId": "f_SA_G_JDT",
       "base": [
         "f_SA_G_JDT"
-      ],
-      "silver": 3000,
-      "gold": 3
+      ]
     },
     "cosmetic_f_SS_HST": {
       "id": "cosmetic_f_SS_HST",
@@ -5468,17 +5386,13 @@
       "iconId": "f_SS_G_HST",
       "base": [
         "f_SS_G_HST"
-      ],
-      "silver": 1250,
-      "gold": 1
+      ]
     },
     "cosmetic_m_S_HKO": {
       "id": "cosmetic_m_S_HKO",
       "type": "male",
       "position": "style",
-      "iconId": "m_S_M_HKO",
-      "silver": 8000,
-      "gold": 7
+      "iconId": "m_S_M_HKO"
     },
     "cosmetic_f_SA_TRIBE": {
       "id": "cosmetic_f_SA_TRIBE",
@@ -5487,9 +5401,7 @@
       "iconId": "f_SA_G_TRIBE",
       "base": [
         "f_SA_G_TRIBE"
-      ],
-      "silver": 2500,
-      "gold": 2
+      ]
     },
     "cosmetic_m_SA_FLWR": {
       "id": "cosmetic_m_SA_FLWR",
@@ -5513,17 +5425,13 @@
       "id": "cosmetic_m_S_HHO",
       "type": "male",
       "position": "style",
-      "iconId": "m_S_M_HHO",
-      "silver": 8000,
-      "gold": 7
+      "iconId": "m_S_M_HHO"
     },
     "cosmetic_f_S_HKO": {
       "id": "cosmetic_f_S_HKO",
       "type": "female",
       "position": "style",
-      "iconId": "f_S_M_HKO",
-      "silver": 8000,
-      "gold": 7
+      "iconId": "f_S_M_HKO"
     },
     "cosmetic_m_SC_JBT": {
       "id": "cosmetic_m_SC_JBT",
@@ -5538,9 +5446,7 @@
       "id": "cosmetic_m_S_HLO",
       "type": "male",
       "position": "style",
-      "iconId": "m_S_M_HLO",
-      "silver": 8000,
-      "gold": 7
+      "iconId": "m_S_M_HLO"
     },
     "cosmetic_f_SC_HRT": {
       "id": "cosmetic_f_SC_HRT",
@@ -5549,9 +5455,7 @@
       "iconId": "f_SC_S_HRT",
       "base": [
         "f_SC_S_HRT"
-      ],
-      "silver": 2000,
-      "gold": 1
+      ]
     },
     "cosmetic_m_SA_JGT": {
       "id": "cosmetic_m_SA_JGT",
@@ -5569,25 +5473,19 @@
       "iconId": "f_SA_G_FLWR",
       "base": [
         "f_SA_G_FLWR"
-      ],
-      "silver": 2500,
-      "gold": 2
+      ]
     },
     "cosmetic_f_S_HLO": {
       "id": "cosmetic_f_S_HLO",
       "type": "female",
       "position": "style",
-      "iconId": "f_S_M_HLO",
-      "silver": 8000,
-      "gold": 7
+      "iconId": "f_S_M_HLO"
     },
     "cosmetic_m_S_JACKFROST": {
       "id": "cosmetic_m_S_JACKFROST",
       "type": "male",
       "position": "style",
-      "iconId": "m_S_M_JACKFROST",
-      "silver": 8000,
-      "gold": 7
+      "iconId": "m_S_M_JACKFROST"
     },
     "cosmetic_f_C_MESHTOP": {
       "id": "cosmetic_f_C_MESHTOP",
@@ -5596,9 +5494,7 @@
       "iconId": "f_C_S_MESHTOP",
       "base": [
         "f_C_S_MESHTOP"
-      ],
-      "silver": 1200,
-      "gold": 1
+      ]
     },
     "cosmetic_m_F_SANDALS": {
       "id": "cosmetic_m_F_SANDALS",
@@ -5622,17 +5518,13 @@
       "id": "cosmetic_f_S_MIDSUMMER",
       "type": "female",
       "position": "style",
-      "iconId": "f_S_M_MIDSUMMER",
-      "silver": 8000,
-      "gold": 7
+      "iconId": "f_S_M_MIDSUMMER"
     },
     "cosmetic_m_S_MIDSUMMER": {
       "id": "cosmetic_m_S_MIDSUMMER",
       "type": "male",
       "position": "style",
-      "iconId": "m_S_M_MIDSUMMER",
-      "silver": 8000,
-      "gold": 7
+      "iconId": "m_S_M_MIDSUMMER"
     },
     "cosmetic_f_HE_FLOWER": {
       "id": "cosmetic_f_HE_FLOWER",
@@ -5641,9 +5533,7 @@
       "iconId": "f_HE_G_FLOWER",
       "base": [
         "f_HE_G_FLOWER"
-      ],
-      "silver": 800,
-      "gold": 0
+      ]
     },
     "cosmetic_f_N_BOW": {
       "id": "cosmetic_f_N_BOW",
@@ -5652,9 +5542,7 @@
       "iconId": "f_N_G_BOW",
       "base": [
         "f_N_G_BOW"
-      ],
-      "silver": 250,
-      "gold": 0
+      ]
     },
     "cosmetic_f_L_HEAVYSKIRT": {
       "id": "cosmetic_f_L_HEAVYSKIRT",
@@ -5669,9 +5557,7 @@
       ],
       "white": [
         "f_L_W_HEAVYSKIRT"
-      ],
-      "silver": 2500,
-      "gold": 2
+      ]
     },
     "cosmetic_f_F_FUR": {
       "id": "cosmetic_f_F_FUR",
@@ -5680,9 +5566,7 @@
       "iconId": "f_F_G_FUR",
       "base": [
         "f_F_G_FUR"
-      ],
-      "silver": 2000,
-      "gold": 1
+      ]
     },
     "cosmetic_m_C_HOOD": {
       "id": "cosmetic_m_C_HOOD",
@@ -5700,9 +5584,7 @@
       "iconId": "f_FL_G_HFR",
       "base": [
         "f_FL_G_HFR"
-      ],
-      "silver": 400,
-      "gold": 0
+      ]
     },
     "cosmetic_f_SC_CROWN": {
       "id": "cosmetic_f_SC_CROWN",
@@ -5711,9 +5593,7 @@
       "iconId": "f_SC_G_CROWN",
       "base": [
         "f_SC_G_CROWN"
-      ],
-      "silver": 2000,
-      "gold": 1
+      ]
     },
     "cosmetic_f_L_LACELEG": {
       "id": "cosmetic_f_L_LACELEG",
@@ -5722,9 +5602,7 @@
       "iconId": "f_L_G_LACELEG",
       "base": [
         "f_L_G_LACELEG"
-      ],
-      "silver": 800,
-      "gold": 0
+      ]
     },
     "cosmetic_f_F_TIED": {
       "id": "cosmetic_f_F_TIED",
@@ -5733,9 +5611,7 @@
       "iconId": "f_F_G_TIED",
       "base": [
         "f_F_G_TIED"
-      ],
-      "silver": 3000,
-      "gold": 2
+      ]
     },
     "cosmetic_f_SF_HOOPS": {
       "id": "cosmetic_f_SF_HOOPS",
@@ -5744,17 +5620,13 @@
       "iconId": "f_SF_G_HOOPS",
       "base": [
         "f_SF_G_HOOPS"
-      ],
-      "silver": 800,
-      "gold": 0
+      ]
     },
     "cosmetic_f_S_CORNMOON": {
       "id": "cosmetic_f_S_CORNMOON",
       "type": "female",
       "position": "style",
-      "iconId": "f_S_M_CORNMOON",
-      "silver": 8000,
-      "gold": 7
+      "iconId": "f_S_M_CORNMOON"
     },
     "cosmetic_f_F_BOW": {
       "id": "cosmetic_f_F_BOW",
@@ -5763,25 +5635,19 @@
       "iconId": "f_F_G_BOW",
       "base": [
         "f_F_G_BOW"
-      ],
-      "silver": 1500,
-      "gold": 1
+      ]
     },
     "cosmetic_m_S_CORNMOON": {
       "id": "cosmetic_m_S_CORNMOON",
       "type": "male",
       "position": "style",
-      "iconId": "m_S_M_CORNMOON",
-      "silver": 8000,
-      "gold": 7
+      "iconId": "m_S_M_CORNMOON"
     },
     "cosmetic_m_S_CALYPSO": {
       "id": "cosmetic_m_S_CALYPSO",
       "type": "male",
       "position": "style",
-      "iconId": "m_S_M_CALYPSO",
-      "silver": 8000,
-      "gold": 7
+      "iconId": "m_S_M_CALYPSO"
     },
     "cosmetic_f_SF_GLSS": {
       "id": "cosmetic_f_SF_GLSS",
@@ -5790,9 +5656,7 @@
       "iconId": "f_SF_G_GLSS",
       "base": [
         "f_SF_G_GLSS"
-      ],
-      "silver": 600,
-      "gold": 0
+      ]
     },
     "cosmetic_m_SF_GOATEE": {
       "id": "cosmetic_m_SF_GOATEE",
@@ -5816,33 +5680,25 @@
       "id": "cosmetic_f_S_LILYOV",
       "type": "female",
       "position": "style",
-      "iconId": "f_S_M_LILYOV",
-      "silver": 8000,
-      "gold": 7
+      "iconId": "f_S_M_LILYOV"
     },
     "cosmetic_f_S_BRNNGWTCH": {
       "id": "cosmetic_f_S_BRNNGWTCH",
       "type": "female",
       "position": "style",
-      "iconId": "f_S_M_BRNNGWTCH",
-      "silver": 8000,
-      "gold": 7
+      "iconId": "f_S_M_BRNNGWTCH"
     },
     "cosmetic_m_S_FIREDANCER": {
       "id": "cosmetic_m_S_FIREDANCER",
       "type": "male",
       "position": "style",
-      "iconId": "m_S_M_FIREDANCER",
-      "silver": 8000,
-      "gold": 7
+      "iconId": "m_S_M_FIREDANCER"
     },
     "cosmetic_m_S_BRNNGWTCH": {
       "id": "cosmetic_m_S_BRNNGWTCH",
       "type": "male",
       "position": "style",
-      "iconId": "m_S_M_BRNNGWTCH",
-      "silver": 8000,
-      "gold": 7
+      "iconId": "m_S_M_BRNNGWTCH"
     },
     "cosmetic_m_SC_DWO": {
       "id": "cosmetic_m_SC_DWO",
@@ -5857,41 +5713,31 @@
       "id": "cosmetic_f_S_ECLIPSE",
       "type": "female",
       "position": "style",
-      "iconId": "f_S_M_ECLIPSE",
-      "silver": 8000,
-      "gold": 7
+      "iconId": "f_S_M_ECLIPSE"
     },
     "cosmetic_f_S_CALYPSO": {
       "id": "cosmetic_f_S_CALYPSO",
       "type": "female",
       "position": "style",
-      "iconId": "f_S_M_CALYPSO",
-      "silver": 8000,
-      "gold": 7
+      "iconId": "f_S_M_CALYPSO"
     },
     "cosmetic_m_S_ECLIPSE": {
       "id": "cosmetic_m_S_ECLIPSE",
       "type": "male",
       "position": "style",
-      "iconId": "m_S_M_ECLIPSE",
-      "silver": 8000,
-      "gold": 7
+      "iconId": "m_S_M_ECLIPSE"
     },
     "cosmetic_f_S_THUNDERMOON": {
       "id": "cosmetic_f_S_THUNDERMOON",
       "type": "female",
       "position": "style",
-      "iconId": "f_S_M_THUNDERMOON",
-      "silver": 8000,
-      "gold": 7
+      "iconId": "f_S_M_THUNDERMOON"
     },
     "cosmetic_m_S_THUNDERMOON": {
       "id": "cosmetic_m_S_THUNDERMOON",
       "type": "male",
       "position": "style",
-      "iconId": "m_S_M_THUNDERMOON",
-      "silver": 8000,
-      "gold": 7
+      "iconId": "m_S_M_THUNDERMOON"
     },
     "cosmetic_f_C_MAGICINK": {
       "id": "cosmetic_f_C_MAGICINK",
@@ -5906,9 +5752,7 @@
       ],
       "white": [
         "f_C_W_MAGICINK"
-      ],
-      "silver": 1000,
-      "gold": 0
+      ]
     },
     "cosmetic_m_C_WITCHCO": {
       "id": "cosmetic_m_C_WITCHCO",
@@ -5938,9 +5782,7 @@
       ],
       "white": [
         "f_C_W_BUTTON"
-      ],
-      "silver": 2500,
-      "gold": 2
+      ]
     },
     "cosmetic_m_C_SSBUTTON": {
       "id": "cosmetic_m_C_SSBUTTON",
@@ -6015,9 +5857,7 @@
       ],
       "white": [
         "f_L_W_SHORTS"
-      ],
-      "silver": 1000,
-      "gold": 1
+      ]
     },
     "cosmetic_f_C_WITCHCO": {
       "id": "cosmetic_f_C_WITCHCO",
@@ -6032,9 +5872,7 @@
       ],
       "white": [
         "f_C_W_WITCHCO"
-      ],
-      "silver": 1000,
-      "gold": 0
+      ]
     },
     "cosmetic_f_L_ROMPER": {
       "id": "cosmetic_f_L_ROMPER",
@@ -6049,9 +5887,7 @@
       ],
       "white": [
         "f_L_W_ROMPER"
-      ],
-      "silver": 1500,
-      "gold": 1
+      ]
     },
     "cosmetic_f_HE_DWO": {
       "id": "cosmetic_f_HE_DWO",
@@ -6066,9 +5902,7 @@
       ],
       "white": [
         "f_HE_W_DWO"
-      ],
-      "silver": 1750,
-      "gold": 1
+      ]
     },
     "cosmetic_f_HE_HNO": {
       "id": "cosmetic_f_HE_HNO",
@@ -6083,9 +5917,7 @@
       ],
       "white": [
         "f_HE_W_HNO"
-      ],
-      "silver": 1000,
-      "gold": 0
+      ]
     },
     "cosmetic_m_HE_DWO": {
       "id": "cosmetic_m_HE_DWO",
@@ -6125,9 +5957,7 @@
       "shadow": [
         "f_HA_W_DWO_Front",
         "f_HA_W_DWO_Back"
-      ],
-      "silver": 1000,
-      "gold": 0
+      ]
     },
     "cosmetic_m_C_DSO": {
       "id": "cosmetic_m_C_DSO",
@@ -6157,9 +5987,7 @@
       ],
       "white": [
         "f_C_W_SCT"
-      ],
-      "silver": 1500,
-      "gold": 1
+      ]
     },
     "cosmetic_m_C_OPEN": {
       "id": "cosmetic_m_C_OPEN",
@@ -6219,9 +6047,7 @@
       ],
       "white": [
         "f_L_W_LS"
-      ],
-      "silver": 4000,
-      "gold": 3
+      ]
     },
     "cosmetic_m_L_PUFF": {
       "id": "cosmetic_m_L_PUFF",
@@ -6254,9 +6080,7 @@
       "iconId": "f_SS_G_CROWSKULL",
       "base": [
         "f_SS_G_CROWSKULL"
-      ],
-      "silver": 850,
-      "gold": 0
+      ]
     },
     "cosmetic_f_SC_ASTRONAUT": {
       "id": "cosmetic_f_SC_ASTRONAUT",
@@ -6265,9 +6089,7 @@
       "iconId": "f_SC_G_ASTRONAUT",
       "base": [
         "f_SC_G_ASTRONAUT"
-      ],
-      "silver": 2000,
-      "gold": 1
+      ]
     },
     "cosmetic_f_PF_SENTINALOWL": {
       "id": "cosmetic_f_PF_SENTINALOWL",
@@ -6276,9 +6098,7 @@
       "iconId": "f_PF_G_SENTINALOWL",
       "base": [
         "f_PF_G_SENTINALOWL"
-      ],
-      "silver": 1000,
-      "gold": 0
+      ]
     },
     "cosmetic_f_HE_HHO": {
       "id": "cosmetic_f_HE_HHO",
@@ -6293,9 +6113,7 @@
       ],
       "white": [
         "f_HE_W_HHO"
-      ],
-      "silver": 1750,
-      "gold": 1
+      ]
     },
     "cosmetic_f_HE_HBO": {
       "id": "cosmetic_f_HE_HBO",
@@ -6310,9 +6128,7 @@
       ],
       "white": [
         "f_HE_W_HBO"
-      ],
-      "silver": 1000,
-      "gold": 0
+      ]
     },
     "cosmetic_m_HE_KSO": {
       "id": "cosmetic_m_HE_KSO",
@@ -6339,9 +6155,7 @@
       ],
       "grey": [
         "f_HA_W_SNWDRP"
-      ],
-      "silver": 2000,
-      "gold": 1
+      ]
     },
     "cosmetic_f_C_KSO": {
       "id": "cosmetic_f_C_KSO",
@@ -6356,9 +6170,7 @@
       ],
       "white": [
         "f_C_W_KSO"
-      ],
-      "silver": 1750,
-      "gold": 1
+      ]
     },
     "cosmetic_m_C_DTO": {
       "id": "cosmetic_m_C_DTO",
@@ -6388,9 +6200,7 @@
       ],
       "white": [
         "f_C_W_TN"
-      ],
-      "silver": 1750,
-      "gold": 1
+      ]
     },
     "cosmetic_m_C_WBYE": {
       "id": "cosmetic_m_C_WBYE",
@@ -6420,9 +6230,7 @@
       ],
       "white": [
         "f_C_W_WBYE"
-      ],
-      "silver": 1000,
-      "gold": 0
+      ]
     },
     "cosmetic_f_H_BH": {
       "id": "cosmetic_f_H_BH",
@@ -6432,9 +6240,7 @@
       "base": [
         "f_H_S_BH_Relaxed",
         "f_H_S_BH_Censer"
-      ],
-      "silver": 1000,
-      "gold": 0
+      ]
     },
     "cosmetic_f_FR_KSO": {
       "id": "cosmetic_f_FR_KSO",
@@ -6444,9 +6250,7 @@
       "base": [
         "f_FR_G_KSO_Relaxed",
         "f_FR_G_KSO_Censer"
-      ],
-      "silver": 300,
-      "gold": 0
+      ]
     },
     "cosmetic_m_H_BH": {
       "id": "cosmetic_m_H_BH",
@@ -6471,9 +6275,7 @@
       ],
       "white": [
         "f_L_W_KSO"
-      ],
-      "silver": 1500,
-      "gold": 1
+      ]
     },
     "cosmetic_m_L_DWO": {
       "id": "cosmetic_m_L_DWO",
@@ -6539,9 +6341,7 @@
       "iconId": "f_CR_G_PRIMAVERA",
       "base": [
         "f_CR_G_PRIMAVERA"
-      ],
-      "silver": 5000,
-      "gold": 4
+      ]
     },
     "cosmetic_f_C_DWO": {
       "id": "cosmetic_f_C_DWO",
@@ -6556,9 +6356,7 @@
       ],
       "white": [
         "f_C_W_DWO"
-      ],
-      "silver": 5500,
-      "gold": 5
+      ]
     },
     "cosmetic_m_HE_BKSO": {
       "id": "cosmetic_m_HE_BKSO",
@@ -6603,9 +6401,7 @@
       ],
       "white": [
         "f_C_W_WRAP"
-      ],
-      "silver": 1500,
-      "gold": 1
+      ]
     },
     "cosmetic_m_SF_ANCHORBEARD": {
       "id": "cosmetic_m_SF_ANCHORBEARD",
@@ -6650,9 +6446,7 @@
       ],
       "white": [
         "f_C_W_KFO"
-      ],
-      "silver": 1750,
-      "gold": 1
+      ]
     },
     "cosmetic_m_C_KSO": {
       "id": "cosmetic_m_C_KSO",
@@ -6697,9 +6491,7 @@
       ],
       "white": [
         "f_C_W_ROMP"
-      ],
-      "silver": 1750,
-      "gold": 1
+      ]
     },
     "cosmetic_m_C_TUNIC": {
       "id": "cosmetic_m_C_TUNIC",
@@ -6724,9 +6516,7 @@
       "base": [
         "f_H_S_DWO_Relaxed",
         "f_H_S_DWO_Censer"
-      ],
-      "silver": 1500,
-      "gold": 1
+      ]
     },
     "cosmetic_m_FL_HFR": {
       "id": "cosmetic_m_FL_HFR",
@@ -6751,9 +6541,7 @@
       ],
       "white": [
         "f_L_W_KFO"
-      ],
-      "silver": 2000,
-      "gold": 1
+      ]
     },
     "cosmetic_m_L_KSO": {
       "id": "cosmetic_m_L_KSO",
@@ -6783,9 +6571,7 @@
       ],
       "white": [
         "f_L_W_DWO"
-      ],
-      "silver": 2000,
-      "gold": 1
+      ]
     },
     "cosmetic_m_L_HFO": {
       "id": "cosmetic_m_L_HFO",
@@ -6815,9 +6601,7 @@
       ],
       "white": [
         "f_L_W_SS"
-      ],
-      "silver": 1000,
-      "gold": 0
+      ]
     },
     "cosmetic_f_SS_BUTTERFLY": {
       "id": "cosmetic_f_SS_BUTTERFLY",
@@ -6826,9 +6610,7 @@
       "iconId": "f_SS_G_BUTTERFLY",
       "base": [
         "f_SS_G_BUTTERFLY"
-      ],
-      "silver": 700,
-      "gold": 0
+      ]
     },
     "cosmetic_m_SS_BUTTERFLY": {
       "id": "cosmetic_m_SS_BUTTERFLY",
@@ -6855,9 +6637,7 @@
       "iconId": "f_PF_G_WENDIGO",
       "base": [
         "f_PF_G_WENDIGO"
-      ],
-      "silver": 3000,
-      "gold": 2
+      ]
     },
     "cosmetic_m_PF_WENDIGO": {
       "id": "cosmetic_m_PF_WENDIGO",
@@ -6878,9 +6658,7 @@
       ],
       "white": [
         "f_HA_W_BUN"
-      ],
-      "silver": 2000,
-      "gold": 1
+      ]
     },
     "cosmetic_m_HA_LT": {
       "id": "cosmetic_m_HA_LT",
@@ -6904,9 +6682,7 @@
       ],
       "white": [
         "f_HA_W_WAVE"
-      ],
-      "silver": 2500,
-      "gold": 2
+      ]
     },
     "cosmetic_m_N_WOLFAMULET": {
       "id": "cosmetic_m_N_WOLFAMULET",
@@ -6924,9 +6700,7 @@
       "iconId": "f_PF_G_BARGHEST",
       "base": [
         "f_PF_G_BARGHEST"
-      ],
-      "silver": 1000,
-      "gold": 0
+      ]
     },
     "cosmetic_m_PF_BARGHEST": {
       "id": "cosmetic_m_PF_BARGHEST",
@@ -6944,9 +6718,7 @@
       "iconId": "f_PF_G_GRINDYLOW",
       "base": [
         "f_PF_G_GRINDYLOW"
-      ],
-      "silver": 2000,
-      "gold": 1
+      ]
     },
     "cosmetic_m_PF_GRINDYLOW": {
       "id": "cosmetic_m_PF_GRINDYLOW",
@@ -6964,9 +6736,7 @@
       "iconId": "f_PF_G_CATSIDHE",
       "base": [
         "f_PF_G_CATSIDHE"
-      ],
-      "silver": 1000,
-      "gold": 0
+      ]
     },
     "cosmetic_m_PF_CATSIDHE": {
       "id": "cosmetic_m_PF_CATSIDHE",
@@ -6987,9 +6757,7 @@
       ],
       "white": [
         "f_HA_W_BRD"
-      ],
-      "silver": 2500,
-      "gold": 2
+      ]
     },
     "cosmetic_m_HE_BIRDSKULL": {
       "id": "cosmetic_m_HE_BIRDSKULL",
@@ -7007,9 +6775,7 @@
       "iconId": "f_HE_G_BDH",
       "base": [
         "f_HE_G_BDH"
-      ],
-      "silver": 3000,
-      "gold": 2
+      ]
     },
     "cosmetic_f_HA_PNY": {
       "id": "cosmetic_f_HA_PNY",
@@ -7021,9 +6787,7 @@
       ],
       "white": [
         "f_HA_W_PNY"
-      ],
-      "silver": 500,
-      "gold": 0
+      ]
     },
     "cosmetic_f_HA_BOB": {
       "id": "cosmetic_f_HA_BOB",
@@ -7035,9 +6799,7 @@
       ],
       "white": [
         "f_HA_W_BOB"
-      ],
-      "silver": 2000,
-      "gold": 1
+      ]
     },
     "cosmetic_f_N_FANCYCHOKER": {
       "id": "cosmetic_f_N_FANCYCHOKER",
@@ -7046,9 +6808,7 @@
       "iconId": "f_N_G_FANCYCHOKER",
       "base": [
         "f_N_G_FANCYCHOKER"
-      ],
-      "silver": 700,
-      "gold": 0
+      ]
     },
     "cosmetic_m_HE_BDH": {
       "id": "cosmetic_m_HE_BDH",
@@ -7081,9 +6841,7 @@
       ],
       "white": [
         "f_HA_W_SPK"
-      ],
-      "silver": 500,
-      "gold": 0
+      ]
     },
     "cosmetic_m_HA_BUN": {
       "id": "cosmetic_m_HA_BUN",
@@ -7104,9 +6862,7 @@
       "iconId": "f_C_G_MESHDRESS",
       "base": [
         "f_C_G_MESHDRESS"
-      ],
-      "silver": 2500,
-      "gold": 2
+      ]
     },
     "cosmetic_f_HA_CURL": {
       "id": "cosmetic_f_HA_CURL",
@@ -7118,9 +6874,7 @@
       ],
       "white": [
         "f_HA_W_CURL"
-      ],
-      "silver": 2500,
-      "gold": 2
+      ]
     },
     "cosmetic_m_CL_KIM": {
       "id": "cosmetic_m_CL_KIM",
@@ -7150,9 +6904,7 @@
       "iconId": "f_N_G_MOONNECKLACE",
       "base": [
         "f_N_G_MOONNECKLACE"
-      ],
-      "silver": 400,
-      "gold": 0
+      ]
     },
     "cosmetic_f_CR_DWO": {
       "id": "cosmetic_f_CR_DWO",
@@ -7161,9 +6913,7 @@
       "iconId": "f_CR_S_DWO",
       "base": [
         "f_CR_S_DWO"
-      ],
-      "silver": 0,
-      "gold": 0
+      ]
     },
     "cosmetic_f_CR_SMMRSOL": {
       "id": "cosmetic_f_CR_SMMRSOL",
@@ -7172,9 +6922,7 @@
       "iconId": "f_CR_G_SMMRSOL",
       "base": [
         "f_CR_G_SMMRSOL"
-      ],
-      "silver": 5000,
-      "gold": 4
+      ]
     },
     "cosmetic_m_N_CROWAMULET": {
       "id": "cosmetic_m_N_CROWAMULET",
@@ -7222,9 +6970,7 @@
       "iconId": "f_SS_G_UNICORN",
       "base": [
         "f_SS_G_UNICORN"
-      ],
-      "silver": 1250,
-      "gold": 1
+      ]
     },
     "cosmetic_m_SS_PYRAMIDS": {
       "id": "cosmetic_m_SS_PYRAMIDS",
@@ -7260,9 +7006,7 @@
       "iconId": "f_CR_G_DSO",
       "base": [
         "f_CR_G_DSO"
-      ],
-      "silver": 0,
-      "gold": 0
+      ]
     },
     "cosmetic_m_CL_DTO": {
       "id": "cosmetic_m_CL_DTO",
@@ -7280,9 +7024,7 @@
       "iconId": "f_CR_S_SHADOW",
       "base": [
         "f_CR_S_SHADOW"
-      ],
-      "silver": 5000,
-      "gold": 4
+      ]
     },
     "cosmetic_m_CL_GRAY": {
       "id": "cosmetic_m_CL_GRAY",
@@ -7327,9 +7069,7 @@
       "iconId": "f_CR_W_WHITE",
       "base": [
         "f_CR_W_WHITE"
-      ],
-      "silver": 5000,
-      "gold": 4
+      ]
     },
     "cosmetic_m_CL_SHADOW": {
       "id": "cosmetic_m_CL_SHADOW",
@@ -7356,9 +7096,7 @@
       "iconId": "f_CR_W_DTO",
       "base": [
         "f_CR_W_DTO"
-      ],
-      "silver": 0,
-      "gold": 0
+      ]
     },
     "cosmetic_f_SS_BALLET": {
       "id": "cosmetic_f_SS_BALLET",
@@ -7367,9 +7105,7 @@
       "iconId": "f_SS_G_BALLET",
       "base": [
         "f_SS_G_BALLET"
-      ],
-      "silver": 550,
-      "gold": 0
+      ]
     },
     "cosmetic_f_CR_KIM": {
       "id": "cosmetic_f_CR_KIM",
@@ -7378,9 +7114,7 @@
       "iconId": "f_CR_G_KIM",
       "base": [
         "f_CR_G_KIM"
-      ],
-      "silver": 5000,
-      "gold": 4
+      ]
     },
     "cosmetic_f_CR_GRAY": {
       "id": "cosmetic_f_CR_GRAY",
@@ -7389,9 +7123,7 @@
       "iconId": "f_CR_G_GRAY",
       "base": [
         "f_CR_G_GRAY"
-      ],
-      "silver": 5000,
-      "gold": 4
+      ]
     },
     "cosmetic_m_SS_BALLET": {
       "id": "cosmetic_m_SS_BALLET",
@@ -7436,9 +7168,7 @@
       "iconId": "f_SS_G_MOLOTOV",
       "base": [
         "f_SS_G_MOLOTOV"
-      ],
-      "silver": 1250,
-      "gold": 1
+      ]
     },
     "cosmetic_m_SS_UNICORN": {
       "id": "cosmetic_m_SS_UNICORN",
@@ -7465,9 +7195,7 @@
       "iconId": "f_SS_G_PYRAMIDS",
       "base": [
         "f_SS_G_PYRAMIDS"
-      ],
-      "silver": 700,
-      "gold": 0
+      ]
     },
     "cosmetic_m_SS_MOLOTOV": {
       "id": "cosmetic_m_SS_MOLOTOV",
@@ -7485,9 +7213,7 @@
       "iconId": "f_SC_G_COFFIN",
       "base": [
         "f_SC_G_COFFIN"
-      ],
-      "silver": 1750,
-      "gold": 1
+      ]
     },
     "cosmetic_f_SC_SPIDER": {
       "id": "cosmetic_f_SC_SPIDER",
@@ -7496,9 +7222,7 @@
       "iconId": "f_SC_G_SPIDER",
       "base": [
         "f_SC_G_SPIDER"
-      ],
-      "silver": 2150,
-      "gold": 1
+      ]
     },
     "cosmetic_m_SC_COFFIN": {
       "id": "cosmetic_m_SC_COFFIN",
@@ -7516,9 +7240,7 @@
       "iconId": "f_SA_G_LEOPARD",
       "base": [
         "f_SA_G_LEOPARD"
-      ],
-      "silver": 3000,
-      "gold": 2
+      ]
     },
     "cosmetic_f_SC_BIRDCAGE": {
       "id": "cosmetic_f_SC_BIRDCAGE",
@@ -7527,9 +7249,7 @@
       "iconId": "f_SC_G_BIRDCAGE",
       "base": [
         "f_SC_G_BIRDCAGE"
-      ],
-      "silver": 1650,
-      "gold": 1
+      ]
     },
     "cosmetic_m_SA_LEOPARD": {
       "id": "cosmetic_m_SA_LEOPARD",
@@ -7556,9 +7276,7 @@
       "iconId": "f_SS_G_JOKER",
       "base": [
         "f_SS_G_JOKER"
-      ],
-      "silver": 1250,
-      "gold": 1
+      ]
     },
     "cosmetic_f_SS_COUPLE": {
       "id": "cosmetic_f_SS_COUPLE",
@@ -7567,9 +7285,7 @@
       "iconId": "f_SS_G_COUPLE",
       "base": [
         "f_SS_G_COUPLE"
-      ],
-      "silver": 800,
-      "gold": 0
+      ]
     },
     "cosmetic_m_SS_JOKER": {
       "id": "cosmetic_m_SS_JOKER",
@@ -7596,9 +7312,7 @@
       "iconId": "f_SC_G_ELEPHANT",
       "base": [
         "f_SC_G_ELEPHANT"
-      ],
-      "silver": 2000,
-      "gold": 1
+      ]
     },
     "cosmetic_f_SC_SUN": {
       "id": "cosmetic_f_SC_SUN",
@@ -7607,9 +7321,7 @@
       "iconId": "f_SC_G_SUN",
       "base": [
         "f_SC_G_SUN"
-      ],
-      "silver": 2000,
-      "gold": 1
+      ]
     },
     "cosmetic_m_SC_SUN": {
       "id": "cosmetic_m_SC_SUN",
@@ -7627,9 +7339,7 @@
       "iconId": "f_SS_G_PUPPET",
       "base": [
         "f_SS_G_PUPPET"
-      ],
-      "silver": 700,
-      "gold": 0
+      ]
     },
     "cosmetic_m_SS_PUPPET": {
       "id": "cosmetic_m_SS_PUPPET",
@@ -7652,8 +7362,6 @@
   },
   "Bundles": {
     "bundle_abondiasBest": {
-      "silver": 300,
-      "gold": 0,
       "collectables": [
         "coll_ironCollar",
         "coll_betony",
@@ -7684,8 +7392,6 @@
       ]
     },
     "bundle_sapphosChoice": {
-      "silver": 300,
-      "gold": 0,
       "collectables": [
         "coll_borage",
         "coll_lobelia",
@@ -7714,8 +7420,6 @@
       ]
     },
     "bundle_hermeticCollection": {
-      "silver": 300,
-      "gold": 0,
       "collectables": [
         "coll_fennel",
         "coll_birch",
@@ -7750,38 +7454,24 @@
   },
   "Consumables": {
     "consumable_alignmentBoosterSmaller": {
-      "silver": 100,
-      "gold": 0,
       "duration": 60
     },
     "consumable_alignmentBoosterMedium": {
-      "silver": 300,
-      "gold": 0,
       "duration": 60
     },
     "consumable_alignmentBoosterGreater": {
-      "silver": 500,
-      "gold": 0,
       "duration": 60
     },
     "consumable_xpBoosterSmaller": {
-      "silver": 100,
-      "gold": 0,
       "duration": 60
     },
     "consumable_xpBoosterMedium": {
-      "silver": 300,
-      "gold": 0,
       "duration": 60
     },
     "consumable_xpBoosterGreater": {
-      "silver": 500,
-      "gold": 0,
       "duration": 60
     },
     "consumable_invisible": {
-      "silver": 200,
-      "gold": 0,
       "duration": 0
     }
   },
