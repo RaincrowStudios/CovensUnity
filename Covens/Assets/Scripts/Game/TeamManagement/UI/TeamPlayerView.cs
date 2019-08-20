@@ -28,6 +28,7 @@ public class TeamPlayerView : MonoBehaviour
     public ApparelView female;
     public Button flyToPlayerBtn;
     public Button btnBack;
+    public Button inviteToCoven;
 
     public Sprite whiteSchool;
     public Sprite shadowSchool;
@@ -42,9 +43,9 @@ public class TeamPlayerView : MonoBehaviour
     void Awake()
     {
         Instance = this;
-
         btnBack.onClick.AddListener(OnClickClose);
         flyToPlayerBtn.onClick.AddListener(FlyToPlayer);
+
 
         m_Canvas.enabled = false;
         m_InputRaycaster.enabled = false;
@@ -53,6 +54,20 @@ public class TeamPlayerView : MonoBehaviour
 
     public void Show(WitchMarkerData data, System.Action onFly = null, System.Action onCoven = null, System.Action onClose = null)
     {
+        inviteToCoven.onClick.RemoveAllListeners();
+        inviteToCoven.onClick.AddListener(() =>
+        {
+            InviteToCoven(data.name);
+        });
+        if (string.IsNullOrEmpty(data.coven))
+        {
+            inviteToCoven.gameObject.SetActive(true);
+        }
+        else
+        {
+            inviteToCoven.gameObject.SetActive(false);
+        }
+
         flyToPlayerBtn.interactable = data.covenId == PlayerDataManager.playerData.covenId;
 
         playerPos.x = data.longitude;
@@ -185,5 +200,24 @@ public class TeamPlayerView : MonoBehaviour
                     callback?.Invoke(null, APIManager.ParseError(response));
                 }
             });
+    }
+    public void InviteToCoven(string id)
+    {
+        if (string.IsNullOrEmpty(TeamManager.MyCovenId) == false)
+        {
+            LoadingOverlay.Show();
+            TeamManager.SendInvite(id, true, (invite, error) =>
+            {
+                LoadingOverlay.Hide();
+                if (string.IsNullOrEmpty(error))
+                {
+                    UIGlobalPopup.ShowPopUp(null, LocalizeLookUp.GetText("coven_invite_success"));
+                }
+                else
+                {
+                    UIGlobalPopup.ShowError(null, error);
+                }
+            });
+        }
     }
 }
