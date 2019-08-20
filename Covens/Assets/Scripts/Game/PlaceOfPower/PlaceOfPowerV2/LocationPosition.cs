@@ -25,7 +25,7 @@ public class LocationPosition : MonoBehaviour
             if (LocationPlayerAction.CanSelectIsland(token))
             {
                 LocationUnitSpawner.SetHighlight(token);
-                LocationPlayerAction.MakeVisible();
+                LocationPlayerAction.ShowActions();
                 LocationPlayerAction.SetSelectedPosition(this);
             }
             else
@@ -35,7 +35,7 @@ public class LocationPosition : MonoBehaviour
         }
         else
         {
-            LocationPlayerAction.MakeTransparent();
+            LocationPlayerAction.ShowActions();
         }
     }
 
