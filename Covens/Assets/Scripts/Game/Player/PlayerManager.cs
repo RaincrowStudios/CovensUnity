@@ -77,7 +77,6 @@ public class PlayerManager : MonoBehaviour
 
     public static event Action onStartFlight;
     public static event Action onFinishFlight;
-    //public static event Action onQuickFlight; // quick flight usually happens when you click on a 'go to location' chat message
 
     void Awake()
     {
@@ -103,8 +102,7 @@ public class PlayerManager : MonoBehaviour
         GardenMarkers.instance.SetupGardens();
         SoundManagerOneShot.Instance.PlayWelcome();
     }
-
-
+    
     void onMapChangePos()
     {
         SnapMapToPosition = false;
@@ -131,52 +129,6 @@ public class PlayerManager : MonoBehaviour
         AddAttackRing();
 
         marker.OnClick += (m) => OnClickSelf();
-    }
-
-
-    void SpawnPhysicalPlayer()
-    {
-        #region compare coordinates
-        double x1, y1, x2, y2;
-        //marker.GetPosition(out x1, out y1);
-        Vector2 aux = marker.Coords;
-        x1 = aux.x;
-        y1 = aux.y;
-
-        var pos = GetGPS.coordinates;
-        x2 = pos.x;
-        y2 = pos.y;
-        x2 = System.Math.Round(x2, 6);
-        y2 = System.Math.Round(y2, 6);
-        x1 = System.Math.Round(x1, 6);
-        y1 = System.Math.Round(y1, 6);
-        #endregion
-
-        if (x2 != x1 && y2 != y1)
-        {
-            //physicalMarker = MapsAPI.Instance.AddMarker(pos, physicalMarkerPrefab);
-            //physicalMarker.scale = playerPhysicalScale;
-            //physicalMarker.SetRange(3, 20);
-            //physicalMarker.instance.name = "_PhysicalMarker";
-            //physicalMarker.instance.GetComponentInChildren<SpriteRenderer>().sortingOrder = 4;
-            //inSpiritForm = true;
-            //var ms = physicalMarker.instance.GetComponent<MarkerScaleManager>();
-            //ms.iniScale = physicalMarker.scale;
-            //ms.m = physicalMarker;
-        }
-        else
-        {
-            //if (physicalMarker != null)
-            //{
-            //    MapsAPI.Instance.RemoveMarker(PlayerManager.physicalMarker);
-            //}
-        }
-    }
-
-    void fadePlayerMarker()
-    {
-        //var g = Utilities.InstantiateObject(transFormPrefab, marker.gameObject.transform);
-        //marker.gameObject.GetComponentInChildren<SpriteRenderer>().color = new Color(1, 1, 1, .25f);
     }
 
     [ContextMenu("Cancel flight")]
@@ -239,18 +191,7 @@ public class PlayerManager : MonoBehaviour
 
         MapFlightTransition.Instance.RecallHome();
     }
-
-    public static void CenterMapOnPlayer()
-    {
-        double x, y;
-        //marker.GetPosition(out x, out y);
-        Vector2 aux = marker.Coords;
-        x = aux.x;
-        y = aux.y;
-
-        MapsAPI.Instance.SetPosition(x, y);
-    }
-
+    
     public void AddAttackRing()
     {
         selectionRing = marker.GameObject.transform.GetChild(0).GetChild(2).gameObject;
@@ -340,7 +281,7 @@ public class PlayerManager : MonoBehaviour
         Vector3 previousPosition = MapsAPI.Instance.mapCenter.position;
         float previousZoom = Mathf.Min(0.98f, MapsAPI.Instance.normalizedZoom);
 
-        List<SpellData> spells = new List<SpellData>(PlayerDataManager.playerData.Spells);
+        List<SpellData> spells = new List<SpellData>(PlayerDataManager.playerData.UnlockedSpells);
         //spells.RemoveAll(spell => spell.target == SpellData.Target.OTHER);
 
         UISpellcastBook.Open(PlayerDataManager.playerData, marker, spells,
@@ -360,4 +301,8 @@ public class PlayerManager : MonoBehaviour
                 MapCameraUtils.FocusOnPosition(previousPosition, previousZoom, true);
             });
     }
+
+    public static string GetQuickcastSpell(int index) => PlayerPrefs.GetString($"{PlayerDataManager.playerData.instance}.quickcast.{index}", null);
+
+    public static void SetQuickcastSpell(int index, string spell) => PlayerPrefs.SetString($"{PlayerDataManager.playerData.instance}.quickcast.{index}", spell);
 }

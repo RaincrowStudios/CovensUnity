@@ -40,8 +40,14 @@ public class EditorScenes : MonoBehaviour
     [MenuItem("Scenes/Screens/Grey Hand Office")]
     static void GreyHandOfficeScene() => OpenScene("GreyHandOffice");
 
-    [MenuItem("Scenes/Screens/QuickCast Picker")]
-    static void QuickCastPickerScene() => OpenScene("QuickCastPicker");
+    [MenuItem("Scenes/Screens/QuickCast")]
+    static void QuickCastScene() => OpenScene("QuickCast");
+
+    [MenuItem("Scenes/Screens/PlayerSelect")]
+    static void PlayerSelectScene() => OpenScene("PlayerSelect");
+
+    [MenuItem("Scenes/Screens/SpiritSelect")]
+    static void SpiritSelectScene() => OpenScene("SpiritSelect");
 
     private static void OpenScene(string name)
     {

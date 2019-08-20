@@ -15,49 +15,24 @@ public class UIQuickCastPicker : MonoBehaviour
     [SerializeField] private RectTransform m_WhiteContainer;
     [SerializeField] private RectTransform m_GreyContainer;
     [SerializeField] private RectTransform m_ShadowContainer;
-
-    private static UIQuickCastPicker m_Instance;
-
+    
     private bool m_SpellsSpawned = false;
-    private System.Action<SpellData> m_OnSelectSpell;
-
-    private static void Open(System.Action<SpellData> onClick)
-    {
-        if (m_Instance != null)
-        {
-            m_Instance.Show(onClick);
-        }
-        else
-        {
-            LoadingOverlay.Show();
-            SceneManager.LoadSceneAsync(SceneManager.Scene.QUICKCAST_PICKER, 
-                UnityEngine.SceneManagement.LoadSceneMode.Additive,
-                null,
-                () =>
-                {
-                    m_Instance.Show(onClick);
-                    LoadingOverlay.Hide();
-                });
-        }
-    }
-
+    private string m_SelectedSpell = null;
+    private System.Action<string> m_OnSelectSpell;
+    private System.Action m_OnClose;
+    
     private void Awake()
     {
-        m_Instance = this;
         m_Canvas.enabled = false;
         m_InputRaycaster.enabled = false;
-
-        DownloadedAssets.OnWillUnloadAssets += DownloadedAssets_OnWillUnloadAssets;
+        m_CloseButton.onClick.AddListener(Hide);
     }
 
-    private void DownloadedAssets_OnWillUnloadAssets()
+    public void Show(string selected, System.Action<string> onSelect, System.Action onClose)
     {
-        DownloadedAssets.OnWillUnloadAssets -= DownloadedAssets_OnWillUnloadAssets;        
-        SceneManager.UnloadScene(SceneManager.Scene.QUICKCAST_PICKER, null, null);
-    }
+        m_OnSelectSpell = onSelect;
+        m_OnClose = onClose;
 
-    private void Show(System.Action<SpellData> onClick)
-    {
         if (!m_SpellsSpawned)
         {
             StartCoroutine(SpawnSpellsCoroutine());
@@ -69,11 +44,14 @@ public class UIQuickCastPicker : MonoBehaviour
 
     private void Hide()
     {
+        m_OnClose?.Invoke();
+        m_OnClose = null;
+
         m_Canvas.enabled = false;
         m_InputRaycaster.enabled = false;
     }
 
-    private void OnClickSpell(SpellData spell)
+    private void OnClickSpell(string spell)
     {
         Hide();
         m_OnSelectSpell?.Invoke(spell);
@@ -90,7 +68,7 @@ public class UIQuickCastPicker : MonoBehaviour
 
         m_SpellsSpawned = true;
 
-        foreach (SpellData spell in PlayerDataManager.playerData.Spells)
+        foreach (SpellData spell in PlayerDataManager.playerData.UnlockedSpells)
         {
             SetupSpell(spell);
             yield return 0;// new WaitForSeconds(0.1f);
@@ -112,22 +90,10 @@ public class UIQuickCastPicker : MonoBehaviour
 
         Button button = item.GetComponent<Button>();
         TextMeshProUGUI title = item.GetComponentInChildren<TextMeshProUGUI>();
-        Image icon = item.GetChild(1).GetComponent<Image>();
+        Image icon = item.GetChild(0).GetChild(0).GetComponent<Image>();
 
-        button.onClick.AddListener(() => OnClickSpell(spell));
+        button.onClick.AddListener(() => OnClickSpell(spell.id));
         title.text = spell.Name;
         DownloadedAssets.GetSprite(spell.id, icon);
-    }
-
-    [ContextMenu("Open")]
-    private void DebugOpen()
-    {
-        Open(null);
-    }
-
-    [ContextMenu("Close")]
-    private void DebugCLose()
-    {
-        Hide();
-    }    
+    }  
 }

@@ -65,7 +65,7 @@ public class LocationPlayerAction : MonoBehaviour
 
     private static void CenterOnPlayer()
     {
-        if (!UIPlayerInfo.Instance.IsShowing && !UISpellcastBook.IsOpen)
+        if (!UIPlayerInfo.isShowing && !UISpellcastBook.IsOpen)
         {
             LocationIslandController.moveCamera(playerMarker.AvatarTransform.position);
         }

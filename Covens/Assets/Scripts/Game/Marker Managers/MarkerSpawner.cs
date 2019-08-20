@@ -241,21 +241,20 @@ public class MarkerSpawner : MarkerManager
 
         if (Data.Type == MarkerType.WITCH)
         {
-            UIPlayerInfo.Instance.Show(m as WitchMarker, Data as WitchToken);
+            UIQuickCast.Open();
+            UIPlayerInfo.Show(m as WitchMarker, Data as WitchToken, UIQuickCast.Close);
         }
         else if (Data.Type == MarkerType.SPIRIT)
         {
-            UISpiritInfo.Instance.Show(m, Data);
+            UIQuickCast.Open();
+            UISpiritInfo.Show(m as SpiritMarker, Data as SpiritToken, UIQuickCast.Close);
         }
         else if (Data.Type == MarkerType.HERB || Data.Type == MarkerType.TOOL || Data.Type == MarkerType.GEM)
         {
             PickUpCollectibleAPI.PickUpCollectable(m as CollectableMarker);
             return;
         }
-
-        TargetMarkerDetailData data = new TargetMarkerDetailData();
-        data.target = instanceID;
-
+        
         if (selectedType == MarkerType.ENERGY && lastEnergyInstance != instanceID)
         {
             if (PlayerDataManager.playerData.energy >= (PlayerDataManager.playerData.baseEnergy * 2))
@@ -321,17 +320,24 @@ public class MarkerSpawner : MarkerManager
                     SelectWitchData_Map witch = JsonConvert.DeserializeObject<SelectWitchData_Map>(response);
                     witch.token = marker.Token as WitchToken;
 
-                    if (UIPlayerInfo.isShowing && UIPlayerInfo.Instance.WitchToken.instance == instance)
-                        UIPlayerInfo.Instance.SetupDetails(witch);
+                    if (UIPlayerInfo.isShowing && UIPlayerInfo.WitchToken.instance == instance)
+                    {
+                        UIPlayerInfo.SetupDetails(witch);
+                        UIQuickCast.UpdateCanCast(marker, witch);
+                    }
                     break;
 
                 case MarkerType.SPIRIT:
                     FirstTapVideoManager.Instance.CheckSpellCasting();
+
                     SelectSpiritData_Map spirit = JsonConvert.DeserializeObject<SelectSpiritData_Map>(response);
                     spirit.token = marker.Token as SpiritToken;
 
-                    if (UISpiritInfo.isOpen && UISpiritInfo.Instance.SpiritToken.instance == instance)
-                        UISpiritInfo.Instance.SetupDetails(spirit);
+                    if (UISpiritInfo.isOpen && UISpiritInfo.SpiritToken.instance == instance)
+                    {
+                        UISpiritInfo.SetupDetails(spirit);
+                        UIQuickCast.UpdateCanCast(marker, spirit);
+                    }
 
                     if (spirit.state == "dead")
                         RemoveTokenHandler.ForceEvent(instance);
@@ -349,16 +355,16 @@ public class MarkerSpawner : MarkerManager
             switch (marker.Type)
             {
                 case MarkerType.WITCH:
-                    if (UIPlayerInfo.isShowing && UIPlayerInfo.Instance.WitchToken.instance == instance)
+                    if (UIPlayerInfo.isShowing && UIPlayerInfo.WitchToken.instance == instance)
                     {
-                        UIGlobalPopup.ShowError(() => UIPlayerInfo.Instance.SetupDetails(null), APIManager.ParseError(response));
+                        UIGlobalPopup.ShowError(null, APIManager.ParseError(response));
                     }
                     break;
 
                 case MarkerType.SPIRIT:
-                    if (UISpiritInfo.isOpen && UISpiritInfo.Instance.SpiritToken.instance == instance)
+                    if (UISpiritInfo.isOpen && UISpiritInfo.SpiritToken.instance == instance)
                     {
-                        UIGlobalPopup.ShowError(() => UISpiritInfo.Instance.SetupDetails(null), APIManager.ParseError(response));
+                        UIGlobalPopup.ShowError(null, APIManager.ParseError(response));
                     }
                     break;
 

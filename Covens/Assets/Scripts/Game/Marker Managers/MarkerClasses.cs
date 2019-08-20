@@ -231,7 +231,9 @@ public class PlayerData : WitchMarkerData
     [JsonIgnore] private Dictionary<string, int> m_ToolsDict = null;
     [JsonIgnore] private Dictionary<string, int> m_GemsDict = null;
     [JsonIgnore] private Inventory m_Inventory = null;
-    [JsonIgnore] private List<SpellData> m_Spells;
+
+    [JsonIgnore] private List<SpellData> m_AllSpells;
+    [JsonIgnore] private List<SpellData> m_UnlockedSpells;
 
     public List<string> spirits;
     public List<KnownSpirits> knownSpirits;
@@ -280,17 +282,22 @@ public class PlayerData : WitchMarkerData
 
     public void UpdateSpells()
     {
-        m_Spells = new List<SpellData>();
-        foreach (var item in DownloadedAssets.spellDictData.Values)
-        {
-            if (item.hidden)
-                continue;
-            //if (item.level > level)
-            //    continue;
+        List<SpellData> dictionary = new List<SpellData>(DownloadedAssets.spellDictData.Values);
 
-            m_Spells.Add(item);
+        m_AllSpells = new List<SpellData>();
+        foreach (var spell in dictionary)
+        {
+            if (!spell.hidden)
+                m_AllSpells.Add(spell);
         }
-        m_Spells.Sort(new System.Comparison<SpellData>((a, b) => a.Name.CompareTo(b.Name)));
+        m_AllSpells.Sort(new System.Comparison<SpellData>((a, b) => a.Name.CompareTo(b.Name)));
+
+        m_UnlockedSpells = new List<SpellData>();
+        foreach (var spell in m_AllSpells)
+        {
+            if (spell.level <= level)
+                m_UnlockedSpells.Add(spell);
+        }
     }
 
     public int GetIngredient(string id)
@@ -427,7 +434,10 @@ public class PlayerData : WitchMarkerData
     public double lastEnergyUpdate;
     
     [JsonIgnore]
-    public List<SpellData> Spells => m_Spells;
+    public List<SpellData> Spells => m_AllSpells;
+
+    [JsonIgnore]
+    public List<SpellData> UnlockedSpells => m_UnlockedSpells;
 
     [JsonIgnore]
     public long minAlignment

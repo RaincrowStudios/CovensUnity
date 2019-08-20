@@ -122,11 +122,11 @@ public class LocationUnitSpawner : MonoBehaviour
         }
         if (token.Type == MarkerType.WITCH)
         {
-            UIPlayerInfo.Instance.ShowPOP(m as WitchMarker, token as WitchToken);
+            UIPlayerInfo.Show(m as WitchMarker, token as WitchToken);
         }
         else if (token.Type == MarkerType.SPIRIT)
         {
-            UISpiritInfo.Instance.Show(m, token);
+            UISpiritInfo.Show(m as SpiritMarker, token as SpiritToken);
         }
         SetHighlight(token);
         LocationIslandController.moveCamera(m.AvatarTransform.position);
@@ -141,16 +141,16 @@ public class LocationUnitSpawner : MonoBehaviour
                     SelectWitchData_Map witch = JsonConvert.DeserializeObject<SelectWitchData_Map>(response);
                     witch.token = token as WitchToken;
 
-                    if (UIPlayerInfo.isShowing && UIPlayerInfo.Instance.WitchToken.instance == token.instance)
-                        UIPlayerInfo.Instance.SetupDetails(witch);
+                    if (UIPlayerInfo.isShowing && UIPlayerInfo.WitchToken.instance == token.instance)
+                        UIPlayerInfo.SetupDetails(witch);
                 }
                 else if (m.Type == MarkerType.SPIRIT)
                 {
                     SelectSpiritData_Map spirit = JsonConvert.DeserializeObject<SelectSpiritData_Map>(response);
                     spirit.token = token as SpiritToken;
 
-                    if (UISpiritInfo.isOpen && UISpiritInfo.Instance.SpiritToken.instance == token.instance)
-                        UISpiritInfo.Instance.SetupDetails(spirit);
+                    if (UISpiritInfo.isOpen && UISpiritInfo.SpiritToken.instance == token.instance)
+                        UISpiritInfo.SetupDetails(spirit);
 
                     if (spirit.state == "dead")
                     {

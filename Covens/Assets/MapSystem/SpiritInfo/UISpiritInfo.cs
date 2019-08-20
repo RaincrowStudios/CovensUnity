@@ -5,34 +5,26 @@ using UnityEngine.UI;
 using TMPro;
 using Raincrow.Maps;
 using Raincrow.GameEventResponses;
+using Raincrow;
 
 public class UISpiritInfo : UIInfoPanel
 {
-    [SerializeField] private UIQuickCast m_CastMenu;
     [SerializeField] private UIConditionList m_ConditionList;
+    [SerializeField] private Image m_SpiritArt;
 
     [Header("Texts")]
     [SerializeField] private TextMeshProUGUI m_SpiritName;
     [SerializeField] private TextMeshProUGUI m_Tier;
+    [SerializeField] private TextMeshProUGUI m_Level;
     [SerializeField] private TextMeshProUGUI m_Energy;
     [SerializeField] private TextMeshProUGUI m_Desc;
 
     [Header("Buttons")]
     [SerializeField] private Button m_InfoButton;
-    [SerializeField] private Button m_DescButton;
-    [SerializeField] private Button m_BackButton;
+    [SerializeField] private Button m_OwnerButton;
     [SerializeField] private Button m_CloseButton;
 
     private static UISpiritInfo m_Instance;
-    public static UISpiritInfo Instance
-    {
-        get
-        {
-            if (m_Instance == null)
-                m_Instance = Instantiate(Resources.Load<UISpiritInfo>("UISpiritInfo"));
-            return m_Instance;
-        }
-    }
 
     public static bool isOpen
     {
@@ -45,41 +37,71 @@ public class UISpiritInfo : UIInfoPanel
         }
     }
 
-    private SpiritMarker m_SpiritMarker;
-    private SpiritToken m_SpiritToken;
+    public static void Show(SpiritMarker spirit, SpiritToken data, System.Action onClose = null)
+    {
+        if (m_Instance != null)
+        {
+            m_Instance._Show(spirit, data, onClose);
+        }
+        else
+        {
+            LoadingOverlay.Show();
+            SceneManager.LoadSceneAsync(SceneManager.Scene.SPIRIT_SELECT,
+                UnityEngine.SceneManagement.LoadSceneMode.Additive,
+                null,
+                () =>
+                {
+                    m_Instance._Show(spirit, data, onClose);
+                    LoadingOverlay.Hide();
+                });
+        }
+    }
+
+    public static void SetupDetails(SelectSpiritData_Map data)
+    {
+        if (m_Instance == null)
+            return;
+
+        m_Instance._SetupDetails(data);
+    }
+
     private SpiritData m_SpiritData;
     private SelectSpiritData_Map m_SpiritDetails;
-
+    private System.Action m_OnClose;
     private float m_PreviousMapZoom;
 
-    public SpiritToken SpiritToken { get { return m_SpiritToken; } }
+    public static SpiritMarker SpiritMarker { get; private set; }
+    public static SpiritToken SpiritToken { get; private set; }
 
     protected override void Awake()
     {
+        m_Instance = this;
+
         base.Awake();
 
-        m_BackButton.onClick.AddListener(OnClickBack);
         m_CloseButton.onClick.AddListener(OnClickClose);
         m_InfoButton.onClick.AddListener(OnClickInfo);
-
-        m_CastMenu.OnClickCast = OnClickCast;
-        m_CastMenu.OnQuickCast = (spell) => QuickCast(spell);
     }
 
-    public void Show(IMarker spirit, Token token)
+    public void _Show(IMarker spirit, Token token, System.Action onClose)
     {
         if (isOpen)
             return;
 
-        m_SpiritMarker = spirit as SpiritMarker;
-        m_SpiritToken = token as SpiritToken;
-        m_SpiritData = DownloadedAssets.spiritDict[m_SpiritToken.spiritId];
+        m_OnClose = onClose;
+        SpiritMarker = spirit as SpiritMarker;
+        SpiritToken = token as SpiritToken;
+        m_SpiritData = DownloadedAssets.spiritDict[SpiritToken.spiritId];
         m_SpiritDetails = null;
-        m_DescButton.onClick.RemoveAllListeners();
-
+        m_OwnerButton.onClick.RemoveAllListeners();
+        
         m_SpiritName.text = m_SpiritData.Name;
-        m_Energy.text = LocalizeLookUp.GetText("cast_energy").ToUpper() + " <color=black>" + m_SpiritToken.energy.ToString() + " / " + m_SpiritToken.baseEnergy.ToString() + "</color>";
+        m_Level.text = "";
+        m_Energy.text = LocalizeLookUp.GetText("cast_energy").ToUpper() + " <color=black>" + SpiritToken.energy.ToString() + " / " + SpiritToken.baseEnergy.ToString() + "</color>";
         m_Desc.text = LocalizeLookUp.GetText("location_owned").Replace("{{Controller}}", "[" + LocalizeLookUp.GetText("loading") + "]");//"Belongs to [Loading...]";
+
+        m_SpiritArt.overrideSprite = null;
+        DownloadedAssets.GetSprite(SpiritToken.spiritId, m_SpiritArt);
 
         string tier;
         switch (m_SpiritData.tier)
@@ -98,30 +120,27 @@ public class UISpiritInfo : UIInfoPanel
 
         OnMapEnergyChange.OnPlayerDead += _OnCharacterDead;
         OnMapEnergyChange.OnEnergyChange += _OnMapEnergyChange;
-
-        Show();
-        m_ConditionList.show = false;
-        SoundManagerOneShot.Instance.PlaySpiritSelectedSpellbook();
+        SpellCastHandler.OnApplyStatusEffect += _OnStatusEffectApplied;
+        RemoveTokenHandler.OnTokenRemove += _OnMapTokenRemove;
+        BanishManager.OnBanished += Abort;
 
         if (!LocationIslandController.isInBattle)
         {
             MainUITransition.Instance.HideMainUI();
-            MarkerSpawner.HighlightMarker(new List<IMarker> { PlayerManager.marker, m_SpiritMarker });
+            MarkerSpawner.HighlightMarker(new List<IMarker> { PlayerManager.marker, SpiritMarker });
             MoveTokenHandler.OnTokenMove += _OnMapTokenMove;
-            SpellCastHandler.OnApplyStatusEffect += _OnStatusEffectApplied;
-            MarkerSpawner.OnImmunityChange += _OnImmunityChange;
-            RemoveTokenHandler.OnTokenRemove += _OnMapTokenRemove;
-            BanishManager.OnBanished += Abort;
         }
 
+        Show();
+        m_ConditionList.show = false;
+        SoundManagerOneShot.Instance.PlaySpiritSelectedSpellbook();
     }
 
     public override void ReOpen()
     {
         base.ReOpen();
-
-        UpdateCanCast();
-        IMarker spirit = MarkerManager.GetMarker(m_SpiritToken.instance);
+        
+        IMarker spirit = MarkerManager.GetMarker(SpiritToken.instance);
 
         if (!LocationIslandController.isInBattle)
         {
@@ -138,8 +157,16 @@ public class UISpiritInfo : UIInfoPanel
         }
     }
 
+    public override void Hide()
+    {
+        base.Hide();
+    }
+
     public override void Close()
     {
+        m_OnClose?.Invoke();
+        m_OnClose = null;
+
         base.Close();
 
         OnMapEnergyChange.OnPlayerDead -= _OnCharacterDead;
@@ -148,7 +175,6 @@ public class UISpiritInfo : UIInfoPanel
         if (!LocationIslandController.isInBattle)
         {
             MoveTokenHandler.OnTokenMove -= _OnMapTokenMove;
-            MarkerSpawner.OnImmunityChange -= _OnImmunityChange;
             SpellCastHandler.OnApplyStatusEffect -= _OnStatusEffectApplied;
             RemoveTokenHandler.OnTokenRemove -= _OnMapTokenRemove;
             BanishManager.OnBanished -= Abort;
@@ -165,7 +191,7 @@ public class UISpiritInfo : UIInfoPanel
 
     }
 
-    public void SetupDetails(SelectSpiritData_Map details)
+    public void _SetupDetails(SelectSpiritData_Map details)
     {
         if (details == null)
         {
@@ -193,81 +219,18 @@ public class UISpiritInfo : UIInfoPanel
             if (string.IsNullOrEmpty(details.coven))
             {
                 m_Desc.text = LocalizeLookUp.GetText("location_owned").Replace("{{Controller}}", "<color=black>" + details.owner + "</color>");
-                m_DescButton.onClick.AddListener(OnClickOwner);
+                m_OwnerButton.onClick.AddListener(OnClickOwner);
             }
             else
             {
                 m_Desc.text = LocalizeLookUp.GetText("location_owned").Replace("{{Controller}}", LocalizeLookUp.GetText("leaderboard_coven") + " <color=black>" + details.coven + "</color>");
-                m_DescButton.onClick.AddListener(OnClickCoven);
+                m_OwnerButton.onClick.AddListener(OnClickCoven);
             }
         }
 
-        UpdateCanCast();
         m_ConditionList.Setup(m_SpiritDetails.effects);
     }
-
-    private void UpdateCanCast()
-    {
-        if (m_SpiritDetails == null)
-        {
-            m_CastMenu.UpdateCanCast(null, null);
-            return;
-        }
-
-        m_CastMenu.UpdateCanCast(m_SpiritDetails, m_SpiritMarker);
-    }
-
-    private void OnClickCast()
-    {
-        this.Hide();
-
-        List<SpellData> spells = new List<SpellData>(PlayerDataManager.playerData.Spells);
-        //spells.RemoveAll(spell => spell.target == SpellData.Target.SELF);
-
-        UISpellcastBook.Open(
-            m_SpiritDetails,
-            m_SpiritMarker,
-            spells,
-            (spell, ingredients) =>
-            {
-                Spellcasting.CastSpell(spell, m_SpiritMarker, ingredients,
-                    (result) => ReOpen(),
-                    () => OnClickClose()
-                );
-            },
-            () => this.ReOpen(),
-            () => Close()
-        );
-    }
-
-    private void QuickCast(string spellId)
-    {
-        SpellData spell = DownloadedAssets.GetSpell(spellId);
-
-        if (spell == null)
-            return;
-
-        //StreetMapUtils.FocusOnTarget(PlayerManager.marker);
-
-        Hide();
-
-        //send the cast
-        Spellcasting.CastSpell(spell, m_SpiritMarker, new List<spellIngredientsData>(), (result) =>
-        {
-            //return to the spirit UI no matter the result
-            ReOpen();
-        },
-        () =>
-        {
-            OnClickClose();
-        });
-    }
-
-    private void OnClickBack()
-    {
-        Close();
-    }
-
+    
     private void OnClickClose()
     {
         Close();
@@ -275,7 +238,7 @@ public class UISpiritInfo : UIInfoPanel
 
     private void OnClickInfo()
     {
-        UIDetailedSpiritInfo.Instance.Show(m_SpiritData, m_SpiritToken);
+        UIDetailedSpiritInfo.Instance.Show(m_SpiritData, SpiritToken);
     }
 
     private void OnClickOwner()
@@ -300,7 +263,7 @@ public class UISpiritInfo : UIInfoPanel
     private void UISpellcasting_OnCastResult()
     {
         //if token is gone
-        if (MarkerSpawner.GetMarker(m_SpiritToken.instance) == null)
+        if (MarkerSpawner.GetMarker(SpiritToken.instance) == null)
         {
             Close();
         }
@@ -319,7 +282,7 @@ public class UISpiritInfo : UIInfoPanel
 
     private void _OnMapTokenMove(string instance, Vector3 position)
     {
-        if (m_SpiritToken.instance == instance)
+        if (SpiritToken.instance == instance)
         {
             MapCameraUtils.FocusOnMarker(position);
         }
@@ -327,7 +290,7 @@ public class UISpiritInfo : UIInfoPanel
 
     private void _OnMapEnergyChange(string instance, int newEnergy)
     {
-        if (instance == m_SpiritToken.instance)
+        if (instance == SpiritToken.instance)
         {
             m_Energy.text = LocalizeLookUp.GetText("card_witch_energy").ToUpper() + " <color=black>" + newEnergy.ToString() + "</color>";
 
@@ -343,21 +306,9 @@ public class UISpiritInfo : UIInfoPanel
         }
     }
 
-    private void _OnImmunityChange(string caster, string target, bool immune)
-    {
-        if (caster == PlayerDataManager.playerData.instance && target == this.m_SpiritToken.instance)
-        {
-            UpdateCanCast();
-        }
-        else if (target == PlayerDataManager.playerData.instance && caster == this.m_SpiritToken.instance)
-        {
-            UpdateCanCast();
-        }
-    }
-
     private void _OnStatusEffectApplied(string character, StatusEffect statusEffect)
     {
-        if (character != this.m_SpiritToken.instance)
+        if (character != SpiritToken.instance)
             return;
 
         foreach (StatusEffect item in m_SpiritDetails.effects)
@@ -369,7 +320,6 @@ public class UISpiritInfo : UIInfoPanel
             }
         }
         m_SpiritDetails.effects.Add(statusEffect);
-
         m_ConditionList.AddCondition(statusEffect);
     }
 
