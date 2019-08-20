@@ -253,10 +253,6 @@ public class UISpiritInfo : UIInfoPanel
 
     private void Abort()
     {
-        //wait for the result screen (UIspellcasting  will call OnFinishFlow)
-        if (UIWaitingCastResult.isOpen)
-            return;
-
         Close();
     }
 
@@ -296,11 +292,6 @@ public class UISpiritInfo : UIInfoPanel
 
             if (newEnergy == 0)
             {
-                //let the player see the result of his spellcasting
-                if (UIWaitingCastResult.isOpen)
-                    return;
-
-                //if he is not waiting for the result, just close the ui
                 Abort();
             }
         }

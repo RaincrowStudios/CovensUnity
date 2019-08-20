@@ -293,10 +293,6 @@ public class UIPlayerInfo : UIInfoPanel
     
     private void Abort()
     {
-        //wait for the result screen (UIspellcasting  will call OnFinishFlow)
-        if (UIWaitingCastResult.isOpen)
-            return;
-
         Close();
     }
 
