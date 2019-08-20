@@ -77,6 +77,9 @@ public class CharacterToken : Token
     public virtual string coven { get; set; }
 
     public virtual int baseEnergy { get; set; }
+
+    [JsonIgnore]
+    public virtual int maxEnergy => (2 * baseEnergy);
 }
 
 public class SpiritToken : CharacterToken

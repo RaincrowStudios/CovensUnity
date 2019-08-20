@@ -257,7 +257,7 @@ public class MarkerSpawner : MarkerManager
         
         if (selectedType == MarkerType.ENERGY && lastEnergyInstance != instanceID)
         {
-            if (PlayerDataManager.playerData.energy >= (PlayerDataManager.playerData.baseEnergy * 2))
+            if (PlayerDataManager.playerData.energy >= PlayerDataManager.playerData.maxEnergy)
             {
                 UIGlobalPopup.ShowPopUp(null, LocalizeLookUp.GetText("energy_full"));
                 return;
@@ -280,8 +280,8 @@ public class MarkerSpawner : MarkerManager
                     UIEnergyBarGlow.Instance.Glow();
                     SoundManagerOneShot.Instance.PlayEnergyCollect();
                     PlayerDataManager.playerData.energy += (Data as CollectableToken).amount;
-                    if (PlayerDataManager.playerData.energy >= (PlayerDataManager.playerData.baseEnergy * 2))
-                        PlayerDataManager.playerData.energy = PlayerDataManager.playerData.baseEnergy * 2;
+                    if (PlayerDataManager.playerData.energy > PlayerDataManager.playerData.maxEnergy)
+                        PlayerDataManager.playerData.energy = PlayerDataManager.playerData.maxEnergy;
                     PlayerManagerUI.Instance.UpdateEnergy();
                     Debug.Log(instanceID);
                 }

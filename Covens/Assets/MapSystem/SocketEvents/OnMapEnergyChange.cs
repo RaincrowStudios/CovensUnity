@@ -15,11 +15,17 @@ public static class OnMapEnergyChange
     /// </para>
     /// </summary>
     public static event System.Action<string, int> OnEnergyChange;
+    public static event System.Action<IMarker, int> OnMarkerEnergyChange;
 
+    
     /// <summary>
     /// triggered when the local player dies
     /// </summary>
     public static event System.Action OnPlayerDead;
+    public static event System.Action OnPlayerRevived;
+    public static event System.Action OnPlayerVulnerable;
+    public static event System.Action<int> OnPlayerEnergyChange;
+    public static event System.Action<string> OnPlayerStateChange;
 
     public static void HandleEvent(string instance, int newEnergy, string newState, double timestamp)
     {
@@ -34,51 +40,23 @@ public static class OnMapEnergyChange
 
             marker = PlayerManager.marker;
             player.lastEnergyUpdate = timestamp;
-            energy = player.energy = newEnergy;
+            energy = player.energy = Mathf.Clamp(newEnergy, 0, player.maxEnergy);
+            string previousState = player.state;
+            player.state = newState;
 
-            if (player.state == "dead" && newState != "dead")
-            {
-                player.state = newState;
-                player.energy = newEnergy;
-                PlayerManager.witchMarker.RemoveDeathFX();
-                DeathState.Instance.Revived();
-            }
+            OnPlayerEnergyChange?.Invoke(energy);
 
-            if (newState != player.state)
+            if (newState != previousState)
             {
-                if (newState == "dead")
-                {
-                    if (!LocationIslandController.isInBattle)
-                    {
-                        PlayerManager.witchMarker.AddDeathFX();
-                        DeathState.Instance.ShowDeath();
-                        OnPlayerDead?.Invoke();
-                    }
-                    else
-                    {
-                        // dead in a location
-                        LoadPOPManager.UnloadScene(null);
-                    }
-                }
+                OnPlayerStateChange?.Invoke(newState);
+
+                if (previousState == "dead")
+                    OnPlayerRevived?.Invoke();
+                else if (newState == "dead")
+                    OnPlayerDead?.Invoke();
                 else if (newState == "vulnerable")
-                {
-                    if (LowEnergyPopup.Instance == null)
-                    {
-                        if (!LocationIslandController.isInBattle)
-                        {
-                            Utilities.InstantiateObject(Resources.Load<GameObject>("UILowEnergyPopUp"), DeathState.Instance.transform);
-                        }
-                    }
-                }
-
-                player.state = newState;
+                    OnPlayerVulnerable?.Invoke();
             }
-
-            //Making sure energy not over 2x base
-            if (player.energy >= (2 * player.baseEnergy))
-                player.energy = player.baseEnergy * 2;
-
-            PlayerManagerUI.Instance.UpdateEnergy();
         }
         else //update another witch's energy
         {
@@ -91,32 +69,13 @@ public static class OnMapEnergyChange
 
             CharacterToken token = marker.Token as CharacterToken;
             token.lastEnergyUpdate = timestamp;
-            energy = token.energy = newEnergy;
-            marker.UpdateEnergy();
-
-            //update the state
-            if (newState == "dead" || newEnergy <= 0)
-            {
-                token.state = "dead";
-
-                if (token.Type == MarkerSpawner.MarkerType.WITCH)
-                    (marker as WitchMarker).AddDeathFX();
-                else if (marker.Type == MarkerSpawner.MarkerType.SPIRIT)
-                    RemoveTokenHandler.ForceEvent(instance);
-            }
-            else
-            {
-                if (token.state == "dead")
-                {
-                    token.state = newState;
-
-                    if (token.Type == MarkerSpawner.MarkerType.WITCH)
-                        (marker as WitchMarker).RemoveDeathFX();
-                }
-            }
+            energy = token.energy = Mathf.Clamp(newEnergy, 0, token.maxEnergy);
+            token.state = newState;
         }
 
         OnEnergyChange?.Invoke(instance, energy);
+        if (marker != null)
+            OnMarkerEnergyChange?.Invoke(marker, energy);
     }
 
     public static void ForceEvent(IMarker marker, int newEnergy, double timestamp)
