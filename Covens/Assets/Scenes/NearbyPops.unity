@@ -853,7 +853,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 0, y: 1}
-  m_AnchoredPosition: {x: 32.994995, y: 0}
+  m_AnchoredPosition: {x: 32.996094, y: 0}
   m_SizeDelta: {x: 158.2, y: 0}
   m_Pivot: {x: 0, y: 0.5}
 --- !u!114 &149001322
@@ -1746,7 +1746,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0.5}
   m_AnchorMax: {x: 1, y: 0.5}
-  m_AnchoredPosition: {x: -0.14245605, y: 561.26013}
+  m_AnchoredPosition: {x: -0.140625, y: 561.26013}
   m_SizeDelta: {x: -101.98, y: 100}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!1 &618550849
@@ -2234,7 +2234,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Cost: {fileID: 251003760}
-  m_Name: {fileID: 145371147}
+  m_NameText: {fileID: 145371147}
   m_Status: {fileID: 1875241828}
   m_ClaimedBy: {fileID: 1530086567}
   m_FlyTo: {fileID: 2111063961}

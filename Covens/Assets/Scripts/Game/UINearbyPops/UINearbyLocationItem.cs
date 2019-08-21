@@ -27,7 +27,7 @@ public class UINearbyLocationItem : MonoBehaviour
     }
 
     [SerializeField] private TextMeshProUGUI m_Cost;
-    [SerializeField] private TextMeshProUGUI m_Name;
+    [SerializeField] private TextMeshProUGUI m_NameText;
     [SerializeField] private TextMeshProUGUI m_Status;
     [SerializeField] private TextMeshProUGUI m_ClaimedBy;
 
@@ -48,7 +48,7 @@ public class UINearbyLocationItem : MonoBehaviour
     public void Setup(LocationData data, System.Action onFlyTo)
     {
         m_OnFlyTo = onFlyTo;
-        m_Name.text = data.name;
+        m_NameText.text = data.name;
         m_ClaimedBy.text = "<color=red>TODO</color>";
 
         //setup cost
