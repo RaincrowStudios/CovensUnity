@@ -226,6 +226,9 @@ public class UIQuickCast : MonoBehaviour
             return;
         }
 
+        if (button.CastStatus != Spellcasting.SpellState.CanCast)
+            return;
+
         SpellData spell = DownloadedAssets.GetSpell(button.Spell);
 
         this._Hide(true);

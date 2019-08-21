@@ -28,7 +28,7 @@ public class UIQuickcastButton : MonoBehaviour, IPointerDownHandler, IPointerUpH
         }
     }
 
-    private Spellcasting.SpellState m_CastStatus = Spellcasting.SpellState.InvalidSpell;
+    public Spellcasting.SpellState CastStatus { get; private set; }
     private System.Action m_OnClick;
     private System.Action m_OnHold;
 
@@ -48,6 +48,8 @@ public class UIQuickcastButton : MonoBehaviour, IPointerDownHandler, IPointerUpH
         m_IconColor_A = m_SpellIcon_A.color;
         m_IconColor_B = m_SpellIcon_B.color;
         m_FillColor = m_CooldownFill.color;
+        CastStatus = Spellcasting.SpellState.InvalidSpell;
+        Interactable = false;
     }
 
     public void Setup(int index, System.Action onClick, System.Action onHold)
@@ -73,7 +75,7 @@ public class UIQuickcastButton : MonoBehaviour, IPointerDownHandler, IPointerUpH
 
         if (string.IsNullOrEmpty(Spell))
         {
-            m_CastStatus = Spellcasting.SpellState.InvalidSpell;
+            CastStatus = Spellcasting.SpellState.InvalidSpell;
             Interactable = true;
             SetFillAmount(0);
             return;
@@ -82,7 +84,7 @@ public class UIQuickcastButton : MonoBehaviour, IPointerDownHandler, IPointerUpH
         CooldownManager.Cooldown? cd = CooldownManager.GetCooldown(Spell);
         if (cd.HasValue)
         {
-            m_CastStatus = Spellcasting.SpellState.InCooldown;
+            CastStatus = Spellcasting.SpellState.InCooldown;
             Interactable = false;
 
             m_CooldownTweenId = LeanTween.value(cd.Value.Remaining / cd.Value.total, 0, cd.Value.Remaining)
@@ -92,14 +94,14 @@ public class UIQuickcastButton : MonoBehaviour, IPointerDownHandler, IPointerUpH
         }
         else if (marker == null || details == null)
         {
-            m_CastStatus = Spellcasting.SpellState.InvalidTarget;
+            CastStatus = Spellcasting.SpellState.InvalidTarget;
             Interactable = false;
             SetFillAmount(0);
         }
         else
         {
-            m_CastStatus = Spellcasting.CanCast(Spell, marker, details);
-            Interactable = m_CastStatus == Spellcasting.SpellState.CanCast;
+            CastStatus = Spellcasting.CanCast(Spell, marker, details);
+            Interactable = CastStatus == Spellcasting.SpellState.CanCast;
             SetFillAmount(0);
         }
     }
