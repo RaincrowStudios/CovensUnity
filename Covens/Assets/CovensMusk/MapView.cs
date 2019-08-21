@@ -37,12 +37,12 @@ public class MapView : MonoBehaviour
         LocationIslandController.OnExitLocation += OnLeavePoP;
     }
 
-
     private void _OnPlayerEnergyUpdated(int energy)
     {
         PlayerManagerUI.Instance.UpdateEnergy();
     }
 
+    [ContextMenu("_OnPlayerDead")]
     private void _OnPlayerDead()
     {
         PlayerManager.witchMarker.AddDeathFX();
@@ -51,12 +51,14 @@ public class MapView : MonoBehaviour
         MapFlightTransition.Instance.RecallHome(true);
     }
 
+    [ContextMenu("_OnPlayerRevived")]
     private void _OnPlayerRevived()
     {
         PlayerManager.witchMarker.RemoveDeathFX();
         DeathState.Instance.Revived();
     }
 
+    [ContextMenu("_OnPlayerVulnerable")]
     private void _OnPlayerVulnerable()
     {
         if (LowEnergyPopup.Instance == null)

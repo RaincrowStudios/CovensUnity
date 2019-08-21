@@ -20,7 +20,7 @@ public class MoonManager : UIAnimationManager
 
     public TextMeshProUGUI currentMoonPhase;
     public TextMeshProUGUI moonDesc;
-    public TextMeshProUGUI energyBonus;
+    public TextMeshProUGUI spellEfficiency;
     public TextMeshProUGUI playerRelation;
     public TextMeshProUGUI timer;
     public GameObject moonState;
@@ -39,7 +39,7 @@ public class MoonManager : UIAnimationManager
     public Sprite blackbase;
     public Sprite whitebase;
 
-
+    public static float[] LunarEffeciency { get; set; }
 
     void Awake()
     {
@@ -48,7 +48,6 @@ public class MoonManager : UIAnimationManager
 
     void Start()
     {
-
         moonAge = MoonAge(DateTime.Today.Day, DateTime.Today.Month, DateTime.Today.Year);
         moonAge = Mathf.Clamp(moonAge, 0, 28);
         alignmentButton = PlayerManagerUI.Instance.LunarPhaseHolder.transform.GetChild(0).GetComponent<Button>();
@@ -86,6 +85,8 @@ public class MoonManager : UIAnimationManager
 
     IEnumerator CountDown()
     {
+        System.DateTime moonRise = Utilities.FromJavaTime(data.moonRise);
+
         while (true)
         {
             string t = Utilities.GetTimeRemaining(data.moonRise);
@@ -94,7 +95,7 @@ public class MoonManager : UIAnimationManager
                 timer.gameObject.SetActive(false);
                 yield break;
             }
-            else if (t == "null")
+            else if (t == "")
             {
                 timer.text = "\n" + LocalizeLookUp.GetText("moon_rise");// "\nMoon has risen";
                 moonState.SetActive(false);
@@ -129,9 +130,8 @@ public class MoonManager : UIAnimationManager
 
     public void SetupMoon()
     {
-        // Debug.Log();
         data.phase = Math.Round(data.phase, 2);
-        Debug.Log("<b><color=red>MOON AGE " + moonAge + "</color></b>");
+
         r1.sprite = returnMoonSprite(moonAge + 1);
         r2.sprite = returnMoonSprite(moonAge + 2);
         middle.sprite = returnMoonSprite(moonAge);
@@ -161,21 +161,27 @@ public class MoonManager : UIAnimationManager
         moonDesc.text = LocalizeLookUp.GetText("moon_desc");
         moonDesc.text = moonDesc.text.Replace("{{Moon Age}}", "<color=#ffffff>" + moonAge.ToString() + "</color>")
             .Replace("{{Luminated}}", "<color=#ffffff>" + ((int)(data.luminosity * 100)).ToString() + "% </color>");
+
+        float lunarEffect = GetLunarEfficiency(PlayerDataManager.playerData.degree, (float)data.luminosity);
+        if (lunarEffect == 0)
+            spellEfficiency.text = "";
+        else
+            spellEfficiency.text = (lunarEffect * 100).ToString("+#;-#") + "<spell efficiency>";
     }
 
-    public void SetupSavannaEnergy(bool show, int amount = 0)
-    {
-        if (show)
-        {
-            energyBonus.gameObject.SetActive(true);
-            energyBonus.text = "+" + LocalizeLookUp.GetText("moon_energy").Replace("{{Amount}}", amount.ToString());// "+ " + amount.ToString() + " Energy";
-        }
-        else
-        {
-            energyBonus.gameObject.SetActive(true);
-            energyBonus.text = "+" + LocalizeLookUp.GetText("moon_energy").Replace("{{Amount}}", "0");//"+0 Energy";
-        }
-    }
+    //public void SetupSavannaEnergy(bool show, int amount = 0)
+    //{
+    //    if (show)
+    //    {
+    //        spellEfficiency.gameObject.SetActive(true);
+    //        spellEfficiency.text = "+" + LocalizeLookUp.GetText("moon_energy").Replace("{{Amount}}", amount.ToString());// "+ " + amount.ToString() + " Energy";
+    //    }
+    //    else
+    //    {
+    //        spellEfficiency.gameObject.SetActive(true);
+    //        spellEfficiency.text = "+" + LocalizeLookUp.GetText("moon_energy").Replace("{{Amount}}", "0");//"+0 Energy";
+    //    }
+    //}
 
     Sprite returnMoonSprite(int age)
     {
@@ -234,6 +240,45 @@ public class MoonManager : UIAnimationManager
         float degree = Mathf.Lerp(0, 1, (Mathf.InverseLerp(-14, 14, PlayerDataManager.playerData.degree)));
         float diff = Mathf.Abs(degree - (float)data.luminosity);
         return (int)((1 - diff) * 100);
+    }
+
+#if UNITY_EDITOR
+    [Header("Lunar efficiency debugging")]
+    public int debugPlayerDegree;
+    public float debugLuminosity = 0.6932794689390696f;
+
+    [ContextMenu("Debug lunar efficiency")]
+    private void DebugLunarEfficiency()
+    {
+        LunarEffeciency = new float[]
+        {
+            0.0f,
+            0.0f,
+            0.0f,
+            0.0f,
+            0.0f,
+            0.0f,
+            0.05f,
+            0.1f,
+            0.2f,
+            0.3f,
+            0.2f,
+            0.1f,
+            0.05f,
+            0.0f,
+            0.0f
+        };
+
+        Debug.Log("Lunar Efficiency: " + GetLunarEfficiency(debugPlayerDegree, debugLuminosity));
+    }
+#endif
+
+    private float GetLunarEfficiency(int playerDegree, float luminosity)
+    {
+        float moonFraction = luminosity - 0.5f;
+        int buffDegree = Mathf.RoundToInt(Mathf.Abs((moonFraction * 14) / 0.5f));
+        float lunarEffect = (LunarEffeciency[buffDegree] * Mathf.Sign(playerDegree)) * Mathf.Sign(moonFraction);
+        return lunarEffect;
     }
 
 

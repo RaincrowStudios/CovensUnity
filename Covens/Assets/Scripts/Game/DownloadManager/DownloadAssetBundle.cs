@@ -68,6 +68,7 @@ public class GameSettingsData
     public long[] alignment;
     public ulong[] exp;
     public int[] baseEnergy;
+    public float[] lunarEfficiency;
 
     public PlaceOfPowerSettings PlaceOfPower;
 
