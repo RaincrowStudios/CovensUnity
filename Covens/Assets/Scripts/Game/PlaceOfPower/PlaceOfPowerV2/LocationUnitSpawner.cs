@@ -298,7 +298,9 @@ public class LocationUnitSpawner : MonoBehaviour
             {
                 if (r == 200)
                 {
+                    var charScale = LocationPlayerAction.playerMarker.AvatarTransform.localScale;
                     LocationPlayerAction.playerMarker.SetAlpha(0, 1);
+                    LeanTween.scale(LocationPlayerAction.playerMarker.AvatarTransform.gameObject, Vector3.zero, .5f).setEaseOutCubic();
                     ShowFlightFX();
                     await Task.Delay(600);
 
@@ -309,6 +311,8 @@ public class LocationUnitSpawner : MonoBehaviour
                         position = position,
                     };
                     LocationPlayerAction.playerMarker.SetAlpha(1, 1);
+                    LeanTween.scale(LocationPlayerAction.playerMarker.AvatarTransform.gameObject, charScale, .5f).setEaseOutCubic();
+
                     Instance.MoveMarker(moveData);
                     LocationIslandController.SetActiveIslands();
                 }
