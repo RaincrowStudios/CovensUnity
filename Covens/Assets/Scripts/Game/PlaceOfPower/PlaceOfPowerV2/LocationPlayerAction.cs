@@ -1,11 +1,8 @@
-using System.Security.Cryptography.X509Certificates;
-using System.Threading.Tasks;
-using System.Runtime.CompilerServices;
 using System;
 using Raincrow.Maps;
 using UnityEngine;
 using UnityEngine.UI;
-
+using Newtonsoft.Json;
 public class LocationPlayerAction : MonoBehaviour
 {
     private static LocationPlayerAction Instance { get; set; }
@@ -21,7 +18,7 @@ public class LocationPlayerAction : MonoBehaviour
 
     private const int MOVE_TIMER = 5;
     private const int SUMMON_TIMER = 30;
-    private const int CLOAK_TIMER = 60;
+    private const int CLOAK_TIMER = 180;
 
     private static LocationActionButton[] m_BtnArr = new LocationActionButton[3];
     public static IMarker playerMarker { get; private set; }
@@ -69,9 +66,29 @@ public class LocationPlayerAction : MonoBehaviour
         m_BtnArr[2] = btn;
 
         btn = Instantiate(m_ActionBtn, transform) as LocationActionButton;
-        btn.Setup(CLOAK_TIMER, m_CloakSprite, () => { });
+        btn.Setup(CLOAK_TIMER, m_CloakSprite, () =>
+        {
+
+            var data = new
+            {
+                spell = "spell_astral"
+            };
+            APIManager.Instance.Post(
+               "character/cast/" + playerWitchToken.instance,
+               JsonConvert.SerializeObject(data), (s, r) =>
+               {
+                   if (r == 200)
+                   {
+                       Debug.Log(s);
+                       Debug.Log("cloak success");
+                       LocationUnitSpawner.EnableCloaking(playerWitchToken.instance);
+                   }
+               });
+        });
         m_BtnArr[0] = btn;
     }
+
+
 
     private static void CenterOnPlayer()
     {

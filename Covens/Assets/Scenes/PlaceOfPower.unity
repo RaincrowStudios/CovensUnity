@@ -36306,6 +36306,8 @@ MonoBehaviour:
   m_PlayerHighlight: {fileID: 519257492}
   m_SelfSelectionRing: {fileID: 968357635}
   m_FlightFX: {fileID: 1218424623}
+  m_CloakingFX: {fileID: 4445222335403471906, guid: a30c548edbe6efa4fa7369b0b595257f,
+    type: 3}
 --- !u!1 &1539544219
 GameObject:
   m_ObjectHideFlags: 0

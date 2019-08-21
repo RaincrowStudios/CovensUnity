@@ -91,6 +91,7 @@ public class LocationIslandController : MonoBehaviour
 
     private static void WitchJoined(WitchToken token)
     {
+        Debug.Log(token.instance + " | ADDED ");
         if (!m_LocationData.tokens.ContainsKey1(token.popIndex) && !m_LocationData.tokens.ContainsKey2(token.instance))
         {
             m_LocationData.tokens.Add(token.popIndex, token.instance, token);
@@ -107,6 +108,10 @@ public class LocationIslandController : MonoBehaviour
             m_LocationData.currentOccupants--;
             OnWitchExit?.Invoke(m_LocationData.tokens[popIndex, removeData.instance] as WitchToken);
             m_LocationData.tokens.Remove(popIndex, removeData.instance);
+            if (isInBattle)
+            {
+                instance.locationUnitSpawner.RemoveMarker(removeData.instance);
+            }
         }
     }
 

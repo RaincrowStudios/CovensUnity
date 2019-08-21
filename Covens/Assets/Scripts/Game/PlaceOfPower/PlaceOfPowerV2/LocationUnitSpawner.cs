@@ -31,10 +31,13 @@ public class LocationUnitSpawner : MonoBehaviour
     [SerializeField] private Transform m_PlayerHighlight;
     [SerializeField] private Transform m_SelfSelectionRing;
     [SerializeField] private Transform m_FlightFX;
+    [SerializeField] private Transform m_CloakingFX;
 
     private static SimplePool<Transform> m_WitchPool;
     private static SimplePool<Transform> m_SpiritPool;
     private static SimplePool<Transform> m_EnergyPool;
+    private static SimplePool<Transform> m_CloakingPool;
+
     public static string currentSelection { get; private set; }
     public static Dictionary<string, IMarker> Markers = new Dictionary<string, IMarker>();
 
@@ -44,7 +47,30 @@ public class LocationUnitSpawner : MonoBehaviour
         m_PlayerHighlight.gameObject.SetActive(false);
         m_WitchPool = new SimplePool<Transform>(witchIcon.transform, 10);
         m_SpiritPool = new SimplePool<Transform>(spiritIcon.transform, 2);
-        m_EnergyPool = new SimplePool<Transform>(witchIcon.transform, 1);
+        // m_EnergyPool = new SimplePool<Transform>(witchIcon.transform, 1);
+        m_CloakingPool = new SimplePool<Transform>(m_CloakingFX, 2);
+    }
+
+    public static async void EnableCloaking(string instance)
+    {
+        Debug.Log("Trying to cloak");
+        if (Markers.ContainsKey(instance))
+        {
+            Debug.Log("Cloaking!");
+            var go = m_CloakingPool.Spawn().gameObject;
+            go.transform.SetParent(Markers[instance].GameObject.transform.GetChild(0));
+            go.transform.localPosition = Vector3.zero;
+            go.transform.localScale = Vector3.zero;
+            go.SetActive(true);
+            LeanTween.scale(go, Vector3.one, .5f).setEaseOutQuad();
+            var timeout = ((WitchToken)Markers[instance].Token).level + 20;
+            await Task.Delay(timeout * 1000);
+            if (LocationIslandController.isInBattle && Markers.ContainsKey(instance))
+            {
+                LeanTween.scale(go, Vector3.zero, .5f).setEaseOutQuad();
+                m_CloakingPool.Despawn(go.transform);
+            }
+        }
     }
 
     public static int GetIsland(string id)
