@@ -526,6 +526,11 @@ public class Utilities : MonoBehaviour
     {
         return dateTime.Subtract(new DateTime(1970, 1, 1)).TotalSeconds;
     }
+
+    public static float InverseLerp(long min, long max, long v)
+    {
+        return (float)((double)(v - min) / (double)(max - min));
+    }
 }
 
 public static class StringExtensions

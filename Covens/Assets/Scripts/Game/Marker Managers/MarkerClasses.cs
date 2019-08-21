@@ -216,7 +216,7 @@ public class PlayerData : WitchMarkerData
     public string account;
     public string physicalDominion;
     public ulong xp;
-    public int alignment;
+    public long alignment;
     public bool whiteMastery;
     public bool shadowMastery;
     public bool greyMastery;
