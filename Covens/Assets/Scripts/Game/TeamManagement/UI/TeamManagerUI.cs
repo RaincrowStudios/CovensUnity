@@ -684,6 +684,7 @@ public class TeamManagerUI : MonoBehaviour
         //setup content
         m_CovenName.text = m_CovenData.Name;
         m_SubTitle.text = "";
+        m_Home.m_MottoButton.interactable = m_CovenData.IsMember && TeamManager.MyRole > CovenRole.MEMBER;
 
         m_Home.m_Motto.text = string.IsNullOrEmpty(m_CovenData.Motto) ? "\"" + LocalizeLookUp.GetText("coven_motto_here") + "\"" : "\"" + m_CovenData.Motto + "\"";
         m_Home.m_FounderName.text = LocalizeLookUp.GetText("coven_founder") + " " + m_CovenData.Founder.Name;
