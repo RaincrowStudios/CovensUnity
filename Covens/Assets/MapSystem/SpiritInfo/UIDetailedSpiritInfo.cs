@@ -4,7 +4,8 @@ using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
 
-public class UIDetailedSpiritInfo : MonoBehaviour {
+public class UIDetailedSpiritInfo : MonoBehaviour
+{
 
     [SerializeField] private Canvas m_Canvas;
     [SerializeField] private GraphicRaycaster m_InputRaycaster;
@@ -54,20 +55,20 @@ public class UIDetailedSpiritInfo : MonoBehaviour {
         m_DisplayName.text = spirit.Name;
 
         if (spirit.tier == 1)
-            m_Tier.text = "Lesser Spirit";
+            m_Tier.text = LocalizeLookUp.GetText("cast_spirit_lesser") + " " + LocalizeLookUp.GetText("attacked_spirit");//"Lesser Spirit";
         else if (spirit.tier == 2)
-            m_Tier.text = "Greater Spirit";
+            m_Tier.text = LocalizeLookUp.GetText("cast_spirit_greater") + " " + LocalizeLookUp.GetText("attacked_spirit");//"Greater Spirit";
         else if (spirit.tier == 3)
-            m_Tier.text = "Superior Spirit";
+            m_Tier.text = LocalizeLookUp.GetText("cast_spirit_superior") + " " + LocalizeLookUp.GetText("attacked_spirit");//"Superior Spirit";
         else
-            m_Tier.text = "Legendary Spirit";
+            m_Tier.text = LocalizeLookUp.GetText("cast_spirit_legendary") + " " + LocalizeLookUp.GetText("attacked_spirit");//"Legendary Spirit";
 
 
         m_TierIcon.sprite = MarkerSpawner.GetSpiritTierSprite(spirit.type);
         m_Location.text = spirit.Location;
-        m_Behavior.text = "<color=white>Behavior:</color> " + spirit.Behavior;
-        m_Lore.text = "<color=white>Lore:</color> " + spirit.Description;
-        
+        m_Behavior.text = spirit.Behavior;
+        m_Lore.text = spirit.Description;
+
         m_SpiritArt.color = new Color(0, 0, 0, 0);
         DownloadedAssets.GetSprite(spirit.id, spr =>
         {

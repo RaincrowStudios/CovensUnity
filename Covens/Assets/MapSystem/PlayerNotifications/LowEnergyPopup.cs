@@ -11,29 +11,37 @@ public class LowEnergyPopup : MonoBehaviour
     [SerializeField] private TextMeshProUGUI m_offerText;
     [SerializeField] private TextMeshProUGUI m_buttonText;
     [SerializeField] private Button m_close;
+    [SerializeField] private Button m_continue;
+    [SerializeField] private CanvasGroup thisCG;
 
     private void Awake()
     {
         Instance = this;
+        thisCG = this.GetComponent<CanvasGroup>();
+        LeanTween.alphaCanvas(thisCG, 1f, 0.5f).setEaseInCubic();
+
     }
 
     // Start is called before the first frame update
     void Start()
     {
         m_offerText.text = LocalizeLookUp.GetText("energy_restore_message");
-        m_close.onClick.AddListener(Close);
+        m_close.onClick.AddListener(() => { Close(); });
+
         //this will need localization
         if (PlayerDataManager.playerData.gold < 1)
         {
             m_buttonText.text = string.Concat("<color=red>", LocalizeLookUp.GetText("energy_restore_missing"), "</color>");
-            m_buttonText.transform.GetChild(0).GetComponent<Button>().onClick.AddListener(() => {
+            m_continue.onClick.AddListener(() =>
+            {
                 ShopManager.OpenSilverStore();
             });
         }
         else
         {
             m_buttonText.text = LocalizeLookUp.GetText("energy_restore_offer");
-            m_buttonText.transform.GetChild(0).GetComponent<Button>().onClick.AddListener(() => {
+            m_continue.onClick.AddListener(() =>
+            {
                 SetupConfirmation();
             });
         }
@@ -44,7 +52,8 @@ public class LowEnergyPopup : MonoBehaviour
     {
         m_offerText.text = LocalizeLookUp.GetText("energy_restore_confirm");
         m_buttonText.text = LocalizeLookUp.GetText("store_accept");
-        m_buttonText.transform.GetChild(0).GetComponent<Button>().onClick.AddListener(() => {
+        m_continue.onClick.AddListener(() =>
+        {
             AddEnergy();
         });
     }
@@ -52,27 +61,33 @@ public class LowEnergyPopup : MonoBehaviour
     // Update is called once per frame
     void AddEnergy()
     {
-
-        var pData = PlayerDataManager.playerData;        
-        pData.gold--;
-        PlayerManagerUI.Instance.UpdateDrachs();
-        pData.energy = pData.baseEnergy;
-        PlayerManagerUI.Instance.UpdateEnergy();
+        LoadingOverlay.Show();
         Close();
-        //need to post new data for player energy here
-        //not sure if below is how it will look, but here ya are.
-        /*
-        var postData = new PlayerDataDetail
-        {
-            energy = pData.baseEnergy,
-            gold = pData.gold
-        };
-        */
 
+        APIManager.Instance.Post("shop/energy", "{}", (response, result) =>
+        {
+            LoadingOverlay.Hide();
+            if (result == 200)
+            {
+                PlayerDataManager.playerData.gold -= 1;
+                PlayerDataManager.playerData.energy = PlayerDataManager.playerData.baseEnergy;
+
+                PlayerManagerUI.Instance.UpdateDrachs();
+                PlayerManagerUI.Instance.UpdateEnergy();
+            }
+            else
+            {
+                UIGlobalPopup.ShowError(null, APIManager.ParseError(response));
+            }
+        });
     }
 
     void Close()
     {
-        Destroy(gameObject);
+        Debug.Log("Closing");
+        LeanTween.alphaCanvas(thisCG, 0f, 0.4f).setOnComplete(() =>
+        {
+            Destroy(gameObject);
+        }).setEaseOutCubic();
     }
 }
