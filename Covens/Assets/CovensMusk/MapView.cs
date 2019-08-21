@@ -62,7 +62,7 @@ public class MapView : MonoBehaviour
     private void _OnPlayerVulnerable()
     {
         if (LowEnergyPopup.Instance == null)
-            Utilities.InstantiateObject(Resources.Load<GameObject>("UILowEnergyPopUp"), DeathState.Instance.transform);
+            Utilities.InstantiateObject(Resources.Load<GameObject>("UILowEnergyPopUp"), null);//, DeathState.Instance.transform);
     }
 
     private void _OnMapTokenAdd(IMarker marker)

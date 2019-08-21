@@ -61,23 +61,25 @@ public class LowEnergyPopup : MonoBehaviour
     // Update is called once per frame
     void AddEnergy()
     {
-
-        var pData = PlayerDataManager.playerData;
-        pData.gold--;
-        PlayerManagerUI.Instance.UpdateDrachs();
-        pData.energy = pData.baseEnergy;
-        PlayerManagerUI.Instance.UpdateEnergy();
+        LoadingOverlay.Show();
         Close();
-        //need to post new data for player energy here
-        //not sure if below is how it will look, but here ya are.
-        /*
-        var postData = new PlayerDataDetail
-        {
-            energy = pData.baseEnergy,
-            gold = pData.gold
-        };
-        */
 
+        APIManager.Instance.Post("shop/energy", "{}", (response, result) =>
+        {
+            LoadingOverlay.Hide();
+            if (result == 200)
+            {
+                PlayerDataManager.playerData.gold -= 1;
+                PlayerDataManager.playerData.energy = PlayerDataManager.playerData.baseEnergy;
+
+                PlayerManagerUI.Instance.UpdateDrachs();
+                PlayerManagerUI.Instance.UpdateEnergy();
+            }
+            else
+            {
+                UIGlobalPopup.ShowError(null, APIManager.ParseError(response));
+            }
+        });
     }
 
     void Close()
