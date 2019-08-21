@@ -18,6 +18,7 @@ public class RemoveTokenHandlerPOP : IGameEventHandler
 
     public void HandleResponse(string eventData)
     {
+        Debug.Log(eventData);
         RemoveEventData removeData = JsonConvert.DeserializeObject<RemoveEventData>(eventData);
         OnRemoveTokenPOP?.Invoke(removeData);
     }
