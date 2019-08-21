@@ -22,6 +22,13 @@ public class MarkerManager : MonoBehaviour
         ENERGY = 12
     }
 
+    public enum MarkerSchool
+    {
+        SHADOW = -1,
+        GREY = 0,
+        WHITE = 1
+    }
+
     public static Dictionary<string, List<IMarker>> Markers = new Dictionary<string, List<IMarker>>();
 
     public static IMarker GetMarker(string instance)

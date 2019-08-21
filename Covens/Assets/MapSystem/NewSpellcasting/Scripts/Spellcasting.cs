@@ -63,9 +63,31 @@ public class Spellcasting
         /// player does not meet the spell's levev requirement
         /// </summary>
         NoLevel,
-
-
+        
+        /// <summary>
+        /// the spell cant be casted on yourself or cant be casted on someone else
+        /// </summary>
         InvalidTarget,
+
+        /// <summary>
+        /// the player's school does not match the required school to cast this spell
+        /// </summary>
+        InvalidCasterSchool,
+        
+        /// <summary>
+        /// the target's school does not match the required school to target this spell
+        /// </summary>
+        InvalidTargetSchool,
+
+        /// <summary>
+        /// this spell can only be casted on witches or only on spirits
+        /// </summary>
+        InvalidTargetType,
+
+        /// <summary>
+        /// the target does not have the required status effects to cast this spell
+        /// </summary>
+        InvalidTargetStatus,
     }
     
     private static Dictionary <string, System.Action<SpellData, IMarker, List<spellIngredientsData>, System.Action<Raincrow.GameEventResponses.SpellCastHandler.Result>, System.Action>> m_SpecialSpells = 
@@ -74,17 +96,7 @@ public class Spellcasting
             //{ "spell_channeling", SpellChanneling.CastSpell }
         };
 
-
-    ///// <summary>
-    ///// This is actually the callback <see cref="OnMapSpellcast.OnSpellcastResult"/>.
-    ///// </summary>
-    //public static System.Action<string, SpellData, DamageResult> OnSpellCast
-    //{
-    //    get { return OnMapSpellcast.OnSpellcastResult; }
-    //    set { OnMapSpellcast.OnSpellcastResult = value; }
-    //}
-
-    public static SpellState CanCast(SpellData spell = null, IMarker target = null, CharacterMarkerData data = null)
+    public static SpellState CanCast(SpellData spell = null, IMarker target = null, CharacterMarkerData targetData = null)
     {
         //silenced
         if (BanishManager.isSilenced)
@@ -93,35 +105,7 @@ public class Spellcasting
         //dead
         if (DeathState.IsDead)
             return SpellState.PlayerDead;
-
-        //energy
-
-
-        //TARGET
-        if (target != null)
-        {
-            Token token = target.Token;
-
-            if (target == PlayerManager.marker)
-            {
-                if (spell != null && spell.target == SpellData.Target.OTHER)
-                    return SpellState.InvalidTarget;
-            }
-            else
-            {
-                if (spell != null && spell.target == SpellData.Target.SELF)
-                    return SpellState.InvalidTarget;
-
-                if (token.Type == MarkerSpawner.MarkerType.WITCH)
-                {
-                    //immunity
-                    if (MarkerSpawner.IsTargetImmune(token as WitchToken))
-                        return SpellState.TargetImmune;
-                }
-            }
-        }
-
-
+        
         //SPELL
         if (spell != null)
         {
@@ -131,14 +115,10 @@ public class Spellcasting
             if (spell.level > PlayerDataManager.playerData.level)
                 return SpellState.NoLevel;
 
-            //is pop only?
-            //if (spell.pop && PlaceOfPower.IsInsideLocation == false)
-            //    return SpellState.NotInPop;
-
-            //in cooldown?
-            if (CooldownManager.GetCooldown(spell.id) != null)
-                return SpellState.InCooldown;
-
+            //caster school
+            if (spell.casterSchool != null && spell.casterSchool.Length > 0 && spell.casterSchool.Contains((int)PlayerDataManager.playerData.school) == false)
+                return SpellState.InvalidCasterSchool;
+                        
             //check ingredients
             if (spell.ingredients != null)
             {
@@ -149,21 +129,74 @@ public class Spellcasting
                 }
             }
 
-            if (PlayerManager.marker == target)
+            //in cooldown?
+            if (CooldownManager.GetCooldown(spell.id) != null)
+                return SpellState.InCooldown;
+            
+            if (target != null)
             {
-                //check player states
-                if (spell.states.Contains(PlayerDataManager.playerData.state) == false)
-                    return SpellState.InvalidState;
-            }
-            else
-            {
-                if (data != null)
+                Token token = target.Token;
+
+                if (target.IsPlayer)
                 {
-                    //check player states
-                    if (spell.states.Contains(data.state) == false)
-                        return SpellState.InvalidState;
+                    //cant be casted on self
+                    if (spell.target == SpellData.Target.OTHER)
+                        return SpellState.InvalidTarget;
+                }
+                else
+                {
+                    //cant be casted on others
+                    if (spell.target == SpellData.Target.SELF)
+                        return SpellState.InvalidTarget;
+
+                    //check immunity
+                    if (target.Type == MarkerManager.MarkerType.WITCH && MarkerSpawner.IsTargetImmune(target.Token as WitchToken))
+                        return SpellState.TargetImmune;
+                }
+
+                //targetType
+                if (spell.targetType != SpellData.TargetType.ANY)
+                {
+                    if (target.Type == MarkerManager.MarkerType.WITCH && spell.targetType != SpellData.TargetType.WITCH)
+                        return SpellState.InvalidTargetType;
+
+                    if (target.Type == MarkerManager.MarkerType.SPIRIT && spell.targetType != SpellData.TargetType.SPIRIT)
+                        return SpellState.InvalidTargetType;
+                }
+
+                //targetschool
+                if (spell.targetSchool != null && spell.targetSchool.Length > 0 && spell.targetSchool.Contains((int)targetData.school) == false)
+                    return SpellState.InvalidTargetSchool;
+
+                //check target state
+                if (spell.states.Contains(targetData.state) == false)
+                    return SpellState.InvalidState;
+
+                //target status effect
+                if (spell.targetStatus != null && spell.targetStatus.Length > 0)
+                {
+                    bool statusValid = false;
+                    foreach (string requiredStatus in spell.targetStatus)
+                    {
+                        foreach (var statusEffect in targetData.effects)
+                        {
+                            if (statusEffect.spell == requiredStatus)
+                            {
+                                statusValid = true;
+                                break;
+                            }
+                        }
+                    }
+                    if (statusValid == false)
+                        return SpellState.InvalidTargetStatus;
                 }
             }
+        }
+        else if (target != null)
+        {
+            //check immunity
+            if (target.Type == MarkerManager.MarkerType.WITCH && MarkerSpawner.IsTargetImmune(target.Token as WitchToken))
+                return SpellState.TargetImmune;
         }
 
         return SpellState.CanCast;

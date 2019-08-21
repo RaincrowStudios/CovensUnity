@@ -1,5 +1,4 @@
-﻿
-using Newtonsoft.Json;
+﻿using Newtonsoft.Json;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -102,6 +101,24 @@ public abstract class CharacterMarkerData : MarkerData
 
     [JsonIgnore]
     public virtual int maxEnergy => (2 * baseEnergy);
+
+    [JsonIgnore]
+    public virtual MarkerManager.MarkerSchool school
+    {
+        get
+        {
+            if (Type == MarkerManager.MarkerType.SPIRIT)
+                return MarkerManager.MarkerSchool.SHADOW;
+
+            if (degree < 0)
+                return MarkerManager.MarkerSchool.SHADOW;
+
+            if (degree > 0)
+                return MarkerManager.MarkerSchool.WHITE;
+
+            return MarkerManager.MarkerSchool.GREY;
+        }
+    }
 }
 
 public class WitchMarkerData : CharacterMarkerData

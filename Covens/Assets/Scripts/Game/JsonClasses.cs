@@ -238,6 +238,13 @@ public class SpellData
         ANY = 2,
     }
 
+    public enum TargetType
+    {
+        ANY = 0,
+        WITCH = 1,
+        SPIRIT = 2,
+    }      
+
     [DefaultValue("")]
     public string id;
     public int glyph;
@@ -250,13 +257,18 @@ public class SpellData
     public int level;
 
     public string[] ingredients;
-    public string[] states;
     public Target target;
     public int align;
     public bool pop;
     public bool hidden;
     public float cooldown;
-    
+
+    public string[] states;
+    public string[] targetStatus;
+    public TargetType targetType;
+    public int[] targetSchool;
+    public int[] casterSchool;
+
     [JsonIgnore]
     public string Name => LocalizeLookUp.GetSpellName(id);
     [JsonIgnore]

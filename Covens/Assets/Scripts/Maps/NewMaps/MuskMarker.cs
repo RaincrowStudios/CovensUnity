@@ -33,7 +33,7 @@ namespace Raincrow.Maps
 
         public Token Token { get; protected set; }
 
-        public bool IsPlayer { get { return (Object)PlayerManager.marker == this; } }
+        public bool IsPlayer => Token.instance == PlayerDataManager.playerData.instance; //(Object)PlayerManager.marker == this;
 
         public virtual string Name => "";
 
