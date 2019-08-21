@@ -2700,7 +2700,7 @@ MonoBehaviour:
   l2: {fileID: 2080343066}
   currentMoonPhase: {fileID: 451589512}
   moonDesc: {fileID: 451589511}
-  energyBonus: {fileID: 451589510}
+  spellEfficiency: {fileID: 451589510}
   playerRelation: {fileID: 451589503}
   timer: {fileID: 451589509}
   moonState: {fileID: 641331434}
@@ -2713,6 +2713,8 @@ MonoBehaviour:
   BlackBar: {fileID: 1215259087}
   blackbase: {fileID: 21300000, guid: 365fe0fc95f549c488f479707e28080c, type: 3}
   whitebase: {fileID: 21300000, guid: 86611801ca119fe4d912f39410e4927e, type: 3}
+  debugPlayerDegree: -1
+  debugLuminosity: 0.9
 --- !u!114 &547694640
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -7110,7 +7112,7 @@ PrefabInstance:
     - target: {fileID: 6838807785290751672, guid: d7664bf51e6967f40a08a565f6caba6d,
         type: 3}
       propertyPath: m_AnchoredPosition.y
-      value: -211699.27
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 8758625567685446294, guid: d7664bf51e6967f40a08a565f6caba6d,
         type: 3}

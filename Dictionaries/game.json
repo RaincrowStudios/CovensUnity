@@ -112,6 +112,23 @@
     39000,
     40000
   ],
+  "lunarEfficiency": [
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0.05,
+    0.1,
+    0.2,
+    0.3,
+    0.2,
+    0.1,
+    0.05,
+    0,
+    0
+  ],
   "PlaceOfPower": {
     "openTimeWindow": [
       120,
@@ -132,13 +149,13 @@
       "level": 1,
       "glyph": 9,
       "school": -1,
+      "xp": 2,
+      "cooldown": 5,
+      "target": 1,
       "states": [
         "",
         "vulnerable"
-      ],
-      "target": 1,
-      "xp": 2,
-      "cooldown": 5
+      ]
     },
     "spell_sunEater": {
       "id": "spell_sunEater",
@@ -146,67 +163,67 @@
       "glyph": 15,
       "school": -1,
       "cost": 2,
+      "align": 2,
+      "xp": 2,
+      "cooldown": 5,
+      "target": 1,
       "states": [
         "",
         "vulnerable"
-      ],
-      "target": 1,
-      "align": 2,
-      "xp": 2,
-      "cooldown": 5
+      ]
     },
     "spell_bind": {
       "id": "spell_bind",
       "level": 2,
       "glyph": 2,
       "school": -1,
+      "align": 1,
+      "xp": 15,
+      "cooldown": 30,
+      "target": 1,
       "states": [
         "",
         "vulnerable"
-      ],
-      "target": 1,
-      "align": 1,
-      "xp": 15,
-      "cooldown": 30
+      ]
     },
     "spell_resurrection": {
       "id": "spell_resurrection",
       "level": 5,
       "glyph": 12,
       "school": -1,
-      "states": [
-        "dead"
-      ],
-      "target": 1,
       "align": 1,
       "xp": 15,
-      "cooldown": 120
+      "cooldown": 120,
+      "target": 1,
+      "states": [
+        "dead"
+      ]
     },
     "spell_bless": {
       "id": "spell_bless",
       "level": 1,
       "glyph": 3,
       "school": 1,
+      "xp": 2,
+      "cooldown": 5,
+      "target": 1,
       "states": [
         "",
         "vulnerable"
-      ],
-      "target": 1,
-      "xp": 2,
-      "cooldown": 5
+      ]
     },
     "spell_silence": {
       "id": "spell_silence",
       "level": 2,
       "glyph": 14,
       "school": 1,
-      "states": [
-        "vulnerable"
-      ],
-      "target": 1,
       "align": 1,
       "xp": 15,
-      "cooldown": 120
+      "cooldown": 120,
+      "target": 1,
+      "states": [
+        "vulnerable"
+      ]
     },
     "spell_whiteFlame": {
       "id": "spell_whiteFlame",
@@ -214,79 +231,79 @@
       "glyph": 6,
       "school": 1,
       "cost": 2,
+      "align": 2,
+      "xp": 2,
+      "cooldown": 5,
+      "target": 1,
       "states": [
         "",
         "vulnerable"
-      ],
-      "target": 1,
-      "align": 2,
-      "xp": 2,
-      "cooldown": 5
+      ]
     },
     "spell_grace": {
       "id": "spell_grace",
       "level": 3,
       "glyph": 7,
       "school": 1,
-      "states": [
-        "dead"
-      ],
-      "target": 1,
       "align": 1,
       "xp": 15,
-      "cooldown": 120
+      "cooldown": 120,
+      "target": 1,
+      "states": [
+        "dead"
+      ]
     },
     "spell_seal": {
       "id": "spell_seal",
       "level": 1,
       "glyph": 13,
       "cost": 10,
+      "align": 3,
+      "xp": 2,
+      "cooldown": 20,
+      "target": 1,
       "states": [
         "",
         "vulnerable"
-      ],
-      "target": 1,
-      "align": 3,
-      "xp": 2,
-      "cooldown": 20
+      ]
     },
     "spell_invisibility": {
       "id": "spell_invisibility",
       "level": 1,
       "glyph": 10,
+      "xp": 15,
+      "cooldown": 120,
+      "target": 2,
       "states": [
         "",
         "vulnerable"
-      ],
-      "target": 2,
-      "xp": 15,
-      "cooldown": 120
+      ]
     },
     "spell_dispel": {
       "id": "spell_dispel",
       "level": 1,
       "glyph": 5,
+      "align": 1,
+      "xp": 5,
+      "cooldown": 15,
+      "target": 1,
       "states": [
         "",
         "vulnerable"
-      ],
-      "target": 1,
-      "align": 1,
-      "xp": 5,
-      "cooldown": 15
+      ]
     },
     "spell_clarity": {
       "id": "spell_clarity",
       "level": 6,
       "glyph": 25,
+      "align": 1,
+      "xp": 15,
+      "cooldown": 15,
+      "target": 1,
       "states": [
         "",
         "vulnerable"
-      ],
-      "target": 1,
-      "align": 1,
-      "xp": 15,
-      "cooldown": 15
+      ]
     },
     "spell_sealBalance": {
       "id": "spell_sealBalance",
@@ -299,14 +316,14 @@
         "coll_frankincense",
         "coll_rocksGlass"
       ],
+      "align": 5,
+      "xp": 20,
+      "cooldown": 60,
+      "target": 2,
       "states": [
         "",
         "vulnerable"
-      ],
-      "target": 2,
-      "align": 5,
-      "xp": 20,
-      "cooldown": 60
+      ]
     },
     "spell_sealLight": {
       "id": "spell_sealLight",
@@ -320,14 +337,14 @@
         "coll_nettle",
         "coll_fireIron"
       ],
+      "align": 5,
+      "xp": 20,
+      "cooldown": 60,
+      "target": 2,
       "states": [
         "",
         "vulnerable"
-      ],
-      "target": 2,
-      "align": 5,
-      "xp": 20,
-      "cooldown": 60
+      ]
     },
     "spell_sealShadow": {
       "id": "spell_sealShadow",
@@ -341,14 +358,14 @@
         "coll_anise",
         "coll_petrifiedWood"
       ],
+      "align": 5,
+      "xp": 20,
+      "cooldown": 60,
+      "target": 2,
       "states": [
         "",
         "vulnerable"
-      ],
-      "target": 2,
-      "align": 5,
-      "xp": 20,
-      "cooldown": 60
+      ]
     },
     "spell_reflectiveWard": {
       "id": "spell_reflectiveWard",
@@ -362,14 +379,14 @@
         "coll_orrisRoot",
         "coll_whiteFur"
       ],
+      "align": 5,
+      "xp": 15,
+      "cooldown": 600,
+      "target": 2,
       "states": [
         "",
         "vulnerable"
-      ],
-      "target": 2,
-      "align": 5,
-      "xp": 15,
-      "cooldown": 600
+      ]
     },
     "spell_rageWard": {
       "id": "spell_rageWard",
@@ -383,14 +400,14 @@
         "coll_newtEye",
         "coll_mayanInk"
       ],
+      "align": 5,
+      "xp": 25,
+      "cooldown": 600,
+      "target": 1,
       "states": [
         "",
         "vulnerable"
-      ],
-      "target": 1,
-      "align": 5,
-      "xp": 25,
-      "cooldown": 600
+      ]
     },
     "spell_greaterSeal": {
       "id": "spell_greaterSeal",
@@ -404,14 +421,14 @@
         "coll_fennel",
         "coll_onyxAmulet"
       ],
+      "align": 5,
+      "xp": 30,
+      "cooldown": 60,
+      "target": 1,
       "states": [
         "",
         "vulnerable"
-      ],
-      "target": 1,
-      "align": 5,
-      "xp": 30,
-      "cooldown": 60
+      ]
     },
     "spell_greaterBless": {
       "id": "spell_greaterBless",
@@ -425,14 +442,14 @@
         "coll_betony",
         "coll_onyxCirclet"
       ],
+      "align": 5,
+      "xp": 30,
+      "cooldown": 60,
+      "target": 1,
       "states": [
         "",
         "vulnerable"
-      ],
-      "target": 1,
-      "align": 5,
-      "xp": 30,
-      "cooldown": 60
+      ]
     },
     "spell_greaterHex": {
       "id": "spell_greaterHex",
@@ -446,14 +463,14 @@
         "coll_borage",
         "coll_onyxRing"
       ],
+      "align": 5,
+      "xp": 30,
+      "cooldown": 60,
+      "target": 1,
       "states": [
         "",
         "vulnerable"
-      ],
-      "target": 1,
-      "align": 5,
-      "xp": 30,
-      "cooldown": 60
+      ]
     },
     "spell_greaterDispel": {
       "id": "spell_greaterDispel",
@@ -466,14 +483,14 @@
         "coll_birch",
         "coll_whiteFur"
       ],
+      "align": 5,
+      "xp": 30,
+      "cooldown": 60,
+      "target": 1,
       "states": [
         "",
         "vulnerable"
-      ],
-      "target": 1,
-      "align": 5,
-      "xp": 30,
-      "cooldown": 60
+      ]
     },
     "spell_banish": {
       "id": "spell_banish",
@@ -486,14 +503,14 @@
         "coll_angelica",
         "coll_whiteCrystal"
       ],
+      "align": 5,
+      "xp": 2,
+      "cooldown": 120,
+      "target": 1,
       "states": [
         "",
         "vulnerable"
-      ],
-      "target": 1,
-      "align": 5,
-      "xp": 2,
-      "cooldown": 120
+      ]
     },
     "spell_wither": {
       "id": "spell_wither",
@@ -507,13 +524,13 @@
         "coll_barberry",
         "coll_cingulum"
       ],
-      "states": [
-        "vulnerable"
-      ],
-      "target": 1,
       "align": 5,
       "xp": 15,
-      "cooldown": 120
+      "cooldown": 120,
+      "target": 1,
+      "states": [
+        "vulnerable"
+      ]
     },
     "spell_foolBargain": {
       "id": "spell_foolBargain",
@@ -521,14 +538,14 @@
       "glyph": 16,
       "baseSpell": "spell_bargain",
       "cost": 30,
+      "align": 5,
+      "xp": 15,
+      "cooldown": 140,
+      "target": 1,
       "states": [
         "",
         "vulnerable"
-      ],
-      "target": 1,
-      "align": 5,
-      "xp": 15,
-      "cooldown": 140
+      ]
     },
     "spell_leech": {
       "id": "spell_leech",
@@ -542,22 +559,22 @@
         "coll_lemongrass",
         "coll_kaskaraBlade"
       ],
+      "align": 5,
+      "xp": 25,
+      "cooldown": 1200,
+      "target": 1,
       "states": [
         "",
         "vulnerable"
-      ],
-      "target": 1,
-      "align": 5,
-      "xp": 25,
-      "cooldown": 1200
+      ]
     },
     "spell_confusion": {
       "id": "spell_confusion",
       "level": 1,
       "glyph": 1,
       "baseSpell": "spell_dispel",
-      "target": 1,
-      "xp": 30
+      "xp": 30,
+      "target": 1
     },
     "spell_burst": {
       "id": "spell_burst",
@@ -571,14 +588,14 @@
         "coll_hyssop",
         "coll_hourglass"
       ],
+      "align": 5,
+      "xp": 5,
+      "cooldown": 15,
+      "target": 1,
       "states": [
         "",
         "vulnerable"
-      ],
-      "target": 1,
-      "align": 5,
-      "xp": 5,
-      "cooldown": 15
+      ]
     },
     "spell_lazurus": {
       "id": "spell_lazurus",
@@ -592,13 +609,13 @@
         "coll_mugwort",
         "coll_oilyFeather"
       ],
-      "states": [
-        "dead"
-      ],
-      "target": 1,
       "align": 5,
       "xp": 15,
-      "cooldown": 30
+      "cooldown": 30,
+      "target": 1,
+      "states": [
+        "dead"
+      ]
     },
     "spell_wail": {
       "id": "spell_wail",
@@ -612,40 +629,44 @@
         "coll_batWool",
         "coll_silverComb"
       ],
+      "align": 5,
+      "xp": 2,
+      "cooldown": 120,
+      "target": 1,
+      "targetType": 1,
       "states": [
         "",
         "vulnerable"
-      ],
-      "target": 1,
-      "align": 5,
-      "xp": 2,
-      "cooldown": 120
+      ]
     },
     "spell_trueSight": {
       "id": "spell_trueSight",
       "level": 3,
       "glyph": 11,
+      "align": 1,
+      "xp": 10,
+      "cooldown": 120,
+      "target": 0,
+      "targetSchool": [
+        0
+      ],
       "states": [
         "",
         "vulnerable"
-      ],
-      "target": 0,
-      "align": 1,
-      "xp": 10,
-      "cooldown": 120
+      ]
     },
     "spell_crowsEye": {
       "id": "spell_crowsEye",
       "level": 7,
       "glyph": 24,
+      "align": 1,
+      "xp": 20,
+      "cooldown": 120,
+      "target": 0,
       "states": [
         "",
         "vulnerable"
-      ],
-      "target": 0,
-      "align": 1,
-      "xp": 20,
-      "cooldown": 120
+      ]
     },
     "spell_twilightDusk": {
       "id": "spell_twilightDusk",
@@ -659,14 +680,14 @@
         "coll_lobelia",
         "coll_silverComb"
       ],
+      "align": 5,
+      "xp": 5,
+      "cooldown": 30,
+      "target": 1,
       "states": [
         "",
         "vulnerable"
-      ],
-      "target": 1,
-      "align": 5,
-      "xp": 5,
-      "cooldown": 30
+      ]
     },
     "spell_shadowMark": {
       "id": "spell_shadowMark",
@@ -674,13 +695,13 @@
       "glyph": 23,
       "school": -1,
       "baseSpell": "spell_sunEater",
+      "xp": 15,
+      "cooldown": 300,
+      "target": 1,
       "states": [
         "",
         "vulnerable"
-      ],
-      "target": 1,
-      "xp": 15,
-      "cooldown": 300
+      ]
     },
     "spell_twilightDawn": {
       "id": "spell_twilightDawn",
@@ -694,14 +715,14 @@
         "coll_pennyRoyal",
         "coll_friedTofu"
       ],
+      "align": 5,
+      "xp": 5,
+      "cooldown": 30,
+      "target": 1,
       "states": [
         "",
         "vulnerable"
-      ],
-      "target": 1,
-      "align": 5,
-      "xp": 5,
-      "cooldown": 30
+      ]
     },
     "spell_channeling": {
       "id": "spell_channeling",
@@ -709,60 +730,60 @@
       "glyph": 10,
       "common": true,
       "cost": 1,
+      "cooldown": 60,
+      "target": 0,
       "states": [
         "",
         "vulnerable"
-      ],
-      "target": 0,
-      "cooldown": 60
+      ]
     },
     "spell_tranquility": {
       "id": "spell_tranquility",
       "level": 5,
       "glyph": 10,
       "cost": 10,
+      "cooldown": 60,
+      "target": 1,
       "states": [
         "",
         "vulnerable"
-      ],
-      "target": 1,
-      "cooldown": 60
+      ]
     },
     "spell_addledMind": {
       "id": "spell_addledMind",
       "level": 5,
       "glyph": 10,
       "cost": 10,
+      "xp": 15,
+      "cooldown": 20,
+      "target": 1,
       "states": [
         "",
         "vulnerable"
-      ],
-      "target": 1,
-      "xp": 15,
-      "cooldown": 20
+      ]
     },
     "attack": {
       "id": "attack",
       "glyph": 9,
       "school": -1,
+      "hidden": true,
+      "target": 1,
       "states": [
         "",
         "vulnerable"
-      ],
-      "target": 1,
-      "hidden": true
+      ]
     },
     "elixir_degree": {
       "id": "elixir_degree",
       "glyph": 10,
-      "target": 1,
-      "hidden": true
+      "hidden": true,
+      "target": 1
     },
     "elixir_xp": {
       "id": "elixir_xp",
       "glyph": 10,
-      "target": 1,
-      "hidden": true
+      "hidden": true,
+      "target": 1
     },
     "spell_mirrors": {
       "id": "spell_mirrors",
@@ -770,14 +791,14 @@
       "glyph": 1,
       "school": 0,
       "cost": 100,
+      "align": 2,
+      "xp": 30,
+      "cooldown": 300,
+      "target": 0,
       "states": [
         "",
         "vulnerable"
-      ],
-      "target": 0,
-      "align": 2,
-      "xp": 30,
-      "cooldown": 300
+      ]
     }
   },
   "Spirits": {
