@@ -28,6 +28,8 @@ public class UIQuickCast : MonoBehaviour
     private static CharacterMarkerData m_TargetData;
     private string m_PreviousMarker = "";
 
+    private int m_AnimTweenId;
+
     public static void Open(System.Action onLoaded = null)
     {
         m_Target = null;
@@ -108,7 +110,7 @@ public class UIQuickCast : MonoBehaviour
     private void Awake()
     {
         m_Instance = this;
-        LeanTween.moveLocalY(m_SpellContainer.gameObject, -138f, 0.1f);
+        m_Canvas.enabled = false;
         m_ButtonPrefab.gameObject.SetActive(false);
         m_MoreSpells.onClick.AddListener(OnClickMoreSpells);
 
@@ -179,18 +181,26 @@ public class UIQuickCast : MonoBehaviour
 
     private void AnimOpen()
     {
+        LeanTween.cancel(m_AnimTweenId);
+
         m_Canvas.enabled = true;
-        LeanTween.moveLocalY(m_SpellContainer.gameObject, 0f, 0.6f).setEaseOutCubic();
         m_InputRaycaster.enabled = true;
+
+        m_AnimTweenId = LeanTween.moveLocalY(m_SpellContainer.gameObject, 0f, 0.6f)
+            .setEaseOutCubic()
+            .uniqueId;
     }
 
     private void AnimHide()
     {
-        LeanTween.moveLocalY(m_SpellContainer.gameObject, -138f, 0.4f).setOnComplete(() =>
-        {
-            m_Canvas.enabled = false;
-        }).setEaseOutCubic();
+        LeanTween.cancel(m_AnimTweenId);
+
         m_InputRaycaster.enabled = false;
+
+        m_AnimTweenId = LeanTween.moveLocalY(m_SpellContainer.gameObject, -138f, 0.4f)
+            .setOnComplete(() => m_Canvas.enabled = false)
+            .setEaseOutCubic()
+            .uniqueId;
     }
 
     private void _UpdateCanCast(IMarker marker, CharacterMarkerData data)
