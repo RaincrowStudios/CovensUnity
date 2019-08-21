@@ -131,4 +131,10 @@ public class UIMain : MonoBehaviour
     {
         UIChat.Open();
     }
+
+    [ContextMenu("Nearby Pops")]
+    private void OpenNearbyPops()
+    {
+        UINearbyLocations.Open();
+    }
 }

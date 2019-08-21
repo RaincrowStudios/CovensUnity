@@ -73,6 +73,10 @@ public class UINearbyLocationItem : MonoBehaviour
             System.TimeSpan timeRemaining = Utilities.FromJavaTime(data.closeOn) - Utilities.FromJavaTime(data.openOn);
             m_Status.text = $"<Open for {timeRemaining.TotalSeconds}>";
         }
-
+        else
+        {
+            //System.TimeSpan cooldownTimer = Utilities.FromJavaTime(data.openOn) - System.DateTime.UtcNow;
+            m_Status.text = $"<Cooldown: {Utilities.GetTimeRemaining(data.openOn)}>";
+        }
     }
 }
