@@ -12,14 +12,14 @@ public class StatusEffect
 {
     public struct Modifier
     {
-        public string status;
+        public string[] status;
         public int resilience;
         public int power;
         public int aptitude;
         public int wisdom;
         public int beCrit;
     }
-    
+
     public string spell;
     public float duration;
     public bool buff;
@@ -92,7 +92,7 @@ public abstract class CharacterMarkerData : MarkerData
     public virtual int resilience { get; set; }
 
     public List<StatusEffect> effects;
-    
+
     public virtual string covenId { get; set; }
     public virtual string coven { get; set; }
 
@@ -452,7 +452,7 @@ public class PlayerData : WitchMarkerData
 
     [JsonIgnore]
     public double lastEnergyUpdate;
-    
+
     [JsonIgnore]
     public List<SpellData> Spells => m_AllSpells;
 
@@ -501,12 +501,12 @@ public class SelectWitchData_Map : WitchMarkerData
 
     [JsonIgnore]
     public WitchToken token;
-    
+
     public override MarkerSpawner.MarkerType Type => MarkerSpawner.MarkerType.WITCH;
-    
+
     //temp fix to avoid replacing all WitchMarkerData references
     [JsonIgnore]
-    public override string state => token.state; 
+    public override string state => token.state;
     [JsonIgnore]
     public override int energy => token.energy;
     [JsonIgnore]
