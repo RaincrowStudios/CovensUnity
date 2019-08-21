@@ -1,0 +1,78 @@
+﻿using System.Collections;
+using System.Collections.Generic;
+using UnityEngine;
+using UnityEngine.UI;
+using TMPro;
+using Newtonsoft.Json;
+
+public class UINearbyLocationItem : MonoBehaviour
+{
+    public struct LocationData
+    {
+        [JsonProperty("_id")]
+        public string id;
+        public string name;
+
+        public int slots;
+        public float latitude;
+        public double longitude;
+        public int tier;
+
+        public double battleBeginsOn;
+        public double closeOn;
+        public double openOn;
+
+        public bool isOpen;
+        public bool isActive;
+    }
+
+    [SerializeField] private TextMeshProUGUI m_Cost;
+    [SerializeField] private TextMeshProUGUI m_Name;
+    [SerializeField] private TextMeshProUGUI m_Status;
+    [SerializeField] private TextMeshProUGUI m_ClaimedBy;
+
+    [SerializeField] private Button m_FlyTo;
+
+    private System.Action m_OnFlyTo;
+
+    private void Awake()
+    {
+        m_FlyTo.onClick.AddListener(OnClickFlyTo);
+    }
+
+    private void OnClickFlyTo()
+    {
+        m_OnFlyTo?.Invoke();
+    }
+
+    public void Setup(LocationData data, System.Action onFlyTo)
+    {
+        m_OnFlyTo = onFlyTo;
+        m_Name.text = data.name;
+        m_ClaimedBy.text = "<color=red>TODO</color>";
+
+        //setup cost
+        int goldCost = DownloadedAssets.PlaceOfPowerSettings.goldCost[data.tier - 1];
+        if (goldCost != 0)
+        {
+            m_Cost.text = goldCost.ToString();
+        }
+        else
+        {
+            int silverCost = DownloadedAssets.PlaceOfPowerSettings.silverCost[data.tier - 1];
+            m_Cost.text = silverCost.ToString();
+        }
+
+        //setup status
+        if (data.isActive)
+        {
+            m_Status.text = "<In Battle>";
+        }
+        else if (data.isOpen)
+        {
+            System.TimeSpan timeRemaining = Utilities.FromJavaTime(data.closeOn) - Utilities.FromJavaTime(data.openOn);
+            m_Status.text = $"<Open for {timeRemaining.TotalSeconds}>";
+        }
+
+    }
+}

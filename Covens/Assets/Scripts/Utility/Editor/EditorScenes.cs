@@ -49,6 +49,9 @@ public class EditorScenes : MonoBehaviour
     [MenuItem("Scenes/Screens/SpiritSelect")]
     static void SpiritSelectScene() => OpenScene("SpiritSelect");
 
+    [MenuItem("Scenes/Screens/Nearby PoPs")]
+    static void NearbyPopsScene() => OpenScene("NearbyPops");
+
     private static void OpenScene(string name)
     {
         if (EditorSceneManager.SaveCurrentModifiedScenesIfUserWantsTo())

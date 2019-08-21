@@ -47,4 +47,7 @@ EditorBuildSettings:
   - enabled: 1
     path: Assets/Scenes/SpiritSelect.unity
     guid: e32e5be3b37f382469d0e963fccac68f
+  - enabled: 1
+    path: Assets/Scenes/NearbyPops.unity
+    guid: f0e2bb3f70202e04c9dfeda4a9880e25
   m_configObjects: {}
