@@ -10,12 +10,9 @@ public class DownloadManager : MonoBehaviour
 {
     public struct AssetResponse
     {
-        [JsonIgnore]
-        public string game => "107";
-        [JsonIgnore]
-        public string store => "107";
-        [JsonIgnore]
-        public string localization => "107";
+        public string game;
+        public string store;
+        public string localization;
 
         public List<string> assets;
         public string version;
