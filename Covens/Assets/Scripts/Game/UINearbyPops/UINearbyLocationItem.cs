@@ -70,13 +70,34 @@ public class UINearbyLocationItem : MonoBehaviour
         }
         else if (data.isOpen)
         {
-            System.TimeSpan timeRemaining = Utilities.FromJavaTime(data.closeOn) - Utilities.FromJavaTime(data.openOn);
-            m_Status.text = $"<Open for {timeRemaining.TotalSeconds}>";
+            StartCoroutine(TimerCoroutine(
+                false,
+                (float)(Utilities.FromJavaTime(data.closeOn) - Utilities.FromJavaTime(data.openOn)).TotalSeconds
+            ));
         }
         else
         {
-            //System.TimeSpan cooldownTimer = Utilities.FromJavaTime(data.openOn) - System.DateTime.UtcNow;
-            m_Status.text = $"<Cooldown: {Utilities.GetTimeRemaining(data.openOn)}>";
+            StartCoroutine(TimerCoroutine(
+                false,
+                (float)(Utilities.FromJavaTime(data.openOn) - System.DateTime.UtcNow).TotalSeconds
+            ));
         }
+    }
+
+    private IEnumerator TimerCoroutine(bool isOpen, float seconds)
+    {
+        string text;
+        if (isOpen)
+            text = "open: {0}";
+        else
+            text = "cooldown: {0}";
+
+        while (seconds > 0)
+        {
+            m_Status.text = string.Format(text, seconds);
+            yield return new WaitForSeconds(1);
+            seconds -= 1;
+        }
+        m_Status.text = string.Format(text, Mathf.Max(seconds, 0));
     }
 }

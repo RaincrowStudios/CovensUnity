@@ -139,8 +139,12 @@ public class UINearbyLocations : MonoBehaviour
         m_Locations = locations;
         foreach(var location in locations)
         {
-            UINearbyLocationItem item = m_ItemPool.Spawn();
-            item.Setup(location, () => PlayerManager.Instance.FlyTo(location.longitude, location.latitude));
+            UINearbyLocationItem item = m_ItemPool.Spawn(m_Container.transform);
+            item.Setup(location, () =>
+            {
+                PlayerManager.Instance.FlyTo(location.longitude, location.latitude);
+                this.Hide();
+            });
         }
     }
 }
