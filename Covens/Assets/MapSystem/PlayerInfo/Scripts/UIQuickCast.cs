@@ -222,7 +222,7 @@ public class UIQuickCast : MonoBehaviour
 
         if (string.IsNullOrEmpty(button.Spell))
         {
-            UIGlobalPopup.ShowPopUp(null, "hold to set a spell");
+            UIGlobalPopup.ShowPopUp(null, LocalizeLookUp.GetText("quickcast_tap_hold"));//"hold to set a spell");
             return;
         }
 
@@ -239,7 +239,7 @@ public class UIQuickCast : MonoBehaviour
 
     private void OnHoldSpell(UIQuickcastButton button)
     {
-        foreach(UIQuickcastButton _item in m_Buttons)
+        foreach (UIQuickcastButton _item in m_Buttons)
         {
             _item.Hightlight(_item == button);
         }
