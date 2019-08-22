@@ -19,6 +19,7 @@ public class UINearbyLocationItem : MonoBehaviour
         public int tier;
 
         public double battleBeginsOn;
+        public double battleFinishedOn;
         public double closeOn;
         public double openOn;
 
@@ -72,7 +73,7 @@ public class UINearbyLocationItem : MonoBehaviour
         {
             StartCoroutine(TimerCoroutine(
                 false,
-                (float)(Utilities.FromJavaTime(data.closeOn) - Utilities.FromJavaTime(data.openOn)).TotalSeconds
+                (float)(Utilities.FromJavaTime(data.battleBeginsOn) - System.DateTime.UtcNow).TotalSeconds
             ));
         }
         else
@@ -88,7 +89,7 @@ public class UINearbyLocationItem : MonoBehaviour
     {
         string text;
         if (isOpen)
-            text = "open: {0}";
+            text = "open for: {0}";
         else
             text = "cooldown: {0}";
 
