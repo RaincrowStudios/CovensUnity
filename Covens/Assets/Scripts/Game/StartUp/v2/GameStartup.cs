@@ -280,7 +280,7 @@ public class GameStartup : MonoBehaviour
                 if (string.IsNullOrEmpty(error) == false)
                     Debug.LogError("GetConfig failed\n" + error);
 
-                Dominion = config.dominion;
+                Dominion = string.IsNullOrEmpty(config.dominion) ? "Ronin" : config.dominion;
                 TopPlayer = config.dominionRank.topPlayer;
                 TopCoven = config.dominionRank.topCoven;
 

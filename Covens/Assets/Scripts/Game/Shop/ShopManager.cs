@@ -204,14 +204,6 @@ public class ShopManager : ShopBase
         DownloadedAssets.IconSprites["bundle_sapphosChoice"] = bundle2;
         DownloadedAssets.IconSprites["bundle_hermeticCollection"] = bundle3;
 
-        title1.GetComponent<Button>().onClick.AddListener(() =>
-        {
-            gearClothAction();
-            maskContainer.SetActive(true);
-        });
-
-
-        title2.GetComponent<Button>().onClick.AddListener(ShowStyles);
         gearClothingFilter.onClick.AddListener(gearClothAction);
 
         gearAccessoriesFilter.onClick.AddListener(() =>
@@ -521,6 +513,15 @@ public class ShopManager : ShopBase
 
     private void ShowGear()
     {
+        title1.GetComponent<Button>().onClick.RemoveAllListeners();
+        title2.GetComponent<Button>().onClick.RemoveAllListeners();
+        title1.GetComponent<Button>().onClick.AddListener(() =>
+        {
+            gearClothAction();
+            maskContainer.SetActive(true);
+        });
+        title2.GetComponent<Button>().onClick.AddListener(ShowStyles);
+        
         title1.color = Color.white;
         title2.color = Color.grey;
         gearFilterContainer.alpha = 0;
@@ -537,6 +538,9 @@ public class ShopManager : ShopBase
 
     private void HideGear()
     {
+        title1.GetComponent<Button>().onClick.RemoveAllListeners();
+        title2.GetComponent<Button>().onClick.RemoveAllListeners();
+
         LeanTween.alphaCanvas(gearFilterContainer, 0, easeWheelStoreOut).setOnComplete(() => gearFilterContainer.gameObject.SetActive(false));
         SetCloseAction();
         ShowWheel();
@@ -630,6 +634,9 @@ public class ShopManager : ShopBase
 
     private void HideStyles()
     {
+        title1.GetComponent<Button>().onClick.RemoveAllListeners();
+        title2.GetComponent<Button>().onClick.RemoveAllListeners();
+
         LeanTween.alphaCanvas(gearFilterContainer, 0, easeWheelStoreOut).setOnComplete(() => gearFilterContainer.gameObject.SetActive(false));
         LeanTween.scale(styleContainer, Vector3.one * .7f, easeWheelStoreOut).setEase(easeTypeWheel);
         LeanTween.alphaCanvas(styleCG, 0, easeWheelStoreOut).setOnComplete(() => styleContainer.SetActive(false));
