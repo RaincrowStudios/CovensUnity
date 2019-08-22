@@ -98,7 +98,7 @@ public class Utilities : MonoBehaviour
         return s;
     }
 
-    public static Color GetSchoolColor(int lp)
+    public static Color GetSchoolColor(long lp)
     {
         if (lp < 0)
         {
@@ -114,7 +114,7 @@ public class Utilities : MonoBehaviour
         }
     }
 
-    public static string GetSchoolCoven(int lp)
+    public static string GetSchoolCoven(long lp)
     {
         string s = "";
         if (lp < 0)

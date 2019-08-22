@@ -134,7 +134,7 @@ namespace Raincrow.Chat
                 DominionSocket = null;
             }
 
-            Log("Initalizing dominion socket");
+            Log("Initalizing dominion socket (" + dominion + ")");
             DominionSocket = SocketManager["/dominion"];
             DominionSocket.On(SocketIOEventTypes.Connect, (_socket, _packet, _args) =>
             {
@@ -228,11 +228,8 @@ namespace Raincrow.Chat
             }
 
             if (DominionSocket == null)
-            {
-                if (!string.IsNullOrEmpty(PlayerDataManager.currentDominion))
-                {
-                    InitDominion(PlayerDataManager.currentDominion);
-                }
+            {                
+                InitDominion(PlayerDataManager.currentDominion);
                 MarkerManagerAPI.OnChangeDominion += OnChangeDominion;
             }
         }
