@@ -47,9 +47,12 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   m_AvatarRenderer: {fileID: 212681355302356672}
   m_NameBanner: {fileID: 0}
+  m_StatsContainer: {fileID: 0}
   m_EnergyRing: {fileID: 0}
+  m_EnergyRingEmpty: {fileID: 0}
   m_Shadows:
   - {fileID: 212614738658301160}
+  m_DebugFloat: 0
   m_ViewTransform: {fileID: 4959983671828090}
 --- !u!1 &1298285111764294
 GameObject:
@@ -107,7 +110,7 @@ MeshRenderer:
   m_RenderingLayerMask: 4294967295
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 21238215743915936, guid: 38350119ae09440479434f932beb604a, type: 2}
+  - {fileID: 2100000, guid: d446073cd8fd248479b0ef0a9c31e32d, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -166,8 +169,7 @@ MonoBehaviour:
   m_text: 24
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 38350119ae09440479434f932beb604a, type: 2}
-  m_sharedMaterial: {fileID: 21238215743915936, guid: 38350119ae09440479434f932beb604a,
-    type: 2}
+  m_sharedMaterial: {fileID: 2100000, guid: d446073cd8fd248479b0ef0a9c31e32d, type: 2}
   m_fontSharedMaterials: []
   m_fontMaterial: {fileID: 0}
   m_fontMaterials: []

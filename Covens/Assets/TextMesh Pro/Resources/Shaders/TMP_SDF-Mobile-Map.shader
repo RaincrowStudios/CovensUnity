@@ -3,7 +3,7 @@
 // - No Glow Option
 // - Softness is applied on both side of the outline
 
-Shader "TextMeshPro/Mobile/Distance Field" {
+Shader "Covens/Distance Field - Map" {
 
 Properties {
 	_FaceColor			("Face Color", Color) = (1,1,1,1)
@@ -54,7 +54,7 @@ Properties {
 SubShader {
 	Tags 
 	{
-		"Queue"="Transparent"
+		"Queue"="Transparent+2"
 		"IgnoreProjector"="True"
 		"RenderType"="Transparent"
 	}
