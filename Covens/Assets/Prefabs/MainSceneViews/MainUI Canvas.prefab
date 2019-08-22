@@ -504,7 +504,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: 0.5, y: -30.800781}
+  m_AnchoredPosition: {x: 0.5, y: -30.80072}
   m_SizeDelta: {x: -243.69995, y: -444.09998}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &222919662468394970
@@ -17816,7 +17816,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 1, y: 0.5}
   m_AnchorMax: {x: 1, y: 0.5}
-  m_AnchoredPosition: {x: -160.80078, y: 0}
+  m_AnchoredPosition: {x: -160.80075, y: 0}
   m_SizeDelta: {x: 306.44, y: 91.69}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &222073879174970262
@@ -24167,7 +24167,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 90.00001, y: 0, z: 34.499}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: 29.800863, y: 32}
+  m_AnchoredPosition: {x: 29.800865, y: 32}
   m_SizeDelta: {x: 215.6, y: 400.9}
   m_Pivot: {x: -0.029959893, y: 0.07250256}
 --- !u!222 &222253823130970226
@@ -25068,6 +25068,7 @@ MonoBehaviour:
   m_StoreButton: {fileID: 114713200079089748}
   m_LeaderboardButton: {fileID: 114231826401964064}
   m_ChatButton: {fileID: 114152227998886348}
+  m_NearbyPopsButton: {fileID: 7249245852711767966}
   m_BookOfShadows: {fileID: 1757248755078680, guid: 661d936853d67a144b65320dd37208bd,
     type: 3}
   m_bosTransform: {fileID: 0}
@@ -25109,7 +25110,7 @@ MonoBehaviour:
   mapPointer: {fileID: 114796637872850108}
   m_SummonButton: {fileID: 114990376330951518}
   m_ShoutButton: {fileID: 114316703701802602}
-  m_LocationButton: {fileID: 5573896195974908553}
+  m_LocationButton: {fileID: 0}
 --- !u!114 &4010615984795548020
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -85985,7 +85986,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: 0.5, y: -30.800781}
+  m_AnchoredPosition: {x: 0.5, y: -30.80072}
   m_SizeDelta: {x: -243.69995, y: -444.09998}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &114939544202949962
@@ -102206,7 +102207,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: 0.5, y: -30.800781}
+  m_AnchoredPosition: {x: 0.5, y: -30.80072}
   m_SizeDelta: {x: -243.69995, y: -444.09998}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &114526280457732962
@@ -125480,7 +125481,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: -375, y: 5}
+  m_AnchoredPosition: {x: -374.99994, y: 5}
   m_SizeDelta: {x: 0, y: 200}
   m_Pivot: {x: 0.5, y: 1}
 --- !u!1 &1760344526793180372
@@ -125998,13 +125999,14 @@ GameObject:
   - component: {fileID: 4933618897539389977}
   - component: {fileID: 550187565552996560}
   - component: {fileID: 9074826059102544397}
+  - component: {fileID: 7249245852711767966}
   m_Layer: 5
-  m_Name: LocationManagerButton
+  m_Name: NearbyLocations
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!224 &3128604241624202895
 RectTransform:
   m_ObjectHideFlags: 0
@@ -126071,10 +126073,55 @@ CanvasGroup:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 3289635199404324092}
   m_Enabled: 1
-  m_Alpha: 0
+  m_Alpha: 1
   m_Interactable: 1
   m_BlocksRaycasts: 1
   m_IgnoreParentGroups: 0
+--- !u!114 &7249245852711767966
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3289635199404324092}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 1392445389, guid: f70555f144d8491a825f0804e09c671c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_Navigation:
+    m_Mode: 3
+    m_SelectOnUp: {fileID: 0}
+    m_SelectOnDown: {fileID: 0}
+    m_SelectOnLeft: {fileID: 0}
+    m_SelectOnRight: {fileID: 0}
+  m_Transition: 1
+  m_Colors:
+    m_NormalColor: {r: 1, g: 1, b: 1, a: 1}
+    m_HighlightedColor: {r: 0.9607843, g: 0.9607843, b: 0.9607843, a: 1}
+    m_PressedColor: {r: 0.78431374, g: 0.78431374, b: 0.78431374, a: 1}
+    m_SelectedColor: {r: 0.9607843, g: 0.9607843, b: 0.9607843, a: 1}
+    m_DisabledColor: {r: 0.78431374, g: 0.78431374, b: 0.78431374, a: 0.5019608}
+    m_ColorMultiplier: 1
+    m_FadeDuration: 0.1
+  m_SpriteState:
+    m_HighlightedSprite: {fileID: 0}
+    m_PressedSprite: {fileID: 0}
+    m_SelectedSprite: {fileID: 0}
+    m_DisabledSprite: {fileID: 0}
+  m_AnimationTriggers:
+    m_NormalTrigger: Normal
+    m_HighlightedTrigger: Highlighted
+    m_PressedTrigger: Pressed
+    m_SelectedTrigger: Highlighted
+    m_DisabledTrigger: Disabled
+  m_Interactable: 1
+  m_TargetGraphic: {fileID: 4709044944711401357}
+  m_OnClick:
+    m_PersistentCalls:
+      m_Calls: []
+    m_TypeName: UnityEngine.UI.Button+ButtonClickedEvent, UnityEngine.UI, Version=1.0.0.0,
+      Culture=neutral, PublicKeyToken=null
 --- !u!1 &3440607668545878168
 GameObject:
   m_ObjectHideFlags: 0
@@ -129649,9 +129696,8 @@ GameObject:
   - component: {fileID: 8559579749757123376}
   - component: {fileID: 5611236566531312278}
   - component: {fileID: 4709044944711401357}
-  - component: {fileID: 5573896195974908553}
   m_Layer: 5
-  m_Name: button
+  m_Name: Icon
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -129713,62 +129759,6 @@ MonoBehaviour:
   m_FillClockwise: 1
   m_FillOrigin: 0
   m_UseSpriteMesh: 0
---- !u!114 &5573896195974908553
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 8193957610548350718}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 1392445389, guid: f70555f144d8491a825f0804e09c671c, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  m_Navigation:
-    m_Mode: 3
-    m_SelectOnUp: {fileID: 0}
-    m_SelectOnDown: {fileID: 0}
-    m_SelectOnLeft: {fileID: 0}
-    m_SelectOnRight: {fileID: 0}
-  m_Transition: 1
-  m_Colors:
-    m_NormalColor: {r: 1, g: 1, b: 1, a: 1}
-    m_HighlightedColor: {r: 0.9607843, g: 0.9607843, b: 0.9607843, a: 1}
-    m_PressedColor: {r: 0.78431374, g: 0.78431374, b: 0.78431374, a: 1}
-    m_SelectedColor: {r: 0.9607843, g: 0.9607843, b: 0.9607843, a: 1}
-    m_DisabledColor: {r: 0.78431374, g: 0.78431374, b: 0.78431374, a: 0.5019608}
-    m_ColorMultiplier: 1
-    m_FadeDuration: 0.1
-  m_SpriteState:
-    m_HighlightedSprite: {fileID: 0}
-    m_PressedSprite: {fileID: 0}
-    m_SelectedSprite: {fileID: 0}
-    m_DisabledSprite: {fileID: 0}
-  m_AnimationTriggers:
-    m_NormalTrigger: Normal
-    m_HighlightedTrigger: Highlighted
-    m_PressedTrigger: Pressed
-    m_SelectedTrigger: Highlighted
-    m_DisabledTrigger: Disabled
-  m_Interactable: 1
-  m_TargetGraphic: {fileID: 4709044944711401357}
-  m_OnClick:
-    m_PersistentCalls:
-      m_Calls:
-      - m_Target: {fileID: 114796654857181126}
-        m_MethodName: OnLocationClick
-        m_Mode: 1
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
-    m_TypeName: UnityEngine.UI.Button+ButtonClickedEvent, UnityEngine.UI, Version=1.0.0.0,
-      Culture=neutral, PublicKeyToken=null
 --- !u!1 &8760261649017144778
 GameObject:
   m_ObjectHideFlags: 0
