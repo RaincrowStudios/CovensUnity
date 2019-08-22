@@ -13,8 +13,11 @@ public class PlayerLandFX : MonoBehaviour
 
     private int m_TweenId;
 
+    private static PlayerLandFX m_Instance;
+
     private void Awake()
     {
+        m_Instance = this;
         m_ParticleModule = LandingFX.main;
         m_ParticleModule.playOnAwake = false;
         LandingFX.gameObject.SetActive(true);
@@ -53,5 +56,21 @@ public class PlayerLandFX : MonoBehaviour
         });
 
         LandingFX.Play(true);
+    }
+
+    public static void PlayLandingAnim()
+    {
+        if (m_Instance == null)
+            return;
+
+        m_Instance.LandingAnim();
+    }
+
+    public static void PlayFlightAnim()
+    {
+        if (m_Instance == null)
+            return;
+
+        m_Instance.OnStartFlight();
     }
 }
