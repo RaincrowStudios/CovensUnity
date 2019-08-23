@@ -57,6 +57,7 @@ public class UIQuickCast : MonoBehaviour
 
     public static void Close()
     {
+        Debug.Log("CLosing Quick cast");
         if (m_Instance == null)
             return;
         m_Instance._Close();

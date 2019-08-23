@@ -120,8 +120,18 @@ public class LocationPlayerAction : MonoBehaviour
                   RenderSettings.fogMode = FogMode.Linear;
                   RenderSettings.fogColor = new Color(0.14f, 0.14f, 0.14f);
                   CenterOnPlayer();
+                  UIQuickCast.EnableQuickcastButtons(false);
+                  if (UIPlayerInfo.isShowing)
+                      UIPlayerInfo.SetVisibility(false);
+                  if (UISpiritInfo.isOpen)
+                      UISpiritInfo.SetVisibility(false);
                   LeanTween.value(1, 0, .5f).setOnUpdate((float v) => CloakingFX(v));
                   isCloaked = true;
+                  foreach (var item in LocationUnitSpawner.Markers)
+                  {
+                      item.Value.ScaleNamePlate(false, .5f);
+                      //   item.Value.EnergyRingFade(1, .5f);
+                  }
               });
        }, true);
         m_BtnArr[0] = btn;
@@ -139,11 +149,6 @@ public class LocationPlayerAction : MonoBehaviour
         m_CloakUIGreyScale.SetParent(playerMarker.GameObject.transform.GetChild(0));
         m_CloakUIGreyScale.localPosition = Vector3.zero;
         m_CloakUIGreyScale.localScale = Vector3.one * Mathf.Lerp(1, 0, v);
-        foreach (var item in LocationUnitSpawner.Markers)
-        {
-            item.Value.ScaleNamePlate(false, .5f);
-            item.Value.EnergyRingFade(0, .5f);
-        }
         RenderSettings.fogStartDistance = Mathf.Lerp(-1446, 2100, v);
         RenderSettings.fogEndDistance = Mathf.Lerp(878, 2200, v);
         m_BtnArr[1].transform.localScale = Mathf.Lerp(0, 1, v) * Vector3.one;
@@ -169,6 +174,20 @@ public class LocationPlayerAction : MonoBehaviour
 
     public static void DisableCloaking()
     {
+        foreach (var item in LocationUnitSpawner.Markers)
+        {
+            item.Value.ScaleNamePlate(true, .5f);
+            // item.Value.EnergyRingFade(0, .5f);
+        }
+        if (UIPlayerInfo.isShowing)
+            UIPlayerInfo.SetVisibility(true);
+        if (UISpiritInfo.isOpen)
+            UISpiritInfo.SetVisibility(true);
+
+        if (UIPlayerInfo.isShowing || UISpiritInfo.isOpen)
+            UIQuickCast.EnableQuickcastButtons(true);
+
+
         RenderSettings.fogMode = FogMode.Linear;
         RenderSettings.fogColor = new Color(0.14f, 0.14f, 0.14f);
         LeanTween.value(0, 1, .5f).setOnUpdate((float v) => Instance.CloakingFX(v)).setOnComplete(() =>

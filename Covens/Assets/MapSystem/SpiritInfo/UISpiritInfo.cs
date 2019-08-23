@@ -56,7 +56,13 @@ public class UISpiritInfo : UIInfoPanel
                 });
         }
     }
-
+    public static void SetVisibility(bool isVisible)
+    {
+        if (m_Instance != null)
+        {
+            LeanTween.alphaCanvas(m_Instance.m_CanvasGroup, isVisible ? 1 : 0, .5f);
+        }
+    }
     public static void SetupDetails(SelectSpiritData_Map data)
     {
         if (m_Instance == null)

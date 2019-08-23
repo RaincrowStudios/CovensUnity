@@ -25,6 +25,14 @@ public class UIPlayerInfo : UIInfoPanel
     [SerializeField] private Button m_PlayerButton;
     [SerializeField] private Button m_CovenButton;
 
+    // public static bool IsVisible
+    // {
+    //     get
+    //     {
+    //         if (m_Instance != null) return m_Instance.m_CanvasGroup.alpha == 1;
+    //         else return false;
+    //     }
+    // }
     private static UIPlayerInfo m_Instance;
 
     public static bool isShowing
@@ -83,6 +91,17 @@ public class UIPlayerInfo : UIInfoPanel
 
         base.Awake();
     }
+
+
+    public static void SetVisibility(bool isVisible)
+    {
+        if (m_Instance != null)
+        {
+            LeanTween.alphaCanvas(m_Instance.m_CanvasGroup, isVisible ? 1 : 0, .5f);
+        }
+    }
+
+
 
     private void _Show(WitchMarker witch, WitchToken data, System.Action onClose)
     {
@@ -191,6 +210,14 @@ public class UIPlayerInfo : UIInfoPanel
             LocationUnitSpawner.EnableMarkers();
         }
     }
+
+    // public static void ForceClose()
+    // {
+    //     if (m_Instance != null)
+    //     {
+    //         m_Instance.Close();
+    //     }
+    // }
 
     private void _SetupDetails(SelectWitchData_Map details)
     {
