@@ -303,7 +303,13 @@ public class PlayerManager : MonoBehaviour
             });
     }
 
-    public static string GetQuickcastSpell(int index) => PlayerPrefs.GetString($"{PlayerDataManager.playerData.instance}.quickcast.{index}", null);
+    public static string GetQuickcastSpell(int index)
+    {
+        string[] defaultSpells = new string[] { "spell_hex", "spell_bless" };
+        string defaultValue = index < defaultSpells.Length ? defaultSpells[index] : null;
+
+        return PlayerPrefs.GetString($"{PlayerDataManager.playerData.instance}.quickcast.{index}", defaultValue);
+    }
 
     public static void SetQuickcastSpell(int index, string spell) => PlayerPrefs.SetString($"{PlayerDataManager.playerData.instance}.quickcast.{index}", spell);
 }

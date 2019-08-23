@@ -1136,13 +1136,10 @@ public class MediaPlayerCtrl : MonoBehaviour
 
     void OnApplicationPause(bool bPause)
     {
-        Debug.Log("ApplicationPause : " + bPause);
-
         if(m_bPlaying == false && m_bPause == false)
             if (m_CurrentState == MEDIAPLAYER_STATE.READY || m_CurrentState == MEDIAPLAYER_STATE.NOT_READY)
                 return;
-
-
+        
         if (bPause == true)
         {
 

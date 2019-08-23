@@ -51,18 +51,7 @@ namespace Raincrow.GameEventResponses
             fx.localPosition = Vector3.zero;
             fx.position += fx.up * 40;
 
-            fx.GetChild(0).GetChild(4).GetComponent<TextMeshPro>().text = amount.ToString("+#;-#");
-
-            fx.GetChild(0).GetChild(1).gameObject.SetActive(false);
-            fx.GetChild(0).GetChild(2).gameObject.SetActive(false);
-            fx.GetChild(0).GetChild(3).gameObject.SetActive(false);
-
-            if (school < 0)
-                fx.GetChild(0).GetChild(1).gameObject.SetActive(true);
-            else if (school == 0)
-                fx.GetChild(0).GetChild(2).gameObject.SetActive(true);
-            else
-                fx.GetChild(0).GetChild(3).gameObject.SetActive(true);
+            fx.GetComponentInChildren<TextMeshProUGUI>().text = amount.ToString("+#;-#");
         }
     }
 }

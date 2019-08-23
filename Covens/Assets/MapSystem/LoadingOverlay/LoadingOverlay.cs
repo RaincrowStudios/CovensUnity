@@ -11,6 +11,8 @@ public class LoadingOverlay : MonoBehaviour
     private UnityEngine.UI.GraphicRaycaster m_InputRaycaster;
     private int m_TweenId;
 
+    private int m_Stack = 0;
+
     private void Awake()
     {
         m_Canvas = GetComponent<Canvas>();
@@ -23,6 +25,8 @@ public class LoadingOverlay : MonoBehaviour
 
     private void _Show(string msg = null)
     {
+        m_Stack += 1;
+
         if (m_Canvas.enabled && m_InputRaycaster.enabled)
             return;
 
@@ -50,11 +54,17 @@ public class LoadingOverlay : MonoBehaviour
 
     private void _Hide()
     {
-        if (m_Canvas.enabled == false && m_InputRaycaster.enabled == false)
+        m_Stack -= 1;
+
+        if (m_Stack < 0)
+            m_Stack = 0;
+
+        if (m_Stack > 0)
             return;
 
-        //Debug.Log("Hide overlay load");
-
+        if (m_Canvas.enabled == false && m_InputRaycaster.enabled == false)
+            return;
+        
         m_InputRaycaster.enabled = false;
 
         LeanTween.cancel(m_TweenId);

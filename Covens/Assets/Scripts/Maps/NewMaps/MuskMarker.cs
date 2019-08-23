@@ -48,6 +48,7 @@ namespace Raincrow.Maps
         protected int m_AlphaTweenId;
         protected int m_CharacterAlphaTweenId;
         private int m_EnergyRingTweenId;
+        private int m_EnergyRingAlphaTweenId;
 
         protected Color m_SchoolColor = Color.white;
         private float m_EnergyFill = 0;
@@ -257,10 +258,7 @@ namespace Raincrow.Maps
                     m_TextMeshes[i].alpha = TextAlpha * Alpha;
                 }
 
-                if (m_EnergyRing)
-                {
-                    EnergyRingFade(a, time);
-                }
+                SetEnergyRingAlpha(Alpha);
 
                 onComplete?.Invoke();
             }
@@ -297,10 +295,7 @@ namespace Raincrow.Maps
                             m_CharacterRenderers[i].color = aux;
                         }
 
-                        if (m_EnergyRing)
-                        {
-                            EnergyRingFade(a, time);
-                        }
+                        SetEnergyRingAlpha(a);
                     })
                     .setOnComplete(onComplete)
                     .uniqueId;
@@ -327,12 +322,21 @@ namespace Raincrow.Maps
 
         public void EnergyRingFade(float a, float time = 0)
         {
-            LeanTween.value(0, 1, time).setOnUpdate((float v) =>
+            LeanTween.cancel(m_EnergyRingAlphaTweenId);
+            m_EnergyRingAlphaTweenId = LeanTween.value(0, 1, time).setOnUpdate((float v) =>
             {
-                Color aux = Color.Lerp(Color.black, m_SchoolColor, a);
+                SetEnergyRingAlpha(v);
+            }).uniqueId;
+        }
+
+        private void SetEnergyRingAlpha(float alpha)
+        {
+            if (m_EnergyRing)
+            {
+                Color aux = Color.Lerp(Color.black, m_SchoolColor, alpha);
                 aux.a = m_EnergyFill;
                 m_EnergyRing.color = aux;
-            });
+            }
         }
 
         public void UpdateRenderers()

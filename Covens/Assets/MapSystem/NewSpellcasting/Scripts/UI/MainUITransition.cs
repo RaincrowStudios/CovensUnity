@@ -18,7 +18,7 @@ public class MainUITransition : MonoBehaviour
     [Header("Buttons")]
     [SerializeField] private Button m_SummonButton;
     [SerializeField] private Button m_ShoutButton;
-    [SerializeField] private Button m_LocationButton;
+    //[SerializeField] private Button m_LocationButton;
 
 
     public static MainUITransition Instance { get; set; }
@@ -129,6 +129,6 @@ public class MainUITransition : MonoBehaviour
     }
     public void EnableLocationButton(bool enable)
     {
-        m_LocationButton.interactable = enable;
+        //m_LocationButton.interactable = enable;
     }
 }

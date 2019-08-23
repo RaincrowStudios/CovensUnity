@@ -260,7 +260,6 @@ public static class LoginAPIManager
                 {
                     callback?.Invoke(result, new LoginResponse() { error = response });
                 }
-
             });
     }
 

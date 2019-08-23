@@ -32,7 +32,8 @@ public class witchSchoolData : MonoBehaviour
 
     void playVideo()
     {
-        WitchSchoolManager.Instance.playVideo(DownloadAssetBundle.baseURL + "witch-school-new/videos/" + id + ".mp4", title.text);
+        Debug.LogError("TODO: PLAY VIDEO");
+        //WitchSchoolManager.m_Instance.playVideo(DownloadAssetBundle.baseURL + "witch-school-new/videos/" + id + ".mp4", title.text);
     }
 
 }

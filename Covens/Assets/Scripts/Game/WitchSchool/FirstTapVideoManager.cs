@@ -17,28 +17,39 @@ public class FirstTapVideoManager : MonoBehaviour
 
     public static bool IsFirstFlight
     {
-        get => PlayerPrefs.GetInt("first.flight." + PlayerDataManager.playerData.instance, 0) == 1;
+        get => PlayerPrefs.GetInt("first.flight." + PlayerDataManager.playerData.instance, 1) == 1;
         set => PlayerPrefs.SetInt("first.flight." + PlayerDataManager.playerData.instance, value ? 1 : 0);
     }
 
+    //public static bool IsFirstSummon
+    //{
+    //    get => PlayerDataManager.playerData != null && PlayerDataManager.playerData.firsts != null && PlayerDataManager.playerData.firsts.Contains("summon") == false;
+    //    set
+    //    {
+    //        if (PlayerDataManager.playerData != null && PlayerDataManager.playerData.firsts != null)
+    //            PlayerDataManager.playerData.firsts.Add("summon");
+    //    }
+    //}
+
+    //public static bool IsFirstCast
+    //{
+    //    get => PlayerDataManager.playerData != null && PlayerDataManager.playerData.firsts != null && PlayerDataManager.playerData.firsts.Contains("cast") == false;
+    //    set
+    //    {
+    //        if (PlayerDataManager.playerData != null && PlayerDataManager.playerData.firsts != null)
+    //            PlayerDataManager.playerData.firsts.Add("cast");
+    //    }
+    //}
     public static bool IsFirstSummon
     {
-        get => PlayerDataManager.playerData != null && PlayerDataManager.playerData.firsts != null && PlayerDataManager.playerData.firsts.Contains("summon") == false;
-        set
-        {
-            if (PlayerDataManager.playerData != null && PlayerDataManager.playerData.firsts != null)
-                PlayerDataManager.playerData.firsts.Add("summon");
-        }
+        get => PlayerPrefs.GetInt("first.summon." + PlayerDataManager.playerData.instance, 1) == 1;
+        set => PlayerPrefs.SetInt("first.summon." + PlayerDataManager.playerData.instance, value ? 1 : 0);
     }
 
     public static bool IsFirstCast
     {
-        get => PlayerDataManager.playerData != null && PlayerDataManager.playerData.firsts != null && PlayerDataManager.playerData.firsts.Contains("cast") == false;
-        set
-        {
-            if (PlayerDataManager.playerData != null && PlayerDataManager.playerData.firsts != null)
-                PlayerDataManager.playerData.firsts.Add("cast");
-        }
+        get => PlayerPrefs.GetInt("first.cast." + PlayerDataManager.playerData.instance, 1) == 1;
+        set => PlayerPrefs.SetInt("first.cast." + PlayerDataManager.playerData.instance, value ? 1 : 0);
     }
 
     void Awake()

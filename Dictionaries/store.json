@@ -37,14 +37,6 @@
     {
       "id": "consumable_xpBoosterGreater",
       "silver": 500
-    },
-    {
-      "id": "consumable_invisible",
-      "silver": 200
-    },
-    {
-      "id": "consumable_truesight",
-      "silver": 200
     }
   ],
   "Silver": [
