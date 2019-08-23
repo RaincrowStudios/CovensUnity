@@ -41803,6 +41803,8 @@ MonoBehaviour:
   - {fileID: 1201884449717399023}
   m_CloakUIGreyScale: {fileID: 1992094624}
   m_DisableCloakBtn: {fileID: 4958969982002207390}
+  m_EnergyText: {fileID: 1304231037512447041}
+  m_EnergySlider: {fileID: 1304315527634344781}
   m_CloakUI: {fileID: 877855937855820255}
 --- !u!4 &1575644657
 Transform:

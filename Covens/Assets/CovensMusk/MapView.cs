@@ -20,7 +20,7 @@ public class MapView : MonoBehaviour
     {
         m_Instance = this;
         OnLeavePoP();
-        
+
         //get the markers at the current position
         MarkerManagerAPI.GetMarkers(
             PlayerDataManager.playerData.longitude,
@@ -68,7 +68,7 @@ public class MapView : MonoBehaviour
     private void _OnMapTokenAdd(IMarker marker)
     {
         Token token = marker.Token;
-                
+
         marker.Interactable = true;
         if (marker.inMapView)
         {

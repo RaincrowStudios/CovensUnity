@@ -299,9 +299,11 @@ public class LocationUnitSpawner : MonoBehaviour
 
     public static void UnloadScene()
     {
+        Debug.Log("<color=green>Unloading POP Scene</color>");
+        Debug.Log(LocationIslandController.isInBattle);
         m_WitchPool.DespawnAll();
         m_SpiritPool.DespawnAll();
-        m_EnergyPool.DespawnAll();
+        // m_EnergyPool.DespawnAll();
         Markers.Clear();
     }
 

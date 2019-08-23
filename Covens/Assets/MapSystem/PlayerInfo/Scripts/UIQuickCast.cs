@@ -164,7 +164,14 @@ public class UIQuickCast : MonoBehaviour
 
         IsOpen = false;
         AnimHide();
-        m_OnClose?.Invoke();
+        try
+        {
+            m_OnClose?.Invoke();
+        }
+        catch
+        {
+            //just exited pop
+        }
         m_OnClose = null;
     }
 

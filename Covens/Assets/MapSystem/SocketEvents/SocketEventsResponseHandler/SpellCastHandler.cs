@@ -68,7 +68,6 @@ namespace Raincrow.GameEventResponses
 
         public void HandleResponse(string eventData)
         {
-            Debug.Log(eventData);
             SpellCastEventData response = JsonConvert.DeserializeObject<SpellCastEventData>(eventData);
             HandleEvent(response);
         }

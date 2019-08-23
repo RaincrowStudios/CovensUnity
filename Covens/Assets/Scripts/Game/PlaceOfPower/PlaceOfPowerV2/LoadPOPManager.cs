@@ -113,4 +113,16 @@ public class LoadPOPManager : MonoBehaviour
         dtDateTime = dtDateTime.AddSeconds(30);
         return ((System.DateTimeOffset)dtDateTime).ToUnixTimeMilliseconds();
     }
+
+    public static void HandleQuickCastOpen(System.Action OnOpen)
+    {
+        UIQuickCast.Open(() =>
+        {
+            if (LocationIslandController.isInBattle)
+            {
+                OnOpen();
+            }
+        });
+
+    }
 }
