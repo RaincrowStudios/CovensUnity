@@ -72,6 +72,8 @@ public class GameStartup : MonoBehaviour
 
     private void Start()
     {
+        SettingsManager.LoadSettings();
+
         //Setting up AppsFlyerStuff
         AppsFlyer.setAppsFlyerKey("Wdx4jw7TTNEEJYUh5UnaDB");
 #if UNITY_IOS

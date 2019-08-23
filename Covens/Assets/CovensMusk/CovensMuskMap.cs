@@ -58,6 +58,8 @@ public class CovensMuskMap : MonoBehaviour
     private CameraDat[] m_CameraSettings;
     private CameraDat m_CamDat;
 
+    private bool m_OriginInitialized = false;
+
     private int m_MinZoom;
     private int m_MaxZoom;
 
@@ -189,6 +191,7 @@ public class CovensMuskMap : MonoBehaviour
     {
         LatLng startingPosition = new LatLng(0, 0);
         m_MapsService.InitFloatingOrigin(startingPosition);
+        m_OriginInitialized = true;
         m_MapsService.ZoomLevel = -1;
 
         if (m_InitOnStart)
@@ -466,7 +469,7 @@ public class CovensMuskMap : MonoBehaviour
 
     public bool IsVisible()
     {
-        return gameObject.activeSelf;
+        return m_Camera.gameObject.activeSelf;
     }
 
     public void EnableBuildings(bool enable)
@@ -474,12 +477,12 @@ public class CovensMuskMap : MonoBehaviour
         if (m_BuildingsEnabled == enable)
             return;
 
-        if (IsVisible() == false)
+        if (m_OriginInitialized == false)
         {
             m_BuildingsEnabled = enable;
             return;
         }
-
+        
         //reload the map with the new settings only after it finishes reloading
         System.Action onLoaded = () => { };
         onLoaded = () =>

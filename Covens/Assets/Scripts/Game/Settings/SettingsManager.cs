@@ -1,4 +1,4 @@
-﻿using UnityEngine.SceneManagement;
+﻿using Raincrow;
 using UnityEngine;
 using UnityEngine.UI;
 using System.Collections;
@@ -10,57 +10,27 @@ using TMPro;
 
 public class SettingsManager : MonoBehaviour
 {
-    public static SettingsManager Instance { get; set; }
-
-    public static string IsFb
-    {
-        get { return PlayerPrefs.GetString("fb", ""); }
-        set { PlayerPrefs.SetString("fb", value); }
-    }
+    [SerializeField] private Canvas m_Canvas;
+    [SerializeField] private GraphicRaycaster m_InputRaycast;
 
     int currWitchButton;
     int currCollButton;
     int currSpiritButton;
+    private GameObject creditsClone;
+    private int m_TweenId;
 
-    //	public GameObject loginButton;
-    public GameObject profileObject;
-    public Text playerFBName;
-    public Image DisplayPic;
-
-    public GameObject Credits;
-    public GameObject creditsClone;
-
-    public Text RID;
-
-    [SerializeField]
-    private TextMeshProUGUI m_AppVersion;
-
-    int minWitch = 15;
-    int minSpirits = 15;
-    int minCollectibles = 15;
-
-    // int moreWitch = 30;
-    // int moreSpirits = 30;
-    // int moreCollectibles = 30;
-
-    int maxWitch = 50;
-    int maxSpirits = 50;
-    int maxCollectibles = 50;
-
-    // int[] customSelection = new int[] { 15, 30, 50 };
-    //Map Marker Settings
-    public Button[] witchMarkers = new Button[3];
-    public Button[] collectibleMarkers = new Button[3];
-    public Button[] spiritMarkers = new Button[3];
+    [SerializeField] private TextMeshProUGUI RID;
+    [SerializeField] private TextMeshProUGUI m_AppVersion;
+    
     public Button[] buildingsOnOff = new Button[2];
     public Button[] soundOnOff = new Button[2];
 
+    public GameObject Credits;
     public Button[] Languages;
 
     public Button tOS;
     public Button privacyPolicy;
-
-
+    
 
     public GameObject LanguageSelect;
     public CanvasGroup LanguageCG;
@@ -74,211 +44,144 @@ public class SettingsManager : MonoBehaviour
 
     public CanvasGroup CG;
     public GameObject container;
-    public static MapMarkerAmount mapMarkerAmount;
 
-    public static string audioConfig
+    private static SettingsManager m_Instance;
+    
+    public static bool AudioEnabled
     {
-        get { return PlayerPrefs.GetString("configAudio", ""); }
-        set { PlayerPrefs.SetString("configAudio", value); }
+        get
+        {
+            return PlayerPrefs.GetInt("Settings.AudioEnabled", 1) == 1;
+        }
+        set
+        {
+            PlayerPrefs.SetInt("Settings.AudioEnabled", value ? 1 : 0);
+            AudioListener.pause = !value;
+            OnAudioToggle?.Invoke(value);
+        }
     }
 
-    public static string buildingConfig
+    public static bool BuildingsEnabled
     {
-        get { return PlayerPrefs.GetString("buildingConfig", ""); }
-        set { PlayerPrefs.SetString("buildingConfig", value); }
+        get
+        {
+            return PlayerPrefs.GetInt("Settings.BuildingsEnabled", (Application.isEditor || SystemInfo.systemMemorySize > 3000) ? 1 : 0) == 1;
+        }
+        set
+        {
+            PlayerPrefs.SetInt("Settings.BuildingsEnabled", value ? 1 : 0);
+            OnBuildingsToggle?.Invoke(value);
+        }
     }
 
+    public static event System.Action<bool> OnAudioToggle;
+    public static event System.Action<bool> OnBuildingsToggle;
+
+    public static void LoadSettings()
+    {
+        AudioEnabled = SettingsManager.AudioEnabled;
+        BuildingsEnabled = SettingsManager.BuildingsEnabled;
+    }
+
+    public static void OpenUI()
+    {
+        if (m_Instance != null)
+        {
+            m_Instance.Show();
+        }
+        else
+        {
+            LoadingOverlay.Show();
+            SceneManager.LoadSceneAsync(SceneManager.Scene.SETTINGS, UnityEngine.SceneManagement.LoadSceneMode.Additive,
+                (t) => { },
+                () =>
+                {
+                    LoadingOverlay.Hide();
+                    m_Instance.Show();
+                });
+        }
+    }
+
+    public static void CloseUI()
+    {
+        if (m_Instance == null)
+            return;
+        m_Instance.Hide();
+    }
 
     void Awake()
     {
-        Instance = this;
-        int memory = (int)Mathf.Clamp(SystemInfo.systemMemorySize, 1500, 6000);
-        int witches = (int)MapUtils.scale(minWitch, maxWitch, 1500, 6000, memory);
+        m_Instance = this;
+        m_Canvas.enabled = false;
+        m_InputRaycast.enabled = false;
+        CG.alpha = 0;
+
         LanguageCG.alpha = 0f;
         LeanTween.scale(LanguageSelect, Vector3.zero, 0.1f);
         LanguageSelect.SetActive(false);
         vectButtonNotSel.Set(1f, 1f, 1f);
         vectButtonSelected.Set(1.1f, 1.1f, 1.1f);
-        RID.text = LocalizeLookUp.GetText("raincrow_id") + " : ";// + LoginAPIManager.StoredUserName;
-        //		RID.alignment = TextAlignmentOptions.Center;
-        mapMarkerAmount = new MapMarkerAmount
-        {
-            witch = witches,
-            collectible = witches,
-            spirit = witches
-        };
+        RID.text = LocalizeLookUp.GetText("raincrow_id") + " : ";
 
-    }
-
-
-
-    // Use this for initialization
-    private void Start()
-    {
-
-        ToggleSound(audioConfig == "");
         //setting up listeners for buttons
-
         for (int i = 0; i < Languages.Length; i++)
         {
-            // Debug.Log("start i is " + i);
             object k = i;
             Languages[i].onClick.AddListener(() =>
             {
                 ToggleLanguage(k);
-                //    Debug.Log("inner i is " + i);
             });
         }
-        // Languages[0].onClick.AddListener(() => {
-        //     ToggleLanguage(0);
-        // });
-        // Languages[1].onClick.AddListener(() => {
-        //     ToggleLanguage(1);
-        // }); 
-        // Languages[2].onClick.AddListener(() => {
-        //     ToggleLanguage(2);
-        // });
-        // Languages[3].onClick.AddListener(() => {
-        //     ToggleLanguage(3);
-        // });
-        // Languages[4].onClick.AddListener(() => {
-        //     ToggleLanguage(4);
-        // });
-        // Languages[5].onClick.AddListener(() => {
-        //     ToggleLanguage(5);
-        // });
+
         Language.onClick.AddListener(showLanguages);
+
         tOS.onClick.AddListener(ShowTOS);
         privacyPolicy.onClick.AddListener(ShowPrivacyPolicy);
-        soundOnOff[0].onClick.AddListener(() => { ToggleSound(true); });
-        soundOnOff[1].onClick.AddListener(() => { ToggleSound(false); });
 
-        buildingsOnOff[0].onClick.AddListener(() => { EnableDisableBuildings(true); });
-        buildingsOnOff[1].onClick.AddListener(() => { EnableDisableBuildings(false); });
-
-
-        if (buildingConfig == "" && SystemInfo.systemMemorySize < 3000)
+        soundOnOff[0].onClick.AddListener(() =>
         {
-            //MapController.Instance.m_StreetMap.EnableBuildings(false);
-            EnableDisableBuildings(false);
-        }
-        else if (buildingConfig == "true")
+            if (!AudioEnabled)
+                AudioEnabled = true;
+        });
+        soundOnOff[1].onClick.AddListener(() =>
         {
-            EnableDisableBuildings(true);
-        }
-        else
+            if (AudioEnabled)
+                AudioEnabled = false;
+        });
+
+        buildingsOnOff[0].onClick.AddListener(() =>
         {
-            EnableDisableBuildings(false);
-
+            if (!BuildingsEnabled)
+                BuildingsEnabled = true;
         }
+        );
+        buildingsOnOff[1].onClick.AddListener(() =>
+        {
+            if (BuildingsEnabled)
+                BuildingsEnabled = false;
+        });
 
-        //APIManager.Instance.Post("character/configuration", JsonConvert.SerializeObject(mapMarkerAmount), (string s, int r) => { Debug.Log("sent"); });
-
-#if UNITY_IOS || UNITY_ANDROID
-        StartCoroutine(checkBatteryLevel());
-        Debug.Log("BATTERY LEVEL AT " + GetBatteryLevel());
-#endif
-
-        // APIManager.Instance.PostData("character/configuration", JsonConvert.SerializeObject(mapMarkerAmount), (string s, int r) => Debug.Log("sent"));
-
+        ToggleSound(AudioEnabled);
+        EnableDisableBuildings(BuildingsEnabled);
     }
-
-    IEnumerator checkBatteryLevel()
-    {
-        yield return new WaitForSeconds(40);
-        if (GetBatteryLevel() < 15)
-        {
-            //make request
-        }
-        else
-            StartCoroutine(checkBatteryLevel());
-    }
-
-    public static float GetBatteryLevel()
-    {
-        // #if UNITY_IOS
-        //          UIDevice device = UIDevice.CurrentDevice();
-        //          device.batteryMonitoringEnabled = true; // need to enable this first
-        //          Debug.Log("Battery state: " + device.batteryState);
-        //          Debug.Log("Battery level: " + device.batteryLevel);
-        //          return device.batteryLevel*100;
-        // #elif UNITY_ANDROID
-
-        //         if (Application.platform == RuntimePlatform.Android)
-        //         {
-        //             try
-        //             {
-        //                 using (AndroidJavaClass unityPlayer = new AndroidJavaClass("com.unity3d.player.UnityPlayer"))
-        //                 {
-        //                     if (null != unityPlayer)
-        //                     {
-        //                         using (AndroidJavaObject currActivity = unityPlayer.GetStatic<AndroidJavaObject>("currentActivity"))
-        //                         {
-        //                             if (null != currActivity)
-        //                             {
-        //                                 using (AndroidJavaObject intentFilter = new AndroidJavaObject("android.content.IntentFilter", new object[] { "android.intent.action.BATTERY_CHANGED" }))
-        //                                 {
-        //                                     using (AndroidJavaObject batteryIntent = currActivity.Call<AndroidJavaObject>("registerReceiver", new object[] { null, intentFilter }))
-        //                                     {
-        //                                         int level = batteryIntent.Call<int>("getIntExtra", new object[] { "level", -1 });
-        //                                         int scale = batteryIntent.Call<int>("getIntExtra", new object[] { "scale", -1 });
-
-        //                                         // Error checking that probably isn't needed but I added just in case.
-        //                                         if (level == -1 || scale == -1)
-        //                                         {
-        //                                             return 50f;
-        //                                         }
-        //                                         return ((float)level / (float)scale) * 100.0f;
-        //                                     }
-
-        //                                 }
-        //                             }
-        //                         }
-        //                     }
-        //                 }
-        //             }
-        //             catch (System.Exception ex)
-        //             {
-
-        //             }
-        //         }
-
-        //         return 100;
-        // #endif
-        return 100;
-    }
-
-    // void OnGUI()
-    // {
-    //     if (GUI.Button(new Rect(55, 200, 180, 40), "Logout"))
-    //     {
-    //         LogOut();
-    //         StartCoroutine(RestartGame());
-    //     }
-    // }
-
+    
     public void ToggleLanguage(object obj)
-
     {
         var ClickedButton = (int)obj;
-        Debug.Log("hello i am " + ClickedButton);
 
         for (int i = 0; i < Languages.Length; i++)
         {
-            // Debug.Log("my i is "+ i);
             var p = Languages[i].transform.GetChild(1).GetComponent<Image>();
             if (i == ClickedButton)
             {
                 SoundManagerOneShot.Instance.PlayButtonTap();
                 p.color = buttonSelected;
-                Debug.Log(i + " clicked");
             }
             else
             {
                 p.color = buttonNotSelected;
             }
         }
-
     }
 
     public void ToggleSound(bool soundOn)
@@ -290,8 +193,6 @@ public class SettingsManager : MonoBehaviour
             LeanTween.scale(soundOnOff[0].gameObject, vectButtonSelected, 0.3f);
             soundOnOff[1].GetComponent<Image>().color = buttonNotSelected;
             LeanTween.scale(soundOnOff[1].gameObject, vectButtonNotSel, 0.3f);
-            AudioListener.pause = false;
-            audioConfig = "";
         }
         else
         {
@@ -299,8 +200,6 @@ public class SettingsManager : MonoBehaviour
             LeanTween.scale(soundOnOff[1].gameObject, vectButtonSelected, 0.3f);
             soundOnOff[0].GetComponent<Image>().color = buttonNotSelected;
             LeanTween.scale(soundOnOff[0].gameObject, vectButtonNotSel, 0.3f);
-            AudioListener.pause = true;
-            audioConfig = "false";
         }
     }
 
@@ -313,9 +212,6 @@ public class SettingsManager : MonoBehaviour
             LeanTween.scale(buildingsOnOff[0].gameObject, vectButtonSelected, 0.3f);
             buildingsOnOff[1].GetComponent<Image>().color = buttonNotSelected;
             LeanTween.scale(buildingsOnOff[1].gameObject, vectButtonNotSel, 0.3f);
-            //if (container.activeInHierarchy)
-            MapsAPI.Instance.EnableBuildings(true);
-            buildingConfig = "true";
         }
         else
         {
@@ -323,10 +219,6 @@ public class SettingsManager : MonoBehaviour
             LeanTween.scale(buildingsOnOff[1].gameObject, vectButtonSelected, 0.3f);
             buildingsOnOff[0].GetComponent<Image>().color = buttonNotSelected;
             LeanTween.scale(buildingsOnOff[0].gameObject, vectButtonNotSel, 0.3f);
-            //if (container.activeInHierarchy)
-            MapsAPI.Instance.EnableBuildings(false);
-            buildingConfig = "false";
-
         }
     }
 
@@ -360,110 +252,72 @@ public class SettingsManager : MonoBehaviour
     {
         AudioListener.volume = value;
     }
-
-    // public void FbLoginSetup()
-    // {
-    //     if (!FB.IsInitialized)
-    //     {
-    //         FB.Init(InitCallBack);
-    //     }
-    // }
-
-    // void InitCallBack()
-    // {
-    //     //		loginButton.SetActive (true);
-    //     profileObject.SetActive(false);
-    //     if (IsFb != "")
-    //     {
-    //         if (!Application.isEditor)
-    //             LoginFB();
-    //     }
-    // }
-
-    // public void LoginFB()
-    // {
-    //     FB.LogInWithReadPermissions(new List<string>() { "public_profile", "email", "user_friends" }, HandleResult);
-    // }
-
-    // public void HandleResult(IResult result)
-    // {
-    //     if (result == null)
-    //     {
-    //         Debug.Log("Login Failed");
-    //         return;
-    //     }
-
-    //     if (!string.IsNullOrEmpty(result.Error))
-    //     {
-    //         Debug.Log("Error - Check log for details");
-    //         //			this.LastResponse = "Error Response:\n" + result.Error;
-    //     }
-    //     else if (result.Cancelled)
-    //     {
-    //         Debug.Log("Cancelled - Check log for details");
-    //     }
-    //     else if (!string.IsNullOrEmpty(result.RawResult))
-    //     {
-    //         Debug.Log("FB Logged in Success!");
-    //         IsFb = "true";
-    //         FB.API("/me/picture?type=square&height=128&width=128", HttpMethod.GET, FBPicCallBack);
-    //         FB.API("/me?fields=first_name", HttpMethod.GET, FBNameCallBack);
-
-
-    //     }
-    //     else
-    //     {
-    //         Debug.Log("Empty Response\n");
-    //     }
-    // }
-
-    // void FBPicCallBack(IGraphResult result)
-    // {
-    //     if (string.IsNullOrEmpty(result.Error) && result.Texture != null)
-    //     {
-    //         DisplayPic.sprite = Sprite.Create(result.Texture, new Rect(0, 0, 128, 128), new Vector2(0.5f, 0.5f));
-    //         //			loginButton.SetActive (false);
-    //         profileObject.SetActive(true);
-    //     }
-    // }
-
-    // void FBNameCallBack(IGraphResult result)
-    // {
-    //     IDictionary<string, object> profile = result.ResultDictionary;
-    //     playerFBName.text = profile["first_name"].ToString();
-    //     Debug.Log(playerFBName.text);
-    // }
-
+    
     public void Show()
     {
+        OnAudioToggle += _OnToggleAudio;
+        OnBuildingsToggle += _OnToggleBuilding;
 
-        CG.alpha = 0;
-        container.SetActive(true);
-        container.transform.localScale = Vector3.zero;
-        LeanTween.scale(container, Vector3.one, .35f).setEase(LeanTweenType.easeOutCirc).setOnComplete(() =>
-        {
-            UIStateManager.Instance.CallWindowChanged(false);
-            //MapController.Instance.SetVisible(false);
-        });
-        LeanTween.alphaCanvas(CG, 1, .35f);
-        //Debug.Log("showing settings");
-        //anim.SetBool("animate", true);
+        m_Canvas.enabled = true;
+        m_InputRaycast.enabled = true;
+        
+        float start = CG.alpha;
+        float end = 1;
+
+        LeanTween.cancel(m_TweenId);
+        m_TweenId = LeanTween.value(start, end, 0.35f)
+            .setOnUpdate((float t) =>
+            {
+                float t2 = LeanTween.easeOutCirc(start, end, t);
+
+                CG.alpha = t;
+                container.transform.localScale = Vector3.Lerp(Vector3.zero, Vector3.one, t2);
+            })
+            .setOnComplete(() => 
+            {
+                UIStateManager.Instance.CallWindowChanged(false);
+                MapsAPI.Instance.HideMap(true);
+            })
+            .uniqueId;
 
         m_AppVersion.text = string.Concat(LocalizeLookUp.GetText("settings_version") + " ", DownloadedAssets.AppVersion);
     }
 
     public void Hide()
     {
+        OnAudioToggle -= _OnToggleAudio;
+        OnBuildingsToggle -= _OnToggleBuilding;
+
         UIStateManager.Instance.CallWindowChanged(true);
-        //MapController.Instance.SetVisible(true);
+        MapsAPI.Instance.HideMap(false);
 
-        LeanTween.alphaCanvas(CG, 0, .35f).setOnComplete(() => container.SetActive(false));
-        LeanTween.scale(container, Vector3.zero, .45f).setEase(LeanTweenType.easeInCubic);
-
-        //anim.SetBool("animate", false);
+        m_InputRaycast.enabled = false;
         m_AppVersion.text = string.Empty;
+        float start = container.transform.localScale.x;
+        float end = 0;
 
+        LeanTween.cancel(m_TweenId);
+        m_TweenId = LeanTween.value(0, 1, 0.45f)
+            .setOnUpdate((float t) =>
+            {
+                float t1 = (1-t) * (0.35f/0.45f);
+                float t2 = LeanTween.easeOutCirc(start, end, t);
+
+                CG.alpha = t1;
+                container.transform.localScale = new Vector3(t2, t2, t2);
+            })
+            .setOnComplete(() =>
+            {
+                m_Canvas.enabled = false;
+                m_TweenId = LeanTween.value(0, 0, 5f).setOnComplete(() =>
+                {
+                    SceneManager.UnloadScene(SceneManager.Scene.SETTINGS, null, null);
+                }).uniqueId;
+
+            })
+            .uniqueId;
     }
+
     public void showLanguages()
     {
         LanguageCG.interactable = true;
@@ -471,6 +325,7 @@ public class SettingsManager : MonoBehaviour
         LeanTween.scale(LanguageSelect, Vector3.one, 0.5f);
         LeanTween.alphaCanvas(LanguageCG, 1f, 0.3f);
     }
+
     public void hideLanguages()
     {
         LanguageCG.interactable = false;
@@ -480,11 +335,14 @@ public class SettingsManager : MonoBehaviour
         });
         LeanTween.alphaCanvas(LanguageCG, 0f, 0.3f);
     }
-}
 
-public class MapMarkerAmount
-{
-    public int witch { get; set; }
-    public int collectible { get; set; }
-    public int spirit { get; set; }
+    private void _OnToggleAudio(bool enabled)
+    {
+        ToggleSound(enabled);
+    }
+
+    private void _OnToggleBuilding(bool enabled)
+    {
+        EnableDisableBuildings(enabled);
+    }
 }

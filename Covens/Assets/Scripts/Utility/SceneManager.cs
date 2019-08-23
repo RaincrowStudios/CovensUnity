@@ -26,6 +26,7 @@ namespace Raincrow
             PLAYER_SELECT,
             SPIRIT_SELECT,
             NEARBY_POPS,
+            SETTINGS,
         }
 
         private static Dictionary<Scene, string> m_SceneNames = new Dictionary<Scene, string>
@@ -45,6 +46,7 @@ namespace Raincrow
             {Scene.PLAYER_SELECT,       "PlayerSelect" },
             {Scene.SPIRIT_SELECT,       "SpiritSelect" },
             {Scene.NEARBY_POPS,         "NearbyPops" },
+            {Scene.SETTINGS,            "Settings" },
         };
 
         private static SceneManager m_Instance;

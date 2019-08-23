@@ -5660,6 +5660,7 @@ Transform:
   m_Children:
   - {fileID: 1858312330}
   - {fileID: 253963233}
+  - {fileID: 1937410530}
   m_Father: {fileID: 0}
   m_RootOrder: 5
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -8911,7 +8912,6 @@ GameObject:
   - component: {fileID: 1711750108}
   - component: {fileID: 1711750112}
   - component: {fileID: 1711750114}
-  - component: {fileID: 1711750113}
   - component: {fileID: 1711750115}
   m_Layer: 5
   m_Name: SplashManager
@@ -9052,14 +9052,6 @@ MonoBehaviour:
   OutdatedBuild: {fileID: 269838113}
   playstoreIcon: {fileID: 1030872524}
   appleIcon: {fileID: 12765520}
---- !u!81 &1711750113
-AudioListener:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1711750107}
-  m_Enabled: 1
 --- !u!82 &1711750114
 AudioSource:
   m_ObjectHideFlags: 0
@@ -9683,6 +9675,45 @@ MonoBehaviour:
   - {fileID: 0}
   m_baseMaterial: {fileID: 0}
   m_maskOffset: {x: 0, y: 0, z: 0, w: 0}
+--- !u!1 &1937410529
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1937410530}
+  - component: {fileID: 1937410531}
+  m_Layer: 0
+  m_Name: AudioListener
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1937410530
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1937410529}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 1249481389}
+  m_RootOrder: 2
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!81 &1937410531
+AudioListener:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1937410529}
+  m_Enabled: 1
 --- !u!1 &1946845952
 GameObject:
   m_ObjectHideFlags: 0

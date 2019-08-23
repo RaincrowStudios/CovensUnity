@@ -27,6 +27,9 @@ namespace Raincrow.Maps
             m_ScaleHelper = m_Map.GetComponentInChildren<GeoToKmHelper>();
 
             Initialize();
+
+            EnableBuildings(SettingsManager.BuildingsEnabled);
+            SettingsManager.OnBuildingsToggle += EnableBuildings;
         }
 
         private void Initialize()

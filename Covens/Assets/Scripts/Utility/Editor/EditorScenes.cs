@@ -52,6 +52,10 @@ public class EditorScenes : MonoBehaviour
     [MenuItem("Scenes/Screens/Nearby PoPs")]
     static void NearbyPopsScene() => OpenScene("NearbyPops");
 
+    [MenuItem("Scenes/Screens/Settings")]
+    static void SettingsScene() => OpenScene("Settings");
+
+
     private static void OpenScene(string name)
     {
         if (EditorSceneManager.SaveCurrentModifiedScenesIfUserWantsTo())

@@ -50,4 +50,7 @@ EditorBuildSettings:
   - enabled: 1
     path: Assets/Scenes/NearbyPops.unity
     guid: f0e2bb3f70202e04c9dfeda4a9880e25
+  - enabled: 1
+    path: Assets/Scenes/Settings.unity
+    guid: ed473b3e50055974ca7bebf5afae6c1e
   m_configObjects: {}

@@ -116,7 +116,7 @@ public class UIMain : MonoBehaviour
 
     private void OnClickSettings()
     {
-        SettingsManager.Instance.Show();
+        SettingsManager.OpenUI();
     }
 
     private void OnClickSummoning()
