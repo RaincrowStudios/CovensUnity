@@ -114,7 +114,7 @@ public class SimplePool<T> where T : Component
         DespawnAll();
         foreach (T _instance in m_AvailablePool)
         {
-            if (_instance == null)
+            if (_instance == null || _instance.gameObject == null)
                 continue;
             GameObject.Destroy(_instance.gameObject);
         }
