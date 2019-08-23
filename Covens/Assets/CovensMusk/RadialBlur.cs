@@ -1,5 +1,6 @@
 using UnityEngine;
 
+[ExecuteInEditMode]
 public class RadialBlur : MonoBehaviour
 {
     [SerializeField] private Material material;

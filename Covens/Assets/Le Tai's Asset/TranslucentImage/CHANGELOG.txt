@@ -1,0 +1,16 @@
+Changelog:
+
+v3.0: 
+!!!Warning!!! Breaking changes:
+ - Blur Config now stored as asset file, allows for sharing of configuration between different Cameras/Scenes/Projects. You will need to re-config your all of your Translucent Image Sources. Settings on Translucent Images will be fine.
+ - Blur Size now called Radius to align with other software.
+
+Added:
+ - Initial LWRP support. Please visit the documentation for setup guide.
+ - Bug fixes and performance improvements.
+ - Alot of ground work for additional blur algorithms (none added yet).
+ - Probably bugs. 😩
+ 
+Changed:
+ - Minimum supported Unity version is now 2017.4
+ - Clearer preview box.
