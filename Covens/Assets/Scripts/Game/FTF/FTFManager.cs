@@ -1332,24 +1332,47 @@ public class FTFManager : MonoBehaviour
         print("end ftf");
 
         MapCameraUtils.FocusOnPosition(PlayerManager.witchMarker.transform.position, 1, false, 1f);
-
-        PlayerDataManager.playerData.tutorial = true;
-
+        
         SocketClient.Instance.InitiateSocketConnection();
         
         LoadingOverlay.Show();
+        FinishFTF((result, response) =>
+        {
+            LoadingOverlay.Hide();
+
+            PlayerManagerUI.Instance.setupXP();
+            AppsFlyerAPI.CompletedFTUE();
+            Utilities.allowMapControl(true);
+            ChatManager.InitChat();
+
+            //get the markers at the current position
+            MarkerManagerAPI.GetMarkers(
+                PlayerDataManager.playerData.longitude,
+                PlayerDataManager.playerData.latitude,
+                null,
+                false,
+                false,
+                false
+            );
+
+            Debug.LogError("ftf failed\n" + result + ": " + response);
+            UIGlobalPopup.ShowError(() => Application.Quit(), "finishTutorial\n" + response);
+        });
+    }
+
+    public static void FinishFTF(System.Action<int, string> callback)
+    {
         APIManager.Instance.Post(
             "character/finishTutorial",
             "{}",
             (response, result) =>
             {
-                LoadingOverlay.Hide();
                 if (result == 200)
                 {
                     Debug.Log("ftf complete");
 
                     FinishFTFResponse data = JsonConvert.DeserializeObject<FinishFTFResponse>(response);
-                                        
+
                     foreach (var item in data.herbs)
                         PlayerDataManager.playerData.SetIngredient(item.id, item.count);
                     foreach (var item in data.tools)
@@ -1358,31 +1381,10 @@ public class FTFManager : MonoBehaviour
                         PlayerDataManager.playerData.SetIngredient(item.id, item.count);
 
                     PlayerDataManager.playerData.xp = data.xp;
-                    PlayerManagerUI.Instance.setupXP();
                     //PlayerDataManager.playerData.spirits = update.spirits;
-
-                    AppsFlyerAPI.CompletedFTUE();
-                    Utilities.allowMapControl(true);
-                    
-                    //get the markers at the current position
-                    MarkerManagerAPI.GetMarkers(
-                        PlayerDataManager.playerData.longitude,
-                        PlayerDataManager.playerData.latitude,
-                        null,
-                        false,
-                        false,
-                        false
-                    );
-
-                    //
-                    ChatManager.InitChat();
+                    PlayerDataManager.playerData.tutorial = true;
                 }
-                else
-                {
-                    //LoginAPIManager.GetCharacter(null);
-                    Debug.LogError("ftf failed\n" + result + ": " + response);
-                    UIGlobalPopup.ShowError(() => Application.Quit(), "finishTutorial\n" + response);
-                }
+                callback?.Invoke(result, response);
             });
     }
 
