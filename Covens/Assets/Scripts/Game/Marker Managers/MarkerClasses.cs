@@ -238,7 +238,7 @@ public class PlayerData : WitchMarkerData
     public CovenInfo covenInfo;
     public QuestStatus quest;
 
-    public PlayerCooldown[] cooldowns;
+    public List<PlayerCooldown> cooldowns;
 
     [JsonProperty("tools")] private List<CollectableItem> m_Tools;
     [JsonProperty("herbs")] private List<CollectableItem> m_Herbs;
