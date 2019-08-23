@@ -1394,7 +1394,7 @@ public class FTFManager : MonoBehaviour
         {
             StartCoroutine(FadeOutFocus(chooseSchool));
             //  ContinueToGame();
-            WitchSchoolManager.Instance.Open();
+            WitchSchoolManager.Open();
             LeanTween.alphaCanvas(statsScreen, 0f, 1f).setOnComplete(() => Destroy(daddy));
         }
         else

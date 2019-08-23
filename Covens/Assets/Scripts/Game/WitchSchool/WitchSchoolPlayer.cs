@@ -3,9 +3,8 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class WitchSchoolPlayer : MonoBehaviour {
-
-
+public class WitchSchoolPlayer : MonoBehaviour
+{
 	public MediaPlayerCtrl player;
 	public CanvasGroup play;
 	public CanvasGroup pause;
@@ -13,12 +12,12 @@ public class WitchSchoolPlayer : MonoBehaviour {
 	bool isPlaying = false;
 
 
-	void Start()
-	{
-		play.alpha= 0;
-		pause.alpha = 0;
-		togglePlayButton.onClick.AddListener (TogglePlay);
-	}
+    void Start()
+    {
+        play.alpha = 0;
+        pause.alpha = 0;
+        togglePlayButton.onClick.AddListener(TogglePlay);
+    }
 
 	public void TogglePlay()
 	{

@@ -171,7 +171,7 @@ public class SettingsManager : MonoBehaviour
 
         m_WitchSchoolButton.onClick.AddListener(() =>
         {
-            WitchSchoolManager.Instance.Open();
+            WitchSchoolManager.Open();
             this.Hide();
         });
 

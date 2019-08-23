@@ -55,6 +55,9 @@ public class EditorScenes : MonoBehaviour
     [MenuItem("Scenes/Screens/Settings")]
     static void SettingsScene() => OpenScene("Settings");
 
+    [MenuItem("Scenes/Screens/WitchSchool")]
+    static void WitchSchoolScene() => OpenScene("WitchSchool");
+
 
     private static void OpenScene(string name)
     {

@@ -17,7 +17,7 @@ public class CovenConstants : MonoBehaviour
         get
         {
 #if GUSTAVO_LOCAL
-                return "http://192.168.0.112:8080/api/";
+                return "http://192.168.0.122:8080/api/";
 #elif UNITY_EDITOR
             if (UnityEditor.EditorPrefs.GetString("game") == "Local")
             {
@@ -29,7 +29,7 @@ public class CovenConstants : MonoBehaviour
             }
             else if (UnityEditor.EditorPrefs.GetString("game") == "Gustavo")
             {
-                return "http://192.168.0.112:9000/api/";
+                return "http://192.168.0.122:9000/api/";
             }
             else
             {
@@ -61,7 +61,7 @@ public class CovenConstants : MonoBehaviour
         get
         {
 #if GUSTAVO_LOCAL
-                return "http://192.168.0.112:8084/socket.io/?";
+                return "http://192.168.0.122:8084/socket.io/?";
 #elif UNITY_EDITOR
             if (UnityEditor.EditorPrefs.GetString("ws") == "Local")
             {
@@ -73,7 +73,7 @@ public class CovenConstants : MonoBehaviour
             }
             else if (UnityEditor.EditorPrefs.GetString("ws") == "Gustavo")
             {
-                return "http://192.168.0.112:8084/socket.io/?";
+                return "http://192.168.0.122:8084/socket.io/?";
             }
             else
             {
@@ -113,7 +113,7 @@ public class CovenConstants : MonoBehaviour
         get
         {
 #if GUSTAVO_LOCAL
-                return "http://192.168.0.112:8083/socket.io/";
+                return "http://192.168.0.122:8083/socket.io/";
 #elif UNITY_EDITOR
             if (UnityEditor.EditorPrefs.GetString("chat") == "Local")
             {
@@ -125,7 +125,7 @@ public class CovenConstants : MonoBehaviour
             }
             else if (UnityEditor.EditorPrefs.GetString("chat") == "Gustavo")
             {
-                return "http://192.168.0.112:8083/socket.io/";
+                return "http://192.168.0.122:8083/socket.io/";
             }
             else
             {
@@ -155,7 +155,7 @@ public class CovenConstants : MonoBehaviour
             }
             else if (UnityEditor.EditorPrefs.GetString("map") == "Gustavo")
             {
-                return "http://192.168.0.112:8081/";
+                return "http://192.168.0.122:8081/";
             }
             else
             {

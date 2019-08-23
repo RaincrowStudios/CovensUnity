@@ -53,4 +53,7 @@ EditorBuildSettings:
   - enabled: 1
     path: Assets/Scenes/Settings.unity
     guid: ed473b3e50055974ca7bebf5afae6c1e
+  - enabled: 1
+    path: Assets/Scenes/WitchSchool.unity
+    guid: e53c84b3e377de74e84eec310d6250c5
   m_configObjects: {}
