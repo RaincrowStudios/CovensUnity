@@ -21,7 +21,9 @@ public class SettingsManager : MonoBehaviour
 
     [SerializeField] private TextMeshProUGUI RID;
     [SerializeField] private TextMeshProUGUI m_AppVersion;
-    
+    [SerializeField] private Button m_HelpCrowButton;
+    [SerializeField] private Button m_WitchSchoolButton;
+
     public Button[] buildingsOnOff = new Button[2];
     public Button[] soundOnOff = new Button[2];
 
@@ -161,6 +163,18 @@ public class SettingsManager : MonoBehaviour
                 BuildingsEnabled = false;
         });
 
+        m_HelpCrowButton.onClick.AddListener(() =>
+        {
+            Raincrow.Chat.UI.UIChat.Open(Raincrow.Chat.ChatCategory.SUPPORT);
+            this.Hide();
+        });
+
+        m_WitchSchoolButton.onClick.AddListener(() =>
+        {
+            WitchSchoolManager.Instance.Open();
+            this.Hide();
+        });
+
         ToggleSound(AudioEnabled);
         EnableDisableBuildings(BuildingsEnabled);
     }
@@ -240,12 +254,12 @@ public class SettingsManager : MonoBehaviour
 
     public void ShowTOS()
     {
-        Debug.LogError("TODO: SHOW TOS");
+        Application.OpenURL(CovenConstants.TERMS_OF_SERVICE_URL);
     }
 
     public void ShowPrivacyPolicy ()
     {
-        Debug.LogError("TODO: SHOW PP");
+        Application.OpenURL(CovenConstants.PRIVACY_POLICY_URL);
     }
 
     public void ChangeSoundLevel(float value)

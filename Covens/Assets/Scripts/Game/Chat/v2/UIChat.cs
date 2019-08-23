@@ -82,11 +82,11 @@ namespace Raincrow.Chat.UI
 
         private static UIChat m_Instance;
 
-        public static void Open()
+        public static void Open(ChatCategory category = ChatCategory.WORLD)
         {
             if (m_Instance != null)
             {
-                m_Instance.Show();
+                m_Instance.Show(category);
             }
             else
             {
@@ -99,15 +99,15 @@ namespace Raincrow.Chat.UI
                     () =>
                     {
                         LoadingOverlay.Hide();
-                        m_Instance.Show();
+                        m_Instance.Show(category);
                     });
             }
         }
 
-        public void Show()
+        public void Show(ChatCategory category = ChatCategory.WORLD)
         {
+            SetCategory(category);
             AnimateShow(() => MapsAPI.Instance.HideMap(true));
-
             if (!ChatManager.Connected)
             {
                 EnableReconnectOverlay(true);

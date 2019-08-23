@@ -541,7 +541,26 @@ public class LoginUIManager : MonoBehaviour
 
     private void OnClickResetPassword()
     {
-        Debug.LogError("todo: reset pass");
+        UIGlobalPopup.ShowError(null, "NOT IMPLEMENTED");
     }
 
+    public void OnClickRaincrowToS()
+    {
+        Application.OpenURL(CovenConstants.TERMS_OF_SERVICE_URL);
+    }
+
+    public void OnClickRaincrowPP()
+    {
+        Application.OpenURL(CovenConstants.PRIVACY_POLICY_URL);
+    }
+
+    public void OnClickGoogleToS()
+    {
+        Application.OpenURL(CovenConstants.GOOGLE_TERMS_OF_SERVICE_URL);
+    }
+
+    public void OnClickGooglePP()
+    {
+        Application.OpenURL(CovenConstants.GOOGLE_PRIVACY_POLICY_URL);
+    }
 }
