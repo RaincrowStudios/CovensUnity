@@ -39,7 +39,7 @@ public class PlayerManagerUI : UIAnimationManager
     public GameObject DeathReason;
     public Text deathDesc;
     public Text deathblessing;
-    
+
     bool isDay = true;
     bool cancheck = true;
 
@@ -180,6 +180,8 @@ public class PlayerManagerUI : UIAnimationManager
             Energy.text = "<b>" + pData.energy.ToString() + "</b>/" + pData.baseEnergy;
         }
 
+
+
     }
 
     public void setupXP()
@@ -208,8 +210,6 @@ public class PlayerManagerUI : UIAnimationManager
             LunarPhaseHolder.sprite = LunarPhase[13];
         if (lp == 13 || lp == 14)
             LunarPhaseHolder.sprite = LunarPhase[14];
-
-
         if (lp == -1 || lp == -2)
             LunarPhaseHolder.sprite = LunarPhase[6];
         if (lp == -3 || lp == -4)

@@ -3,6 +3,8 @@ using Raincrow.Maps;
 using UnityEngine;
 using UnityEngine.UI;
 using Newtonsoft.Json;
+using TMPro;
+
 public class LocationPlayerAction : MonoBehaviour
 {
     private static LocationPlayerAction Instance { get; set; }
@@ -18,7 +20,8 @@ public class LocationPlayerAction : MonoBehaviour
     [SerializeField] private CanvasGroup[] m_CloakUIDisable;
     [SerializeField] private Transform m_CloakUIGreyScale;
     [SerializeField] private Button m_DisableCloakBtn;
-
+    [SerializeField] private TextMeshProUGUI m_EnergyText;
+    [SerializeField] private Slider m_EnergySlider;
     [SerializeField] private CanvasGroup m_CloakUI;
 
     private const int MOVE_TIMER = 5;
@@ -32,6 +35,14 @@ public class LocationPlayerAction : MonoBehaviour
     public static int playerPopIndex => playerWitchToken.popIndex;
     public static WitchToken playerWitchToken => playerMarker.Token as WitchToken;
     public static bool isCloaked { get; private set; }
+
+    public static void UpdateEnergy(int energy)
+    {
+        Instance.m_EnergySlider.maxValue = PlayerDataManager.playerData.baseEnergy;
+        Instance.m_EnergySlider.value = PlayerDataManager.playerData.energy;
+        Instance.m_EnergyText.text = $"{PlayerDataManager.playerData.energy}/{PlayerDataManager.playerData.baseEnergy}";
+    }
+
     public static void SetSelectedPosition(LocationPosition locationPosition)
     {
         selectedPosition = locationPosition;
@@ -61,12 +72,27 @@ public class LocationPlayerAction : MonoBehaviour
         m_DisableCloakBtn.onClick.AddListener(RequestDisableCloaking);
         LocationIslandController.OnEnterLocation += Setup;
         LocationIslandController.OnExitLocation -= Setup;
+        LocationIslandController.OnExitLocation -= () =>
+        {
+            OnMapEnergyChange.OnPlayerEnergyChange -= UpdateEnergy;
+
+        };
+        LocationIslandController.OnExitLocation += () =>
+        {
+            if (isCloaked)
+            {
+                RenderSettings.fog = false;
+                isCloaked = false;
+            }
+        };
 
     }
 
     private void Setup()
     {
         LocationActionButton btn;
+        UpdateEnergy(0);
+        OnMapEnergyChange.OnPlayerEnergyChange += UpdateEnergy;
         btn = Instantiate(m_ActionBtn, transform) as LocationActionButton;
         btn.Setup(MOVE_TIMER, m_flySprite, () =>
         {
@@ -217,19 +243,22 @@ public class LocationPlayerAction : MonoBehaviour
 
     public static void ShowSpells()
     {
-        UIQuickCast.Open(() =>
-        {
-            UIQuickCast.EnableQuickcastButtons(true);
-            UIQuickCast.AddItem(m_BtnArr[0].gameObject, 0, () =>
-                    {
-                        if (m_BtnArr[0].gameObject.activeInHierarchy)
-                        {
-                            m_BtnArr[0].gameObject.SetActive(false);
-                            m_BtnArr[0].transform.SetParent(Instance.transform);
-                        }
-                    });
-            m_BtnArr[0].gameObject.SetActive(true);
-        });
 
+        LoadPOPManager.HandleQuickCastOpen(ShowSpellHelper);
+
+    }
+
+    private static void ShowSpellHelper()
+    {
+        UIQuickCast.EnableQuickcastButtons(true);
+        UIQuickCast.AddItem(m_BtnArr[0].gameObject, 0, () =>
+                {
+                    if (m_BtnArr[0].gameObject.activeInHierarchy)
+                    {
+                        m_BtnArr[0].gameObject.SetActive(false);
+                        m_BtnArr[0].transform.SetParent(Instance.transform);
+                    }
+                });
+        m_BtnArr[0].gameObject.SetActive(true);
     }
 }
