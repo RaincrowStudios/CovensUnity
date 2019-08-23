@@ -266,7 +266,7 @@ public class ShopManager : ShopBase
     }
 
     #region MainStoreUI
-    
+
     private void Open()
     {
         UIStateManager.Instance.CallWindowChanged(false);
@@ -521,7 +521,7 @@ public class ShopManager : ShopBase
             maskContainer.SetActive(true);
         });
         title2.GetComponent<Button>().onClick.AddListener(ShowStyles);
-        
+
         title1.color = Color.white;
         title2.color = Color.grey;
         gearFilterContainer.alpha = 0;
@@ -601,6 +601,7 @@ public class ShopManager : ShopBase
         {
             buyWithGoldBtn.onClick.AddListener(() => { OnBuy(st, false); });
             buyWithGold.text = LocalizeLookUp.GetText("store_buy_gold") + ": " + st.gold.ToString();
+            buyWithGoldBtn.interactable = st.gold <= PlayerDataManager.playerData.gold;
             buyWithGold.color = st.gold > PlayerDataManager.playerData.gold ? Color.red : Utilities.Orange;
         }
 
@@ -610,7 +611,7 @@ public class ShopManager : ShopBase
         ResetNavButtons();
         styleNavContainer.GetChild(currentStyle).GetComponent<Image>().color = Color.white;
 
-        DownloadedAssets.GetSprite(st.iconId, styleIcon);        
+        DownloadedAssets.GetSprite(st.iconId, styleIcon);
     }
 
     private void SwipeRightStyle()
