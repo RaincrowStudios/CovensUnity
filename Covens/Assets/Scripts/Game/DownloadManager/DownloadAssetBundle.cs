@@ -56,6 +56,8 @@ public struct PlaceOfPowerSettings
 {
     public int[] openTimeWindow;
     public int[] cooldownWindow;
+    public int[] silverCost;
+    public int[] goldCost;
 }
 
 public class GameSettingsData

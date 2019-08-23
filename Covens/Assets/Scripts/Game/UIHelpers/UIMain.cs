@@ -27,6 +27,7 @@ public class UIMain : MonoBehaviour
     [SerializeField] private Button m_StoreButton;
     [SerializeField] private Button m_LeaderboardButton;
     [SerializeField] private Button m_ChatButton;
+    [SerializeField] private Button m_NearbyPopsButton;
 
 
     [Header("Screens")]
@@ -52,6 +53,7 @@ public class UIMain : MonoBehaviour
         m_StoreButton.onClick.AddListener(OnClickStore);
         m_LeaderboardButton.onClick.AddListener(OnClickLeaderboards);
         m_ChatButton.onClick.AddListener(OnClickChat);
+        m_NearbyPopsButton.onClick.AddListener(OnClickNearbyPops);
     }
 
     private void OnClickLeaderboards()
@@ -114,7 +116,7 @@ public class UIMain : MonoBehaviour
 
     private void OnClickSettings()
     {
-        SettingsManager.Instance.Show();
+        SettingsManager.OpenUI();
     }
 
     private void OnClickSummoning()
@@ -130,5 +132,10 @@ public class UIMain : MonoBehaviour
     private void OnClickChat()
     {
         UIChat.Open();
+    }
+
+    private void OnClickNearbyPops()
+    {
+        UINearbyLocations.Open();
     }
 }

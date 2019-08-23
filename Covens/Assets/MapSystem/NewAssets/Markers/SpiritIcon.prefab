@@ -137,7 +137,7 @@ MonoBehaviour:
   m_IconGroup: {fileID: 4527749467080838}
   m_NamePlate: {fileID: 4338905907238940}
   m_DisplayName: {fileID: 114468071247984912}
-  m_Tier: {fileID: 0}
+  m_Tier: {fileID: 8382105340551566257}
   m_IconRenderer: {fileID: 212061742380053784}
 --- !u!1 &1380211745843976
 GameObject:
@@ -652,8 +652,7 @@ MonoBehaviour:
   m_text: spirit
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 38350119ae09440479434f932beb604a, type: 2}
-  m_sharedMaterial: {fileID: 21238215743915936, guid: 38350119ae09440479434f932beb604a,
-    type: 2}
+  m_sharedMaterial: {fileID: 2100000, guid: d446073cd8fd248479b0ef0a9c31e32d, type: 2}
   m_fontSharedMaterials: []
   m_fontMaterial: {fileID: 0}
   m_fontMaterials: []
@@ -1205,8 +1204,7 @@ MonoBehaviour:
 '
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 38350119ae09440479434f932beb604a, type: 2}
-  m_sharedMaterial: {fileID: 21238215743915936, guid: 38350119ae09440479434f932beb604a,
-    type: 2}
+  m_sharedMaterial: {fileID: 2100000, guid: d446073cd8fd248479b0ef0a9c31e32d, type: 2}
   m_fontSharedMaterials: []
   m_fontMaterial: {fileID: 0}
   m_fontMaterials: []

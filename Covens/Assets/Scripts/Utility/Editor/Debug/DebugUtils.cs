@@ -18,14 +18,16 @@ namespace Raincrow.Test
         }
 
         private int m_CurrentTab = 0;
-        private string[] m_TabOptions = new string[] { "Users", "Socket", "Others", "Chat", "Coven" };
+        private string[] m_TabOptions = new string[] { "Users", "Socket", "Others", "Spells" };
         private Vector2 m_ScrollPosition = Vector2.zero;
         private Vector3 m_Vector3;
         private float m_Float1;
         private float m_Float2;
         private float m_Float3;
         private string m_SpellId = "spell_hex";
-        DebugUtilsSocket socketDebug = null;
+
+        [SerializeField] DebugUtilsSocket socketDebug = null;
+        [SerializeField] SpellsSheetHelper spellsHelper = null;
 
         private void OnGUI()
         {
@@ -49,13 +51,10 @@ namespace Raincrow.Test
                         Others();
                         break;
                     case 3:
-                        Chat();
+                        if (spellsHelper == null)
+                            spellsHelper = new SpellsSheetHelper();
+                        spellsHelper.DrawGUI();
                         break;
-                    case 4:
-                        // Check DebugUtilsCovenManagement file
-                        //ShowCovenDebug();
-                        break;
-
                 }
             }
         }

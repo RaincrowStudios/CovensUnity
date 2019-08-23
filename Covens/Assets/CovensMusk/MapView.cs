@@ -161,5 +161,4 @@ public class MapView : MonoBehaviour
         MapsAPI.Instance.OnCameraUpdate += OnMapUpdate;
         PlayerManager.onStartFlight += OnStartFlight;
     }
-
 }

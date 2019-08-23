@@ -742,10 +742,10 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 2652062069964625560}
-  - component: {fileID: 5502888653130968478}
-  - component: {fileID: 2111309029500489496}
   - component: {fileID: 7364770640206140853}
   - component: {fileID: 8503351053510562109}
+  - component: {fileID: 5502888653130968478}
+  - component: {fileID: 2111309029500489496}
   - component: {fileID: 9030398474045775845}
   m_Layer: 5
   m_Name: UILowEnergyPopUp
@@ -778,35 +778,6 @@ RectTransform:
   m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
---- !u!114 &5502888653130968478
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1571228120156874113}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 9375a997ea07ff94c8f3b28115ac914c, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  m_offerText: {fileID: 6798266470114642272}
-  m_buttonText: {fileID: 7650607807467754237}
-  m_close: {fileID: 5279437346470140366}
-  m_continue: {fileID: 7099695178354136590}
-  thisCG: {fileID: 2111309029500489496}
---- !u!225 &2111309029500489496
-CanvasGroup:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1571228120156874113}
-  m_Enabled: 1
-  m_Alpha: 1
-  m_Interactable: 1
-  m_BlocksRaycasts: 1
-  m_IgnoreParentGroups: 0
 --- !u!223 &7364770640206140853
 Canvas:
   m_ObjectHideFlags: 0
@@ -850,6 +821,35 @@ MonoBehaviour:
   m_FallbackScreenDPI: 96
   m_DefaultSpriteDPI: 96
   m_DynamicPixelsPerUnit: 1
+--- !u!114 &5502888653130968478
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1571228120156874113}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9375a997ea07ff94c8f3b28115ac914c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_offerText: {fileID: 6798266470114642272}
+  m_buttonText: {fileID: 7650607807467754237}
+  m_close: {fileID: 5279437346470140366}
+  m_continue: {fileID: 7099695178354136590}
+  thisCG: {fileID: 2111309029500489496}
+--- !u!225 &2111309029500489496
+CanvasGroup:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1571228120156874113}
+  m_Enabled: 1
+  m_Alpha: 1
+  m_Interactable: 1
+  m_BlocksRaycasts: 1
+  m_IgnoreParentGroups: 0
 --- !u!114 &9030398474045775845
 MonoBehaviour:
   m_ObjectHideFlags: 0

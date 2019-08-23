@@ -163,8 +163,9 @@ public class PlayerManager : MonoBehaviour
 
         if (MapsAPI.Instance.DistanceBetweenPointsD(p, playerPos) > 0.1f)
         {
+            PlayerLandFX.PlayFlightAnim();
             MapsAPI.Instance.SetPosition(p.x, p.y);
-            MarkerManagerAPI.GetMarkers(false, true, null, true);
+            MarkerManagerAPI.GetMarkers(false, true, PlayerLandFX.PlayLandingAnim, true);
         }
         else
         {

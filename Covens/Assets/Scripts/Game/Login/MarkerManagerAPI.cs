@@ -182,7 +182,7 @@ public class MarkerManagerAPI : MonoBehaviour
         PlayerDataManager.zone = location.zone;
         if (location.dominion != PlayerDataManager.currentDominion)
         {
-            PlayerDataManager.currentDominion = location.dominion;
+            PlayerDataManager.currentDominion = string.IsNullOrEmpty(location.dominion) ? "Ronin" : location.dominion;
             OnChangeDominion?.Invoke(location.dominion);
             if (string.IsNullOrWhiteSpace(location.garden))
             {

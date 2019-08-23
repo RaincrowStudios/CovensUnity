@@ -39,14 +39,15 @@ public class UIDominionSplash : MonoBehaviour
 
     public void Show(System.Action onClose)
     {
+        m_CloseButton.gameObject.SetActive(true);
         m_OnClose = onClose;
         m_Dominion.text = m_TopWitch.text = m_TopCoven.text = "";
         m_Dominion.alpha = m_TopWitch.alpha = m_TopCoven.alpha = 0;
         float time = 2.5f;
         m_Dominion.text = LocalizeLookUp.GetText("dominion_location") + " " + GameStartup.Dominion;
         LeanTween.value(0, 1f, 2f).setOnUpdate((float a) => m_Dominion.alpha = a).setDelay(0.25f).setEaseOutCubic();
-        Debug.Log("Top Player" + GameStartup.TopPlayer);
-        Debug.Log("Top Coven" + GameStartup.TopCoven);
+        //Debug.Log("Top Player" + GameStartup.TopPlayer);
+        //Debug.Log("Top Coven" + GameStartup.TopCoven);
         if (string.IsNullOrEmpty(GameStartup.TopPlayer) == false)
         {
             m_TopWitch.gameObject.SetActive(true);
@@ -80,7 +81,7 @@ public class UIDominionSplash : MonoBehaviour
     {
         m_OnClose?.Invoke();
         m_OnClose = null;
-
+        LeanTween.cancelAll();
         m_InputRaycaster.enabled = false;
         LeanTween.alphaCanvas(m_CanvasGroup, 0, 1f).setEaseOutCubic().setOnComplete(() =>
         {

@@ -628,8 +628,8 @@ public class ChatCovenData
     public int members { get; set; }
     public int worldRank { get; set; }
     public int dominionRank { get; set; }
-    public int xp { get; set; }
-    public int alignment { get; set; }
+    public ulong xp { get; set; }
+    public long alignment { get; set; }
     public int level { get; set; }
     public string founder { get; set; }
 }

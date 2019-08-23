@@ -141,10 +141,1119 @@
       2400,
       2400,
       2400
+    ],
+    "silverCost": [
+      50,
+      0,
+      0,
+      0
+    ],
+    "goldCost": [
+      0,
+      1,
+      1,
+      1
     ]
   },
   "Spells": {
+    "attack": {
+      "id": "attack",
+      "glyph": 9,
+      "school": -1,
+      "target": 1,
+      "states": [
+        "",
+        "vulnerable"
+      ],
+      "hidden": true
+    },
+    "elixir_degree": {
+      "id": "elixir_degree",
+      "glyph": 10,
+      "target": 1,
+      "hidden": true
+    },
+    "elixir_xp": {
+      "id": "elixir_xp",
+      "glyph": 10,
+      "target": 1,
+      "hidden": true
+    },
+    "spell_addledMind": {
+      "id": "spell_addledMind",
+      "level": 5,
+      "glyph": 10,
+      "school": 0,
+      "cost": 50,
+      "align": 0,
+      "xp": 15,
+      "cooldown": 20,
+      "pop": false,
+      "casterSchool": [
+        -1,
+        0,
+        1
+      ],
+      "target": 1,
+      "targetSchool": [
+        -1,
+        0,
+        1
+      ],
+      "targetType": "ANY",
+      "states": [
+        "vulnerable",
+        ""
+      ],
+      "targetStatus": [
+        "channeling"
+      ]
+    },
+    "spell_astral": {
+      "id": "spell_astral",
+      "level": 1,
+      "glyph": 10,
+      "school": 0,
+      "cost": 0,
+      "align": 0,
+      "xp": 0,
+      "cooldown": 180,
+      "pop": true,
+      "casterSchool": [
+        -1,
+        0,
+        1
+      ],
+      "target": 0,
+      "targetSchool": [
+        -1,
+        0,
+        1
+      ],
+      "targetType": "ANY",
+      "states": [
+        "vulnerable",
+        ""
+      ]
+    },
+    "spell_banish": {
+      "id": "spell_banish",
+      "level": 3,
+      "glyph": 4,
+      "school": 0,
+      "cost": 30,
+      "ingredients": [
+        "coll_whiteCrystal",
+        "coll_motherTear",
+        "coll_angelica"
+      ],
+      "align": 5,
+      "xp": 2,
+      "cooldown": 120,
+      "pop": false,
+      "casterSchool": [
+        -1,
+        0,
+        1
+      ],
+      "target": 1,
+      "targetSchool": [
+        -1,
+        0,
+        1
+      ],
+      "targetType": "ANY",
+      "states": [
+        "vulnerable",
+        ""
+      ]
+    },
+    "spell_bind": {
+      "id": "spell_bind",
+      "level": 2,
+      "glyph": 2,
+      "school": -1,
+      "cost": 0,
+      "align": 5,
+      "xp": 15,
+      "cooldown": 30,
+      "pop": false,
+      "casterSchool": [
+        -1,
+        0,
+        1
+      ],
+      "target": 1,
+      "targetSchool": [
+        -1,
+        0,
+        1
+      ],
+      "targetType": "ANY",
+      "states": [
+        "vulnerable"
+      ]
+    },
+    "spell_bless": {
+      "id": "spell_bless",
+      "level": 1,
+      "glyph": 3,
+      "school": 1,
+      "cost": 0,
+      "align": 0,
+      "xp": 2,
+      "cooldown": 5,
+      "pop": false,
+      "casterSchool": [
+        -1,
+        0,
+        1
+      ],
+      "target": 1,
+      "targetSchool": [
+        -1,
+        0,
+        1
+      ],
+      "targetType": "ANY",
+      "states": [
+        "vulnerable",
+        ""
+      ]
+    },
+    "spell_burst": {
+      "id": "spell_burst",
+      "level": 3,
+      "glyph": 27,
+      "school": 0,
+      "cost": 80,
+      "ingredients": [
+        "coll_hourglass",
+        "coll_motherTear",
+        "coll_hyssop"
+      ],
+      "align": 5,
+      "xp": 5,
+      "cooldown": 15,
+      "pop": false,
+      "casterSchool": [
+        -1,
+        0,
+        1
+      ],
+      "target": 1,
+      "targetSchool": [
+        -1,
+        0,
+        1
+      ],
+      "targetType": "ANY",
+      "states": [
+        "vulnerable",
+        ""
+      ]
+    },
+    "spell_channeling": {
+      "id": "spell_channeling",
+      "level": 3,
+      "glyph": 10,
+      "school": 0,
+      "cost": 5,
+      "align": 0,
+      "xp": 0,
+      "cooldown": 60,
+      "pop": false,
+      "casterSchool": [
+        -1,
+        0,
+        1
+      ],
+      "target": 0,
+      "targetSchool": [
+        -1,
+        0,
+        1
+      ],
+      "targetType": "ANY",
+      "states": [
+        "vulnerable",
+        ""
+      ]
+    },
+    "spell_clarity": {
+      "id": "spell_clarity",
+      "level": 6,
+      "glyph": 25,
+      "school": 0,
+      "cost": 50,
+      "align": 1,
+      "xp": 15,
+      "cooldown": 15,
+      "pop": false,
+      "casterSchool": [
+        -1,
+        0,
+        1
+      ],
+      "target": 1,
+      "targetSchool": [
+        -1,
+        0,
+        1
+      ],
+      "targetType": "ANY",
+      "states": [
+        "vulnerable",
+        ""
+      ]
+    },
+    "spell_crowsEye": {
+      "id": "spell_crowsEye",
+      "level": 7,
+      "glyph": 24,
+      "school": 0,
+      "cost": 300,
+      "align": 10,
+      "xp": 20,
+      "cooldown": 120,
+      "pop": false,
+      "casterSchool": [
+        -1,
+        0,
+        1
+      ],
+      "target": 0,
+      "targetSchool": [
+        0
+      ],
+      "targetType": "ANY",
+      "states": [
+        "vulnerable",
+        ""
+      ]
+    },
+    "spell_dispel": {
+      "id": "spell_dispel",
+      "level": 1,
+      "glyph": 5,
+      "school": 0,
+      "cost": 0,
+      "align": 1,
+      "xp": 5,
+      "cooldown": 15,
+      "pop": false,
+      "casterSchool": [
+        -1,
+        0,
+        1
+      ],
+      "target": 1,
+      "targetSchool": [
+        -1,
+        0,
+        1
+      ],
+      "targetType": "ANY",
+      "states": [
+        "vulnerable",
+        ""
+      ]
+    },
+    "spell_foolBargain": {
+      "id": "spell_foolBargain",
+      "level": 9,
+      "glyph": 16,
+      "school": 0,
+      "cost": 0,
+      "align": 2,
+      "xp": 15,
+      "cooldown": 140,
+      "pop": false,
+      "casterSchool": [
+        -1,
+        0,
+        1
+      ],
+      "target": 1,
+      "targetSchool": [
+        -1,
+        0,
+        1
+      ],
+      "targetType": "ANY",
+      "states": [
+        "vulnerable",
+        ""
+      ]
+    },
+    "spell_grace": {
+      "id": "spell_grace",
+      "level": 3,
+      "glyph": 7,
+      "school": 1,
+      "cost": 150,
+      "align": 10,
+      "xp": 15,
+      "cooldown": 120,
+      "pop": false,
+      "casterSchool": [
+        -1,
+        0,
+        1
+      ],
+      "target": 1,
+      "targetSchool": [
+        -1,
+        0,
+        1
+      ],
+      "targetType": "ANY",
+      "states": [
+        "dead"
+      ]
+    },
+    "spell_greaterBless": {
+      "id": "spell_greaterBless",
+      "level": 3,
+      "glyph": 3,
+      "school": 1,
+      "cost": 30,
+      "ingredients": [
+        "coll_onyxCirclet",
+        "coll_motherTear",
+        "coll_betony"
+      ],
+      "align": 5,
+      "xp": 30,
+      "cooldown": 60,
+      "pop": false,
+      "casterSchool": [
+        -1,
+        0,
+        1
+      ],
+      "target": 1,
+      "targetSchool": [
+        -1,
+        0,
+        1
+      ],
+      "targetType": "ANY",
+      "states": [
+        "vulnerable",
+        ""
+      ]
+    },
+    "spell_greaterDispel": {
+      "id": "spell_greaterDispel",
+      "level": 3,
+      "glyph": 5,
+      "school": 0,
+      "cost": 30,
+      "ingredients": [
+        "coll_malachite",
+        "coll_beeswax",
+        "coll_galangal"
+      ],
+      "align": 5,
+      "xp": 30,
+      "cooldown": 60,
+      "pop": false,
+      "casterSchool": [
+        -1,
+        0,
+        1
+      ],
+      "target": 1,
+      "targetSchool": [
+        -1,
+        0,
+        1
+      ],
+      "targetType": "ANY",
+      "states": [
+        "vulnerable",
+        ""
+      ]
+    },
+    "spell_greaterHex": {
+      "id": "spell_greaterHex",
+      "level": 3,
+      "glyph": 9,
+      "school": -1,
+      "cost": 30,
+      "ingredients": [
+        "coll_onyxRing",
+        "coll_bloodAgate",
+        "coll_borage"
+      ],
+      "align": 5,
+      "xp": 30,
+      "cooldown": 60,
+      "pop": false,
+      "casterSchool": [
+        -1,
+        0,
+        1
+      ],
+      "target": 1,
+      "targetSchool": [
+        -1,
+        0,
+        1
+      ],
+      "targetType": "ANY",
+      "states": [
+        "vulnerable",
+        ""
+      ]
+    },
+    "spell_greaterSeal": {
+      "id": "spell_greaterSeal",
+      "level": 1,
+      "glyph": 13,
+      "school": 0,
+      "cost": 30,
+      "ingredients": [
+        "coll_votiveCandle",
+        "coll_bloodAgate"
+      ],
+      "align": 5,
+      "xp": 30,
+      "cooldown": 60,
+      "pop": false,
+      "casterSchool": [
+        -1,
+        0,
+        1
+      ],
+      "target": 1,
+      "targetSchool": [
+        -1,
+        0,
+        1
+      ],
+      "targetType": "ANY",
+      "states": [
+        "vulnerable",
+        ""
+      ]
+    },
     "spell_hex": {
+      "id": "spell_hex",
+      "level": 1,
+      "glyph": 9,
+      "school": -1,
+      "cost": 0,
+      "align": 0,
+      "xp": 2,
+      "cooldown": 5,
+      "pop": false,
+      "casterSchool": [
+        -1,
+        0,
+        1
+      ],
+      "target": 1,
+      "targetSchool": [
+        -1,
+        0,
+        1
+      ],
+      "targetType": "ANY",
+      "states": [
+        "vulnerable",
+        ""
+      ]
+    },
+    "spell_invisibility": {
+      "id": "spell_invisibility",
+      "level": 1,
+      "glyph": 10,
+      "school": 0,
+      "cost": 100,
+      "ingredients": [
+        "coll_rainwater",
+        "coll_eyeBright",
+        "coll_brimstone"
+      ],
+      "align": 10,
+      "xp": 15,
+      "cooldown": 120,
+      "pop": false,
+      "casterSchool": [
+        -1,
+        0,
+        1
+      ],
+      "target": 2,
+      "targetSchool": [
+        -1,
+        0,
+        1
+      ],
+      "targetType": "ANY",
+      "states": [
+        "vulnerable",
+        ""
+      ]
+    },
+    "spell_lazurus": {
+      "id": "spell_lazurus",
+      "level": 7,
+      "glyph": 8,
+      "school": 1,
+      "cost": 0,
+      "ingredients": [
+        "coll_oilyFeather",
+        "coll_motherTear",
+        "coll_mugwort"
+      ],
+      "align": 10,
+      "xp": 15,
+      "cooldown": 30,
+      "pop": false,
+      "casterSchool": [
+        -1,
+        0,
+        1
+      ],
+      "target": 1,
+      "targetSchool": [
+        -1,
+        0,
+        1
+      ],
+      "targetType": "ANY",
+      "states": [
+        "dead"
+      ]
+    },
+    "spell_leech": {
+      "id": "spell_leech",
+      "level": 5,
+      "glyph": 26,
+      "school": -1,
+      "cost": 0,
+      "align": 5,
+      "xp": 25,
+      "cooldown": 1200,
+      "pop": false,
+      "casterSchool": [
+        -1,
+        0,
+        1
+      ],
+      "target": 1,
+      "targetSchool": [
+        -1,
+        0,
+        1
+      ],
+      "targetType": "ANY",
+      "states": [
+        "vulnerable",
+        ""
+      ]
+    },
+    "spell_mirrors": {
+      "id": "spell_mirrors",
+      "level": 5,
+      "glyph": 1,
+      "school": 0,
+      "cost": 100,
+      "align": 2,
+      "xp": 30,
+      "cooldown": 300,
+      "pop": false,
+      "casterSchool": [
+        -1,
+        0,
+        1
+      ],
+      "target": 0,
+      "targetSchool": [
+        0
+      ],
+      "targetType": "ANY",
+      "states": [
+        "vulnerable",
+        ""
+      ]
+    },
+    "spell_rageWard": {
+      "id": "spell_rageWard",
+      "level": 6,
+      "glyph": 21,
+      "school": -1,
+      "cost": 500,
+      "align": 5,
+      "xp": 25,
+      "cooldown": 600,
+      "pop": false,
+      "casterSchool": [
+        -1,
+        0,
+        1
+      ],
+      "target": 2,
+      "targetSchool": [
+        -1,
+        0,
+        1
+      ],
+      "targetType": "ANY",
+      "states": [
+        "vulnerable",
+        ""
+      ]
+    },
+    "spell_reflectiveWard": {
+      "id": "spell_reflectiveWard",
+      "level": 6,
+      "glyph": 20,
+      "school": 1,
+      "cost": 200,
+      "ingredients": [
+        "coll_whiteFur",
+        "coll_motherTear",
+        "coll_orrisRoot"
+      ],
+      "align": 5,
+      "xp": 15,
+      "cooldown": 600,
+      "pop": false,
+      "casterSchool": [
+        -1,
+        0,
+        1
+      ],
+      "target": 2,
+      "targetSchool": [
+        -1,
+        0,
+        1
+      ],
+      "targetType": "ANY",
+      "states": [
+        "vulnerable",
+        ""
+      ]
+    },
+    "spell_resurrection": {
+      "id": "spell_resurrection",
+      "level": 5,
+      "glyph": 12,
+      "school": -1,
+      "cost": 100,
+      "ingredients": [
+        "coll_motherTear"
+      ],
+      "align": 10,
+      "xp": 15,
+      "cooldown": 120,
+      "pop": false,
+      "casterSchool": [
+        -1,
+        0,
+        1
+      ],
+      "target": 1,
+      "targetSchool": [
+        -1,
+        0,
+        1
+      ],
+      "targetType": "ANY",
+      "states": [
+        "dead"
+      ]
+    },
+    "spell_seal": {
+      "id": "spell_seal",
+      "level": 1,
+      "glyph": 13,
+      "school": 0,
+      "cost": 10,
+      "align": 3,
+      "xp": 2,
+      "cooldown": 20,
+      "pop": false,
+      "casterSchool": [
+        -1,
+        0,
+        1
+      ],
+      "target": 1,
+      "targetSchool": [
+        -1,
+        0,
+        1
+      ],
+      "targetType": "ANY",
+      "states": [
+        "vulnerable",
+        ""
+      ]
+    },
+    "spell_sealBalance": {
+      "id": "spell_sealBalance",
+      "level": 10,
+      "glyph": 17,
+      "school": 0,
+      "cost": 200,
+      "align": 5,
+      "xp": 20,
+      "cooldown": 60,
+      "pop": false,
+      "casterSchool": [
+        -1,
+        0,
+        1
+      ],
+      "target": 2,
+      "targetSchool": [
+        0
+      ],
+      "targetType": "ANY",
+      "states": [
+        "vulnerable",
+        ""
+      ]
+    },
+    "spell_sealLight": {
+      "id": "spell_sealLight",
+      "level": 10,
+      "glyph": 18,
+      "school": 1,
+      "cost": 200,
+      "align": 5,
+      "xp": 20,
+      "cooldown": 60,
+      "pop": false,
+      "casterSchool": [
+        -1,
+        0,
+        1
+      ],
+      "target": 2,
+      "targetSchool": [
+        1
+      ],
+      "targetType": "ANY",
+      "states": [
+        "vulnerable",
+        ""
+      ]
+    },
+    "spell_sealShadow": {
+      "id": "spell_sealShadow",
+      "level": 10,
+      "glyph": 19,
+      "school": -1,
+      "cost": 200,
+      "align": 5,
+      "xp": 20,
+      "cooldown": 60,
+      "pop": false,
+      "casterSchool": [
+        -1,
+        0,
+        1
+      ],
+      "target": 2,
+      "targetSchool": [
+        -1
+      ],
+      "targetType": "ANY",
+      "states": [
+        "vulnerable",
+        ""
+      ]
+    },
+    "spell_shadowMark": {
+      "id": "spell_shadowMark",
+      "level": 10,
+      "glyph": 23,
+      "school": -1,
+      "cost": 0,
+      "align": 2,
+      "xp": 15,
+      "cooldown": 300,
+      "pop": false,
+      "casterSchool": [
+        -1
+      ],
+      "target": 1,
+      "targetSchool": [
+        -1,
+        0,
+        1
+      ],
+      "targetType": "ANY",
+      "states": [
+        "vulnerable",
+        ""
+      ]
+    },
+    "spell_silence": {
+      "id": "spell_silence",
+      "level": 2,
+      "glyph": 14,
+      "school": 1,
+      "cost": 0,
+      "align": 1,
+      "xp": 15,
+      "cooldown": 120,
+      "pop": false,
+      "casterSchool": [
+        -1,
+        0,
+        1
+      ],
+      "target": 1,
+      "targetSchool": [
+        -1,
+        0,
+        1
+      ],
+      "targetType": "ANY",
+      "states": [
+        "vulnerable"
+      ]
+    },
+    "spell_sunEater": {
+      "id": "spell_sunEater",
+      "level": 1,
+      "glyph": 26,
+      "school": -1,
+      "cost": 15,
+      "align": 2,
+      "xp": 2,
+      "cooldown": 5,
+      "pop": false,
+      "casterSchool": [
+        -1,
+        0,
+        1
+      ],
+      "target": 1,
+      "targetSchool": [
+        -1,
+        0,
+        1
+      ],
+      "targetType": "ANY",
+      "states": [
+        "vulnerable",
+        ""
+      ]
+    },
+    "spell_tranquility": {
+      "id": "spell_tranquility",
+      "level": 5,
+      "glyph": 10,
+      "school": 0,
+      "cost": 50,
+      "align": 0,
+      "xp": 0,
+      "cooldown": 60,
+      "pop": false,
+      "casterSchool": [
+        -1,
+        0,
+        1
+      ],
+      "target": 1,
+      "targetSchool": [
+        -1,
+        0,
+        1
+      ],
+      "targetType": "ANY",
+      "states": [
+        "vulnerable",
+        ""
+      ]
+    },
+    "spell_trueSight": {
+      "id": "spell_trueSight",
+      "level": 1,
+      "glyph": 11,
+      "school": 0,
+      "cost": 100,
+      "align": 5,
+      "xp": 10,
+      "cooldown": 120,
+      "pop": false,
+      "casterSchool": [
+        -1,
+        0,
+        1
+      ],
+      "target": 0,
+      "targetSchool": [
+        0
+      ],
+      "targetType": "ANY",
+      "states": [
+        "vulnerable",
+        ""
+      ]
+    },
+    "spell_twilightDawn": {
+      "id": "spell_twilightDawn",
+      "level": 3,
+      "glyph": 31,
+      "school": 1,
+      "cost": 30,
+      "ingredients": [
+        "coll_friedTofu",
+        "coll_motherTear",
+        "coll_pennyRoyal"
+      ],
+      "align": 5,
+      "xp": 5,
+      "cooldown": 30,
+      "pop": false,
+      "casterSchool": [
+        -1,
+        0,
+        1
+      ],
+      "target": 1,
+      "targetSchool": [
+        -1,
+        0,
+        1
+      ],
+      "targetType": "ANY",
+      "states": [
+        "vulnerable",
+        ""
+      ]
+    },
+    "spell_twilightDusk": {
+      "id": "spell_twilightDusk",
+      "level": 3,
+      "glyph": 30,
+      "school": -1,
+      "cost": 30,
+      "ingredients": [
+        "coll_silverComb",
+        "coll_bloodAgate",
+        "coll_lobelia"
+      ],
+      "align": 5,
+      "xp": 5,
+      "cooldown": 30,
+      "pop": false,
+      "casterSchool": [
+        -1,
+        0,
+        1
+      ],
+      "target": 1,
+      "targetSchool": [
+        -1,
+        0,
+        1
+      ],
+      "targetType": "ANY",
+      "states": [
+        "vulnerable",
+        ""
+      ]
+    },
+    "spell_wail": {
+      "id": "spell_wail",
+      "level": 7,
+      "school": -1,
+      "cost": 45,
+      "ingredients": [
+        "coll_candleBlack",
+        "coll_malachite"
+      ],
+      "align": 5,
+      "xp": 2,
+      "cooldown": 120,
+      "pop": false,
+      "casterSchool": [
+        -1,
+        0,
+        1
+      ],
+      "target": 1,
+      "targetSchool": [
+        -1,
+        0,
+        1
+      ],
+      "targetType": "WITCH",
+      "states": [
+        "vulnerable",
+        ""
+      ]
+    },
+    "spell_whiteFlame": {
+      "id": "spell_whiteFlame",
+      "level": 1,
+      "glyph": 28,
+      "school": 1,
+      "cost": 10,
+      "align": 2,
+      "xp": 2,
+      "cooldown": 5,
+      "pop": false,
+      "casterSchool": [
+        -1,
+        0,
+        1
+      ],
+      "target": 1,
+      "targetSchool": [
+        -1,
+        0,
+        1
+      ],
+      "targetType": "ANY",
+      "states": [
+        "vulnerable",
+        ""
+      ]
+    },
+    "spell_wither": {
+      "id": "spell_wither",
+      "level": 7,
+      "glyph": 22,
+      "school": -1,
+      "cost": 0,
+      "align": 5,
+      "xp": 15,
+      "cooldown": 120,
+      "pop": false,
+      "casterSchool": [
+        -1,
+        0,
+        1
+      ],
+      "target": 1,
+      "targetSchool": [
+        -1,
+        0,
+        1
+      ],
+      "targetType": "ANY",
+      "states": [
+        "vulnerable",
+        ""
+      ]
+    }
+  },
+  "Sheet32": {
+    "": {},
+    "2": {
+      "1": 2,
       "id": "spell_hex",
       "level": 1,
       "glyph": 9,
@@ -157,7 +1266,8 @@
         "vulnerable"
       ]
     },
-    "spell_sunEater": {
+    "3": {
+      "1": 3,
       "id": "spell_sunEater",
       "level": 1,
       "glyph": 15,
@@ -172,7 +1282,8 @@
         "vulnerable"
       ]
     },
-    "spell_bind": {
+    "4": {
+      "1": 4,
       "id": "spell_bind",
       "level": 2,
       "glyph": 2,
@@ -186,7 +1297,8 @@
         "vulnerable"
       ]
     },
-    "spell_resurrection": {
+    "5": {
+      "1": 5,
       "id": "spell_resurrection",
       "level": 5,
       "glyph": 12,
@@ -199,7 +1311,8 @@
         "dead"
       ]
     },
-    "spell_bless": {
+    "6": {
+      "1": 6,
       "id": "spell_bless",
       "level": 1,
       "glyph": 3,
@@ -212,7 +1325,8 @@
         "vulnerable"
       ]
     },
-    "spell_silence": {
+    "7": {
+      "1": 7,
       "id": "spell_silence",
       "level": 2,
       "glyph": 14,
@@ -225,7 +1339,8 @@
         "vulnerable"
       ]
     },
-    "spell_whiteFlame": {
+    "8": {
+      "1": 8,
       "id": "spell_whiteFlame",
       "level": 1,
       "glyph": 6,
@@ -240,7 +1355,8 @@
         "vulnerable"
       ]
     },
-    "spell_grace": {
+    "9": {
+      "1": 9,
       "id": "spell_grace",
       "level": 3,
       "glyph": 7,
@@ -253,7 +1369,8 @@
         "dead"
       ]
     },
-    "spell_seal": {
+    "10": {
+      "1": 10,
       "id": "spell_seal",
       "level": 1,
       "glyph": 13,
@@ -267,7 +1384,8 @@
         "vulnerable"
       ]
     },
-    "spell_invisibility": {
+    "11": {
+      "1": 11,
       "id": "spell_invisibility",
       "level": 1,
       "glyph": 10,
@@ -279,7 +1397,8 @@
         "vulnerable"
       ]
     },
-    "spell_dispel": {
+    "12": {
+      "1": 12,
       "id": "spell_dispel",
       "level": 1,
       "glyph": 5,
@@ -292,7 +1411,8 @@
         "vulnerable"
       ]
     },
-    "spell_clarity": {
+    "13": {
+      "1": 13,
       "id": "spell_clarity",
       "level": 6,
       "glyph": 25,
@@ -305,7 +1425,8 @@
         "vulnerable"
       ]
     },
-    "spell_sealBalance": {
+    "14": {
+      "1": 14,
       "id": "spell_sealBalance",
       "level": 10,
       "glyph": 17,
@@ -325,7 +1446,8 @@
         "vulnerable"
       ]
     },
-    "spell_sealLight": {
+    "15": {
+      "1": 15,
       "id": "spell_sealLight",
       "level": 10,
       "glyph": 18,
@@ -346,7 +1468,8 @@
         "vulnerable"
       ]
     },
-    "spell_sealShadow": {
+    "16": {
+      "1": 16,
       "id": "spell_sealShadow",
       "level": 10,
       "glyph": 19,
@@ -367,7 +1490,8 @@
         "vulnerable"
       ]
     },
-    "spell_reflectiveWard": {
+    "17": {
+      "1": 17,
       "id": "spell_reflectiveWard",
       "level": 6,
       "glyph": 20,
@@ -388,7 +1512,8 @@
         "vulnerable"
       ]
     },
-    "spell_rageWard": {
+    "18": {
+      "1": 18,
       "id": "spell_rageWard",
       "level": 6,
       "glyph": 21,
@@ -409,7 +1534,8 @@
         "vulnerable"
       ]
     },
-    "spell_greaterSeal": {
+    "19": {
+      "1": 19,
       "id": "spell_greaterSeal",
       "level": 3,
       "glyph": 13,
@@ -430,7 +1556,8 @@
         "vulnerable"
       ]
     },
-    "spell_greaterBless": {
+    "20": {
+      "1": 20,
       "id": "spell_greaterBless",
       "level": 3,
       "glyph": 3,
@@ -451,7 +1578,8 @@
         "vulnerable"
       ]
     },
-    "spell_greaterHex": {
+    "21": {
+      "1": 21,
       "id": "spell_greaterHex",
       "level": 3,
       "glyph": 9,
@@ -472,7 +1600,8 @@
         "vulnerable"
       ]
     },
-    "spell_greaterDispel": {
+    "22": {
+      "1": 22,
       "id": "spell_greaterDispel",
       "level": 3,
       "glyph": 5,
@@ -492,7 +1621,8 @@
         "vulnerable"
       ]
     },
-    "spell_banish": {
+    "23": {
+      "1": 23,
       "id": "spell_banish",
       "level": 3,
       "glyph": 4,
@@ -512,7 +1642,8 @@
         "vulnerable"
       ]
     },
-    "spell_wither": {
+    "24": {
+      "1": 24,
       "id": "spell_wither",
       "level": 7,
       "glyph": 22,
@@ -532,7 +1663,8 @@
         "vulnerable"
       ]
     },
-    "spell_foolBargain": {
+    "25": {
+      "1": 25,
       "id": "spell_foolBargain",
       "level": 9,
       "glyph": 16,
@@ -547,7 +1679,8 @@
         "vulnerable"
       ]
     },
-    "spell_leech": {
+    "26": {
+      "1": 26,
       "id": "spell_leech",
       "level": 5,
       "glyph": 26,
@@ -568,7 +1701,8 @@
         "vulnerable"
       ]
     },
-    "spell_confusion": {
+    "27": {
+      "1": 27,
       "id": "spell_confusion",
       "level": 1,
       "glyph": 1,
@@ -576,7 +1710,8 @@
       "xp": 30,
       "target": 1
     },
-    "spell_burst": {
+    "28": {
+      "1": 28,
       "id": "spell_burst",
       "level": 3,
       "glyph": 27,
@@ -597,7 +1732,8 @@
         "vulnerable"
       ]
     },
-    "spell_lazurus": {
+    "29": {
+      "1": 29,
       "id": "spell_lazurus",
       "level": 7,
       "glyph": 8,
@@ -617,7 +1753,8 @@
         "dead"
       ]
     },
-    "spell_wail": {
+    "30": {
+      "1": 30,
       "id": "spell_wail",
       "level": 7,
       "glyph": 28,
@@ -639,7 +1776,8 @@
         "vulnerable"
       ]
     },
-    "spell_trueSight": {
+    "31": {
+      "1": 31,
       "id": "spell_trueSight",
       "level": 3,
       "glyph": 11,
@@ -655,7 +1793,8 @@
         "vulnerable"
       ]
     },
-    "spell_crowsEye": {
+    "32": {
+      "1": 32,
       "id": "spell_crowsEye",
       "level": 7,
       "glyph": 24,
@@ -668,7 +1807,8 @@
         "vulnerable"
       ]
     },
-    "spell_twilightDusk": {
+    "33": {
+      "1": 33,
       "id": "spell_twilightDusk",
       "level": 3,
       "glyph": 30,
@@ -689,7 +1829,8 @@
         "vulnerable"
       ]
     },
-    "spell_shadowMark": {
+    "34": {
+      "1": 34,
       "id": "spell_shadowMark",
       "level": 10,
       "glyph": 23,
@@ -703,7 +1844,8 @@
         "vulnerable"
       ]
     },
-    "spell_twilightDawn": {
+    "35": {
+      "1": 35,
       "id": "spell_twilightDawn",
       "level": 3,
       "glyph": 31,
@@ -724,11 +1866,12 @@
         "vulnerable"
       ]
     },
-    "spell_channeling": {
+    "36": {
+      "1": 36,
       "id": "spell_channeling",
       "level": 3,
       "glyph": 10,
-      "common": true,
+      "common": "VERDADEIRO",
       "cost": 1,
       "cooldown": 60,
       "target": 0,
@@ -737,7 +1880,8 @@
         "vulnerable"
       ]
     },
-    "spell_tranquility": {
+    "37": {
+      "1": 37,
       "id": "spell_tranquility",
       "level": 5,
       "glyph": 10,
@@ -749,7 +1893,8 @@
         "vulnerable"
       ]
     },
-    "spell_addledMind": {
+    "38": {
+      "1": 38,
       "id": "spell_addledMind",
       "level": 5,
       "glyph": 10,
@@ -762,43 +1907,37 @@
         "vulnerable"
       ]
     },
-    "attack": {
+    "39": {
+      "1": 39,
       "id": "attack",
       "glyph": 9,
       "school": -1,
-      "hidden": true,
+      "hidden": "VERDADEIRO",
       "target": 1,
       "states": [
         "",
         "vulnerable"
       ]
     },
-    "elixir_degree": {
+    "40": {
+      "1": 40,
       "id": "elixir_degree",
       "glyph": 10,
-      "hidden": true,
+      "hidden": "VERDADEIRO",
       "target": 1
     },
-    "elixir_xp": {
+    "41": {
+      "1": 41,
       "id": "elixir_xp",
       "glyph": 10,
-      "hidden": true,
+      "hidden": "VERDADEIRO",
       "target": 1
     },
-    "spell_mirrors": {
+    "42": {
+      "1": 42,
       "id": "spell_mirrors",
       "level": 5,
-      "glyph": 1,
-      "school": 0,
-      "cost": 100,
-      "align": 2,
-      "xp": 30,
-      "cooldown": 300,
-      "target": 0,
-      "states": [
-        "",
-        "vulnerable"
-      ]
+      "glyph": 1
     }
   },
   "Spirits": {

@@ -12,7 +12,7 @@ public class MapFlightTransition : MonoBehaviour
     [SerializeField] private RadialBlur m_RadialBlur;
     bool Canfly = true;
     public CanvasGroup CG;
-    // bool hasPlayed = false;
+
     void Awake()
     {
         Instance = this;
@@ -31,21 +31,22 @@ public class MapFlightTransition : MonoBehaviour
 
         CG.gameObject.SetActive(true);
         CG.alpha = 0;
-        // PlayerManager.inSpiritForm = false;
-        // hasPlayed = false;
+
+        PlayerLandFX.PlayFlightAnim();
 
         bool wasAtStreetLevel = MapsAPI.Instance.streetLevel;
+
         LeanTween.alphaCanvas(CG, 1, .3f).setOnComplete(() =>
         {
             map.SetPosition(GetGPS.longitude, GetGPS.latitude);
-            //m_CameraControl.SetZoomRecall(.89f);
 
-            //m_CameraControl.OnLandButton(true);
             m_CameraControl.AnimateZoom(1f, 0.3f, false, m_CameraControl.m_FlyOutCurve);
 
             //if the player was at street level, PlayerManager.OnLand will not trigger
             if (wasAtStreetLevel)
-                MarkerManagerAPI.GetMarkers(true, false, null, false, false);
+                MarkerManagerAPI.GetMarkers(true, false, PlayerLandFX.PlayLandingAnim, false, false);
+            else
+                PlayerLandFX.PlayLandingAnim();
 
             LeanTween.alphaCanvas(CG, 0, .3f).setOnComplete(() =>
             {

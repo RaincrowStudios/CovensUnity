@@ -464,6 +464,8 @@ public class DownloadManager : MonoBehaviour
             StoreManagerAPI.ConsumableDict = data.Consumables;
             StoreManagerAPI.SilverBundleDict = data.Silver;
 
+            DownloadedAssets.PlaceOfPowerSettings = data.PlaceOfPower;
+
             return true;
         }
         catch (System.Exception e)

@@ -28,6 +28,8 @@ public class DownloadedAssets : MonoBehaviour
     public static Dictionary<string, IngredientData> ingredientDict = new Dictionary<string, IngredientData>();
     public static Dictionary<string, CosmeticData> cosmeticDict = new Dictionary<string, CosmeticData>();
 
+    public static PlaceOfPowerSettings PlaceOfPowerSettings { get; set; }
+
 
     public static bool UnloadingMemory { get; private set; }
     public static event System.Action OnWillUnloadAssets;
