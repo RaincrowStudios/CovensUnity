@@ -15,6 +15,11 @@ public class LocationPlayerAction : MonoBehaviour
     [SerializeField] private Sprite m_flySprite;
     [SerializeField] private Sprite m_CloakSprite;
     [SerializeField] private Sprite m_SummonSprite;
+    [SerializeField] private CanvasGroup[] m_CloakUIDisable;
+    [SerializeField] private Transform m_CloakUIGreyScale;
+    [SerializeField] private Button m_DisableCloakBtn;
+
+    [SerializeField] private CanvasGroup m_CloakUI;
 
     private const int MOVE_TIMER = 5;
     private const int SUMMON_TIMER = 30;
@@ -26,7 +31,7 @@ public class LocationPlayerAction : MonoBehaviour
     public static int getCurrentIsland => playerWitchToken.island;
     public static int playerPopIndex => playerWitchToken.popIndex;
     public static WitchToken playerWitchToken => playerMarker.Token as WitchToken;
-
+    public static bool isCloaked { get; private set; }
     public static void SetSelectedPosition(LocationPosition locationPosition)
     {
         selectedPosition = locationPosition;
@@ -53,6 +58,14 @@ public class LocationPlayerAction : MonoBehaviour
         Instance = this;
         m_MoveCloserCloseBtn.onClick.AddListener(HideMoveCloser);
         m_CenterOnPlayerBtn.onClick.AddListener(CenterOnPlayer);
+        m_DisableCloakBtn.onClick.AddListener(RequestDisableCloaking);
+        LocationIslandController.OnEnterLocation += Setup;
+        LocationIslandController.OnExitLocation -= Setup;
+
+    }
+
+    private void Setup()
+    {
         LocationActionButton btn;
         btn = Instantiate(m_ActionBtn, transform) as LocationActionButton;
         btn.Setup(MOVE_TIMER, m_flySprite, () =>
@@ -66,29 +79,81 @@ public class LocationPlayerAction : MonoBehaviour
         m_BtnArr[2] = btn;
 
         btn = Instantiate(m_ActionBtn, transform) as LocationActionButton;
-        btn.Setup(CLOAK_TIMER, m_CloakSprite, () =>
-        {
+        btn.Setup(PlayerDataManager.playerData.level + 20, m_CloakSprite, () =>
+       {
 
-            var data = new
-            {
-                spell = "spell_astral"
-            };
-            APIManager.Instance.Post(
-               "character/cast/" + playerWitchToken.instance,
-               JsonConvert.SerializeObject(data), (s, r) =>
-               {
-                   if (r == 200)
-                   {
-                       Debug.Log(s);
-                       Debug.Log("cloak success");
-                       LocationUnitSpawner.EnableCloaking(playerWitchToken.instance);
-                   }
-               });
-        });
+           var data = new
+           {
+               spell = "spell_astral"
+           };
+           APIManager.Instance.Post(
+              "character/cast/" + playerWitchToken.instance,
+              JsonConvert.SerializeObject(data), (s, r) =>
+              {
+                  RenderSettings.fog = true;
+                  RenderSettings.fogMode = FogMode.Linear;
+                  RenderSettings.fogColor = new Color(0.14f, 0.14f, 0.14f);
+                  CenterOnPlayer();
+                  LeanTween.value(1, 0, .5f).setOnUpdate((float v) => CloakingFX(v));
+                  isCloaked = true;
+              });
+       }, true);
         m_BtnArr[0] = btn;
     }
 
+    private void CloakingFX(float v)
+    {
+        foreach (var item in m_CloakUIDisable)
+        {
+            item.alpha = v;
+        }
+        m_CloakUI.gameObject.SetActive(true);
+        m_CloakUI.alpha = Mathf.Lerp(1, 0, v);
+        m_CloakUIGreyScale.gameObject.SetActive(true);
+        m_CloakUIGreyScale.SetParent(playerMarker.GameObject.transform.GetChild(0));
+        m_CloakUIGreyScale.localPosition = Vector3.zero;
+        m_CloakUIGreyScale.localScale = Vector3.one * Mathf.Lerp(1, 0, v);
+        foreach (var item in LocationUnitSpawner.Markers)
+        {
+            item.Value.ScaleNamePlate(false, .5f);
+            item.Value.EnergyRingFade(0, .5f);
+        }
+        RenderSettings.fogStartDistance = Mathf.Lerp(-1446, 2100, v);
+        RenderSettings.fogEndDistance = Mathf.Lerp(878, 2200, v);
+        m_BtnArr[1].transform.localScale = Mathf.Lerp(0, 1, v) * Vector3.one;
+        m_BtnArr[2].transform.localScale = Mathf.Lerp(0, 1, v) * Vector3.one;
+        m_BtnArr[0].transform.localScale = Mathf.Lerp(1.2f, 1, v) * Vector3.one;
+        //  LocationUnitSpawner.guardianMarker.SetAlpha(.5f);
+    }
 
+    public void RequestDisableCloaking()
+    {
+        m_DisableCloakBtn.interactable = false;
+        APIManager.Instance.Delete(
+               "character/astral", "{}", (s, r) =>
+               {
+                   //    if (r == 200)
+                   //    {
+                   m_BtnArr[0].Setup(180);
+                   DisableCloaking();
+                   //    }
+                   m_DisableCloakBtn.interactable = true;
+               });
+    }
+
+    public static void DisableCloaking()
+    {
+        RenderSettings.fogMode = FogMode.Linear;
+        RenderSettings.fogColor = new Color(0.14f, 0.14f, 0.14f);
+        LeanTween.value(0, 1, .5f).setOnUpdate((float v) => Instance.CloakingFX(v)).setOnComplete(() =>
+        {
+            isCloaked = false;
+            RenderSettings.fog = false;
+            Instance.m_CloakUI.gameObject.SetActive(false);
+            Instance.m_CloakUIGreyScale.gameObject.SetActive(false);
+
+        });
+    }
 
     private static void CenterOnPlayer()
     {

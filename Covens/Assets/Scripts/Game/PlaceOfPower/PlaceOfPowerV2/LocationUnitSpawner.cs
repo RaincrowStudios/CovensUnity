@@ -37,7 +37,7 @@ public class LocationUnitSpawner : MonoBehaviour
     private static SimplePool<Transform> m_SpiritPool;
     private static SimplePool<Transform> m_EnergyPool;
     private static SimplePool<Transform> m_CloakingPool;
-
+    private static Dictionary<string, GameObject> m_cloaks = new Dictionary<string, GameObject>();
     public static string currentSelection { get; private set; }
     public static Dictionary<string, IMarker> Markers = new Dictionary<string, IMarker>();
 
@@ -51,25 +51,47 @@ public class LocationUnitSpawner : MonoBehaviour
         m_CloakingPool = new SimplePool<Transform>(m_CloakingFX, 2);
     }
 
-    public static async void EnableCloaking(string instance)
+    public static void EnableCloaking(string instance)
     {
-        Debug.Log("Trying to cloak");
         if (Markers.ContainsKey(instance))
         {
-            Debug.Log("Cloaking!");
             var go = m_CloakingPool.Spawn().gameObject;
+            int degree = ((WitchToken)Markers[instance].Token).degree;
+            if (degree < 0)
+            {
+                go.transform.GetChild(0).gameObject.SetActive(true);
+            }
+            else if (degree > 0)
+            {
+                go.transform.GetChild(2).gameObject.SetActive(true);
+            }
+            else
+            {
+                go.transform.GetChild(1).gameObject.SetActive(true);
+            }
+
             go.transform.SetParent(Markers[instance].GameObject.transform.GetChild(0));
+
             go.transform.localPosition = Vector3.zero;
             go.transform.localScale = Vector3.zero;
             go.SetActive(true);
+            if (m_cloaks.ContainsKey(instance)) DisableCloaking(instance);
+            m_cloaks.Add(instance, go);
             LeanTween.scale(go, Vector3.one, .5f).setEaseOutQuad();
-            var timeout = ((WitchToken)Markers[instance].Token).level + 20;
-            await Task.Delay(timeout * 1000);
-            if (LocationIslandController.isInBattle && Markers.ContainsKey(instance))
+        }
+    }
+
+    public static void DisableCloaking(string instance)
+    {
+        if (m_cloaks.ContainsKey(instance))
+        {
+
+            LeanTween.scale(m_cloaks[instance], Vector3.zero, .5f).setEaseOutQuad().setOnComplete(() =>
             {
-                LeanTween.scale(go, Vector3.zero, .5f).setEaseOutQuad();
-                m_CloakingPool.Despawn(go.transform);
-            }
+                m_CloakingPool.Despawn(m_cloaks[instance].transform);
+                m_cloaks.Remove(instance);
+            });
+
         }
     }
 

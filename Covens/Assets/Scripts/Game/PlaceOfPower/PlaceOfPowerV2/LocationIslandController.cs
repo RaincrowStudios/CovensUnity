@@ -18,6 +18,7 @@ public class LocationIslandController : MonoBehaviour
     public static event System.Action OnExitLocation;
 
     private static bool m_IsInBattle = false;
+
     private Vector2 m_MouseDownPosition;
 
     public static bool isInBattle
@@ -45,11 +46,6 @@ public class LocationIslandController : MonoBehaviour
     private void Awake()
     {
         instance = this;
-    }
-
-    private void CheckMarkerState()
-    {
-
     }
 
     private void BattleBeginPOP(SpiritToken guardianSpirit)
@@ -86,6 +82,7 @@ public class LocationIslandController : MonoBehaviour
         instance.popCameraController.onUpdate -= UpdateMarkers;
         LocationBattleStart.OnLocationBattleStart -= instance.BattleBeginPOP;
         LocationBattleEnd.OnLocationBattleEnd -= BattleStopPOP;
+        ExpireAstralHandler.OnExpireAstral -= LocationUnitSpawner.DisableCloaking;
         isInBattle = false;
     }
 
@@ -131,6 +128,7 @@ public class LocationIslandController : MonoBehaviour
                   await Task.Delay(2200);
                   LoadPOPManager.LoadScene(() =>
                   {
+                      ExpireAstralHandler.OnExpireAstral += LocationUnitSpawner.DisableCloaking;
                       OnMapEnergyChange.OnPlayerDead += LoadPOPManager.UnloadScene;
                       OnMapEnergyChange.OnMarkerEnergyChange += LocationUnitSpawner.OnEnergyChange;
                       LocationBattleStart.OnLocationBattleStart += instance.BattleBeginPOP;
@@ -226,6 +224,7 @@ public class LocationIslandController : MonoBehaviour
 
     private void Update()
     {
+        if (LocationPlayerAction.isCloaked) return;
         bool inputUp = false;
         bool inputDown = false;
 
@@ -271,7 +270,6 @@ public class LocationIslandController : MonoBehaviour
                     LP.OnClick();
                 }
             }
-
         }
     }
 }

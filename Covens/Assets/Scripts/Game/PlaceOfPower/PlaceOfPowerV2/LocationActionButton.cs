@@ -10,7 +10,7 @@ public class LocationActionButton : MonoBehaviour
     [SerializeField] private Image m_Progress;
     [SerializeField] private Image m_BtnImg;
     [SerializeField] private Button m_Btn;
-
+    // System.Action m_OnClick;
     public bool isInteractable
     {
         get { return m_Btn.interactable; }
@@ -20,8 +20,9 @@ public class LocationActionButton : MonoBehaviour
     {
     }
 
-    public void Setup(int cooldown, Sprite sprite, System.Action onClick)
+    public void Setup(int cooldown, Sprite sprite, System.Action onClick, bool isCloak = false)
     {
+        // m_OnClick = onClick;
         m_Progress.fillAmount = 0;
         m_BtnImg.sprite = sprite;
         m_Btn.interactable = true;
@@ -35,8 +36,29 @@ public class LocationActionButton : MonoBehaviour
                 m_Progress.fillAmount = v;
             }).setOnComplete(() =>
             {
-                m_Btn.interactable = true;
+                if (isCloak)
+                {
+                    LocationPlayerAction.DisableCloaking();
+                    Setup(180);
+                }
+                else
+                {
+                    m_Btn.interactable = true;
+                }
             });
+        });
+    }
+
+    public void Setup(int cooldown)
+    {
+        LeanTween.cancelAll();
+        m_Progress.fillAmount = 0;
+        LeanTween.value(1, 0, cooldown).setOnUpdate((float v) =>
+        {
+            m_Progress.fillAmount = v;
+        }).setOnComplete(() =>
+        {
+            m_Btn.interactable = true;
         });
     }
 }

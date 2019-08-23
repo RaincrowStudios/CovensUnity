@@ -114,6 +114,11 @@ namespace Raincrow.Maps
             Type = data.Type;
         }
 
+        public void ScaleNamePlate(bool scaleUp, float time = 1)
+        {
+            LeanTween.scale(m_NameBanner.gameObject, scaleUp ? Vector3.one * 4.5f : Vector3.zero, time);
+        }
+
         public virtual void EnablePortait() { }
 
         public virtual void EnableAvatar() { }
@@ -254,9 +259,7 @@ namespace Raincrow.Maps
 
                 if (m_EnergyRing)
                 {
-                    aux = Color.Lerp(Color.black, m_SchoolColor, a);
-                    aux.a = m_EnergyFill;
-                    m_EnergyRing.color = aux;
+                    EnergyRingFade(a, time);
                 }
 
                 onComplete?.Invoke();
@@ -296,9 +299,7 @@ namespace Raincrow.Maps
 
                         if (m_EnergyRing)
                         {
-                            aux = Color.Lerp(Color.black, m_SchoolColor, Alpha);
-                            aux.a = m_EnergyFill;
-                            m_EnergyRing.color = aux;
+                            EnergyRingFade(a, time);
                         }
                     })
                     .setOnComplete(onComplete)
@@ -322,6 +323,16 @@ namespace Raincrow.Maps
                         m_Particles[i].Play(false);
                 }
             }
+        }
+
+        public void EnergyRingFade(float a, float time = 0)
+        {
+            LeanTween.value(0, 1, time).setOnUpdate((float v) =>
+            {
+                Color aux = Color.Lerp(Color.black, m_SchoolColor, a);
+                aux.a = m_EnergyFill;
+                m_EnergyRing.color = aux;
+            });
         }
 
         public void UpdateRenderers()

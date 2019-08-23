@@ -23,6 +23,8 @@ namespace Raincrow.Maps
         void EnableAvatar();
         void SetStats();
         void UpdateEnergy();
+        void ScaleNamePlate(bool scaleUp, float time = 1);
+        void EnergyRingFade(float a, float time = 0);
         void SetCharacterAlpha(float t, float time = 0, System.Action onComplete = null);
         void SetTextAlpha(float a);
         void SetAlpha(float a, float time = 0, System.Action onComplete = null);
