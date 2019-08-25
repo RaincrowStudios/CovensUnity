@@ -5,12 +5,12 @@ using System.Collections.Generic;
 
 public class LocationMarker : MuskMarker
 {
+    [Header("PoP Marker")]
     [SerializeField] private Transform m_AvatarGroup;
     [SerializeField] private Transform m_IconGroup;
     [SerializeField] private SpriteRenderer m_Ring;
     [SerializeField] private Transform m_CharacterTransform;
     [SerializeField] private Transform m_IconTransform;
-    [SerializeField] private Transform m_particleSystem;
 
     public override Transform AvatarTransform
     {

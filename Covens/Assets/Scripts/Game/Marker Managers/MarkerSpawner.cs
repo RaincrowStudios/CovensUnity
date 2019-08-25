@@ -60,6 +60,7 @@ public class MarkerSpawner : MarkerManager
     private static SimplePool<Transform> m_ToolPool;
     private static SimplePool<Transform> m_GemPool;
     private static SimplePool<Transform> m_EnergyPool;
+    private static SimplePool<Transform> m_PopPool;
 
     void Awake()
     {
@@ -84,6 +85,7 @@ public class MarkerSpawner : MarkerManager
         m_GemPool = new SimplePool<Transform>(gem.transform, 10);
         m_ToolPool = new SimplePool<Transform>(tool.transform, 10);
         m_EnergyPool = new SimplePool<Transform>(energyIcon.transform, 10);
+        m_PopPool = new SimplePool<Transform>(unclaimedLoc.transform, 10);
 
         //init the map/markers variables
         UpdateProperties();
@@ -114,13 +116,7 @@ public class MarkerSpawner : MarkerManager
     {
         if (PlayerDataManager.IsFTF)
             return null;
-
-        //double distance = MapsAPI.Instance.DistanceBetweenPointsD(new Vector2(Data.longitude, Data.latitude), PlayerManager.marker.coords);
-        //if (distance >= PlayerDataManager.DisplayRadius)
-        //{
-        //    return null;
-        //}
-
+        
         if (Markers.ContainsKey(Data.instance))
         {
             foreach (var item in Markers[Data.instance])
@@ -158,6 +154,16 @@ public class MarkerSpawner : MarkerManager
         {
             go = m_GemPool.Spawn().gameObject;
             go.name = $"[gem] {Data.instance}";
+        }
+        else if (Data.Type == MarkerType.ENERGY)
+        {
+            go = m_EnergyPool.Spawn().gameObject;
+            go.name = $"[energy] {Data.instance}";
+        }
+        else if (Data.Type == MarkerType.PLACE_OF_POWER)
+        {
+            go = m_PopPool.Spawn().gameObject;
+            go.name = $"[PlaceOfPower] {Data.instance}";
         }
         else
         {

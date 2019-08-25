@@ -15,6 +15,8 @@ namespace Raincrow.GameEventResponses
                 public WitchToken[] characters;
                 public SpiritToken[] spirits;
                 public CollectableToken[] items;
+                public EnergyToken[] energies;
+                public PopToken[] placesOfPower;
             }
 
             public double latitude;
@@ -37,7 +39,12 @@ namespace Raincrow.GameEventResponses
             MarkerManagerAPI.LoadMap(realocate.longitude, realocate.latitude, true, () =>
             {
                 MarkerManagerAPI.UpdateDominion(realocate.dominion);
-                MarkerManagerAPI.SpawnMarkers(realocate.tokens.characters, realocate.tokens.spirits, realocate.tokens.items);
+                MarkerManagerAPI.SpawnMarkers(
+                    realocate.tokens.characters, 
+                    realocate.tokens.spirits, 
+                    realocate.tokens.items, 
+                    realocate.tokens.energies,
+                    realocate.tokens.placesOfPower);
             });
         }
     }
