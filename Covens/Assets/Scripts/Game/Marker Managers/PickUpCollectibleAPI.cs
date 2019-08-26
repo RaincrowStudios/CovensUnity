@@ -72,7 +72,7 @@ public static class PickUpCollectibleAPI
         Token token = marker.Token;
         LeanTween.scale(marker.GameObject, Vector3.zero, .3f).setOnComplete(() => MarkerSpawner.DeleteMarker(token.instance));
 
-        MarkerSpawner.GetMarkerDetails(token.instance, (result, response) =>
+        APIManager.Instance.Post("character/pickup/" + token.instance, "{}", (response, result) =>
         {
             if (result == 200)
             {
