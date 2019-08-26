@@ -491,8 +491,7 @@ namespace Raincrow.Chat.UI
             }
 
             HighlightHeader(category);
-
-
+            
             _enableInputUI.gameObject.SetActive(false);
             _covenName.gameObject.SetActive(false);
             _sendScreenshotButton.SetActive(false);

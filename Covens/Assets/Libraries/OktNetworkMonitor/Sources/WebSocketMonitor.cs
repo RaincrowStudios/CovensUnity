@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using Raincrow.Chat;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -26,11 +27,13 @@ namespace Oktagon.Network
         {
             m_pMonitor = pMonitor;
             SocketClient.OnResponseParsedEvent += WebSocketClient_OnResponseEvt;
+            ChatManager.OnResponseParsedEvent += ChatSocket_OnResponseEvt;
         }
         public void Destroy()
         {
             m_pMonitor = null;
             SocketClient.OnResponseParsedEvent -= WebSocketClient_OnResponseEvt;
+            ChatManager.OnResponseParsedEvent -= ChatSocket_OnResponseEvt;
         }
 
         private void WebSocketClient_OnResponseEvt(CommandResponse response)
@@ -64,6 +67,35 @@ namespace Oktagon.Network
             m_pMonitor.AddData(pData);
         }
 
+        private void ChatSocket_OnResponseEvt(CommandResponse response)
+        {
+            // bake them
+            OktNetworkMonitor.RecordData pData = new OktNetworkMonitor.RecordData();
 
+            pData.Table = "ChatSocket";
+            pData.RequestType = response.Command;
+            pData.Response = response.Data;
+            //            pData.Request = "";
+            //            pData.RequestType = "";
+            //            pData.SizeRequest = 0;// System.Text.ASCIIEncoding.ASCII.GetByteCount(sJsonRequest);
+            //            pData.ResponseType = "";
+            //            pData.ReferenceId = obj;
+            //#if SERVER_FAKE
+            //            pData.Response = obj;
+            //#else
+            //            pData.Response = obj.Replace("{", "{\n").Replace("}", "\n}").Replace(",", ",\n");
+            //#endif
+            //            pData.ResponseType = "";
+            //            pData.SizeResponse = obj != null ? obj.Length : 0;
+
+
+#if UNITY_EDITOR
+            // only collect stack on editor due to performance
+            pData.Stack = UnityEngine.StackTraceUtility.ExtractStackTrace();
+#endif
+
+            // add it
+            m_pMonitor.AddData(pData);
+        }
     }
 }

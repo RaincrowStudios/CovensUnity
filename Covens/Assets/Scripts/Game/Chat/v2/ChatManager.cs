@@ -50,6 +50,9 @@ namespace Raincrow.Chat
         public static event System.Action<ChatCategory> OnLeaveChatSuccess;
         public static event System.Action<string, string> OnEnterCovenChat;
 
+        //network monitor event
+        public static event System.Action<CommandResponse> OnResponseParsedEvent;
+
         public static void InitChat()
         {
             string covenId = string.Empty;
@@ -265,9 +268,17 @@ namespace Raincrow.Chat
 
         private static void OnSocketJoinChat(ChatCategory category, object[] args)
         {
+#if UNITY_EDITOR
+            OnResponseParsedEvent?.Invoke(new CommandResponse
+            {
+                Command = "join.success (" + category.ToString() + ")",
+                Data = args[0].ToString()
+            });
+#endif
             Log("Joined " + category + " chat");
 
             List<ChatMessage> messages = JsonConvert.DeserializeObject<List<ChatMessage>>(args[0].ToString());
+            messages.Reverse();
             m_Messages[category] = messages;
 
             JoinChat(category);
@@ -277,6 +288,14 @@ namespace Raincrow.Chat
 
         private static void OnSocketLeaveChat(ChatCategory category, object[] args)
         {
+#if UNITY_EDITOR
+            OnResponseParsedEvent?.Invoke(new CommandResponse
+            {
+                Command = "left.success (" + category.ToString() + ")",
+                Data = args[0].ToString()
+            });
+#endif
+
             Log("Left " + category + " chat");
 
             LeaveChat(category);
@@ -289,6 +308,14 @@ namespace Raincrow.Chat
 
         private static void OnSocketReceiveMessage(ChatCategory category, object[] args)
         {
+#if UNITY_EDITOR
+            OnResponseParsedEvent?.Invoke(new CommandResponse
+            {
+                Command = "new.message (" + category.ToString() + ")",
+                Data = args[0].ToString()
+            });
+#endif
+
             ChatMessage msg = JsonConvert.DeserializeObject<ChatMessage>(args[0].ToString());
 
             if (!m_Messages[category].Contains(msg))

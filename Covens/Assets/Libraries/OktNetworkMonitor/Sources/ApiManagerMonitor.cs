@@ -1,4 +1,5 @@
 ﻿
+using Raincrow.Chat;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -25,10 +26,10 @@ namespace Oktagon.Network
         /// <param name="pMonitor"></param>
         public void SetupMonitor(OktNetworkMonitor pMonitor)
         {
+            Debug.LogError("setup monitor");
             m_pMonitor = pMonitor;
             APIManager.OnRequestEvt += APIManager_OnRequestEvt;
             APIManager.OnResponseEvt += APIManager_OnResponseEvt;
-            SocketClient.OnResponseParsedEvent += WebSocketClient_OnResponseEvt;
         }
 
         public void Destroy()
@@ -36,7 +37,6 @@ namespace Oktagon.Network
             m_pMonitor = null;
             APIManager.OnRequestEvt -= APIManager_OnRequestEvt;
             APIManager.OnResponseEvt -= APIManager_OnResponseEvt;
-            SocketClient.OnResponseParsedEvent -= WebSocketClient_OnResponseEvt;
         }
         
 
@@ -94,26 +94,6 @@ namespace Oktagon.Network
             pData.ResponseCode = obj.responseCode;
             pData.ResponseType = "";
             pData.SizeResponse = sResponse != null ? sResponse.Length : 0;
-            m_pMonitor.AddDataResponse(pData);
-        }
-
-
-        private void WebSocketClient_OnResponseEvt(CommandResponse commandResponse)
-        {
-            // bake them
-            OktNetworkMonitor.RecordData pData = new OktNetworkMonitor.RecordData();
-
-            pData.Table = "WebSocketClient";
-            pData.RequestType = commandResponse.Command;
-            pData.Response = commandResponse.Data;
-            pData.SizeResponse = !string.IsNullOrWhiteSpace(commandResponse.Data) ? commandResponse.Data.Length : 0;
-
-#if UNITY_EDITOR
-            // only collect stack on editor due to performance
-            pData.Stack = UnityEngine.StackTraceUtility.ExtractStackTrace();
-#endif
-
-            // add it
             m_pMonitor.AddDataResponse(pData);
         }
     }
