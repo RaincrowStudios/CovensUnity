@@ -30,14 +30,14 @@ public class PlayerLandFX : MonoBehaviour
         PlayerManager.onFinishFlight += LandingAnim;
     }
 
-    //private void Start()
-    //{
-    //    LandingAnim();
-    //}
+    private void Start()
+    {
+        LandingAnim();
+    }
 
     private void OnStartFlight()
     {
-        //Debug.LogError("flight anim");
+        Debug.LogError("flight anim");
         LeanTween.cancel(m_TweenId);
         LandingFX.Stop(true);
 
@@ -48,7 +48,7 @@ public class PlayerLandFX : MonoBehaviour
 
     void LandingAnim()
     {
-        //Debug.LogError("land anim");
+        Debug.LogError("land anim");
         LeanTween.cancel(m_TweenId);
         m_TweenId = LeanTween.value(0, 1, animTime).setEase(easeType).setOnUpdate((float t) =>
         {
@@ -62,7 +62,7 @@ public class PlayerLandFX : MonoBehaviour
 
     public static void PlayLandingAnim()
     {
-        //Debug.LogError("play land anim : " + (m_Instance == null));
+        Debug.LogError("play land anim : " + (m_Instance == null));
         if (m_Instance == null)
             return;
 
@@ -71,7 +71,7 @@ public class PlayerLandFX : MonoBehaviour
 
     public static void PlayFlightAnim()
     {
-        //Debug.LogError("play flight anim : " + (m_Instance == null));
+        Debug.LogError("play flight anim : " + (m_Instance == null));
         if (m_Instance == null)
             return;
 

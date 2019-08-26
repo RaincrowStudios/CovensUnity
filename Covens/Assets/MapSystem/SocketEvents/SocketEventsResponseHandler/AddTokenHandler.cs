@@ -28,7 +28,7 @@ namespace Raincrow.GameEventResponses
             //ignore if the token is already dead
             if (token.type == "spirit" && ((token as SpiritToken).energy <= 0 || (token as SpiritToken).state == "dead"))
                 return;
-
+            
             IMarker marker = MarkerSpawner.GetMarker(token.instance);
             bool isNew = marker == null;
 
@@ -39,8 +39,9 @@ namespace Raincrow.GameEventResponses
 
             if (isNew)
             {
-                marker.GameObject.SetActive(false);
+                //marker.GameObject.SetActive(false);
                 marker.SetAlpha(0);
+                marker.inMapView = false;
             }
 
             OnMarkerAdd?.Invoke(marker);
