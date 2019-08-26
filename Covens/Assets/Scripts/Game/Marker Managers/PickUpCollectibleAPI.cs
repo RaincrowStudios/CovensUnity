@@ -2,6 +2,7 @@
 using System.Collections;
 using System;
 using Newtonsoft.Json;
+using Raincrow.Maps;
 
 public static class PickUpCollectibleAPI
 {
@@ -55,6 +56,32 @@ public static class PickUpCollectibleAPI
                 //show failed notification
                 string msg = LocalizeLookUp.GetText(APIManager.ParseError(response));
                 PlayerNotificationManager.Instance.ShowNotification(msg, UICollectableInfo.Instance.m_IconDict[type]);
+            }
+        });
+    }
+
+    public static void CollectEnergy(IMarker marker)
+    {
+        if (PlayerDataManager.playerData.energy >= PlayerDataManager.playerData.maxEnergy)
+        {
+            UIGlobalPopup.ShowPopUp(null, LocalizeLookUp.GetText("energy_full"));
+            return;
+        }
+
+        marker.Interactable = false;
+        Token token = marker.Token;
+        LeanTween.scale(marker.GameObject, Vector3.zero, .3f).setOnComplete(() => MarkerSpawner.DeleteMarker(token.instance));
+
+        MarkerSpawner.GetMarkerDetails(token.instance, (result, response) =>
+        {
+            if (result == 200)
+            {
+                int amount = token is CollectableToken ? (token as CollectableToken).amount : (token as EnergyToken).amount;
+                PlayerDataManager.playerData.energy = Mathf.Min(PlayerDataManager.playerData.energy + amount, PlayerDataManager.playerData.maxEnergy);
+
+                PlayerManagerUI.Instance.UpdateEnergy();
+                UIEnergyBarGlow.Instance.Glow();
+                SoundManagerOneShot.Instance.PlayEnergyCollect();
             }
         });
     }

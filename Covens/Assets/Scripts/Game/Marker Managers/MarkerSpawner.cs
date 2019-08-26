@@ -13,9 +13,9 @@ public class MarkerSpawner : MarkerManager
     public static event System.Action<string, string, bool> OnImmunityChange;
 
     public static MarkerSpawner Instance { get; set; }
-    public static MarkerType selectedType;
-    public static Transform SelectedMarker3DT = null;
-    public static string instanceID = "";
+    //public static MarkerType selectedType;
+    //public static Transform SelectedMarker3DT = null;
+    //public static string instanceID = "";
 
     [Header("Witch")]
     public GameObject witchIcon;
@@ -47,7 +47,7 @@ public class MarkerSpawner : MarkerManager
 
     //[Header("MarkerEnergyRing")]
     //public Sprite[] EnergyRings;
-    private string lastEnergyInstance = "";
+    //private string lastEnergyInstance = "";
 
     private Dictionary<string, Sprite> m_SpiritIcons;
     private List<(SimplePool<Transform>, IMarker)> m_ToDespawn = new List<(SimplePool<Transform>, IMarker)>();
@@ -239,9 +239,18 @@ public class MarkerSpawner : MarkerManager
         }
 
         var Data = m.Token;
-        SelectedMarker3DT = m.GameObject.transform;
-        instanceID = Data.instance;
-        selectedType = Data.Type;
+
+        if (Data.Type == MarkerType.HERB || Data.Type == MarkerType.TOOL || Data.Type == MarkerType.GEM)
+        {
+            PickUpCollectibleAPI.PickUpCollectable(m as CollectableMarker);
+            return;
+        }
+
+        if (Data.Type == MarkerType.ENERGY)
+        {
+            PickUpCollectibleAPI.CollectEnergy(m);
+            return;
+        }
 
         //show the basic available info, and waut for the map/select response to fill the details
         if (Data.Type == MarkerType.WITCH)
@@ -254,55 +263,9 @@ public class MarkerSpawner : MarkerManager
             UIQuickCast.Open();
             UISpiritInfo.Show(m as SpiritMarker, Data as SpiritToken, UIQuickCast.Close);
         }
-        else if (Data.Type == MarkerType.HERB || Data.Type == MarkerType.TOOL || Data.Type == MarkerType.GEM)
-        {
-            PickUpCollectibleAPI.PickUpCollectable(m as CollectableMarker);
-            return;
-        }
 
-        if (selectedType == MarkerType.ENERGY && lastEnergyInstance != instanceID)
-        {
-            if (PlayerDataManager.playerData.energy >= PlayerDataManager.playerData.maxEnergy)
-            {
-                UIGlobalPopup.ShowPopUp(null, LocalizeLookUp.GetText("energy_full"));
-                return;
-            }
-
-            //var g = Instantiate(energyParticles);
-            //g.transform.position = SelectedMarker3DT.GetChild(1).position;
-            LeanTween.scale(SelectedMarker3DT.gameObject, Vector3.zero, .3f).setOnComplete(() =>
-            {
-                DeleteMarker(instanceID);
-            });
-            var energyData = new { target = Data.instance };
-            APIManager.Instance.Post("map/pickup", JsonConvert.SerializeObject(energyData), (string s, int r) =>
-            {
-                Debug.Log(s);
-
-                if (r == 200 && s != "")
-                {
-
-                    UIEnergyBarGlow.Instance.Glow();
-                    SoundManagerOneShot.Instance.PlayEnergyCollect();
-                    PlayerDataManager.playerData.energy += (Data as CollectableToken).amount;
-                    if (PlayerDataManager.playerData.energy > PlayerDataManager.playerData.maxEnergy)
-                        PlayerDataManager.playerData.energy = PlayerDataManager.playerData.maxEnergy;
-                    PlayerManagerUI.Instance.UpdateEnergy();
-                    Debug.Log(instanceID);
-                }
-                else
-                {
-
-                }
-            });
-
-            lastEnergyInstance = instanceID;
-        }
-        else
-        {
-            SoundManagerOneShot.Instance.PlayWhisperFX();
-            GetMarkerDetails(Data.instance, (result, response) => GetResponse(m, instanceID, response, result));
-        }
+        SoundManagerOneShot.Instance.PlayWhisperFX();
+        GetMarkerDetails(Data.instance, (result, response) => GetResponse(m, Data.instance, response, result));
     }
 
     public static void GetMarkerDetails(string id, System.Action<int, string> callback)

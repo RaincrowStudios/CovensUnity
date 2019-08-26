@@ -105,13 +105,13 @@ public class WebsocketSenderWindow : EditorWindow
 			te.Copy();
 		}
 
-		if (GUILayout.Button ("Copy TargetID")) {
-			Debug.Log (MarkerSpawner.instanceID);
-			TextEditor te = new TextEditor();
-			te.content = new GUIContent( MarkerSpawner.instanceID);
-			te.SelectAll();
-			te.Copy();
-		}
+		//if (GUILayout.Button ("Copy TargetID")) {
+		//	Debug.Log (MarkerSpawner.instanceID);
+		//	TextEditor te = new TextEditor();
+		//	te.content = new GUIContent( MarkerSpawner.instanceID);
+		//	te.SelectAll();
+		//	te.Copy();
+		//}
 
 		if (GUILayout.Button ("Send Command"))
         {
