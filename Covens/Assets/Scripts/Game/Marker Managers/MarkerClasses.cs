@@ -12,7 +12,7 @@ public class StatusEffect
 {
     public struct Modifier
     {
-        public string[] status;
+        public List<string> status;
         public int resilience;
         public int power;
         public int aptitude;
@@ -244,8 +244,8 @@ public class PlayerData : WitchMarkerData
     [JsonProperty("herbs")] private List<CollectableItem> m_Herbs;
     [JsonProperty("gems")] private List<CollectableItem> m_Gems;
 
-    [JsonProperty("cosmetics")] private string[] m_Cosmetics;
-    [JsonProperty("consumables")] private ConsumableItem[] m_Consumables;
+    [JsonProperty("cosmetics")] private List<string> m_Cosmetics;
+    [JsonProperty("consumables")] private List<ConsumableItem> m_Consumables;
 
     [JsonIgnore] private Dictionary<string, int> m_HerbsDict = null;
     [JsonIgnore] private Dictionary<string, int> m_ToolsDict = null;

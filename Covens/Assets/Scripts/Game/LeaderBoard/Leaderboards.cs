@@ -197,8 +197,8 @@ public class Leaderboards : UIAnimationManager
 
 public struct LeaderboardRoot
 {
-    public LeaderboardData[] players;
-    public LeaderboardData[] covens;
+    public List<LeaderboardData> players;
+    public List<LeaderboardData> covens;
 }
 
 public struct LeaderboardData

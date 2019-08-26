@@ -281,7 +281,7 @@ public class WorldMapMarkerManager : MonoBehaviour
                 m_RequestCoroutine = null;
                 if (result == 200)
                 {
-                    MarkerItem[] markers = JsonConvert.DeserializeObject<MarkerItem[]>(response);
+                    List<MarkerItem> markers = JsonConvert.DeserializeObject<List<MarkerItem>>(response);
                     
                     //stop spawning
                     if (m_SpawnCoroutine != null)
@@ -296,7 +296,7 @@ public class WorldMapMarkerManager : MonoBehaviour
                     updateFrom = 0;
 
                     //spawn new markers
-                    m_SpawnCoroutine = StartCoroutine(SpawnCoroutine(markers));
+                    m_SpawnCoroutine = StartCoroutine(SpawnCoroutine(markers.ToArray()));
                 }
                 else
                 {

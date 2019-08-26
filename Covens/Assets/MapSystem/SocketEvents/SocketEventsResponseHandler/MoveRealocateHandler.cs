@@ -1,5 +1,6 @@
 ﻿using Newtonsoft.Json;
 using Raincrow.Maps;
+using System.Collections.Generic;
 using UnityEngine;
 
 namespace Raincrow.GameEventResponses
@@ -12,11 +13,11 @@ namespace Raincrow.GameEventResponses
         {
             public struct Tokens
             {
-                public WitchToken[] characters;
-                public SpiritToken[] spirits;
-                public CollectableToken[] items;
-                public EnergyToken[] energies;
-                public PopToken[] placesOfPower;
+                public List<WitchToken> characters;
+                public List<SpiritToken> spirits;
+                public List<CollectableToken> items;
+                public List<EnergyToken> energies;
+                public List<PopToken> placesOfPower;
             }
 
             public double latitude;

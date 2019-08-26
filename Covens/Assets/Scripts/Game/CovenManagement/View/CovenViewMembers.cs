@@ -153,7 +153,7 @@ public class CovenViewMembers : CovenViewBase
     public void FillList(CovenData pCovenData, bool bAnimate)
     {
         m_TabCoven.m_ListItemPool.DespawnAll();
-        for (int i = 0; i < pCovenData.members.Length; i++)
+        for (int i = 0; i < pCovenData.members.Count; i++)
         {
             CovenScrollViewItemMember pView = m_TabCoven.m_ListItemPool.Spawn<CovenScrollViewItemMember>();
             var eRole = CovenController.ParseRole(pCovenData.members[i].role);
@@ -216,10 +216,10 @@ public class CovenViewMembers : CovenViewBase
     {
         Action<MemberInvite> Success = (MemberInvite pData) =>
         {
-            Utilities.SetActiveList(pData.requests != null && pData.requests.Length > 0, m_MemberRequest.m_Root);
-            if (pData.requests != null && pData.requests.Length > 0)
+            Utilities.SetActiveList(pData.requests != null && pData.requests.Count > 0, m_MemberRequest.m_Root);
+            if (pData.requests != null && pData.requests.Count > 0)
             {
-                m_MemberRequest.m_Text.text = pData.requests.Length.ToString();
+                m_MemberRequest.m_Text.text = pData.requests.Count.ToString();
                 m_MemberRequest.m_Root.transform.localScale = Vector3.zero;
                 LeanTween.scale(m_MemberRequest.m_Root, Vector3.one, .4f).setEase(LeanTweenType.easeOutBack);
             }
@@ -356,7 +356,7 @@ public class CovenViewMembers : CovenViewBase
         Action<FindResponse> Success = (FindResponse pItens) =>
         {
             UIGenericInputPopup.Instance.SetLoading(false);
-            UIGenericInputPopup.Instance.SetTipList(pItens.matches);
+            UIGenericInputPopup.Instance.SetTipList(pItens.matches.ToArray());
         };
         Action<string> Error = (string sError) =>
         {

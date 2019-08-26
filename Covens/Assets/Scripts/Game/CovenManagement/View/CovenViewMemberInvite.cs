@@ -29,7 +29,7 @@ public class CovenViewMemberInvite : CovenViewBase
         Action<MemberInvite> Success = (MemberInvite pInvite) =>
         {
             UIGenericLoadingPopup.CloseLoading();
-            FillList(pInvite.requests, true);
+            FillList(pInvite.requests.ToArray(), true);
         };
         Action<string> Error = (string sError) =>
         {

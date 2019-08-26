@@ -29,7 +29,7 @@ public class BOSActiveSpirit : MonoBehaviour
 
             if (result == 200)
             {
-                SpiritInstance[] spirits = JsonConvert.DeserializeObject<SpiritInstance[]>(response);
+                SpiritInstance[] spirits = JsonConvert.DeserializeObject<List<SpiritInstance>>(response).ToArray();
                 StartCoroutine(SetupSpiritsCoroutine(spirits));
             }
             else

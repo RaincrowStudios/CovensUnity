@@ -438,7 +438,7 @@ public class UISpellcastBook : MonoBehaviour//, IEnhancedScrollerDelegate
                 _card.SetAlpha(0.15f, 1);
         }
 
-        SetIngredients(m_SelectedSpell == null ? null : m_SelectedSpell.ingredients);
+        SetIngredients(m_SelectedSpell == null ? null : m_SelectedSpell.ingredients.ToArray());
         EnableInventoryButton(m_SelectedSpell != null);
 
         if (m_SelectedSpell != null)
@@ -469,7 +469,7 @@ public class UISpellcastBook : MonoBehaviour//, IEnhancedScrollerDelegate
         //in case the player clicked the glyph without first selecting a card
         if (m_SelectedSpell == null || m_SelectedSpell.id != card.Spell.id)
         {
-            SetIngredients(card.Spell.ingredients);
+            SetIngredients(card.Spell.ingredients.ToArray());
         }
 
         List<spellIngredientsData> ingredients = new List<spellIngredientsData>();
@@ -544,7 +544,7 @@ public class UISpellcastBook : MonoBehaviour//, IEnhancedScrollerDelegate
         UIInventory.Instance.Show(OnClickInventoryItem, OnCloseInventory, false, false);
 
         //lock if necessary
-        UIInventory.Instance.LockIngredients(m_SelectedSpell.ingredients, 0);
+        UIInventory.Instance.LockIngredients(m_SelectedSpell.ingredients.ToArray(), 0);
 
         //set the ivnentory with the current ingredients
         List<CollectableItem> selected = new List<CollectableItem>()

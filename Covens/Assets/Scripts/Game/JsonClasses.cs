@@ -256,18 +256,18 @@ public class SpellData
     public int xp;
     public int level;
 
-    public string[] ingredients;
+    public List<string> ingredients;
     public Target target;
     public int align;
     public bool pop;
     public bool hidden;
     public float cooldown;
 
-    public string[] states;
-    public string[] targetStatus;
+    public List<string> states;
+    public List<string> targetStatus;
     public TargetType targetType;
-    public int[] targetSchool;
-    public int[] casterSchool;
+    public List<int> targetSchool;
+    public List<int> casterSchool;
 
     [JsonIgnore]
     public string Name => LocalizeLookUp.GetSpellName(id);
@@ -489,9 +489,9 @@ public class CovenData
     public string dominion { get; set; }
     public int? dominionRank { get; set; }
 
-    public CovenMember[] members { get; set; }
-    public CovenOverview[] allies { get; set; }
-    public CovenOverview[] alliedCovens { get; set; }
+    public List<CovenMember> members { get; set; }
+    public List<CovenOverview> allies { get; set; }
+    public List<CovenOverview> alliedCovens { get; set; }
 }
 
 
@@ -534,13 +534,13 @@ public class FindRequest
 }
 public class FindResponse
 {
-    public string[] matches { get; set; }
+    public List<string> matches { get; set; }
 }
 
 public class MemberInvite
 {
-    public MemberOverview[] requests;
-    public MemberOverview[] invites;
+    public List<MemberOverview> requests;
+    public List<MemberOverview> invites;
 }
 public class MemberOverview
 {
@@ -605,14 +605,14 @@ public class Shop_PurchaseSilver
 
 public partial class Shop_DisplayResponse
 {
-    public ShopBundle[] items { get; set; }
+    public List<ShopBundle> items { get; set; }
 }
 public partial class ShopBundle
 {
     public string Id { get; set; }
     public string DisplayName { get; set; }
     public string Type { get; set; }
-    public Content[] Contents { get; set; }
+    public List<Content> Contents { get; set; }
     public long SilverCost { get; set; }
     public long GoldCost { get; set; }
 }

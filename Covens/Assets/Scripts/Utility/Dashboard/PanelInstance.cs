@@ -188,14 +188,14 @@ public class PanelInstance : MonoBehaviour
         UpdateTokens();
         Action<CovenData> Success = (CovenData pData) =>
         {
-            m_CovenTitle.text = "Coven[" + pData.covenName + "] own[" + pData.createdBy + "] ally[" + pData.allies.Length + "] allied[" + pData.alliedCovens.Length + "]";
-            string sMembers = "- Members: ( " + (pData.members != null ? pData.members.Length.ToString() : "0") + " )";
+            m_CovenTitle.text = "Coven[" + pData.covenName + "] own[" + pData.createdBy + "] ally[" + pData.allies.Count + "] allied[" + pData.alliedCovens.Count + "]";
+            string sMembers = "- Members: ( " + (pData.members != null ? pData.members.Count.ToString() : "0") + " )";
             foreach (var p in pData.members)
                 sMembers += "\n  - displayName[" + p.displayName + "] Role[" + CovenController.ParseRole(p.role) + "] title[" + p.title + "] status[" + p.state + "]";
-            string sAllies = "- Allies ( " + (pData.allies != null ? pData.allies.Length.ToString() : "0") + " ):";
+            string sAllies = "- Allies ( " + (pData.allies != null ? pData.allies.Count.ToString() : "0") + " ):";
             foreach (var p in pData.allies)
                 sAllies += "\n  - covenName[" + p.covenName+ "] members[" + p.members + "] rank[" + p.rank + "]";
-            string sAllieds = "- Allieds ( " + (pData.alliedCovens != null ? pData.alliedCovens.Length.ToString() : "0") + " ):";
+            string sAllieds = "- Allieds ( " + (pData.alliedCovens != null ? pData.alliedCovens.Count.ToString() : "0") + " ):";
             foreach (var p in pData.alliedCovens)
                 sAllieds += "\n  - covenName[" + p.covenName + "] members[" + p.members + "] rank[" + p.rank + "]";
             Log(sMembers);
@@ -220,11 +220,11 @@ public class PanelInstance : MonoBehaviour
         UpdateTokens();
         Action<MemberInvite> Success = (MemberInvite pMembers) =>
         {
-            string s = "- Invites: ( " + (pMembers.invites != null ? pMembers.invites.Length.ToString() : "0") + " )";
+            string s = "- Invites: ( " + (pMembers.invites != null ? pMembers.invites.Count.ToString() : "0") + " )";
             foreach(var pMember in pMembers.invites)
                 s += "\n  - displayName[" + pMember.displayName + "]: " + pMember.inviteToken;
             Log(s);
-            s = "- Requests: ( "+(pMembers.requests != null ? pMembers.requests.Length.ToString() : "0") +" )";
+            s = "- Requests: ( "+(pMembers.requests != null ? pMembers.requests.Count.ToString() : "0") +" )";
             foreach (var pMember in pMembers.requests)
                 s += "\n  - displayName[" + pMember.displayName + "] inviteToken[" + pMember.inviteToken + "]";
 

@@ -144,7 +144,7 @@ public class CovenViewCovenInvite : CovenViewBase
         Action<FindResponse> Success = (FindResponse pItens) =>
         {
             UIGenericInputPopup.Instance.SetLoading(false);
-            UIGenericInputPopup.Instance.SetTipList(pItens.matches);
+            UIGenericInputPopup.Instance.SetTipList(pItens.matches.ToArray());
         };
         Action<string> Error = (string sError) =>
         {

@@ -67,12 +67,12 @@ public partial class CovenController
             return RoleCanManageAlliance(CurrentRole);
         }
     }
-    public CovenOverview[] AlliedCovens
+    public List<CovenOverview> AlliedCovens
     {
         get { return Player.Data.alliedCovens; }
         set { Player.Data.alliedCovens = value; }
     }
-    public CovenOverview[] Allies
+    public List<CovenOverview> Allies
     {
         get { return Player.Data.allies; }
         set { Player.Data.allies = value; }
@@ -195,9 +195,9 @@ public partial class CovenController
             return 0;
 
         int iCount = 0;
-        for (int i = 0; i < AlliedCovens.Length; i++)
+        for (int i = 0; i < AlliedCovens.Count; i++)
         {
-            CovenOverview pCoven = GetCoven(Allies, AlliedCovens[i].coven);
+            CovenOverview pCoven = GetCoven(Allies.ToArray(), AlliedCovens[i].coven);
             // not finding means we are allied
             if (pCoven == null)
                 iCount++;
@@ -219,7 +219,7 @@ public partial class CovenController
             return null;
 
         List<CovenOverview> pList = new List<CovenOverview>(AlliedCovens);
-        for (int i = 0; i < Allies.Length; i++)
+        for (int i = 0; i < Allies.Count; i++)
         {
             bool bFound = false;
             for (int j = 0; j < pList.Count; j++)
@@ -242,7 +242,7 @@ public partial class CovenController
         if (Player.Data == null)
             return false;
 
-        for (int i = 0; i < Allies.Length; i++)
+        for (int i = 0; i < Allies.Count; i++)
         {
             if (sCovenName == Allies[i].coven)
                 return true;
@@ -350,7 +350,7 @@ public partial class CovenController
             if (pMember.displayName == sUserName)
             {
                 vMembers.Remove(pMember);
-                Data.members = vMembers.ToArray();
+                Data.members = vMembers;
                 return true;
             }
         }
@@ -364,7 +364,7 @@ public partial class CovenController
         pNewMember.degree = sDegree;
         var members = new List<CovenMember>(Data.members);
         members.Add(pNewMember);
-        Data.members = members.ToArray();
+        Data.members = members;
     }
 
 
@@ -641,7 +641,7 @@ public partial class CovenController
         pCoven.coven = pResp.coven;
         pCoven.covenName = pResp.covenName;
         vNewAllies.Add(pCoven);
-        Allies = vNewAllies.ToArray();
+        Allies = vNewAllies;
         DidChangeCovenData(pResp.command);
     }
     public void OnReceiveCovenMemberUnally(WSData pResp)
@@ -661,7 +661,7 @@ public partial class CovenController
         }
 
         // update data
-        Allies = vNewAllied.ToArray();
+        Allies = vNewAllied;
         DidChangeCovenData(pResp.command);
     }
     public void OnReceiveCovenMemberKick(WSData pResp)

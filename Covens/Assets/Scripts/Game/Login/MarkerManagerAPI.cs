@@ -18,11 +18,11 @@ public class MarkerManagerAPI : MonoBehaviour
             public int music;
         }
 
-        public WitchToken[] characters;
-        public SpiritToken[] spirits;
-        public CollectableToken[] items;
-        public EnergyToken[] energies;
-        public PopToken[] placesOfPower;
+        public List<WitchToken> characters;
+        public List<SpiritToken> spirits;
+        public List<CollectableToken> items;
+        public List<EnergyToken> energies;
+        public List<PopToken> placesOfPower;
         public Location location;
     }
 
@@ -203,7 +203,7 @@ public class MarkerManagerAPI : MonoBehaviour
         }
     }
 
-    public static void SpawnMarkers(WitchToken[] witches, SpiritToken[] spirits, CollectableToken[] items, EnergyToken[] energies, PopToken[] pops)
+    public static void SpawnMarkers(List<WitchToken> witches, List<SpiritToken> spirits, List<CollectableToken> items, List<EnergyToken> energies, List<PopToken> pops)
     {
         //finaly add/update markers
         if (m_SpawnCoroutine != null)
@@ -212,14 +212,14 @@ public class MarkerManagerAPI : MonoBehaviour
         m_SpawnCoroutine = m_Instance.StartCoroutine(SpawnMarkersCoroutine(witches, spirits, items, energies, pops));
     }
 
-    private static IEnumerator SpawnMarkersCoroutine(WitchToken[] witches, SpiritToken[] spirits, CollectableToken[] items, EnergyToken[] energies, PopToken[] pops)
+    private static IEnumerator SpawnMarkersCoroutine(List<WitchToken> witches, List<SpiritToken> spirits, List<CollectableToken> items, List<EnergyToken> energies, List<PopToken> pops)
     {
         HashSet<IMarker> updatedMarkers = new HashSet<IMarker>();
 
         IMarker aux;
 
         //witches
-        for (int i = 0; i < witches.Length; i++)
+        for (int i = 0; i < witches.Count; i++)
         {
             aux = MarkerSpawner.Instance.AddMarker(witches[i]);
             if (aux != null)
@@ -227,7 +227,7 @@ public class MarkerManagerAPI : MonoBehaviour
             yield return 1;
         }
         //spirits
-        for (int i = 0; i < spirits.Length; i++)
+        for (int i = 0; i < spirits.Count; i++)
         {
             if (spirits[i].energy == 0)
                 continue;
@@ -236,21 +236,21 @@ public class MarkerManagerAPI : MonoBehaviour
                 updatedMarkers.Add(aux);
         }
         //collectables
-        for (int i = 0; i < items.Length; i++)
+        for (int i = 0; i < items.Count; i++)
         {
             aux = MarkerSpawner.Instance.AddMarker(items[i]);
             if (aux != null)
                 updatedMarkers.Add(aux);
         }
         //energy
-        for (int i = 0; i < energies.Length; i++)
+        for (int i = 0; i < energies.Count; i++)
         {
             aux = MarkerSpawner.Instance.AddMarker(energies[i]);
             if (aux != null)
                 updatedMarkers.Add(aux);
         }
         //pops
-        for (int i = 0; i < pops.Length; i++)
+        for (int i = 0; i < pops.Count; i++)
         {
             aux = MarkerSpawner.Instance.AddMarker(pops[i]);
             if (aux != null)

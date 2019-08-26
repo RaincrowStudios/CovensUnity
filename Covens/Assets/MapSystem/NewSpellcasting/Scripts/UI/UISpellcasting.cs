@@ -327,7 +327,7 @@ public class UISpellcasting : UIInfoPanel
     {
         base.ReOpen();
         if (m_SelectedSpell != null)
-            LockIngredients(m_SelectedSpell.ingredients);
+            LockIngredients(m_SelectedSpell.ingredients.ToArray());
         UpdateCanCast();
     }
 
@@ -398,7 +398,7 @@ public class UISpellcasting : UIInfoPanel
                 break;
 
             case Spellcasting.SpellState.InvalidState:
-                if (m_SelectedSpell.states.Length == 1)
+                if (m_SelectedSpell.states.Count == 1)
                 {
                     if (m_SelectedSpell.states[0] == "dead")
                         castText.text = LocalizeLookUp.GetText("spell_targetnotdead");
@@ -435,7 +435,7 @@ public class UISpellcasting : UIInfoPanel
         m_HerbRequired = m_ToolRequired = m_GemRequired = false;
         if (spell.ingredients != null)
         {
-            for (int i = 0; i < spell.ingredients.Length; i++)
+            for (int i = 0; i < spell.ingredients.Count; i++)
             {
                 IngredientType ingType = DownloadedAssets.GetCollectable(spell.ingredients[i]).Type;
                 if (ingType == IngredientType.herb)
@@ -454,7 +454,7 @@ public class UISpellcasting : UIInfoPanel
         m_SelectedTitle.text = spell.Name;
         m_SelectedCost.text = LocalizeLookUp.GetText("moon_energy").Replace("{{Amount}}", spell.cost.ToString());// $"({spell.cost} Energy)";
 
-        LockIngredients(spell.ingredients);
+        LockIngredients(spell.ingredients.ToArray());
         UpdateCanCast();
     }
 
@@ -560,7 +560,7 @@ public class UISpellcasting : UIInfoPanel
         else
         {
             UIInventory.Instance.Show(OnSelectInventoryItem, null, false, false);
-            UIInventory.Instance.LockIngredients(m_SelectedSpell.ingredients, 0f);
+            UIInventory.Instance.LockIngredients(m_SelectedSpell.ingredients.ToArray(), 0f);
             m_CloseButton.gameObject.SetActive(false);
             o_InventoryButtonImage.GetComponent<Image>().color = Color.grey;
         }

@@ -9,7 +9,7 @@ namespace Raincrow.Store
 {
     public struct IngredientBundleData
     {
-        public string[] collectables;
+        public List<string> collectables;
         public int[] amount;
     }
 
@@ -190,7 +190,7 @@ namespace Raincrow.Store
                                 gold = Store.GetPrice(type, id, false);
 
                             //add the ingredients to the inventory
-                            for (int i = 0; i < bundle.collectables.Length; i++)
+                            for (int i = 0; i < bundle.collectables.Count; i++)
                             {
                                 debug += "\n\t" + bundle.collectables[i] + " +" + bundle.amount[i];
                                 PlayerDataManager.playerData.AddIngredient(bundle.collectables[i], bundle.amount[i]);
@@ -309,7 +309,7 @@ namespace Raincrow.Store
                 if (bundle.collectables != null)
                 {
                     aux.contents = new List<StoreItemContent>();
-                    for (int i = 0; i < bundle.collectables.Length; i++)
+                    for (int i = 0; i < bundle.collectables.Count; i++)
                     {
                         aux.contents.Add(new StoreItemContent()
                         {

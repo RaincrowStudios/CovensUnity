@@ -115,7 +115,6 @@ public class PlayerManager : MonoBehaviour
 
     void SpawnPlayer(float x, float y)
     {
-        Debug.LogError("SPAWN PALYER");
         Vector2 pos = new Vector2(x, y);
         GameObject markerGo = GameObject.Instantiate(markerPrefab);
         m_Marker = MapsAPI.Instance.AddMarker(pos, markerGo);
@@ -125,7 +124,7 @@ public class PlayerManager : MonoBehaviour
         marker.Setup(new PlayerToken());
         marker.AvatarTransform.rotation = MapsAPI.Instance.camera.transform.rotation;
 
-        OnUpdateEquips(() => { Debug.LogError("ENABLE AVATAR"); witchMarker.EnableAvatar(); });
+        OnUpdateEquips(() => witchMarker.EnableAvatar());
 
         AddAttackRing();
 

@@ -260,9 +260,9 @@ public class DownloadedAssets : MonoBehaviour
         {
             SpellData res = spellDictData[id];
             if (res.states == null)
-                res.states = new string[0];
+                res.states = new List<string>();
             if (res.ingredients == null)
-                res.ingredients = new string[0];
+                res.ingredients = new List<string>();
             return res;
         }
         else

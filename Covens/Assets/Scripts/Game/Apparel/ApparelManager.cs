@@ -74,13 +74,13 @@ public class CosmeticData
     public string type;
 
     [JsonProperty("base")]
-    public string[] baseAssets;
+    public List<string> baseAssets;
     [JsonProperty("shadow")]
-    public string[] shadowAssets;
+    public List<string> shadowAssets;
     [JsonProperty("grey")]
-    public string[] greyAssets;
+    public List<string> greyAssets;
     [JsonProperty("white")]
-    public string[] whiteAssets;
+    public List<string> whiteAssets;
 
     public bool hidden;
 

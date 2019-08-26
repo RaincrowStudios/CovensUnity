@@ -56,7 +56,7 @@ public class HeatMapManager : MonoBehaviour
         if (timeSince.TotalHours < 12)
         {
             Debug.Log(timeSince.TotalHours + " hours since last heatmap update");
-            callback?.Invoke(JsonConvert.DeserializeObject<HeatPoint[]>(CachedHeatmapsJson));
+            callback?.Invoke(JsonConvert.DeserializeObject<List<HeatPoint>>(CachedHeatmapsJson).ToArray());
             return;
         }
 
@@ -70,7 +70,7 @@ public class HeatMapManager : MonoBehaviour
                 LastUpdate = System.DateTime.UtcNow.Ticks;
                 CachedHeatmapsJson = response;
 
-                callback?.Invoke(JsonConvert.DeserializeObject<HeatPoint[]>(response));
+                callback?.Invoke(JsonConvert.DeserializeObject<List<HeatPoint>>(response).ToArray());
             }
             else
             {

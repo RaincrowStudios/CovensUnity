@@ -116,13 +116,13 @@ public class Spellcasting
                 return SpellState.NoLevel;
 
             //caster school
-            if (spell.casterSchool != null && spell.casterSchool.Length > 0 && spell.casterSchool.Contains((int)PlayerDataManager.playerData.school) == false)
+            if (spell.casterSchool != null && spell.casterSchool.Count > 0 && spell.casterSchool.Contains((int)PlayerDataManager.playerData.school) == false)
                 return SpellState.InvalidCasterSchool;
                         
             //check ingredients
             if (spell.ingredients != null)
             {
-                for (int i = 0; i < spell.ingredients.Length; i++)
+                for (int i = 0; i < spell.ingredients.Count; i++)
                 {
                     if (PlayerDataManager.playerData.GetIngredient(spell.ingredients[i]) == 0)
                         return SpellState.MissingIngredients;
@@ -165,7 +165,7 @@ public class Spellcasting
                 }
 
                 //targetschool
-                if (spell.targetSchool != null && spell.targetSchool.Length > 0 && spell.targetSchool.Contains((int)targetData.school) == false)
+                if (spell.targetSchool != null && spell.targetSchool.Count > 0 && spell.targetSchool.Contains((int)targetData.school) == false)
                     return SpellState.InvalidTargetSchool;
 
                 //check target state
@@ -173,7 +173,7 @@ public class Spellcasting
                     return SpellState.InvalidState;
 
                 //target status effect
-                if (spell.targetStatus != null && spell.targetStatus.Length > 0)
+                if (spell.targetStatus != null && spell.targetStatus.Count > 0)
                 {
                     bool statusValid = false;
                     foreach (string requiredStatus in spell.targetStatus)
