@@ -288,7 +288,7 @@ public class MarkerSpawner : MarkerManager
                     SelectWitchData_Map witch = JsonConvert.DeserializeObject<SelectWitchData_Map>(response);
                     witch.token = marker.Token as WitchToken;
 
-                    if (UIPlayerInfo.isShowing && UIPlayerInfo.WitchToken.instance == instance)
+                    if (UIPlayerInfo.WitchToken != null && UIPlayerInfo.WitchToken.instance == instance)
                     {
                         UIPlayerInfo.SetupDetails(witch);
                         UIQuickCast.UpdateCanCast(marker, witch);
@@ -301,7 +301,7 @@ public class MarkerSpawner : MarkerManager
                     SelectSpiritData_Map spirit = JsonConvert.DeserializeObject<SelectSpiritData_Map>(response);
                     spirit.token = marker.Token as SpiritToken;
 
-                    if (UISpiritInfo.isOpen && UISpiritInfo.SpiritToken.instance == instance)
+                    if (UISpiritInfo.SpiritToken != null && UISpiritInfo.SpiritToken.instance == instance)
                     {
                         UISpiritInfo.SetupDetails(spirit);
                         UIQuickCast.UpdateCanCast(marker, spirit);
