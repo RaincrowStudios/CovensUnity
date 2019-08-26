@@ -35,7 +35,7 @@ public class LocationPOPInfo : UIInfoPanel
 
     Dictionary<string, Sprite> imgs = new Dictionary<string, Sprite>();
 
-    private Button m_EnterBtn;
+    [SerializeField] private Button m_EnterBtn;
     private LocationViewData m_LocationViewData;
     private static LocationPOPInfo m_Instance;
     private bool m_HasEnteredPOP = false;
@@ -63,10 +63,9 @@ public class LocationPOPInfo : UIInfoPanel
     protected override void Awake()
     {
         m_Instance = this;
-        imgs.Add("5d642429d1bdb244e91395b0", disneyPark);
-        imgs.Add("5d64251fd1bdb244e913ae7f", Winchester);
-        imgs.Add("5d642429d1bdb244e91395b0", Hollywood);
-        m_EnterBtn = m_Enter.GetComponent<Button>();
+        imgs["5d642429d1bdb244e91395b0"] = disneyPark;
+        imgs["5d64251fd1bdb244e913ae7f"] = Winchester;
+        imgs["5d642429d1bdb244e91395b0"] = Hollywood;
         m_CloseBtn.onClick.AddListener(Close);
         base.Awake();
     }
