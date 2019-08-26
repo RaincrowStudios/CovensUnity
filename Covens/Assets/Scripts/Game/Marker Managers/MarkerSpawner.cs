@@ -116,7 +116,7 @@ public class MarkerSpawner : MarkerManager
     {
         if (PlayerDataManager.IsFTF)
             return null;
-        
+
         if (Markers.ContainsKey(Data.instance))
         {
             foreach (var item in Markers[Data.instance])
@@ -313,6 +313,9 @@ public class MarkerSpawner : MarkerManager
 
                     break;
 
+                case MarkerType.PLACE_OF_POWER:
+                    LoadPOPManager.EnterPOP(instance);
+                    break;
 
                 default:
                     Debug.LogError("Token selection not implemented for " + marker.Type);

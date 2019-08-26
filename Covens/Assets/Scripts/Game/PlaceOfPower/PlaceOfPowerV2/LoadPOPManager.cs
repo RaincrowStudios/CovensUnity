@@ -20,51 +20,56 @@ public class LoadPOPManager : MonoBehaviour
     }
     void OnGUI()
     {
-        if (!isViewVisible && GUI.Button(new Rect(320, 10, 80, 40), "View POP"))
-        {
-            if (map == null)
-            {
-                map = MapsAPI.Instance;
-            }
-            LocationIslandController.ExitPOP(() =>
-            {
-                APIManager.Instance.Get("place-of-power/view/5d56ebd18aca90617dc3b5fa", (response, result) =>
-                      {
-                          Debug.Log(response);
-                          if (result == 200)
-                          {
-                              var popInfo = LocationPOPInfo.Instance;
-                              var data = JsonConvert.DeserializeObject<LocationViewData>(response);
-                              data.battleBeginsOn = GetFakeTime();
-                              Debug.Log(GetFakeTime());
-                              Debug.Log(data.battleBeginsOn);
-                              popInfo.Show(data);
-                              isViewVisible = true;
-                          }
-                          else
-                          {
-                              Debug.Log(result);
-                          }
-
-                      });
-            });
-        }
+        // if (!isViewVisible && GUI.Button(new Rect(320, 10, 80, 40), "View POP"))
+        // {
+        //     NewMethod();
+        // }
 
 
 
-        if (sceneLoaded && !LocationIslandController.isInBattle && GUI.Button(new Rect(365, 10, 160, 40), "Start POP Battle"))
-        {
-            if (map == null)
-            {
-                map = MapsAPI.Instance;
-            }
-            APIManager.Instance.Post("place-of-power/start/5d56ebd18aca90617dc3b5fa", "{}", (response, result) =>
-             {
-                 Debug.Log(response);
-             });
-        }
+        // if (sceneLoaded && !LocationIslandController.isInBattle && GUI.Button(new Rect(365, 10, 160, 40), "Start POP Battle"))
+        // {
+        //     if (map == null)
+        //     {
+        //         map = MapsAPI.Instance;
+        //     }
+        //     APIManager.Instance.Post("place-of-power/start/5d56ebd18aca90617dc3b5fa", "{}", (response, result) =>
+        //      {
+        //          Debug.Log(response);
+        //      });
+        // }
     }
 
+    public static void EnterPOP(string id)
+    {
+        Debug.Log(id);
+        if (Instance.map == null)
+        {
+            Instance.map = MapsAPI.Instance;
+        }
+        LocationIslandController.ExitPOP(() =>
+        {
+            APIManager.Instance.Get("place-of-power/view/" + id, (response, result) =>
+              {
+                  Debug.Log(response);
+                  if (result == 200)
+                  {
+                      var popInfo = LocationPOPInfo.Instance;
+                      var data = JsonConvert.DeserializeObject<LocationViewData>(response);
+                      data.battleBeginsOn = GetFakeTime();
+                      Debug.Log(GetFakeTime());
+                      Debug.Log(data.battleBeginsOn);
+                      popInfo.Show(data);
+                      Instance.isViewVisible = true;
+                  }
+                  else
+                  {
+                      Debug.Log(result);
+                  }
+
+              });
+        });
+    }
 
     public static void LoadScene(System.Action onComplete)
     {
