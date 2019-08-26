@@ -385,7 +385,7 @@ public class LocationUnitSpawner : MonoBehaviour
         Debug.Log(g.name);
         g.transform.SetParent(GetTransform(t));
         m.InitializePositionPOP();
-        m.EnablePopSorting();
+        // m.EnablePopSorting();
         m.GameObject.SetActive(true);
 
     }
@@ -436,7 +436,7 @@ public class LocationUnitSpawner : MonoBehaviour
         m.AvatarTransform.localScale = Vector3.one * 2.5f;
         g.transform.SetParent(m_CenterSpiritTransform);
         m.InitializePositionPOP();
-        m.EnablePopSorting();
+        //  m.EnablePopSorting();
         m.GameObject.SetActive(true);
     }
 
