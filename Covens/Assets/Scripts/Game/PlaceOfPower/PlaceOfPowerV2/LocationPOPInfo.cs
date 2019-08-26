@@ -69,6 +69,7 @@ public class LocationPOPInfo : UIInfoPanel
     }
     private void ShowUI()
     {
+        SoundManagerOneShot.Instance.SummonRiser();
         m_HasEnteredPOP = false;
         m_EnterAnimation.SetActive(false);
         m_Title.text = m_LocationViewData.name;
@@ -207,6 +208,7 @@ public class LocationPOPInfo : UIInfoPanel
     {
         if (locationData != null)
         {
+            SoundManagerOneShot.Instance.IngredientAdded();
             m_HasEnteredPOP = true;
             UpdateWitchCount();
             m_EnterAnimation.SetActive(true);
@@ -221,6 +223,7 @@ public class LocationPOPInfo : UIInfoPanel
     private void UpdateWitchCount()
     {
         m_TimeSubtitle.text = $"{LocationIslandController.locationData.currentOccupants} Witches Joined";
+        SoundManagerOneShot.Instance.PlayWooshShort();
     }
 
     private void SetupWitchAnimation(WitchToken token, bool Add)

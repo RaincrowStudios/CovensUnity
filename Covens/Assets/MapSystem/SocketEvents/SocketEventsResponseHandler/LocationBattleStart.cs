@@ -14,6 +14,7 @@ public class LocationBattleStart : IGameEventHandler
     {
         Debug.Log(eventData);
         Debug.Log("Location Battle has Started");
+        SoundManagerOneShot.Instance.SetBGTrack(1);
         var spiritData = JsonConvert.DeserializeObject<SpiritToken>(eventData);
         spiritData.island = -1;
         spiritData.position = -1;

@@ -13,6 +13,7 @@ public class LocationBattleEnd : IGameEventHandler
     public void HandleResponse(string eventData)
     {
         Debug.Log("Location Battle has Ended");
+        SoundManagerOneShot.Instance.SetBGTrack(0);
         OnLocationBattleEnd?.Invoke();
     }
 }

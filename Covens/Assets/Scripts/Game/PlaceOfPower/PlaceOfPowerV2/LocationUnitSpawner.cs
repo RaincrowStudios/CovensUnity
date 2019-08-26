@@ -352,6 +352,8 @@ public class LocationUnitSpawner : MonoBehaviour
                     LocationPlayerAction.playerMarker.SetAlpha(0, 1);
                     LeanTween.scale(LocationPlayerAction.playerMarker.AvatarTransform.gameObject, Vector3.zero, .5f).setEaseOutCubic();
                     ShowFlightFX();
+                    SoundManagerOneShot.Instance.PlayWooshShort();
+
                     await Task.Delay(600);
 
                     MoveEventDataPOP moveData = new MoveEventDataPOP
@@ -360,6 +362,7 @@ public class LocationUnitSpawner : MonoBehaviour
                         island = island,
                         position = position,
                     };
+                    SoundManagerOneShot.Instance.PlayLandFX();
                     LocationPlayerAction.playerMarker.SetAlpha(1, 1);
                     LeanTween.scale(LocationPlayerAction.playerMarker.AvatarTransform.gameObject, charScale, .5f).setEaseOutCubic();
 

@@ -211,6 +211,7 @@ MonoBehaviour:
   - {fileID: 8300000, guid: 037ceb44e83f35144b73afb0300e0c60, type: 3}
   - {fileID: 8300000, guid: c7f49b67357326249ad446a5ab3902fd, type: 3}
   - {fileID: 8300000, guid: b41b4552070905b419625f25b15c239d, type: 3}
+  BGnum: 0
   spellbookSpiritSelected:
   - {fileID: 8300000, guid: e51afc4aac298cc46b5a6a0f3bc8d2c1, type: 3}
   - {fileID: 8300000, guid: da12a06b6609f4a44bb0185b63280835, type: 3}
@@ -218,4 +219,5 @@ MonoBehaviour:
   - {fileID: 8300000, guid: 0b488d0eda722a74ab14e9aa66554b4b, type: 3}
   - {fileID: 8300000, guid: cb6da9ae1ff39334a8fdb74005a4ff0d, type: 3}
   - {fileID: 8300000, guid: a07ad4a536d19834bb8ecefefd852294, type: 3}
+  Cloaking: {fileID: 8300000, guid: ea6ee5ed1269dff44a3c2123f2048499, type: 3}
   PostEffect2: {fileID: 8300000, guid: 4de10fe946c94ba468c8c1bfe7b699d6, type: 3}

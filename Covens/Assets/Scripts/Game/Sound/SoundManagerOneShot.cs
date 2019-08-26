@@ -72,7 +72,9 @@ public class SoundManagerOneShot : MonoBehaviour
     public AudioClip flySoundStart;
 
     public AudioClip[] soundsBG;
+    public int BGnum;
     public AudioClip[] spellbookSpiritSelected;
+    public AudioClip Cloaking;
 
     public AudioClip PostEffect2;
     AudioSource ASBG;
@@ -91,6 +93,40 @@ public class SoundManagerOneShot : MonoBehaviour
     {
         ASBG.clip = soundsBG[Mathf.Clamp(i, 0, soundsBG.Length - 1)];
         ASBG.Play();
+        ASBG.volume = 0.7f;
+        BGnum = i;
+    }
+    public void FadeOutBGTrack()
+    {
+        LeanTween.value(0.7f, 0.05f, 1f).setOnUpdate((float v) =>
+        {
+            ASBG.volume = v;
+        });
+    }
+    public void FadeInBGTrack()
+    {
+        LeanTween.value(0.05f, 0.7f, 1f).setOnUpdate((float v) =>
+        {
+            ASBG.volume = v;
+        });
+    }
+    public void PlayCloakingSFX(bool start)
+    {
+        AS.clip = Cloaking;
+        if (start)
+        {
+            AS.Play();
+        }
+        else
+        {
+            LeanTween.value(1f, 0f, 1f).setOnUpdate((float v) =>
+              {
+                  AS.volume = v;
+              }).setOnComplete(() =>
+              {
+                  AS.Stop();
+              });
+        }
     }
     public void PlayEnergyCollect(float s = 1)
     {

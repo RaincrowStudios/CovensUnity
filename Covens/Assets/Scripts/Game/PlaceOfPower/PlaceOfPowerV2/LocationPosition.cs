@@ -15,6 +15,7 @@ public class LocationPosition : MonoBehaviour
 
     public void OnClick()
     {
+        SoundManagerOneShot.Instance.PlayButtonTap();
         Debug.Log("onclick");
         if (CheckEmpty())
         {

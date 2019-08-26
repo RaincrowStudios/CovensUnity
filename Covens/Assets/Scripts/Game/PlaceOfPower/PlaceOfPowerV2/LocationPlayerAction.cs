@@ -50,6 +50,7 @@ public class LocationPlayerAction : MonoBehaviour
 
     public static void HideMoveCloser()
     {
+        SoundManagerOneShot.Instance.PlayButtonTap();
         Instance.m_MoveCloser.SetActive(false);
         LocationUnitSpawner.EnableMarkers();
     }
@@ -67,6 +68,7 @@ public class LocationPlayerAction : MonoBehaviour
     private void Awake()
     {
         Instance = this;
+
         m_MoveCloserCloseBtn.onClick.AddListener(HideMoveCloser);
         m_CenterOnPlayerBtn.onClick.AddListener(CenterOnPlayer);
         m_DisableCloakBtn.onClick.AddListener(RequestDisableCloaking);
@@ -127,6 +129,9 @@ public class LocationPlayerAction : MonoBehaviour
                       UISpiritInfo.SetVisibility(false);
                   LeanTween.value(1, 0, .5f).setOnUpdate((float v) => CloakingFX(v));
                   isCloaked = true;
+                  SoundManagerOneShot.Instance.FadeOutBGTrack();
+                  Debug.Log("isCloaked = true");
+                  SoundManagerOneShot.Instance.PlayCloakingSFX(true);
                   foreach (var item in LocationUnitSpawner.Markers)
                   {
                       item.Value.ScaleNamePlate(false, .5f);
@@ -154,11 +159,13 @@ public class LocationPlayerAction : MonoBehaviour
         m_BtnArr[1].transform.localScale = Mathf.Lerp(0, 1, v) * Vector3.one;
         m_BtnArr[2].transform.localScale = Mathf.Lerp(0, 1, v) * Vector3.one;
         m_BtnArr[0].transform.localScale = Mathf.Lerp(1.2f, 1, v) * Vector3.one;
+
         //  LocationUnitSpawner.guardianMarker.SetAlpha(.5f);
     }
 
     public void RequestDisableCloaking()
     {
+        SoundManagerOneShot.Instance.PlayButtonTap();
         m_DisableCloakBtn.interactable = false;
         APIManager.Instance.Delete(
                "character/astral", "{}", (s, r) =>
@@ -193,6 +200,9 @@ public class LocationPlayerAction : MonoBehaviour
         LeanTween.value(0, 1, .5f).setOnUpdate((float v) => Instance.CloakingFX(v)).setOnComplete(() =>
         {
             isCloaked = false;
+            SoundManagerOneShot.Instance.FadeInBGTrack();
+            Debug.Log("isCloaked = false");
+            SoundManagerOneShot.Instance.PlayCloakingSFX(false);
             RenderSettings.fog = false;
             Instance.m_CloakUI.gameObject.SetActive(false);
             Instance.m_CloakUIGreyScale.gameObject.SetActive(false);
@@ -202,6 +212,7 @@ public class LocationPlayerAction : MonoBehaviour
 
     private static void CenterOnPlayer()
     {
+        SoundManagerOneShot.Instance.PlayButtonTap();
         if (!UIPlayerInfo.isShowing && !UISpellcastBook.IsOpen)
         {
             LocationIslandController.moveCamera(playerMarker.AvatarTransform.position);
