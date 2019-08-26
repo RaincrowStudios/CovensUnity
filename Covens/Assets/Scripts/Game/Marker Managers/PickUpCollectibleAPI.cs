@@ -73,6 +73,7 @@ public static class PickUpCollectibleAPI
         marker.Interactable = false;
         marker.SetAlpha(0, 0.5f);
         Token token = marker.Token;
+        SoundManagerOneShot.Instance.PlayEnergyCollect();
         //LeanTween.scale(marker.GameObject, Vector3.zero, .3f).setOnComplete(() => MarkerSpawner.DeleteMarker(token.instance));
 
         Transform fx = m_CollectFxPool.Spawn(marker.AvatarTransform, 5f);
@@ -88,7 +89,6 @@ public static class PickUpCollectibleAPI
 
                 PlayerManagerUI.Instance.UpdateEnergy();
                 UIEnergyBarGlow.Instance.Glow();
-                SoundManagerOneShot.Instance.PlayEnergyCollect();
             }
         });
     }
