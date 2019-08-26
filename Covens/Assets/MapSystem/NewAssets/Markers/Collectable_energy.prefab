@@ -9,7 +9,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 4514160629041394}
-  - component: {fileID: 114086724253064664}
+  - component: {fileID: 6822432476585879676}
   m_Layer: 20
   m_Name: Collectable_energy
   m_TagString: Untagged
@@ -33,7 +33,7 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &114086724253064664
+--- !u!114 &6822432476585879676
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -42,7 +42,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 1138044086477858}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 0daa41819a9973b4b9d64a0d51afeb20, type: 3}
+  m_Script: {fileID: 11500000, guid: da1535468f29c824088fe6f534c25b92, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   m_AvatarRenderer: {fileID: 212681355302356672}
@@ -54,6 +54,7 @@ MonoBehaviour:
   - {fileID: 212614738658301160}
   m_DebugFloat: 0
   m_ViewTransform: {fileID: 4959983671828090}
+  m_EnergyAmount: {fileID: 114038326321167068}
 --- !u!1 &1298285111764294
 GameObject:
   m_ObjectHideFlags: 0
@@ -68,7 +69,7 @@ GameObject:
   - component: {fileID: 222254814235709312}
   - component: {fileID: 114038326321167068}
   m_Layer: 20
-  m_Name: TextMeshPro
+  m_Name: EnergyAmount
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -270,7 +271,7 @@ GameObject:
   - component: {fileID: 212681355302356672}
   - component: {fileID: 65603709366546794}
   m_Layer: 20
-  m_Name: New Sprite
+  m_Name: Icon
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -363,7 +364,7 @@ GameObject:
   - component: {fileID: 4434688975403966}
   - component: {fileID: 212614738658301160}
   m_Layer: 20
-  m_Name: Shadow (1)
+  m_Name: Shadow
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -419,8 +420,8 @@ SpriteRenderer:
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: 0
   m_SortingLayer: 0
-  m_SortingOrder: 0
-  m_Sprite: {fileID: 21300000, guid: 8448de2e70e1a324aad0732c99845ae7, type: 3}
+  m_SortingOrder: -10
+  m_Sprite: {fileID: 21300000, guid: 63a67f83578ab194b80257f780f43750, type: 3}
   m_Color: {r: 0, g: 0, b: 0, a: 0.41960785}
   m_FlipX: 0
   m_FlipY: 0
