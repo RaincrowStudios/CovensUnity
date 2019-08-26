@@ -30,7 +30,9 @@ public class WorldMapMarkerManager : MonoBehaviour
         placeOfPower1 = 16,
         placeOfPower2 = 17,
         placeOfPower3 = 18,
-        placeOfPower4 = 19
+        placeOfPower4 = 19,
+
+        energy = 20,
     }
 
     [SerializeField] private WorldMapMarker m_MarkerPrefab;
@@ -58,6 +60,7 @@ public class WorldMapMarkerManager : MonoBehaviour
     [SerializeField] private Sprite m_CollectableHerb;
     [SerializeField] private Sprite m_CollectableGem;
     [SerializeField] private Sprite m_CollectableTool;
+    [SerializeField] private Sprite m_CollectableEnergy;
 
     [Space(2)]
     [SerializeField] private Sprite m_PlaceOfPower1;
@@ -69,6 +72,7 @@ public class WorldMapMarkerManager : MonoBehaviour
     [SerializeField] private Color m_WitchColor;
     [SerializeField] private Color m_SpiritColor;
     [SerializeField] private Color m_CollectableColor;
+    [SerializeField] private Color m_CollectableEnergyColor;
     [SerializeField] private Color m_PopColor;
 
     [Header("Settings")]
@@ -148,6 +152,8 @@ public class WorldMapMarkerManager : MonoBehaviour
             m_PlaceOfPower1,
             m_PlaceOfPower1,
             m_PlaceOfPower1,
+
+            m_CollectableEnergy,
         };
 
         m_MarkerColorMap = new Color[]
@@ -175,6 +181,8 @@ public class WorldMapMarkerManager : MonoBehaviour
             m_PopColor,
             m_PopColor,
             m_PopColor,
+
+            m_CollectableEnergyColor,
         };
     }
 

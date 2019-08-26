@@ -12,7 +12,7 @@ public abstract class Token
         { "portal",         MarkerSpawner.MarkerType.PORTAL },
         { "spirit",         MarkerSpawner.MarkerType.SPIRIT },
         { "duke",           MarkerSpawner.MarkerType.DUKE },
-        { "location",       MarkerSpawner.MarkerType.PLACE_OF_POWER },
+        { "placeOfPower",       MarkerSpawner.MarkerType.PLACE_OF_POWER },
         { "character",      MarkerSpawner.MarkerType.WITCH },
         { "summoningEvent", MarkerSpawner.MarkerType.SUMMONING_EVENT },
         { "gem",            MarkerSpawner.MarkerType.GEM },
@@ -110,6 +110,18 @@ public class WitchToken : CharacterToken
     }
 }
 
+public class PopToken : Token
+{
+    public override string type => "placeOfPower";
+    public int tier;
+}
+
+public class EnergyToken : Token
+{
+    public override string type => "energy";
+    public int amount;
+}
+
 public class PlayerToken : WitchToken
 {
     //witch token
@@ -178,9 +190,4 @@ public class PlayerToken : WitchToken
         get => PlayerDataManager.playerData.latitude;
         set => PlayerDataManager.playerData.latitude = value;
     }
-}
-
-public class PopToken : Token
-{
-    public string owner;
 }

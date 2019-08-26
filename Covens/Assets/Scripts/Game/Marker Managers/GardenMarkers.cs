@@ -156,7 +156,7 @@ public class GardenMarkers : MonoBehaviour
         if (loreMarker == null)
             return;
 
-        Debug.Log("check lore on land:\n" + map.position + "\n" + loreMarker.Coords);
+        //Debug.Log("check lore on land:\n" + map.position + "\n" + loreMarker.Coords);
 
         if (!PlayerDataManager.playerData.quest.explore.completed &&
             map.DistanceBetweenPointsD(map.position, new Vector2(loreMarker.Coords.x, loreMarker.Coords.y)) < 8)

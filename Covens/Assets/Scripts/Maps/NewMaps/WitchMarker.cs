@@ -77,7 +77,7 @@ public class WitchMarker : MuskMarker
     public override void EnablePopSorting()
     {
         base.EnablePopSorting();
-        m_AvatarRenderer.sortingOrder = 10;
+        //m_AvatarRenderer.sortingOrder = 10;
     }
 
     public override void EnablePortait()

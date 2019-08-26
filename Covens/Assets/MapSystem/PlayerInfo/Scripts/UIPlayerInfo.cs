@@ -25,14 +25,6 @@ public class UIPlayerInfo : UIInfoPanel
     [SerializeField] private Button m_PlayerButton;
     [SerializeField] private Button m_CovenButton;
 
-    // public static bool IsVisible
-    // {
-    //     get
-    //     {
-    //         if (m_Instance != null) return m_Instance.m_CanvasGroup.alpha == 1;
-    //         else return false;
-    //     }
-    // }
     private static UIPlayerInfo m_Instance;
 
     public static bool isShowing
@@ -48,6 +40,9 @@ public class UIPlayerInfo : UIInfoPanel
 
     public static void Show(WitchMarker witch, WitchToken data, System.Action onClose = null)
     {
+        WitchMarker = witch;
+        WitchToken = data;
+
         if (m_Instance != null)
         {
             m_Instance._Show(witch, data, onClose);
@@ -68,18 +63,20 @@ public class UIPlayerInfo : UIInfoPanel
 
     public static void SetupDetails(SelectWitchData_Map data)
     {
+        m_WitchData = data;
+
         if (m_Instance == null)
             return;
 
         m_Instance._SetupDetails(data);
     }
 
-    private SelectWitchData_Map m_WitchDetails;
     private float m_PreviousMapZoom;
     private System.Action m_OnClose;
 
     public static WitchToken WitchToken { get; private set; }
     public static WitchMarker WitchMarker { get; private set; }
+    private static SelectWitchData_Map m_WitchData;
 
     protected override void Awake()
     {
@@ -115,11 +112,7 @@ public class UIPlayerInfo : UIInfoPanel
         }
 
         m_OnClose = onClose;
-
-        WitchMarker = witch;
-        WitchToken = data;
-        m_WitchDetails = null;
-
+        
         // //setup the ui
         m_DisplayNameText.text = WitchToken.displayName;
         m_DegreeSchoolText.text = Utilities.WitchTypeControlSmallCaps(WitchToken.degree);
@@ -157,6 +150,9 @@ public class UIPlayerInfo : UIInfoPanel
         OnMapEnergyChange.OnEnergyChange += _OnEnergyChange;
         OnMapEnergyChange.OnPlayerDead += _OnCharacterDead;
 
+        if (m_WitchData != null)
+            _SetupDetails(m_WitchData);
+
         //animate the ui
         Show();
     }
@@ -187,6 +183,10 @@ public class UIPlayerInfo : UIInfoPanel
         m_OnClose?.Invoke();
         m_OnClose = null;
 
+        WitchMarker = null;
+        WitchToken = null;
+        m_WitchData = null;
+
         //aniamte the ui
         base.Close();
 
@@ -211,26 +211,14 @@ public class UIPlayerInfo : UIInfoPanel
         }
     }
 
-    // public static void ForceClose()
-    // {
-    //     if (m_Instance != null)
-    //     {
-    //         m_Instance.Close();
-    //     }
-    // }
-
     private void _SetupDetails(SelectWitchData_Map details)
     {
-        m_WitchDetails = details;
-
         if (string.IsNullOrEmpty(details.coven) == false)
             m_CovenText.text = LocalizeLookUp.GetText("chat_coven").ToUpper() + " <color=black>" + details.coven + "</color>";
-        //else if (string.IsNullOrEmpty(TeamManager.MyCovenId) == false)
-        //    m_CovenText.text = LocalizeLookUp.GetText("invite_coven").ToUpper();
         else
             m_CovenText.text = LocalizeLookUp.GetText("chat_screen_no_coven");
 
-        m_ConditionsList.Setup(m_WitchDetails.effects);
+        m_ConditionsList.Setup(m_WitchData.effects);
     }
 
     private void OnClickClose()
@@ -241,33 +229,15 @@ public class UIPlayerInfo : UIInfoPanel
     private void OnClickCoven()
     {
         //show the witche's coven
-        if (string.IsNullOrEmpty(m_WitchDetails.coven) == false)
+        if (string.IsNullOrEmpty(m_WitchData.coven) == false)
         {
-            TeamManagerUI.OpenName(m_WitchDetails.coven);
+            TeamManagerUI.OpenName(m_WitchData.coven);
         }
-
-        //invite to my coven
-        /*else if (string.IsNullOrEmpty(TeamManager.MyCovenId) == false)
-        {
-            LoadingOverlay.Show();
-            TeamManager.SendInvite(WitchToken.Id, false, (invite, error) =>
-            {
-                LoadingOverlay.Hide();
-                if (string.IsNullOrEmpty(error))
-                {
-                    UIGlobalPopup.ShowPopUp(null, LocalizeLookUp.GetText("coven_invite_success"));
-                }
-                else
-                {
-                    UIGlobalPopup.ShowError(null, error);
-                }
-            });
-        }*/
     }
 
     private void OnClickPlayer()
     {
-        TeamPlayerView.Instance.Show(m_WitchDetails);
+        TeamPlayerView.Instance.Show(m_WitchData);
     }
 
 
@@ -306,15 +276,15 @@ public class UIPlayerInfo : UIInfoPanel
         if (character != WitchToken.instance)
             return;
 
-        foreach (StatusEffect item in m_WitchDetails.effects)
+        foreach (StatusEffect item in m_WitchData.effects)
         {
             if (item.spell == statusEffect.spell)
             {
-                m_WitchDetails.effects.Remove(item);
+                m_WitchData.effects.Remove(item);
                 break;
             }
         }
-        m_WitchDetails.effects.Add(statusEffect);
+        m_WitchData.effects.Add(statusEffect);
         m_ConditionsList.AddCondition(statusEffect);
     }
 

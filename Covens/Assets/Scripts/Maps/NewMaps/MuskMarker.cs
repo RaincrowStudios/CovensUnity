@@ -143,9 +143,9 @@ namespace Raincrow.Maps
 
         public virtual void EnablePopSorting()
         {
-            m_AvatarRenderer.sortingOrder = 10;
-            m_EnergyRingEmpty.sortingOrder = 8;
-            m_EnergyRing.sortingOrder = 9;
+            //m_AvatarRenderer.sortingOrder = 10;
+            //m_EnergyRingEmpty.sortingOrder = 8;
+            //m_EnergyRing.sortingOrder = 9;
         }
 
         public virtual void UpdateNameplate(float preferredWidth)

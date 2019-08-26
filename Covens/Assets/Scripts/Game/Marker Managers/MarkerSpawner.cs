@@ -13,9 +13,9 @@ public class MarkerSpawner : MarkerManager
     public static event System.Action<string, string, bool> OnImmunityChange;
 
     public static MarkerSpawner Instance { get; set; }
-    public static MarkerType selectedType;
-    public static Transform SelectedMarker3DT = null;
-    public static string instanceID = "";
+    //public static MarkerType selectedType;
+    //public static Transform SelectedMarker3DT = null;
+    //public static string instanceID = "";
 
     [Header("Witch")]
     public GameObject witchIcon;
@@ -47,7 +47,7 @@ public class MarkerSpawner : MarkerManager
 
     //[Header("MarkerEnergyRing")]
     //public Sprite[] EnergyRings;
-    private string lastEnergyInstance = "";
+    //private string lastEnergyInstance = "";
 
     private Dictionary<string, Sprite> m_SpiritIcons;
     private List<(SimplePool<Transform>, IMarker)> m_ToDespawn = new List<(SimplePool<Transform>, IMarker)>();
@@ -60,6 +60,7 @@ public class MarkerSpawner : MarkerManager
     private static SimplePool<Transform> m_ToolPool;
     private static SimplePool<Transform> m_GemPool;
     private static SimplePool<Transform> m_EnergyPool;
+    private static SimplePool<Transform> m_PopPool;
 
     void Awake()
     {
@@ -84,6 +85,7 @@ public class MarkerSpawner : MarkerManager
         m_GemPool = new SimplePool<Transform>(gem.transform, 10);
         m_ToolPool = new SimplePool<Transform>(tool.transform, 10);
         m_EnergyPool = new SimplePool<Transform>(energyIcon.transform, 10);
+        m_PopPool = new SimplePool<Transform>(unclaimedLoc.transform, 10);
 
         //init the map/markers variables
         UpdateProperties();
@@ -114,13 +116,7 @@ public class MarkerSpawner : MarkerManager
     {
         if (PlayerDataManager.IsFTF)
             return null;
-
-        //double distance = MapsAPI.Instance.DistanceBetweenPointsD(new Vector2(Data.longitude, Data.latitude), PlayerManager.marker.coords);
-        //if (distance >= PlayerDataManager.DisplayRadius)
-        //{
-        //    return null;
-        //}
-
+        
         if (Markers.ContainsKey(Data.instance))
         {
             foreach (var item in Markers[Data.instance])
@@ -158,6 +154,16 @@ public class MarkerSpawner : MarkerManager
         {
             go = m_GemPool.Spawn().gameObject;
             go.name = $"[gem] {Data.instance}";
+        }
+        else if (Data.Type == MarkerType.ENERGY)
+        {
+            go = m_EnergyPool.Spawn().gameObject;
+            go.name = $"[energy] {Data.instance}";
+        }
+        else if (Data.Type == MarkerType.PLACE_OF_POWER)
+        {
+            go = m_PopPool.Spawn().gameObject;
+            go.name = $"[PlaceOfPower] {Data.instance}";
         }
         else
         {
@@ -233,9 +239,18 @@ public class MarkerSpawner : MarkerManager
         }
 
         var Data = m.Token;
-        SelectedMarker3DT = m.GameObject.transform;
-        instanceID = Data.instance;
-        selectedType = Data.Type;
+
+        if (Data.Type == MarkerType.HERB || Data.Type == MarkerType.TOOL || Data.Type == MarkerType.GEM)
+        {
+            PickUpCollectibleAPI.PickUpCollectable(m as CollectableMarker);
+            return;
+        }
+
+        if (Data.Type == MarkerType.ENERGY)
+        {
+            PickUpCollectibleAPI.CollectEnergy(m);
+            return;
+        }
 
         //show the basic available info, and waut for the map/select response to fill the details
         if (Data.Type == MarkerType.WITCH)
@@ -248,55 +263,9 @@ public class MarkerSpawner : MarkerManager
             UIQuickCast.Open();
             UISpiritInfo.Show(m as SpiritMarker, Data as SpiritToken, UIQuickCast.Close);
         }
-        else if (Data.Type == MarkerType.HERB || Data.Type == MarkerType.TOOL || Data.Type == MarkerType.GEM)
-        {
-            PickUpCollectibleAPI.PickUpCollectable(m as CollectableMarker);
-            return;
-        }
 
-        if (selectedType == MarkerType.ENERGY && lastEnergyInstance != instanceID)
-        {
-            if (PlayerDataManager.playerData.energy >= PlayerDataManager.playerData.maxEnergy)
-            {
-                UIGlobalPopup.ShowPopUp(null, LocalizeLookUp.GetText("energy_full"));
-                return;
-            }
-
-            //var g = Instantiate(energyParticles);
-            //g.transform.position = SelectedMarker3DT.GetChild(1).position;
-            LeanTween.scale(SelectedMarker3DT.gameObject, Vector3.zero, .3f).setOnComplete(() =>
-            {
-                DeleteMarker(instanceID);
-            });
-            var energyData = new { target = Data.instance };
-            APIManager.Instance.Post("map/pickup", JsonConvert.SerializeObject(energyData), (string s, int r) =>
-            {
-                Debug.Log(s);
-
-                if (r == 200 && s != "")
-                {
-
-                    UIEnergyBarGlow.Instance.Glow();
-                    SoundManagerOneShot.Instance.PlayEnergyCollect();
-                    PlayerDataManager.playerData.energy += (Data as CollectableToken).amount;
-                    if (PlayerDataManager.playerData.energy > PlayerDataManager.playerData.maxEnergy)
-                        PlayerDataManager.playerData.energy = PlayerDataManager.playerData.maxEnergy;
-                    PlayerManagerUI.Instance.UpdateEnergy();
-                    Debug.Log(instanceID);
-                }
-                else
-                {
-
-                }
-            });
-
-            lastEnergyInstance = instanceID;
-        }
-        else
-        {
-            SoundManagerOneShot.Instance.PlayWhisperFX();
-            GetMarkerDetails(Data.instance, (result, response) => GetResponse(m, instanceID, response, result));
-        }
+        SoundManagerOneShot.Instance.PlayWhisperFX();
+        GetMarkerDetails(Data.instance, (result, response) => GetResponse(m, Data.instance, response, result));
     }
 
     public static void GetMarkerDetails(string id, System.Action<int, string> callback)
@@ -319,7 +288,7 @@ public class MarkerSpawner : MarkerManager
                     SelectWitchData_Map witch = JsonConvert.DeserializeObject<SelectWitchData_Map>(response);
                     witch.token = marker.Token as WitchToken;
 
-                    if (UIPlayerInfo.isShowing && UIPlayerInfo.WitchToken.instance == instance)
+                    if (UIPlayerInfo.WitchToken != null && UIPlayerInfo.WitchToken.instance == instance)
                     {
                         UIPlayerInfo.SetupDetails(witch);
                         UIQuickCast.UpdateCanCast(marker, witch);
@@ -332,7 +301,7 @@ public class MarkerSpawner : MarkerManager
                     SelectSpiritData_Map spirit = JsonConvert.DeserializeObject<SelectSpiritData_Map>(response);
                     spirit.token = marker.Token as SpiritToken;
 
-                    if (UISpiritInfo.isOpen && UISpiritInfo.SpiritToken.instance == instance)
+                    if (UISpiritInfo.SpiritToken != null && UISpiritInfo.SpiritToken.instance == instance)
                     {
                         UISpiritInfo.SetupDetails(spirit);
                         UIQuickCast.UpdateCanCast(marker, spirit);

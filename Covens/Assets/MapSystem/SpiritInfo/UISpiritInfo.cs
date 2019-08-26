@@ -39,6 +39,9 @@ public class UISpiritInfo : UIInfoPanel
 
     public static void Show(SpiritMarker spirit, SpiritToken data, System.Action onClose = null)
     {
+        SpiritMarker = spirit;
+        SpiritToken = data;
+
         if (m_Instance != null)
         {
             m_Instance._Show(spirit, data, onClose);
@@ -65,6 +68,8 @@ public class UISpiritInfo : UIInfoPanel
     }
     public static void SetupDetails(SelectSpiritData_Map data)
     {
+        m_SpiritSelectData = data;
+
         if (m_Instance == null)
             return;
 
@@ -72,12 +77,12 @@ public class UISpiritInfo : UIInfoPanel
     }
 
     private SpiritData m_SpiritData;
-    private SelectSpiritData_Map m_SpiritDetails;
     private System.Action m_OnClose;
     private float m_PreviousMapZoom;
 
     public static SpiritMarker SpiritMarker { get; private set; }
     public static SpiritToken SpiritToken { get; private set; }
+    private static SelectSpiritData_Map m_SpiritSelectData;
 
     protected override void Awake()
     {
@@ -89,16 +94,14 @@ public class UISpiritInfo : UIInfoPanel
         m_InfoButton.onClick.AddListener(OnClickInfo);
     }
 
-    public void _Show(IMarker spirit, Token token, System.Action onClose)
+    private void _Show(IMarker spirit, Token token, System.Action onClose)
     {
         if (isOpen)
             return;
 
         m_OnClose = onClose;
-        SpiritMarker = spirit as SpiritMarker;
-        SpiritToken = token as SpiritToken;
         m_SpiritData = DownloadedAssets.spiritDict[SpiritToken.spiritId];
-        m_SpiritDetails = null;
+        m_SpiritSelectData = null;
         m_OwnerButton.onClick.RemoveAllListeners();
 
         m_SpiritName.text = m_SpiritData.Name;
@@ -137,6 +140,9 @@ public class UISpiritInfo : UIInfoPanel
             MoveTokenHandler.OnTokenMove += _OnMapTokenMove;
         }
 
+        if (m_SpiritSelectData != null)
+            _SetupDetails(m_SpiritSelectData);
+
         Show();
         m_ConditionList.show = false;
         SoundManagerOneShot.Instance.PlaySpiritSelectedSpellbook();
@@ -173,6 +179,10 @@ public class UISpiritInfo : UIInfoPanel
         m_OnClose?.Invoke();
         m_OnClose = null;
 
+        SpiritMarker = null;
+        SpiritToken = null;
+        m_SpiritSelectData = null;
+
         base.Close();
 
         OnMapEnergyChange.OnPlayerDead -= _OnCharacterDead;
@@ -197,7 +207,7 @@ public class UISpiritInfo : UIInfoPanel
 
     }
 
-    public void _SetupDetails(SelectSpiritData_Map details)
+    private void _SetupDetails(SelectSpiritData_Map details)
     {
         if (details == null)
         {
@@ -205,9 +215,7 @@ public class UISpiritInfo : UIInfoPanel
             return;
         }
 
-        m_SpiritDetails = details;
-
-        if (string.IsNullOrEmpty(m_SpiritDetails.owner))
+        if (string.IsNullOrEmpty(m_SpiritSelectData.owner))
         {
             if (m_SpiritData.tier == 1)
                 m_Tier.text = LocalizeLookUp.GetText("ftf_wild_spirit") + " (" + LocalizeLookUp.GetText("cast_spirit_lesser") + ")";//"Wild Spirit (Lesser)";
@@ -234,7 +242,7 @@ public class UISpiritInfo : UIInfoPanel
             }
         }
 
-        m_ConditionList.Setup(m_SpiritDetails.effects);
+        m_ConditionList.Setup(m_SpiritSelectData.effects);
     }
 
     private void OnClickClose()
@@ -254,7 +262,7 @@ public class UISpiritInfo : UIInfoPanel
 
     private void OnClickCoven()
     {
-        TeamManagerUI.OpenName(m_SpiritDetails.coven);
+        TeamManagerUI.OpenName(m_SpiritSelectData.coven);
     }
 
     private void Abort()
@@ -308,15 +316,15 @@ public class UISpiritInfo : UIInfoPanel
         if (character != SpiritToken.instance)
             return;
 
-        foreach (StatusEffect item in m_SpiritDetails.effects)
+        foreach (StatusEffect item in m_SpiritSelectData.effects)
         {
             if (item.spell == statusEffect.spell)
             {
-                m_SpiritDetails.effects.Remove(item);
+                m_SpiritSelectData.effects.Remove(item);
                 break;
             }
         }
-        m_SpiritDetails.effects.Add(statusEffect);
+        m_SpiritSelectData.effects.Add(statusEffect);
         m_ConditionList.AddCondition(statusEffect);
     }
 
