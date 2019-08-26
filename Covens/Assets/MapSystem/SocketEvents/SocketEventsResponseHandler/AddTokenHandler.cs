@@ -15,6 +15,12 @@ namespace Raincrow.GameEventResponses
 
         public static void HandleEvent(Token token)
         {
+            if (MarkerManagerAPI.IsSpawningTokens)
+            {
+                LeanTween.value(0, 0, 1f).setOnComplete(() => HandleEvent(token));
+                return;
+            }
+
             if (token == null)
             {
                 Debug.LogError("no token on map_token_add");
@@ -29,6 +35,11 @@ namespace Raincrow.GameEventResponses
             if (token.type == "spirit" && ((token as SpiritToken).energy <= 0 || (token as SpiritToken).state == "dead"))
                 return;
             
+            if (token.Type == MarkerManager.MarkerType.ENERGY)
+            {
+                Debug.LogError("adding energy");
+            }
+            
             IMarker marker = MarkerSpawner.GetMarker(token.instance);
             bool isNew = marker == null;
 
@@ -37,12 +48,12 @@ namespace Raincrow.GameEventResponses
             if (marker == null)
                 return;
 
-            if (isNew)
-            {
-                //marker.GameObject.SetActive(false);
-                marker.SetAlpha(0);
-                marker.inMapView = false;
-            }
+            //if (isNew)
+            //{
+            //    marker.GameObject.SetActive(false);
+            //    marker.SetAlpha(0);
+            //    marker.inMapView = false;
+            //}
 
             OnMarkerAdd?.Invoke(marker);
             OnTokenAdd?.Invoke(token.instance);

@@ -28,6 +28,7 @@ public class MarkerManagerAPI : MonoBehaviour
 
     public static event System.Action<string> OnChangeDominion;
     public static bool IsSpiritForm { get; private set; }
+    public static bool IsSpawningTokens { get; private set; }
     
     private static MarkerManagerAPI m_Instance;
     private static int m_MoveTweenId;
@@ -116,6 +117,7 @@ public class MarkerManagerAPI : MonoBehaviour
         //move back to previous position
         LeanTween.cancel(m_MoveTweenId);
         Vector3 targetPosition = MapsAPI.Instance.GetWorldPosition(PlayerDataManager.playerData.longitude, PlayerDataManager.playerData.latitude);
+
         if (Vector3.Distance(targetPosition, PlayerManager.marker.GameObject.transform.position) < 200)
             m_MoveTweenId = LeanTween.move(PlayerManager.marker.GameObject, targetPosition, 1f).setEaseOutCubic().uniqueId;
         else
@@ -214,6 +216,8 @@ public class MarkerManagerAPI : MonoBehaviour
 
     private static IEnumerator SpawnMarkersCoroutine(List<WitchToken> witches, List<SpiritToken> spirits, List<CollectableToken> items, List<EnergyToken> energies, List<PopToken> pops)
     {
+        IsSpawningTokens = true;
+
         HashSet<IMarker> updatedMarkers = new HashSet<IMarker>();
 
         IMarker aux;
@@ -272,6 +276,7 @@ public class MarkerManagerAPI : MonoBehaviour
             MarkerSpawner.DeleteMarker(id);
         
         m_SpawnCoroutine = null;
+        IsSpawningTokens = false;
     }
 }
 
