@@ -148,7 +148,7 @@ public class Leaderboards : UIAnimationManager
             if (m_Players != null)
             {
                 //This is to change score text to level when on top players
-                transform.GetChild(2).GetChild(1).GetChild(0).GetChild(3).GetComponent<Text>().text = LocalizeLookUp.GetText("card_witch_level");
+                transform.GetChild(2).GetChild(1).GetChild(0).GetChild(3).GetComponent<Text>().text = LocalizeLookUp.GetText("spell_xp").Replace("{{Number}} ", "");
                 for (int i = 0; i < m_Players.Length; i++)
                 {
                     var g = Utilities.InstantiateObject(prefab, container);
