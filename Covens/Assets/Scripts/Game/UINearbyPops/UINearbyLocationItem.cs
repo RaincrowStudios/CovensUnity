@@ -50,7 +50,7 @@ public class UINearbyLocationItem : MonoBehaviour
     {
         m_OnFlyTo = onFlyTo;
         m_NameText.text = data.name;
-        m_ClaimedBy.text = "<color=red>TODO</color>";
+        m_ClaimedBy.text = "Unclaimed";
 
         //setup cost
         int goldCost = DownloadedAssets.PlaceOfPowerSettings.goldCost[data.tier - 1];
@@ -89,9 +89,9 @@ public class UINearbyLocationItem : MonoBehaviour
     {
         string text;
         if (isOpen)
-            text = "open for: {0}";
+            text = "Open for: {0}";
         else
-            text = "cooldown: {0}";
+            text = "Cooldown: {0}";
 
         while (seconds > 0)
         {
