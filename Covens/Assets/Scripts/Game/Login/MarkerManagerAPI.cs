@@ -67,10 +67,12 @@ public class MarkerManagerAPI : MonoBehaviour
         Debug.Log("<color=red>get markers</color>:\n" + dataJson);
 
         System.Action requestMarkers = () => { };
+        IsSpawningTokens = true;
         requestMarkers = () => APIManager.Instance.Post("character/move", dataJson,
             (s, r) =>
             {
                 LoadingOverlay.Hide();
+                IsSpawningTokens = false;
 
                 if (r == 200)
                     GetMarkersCallback(longitude, latitude, s, r);

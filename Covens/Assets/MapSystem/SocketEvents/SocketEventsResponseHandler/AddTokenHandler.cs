@@ -34,12 +34,7 @@ namespace Raincrow.GameEventResponses
             //ignore if the token is already dead
             if (token.type == "spirit" && ((token as SpiritToken).energy <= 0 || (token as SpiritToken).state == "dead"))
                 return;
-            
-            if (token.Type == MarkerManager.MarkerType.ENERGY)
-            {
-                Debug.LogError("adding energy");
-            }
-            
+                        
             IMarker marker = MarkerSpawner.GetMarker(token.instance);
             bool isNew = marker == null;
 
