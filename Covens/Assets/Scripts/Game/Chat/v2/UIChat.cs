@@ -828,12 +828,13 @@ namespace Raincrow.Chat.UI
             //    return;
             //}            
 
-            _SelectedGlow.gameObject.SetActive(true);
             foreach (KeyValuePair<ChatCategory, TMPro.TextMeshProUGUI> entry in m_HeaderButtons)
             {
                 if (entry.Key == category)
                 {
-                    _SelectedGlow.transform.position = entry.Value.transform.position;
+                    _SelectedGlow.transform.SetParent(entry.Value.transform);
+                    _SelectedGlow.transform.SetAsFirstSibling();
+                    _SelectedGlow.transform.localPosition = Vector3.zero;
                     entry.Value.fontStyle = TMPro.FontStyles.Bold;
                 }
                 else
@@ -841,6 +842,7 @@ namespace Raincrow.Chat.UI
                     entry.Value.fontStyle = TMPro.FontStyles.Normal;
                 }
             }
+            _SelectedGlow.gameObject.SetActive(true);
         }
     }
 }
