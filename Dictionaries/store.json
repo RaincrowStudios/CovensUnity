@@ -752,9 +752,6 @@
       "gold": 8
     },
     {
-      "id": "cosmetic_m_HE_GLSS"
-    },
-    {
       "id": "cosmetic_m_HE_HDWO",
       "silver": 900,
       "gold": 9
@@ -1190,18 +1187,7 @@
       "gold": 7
     },
     {
-      "id": "cosmetic_m_CL_DWO"
-    },
-    {
       "id": "cosmetic_m_CL_SMMRSOL",
-      "silver": 1200,
-      "gold": 12
-    },
-    {
-      "id": "cosmetic_m_CL_DTO"
-    },
-    {
-      "id": "cosmetic_m_CL_GRAY",
       "silver": 1200,
       "gold": 12
     },
@@ -1209,9 +1195,6 @@
       "id": "cosmetic_m_F_STRAPPEDSHOES",
       "silver": 450,
       "gold": 4
-    },
-    {
-      "id": "cosmetic_m_CL_DSO"
     },
     {
       "id": "cosmetic_m_CL_PRIMAVERA",

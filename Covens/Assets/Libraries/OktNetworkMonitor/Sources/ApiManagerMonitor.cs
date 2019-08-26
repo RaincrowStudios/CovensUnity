@@ -26,7 +26,6 @@ namespace Oktagon.Network
         /// <param name="pMonitor"></param>
         public void SetupMonitor(OktNetworkMonitor pMonitor)
         {
-            Debug.LogError("setup monitor");
             m_pMonitor = pMonitor;
             APIManager.OnRequestEvt += APIManager_OnRequestEvt;
             APIManager.OnResponseEvt += APIManager_OnResponseEvt;
