@@ -1,4 +1,5 @@
-﻿using System.Threading.Tasks;
+﻿using System.Collections.Generic;
+using System.Threading.Tasks;
 using System;
 
 using TMPro;
@@ -14,6 +15,7 @@ public class LocationPOPInfo : UIInfoPanel
     [SerializeField] private CanvasGroup m_TimeCG;
     [SerializeField] private TextMeshProUGUI m_TimeSubtitle;
     [SerializeField] private TextMeshProUGUI m_TimeTitle;
+    [SerializeField] private Image m_locationImage;
     [SerializeField] private Color m_NotEnoughSilver;
     [SerializeField] private Color m_EnoughSilver;
     [SerializeField] private Image m_Enter;
@@ -26,6 +28,13 @@ public class LocationPOPInfo : UIInfoPanel
     [SerializeField] private TextMeshProUGUI m_PlayerJoinedTitle;
     [SerializeField] private TextMeshProUGUI m_PlayerJoinedSubtitle;
     [SerializeField] private Image m_PlayerJoinedColor;
+
+    public Sprite disneyPark;
+    public Sprite Hollywood;
+    public Sprite Winchester;
+
+    Dictionary<string, Sprite> imgs = new Dictionary<string, Sprite>();
+
     private Button m_EnterBtn;
     private LocationViewData m_LocationViewData;
     private static LocationPOPInfo m_Instance;
@@ -54,6 +63,9 @@ public class LocationPOPInfo : UIInfoPanel
     protected override void Awake()
     {
         m_Instance = this;
+        imgs.Add("5d642429d1bdb244e91395b0", disneyPark);
+        imgs.Add("5d64251fd1bdb244e913ae7f", Winchester);
+        imgs.Add("5d642429d1bdb244e91395b0", Hollywood);
         m_EnterBtn = m_Enter.GetComponent<Button>();
         m_CloseBtn.onClick.AddListener(Close);
         base.Awake();
@@ -70,6 +82,14 @@ public class LocationPOPInfo : UIInfoPanel
     private void ShowUI()
     {
         SoundManagerOneShot.Instance.SummonRiser();
+        try
+        {
+            m_locationImage.sprite = imgs[m_LocationViewData._id];
+
+        }
+        catch (System.Exception)
+        {
+        }
         m_HasEnteredPOP = false;
         m_EnterAnimation.SetActive(false);
         m_Title.text = m_LocationViewData.name;

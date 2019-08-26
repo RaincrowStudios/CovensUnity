@@ -270,14 +270,16 @@ public class LocationUnitSpawner : MonoBehaviour
                     (response, result) => callback(result, response));
     }
 
-    public async void RemoveMarker(string instance)
+
+    public async void RemoveMarker(string instance, bool remove = true)
     {
         if (Markers.ContainsKey(instance))
         {
             var marker = Markers[instance];
             marker.SetAlpha(0, 1);
             marker.Interactable = false;
-            Markers.Remove(instance);
+            if (remove)
+                Markers.Remove(instance);
             await Task.Delay(2000);
             Debug.Log("Despawning");
             marker.OnDespawn();
@@ -285,6 +287,15 @@ public class LocationUnitSpawner : MonoBehaviour
             else if (marker.Type == MarkerType.SPIRIT) m_SpiritPool.Despawn(marker.GameObject.transform);
             else throw new NotImplementedException("Unhandled Marker Type: " + marker.Type);
         }
+    }
+
+    public void RemoveAllMarkers()
+    {
+        foreach (var item in Markers)
+        {
+            RemoveMarker(item.Key, false);
+        }
+        Markers.Clear();
     }
 
     public static void OnEnergyChange(IMarker m, int energy)

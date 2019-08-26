@@ -14,7 +14,7 @@ public static class LoginAPIManager
 
     public static bool characterLoggedIn { get { return PlayerDataManager.playerData != null; } }
     public static bool accountLoggedIn { get { return !(string.IsNullOrEmpty(loginToken) || string.IsNullOrEmpty(wssToken)); } }
-    
+
     public static string loginToken
     {
         get
@@ -157,7 +157,7 @@ public static class LoginAPIManager
             plat = "ios";
         else
             plat = Application.platform.ToString().ToLower();
-              
+
         var data = new
         {
             username = username,
@@ -170,7 +170,7 @@ public static class LoginAPIManager
             notificationsEnabled = true
         };
 
-        APIManager.Instance.PostRaincrow("login", JsonConvert.SerializeObject(data), 
+        APIManager.Instance.PostRaincrow("login", JsonConvert.SerializeObject(data),
             (response, result) =>
             {
                 if (result == 200)
@@ -179,7 +179,7 @@ public static class LoginAPIManager
                     StoredUserPassword = password;
 
                     LoginResponse loginData = JsonConvert.DeserializeObject<LoginResponse>(response);
-
+                    //REMOVE LATER
                     loginToken = loginData.game;
                     wssToken = loginData.socket;
 
@@ -189,8 +189,8 @@ public static class LoginAPIManager
                 {
                     callback?.Invoke(result, new LoginResponse() { error = response });
                 }
-            }, 
-            false, 
+            },
+            false,
             false);
     }
 
@@ -270,8 +270,11 @@ public static class LoginAPIManager
             if (result == 200)
             {
                 PlayerDataManager.playerData = ParsePlayerData(response);
+                APIManager.Instance.Put("place-of-power/leave", "{}", (s, r) => { Debug.Log(s); Debug.Log("TODO: Move pop leave logic"); });
+
                 //TeamManager.GetCoven(null);
                 OnCharacterReceived?.Invoke();
+
             }
             else if (result == 412 && response == "1001")
             {
@@ -299,7 +302,7 @@ public static class LoginAPIManager
 
         return player;
     }
-    
+
     public struct GameConfig
     {
         public struct DominionRank
@@ -324,24 +327,24 @@ public static class LoginAPIManager
 
     public static void GetConfigurations(float longitude, float latitude, System.Action<GameConfig, string> callback)
     {
-        APIManager.Instance.GetRaincrow($"configurations?latitude={latitude.ToString().Replace(',','.')}&longitude={longitude.ToString().Replace(',', '.')}", "", (response, result) =>
-        {
-            if (result == 200)
-            {
-                GameConfig data = JsonConvert.DeserializeObject<GameConfig>(response);
+        APIManager.Instance.GetRaincrow($"configurations?latitude={latitude.ToString().Replace(',', '.')}&longitude={longitude.ToString().Replace(',', '.')}", "", (response, result) =>
+         {
+             if (result == 200)
+             {
+                 GameConfig data = JsonConvert.DeserializeObject<GameConfig>(response);
 
-                PlayerDataManager.DisplayRadius = data.displayRadius / 1000;
-                PlayerDataManager.moonData = data.moon;
-                PlayerDataManager.sunData = data.sun;
-                PlayerDataManager.tribunal = data.tribunal;
-                PlayerDataManager.tribunalDaysRemaining = data.daysRemaining;
+                 PlayerDataManager.DisplayRadius = data.displayRadius / 1000;
+                 PlayerDataManager.moonData = data.moon;
+                 PlayerDataManager.sunData = data.sun;
+                 PlayerDataManager.tribunal = data.tribunal;
+                 PlayerDataManager.tribunalDaysRemaining = data.daysRemaining;
 
-                callback?.Invoke(data, null);
-            }
-            else
-            {
-                callback?.Invoke(new GameConfig(), response);
-            }
-        });
+                 callback?.Invoke(data, null);
+             }
+             else
+             {
+                 callback?.Invoke(new GameConfig(), response);
+             }
+         });
     }
 }

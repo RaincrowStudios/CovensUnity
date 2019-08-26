@@ -50,21 +50,35 @@ public class LocationIslandController : MonoBehaviour
 
     private void BattleBeginPOP(SpiritToken guardianSpirit)
     {
-        isInBattle = true;
-        OnEnterLocation?.Invoke();
-        MoveTokenHandlerPOP.OnMarkerMovePOP += instance.locationUnitSpawner.MoveMarker;
-        AddSpiritHandlerPOP.OnSpiritAddPOP += instance.locationUnitSpawner.AddMarker;
-        CreateIslands(m_LocationData);
-        CreateTokens();
-        locationUnitSpawner.AddMarker(guardianSpirit);
-        UpdateMarkers(false, true, true);
-        LocationPOPInfo.Instance.Close();
-        SetActiveIslands();
-        instance.popCameraController.onUpdate += UpdateMarkers;
+        if (!isInBattle)
+        {
+            isInBattle = true;
+            OnEnterLocation?.Invoke();
+            MoveTokenHandlerPOP.OnMarkerMovePOP += instance.locationUnitSpawner.MoveMarker;
+            AddSpiritHandlerPOP.OnSpiritAddPOP += instance.locationUnitSpawner.AddMarker;
+            CreateIslands(m_LocationData);
+            CreateTokens();
+            locationUnitSpawner.AddMarker(guardianSpirit);
+            UpdateMarkers(false, true, true);
+            LocationPOPInfo.Instance.Close();
+            SetActiveIslands();
+            instance.popCameraController.onUpdate += UpdateMarkers;
+        }
+        else
+        {
+            CreateTokens();
+            locationUnitSpawner.AddMarker(guardianSpirit);
+            SetActiveIslands();
+        }
     }
 
-    private void CreateTokens()
+    private async void CreateTokens()
     {
+        if (LocationUnitSpawner.Markers.Count > 0)
+        {
+            locationUnitSpawner.RemoveAllMarkers();
+        }
+        await Task.Delay(1000);
         foreach (var item in m_LocationData.tokens.Values())
         {
             if (item is WitchToken)

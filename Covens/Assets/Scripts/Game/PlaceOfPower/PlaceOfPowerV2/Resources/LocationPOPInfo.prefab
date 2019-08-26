@@ -3101,6 +3101,7 @@ MonoBehaviour:
   m_TimeCG: {fileID: 590052087679099310}
   m_TimeSubtitle: {fileID: 2263399932152915003}
   m_TimeTitle: {fileID: 4983078242387479624}
+  m_locationImage: {fileID: 3263099387584449707}
   m_NotEnoughSilver: {r: 0.5188679, g: 0, b: 0, a: 1}
   m_EnoughSilver: {r: 0.49056602, g: 0.49056602, b: 0.49056602, a: 1}
   m_Enter: {fileID: 1024919767395317448}
@@ -3113,6 +3114,9 @@ MonoBehaviour:
   m_PlayerJoinedTitle: {fileID: 973837150840024578}
   m_PlayerJoinedSubtitle: {fileID: 8270968675822046023}
   m_PlayerJoinedColor: {fileID: 580179720018635947}
+  disneyPark: {fileID: 21300000, guid: 209f39401e75a72488295a2b284bf1a8, type: 3}
+  Hollywood: {fileID: 21300000, guid: 750e3e75f412e24419361b499ba49705, type: 3}
+  Winchester: {fileID: 21300000, guid: 0a491badd0a59e04c8e6798894ac42f4, type: 3}
 --- !u!1 &8370872736402372589
 GameObject:
   m_ObjectHideFlags: 0
