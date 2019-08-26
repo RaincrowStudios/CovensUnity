@@ -20,14 +20,16 @@ public static class PickUpCollectibleAPI
         marker.Interactable = false;
 
         //spawn particle fx over item
-        Transform fx = m_CollectFxPool.Spawn();
-        fx.position = marker.AvatarTransform.position;
+        Transform fx = m_CollectFxPool.Spawn(marker.AvatarTransform, 5f);
+        fx.localPosition = Vector3.zero;
+        fx.SetParent(null);
+        //fx.position = marker.AvatarTransform.position;
 
         //spawn particle on inventory button
         if (UIStateManager.Instance.DisableButtons.Length >= 2)
         {
             Transform inventoryButton = UIStateManager.Instance.DisableButtons[2].transform;
-            Transform uiFx = m_UiCollectFxPool.Spawn(inventoryButton);
+            Transform uiFx = m_UiCollectFxPool.Spawn(inventoryButton, 5f);
             uiFx.localPosition = Vector3.zero;
             uiFx.localScale = Vector3.one;
             marker.SetAlpha(0, 0.5f);
@@ -69,8 +71,14 @@ public static class PickUpCollectibleAPI
         }
 
         marker.Interactable = false;
+        marker.SetAlpha(0, 0.5f);
         Token token = marker.Token;
-        LeanTween.scale(marker.GameObject, Vector3.zero, .3f).setOnComplete(() => MarkerSpawner.DeleteMarker(token.instance));
+        SoundManagerOneShot.Instance.PlayEnergyCollect();
+        //LeanTween.scale(marker.GameObject, Vector3.zero, .3f).setOnComplete(() => MarkerSpawner.DeleteMarker(token.instance));
+
+        Transform fx = m_CollectFxPool.Spawn(marker.AvatarTransform, 5f);
+        fx.localPosition = Vector3.zero;
+        fx.SetParent(null);
 
         APIManager.Instance.Post("character/pickup/" + token.instance, "{}", (response, result) =>
         {
@@ -81,7 +89,6 @@ public static class PickUpCollectibleAPI
 
                 PlayerManagerUI.Instance.UpdateEnergy();
                 UIEnergyBarGlow.Instance.Glow();
-                SoundManagerOneShot.Instance.PlayEnergyCollect();
             }
         });
     }
