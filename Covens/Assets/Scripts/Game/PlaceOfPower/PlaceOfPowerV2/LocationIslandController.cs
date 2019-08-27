@@ -77,8 +77,8 @@ public class LocationIslandController : MonoBehaviour
         if (LocationUnitSpawner.Markers.Count > 0)
         {
             locationUnitSpawner.RemoveAllMarkers();
+            await Task.Delay(1000);
         }
-        await Task.Delay(1000);
         foreach (var item in m_LocationData.tokens.Values())
         {
             if (item is WitchToken)
