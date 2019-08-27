@@ -167,7 +167,7 @@ public class GameStartup : MonoBehaviour
 
     private void OnAssetDownloadProgress(string name, float progress, float fileSize)
     {
-        SplashManager.Instance.SetDownloadProgress(name, m_CurrentFileIndex, m_FilesAmount, m_CurrentFileSize, 0);
+        SplashManager.Instance.SetDownloadProgress(name, m_CurrentFileIndex, m_FilesAmount, m_CurrentFileSize, progress);
     }
 
     private void OnAssetDownloadFinish(string name)
