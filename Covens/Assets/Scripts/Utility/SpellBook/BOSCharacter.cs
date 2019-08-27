@@ -19,23 +19,27 @@ public class BOSCharacter : BOSBase
     [SerializeField] private Image pathImage;
 	public static BOSCharacter Instance { get; set; }
 
-
-
-    void Start()
+    private void Awake()
     {
-		Instance = this;
+        Instance = this;
+
+        title.text = LocalizeLookUp.GetText("bos_title");
+
         var pData = PlayerDataManager.playerData;
+
         witchType.text = Utilities.WitchTypeControlSmallCaps(pData.degree);
 		witchType.text += " <b>" + PlayerDataManager.playerData.name + "</b>";
-		title.text = LocalizeLookUp.GetText ("bos_title");
-       // coven.text = pData.covenName == "" ? "Coven: No Coven" : "Coven: " + pData.covenName;
 		coven.text = string.IsNullOrEmpty(pData.covenInfo.name) ? LocalizeLookUp.GetText("lt_coven_none") : LocalizeLookUp.GetText("lt_coven") + " " + pData.covenInfo.name;
-		//dominionRank.text = LocalizeLookUp.GetText ("generic_rank") + " " + pData.dominionRank.ToString() + " " + LocalizeLookUp.GetText ("dominion_location_short") + " " + pData.dominion;
-        dominionRank.text = LocalizeLookUp.GetText("lt_dominion") + " " + pData.dominion; ;
+
+		dominionRank.text = LocalizeLookUp.GetText ("generic_rank") + " " + pData.dominionRank.ToString() + " " + LocalizeLookUp.GetText ("dominion_location_short") + " " + pData.dominion;
+        //dominionRank.text = LocalizeLookUp.GetText("lt_dominion") + " " + pData.dominion; ;
         worldRank.text = LocalizeLookUp.GetText ("generic_rank") + " " + pData.worldRank.ToString() + " " + LocalizeLookUp.GetText ("dominion_world");
-		favoriteSpell.text = LocalizeLookUp.GetText ("spell_favorite") + " " + (pData.favoriteSpell == null ? LocalizeLookUp.GetText ("lt_none") : LocalizeLookUp.GetSpellName(pData.favoriteSpell));
-        nemesis.text = ""; //LocalizeLookUp.GetText("generic_nemesis") +": " + (pData.nemesis == "" ? LocalizeLookUp.GetText ("lt_none") : pData.nemesis);
-        benefactor.text = "";// LocalizeLookUp.GetText("generic_benefactor") +": " + (pData.benefactor == "" ? LocalizeLookUp.GetText ("lt_none") : pData.benefactor);
+
+        favoriteSpell.text = LocalizeLookUp.GetText ("spell_favorite") + " " + (string.IsNullOrEmpty(pData.favoriteSpell)? LocalizeLookUp.GetText ("lt_none") : LocalizeLookUp.GetSpellName(pData.favoriteSpell));
+
+        nemesis.text = LocalizeLookUp.GetText("generic_nemesis") +": " + (string.IsNullOrEmpty(pData.nemesis) ? LocalizeLookUp.GetText ("lt_none") : pData.nemesis);
+        benefactor.text = LocalizeLookUp.GetText("generic_benefactor") +": " + (string.IsNullOrEmpty(pData.benefactor) ? LocalizeLookUp.GetText ("lt_none") : pData.benefactor);
+
         if (pData.degree > 0)
         {
             pathImage.sprite = pathSprites[1];
