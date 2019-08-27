@@ -207,6 +207,8 @@ public class MarkerSpawner : MarkerManager
                 Instance.m_ToDespawn.Add((m_GemPool, marker));
             else if (marker.Type == MarkerType.TOOL)
                 Instance.m_ToDespawn.Add((m_ToolPool, marker));
+            else if (marker.Type == MarkerType.ENERGY)
+                Instance.m_ToDespawn.Add((m_EnergyPool, marker));
 
             if (Instance.m_DespawnTimer < despawnDelay)
                 Instance.m_DespawnTimer = despawnDelay;
