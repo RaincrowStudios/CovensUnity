@@ -254,7 +254,8 @@ namespace Raincrow.Maps
 
         public void HideMap(bool hide)
         {
-            m_Map.HideMap(hide);
+            if (m_Map != null)
+                m_Map.HideMap(hide);
         }
 
 
