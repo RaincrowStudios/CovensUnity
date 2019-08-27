@@ -165,7 +165,7 @@ namespace Raincrow.GameEventResponses
                     LeanTween.value(0, 0, 0.25f).setOnComplete(() => OnMapEnergyChange.ForceEvent(target, targetNewEnergy, data.timestamp));
 
                     //add status effects to PlayerDataManager.playerData
-                    if (string.IsNullOrEmpty(data.result.statusEffect.spell) == false)
+                    if (data.result.statusEffect != null && string.IsNullOrEmpty(data.result.statusEffect.spell) == false)
                     {
                         OnApplyStatusEffect?.Invoke(data.target.id, data.result.statusEffect);
 
