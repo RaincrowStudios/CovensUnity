@@ -166,7 +166,7 @@ public class MoonManager : UIAnimationManager
         if (lunarEffect == 0)
             spellEfficiency.text = "";
         else
-            spellEfficiency.text = (lunarEffect * 100).ToString("+#;-#") + "<spell efficiency>";
+            spellEfficiency.text = LocalizeLookUp.GetText("spell_efficiency_bonus").Replace("{{value}}", (lunarEffect * 100).ToString(" +#;-#"));// + "% Spell efficiency";
     }
 
     //public void SetupSavannaEnergy(bool show, int amount = 0)

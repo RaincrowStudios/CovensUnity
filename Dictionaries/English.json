@@ -3248,6 +3248,7 @@
 	"generic_power":"Power",
 	"generic_resilience":"Resilience",
 	"quickcast_tap_hold":"Tap and Hold to Set a Spell",
+	"spell_efficiency_bonus":"{{value}}% Spell Efficiency",
 	"error_1000":"Account not found",
 	"error_1001":"Character not found",
 	"error_1002":"Player not found",
