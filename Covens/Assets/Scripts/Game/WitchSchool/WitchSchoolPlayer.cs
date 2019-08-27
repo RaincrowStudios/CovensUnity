@@ -68,6 +68,9 @@ public class WitchSchoolPlayer : MonoBehaviour
         PlayerDataManager.Instance?.GetComponent<AudioSource>().Pause();
         m_VideoTitle.text = title;
         m_VideoImage.color = Color.black;
+
+        m_Slider.value = 0;
+        OnVideoBuffering();
     }
 
     private void Close()
@@ -118,7 +121,7 @@ public class WitchSchoolPlayer : MonoBehaviour
     private void OnVideoBuffering()
     {
         LeanTween.cancel(m_LoadingTweenId);
-        m_LoadingTweenId = LeanTween.alphaCanvas(m_Loading, 0f, 0.1f).uniqueId;
+        m_LoadingTweenId = LeanTween.alphaCanvas(m_Loading, 1f, 0.1f).uniqueId;
     }
 
     private void OnVideoBufferingEnd()
@@ -129,6 +132,7 @@ public class WitchSchoolPlayer : MonoBehaviour
 
     private void OnVideoReady()
     {
+        OnVideoBufferingEnd();
         UpdateState(MediaPlayerCtrl.MEDIAPLAYER_STATE.PLAYING);
     }
 
@@ -144,7 +148,6 @@ public class WitchSchoolPlayer : MonoBehaviour
         {
             m_VideoPlayer.SetSeekBarValue(value);
             m_VideoPlayer.Play();
-            //m_VideoPlayer.Pause();
             UpdateState(m_VideoPlayer.GetCurrentState());
         }
     }
