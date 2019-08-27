@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using Raincrow;
+using System.Collections;
 using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
@@ -6,6 +7,7 @@ using UnityEngine.UI;
 
 public class WitchSchoolPlayer : MonoBehaviour
 {
+    [SerializeField] private GraphicRaycaster m_InputRaycaster;
     [SerializeField] private MediaPlayerCtrl m_VideoPlayer;
     [SerializeField] private RawImage m_VideoImage;
     [SerializeField] private TextMeshProUGUI m_VideoTitle;
@@ -22,6 +24,27 @@ public class WitchSchoolPlayer : MonoBehaviour
     [Space(2)]
     [SerializeField] private Button m_PlayerButton;
     [SerializeField] private Button m_CloseButton;
+    
+    private static WitchSchoolPlayer m_Instance;
+
+    public static void Open(string title, string url, System.Action onOpen, System.Action onClose)
+    {
+        if (m_Instance != null)
+        {
+            m_Instance._Open(title, url, onOpen, onClose);
+        }
+        else
+        {
+            LoadingOverlay.Show();
+            SceneManager.LoadSceneAsync(SceneManager.Scene.VIDEO_PLAYER, UnityEngine.SceneManagement.LoadSceneMode.Additive,
+                (progress) => { },
+                () =>
+                {
+                    LoadingOverlay.Hide();
+                    m_Instance._Open(title, url, onOpen, onClose);
+                });
+        }
+    }
 
     private int m_TweenId;
     private int m_ButtonTweenId;
@@ -31,29 +54,34 @@ public class WitchSchoolPlayer : MonoBehaviour
 
     void Awake()
     {
+        m_Instance = this;
+
+        gameObject.SetActive(false);
+        m_InputRaycaster.enabled = false;
+
         m_PlayCanvasGroup.alpha = 0;
         m_PauseCanvasGroup.alpha = 0;
         m_StopCanvasGroup.alpha = 0;
         m_CanvasGroup.alpha = 0;
         m_SliderCanvasGroup.alpha = 0;
-        gameObject.SetActive(false);
 
         m_PlayerButton.onClick.AddListener(OnClickPlayer);
         m_CloseButton.onClick.AddListener(Close);
         m_Slider.onValueChanged.AddListener(OnUpdateSlider);
         
-        m_VideoPlayer.OnVideoBuffering = OnVideoBuffering;
-        m_VideoPlayer.OnVideoBufferingEnd = OnVideoBufferingEnd;
+        //m_VideoPlayer.OnVideoBuffering = OnVideoBuffering;
+        //m_VideoPlayer.OnVideoBufferingEnd = OnVideoBufferingEnd;
         m_VideoPlayer.OnVideoFirstFrameReady = OnVideoReady;
         m_VideoPlayer.OnEnd = OnVideoEnd;
     }
 
-    public void Open(string title, string url, System.Action onOpen, System.Action onClose)
+    private void _Open(string title, string url, System.Action onOpen, System.Action onClose)
     {
+        Debug.Log($"[VideoPlayer] Loading \"{title}\" ({url})");
         m_OnClose = onClose;
 
-        m_CanvasGroup.blocksRaycasts = true;
         gameObject.SetActive(true);
+        m_InputRaycaster.enabled = true;
 
         LeanTween.cancel(m_TweenId);
         m_TweenId = LeanTween.alphaCanvas(m_CanvasGroup, 1f, 0.5f)
@@ -76,9 +104,11 @@ public class WitchSchoolPlayer : MonoBehaviour
     private void Close()
     {
         StopCoroutine("LoadVideoCoroutine");
+
         m_OnClose?.Invoke();
         m_OnClose = null;
-        m_CanvasGroup.blocksRaycasts = false;
+        m_InputRaycaster.enabled = false;
+        m_VideoPlayer.UnLoad();
 
         LeanTween.cancel(m_TweenId);
         m_TweenId = LeanTween.alphaCanvas(m_CanvasGroup, 0f, 0.5f)
@@ -90,9 +120,12 @@ public class WitchSchoolPlayer : MonoBehaviour
             .setOnComplete(() =>
             {
                 gameObject.SetActive(false);
-                m_VideoPlayer.UnLoad();
-                m_VideoPlayer.OnReady = null;
                 PlayerDataManager.Instance?.GetComponent<AudioSource>().UnPause();
+
+                m_TweenId = LeanTween.value(0, 0, 120).setOnComplete(() =>
+                {
+                    SceneManager.UnloadScene(SceneManager.Scene.VIDEO_PLAYER, null, null);
+                }).uniqueId;
             })
             .uniqueId;
     }
@@ -226,4 +259,13 @@ public class WitchSchoolPlayer : MonoBehaviour
         if (m_VideoPlayer.GetCurrentState() == MediaPlayerCtrl.MEDIAPLAYER_STATE.PLAYING)
             m_Slider.value = m_VideoPlayer.GetSeekBarValue();
     }
+
+#if UNITY_EDITOR
+
+    [SerializeField] private MediaPlayerCtrl.MEDIAPLAYER_STATE m_DebugPlayerState;
+    private void LateUpdate()
+    {
+        m_DebugPlayerState = m_VideoPlayer.GetCurrentState();
+    }
+#endif
 }

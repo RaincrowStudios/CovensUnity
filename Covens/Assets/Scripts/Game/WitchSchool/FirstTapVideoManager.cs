@@ -6,14 +6,18 @@ using System.Collections.Generic;
 public class FirstTapVideoManager : MonoBehaviour
 {
     public static FirstTapVideoManager Instance;
+    
     public Text title;
     public Text desc;
     public Image thumb;
     public CanvasGroup CG;
-    public CanvasGroup videoContainer;
-    public MediaPlayerCtrl player;
-    public Text videoTitle;
-    public string ID = "";
+
+    [SerializeField] private Button m_ThumbnailButton;
+    [SerializeField] private Button m_WatchButton;
+    [SerializeField] private Button m_SkipButton;
+
+    private string m_Id = "";
+    private int m_TweenId;
 
     public static bool IsFirstFlight
     {
@@ -40,6 +44,7 @@ public class FirstTapVideoManager : MonoBehaviour
     //            PlayerDataManager.playerData.firsts.Add("cast");
     //    }
     //}
+
     public static bool IsFirstSummon
     {
         get => PlayerPrefs.GetInt("first.summon." + PlayerDataManager.playerData.instance, 1) == 1;
@@ -55,6 +60,10 @@ public class FirstTapVideoManager : MonoBehaviour
     void Awake()
     {
         Instance = this;
+
+        m_ThumbnailButton.onClick.AddListener(PlayVideo);
+        m_WatchButton.onClick.AddListener(PlayVideo);
+        m_SkipButton.onClick.AddListener(OnSkip);
     }
     
     public bool CheckSummon()
@@ -105,11 +114,15 @@ public class FirstTapVideoManager : MonoBehaviour
         if (WitchSchoolManager.witchVideos.Contains(id) == false)
             return;
 
-        ID = id;
+        LeanTween.cancel(m_TweenId);
+
+        m_Id = id;
         title.text = LocalizeLookUp.GetText(id + "_title").ToUpper();
         desc.text = LocalizeLookUp.GetText(id + "_desc");
         StartCoroutine(getPic(id));
-        StartCoroutine(FadeInFocus(CG));
+
+        CG.gameObject.SetActive(true);
+        m_TweenId = LeanTween.alphaCanvas(CG, 1f, 1f).setEaseOutCubic().uniqueId;
     }
 
     IEnumerator getPic(string id)
@@ -121,75 +134,28 @@ public class FirstTapVideoManager : MonoBehaviour
 
     public void OnSkip()
     {
-        StartCoroutine(FadeOutFocus(CG));
+        LeanTween.cancel(m_TweenId);
+        m_TweenId =  LeanTween.alphaCanvas(CG, 0f, 1f).setEaseOutCubic().setOnComplete(() => CG.gameObject.SetActive(false)).uniqueId;
 
-        if (ID == "fly")
+        if (m_Id == "fly")
         {
             IsFirstFlight = false;
             MapFlightTransition.Instance.FlyOut();
         }
-        else if (ID == "summoning")
+        else if (m_Id == "summoning")
         {
             IsFirstSummon = false;
             SummoningController.Instance.Open();
         }
-        else if (ID == "spellcasting")
+        else if (m_Id == "spellcasting")
         {
             IsFirstCast = false;
         }
-
     }
 
-    public void playVideo()
+    public void PlayVideo()
     {
-        videoTitle.text = title.text;
-        StartCoroutine(FadeInFocus(videoContainer));
-        player.Load(DownloadAssetBundle.baseURL + "witch-school-new/videos/" + ID + ".mp4");
-    }
-
-    public void OnCloseVideo()
-    {
-        player.UnLoad();
-        StartCoroutine(FadeOutFocus(videoContainer));
-
-        OnSkip();
-    }
-
-    IEnumerator FadeOutFocus(CanvasGroup cg)
-    {
-        float t = 0;
-        while (t <= 1)
-        {
-            t += Time.deltaTime * 2.8f;
-            cg.alpha = Mathf.SmoothStep(1, 0, t);
-            yield return 0;
-        }
-        cg.gameObject.SetActive(false);
-    }
-
-    IEnumerator FadeInFocus(CanvasGroup cg, float delay = 0)
-    {
-
-        cg.gameObject.SetActive(true);
-        float t = 0;
-        while (t <= 1)
-        {
-            t += Time.deltaTime * 2;
-            cg.alpha = Mathf.SmoothStep(0, 1, t);
-            yield return 0;
-        }
-
-    }
-
-    public void Disable(GameObject g, float delay = 1.5f)
-    {
-        StartCoroutine(disableObject(g, delay));
-    }
-
-    IEnumerator disableObject(GameObject g, float delay)
-    {
-        yield return new WaitForSeconds(delay);
-        g.SetActive(false);
+        WitchSchoolPlayer.Open(title.text, DownloadAssetBundle.baseURL + "witch-school-new/videos/" + m_Id + ".mp4", null, OnSkip);
     }
 }
 

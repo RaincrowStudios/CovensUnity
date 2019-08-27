@@ -58,6 +58,9 @@ public class EditorScenes : MonoBehaviour
     [MenuItem("Scenes/Screens/WitchSchool")]
     static void WitchSchoolScene() => OpenScene("WitchSchool");
 
+    [MenuItem("Scenes/Screens/VideoPlayer")]
+    static void VideoPlayerScene() => OpenScene("VideoPlayer");
+
 
     private static void OpenScene(string name)
     {

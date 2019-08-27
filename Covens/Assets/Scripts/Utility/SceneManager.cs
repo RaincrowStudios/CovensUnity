@@ -28,6 +28,7 @@ namespace Raincrow
             NEARBY_POPS,
             SETTINGS,
             WITCH_SCHOOL,
+            VIDEO_PLAYER,
         }
 
         private static Dictionary<Scene, string> m_SceneNames = new Dictionary<Scene, string>
@@ -49,6 +50,7 @@ namespace Raincrow
             {Scene.NEARBY_POPS,         "NearbyPops" },
             {Scene.SETTINGS,            "Settings" },
             {Scene.WITCH_SCHOOL,        "WitchSchool" },
+            {Scene.VIDEO_PLAYER,        "VideoPlayer" },
         };
 
         private static SceneManager m_Instance;
