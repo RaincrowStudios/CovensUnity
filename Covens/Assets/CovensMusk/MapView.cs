@@ -8,6 +8,9 @@ public class MapView : MonoBehaviour
 {
     private static MapView m_Instance;
 
+    private List<string> m_BanishedSpirits = new List<string>();
+    private List<string> m_DiscoveredSpirits = new List<string>();
+
     public static void Initialize()
     {
         if (m_Instance != null)
@@ -35,6 +38,9 @@ public class MapView : MonoBehaviour
 
         LocationIslandController.OnEnterLocation += OnEnterPoP;
         LocationIslandController.OnExitLocation += OnLeavePoP;
+
+        SpiritDicoveredHandler.OnSpiritDiscovered += _OnSpiritDiscovered;
+        SpellCastHandler.OnSpiritBanished += _OnSpiritBanished;
     }
 
     private void _OnPlayerEnergyUpdated(int energy)
@@ -115,6 +121,26 @@ public class MapView : MonoBehaviour
             if (token.Type == MarkerSpawner.MarkerType.WITCH)
                 (marker as WitchMarker).RemoveDeathFX();
         }
+    }
+
+    private void _OnSpiritBanished(string spirit)
+    {
+        Debug.Log(spirit + " BANISHED");
+        if (m_DiscoveredSpirits.Contains(spirit))
+        {
+            m_DiscoveredSpirits.Remove(spirit);
+            UISpiritDiscovered.Instance.Show(spirit);
+        }
+        else
+        {
+            UISpiritBanished.Instance.Show(spirit);
+        }
+    }
+
+    private void _OnSpiritDiscovered(string spirit)
+    {
+        Debug.Log(spirit + " DISCOVERED");
+        m_DiscoveredSpirits.Add(spirit);
     }
 
 

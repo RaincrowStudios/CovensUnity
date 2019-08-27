@@ -38,6 +38,11 @@ namespace Raincrow.GameEventResponses
                 if (spell != null && target != null && target.inMapView && target.IsShowingAvatar)
                     SpawnFx(target, spell.school, (int)response.result.damage);
             }
+
+            if (isCaster)
+            {
+
+            }
         }
 
         private void SpawnFx(IMarker marker, int school, int amount)

@@ -58,6 +58,8 @@ namespace Raincrow.GameEventResponses
         public static event System.Action<string, string, SpellData, Result> OnSpellCast;
         public static event System.Action<string, StatusEffect> OnApplyStatusEffect;
 
+        public static event System.Action<string> OnSpiritBanished;
+
         private static Dictionary<string, System.Action<SpellCastEventData, IMarker, IMarker>> m_SpellBehaviorDict = new Dictionary<string, System.Action<SpellCastEventData, IMarker, IMarker>>()
         {
             { "spell_banish",   BanishManager.Banish },
@@ -195,7 +197,7 @@ namespace Raincrow.GameEventResponses
                             (target as WitchMarker).AddImmunityFX();
                     }
 
-                    //
+                    //handle spell/animation
                     if (target != null)
                     {
                         if (data.result.isSuccess)
@@ -243,7 +245,8 @@ namespace Raincrow.GameEventResponses
                     if (playerIsCaster && data.target.energy == 0 && target is SpiritMarker)
                     {
                         SpiritData spiritData = (target as SpiritMarker).spiritData;
-                        UISpiritBanished.Instance.Show(spiritData.id);
+                        OnSpiritBanished?.Invoke(spiritData.id);
+                        //UISpiritBanished.Instance.Show(spiritData.id);
                     }
 
                     //show notification

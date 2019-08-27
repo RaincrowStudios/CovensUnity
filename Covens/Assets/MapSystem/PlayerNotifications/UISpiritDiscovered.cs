@@ -66,9 +66,9 @@ public class UISpiritDiscovered : MonoBehaviour
 
     private IEnumerator ShowCoroutine(string id, Sprite sprite)
     {
-        //wait for the spirit banished ui to close
-        while (UISpiritBanished.IsOpen)
-            yield return 1;
+        ////wait for the spirit banished ui to close
+        //while (UISpiritBanished.IsOpen)
+        //    yield return 1;
 
         string spiritName = LocalizeLookUp.GetSpiritName(id);
 
