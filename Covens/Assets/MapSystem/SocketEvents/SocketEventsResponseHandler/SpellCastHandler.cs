@@ -58,7 +58,7 @@ namespace Raincrow.GameEventResponses
         public static event System.Action<string, string, SpellData, Result> OnSpellCast;
         public static event System.Action<string, StatusEffect> OnApplyStatusEffect;
 
-        public static event System.Action<string> OnSpiritBanished;
+        public static System.Action<string> OnSpiritBanished;
 
         private static Dictionary<string, System.Action<SpellCastEventData, IMarker, IMarker>> m_SpellBehaviorDict = new Dictionary<string, System.Action<SpellCastEventData, IMarker, IMarker>>()
         {

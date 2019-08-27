@@ -39,9 +39,10 @@ namespace Raincrow.GameEventResponses
                     SpawnFx(target, spell.school, (int)response.result.damage);
             }
 
-            if (isCaster)
+            if (isCaster && response.target.energy == 0 && target is SpiritMarker)
             {
-
+                SpiritData spiritData = (target as SpiritMarker).spiritData;
+                SpellCastHandler.OnSpiritBanished?.Invoke(spiritData.id);
             }
         }
 

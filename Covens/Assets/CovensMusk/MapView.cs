@@ -8,7 +8,6 @@ public class MapView : MonoBehaviour
 {
     private static MapView m_Instance;
 
-    private List<string> m_BanishedSpirits = new List<string>();
     private List<string> m_DiscoveredSpirits = new List<string>();
 
     public static void Initialize()
