@@ -221,7 +221,8 @@
       "states": [
         "vulnerable",
         ""
-      ]
+      ],
+      "hidden": true
     },
     "spell_banish": {
       "id": "spell_banish",

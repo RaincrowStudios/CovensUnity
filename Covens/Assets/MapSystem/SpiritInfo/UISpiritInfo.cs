@@ -101,7 +101,6 @@ public class UISpiritInfo : UIInfoPanel
 
         m_OnClose = onClose;
         m_SpiritData = DownloadedAssets.spiritDict[SpiritToken.spiritId];
-        m_SpiritSelectData = null;
         m_OwnerButton.onClick.RemoveAllListeners();
 
         m_SpiritName.text = m_SpiritData.Name;
