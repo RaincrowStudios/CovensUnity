@@ -294,9 +294,6 @@ public class UIWaitingCastResult : UIInfoPanel
         }
         if (PlayerDataManager.playerData.degree == 0) //setting up the Degree Bar UI if the witch is grey
         {
-            //    OldMin = -PlayerDataManager.playerData.maxAlignment;
-            //    OldMax = PlayerDataManager.playerData.maxAlignment;
-            //    OldVal = PlayerDataManager.playerData.alignment;
             CurrentDegree.gameObject.SetActive(false);
             NextDegree.gameObject.SetActive(false);
             NextShadowIcon.SetActive(false);
@@ -315,11 +312,6 @@ public class UIWaitingCastResult : UIInfoPanel
                 NextDegree.color = new Color(0.2705882f, 0.2705882f, 0.2705882f);
                 NextShadowIcon.SetActive(false);
                 CurrentShadowIcon.SetActive(false);
-
-
-                //OldMin = PlayerDataManager.playerData.minAlignment;
-                //OldMax = PlayerDataManager.playerData.maxAlignment;
-                //OldVal = PlayerDataManager.playerData.alignment;
             }
             else if (PlayerDataManager.playerData.degree < 0) //Shadow Witch
             {
@@ -327,15 +319,16 @@ public class UIWaitingCastResult : UIInfoPanel
                 CurrentShadowIcon.SetActive(true);
                 CurrentDegree.color = new Color(1f, 1f, 1f);
                 NextDegree.color = new Color(1f, 1f, 1f);
-                //OldMin = (int)Mathf.Abs(PlayerDataManager.playerData.maxAlignment);
-                //OldMax = (int)Mathf.Abs(PlayerDataManager.playerData.minAlignment);
-                //if (PlayerDataManager.playerData.alignment >= 0)
-                //    OldVal = PlayerDataManager.playerData.alignment;
-                //else
-                //    OldVal = 
             }
         }
-        var finalFill = Utilities.InverseLerp(PlayerDataManager.playerData.minAlignment, PlayerDataManager.playerData.maxAlignment, PlayerDataManager.playerData.alignment);// MapUtils.scale(0f, 1f, OldMin, OldMax, OldVal); //Finding new Value
+
+        var finalFill = Utilities.InverseLerp(
+            PlayerDataManager.playerData.minAlignment, 
+            PlayerDataManager.playerData.maxAlignment, 
+            PlayerDataManager.playerData.alignment);
+        
+        if (PlayerDataManager.playerData.degree < 0)
+            finalFill = 1 - finalFill;
 
         if (initialFill != finalFill)
         {

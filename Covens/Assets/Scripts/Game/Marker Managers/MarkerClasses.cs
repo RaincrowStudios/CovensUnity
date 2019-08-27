@@ -214,7 +214,7 @@ public class PlayerData : WitchMarkerData
 {
     [JsonProperty("_id")] public string instance;
     public string account;
-    public string physicalDominion;
+    //public string physicalDominion;
     public ulong xp;
     public long alignment;
     public bool whiteMastery;
@@ -231,7 +231,6 @@ public class PlayerData : WitchMarkerData
     public bool tutorial;
 
     public string favoriteSpell;
-    public bool dailyBlessing;
     public string benefactor;
     public string nemesis;
 
