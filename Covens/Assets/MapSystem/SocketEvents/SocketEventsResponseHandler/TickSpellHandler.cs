@@ -51,7 +51,7 @@ namespace Raincrow.GameEventResponses
             fx.localPosition = Vector3.zero;
             fx.position += fx.up * 40;
 
-            fx.GetComponentInChildren<TextMeshProUGUI>().text = amount.ToString("+#;-#");
+            fx.GetComponentInChildren<TextMeshPro>().text = amount.ToString("+#;-#");
         }
     }
 }
