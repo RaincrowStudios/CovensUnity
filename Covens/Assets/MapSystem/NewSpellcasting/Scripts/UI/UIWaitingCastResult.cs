@@ -100,6 +100,8 @@ public class UIWaitingCastResult : UIInfoPanel
 
     public void Show(IMarker target, SpellData spell, List<spellIngredientsData> ingredients, System.Action<Raincrow.GameEventResponses.SpellCastHandler.Result> onContinue, System.Action onClose = null)
     {
+        OnMapEnergyChange.OnPlayerDead += Close;
+
         m_WaitingResults = true;
 
         LeanTween.cancel(m_LoadingTweenId);
@@ -241,6 +243,7 @@ public class UIWaitingCastResult : UIInfoPanel
 
     public override void Close()
     {
+        OnMapEnergyChange.OnPlayerDead -= Close;
         base.Close();
 
         m_OnContinueCallback = null;

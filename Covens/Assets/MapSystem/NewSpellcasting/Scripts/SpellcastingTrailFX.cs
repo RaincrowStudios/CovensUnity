@@ -24,7 +24,7 @@ public class SpellcastingTrailFX : MonoBehaviour
     {
         if (caster == null || target == null || caster.isNull || target.isNull)
         {
-            LeanTween.value(0, 0, 0.6f)
+            LeanTween.value(0, 0, 0.2f)
                 .setOnStart(onStart)
                 .setOnComplete(onComplete);
         }
