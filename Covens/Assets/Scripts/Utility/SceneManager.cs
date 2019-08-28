@@ -29,6 +29,7 @@ namespace Raincrow
             SETTINGS,
             WITCH_SCHOOL,
             VIDEO_PLAYER,
+            POPUP,
         }
 
         private static Dictionary<Scene, string> m_SceneNames = new Dictionary<Scene, string>
@@ -51,6 +52,7 @@ namespace Raincrow
             {Scene.SETTINGS,            "Settings" },
             {Scene.WITCH_SCHOOL,        "WitchSchool" },
             {Scene.VIDEO_PLAYER,        "VideoPlayer" },
+            {Scene.POPUP,               "Popup" }
         };
 
         private static SceneManager m_Instance;
@@ -118,8 +120,14 @@ namespace Raincrow
 
             AsyncOperation asyncOp = UnitySceneManager.UnloadSceneAsync(unityScene);
             asyncOp.completed += op => onComplete?.Invoke();
-
             Instance.StartCoroutine(AsyncOperationCoroutine(asyncOp, onProgress));
+        }
+
+        public static bool IsSceneLoaded(Scene scene)
+        {
+            string sceneName = m_SceneNames[scene];
+            UnityScene unityScene = UnitySceneManager.GetSceneByName(sceneName);
+            return unityScene.isLoaded;
         }
 
         private static IEnumerator AsyncOperationCoroutine(AsyncOperation op, System.Action<float> onProgress)

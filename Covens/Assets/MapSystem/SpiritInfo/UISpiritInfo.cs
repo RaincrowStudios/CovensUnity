@@ -96,10 +96,17 @@ public class UISpiritInfo : UIInfoPanel
 
     private void _Show(IMarker spirit, Token token, System.Action onClose)
     {
-        if (isOpen)
-            return;
-
         m_OnClose = onClose;
+        previousMapPosition = MapsAPI.Instance.GetWorldPosition();
+        m_PreviousMapZoom = Mathf.Min(0.99f, MapsAPI.Instance.normalizedZoom);
+
+        if (MarkerSpawner.GetMarker(spirit.Token.Id) == null)
+        {
+            m_PreviousMapZoom = MapsAPI.Instance.normalizedZoom;
+            Close();
+            return;
+        }
+
         m_SpiritData = DownloadedAssets.spiritDict[SpiritToken.spiritId];
         m_OwnerButton.onClick.RemoveAllListeners();
 
@@ -121,10 +128,6 @@ public class UISpiritInfo : UIInfoPanel
             default: tier = "?"; break;
         };
         m_Tier.text = tier;
-
-        previousMapPosition = MapsAPI.Instance.GetWorldPosition();
-        m_PreviousMapZoom = Mathf.Min(0.98f, MapsAPI.Instance.normalizedZoom);
-
 
         OnMapEnergyChange.OnPlayerDead += _OnCharacterDead;
         OnMapEnergyChange.OnEnergyChange += _OnMapEnergyChange;

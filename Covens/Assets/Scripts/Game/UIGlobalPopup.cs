@@ -4,6 +4,7 @@ using UnityEngine;
 using System;
 using UnityEngine.UI;
 using TMPro;
+using Raincrow;
 
 public class UIGlobalPopup : MonoBehaviour
 {
@@ -21,22 +22,18 @@ public class UIGlobalPopup : MonoBehaviour
     [SerializeField] private Button m_ConfirmButton;
     [SerializeField] private Button m_CancelButton;
 
+    public static bool IsOpen { get; private set; }
+    public static bool IsLoading { get; private set; }
+    private static List<System.Action> m_Queue = new List<Action>();
+
     private System.Action m_OnConfirm;
     private System.Action m_OnCancel;
-    private List<System.Action> m_Queue = new List<Action>();
-    public static bool IsOpen { get; private set; }
-
+    
     private int m_AlphaTweenId;
     private int m_ScaleTweenId;
     
     private void Awake()
     {
-        if(m_Instance != null)
-        {
-            Destroy(this.gameObject);
-            return;
-        }
-
         m_Instance = this;
         DontDestroyOnLoad(this.gameObject);
 
@@ -45,6 +42,29 @@ public class UIGlobalPopup : MonoBehaviour
         m_InputRaycaster.enabled = false;
         m_ConfirmButton.onClick.AddListener(OnClickConfirm);
         m_CancelButton.onClick.AddListener(OnClickCancel);
+
+        if (m_Queue.Count > 0)
+        {
+            m_Queue[0]?.Invoke();
+            m_Queue.RemoveAt(0);
+        }
+    }
+
+    public static void LoadScene()
+    {
+        if (m_Instance != null)
+            return;
+
+        if (IsLoading)
+            return;
+
+        LoadingOverlay.Show();
+        IsLoading = true;
+        SceneManager.LoadSceneAsync(SceneManager.Scene.POPUP, UnityEngine.SceneManagement.LoadSceneMode.Additive, null, () =>
+        {
+            IsLoading = false;
+            LoadingOverlay.Hide();
+        });
     }
 
     public static void ShowPopUp(Action confirmAction, Action cancelAction, string txt)
@@ -56,9 +76,16 @@ public class UIGlobalPopup : MonoBehaviour
             m_Instance.SetError("");
             m_Instance.Show();
         };
+        
+        if (m_Instance == null)
+        {
+            m_Queue.Add(show);
+            LoadScene();
+            return;
+        }
 
         if (IsOpen)
-            m_Instance.m_Queue.Add(show);
+            m_Queue.Add(show);
         else
             show();
     }
@@ -73,15 +100,17 @@ public class UIGlobalPopup : MonoBehaviour
             m_Instance.Show();
         };
 
+        if (m_Instance == null)
+        {
+            m_Queue.Add(show);
+            LoadScene();
+            return;
+        }
+
         if (IsOpen)
-            m_Instance.m_Queue.Add(show);
+            m_Queue.Add(show);
         else
             show();
-    }
-    
-    public static void Error(string err)
-    {
-        m_Instance.SetError(err);
     }
     
     public static void ShowError(Action confirmAction, string txt)
@@ -94,8 +123,15 @@ public class UIGlobalPopup : MonoBehaviour
             m_Instance.Show();
         };
 
+        if (m_Instance == null)
+        {
+            m_Queue.Add(show);
+            LoadScene();
+            return;
+        }
+
         if (IsOpen)
-            m_Instance.m_Queue.Add(show);
+            m_Queue.Add(show);
         else
             show();
     }
