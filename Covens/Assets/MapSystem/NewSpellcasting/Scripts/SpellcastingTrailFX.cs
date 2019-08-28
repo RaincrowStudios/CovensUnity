@@ -74,10 +74,16 @@ public class SpellcastingTrailFX : MonoBehaviour
                 LTBezierPath path;
                 if (!LocationIslandController.isInBattle)
                 {
+                    Vector3 endcontrol = (startPosition - targetPosition) * Random.Range(0.3f, 0.5f);
+                    Vector3 startcontrol = (targetPosition - startPosition) * Random.Range(0.3f, 0.5f);
+
+                    startcontrol = Quaternion.Euler(0, Random.Range(-100,100), Random.Range(-100, 100)) * startcontrol;
+                    endcontrol = Quaternion.Euler(0, Random.Range(-45, 45), Random.Range(-45, 45)) * endcontrol;
+                    
                     path = new LTBezierPath(new Vector3[] {
                         startPosition, //start point
-                        targetPosition + new Vector3(Random.Range(-100,100),Random.Range(-35,35),Random.Range(-100,100)),
-                        startPosition + new Vector3(Random.Range(-100,100),Random.Range(-35,35),Random.Range(-100,100)),
+                        targetPosition + endcontrol,
+                        startPosition + startcontrol,
                         targetPosition
                    });
                 }
@@ -85,8 +91,8 @@ public class SpellcastingTrailFX : MonoBehaviour
                 {
                     path = new LTBezierPath(new Vector3[] {
                         startPosition, //start point
-                        targetPosition + new Vector3(Random.Range(-100,100),Random.Range(-35,35),Random.Range(-100,100)) * trailTime,
-                        startPosition + new Vector3(Random.Range(-100,100),Random.Range(-35,35),Random.Range(-100,100)) * trailTime,
+                        targetPosition + new Vector3(Random.Range(-100,100),Random.Range(-35,35),Random.Range(-100,100)),
+                        startPosition + new Vector3(Random.Range(-100,100),Random.Range(-35,35),Random.Range(-100,100)),
                         targetPosition
                    });
                 }
