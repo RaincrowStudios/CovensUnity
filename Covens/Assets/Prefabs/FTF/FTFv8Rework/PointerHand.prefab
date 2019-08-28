@@ -12,8 +12,9 @@ GameObject:
   - component: {fileID: 222775025232038066}
   - component: {fileID: 114088330954408462}
   - component: {fileID: 5033959134489006734}
+  - component: {fileID: 4335546329154286894}
   m_Layer: 23
-  m_Name: MattBox
+  m_Name: PointerHand
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -88,5 +89,15 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   frequency: 1
-  scaleFinal: 1.5
-  scaleInit: 1
+--- !u!225 &4335546329154286894
+CanvasGroup:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1914846664954902}
+  m_Enabled: 1
+  m_Alpha: 0
+  m_Interactable: 1
+  m_BlocksRaycasts: 1
+  m_IgnoreParentGroups: 0
