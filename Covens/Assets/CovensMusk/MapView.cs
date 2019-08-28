@@ -7,8 +7,8 @@ using UnityEngine;
 public class MapView : MonoBehaviour
 {
     private static MapView m_Instance;
-
     private List<string> m_DiscoveredSpirits = new List<string>();
+    private List<string> m_BanishedSpirits = new List<string>();
 
     public static void Initialize()
     {
@@ -125,21 +125,43 @@ public class MapView : MonoBehaviour
     private void _OnSpiritBanished(string spirit)
     {
         Debug.Log(spirit + " BANISHED");
+        
+        //discover.spirit was triggered before the banish
         if (m_DiscoveredSpirits.Contains(spirit))
         {
             m_DiscoveredSpirits.Remove(spirit);
             UISpiritDiscovered.Instance.Show(spirit);
         }
+
+        //discover.spirit was not triggered yet
         else
         {
-            UISpiritBanished.Instance.Show(spirit);
+            bool discovered = PlayerDataManager.playerData.knownSpirits.Exists(spr => spr.spirit == spirit);
+
+            //player already had this spirit
+            if (discovered)
+                UISpiritBanished.Instance.Show(spirit);
+
+            //wait for the discover.spirit event
+            else
+                m_BanishedSpirits.Add(spirit);
         }
     }
 
     private void _OnSpiritDiscovered(string spirit)
     {
         Debug.Log(spirit + " DISCOVERED");
-        m_DiscoveredSpirits.Add(spirit);
+
+        //banished was already triggered
+        if (m_BanishedSpirits.Contains(spirit))
+        {
+            UISpiritDiscovered.Instance.Show(spirit);
+        }
+        //banish was not triggered yet
+        else
+        {
+            m_DiscoveredSpirits.Add(spirit);
+        }
     }
 
 

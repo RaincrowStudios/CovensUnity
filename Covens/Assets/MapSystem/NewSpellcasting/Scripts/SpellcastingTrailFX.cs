@@ -85,8 +85,8 @@ public class SpellcastingTrailFX : MonoBehaviour
                 {
                     path = new LTBezierPath(new Vector3[] {
                         startPosition, //start point
-                        targetPosition + new Vector3(Random.Range(-100,100),Random.Range(-35,35),Random.Range(-100,100)),
-                        startPosition + new Vector3(Random.Range(-100,100),Random.Range(-35,35),Random.Range(-100,100)),
+                        targetPosition + new Vector3(Random.Range(-100,100),Random.Range(-35,35),Random.Range(-100,100)) * trailTime,
+                        startPosition + new Vector3(Random.Range(-100,100),Random.Range(-35,35),Random.Range(-100,100)) * trailTime,
                         targetPosition
                    });
                 }
