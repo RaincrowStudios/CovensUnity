@@ -69,7 +69,7 @@ public class ShopItem : MonoBehaviour
         cost.color = item.silver > PlayerDataManager.playerData.silver ? Color.red : Color.white;
         button.sprite = item.owned ? green : red;
         //   buy.text = item.owned ? "OWNED" : "BUY";
-        buyButton.interactable = item.silver < PlayerDataManager.playerData.silver;
+        buyButton.interactable = item.silver <= PlayerDataManager.playerData.silver;
         buyButton.onClick.AddListener(() => { onClick(ShopBase.ShopItemType.IngredientCharms, item); });
     }
 
