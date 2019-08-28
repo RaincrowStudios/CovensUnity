@@ -130,6 +130,7 @@ public class UISpiritInfo : UIInfoPanel
         OnMapEnergyChange.OnEnergyChange += _OnMapEnergyChange;
         SpellCastHandler.OnApplyStatusEffect += _OnStatusEffectApplied;
         RemoveTokenHandler.OnTokenRemove += _OnMapTokenRemove;
+        ExpireSpiritHandler.OnSpiritExpire += _OnMapTokenRemove;
         BanishManager.OnBanished += Abort;
 
         if (!LocationIslandController.isInBattle)
@@ -186,12 +187,13 @@ public class UISpiritInfo : UIInfoPanel
 
         OnMapEnergyChange.OnPlayerDead -= _OnCharacterDead;
         OnMapEnergyChange.OnEnergyChange -= _OnMapEnergyChange;
+        SpellCastHandler.OnApplyStatusEffect -= _OnStatusEffectApplied;
+        RemoveTokenHandler.OnTokenRemove -= _OnMapTokenRemove;
+        ExpireSpiritHandler.OnSpiritExpire -= _OnMapTokenRemove;
 
         if (!LocationIslandController.isInBattle)
         {
             MoveTokenHandler.OnTokenMove -= _OnMapTokenMove;
-            SpellCastHandler.OnApplyStatusEffect -= _OnStatusEffectApplied;
-            RemoveTokenHandler.OnTokenRemove -= _OnMapTokenRemove;
             BanishManager.OnBanished -= Abort;
 
             MapsAPI.Instance.allowControl = true;
