@@ -114,6 +114,9 @@ public class FirstTapVideoManager : MonoBehaviour
         if (WitchSchoolManager.witchVideos.Contains(id) == false)
             return;
 
+        CG.interactable = true;
+        CG.blocksRaycasts = true;
+
         LeanTween.cancel(m_TweenId);
 
         m_Id = id;
@@ -134,6 +137,9 @@ public class FirstTapVideoManager : MonoBehaviour
 
     public void OnSkip()
     {
+        CG.interactable = false;
+        CG.blocksRaycasts = false;
+
         LeanTween.cancel(m_TweenId);
         m_TweenId =  LeanTween.alphaCanvas(CG, 0f, 1f).setEaseOutCubic().setOnComplete(() => CG.gameObject.SetActive(false)).uniqueId;
 
