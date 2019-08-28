@@ -94,8 +94,8 @@ public class TeamPlayerView : MonoBehaviour
         _worldRank.text = LocalizeLookUp.GetText("lt_world_rank") + " " + data.worldRank;
         _coven.text = (string.IsNullOrEmpty(data.coven) ? LocalizeLookUp.GetText("lt_coven_none") : LocalizeLookUp.GetText("lt_coven") + " " + data.coven);
         //_state.text = (data.state == "" ? LocalizeLookUp.GetText("lt_state_normal") : LocalizeLookUp.GetText("lt_state") + " " + data.state);
-        _power.text = LocalizeLookUp.GetText("generic_power") + ": " + data.power;
-        _resilience.text = LocalizeLookUp.GetText("generic_resilience") + ": " + data.resilience;
+        _power.text = LocalizeLookUp.GetText("generic_power") + ": " + data.Power;
+        _resilience.text = LocalizeLookUp.GetText("generic_resilience") + ": " + data.Resilience;
         _energy.text = LocalizeLookUp.GetText("lt_energy") + " " + data.energy.ToString() + "/" + data.baseEnergy.ToString();
 
         m_OnFly = onFly;

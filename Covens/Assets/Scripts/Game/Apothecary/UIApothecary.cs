@@ -1,4 +1,5 @@
 ﻿using Newtonsoft.Json;
+using Raincrow.GameEventResponses;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -236,8 +237,8 @@ public class UIApothecary : MonoBehaviour
         UIGlobalPopup.ShowPopUp(
             confirmAction: (System.Action)(() =>
             {
-                var data = new { consumable = Items[m_pWheel.SelectedIndex].Consumable.id };
-                APIManager.Instance.Post((string)"inventory/consume", (string)JsonConvert.SerializeObject((object)data), (System.Action<string, int>)this.OnConsumeResponse);
+                //var data = new { consumable = Items[m_pWheel.SelectedIndex].Consumable.id };
+                APIManager.Instance.Post("character/consume/" + Items[m_pWheel.SelectedIndex].Consumable.id, "{}", OnConsumeResponse);
                 m_pLoading.SetActive(true);
             }),
             cancelAction: () =>
@@ -250,24 +251,26 @@ public class UIApothecary : MonoBehaviour
 
     private void OnConsumeResponse(string response, int result)
     {
+        m_pLoading.SetActive(false);
+
         if (result == 200)
         {
             UIGlobalPopup.ShowPopUp(
                 () => {
                     Items[m_pWheel.SelectedIndex].Consumable.count -= 1;
+                    m_pConsumeButton.interactable = Items[m_pWheel.SelectedIndex].Consumable.count > 0;
                     m_pConsumeText.text = LocalizeLookUp.GetText("consume_amount").Replace("{{Count}}", Items[m_pWheel.SelectedIndex].Consumable.count.ToString());// + ")";
                 },
                 LocalizeLookUp.GetStoreDesc(Items[m_pWheel.SelectedIndex].Consumable.id)
             );
+
+            StatusEffect effect = JsonConvert.DeserializeObject<StatusEffect>(response);
+            SpellCastHandler.OnPlayerApplyStatusEffect?.Invoke(effect);
         }
         else
         {
-            string sError = "code " + result;
-            UIGlobalPopup.Error(sError);
+            UIGlobalPopup.ShowError(null, APIManager.ParseError(response));
         }
-
-        m_pConsumeButton.interactable = Items[m_pWheel.SelectedIndex].Consumable.count > 0;
-        m_pLoading.SetActive(false);
     }
 
     private void OnClickReturn()

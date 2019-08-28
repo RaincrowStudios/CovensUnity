@@ -379,6 +379,14 @@ namespace Raincrow.Test
                     Debug.Log(PlayerManager.inSpiritForm);
                 }
 
+                if (GUILayout.Button("Player stats"))
+                {
+                    Debug.Log($"Power: {PlayerDataManager.playerData.Power} ({PlayerDataManager.playerData.basePower})");
+                    Debug.Log($"Power: {PlayerDataManager.playerData.Resilience} ({PlayerDataManager.playerData.baseResilience})");
+                    Debug.Log($"Power: {PlayerDataManager.playerData.Aptitude} ({PlayerDataManager.playerData.baseAptitude})");
+                    //Debug.Log($"Power: {PlayerDataManager.playerData.Power} ({PlayerDataManager.playerData.basePower})");
+                }
+
                 if (GUILayout.Button("notification"))
                 {
                     Sprite spr = null;

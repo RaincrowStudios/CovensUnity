@@ -88,8 +88,18 @@ public abstract class CharacterMarkerData : MarkerData
     public virtual int energy { get; set; }
     public virtual int degree { get; set; }
     public virtual int level { get; set; }
-    public virtual int power { get; set; }
-    public virtual int resilience { get; set; }
+
+    [JsonProperty("power")]
+    public virtual int basePower { get; set; }
+
+    [JsonProperty("aptitude")]
+    public virtual int baseAptitude { get; set; }
+
+    [JsonProperty("wisdom")]
+    public virtual int baseWisdom { get; set; }
+
+    [JsonProperty("resilience")]
+    public virtual int baseResilience { get; set; }
 
     public List<StatusEffect> effects;
 
@@ -117,6 +127,67 @@ public abstract class CharacterMarkerData : MarkerData
                 return MarkerManager.MarkerSchool.WHITE;
 
             return MarkerManager.MarkerSchool.GREY;
+        }
+    }
+
+    [JsonIgnore]
+    public int Aptitude
+    {
+        get
+        {
+            int result = baseAptitude;
+            if (effects != null)
+            {
+                foreach (var condition in effects)
+                    result += condition.modifiers.aptitude;
+            }
+            return result;
+        }
+    }
+
+    [JsonIgnore]
+    public int Power
+    {
+        get
+        {
+            int result = basePower;
+            if (effects != null)
+            {
+                foreach (var condition in effects)
+                    result += condition.modifiers.power;
+            }
+            return result;
+        }
+    }
+
+    [JsonIgnore]
+    public int Resilience
+    {
+        get
+        {
+            int result = baseResilience;
+            if (effects != null)
+            {
+                foreach (var condition in effects)
+                    result += condition.modifiers.resilience;
+            }
+            return result;
+        }
+    }
+
+
+    [JsonIgnore]
+    public int Wisdom
+    {
+        get
+        {
+            int result = baseWisdom;
+            if (effects != null)
+            {
+                foreach (var condition in effects)
+                    result += condition.modifiers.wisdom;
+            }
+            return result;
         }
     }
 }
@@ -223,11 +294,11 @@ public class PlayerData : WitchMarkerData
 
     public int silver;
     public int gold;
+
     public int foxus;
     public int ward;
     public int favor;
-    public int aptitude;
-    public int wisdom;
+
     public bool tutorial;
 
     public string favoriteSpell;
@@ -489,13 +560,22 @@ public class PlayerData : WitchMarkerData
 
     [JsonIgnore]
     public override string coven => covenInfo.name;
+    
+    public long ApplyExpBuffs(long expAmount)
+    {
+       return expAmount + (long)(expAmount * Aptitude * 0.01);
+    }
+
+    public void AddExp(long amount)
+    {
+        xp += (ulong)amount;
+        PlayerManagerUI.Instance.setupXP();
+    }
 }
 
 //map select
 public class SelectWitchData_Map : WitchMarkerData
 {
-    public new int power;
-    public new int resilience;
     public PlayerRank rank;
 
     [JsonIgnore]
@@ -537,10 +617,10 @@ public class SelectWitchData_Map : WitchMarkerData
 public class SelectSpiritData_Map : SpiritMarkerData
 {
     public override double createdOn { get; set; }
-    public override string owner { get; set; }
+    //public override string owner { get; set; }
     //public override string coven { get; set; }
-    public override int power { get; set; }
-    public override int resilience { get; set; }
+    //public override int basePower { get; set; }
+    //public override int baseResilience { get; set; }
     public override int bounty { get; set; }
 
     [JsonIgnore]
@@ -548,7 +628,6 @@ public class SelectSpiritData_Map : SpiritMarkerData
 
     [JsonIgnore]
     public override string state => token.state;
-
     [JsonIgnore]
     public override int energy => token.energy;
     [JsonIgnore]

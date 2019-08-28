@@ -271,15 +271,15 @@ public class GameStartup : MonoBehaviour
 
     private void StartGame()
     {
-        if (PlayerDataManager.IsFTF)
-        {
-            Debug.Log("<color=red>skiping tutorial</color>");
-            FTFManager.FinishFTF((result, response) =>
-            {
-                StartGame();
-            });
-            return;
-        }
+        //if (PlayerDataManager.IsFTF)
+        //{
+        //    Debug.Log("<color=red>skiping tutorial</color>");
+        //    FTFManager.FinishFTF((result, response) =>
+        //    {
+        //        StartGame();
+        //    });
+        //    return;
+        //}
 
         if (m_ConfigReady == false)
         {

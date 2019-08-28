@@ -17,8 +17,8 @@ public static class SpellcastingTextFeedback
         string spellSuccessMod = "";
         string intensityMod = "";
         string statusDuration = "";
-        int newResilience = PlayerDataManager.playerData.resilience;
-        int newPower = PlayerDataManager.playerData.power;
+        int newResilience = PlayerDataManager.playerData.baseResilience;
+        int newPower = PlayerDataManager.playerData.Power;
         int powerMod = 0;
         int selfEnergyChange = 0;
 

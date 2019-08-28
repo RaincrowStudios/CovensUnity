@@ -52,7 +52,7 @@ namespace Raincrow.GameEventResponses
 
         public string EventName => "cast.spell";
         public static event System.Action<string, SpellData, Result> OnPlayerTargeted;
-        public static event System.Action<StatusEffect> OnPlayerApplyStatusEffect;
+        public static System.Action<StatusEffect> OnPlayerApplyStatusEffect;
         public static System.Action<StatusEffect> OnPlayerExpireStatusEffect;
 
         public static event System.Action<string, string, SpellData, Result> OnSpellCast;
@@ -132,8 +132,7 @@ namespace Raincrow.GameEventResponses
 
                 if (data.result.isSuccess)
                 {
-                    PlayerDataManager.playerData.xp += (ulong)spell.xp;
-                    PlayerManagerUI.Instance.setupXP();
+                    PlayerDataManager.playerData.AddExp(PlayerDataManager.playerData.ApplyExpBuffs(spell.xp));
                 }
             }
 
