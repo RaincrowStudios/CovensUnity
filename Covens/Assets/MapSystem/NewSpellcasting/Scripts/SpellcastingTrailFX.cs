@@ -24,7 +24,7 @@ public class SpellcastingTrailFX : MonoBehaviour
     {
         if (caster == null || target == null || caster.isNull || target.isNull)
         {
-            LeanTween.value(0, 0, 0.2f)
+            LeanTween.value(0, 0, 0.1f)
                 .setOnStart(onStart)
                 .setOnComplete(onComplete);
         }
@@ -68,6 +68,14 @@ public class SpellcastingTrailFX : MonoBehaviour
 
         //spawn the charge
         chargeFxPool.Spawn(caster.position + offset, 2f).transform.localScale = new Vector3(5, 5, 5);
+
+        //just call on complete if the caster is casting on itself
+        if (caster == target)
+        {
+            LeanTween.value(0, 0, 0.25f).setOnComplete(onComplete);
+            return;
+        }
+
         LeanTween.value(0, 1, 0.25f)
             .setOnComplete(() =>
             {
