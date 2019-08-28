@@ -101,6 +101,17 @@ public class MapView : MonoBehaviour
     {
         marker.SetWorldPosition(position, 2f);
     }
+        
+    private void _OnSpiritExpire(IMarker marker)
+    {
+        MarkerSpawner.DeleteMarker(marker.Token.instance);
+
+        if (marker.Interactable)
+            marker.Interactable = false;
+
+        marker.SetAlpha(0, 1);
+        LeanTween.scale(marker.GameObject, Vector3.zero, 2f).setEaseOutCubic();
+    }
 
     private void _OnMapTokenEnergyUpdated(IMarker marker, int energy)
     {
@@ -185,6 +196,8 @@ public class MapView : MonoBehaviour
         AddTokenHandler.OnMarkerAdd -= _OnMapTokenAdd;
         RemoveTokenHandler.OnMarkerRemove -= _OnMapTokenRemove;
         MoveTokenHandler.OnMarkerMove -= _OnMapTokenMove;
+        OnMapEnergyChange.OnMarkerEnergyChange -= _OnMapTokenEnergyUpdated;
+        ExpireSpiritHandler.OnSpiritMarkerExpire -= _OnSpiritExpire;
 
         MapsAPI.Instance.OnCameraUpdate -= OnMapUpdate;
         PlayerManager.onStartFlight -= OnStartFlight;
@@ -204,6 +217,7 @@ public class MapView : MonoBehaviour
         RemoveTokenHandler.OnMarkerRemove += _OnMapTokenRemove;
         MoveTokenHandler.OnMarkerMove += _OnMapTokenMove;
         OnMapEnergyChange.OnMarkerEnergyChange += _OnMapTokenEnergyUpdated;
+        ExpireSpiritHandler.OnSpiritMarkerExpire += _OnSpiritExpire;
 
         MapsAPI.Instance.OnCameraUpdate += OnMapUpdate;
         PlayerManager.onStartFlight += OnStartFlight;

@@ -217,6 +217,11 @@ public class MarkerSpawner : MarkerManager
                 Instance.m_DespawnCoroutine = Instance.StartCoroutine(Instance.DespawnCoroutine());
 
             MapsAPI.Instance.RemoveMarker(marker);
+
+            if (m_Highlighting)
+            {
+                m_HighlightedMarkers.Remove(marker);
+            }
         }
     }
 
@@ -486,6 +491,10 @@ public class MarkerSpawner : MarkerManager
     public static void HighlightMarker(List<IMarker> targets)
     {
         m_Highlighting = targets.Count > 0;
+
+        if (targets == null)
+            targets = new List<IMarker>();
+
         m_HighlightedMarkers = targets;
         //MapsAPI.Instance.EnableBuildingIcons(!highlight);
 

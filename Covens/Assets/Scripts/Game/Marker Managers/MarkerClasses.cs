@@ -254,7 +254,7 @@ public class PlayerData : WitchMarkerData
     [JsonIgnore] private List<SpellData> m_AllSpells;
     [JsonIgnore] private List<SpellData> m_UnlockedSpells;
 
-    public List<string> spirits;
+    //public List<string> spirits;
     public List<KnownSpirits> knownSpirits;
     public List<CovenInvite> covenInvites;
     public List<CovenRequest> covenRequests;
