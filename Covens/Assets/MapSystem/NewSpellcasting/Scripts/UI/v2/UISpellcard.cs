@@ -17,6 +17,7 @@ public class UISpellcard : MonoBehaviour// : EnhancedScrollerCellView
     [SerializeField] private Image m_SchoolIcon;
     [SerializeField] private Image m_SpellIcon;
     [SerializeField] private Image m_SchoolFrame;
+    [SerializeField] private Image m_SchoolFrame2;
     [SerializeField] private Image m_SpellFrame;
 
     [SerializeField] private Button m_CardButton;
@@ -101,7 +102,7 @@ public class UISpellcard : MonoBehaviour// : EnhancedScrollerCellView
             m_SchoolFrame.color = m_SpellFrame.color = Utilities.Blue;
             m_SchoolIcon.overrideSprite = m_GreyCrest;
         }
-
+        m_SchoolFrame2.color = m_SchoolFrame.color;
         m_SpellIcon.overrideSprite = m_CooldownIcon.overrideSprite = null;
         DownloadedAssets.GetSprite(spell.id, spr =>
         {

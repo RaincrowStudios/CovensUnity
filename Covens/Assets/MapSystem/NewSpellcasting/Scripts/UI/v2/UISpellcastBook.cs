@@ -29,7 +29,7 @@ public class UISpellcastBook : MonoBehaviour//, IEnhancedScrollerDelegate
     [SerializeField] private Sprite[] m_TierSprite;
 
     [SerializeField] private TextMeshProUGUI m_BottomText;
-    
+
 
     private static UISpellcastBook m_Instance;
 
@@ -127,7 +127,7 @@ public class UISpellcastBook : MonoBehaviour//, IEnhancedScrollerDelegate
         m_CardPool = new SimplePool<UISpellcard>(m_CardPrefab, 38);
 
         int padding = (int)(m_Canvas.GetComponent<RectTransform>().sizeDelta.x / 2f) - (int)(m_CardPrefab.GetComponent<RectTransform>().sizeDelta.x / 2f);
-        m_ScrollLayoutGroup.padding = new RectOffset(padding, padding, 0, 0);
+        m_ScrollLayoutGroup.padding = new RectOffset(padding, padding, 73, 0);
         m_ScrollLayoutGroup.spacing = 0;
     }
 
@@ -282,7 +282,7 @@ public class UISpellcastBook : MonoBehaviour//, IEnhancedScrollerDelegate
             card.SetAlpha(0);
             m_Cards.Add(card);
         }
-        
+
         //StopCoroutine("SetupCardsCoroutine");
         StartCoroutine(SetupCardsCoroutine());
     }
@@ -311,7 +311,7 @@ public class UISpellcastBook : MonoBehaviour//, IEnhancedScrollerDelegate
         int i = m_PlayerSpells.Count / 2;
         int left = i;
         int right = i + 1;
-        
+
         while (left >= 0 || right < m_PlayerSpells.Count)
         {
             if (left >= 0)
@@ -393,7 +393,7 @@ public class UISpellcastBook : MonoBehaviour//, IEnhancedScrollerDelegate
 
         m_SelectedSchool = school;
 
-        foreach(UISpellcard card in m_Cards)
+        foreach (UISpellcard card in m_Cards)
         {
             card.gameObject.SetActive(school == null || school == card.Spell.school);
         }
@@ -741,7 +741,7 @@ public class UISpellcastBook : MonoBehaviour//, IEnhancedScrollerDelegate
         offset -= 0.5f;
         offset *= m_Canvas.GetComponent<RectTransform>().sizeDelta.x;
 
-        float cardPosition = m_Cards[cardIndex].RectTransform.anchoredPosition.x - m_ScrollLayoutGroup.padding.left ;
+        float cardPosition = m_Cards[cardIndex].RectTransform.anchoredPosition.x - m_ScrollLayoutGroup.padding.left;
         float containerSize = (m_Cards[0].RectTransform.sizeDelta.x * (cardCount - 1));
         float normalized = (cardPosition - offset) / containerSize;
 
