@@ -54,28 +54,20 @@ public class UIConditionInfo : MonoBehaviour
     public void Show(string conditionId, RectTransform referencePosition, Vector2 pivot, bool oldCanvas = false)
     {
         ConditionData condition = DownloadedAssets.GetCondition(conditionId);
-        
-        LeanTween.cancel(m_TweenId, true);
-
         SpellData spell = DownloadedAssets.GetSpell(condition.spellID);
+        Show(spell.Name, LocalizeLookUp.GetConditionDesc(conditionId), referencePosition, pivot, oldCanvas);
+    }
 
-        m_Title.text = spell.Name;
-        m_Description.text = LocalizeLookUp.GetConditionDesc(conditionId);
-        m_ReferencePosition = referencePosition;
+    public void Show(string title, string description, RectTransform parent, Vector2 pivot, bool oldCanvas = false)
+    {
+        //setup
+        m_Title.text = title;
+        m_Description.text = description;
+        m_ReferencePosition = parent;
         m_Panel.pivot = pivot;
 
-        if (oldCanvas)
-        {
-            m_Canvas.renderMode = RenderMode.ScreenSpaceCamera;
-            m_Canvas.worldCamera = MainUITransition.Instance.GetComponent<Canvas>().worldCamera;
-        }
-        else
-        {
-            m_Canvas.renderMode = RenderMode.ScreenSpaceOverlay;
-        }
-
-        LayoutRebuilder.ForceRebuildLayoutImmediate(m_Panel);
-
+        //prepare animation
+        LeanTween.cancel(m_TweenId, true);
         m_TweenId = LeanTween.value(0, 1, 0.5f)
             .setEaseOutCubic()
             .setOnStart(() =>
@@ -96,6 +88,20 @@ public class UIConditionInfo : MonoBehaviour
                 m_CanvasGroup.alpha = t;
             })
             .uniqueId;
+
+        //setup position
+        if (oldCanvas)
+        {
+            m_Canvas.renderMode = RenderMode.ScreenSpaceCamera;
+            m_Canvas.worldCamera = MainUITransition.Instance.GetComponent<Canvas>().worldCamera;
+        }
+        else
+        {
+            m_Canvas.renderMode = RenderMode.ScreenSpaceOverlay;
+        }
+
+        //force ui to rebuild
+        LayoutRebuilder.ForceRebuildLayoutImmediate(m_Panel);
     }
 
     public void Close()

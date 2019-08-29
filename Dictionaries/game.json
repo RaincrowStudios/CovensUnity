@@ -598,7 +598,7 @@
     },
     "spell_greaterSeal": {
       "id": "spell_greaterSeal",
-      "level": 1,
+      "level": 3,
       "glyph": 13,
       "school": 0,
       "cost": 30,
@@ -738,7 +738,7 @@
         0,
         1
       ],
-      "targetType": "ANY",
+      "targetType": 0,
       "states": [
         "vulnerable",
         ""
@@ -763,7 +763,7 @@
       "targetSchool": [
         0
       ],
-      "targetType": "ANY",
+      "targetType": 0,
       "states": [
         "vulnerable",
         ""
@@ -790,7 +790,7 @@
         0,
         1
       ],
-      "targetType": "ANY",
+      "targetType": 0,
       "states": [
         "vulnerable",
         ""
@@ -822,7 +822,7 @@
         0,
         1
       ],
-      "targetType": "ANY",
+      "targetType": 0,
       "states": [
         "vulnerable",
         ""
@@ -852,7 +852,7 @@
         0,
         1
       ],
-      "targetType": "ANY",
+      "targetType": 0,
       "states": [
         "dead"
       ]
@@ -878,7 +878,7 @@
         0,
         1
       ],
-      "targetType": "ANY",
+      "targetType": 0,
       "states": [
         "vulnerable",
         ""
@@ -903,7 +903,7 @@
       "targetSchool": [
         0
       ],
-      "targetType": "ANY",
+      "targetType": 0,
       "states": [
         "vulnerable",
         ""
@@ -928,7 +928,7 @@
       "targetSchool": [
         1
       ],
-      "targetType": "ANY",
+      "targetType": 0,
       "states": [
         "vulnerable",
         ""
@@ -953,7 +953,7 @@
       "targetSchool": [
         -1
       ],
-      "targetType": "ANY",
+      "targetType": 0,
       "states": [
         "vulnerable",
         ""
@@ -978,7 +978,7 @@
         0,
         1
       ],
-      "targetType": "ANY",
+      "targetType": 0,
       "states": [
         "vulnerable",
         ""
@@ -1005,7 +1005,7 @@
         0,
         1
       ],
-      "targetType": "ANY",
+      "targetType": 0,
       "states": [
         "vulnerable"
       ]
@@ -1031,7 +1031,7 @@
         0,
         1
       ],
-      "targetType": "ANY",
+      "targetType": 0,
       "states": [
         "vulnerable",
         ""
@@ -1058,7 +1058,7 @@
         0,
         1
       ],
-      "targetType": "ANY",
+      "targetType": 0,
       "states": [
         "vulnerable",
         ""
@@ -1083,7 +1083,7 @@
       "targetSchool": [
         0
       ],
-      "targetType": "ANY",
+      "targetType": 0,
       "states": [
         "vulnerable",
         ""
@@ -1115,7 +1115,7 @@
         0,
         1
       ],
-      "targetType": "ANY",
+      "targetType": 0,
       "states": [
         "vulnerable",
         ""
@@ -1147,7 +1147,7 @@
         0,
         1
       ],
-      "targetType": "ANY",
+      "targetType": 0,
       "states": [
         "vulnerable",
         ""
@@ -1177,7 +1177,7 @@
         0,
         1
       ],
-      "targetType": "WITCH",
+      "targetType": 1,
       "states": [
         "vulnerable",
         ""
@@ -1204,7 +1204,7 @@
         0,
         1
       ],
-      "targetType": "ANY",
+      "targetType": 0,
       "states": [
         "vulnerable",
         ""
@@ -1231,7 +1231,7 @@
         0,
         1
       ],
-      "targetType": "ANY",
+      "targetType": 0,
       "states": [
         "vulnerable",
         ""

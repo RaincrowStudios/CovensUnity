@@ -13,6 +13,7 @@ namespace Raincrow.GameEventResponses
             public string id;
             public string type;
             public int energy;
+            public string name;
 
             [JsonIgnore]
             public MarkerManager.MarkerType Type => Token.TypeFromString(type);

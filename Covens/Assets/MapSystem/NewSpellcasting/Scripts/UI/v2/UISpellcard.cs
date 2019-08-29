@@ -23,6 +23,15 @@ public class UISpellcard : MonoBehaviour// : EnhancedScrollerCellView
     [SerializeField] private Button m_SchoolButton;
     [SerializeField] private Button m_SpellButton;
 
+    [Header("Ingredients")]
+    [SerializeField] private HorizontalLayoutGroup m_IngredientsContainer;
+    [SerializeField] private Image m_Gem;
+    [SerializeField] private Image m_Tool;
+    [SerializeField] private Image m_Herb;
+    [SerializeField] private Button m_GemButton;
+    [SerializeField] private Button m_ToolButton;
+    [SerializeField] private Button m_HerbButton;
+
     [Header("cooldowns")]
     [SerializeField] private Image m_CooldownBackground;
     [SerializeField] private Image m_CooldownIcon;
@@ -33,6 +42,7 @@ public class UISpellcard : MonoBehaviour// : EnhancedScrollerCellView
     [SerializeField] private Sprite m_GreyCrest;
     [SerializeField] private Sprite m_WhiteCrest;
 
+
     public SpellData Spell { get; private set; }
     public RectTransform RectTransform { get; private set; }
 
@@ -41,7 +51,6 @@ public class UISpellcard : MonoBehaviour// : EnhancedScrollerCellView
     private System.Action<UISpellcard> m_OnClickGlyph;
 
     private int m_TweenId;
-    //private Coroutine m_CooldownCoroutine;
     private int m_CooldownTweenId;
 
     private void Awake()
@@ -58,14 +67,6 @@ public class UISpellcard : MonoBehaviour// : EnhancedScrollerCellView
     {
         transform.localScale = Vector3.one;
     }
-
-    //public void ClearData()
-    //{
-    //    m_SpellIcon.overrideSprite = m_CooldownIcon.overrideSprite = m_SchoolIcon.overrideSprite = null;
-    //    m_SpellName.text = "";
-    //    m_SpellCost.text = "";
-    //    m_SpellDescription.text = "";
-    //}
 
     public void SetData(
         SpellData spell,
@@ -148,6 +149,8 @@ public class UISpellcard : MonoBehaviour// : EnhancedScrollerCellView
         {
             m_CooldownBackground.fillAmount = m_CooldownIcon.fillAmount = 0;
         }
+
+        SetIngredients(Spell != null ? Spell.ingredients : null);
     }
 
     private void OnClickSchool()
@@ -181,5 +184,91 @@ public class UISpellcard : MonoBehaviour// : EnhancedScrollerCellView
     public void SetInteractable(bool interactable)
     {
         m_CanvasGroup.interactable = interactable;
+    }
+
+    public void SetIngredients(List<string> requiredIngredients)
+    {
+        m_GemButton.onClick.RemoveAllListeners();
+        m_ToolButton.onClick.RemoveAllListeners();
+        m_HerbButton.onClick.RemoveAllListeners();
+
+        if (requiredIngredients == null || requiredIngredients.Count == 0)
+        {
+            m_IngredientsContainer.gameObject.SetActive(false);
+            return;
+        }
+        else
+        {
+            m_IngredientsContainer.gameObject.SetActive(true);
+        }
+
+        string requiredGem = null;
+        string requiredTool = null;
+        string requiredHerb = null;
+
+        foreach (string ingr in requiredIngredients)
+        {
+            var data = DownloadedAssets.GetCollectable(ingr);
+            if (data.Type == IngredientType.gem)
+            {
+                requiredGem = ingr;
+                m_GemButton.onClick.AddListener(() => UIConditionInfo.Instance.Show(LocalizeLookUp.GetCollectableName(ingr), LocalizeLookUp.GetCollectableDesc(ingr), m_Gem.rectTransform, new Vector2(0, 0), false));
+            }
+            else if (data.Type == IngredientType.tool)
+            {
+                requiredTool = ingr;
+                m_ToolButton.onClick.AddListener(() => UIConditionInfo.Instance.Show(LocalizeLookUp.GetCollectableName(ingr), LocalizeLookUp.GetCollectableDesc(ingr), m_Tool.rectTransform, new Vector2(0, 0), false));
+            }
+            else if (data.Type == IngredientType.herb)
+            {
+                requiredHerb = ingr;
+                m_HerbButton.onClick.AddListener(() => UIConditionInfo.Instance.Show(LocalizeLookUp.GetCollectableName(ingr), LocalizeLookUp.GetCollectableDesc(ingr), m_Herb.rectTransform, new Vector2(0, 0), false));
+            }
+        }
+
+        Color enableColor = Color.white;
+        Color disableColor = new Color(1, 1, 1, 0.2f);
+
+        //gem
+        if (requiredGem == null)
+        {
+            m_Gem.gameObject.SetActive(false);
+        }
+        else
+        {
+            m_Gem.gameObject.SetActive(true);
+            if (PlayerDataManager.playerData.GetIngredient(requiredGem) > 0)
+                m_Gem.color = enableColor;
+            else
+                m_Gem.color = disableColor;
+        }
+
+        //tool
+        if (requiredTool == null)
+        {
+            m_Tool.gameObject.SetActive(false);
+        }
+        else
+        {
+            m_Tool.gameObject.SetActive(true);
+            if (PlayerDataManager.playerData.GetIngredient(requiredTool) > 0)
+                m_Tool.color = enableColor;
+            else
+                m_Tool.color = disableColor;
+        }
+
+        //herb
+        if (requiredHerb == null)
+        {
+            m_Herb.gameObject.SetActive(false);
+        }
+        else
+        {
+            m_Herb.gameObject.SetActive(true);
+            if (PlayerDataManager.playerData.GetIngredient(requiredHerb) > 0)
+                m_Herb.color = enableColor;
+            else
+                m_Herb.color = disableColor;
+        }
     }
 }
