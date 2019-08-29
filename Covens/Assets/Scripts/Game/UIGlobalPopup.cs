@@ -15,8 +15,8 @@ public class UIGlobalPopup : MonoBehaviour
     [SerializeField] private CanvasGroup m_CanvasGroup;
     [SerializeField] private RectTransform m_Panel;
 
+    [SerializeField] private TextMeshProUGUI m_SizeFitter;
     [SerializeField] private TextMeshProUGUI m_MessageText;
-    [SerializeField] private TextMeshProUGUI m_ErrorText;
     [SerializeField] private TextMeshProUGUI m_ConfirmText;
     [SerializeField] private TextMeshProUGUI m_CancelText;
     [SerializeField] private Button m_ConfirmButton;
@@ -35,7 +35,6 @@ public class UIGlobalPopup : MonoBehaviour
     private void Awake()
     {
         m_Instance = this;
-        DontDestroyOnLoad(this.gameObject);
 
         m_CanvasGroup.alpha = 0;
         m_Canvas.enabled = false;
@@ -72,8 +71,7 @@ public class UIGlobalPopup : MonoBehaviour
         System.Action show = () =>
         {
             m_Instance.SetButtons("Yes", "No", confirmAction, cancelAction);
-            m_Instance.SetMessage(txt);
-            m_Instance.SetError("");
+            m_Instance.SetMessage(txt, false);
             m_Instance.Show();
         };
         
@@ -95,8 +93,7 @@ public class UIGlobalPopup : MonoBehaviour
         System.Action show = () =>
         {
             m_Instance.SetButtons("Ok", confirmAction);
-            m_Instance.SetMessage(txt);
-            m_Instance.SetError("");
+            m_Instance.SetMessage(txt, false);
             m_Instance.Show();
         };
 
@@ -118,8 +115,7 @@ public class UIGlobalPopup : MonoBehaviour
         System.Action show = () =>
         {
             m_Instance.SetButtons("Ok", confirmAction);
-            m_Instance.SetMessage("");
-            m_Instance.SetError(txt);
+            m_Instance.SetMessage(txt, true);
             m_Instance.Show();
         };
 
@@ -180,14 +176,11 @@ public class UIGlobalPopup : MonoBehaviour
             .uniqueId;
     }
 
-    private void SetMessage(string message)
+    private void SetMessage(string message, bool error = false)
     {
         m_MessageText.text = message;
-    }
-
-    private void SetError(string error)
-    {
-        m_ErrorText.text = error;
+        m_SizeFitter.text = message;
+        m_MessageText.color = error ? Color.red : Color.white;
     }
 
     private void SetButtons(string confirm, System.Action onConfirm)
@@ -226,4 +219,20 @@ public class UIGlobalPopup : MonoBehaviour
         m_OnCancel = null;
         Hide();
     }
+    
+#if UNITY_EDITOR
+    [SerializeField] private string m_DebugString;
+
+    [ContextMenu("Debug ShowMessage")]
+    private void DebugShowMessage()
+    {
+        ShowPopUp(null, m_DebugString);
+    }
+
+    [ContextMenu("Debug ShowError")]
+    private void DebugShowError()
+    {
+        ShowError(null, m_DebugString);
+    }
+#endif
 }
