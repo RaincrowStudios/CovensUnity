@@ -57,9 +57,6 @@ public class UIQuickCast : MonoBehaviour
 
     public static void Close()
     {
-        Debug.Log("CLosing Quick cast");
-        if (m_Instance == null)
-            return;
         m_Instance._Close();
     }
 
@@ -127,6 +124,16 @@ public class UIQuickCast : MonoBehaviour
 
     private void _Open()
     {
+        //in case the marker was rmeoved while loading the scene
+        if (m_Target != null)
+        {
+            if (MarkerSpawner.GetMarker(m_Target.Token.Id) == null)
+            {
+                _Close();
+                return;
+            }
+        }
+
         IsOpen = true;
 
         int quickcastCount = 4;
@@ -169,11 +176,13 @@ public class UIQuickCast : MonoBehaviour
         {
             m_OnClose?.Invoke();
         }
-        catch
+        catch (System.Exception e)
         {
-            //just exited pop
+            Debug.LogError(e.Message + "\n" + e.InnerException + "\n" + e.StackTrace);
         }
         m_OnClose = null;
+        m_Target = null;
+        m_TargetData = null;
     }
 
     private void _Hide(bool hide)
@@ -385,7 +394,7 @@ public class UIQuickCast : MonoBehaviour
 
     private void _OnMapTokenRemove(string instance)
     {
-        if (m_Target == null || m_TargetData == null)
+        if (m_Target == null)
             return;
 
         if (instance != m_Target.Token.instance)

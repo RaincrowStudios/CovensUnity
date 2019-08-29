@@ -102,9 +102,6 @@ public class UIPlayerInfo : UIInfoPanel
 
     private void _Show(WitchMarker witch, WitchToken data, System.Action onClose)
     {
-        if (IsShowing)
-            return;
-
         if (witch == null)
         {
             Debug.LogError("null witch");
@@ -112,6 +109,16 @@ public class UIPlayerInfo : UIInfoPanel
         }
 
         m_OnClose = onClose;
+        previousMapPosition = MapsAPI.Instance.GetWorldPosition();
+        m_PreviousMapZoom = Mathf.Min(0.99f, MapsAPI.Instance.normalizedZoom);
+
+        if (MarkerSpawner.GetMarker(witch.Token.Id) == null)
+        {
+            m_PreviousMapZoom = MapsAPI.Instance.normalizedZoom;
+            Close();
+            return;
+        }
+
         
         // //setup the ui
         m_DisplayNameText.text = WitchToken.displayName;
@@ -138,8 +145,6 @@ public class UIPlayerInfo : UIInfoPanel
         {
             MainUITransition.Instance.HideMainUI();
             MarkerSpawner.HighlightMarker(new List<IMarker> { PlayerManager.marker, WitchMarker });
-            previousMapPosition = MapsAPI.Instance.GetWorldPosition();
-            m_PreviousMapZoom = MapsAPI.Instance.normalizedZoom;
 
             MoveTokenHandler.OnTokenMove += _OnMapTokenMove;
         }
@@ -262,7 +267,7 @@ public class UIPlayerInfo : UIInfoPanel
         if (instance == WitchToken.instance)
         {
             Abort();
-            UIGlobalPopup.ShowPopUp(null, LocalizeLookUp.GetText("spellbook_witch_is_gone").Replace("{{witch name}}", WitchToken.displayName));// + " is gone.");
+            //UIGlobalPopup.ShowPopUp(null, LocalizeLookUp.GetText("spellbook_witch_is_gone").Replace("{{witch name}}", WitchToken.displayName));// + " is gone.");
         }
     }
 

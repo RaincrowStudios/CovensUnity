@@ -13,6 +13,14 @@ public static class SpellcastingTextFeedback
         string casterColor, targetColor;
         string casterDegree, targetDegree;
         int damage = Mathf.Abs((int)response.result.damage);
+        int resilienceMod = 0;
+        string spellSuccessMod = "";
+        string intensityMod = "";
+        string statusDuration = "";
+        int newResilience = PlayerDataManager.playerData.baseResilience;
+        int newPower = PlayerDataManager.playerData.Power;
+        int powerMod = 0;
+        int selfEnergyChange = 0;
 
         //setup spirit/witch specific info
         if (caster == PlayerManager.marker)
@@ -106,22 +114,23 @@ public static class SpellcastingTextFeedback
             {
                 formatedString = string.Format(
                     str,
-                    casterName,
-                    casterColor,
-                    casterDegree,
-                    targetName,
-                    targetColor,
-                    targetDegree,
-                    damage,
-                    damage
-                //response.result.resilienceChanged.ToString(),//power
-                //response.result.successChance.ToString(),//resilience
-                //intensityModifier,
-                //"1 min",
-                //response.result.newResilience.ToString(),
-                //response.result.newPower.ToString(),
-                //response.result.powerChanged.ToString(),
-                //response.result.selfEnergy.ToString()
+
+                    casterName,     //0
+                    casterColor,    //1
+                    casterDegree,   //2
+                    targetName,     //3
+                    targetColor,    //4
+                    targetDegree,   //5
+                    damage,         //6 
+                    damage,         //7
+                    resilienceMod,  //8
+                    spellSuccessMod,//9
+                    intensityMod,   //10
+                    statusDuration, //11
+                    newResilience,  //12
+                    newPower,       //13
+                    powerMod,       //14
+                    selfEnergyChange//15
                 );
             }
             catch (System.Exception e)

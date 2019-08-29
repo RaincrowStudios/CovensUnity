@@ -40,8 +40,9 @@ public static class BlessingManager
                 
                 if (data.updated)
                 {
-                    int energyGained = PlayerDataManager.playerData.baseEnergy - PlayerDataManager.playerData.energy;
-                    OnMapEnergyChange.ForceEvent(PlayerManager.marker, PlayerDataManager.playerData.baseEnergy, data.lastBlessing);
+                    int energy = Mathf.Max(PlayerDataManager.playerData.energy, PlayerDataManager.playerData.baseEnergy);
+                    int energyGained = energy - PlayerDataManager.playerData.energy;
+                    OnMapEnergyChange.ForceEvent(PlayerManager.marker, energy, data.lastBlessing);
                     UIDailyBlessing.Show(energyGained);
 
                     Debug.Log("<color=magenta>daily blessing received</color>");

@@ -24,7 +24,7 @@ public class SpellcastingTrailFX : MonoBehaviour
     {
         if (caster == null || target == null || caster.isNull || target.isNull)
         {
-            LeanTween.value(0, 0, 0.6f)
+            LeanTween.value(0, 0, 0.1f)
                 .setOnStart(onStart)
                 .setOnComplete(onComplete);
         }
@@ -68,16 +68,30 @@ public class SpellcastingTrailFX : MonoBehaviour
 
         //spawn the charge
         chargeFxPool.Spawn(caster.position + offset, 2f).transform.localScale = new Vector3(5, 5, 5);
+
+        //just call on complete if the caster is casting on itself
+        if (caster == target)
+        {
+            LeanTween.value(0, 0, 0.25f).setOnComplete(onComplete);
+            return;
+        }
+
         LeanTween.value(0, 1, 0.25f)
             .setOnComplete(() =>
             {
                 LTBezierPath path;
                 if (!LocationIslandController.isInBattle)
                 {
+                    Vector3 endcontrol = (startPosition - targetPosition) * Random.Range(0.3f, 0.5f);
+                    Vector3 startcontrol = (targetPosition - startPosition) * Random.Range(0.3f, 0.5f);
+
+                    startcontrol = Quaternion.Euler(0, Random.Range(-100,100), Random.Range(-100, 100)) * startcontrol;
+                    endcontrol = Quaternion.Euler(0, Random.Range(-45, 45), Random.Range(-45, 45)) * endcontrol;
+                    
                     path = new LTBezierPath(new Vector3[] {
                         startPosition, //start point
-                        targetPosition + new Vector3(Random.Range(-100,100),Random.Range(-35,35),Random.Range(-100,100)),
-                        startPosition + new Vector3(Random.Range(-100,100),Random.Range(-35,35),Random.Range(-100,100)),
+                        targetPosition + endcontrol,
+                        startPosition + startcontrol,
                         targetPosition
                    });
                 }

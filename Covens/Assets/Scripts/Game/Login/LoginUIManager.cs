@@ -146,6 +146,9 @@ public class LoginUIManager : MonoBehaviour
 
         m_CurrentScreen = Screen.NONE;
 
+        AgeGateCG.alpha = 0;
+        AgeGate.SetActive(false);
+
         //setup buttons
         //main
         m_ExistingAccountBtn.onClick.AddListener(() => SetScreen(Screen.SIGN_IN));
@@ -155,13 +158,21 @@ public class LoginUIManager : MonoBehaviour
         m_LoginBackButton.onClick.AddListener(() => SetScreen(Screen.WELCOME));
         m_ForgotPassButton.onClick.AddListener(() => SetScreen(Screen.RESET_A));
         loginButton.onClick.AddListener(OnClickLogin);
+        accountName.onEndEdit.AddListener(value => accountPassword.Select());
+        //accountPassword.onEndEdit.AddListener(value => OnClickLogin());
 
         //age gate
         CheckAge.onClick.AddListener(() => AgeGateCheck());
+        dateDay.onEndEdit.AddListener(value => dateMonth.Select());
+        dateMonth.onEndEdit.AddListener(value => dateYear.Select());
+        //dateYear.onEndEdit.AddListener(value => AgeGateCheck());
 
         //create acc
         m_CreatAccBackButton.onClick.AddListener(() => SetScreen(Screen.WELCOME));
         createAccountButton.onClick.AddListener(OnClickCreateAccount);
+        createAccountName.onEndEdit.AddListener(value => createAccountEmail.Select());
+        createAccountEmail.onEndEdit.AddListener(value => createAccountPassword.Select());
+        //createAccountPassword.onEndEdit.AddListener(value => OnClickCreateAccount());
 
         //choose char
         m_ChooseCharConfirmButton.onClick.AddListener(OnConfirmCharacterBody);
@@ -175,6 +186,7 @@ public class LoginUIManager : MonoBehaviour
         //create char
         m_CreateCharConfirmButton.onClick.AddListener(OnClickCreateCharacter);
         m_CreateCharBackButton.onClick.AddListener(() => SetScreen(Screen.CHOOSE_CHARACTER));
+        //createCharacterName.onEndEdit.AddListener(value => OnClickCreateCharacter());
 
         //no mail found
         m_NoMainBackButton.onClick.AddListener(() => SetScreen(Screen.WELCOME));
@@ -190,6 +202,8 @@ public class LoginUIManager : MonoBehaviour
         createAccountError.text = "";
         createCharacterError.gameObject.SetActive(true);
         createCharacterError.text = "";
+
+
     }
 
     private void Start()

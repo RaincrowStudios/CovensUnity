@@ -299,8 +299,15 @@ public class Spellcasting
                     }
                     else
                     {
+                        //force a remove token event just in case the marker stayed onthe game
+                        if (response == "1002")
+                        {
+                            RemoveTokenHandler.ForceEvent(targetId);
+                            return;
+                        }
+
                         UIWaitingCastResult.Instance.Close();
-                           onContinue?.Invoke(new Raincrow.GameEventResponses.SpellCastHandler.Result());
+                        onContinue?.Invoke(new Raincrow.GameEventResponses.SpellCastHandler.Result());
                         UIGlobalPopup.ShowError(null, APIManager.ParseError(response));
                     }
                 }

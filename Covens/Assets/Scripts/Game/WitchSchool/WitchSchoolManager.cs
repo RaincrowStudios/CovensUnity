@@ -28,8 +28,6 @@ public class WitchSchoolManager : MonoBehaviour
     [SerializeField] private witchSchoolData m_ItemPrefab;
     [SerializeField] private LayoutGroup m_ItemContainer;
 
-    [SerializeField] private WitchSchoolPlayer m_Player;
-
     private int m_TweenId;
     private int m_VideoTweenId;
 
@@ -116,7 +114,7 @@ public class WitchSchoolManager : MonoBehaviour
 
     public void PlayVideo(string id)
     {
-        m_Player.Open(
+        WitchSchoolPlayer.Open(
             LocalizeLookUp.GetText(id + "_title").ToUpper(),
             DownloadAssetBundle.baseURL + "witch-school-new/videos/" + id + ".mp4",
             () => m_ItemContainer.gameObject.SetActive(false),

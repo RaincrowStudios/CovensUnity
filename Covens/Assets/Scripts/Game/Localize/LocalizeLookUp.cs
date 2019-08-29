@@ -89,7 +89,7 @@ public class LocalizeLookUp : MonoBehaviour
 
     //Store
     public static string GetStoreTitle(string id) => GetText(id + "_title");
-    public static string GetStoreSubtitle(string id) => GetText(id + "_subtitle");
+    public static string GetStoreSubtitle(string id) => (HasKey(id + "_subtitle") ? GetText(id + "_subtitle") : "");
     public static string GetStoreDesc(string id) => GetText(id + "_desc");
     public static string GetStorePurchaseTitle(string id) => GetText(id + "_purchase");
     public static string GetStorePurchaseSuccess(string id) => GetText(id + "_consume");

@@ -38,6 +38,12 @@ namespace Raincrow.GameEventResponses
                 if (spell != null && target != null && target.inMapView && target.IsShowingAvatar)
                     SpawnFx(target, spell.school, (int)response.result.damage);
             }
+
+            if (isCaster && response.target.energy == 0 && target is SpiritMarker)
+            {
+                SpiritData spiritData = (target as SpiritMarker).spiritData;
+                SpellCastHandler.OnSpiritBanished?.Invoke(spiritData.id);
+            }
         }
 
         private void SpawnFx(IMarker marker, int school, int amount)
@@ -51,7 +57,7 @@ namespace Raincrow.GameEventResponses
             fx.localPosition = Vector3.zero;
             fx.position += fx.up * 40;
 
-            fx.GetComponentInChildren<TextMeshProUGUI>().text = amount.ToString("+#;-#");
+            fx.GetComponentInChildren<TextMeshPro>().text = amount.ToString("+#;-#");
         }
     }
 }

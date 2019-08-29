@@ -54,24 +54,7 @@ public class UIDailyBlessing : MonoBehaviour
     {
         m_BlessingText.text = LocalizeLookUp.GetText("blessing_grant").Replace("{{amount}}", "<color=#FF9900>" + energyGained.ToString() + "</color>");
         m_PopBonusText.text = "";
-
-        //if (PlayerDataManager.playerData.blessing.daily != 0)
-        //{
-        //    blessingText.text = LocalizeLookUp.GetText("blessing_grant");
-        //    blessingText.text = blessingText.text.Replace("{{amount}}", "<color=#FF9900>" + PlayerDataManager.playerData.blessing.daily.ToString() + "</color>");
-        //}
-        //else
-        //    blessingText.text = LocalizeLookUp.GetText("blessing_full");
-        ////blessingText.text = "The Dea Savannah Grey has granted you her daily gift of <color=#FF9900>" + PlayerDataManager.playerData.blessing.daily.ToString() + "</color> energy";
-        //if (PlayerDataManager.playerData.blessing.locations > 0)
-        //{
-        //    locationEn.text = LocalizeLookUp.GetText("blessing_pop").Replace("{{amount}}", PlayerDataManager.playerData.blessing.locations.ToString());// "You also gained " + PlayerDataManager.playerData.blessing.locations.ToString() + " energy from your Places of Power";
-        //}
-        //else
-        //{
-        //    locationEn.text = "";
-        //}
-
+        
         m_Canvas.enabled = true;
         m_InputRaycaster.enabled = true;
 

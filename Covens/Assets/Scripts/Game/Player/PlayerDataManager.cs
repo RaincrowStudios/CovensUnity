@@ -60,6 +60,7 @@ public class PlayerDataManager : MonoBehaviour
             return new Equipped();
         }
     }
+
     public string[] Cosmetics
     {
         get
@@ -69,6 +70,7 @@ public class PlayerDataManager : MonoBehaviour
             return null;
         }
     }
+
     public ConsumableItemModel[] Consumables;
 
     public void OnPlayerJoinCoven(string sCovenId, string covenName)

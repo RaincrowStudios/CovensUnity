@@ -207,6 +207,8 @@ public class MarkerSpawner : MarkerManager
                 Instance.m_ToDespawn.Add((m_GemPool, marker));
             else if (marker.Type == MarkerType.TOOL)
                 Instance.m_ToDespawn.Add((m_ToolPool, marker));
+            else if (marker.Type == MarkerType.ENERGY)
+                Instance.m_ToDespawn.Add((m_EnergyPool, marker));
 
             if (Instance.m_DespawnTimer < despawnDelay)
                 Instance.m_DespawnTimer = despawnDelay;
@@ -215,6 +217,11 @@ public class MarkerSpawner : MarkerManager
                 Instance.m_DespawnCoroutine = Instance.StartCoroutine(Instance.DespawnCoroutine());
 
             MapsAPI.Instance.RemoveMarker(marker);
+
+            if (m_Highlighting)
+            {
+                m_HighlightedMarkers.Remove(marker);
+            }
         }
     }
 
@@ -257,11 +264,13 @@ public class MarkerSpawner : MarkerManager
         if (Data.Type == MarkerType.WITCH)
         {
             UIQuickCast.Open();
+            UIQuickCast.UpdateCanCast(m, null);
             UIPlayerInfo.Show(m as WitchMarker, Data as WitchToken, UIQuickCast.Close);
         }
         else if (Data.Type == MarkerType.SPIRIT)
         {
             UIQuickCast.Open();
+            UIQuickCast.UpdateCanCast(m, null);
             UISpiritInfo.Show(m as SpiritMarker, Data as SpiritToken, UIQuickCast.Close);
         }
 
@@ -278,31 +287,48 @@ public class MarkerSpawner : MarkerManager
     }
 
     public void GetResponse(IMarker marker, string instance, string response, int code)
-    {
-        if (code == 200)
+    {    
+        if (code != 200)
         {
-            switch (marker.Type)
-            {
-                case MarkerType.WITCH:
+            if (response == "1002") 
+                RemoveTokenHandler.ForceEvent(instance);
+            else
+                UIGlobalPopup.ShowError(null, APIManager.ParseError(response));
+        }
+
+        switch (marker.Type)
+        {
+            case MarkerType.WITCH:
+
+                bool witchSelected = UIPlayerInfo.WitchToken != null && UIPlayerInfo.WitchToken.instance == instance;
+
+                if (code == 200)
+                {
                     FirstTapVideoManager.Instance.CheckSpellCasting();
 
                     SelectWitchData_Map witch = JsonConvert.DeserializeObject<SelectWitchData_Map>(response);
                     witch.token = marker.Token as WitchToken;
 
-                    if (UIPlayerInfo.WitchToken != null && UIPlayerInfo.WitchToken.instance == instance)
+                    if (witchSelected)
                     {
                         UIPlayerInfo.SetupDetails(witch);
                         UIQuickCast.UpdateCanCast(marker, witch);
                     }
-                    break;
+                }
+                break;
 
-                case MarkerType.SPIRIT:
+            case MarkerType.SPIRIT:
+
+                bool spiritSelected = UISpiritInfo.SpiritToken != null && UISpiritInfo.SpiritToken.instance == instance;
+
+                if (code == 200)
+                {
                     FirstTapVideoManager.Instance.CheckSpellCasting();
 
                     SelectSpiritData_Map spirit = JsonConvert.DeserializeObject<SelectSpiritData_Map>(response);
                     spirit.token = marker.Token as SpiritToken;
 
-                    if (UISpiritInfo.SpiritToken != null && UISpiritInfo.SpiritToken.instance == instance)
+                    if (spiritSelected)
                     {
                         UISpiritInfo.SetupDetails(spirit);
                         UIQuickCast.UpdateCanCast(marker, spirit);
@@ -310,40 +336,16 @@ public class MarkerSpawner : MarkerManager
 
                     if (spirit.state == "dead")
                         RemoveTokenHandler.ForceEvent(instance);
+                }
+                break;
 
-                    break;
+            case MarkerType.PLACE_OF_POWER:
+                LoadPOPManager.EnterPOP(instance);
+                break;
 
-                case MarkerType.PLACE_OF_POWER:
-                    LoadPOPManager.EnterPOP(instance);
-                    break;
-
-                default:
-                    Debug.LogError("Token selection not implemented for " + marker.Type);
-                    break;
-            }
-        }
-        else
-        {
-            switch (marker.Type)
-            {
-                case MarkerType.WITCH:
-                    if (UIPlayerInfo.isShowing && UIPlayerInfo.WitchToken.instance == instance)
-                    {
-                        UIGlobalPopup.ShowError(null, APIManager.ParseError(response));
-                    }
-                    break;
-
-                case MarkerType.SPIRIT:
-                    if (UISpiritInfo.isOpen && UISpiritInfo.SpiritToken.instance == instance)
-                    {
-                        UIGlobalPopup.ShowError(null, APIManager.ParseError(response));
-                    }
-                    break;
-
-                default:
-                    Debug.LogError("Token selection not implemented for " + marker.Type);
-                    break;
-            }
+            default:
+                Debug.LogError("Token selection not implemented for " + marker.Type);
+                break;
         }
     }
 
@@ -484,6 +486,10 @@ public class MarkerSpawner : MarkerManager
     public static void HighlightMarker(List<IMarker> targets)
     {
         m_Highlighting = targets.Count > 0;
+
+        if (targets == null)
+            targets = new List<IMarker>();
+
         m_HighlightedMarkers = targets;
         //MapsAPI.Instance.EnableBuildingIcons(!highlight);
 

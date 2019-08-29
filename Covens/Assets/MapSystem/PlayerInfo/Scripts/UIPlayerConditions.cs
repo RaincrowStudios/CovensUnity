@@ -43,13 +43,22 @@ public class UIPlayerConditions : MonoBehaviour
 
         m_Canvas.enabled = false;
         m_InputRaycaster.enabled = false;
-    }
 
-    private void Start()
-    {
-        SetupCounter();
         SpellCastHandler.OnPlayerApplyStatusEffect += AddCondition;
         OnMapEnergyChange.OnPlayerDead += SetupCounter;
+    }
+
+    private IEnumerator Start()
+    {
+        while (PlayerDataManager.playerData == null)
+            yield return 0;
+
+        var conditions = PlayerDataManager.playerData.effects;
+
+        foreach(StatusEffect effect in conditions)
+        {
+            AddCondition(effect);
+        }
     }
 
     public void Open()

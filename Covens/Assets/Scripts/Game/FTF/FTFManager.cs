@@ -1355,8 +1355,11 @@ public class FTFManager : MonoBehaviour
                 false
             );
 
-            Debug.LogError("ftf failed\n" + result + ": " + response);
-            UIGlobalPopup.ShowError(() => Application.Quit(), "finishTutorial\n" + response);
+            if (result != 200)
+            {
+                Debug.LogError("ftf failed\n" + result + ": " + response);
+                UIGlobalPopup.ShowError(() => Application.Quit(), "finishTutorial\n" + response);
+            }
         });
     }
 

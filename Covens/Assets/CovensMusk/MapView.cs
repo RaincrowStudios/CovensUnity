@@ -7,6 +7,8 @@ using UnityEngine;
 public class MapView : MonoBehaviour
 {
     private static MapView m_Instance;
+    private List<string> m_DiscoveredSpirits = new List<string>();
+    private List<string> m_BanishedSpirits = new List<string>();
 
     public static void Initialize()
     {
@@ -35,6 +37,9 @@ public class MapView : MonoBehaviour
 
         LocationIslandController.OnEnterLocation += OnEnterPoP;
         LocationIslandController.OnExitLocation += OnLeavePoP;
+
+        SpiritDicoveredHandler.OnSpiritDiscovered += _OnSpiritDiscovered;
+        SpellCastHandler.OnSpiritBanished += _OnSpiritBanished;
     }
 
     private void _OnPlayerEnergyUpdated(int energy)
@@ -96,6 +101,17 @@ public class MapView : MonoBehaviour
     {
         marker.SetWorldPosition(position, 2f);
     }
+        
+    private void _OnSpiritExpire(IMarker marker)
+    {
+        MarkerSpawner.DeleteMarker(marker.Token.instance);
+
+        if (marker.Interactable)
+            marker.Interactable = false;
+
+        marker.SetAlpha(0, 1);
+        LeanTween.scale(marker.GameObject, Vector3.zero, 2f).setEaseOutCubic();
+    }
 
     private void _OnMapTokenEnergyUpdated(IMarker marker, int energy)
     {
@@ -114,6 +130,48 @@ public class MapView : MonoBehaviour
         {
             if (token.Type == MarkerSpawner.MarkerType.WITCH)
                 (marker as WitchMarker).RemoveDeathFX();
+        }
+    }
+
+    private void _OnSpiritBanished(string spirit)
+    {
+        Debug.Log(spirit + " BANISHED");
+        
+        //discover.spirit was triggered before the banish
+        if (m_DiscoveredSpirits.Contains(spirit))
+        {
+            m_DiscoveredSpirits.Remove(spirit);
+            UISpiritDiscovered.Instance.Show(spirit);
+        }
+
+        //discover.spirit was not triggered yet
+        else
+        {
+            bool discovered = PlayerDataManager.playerData.knownSpirits.Exists(spr => spr.spirit == spirit);
+
+            //player already had this spirit
+            if (discovered)
+                UISpiritBanished.Instance.Show(spirit);
+
+            //wait for the discover.spirit event
+            else
+                m_BanishedSpirits.Add(spirit);
+        }
+    }
+
+    private void _OnSpiritDiscovered(string spirit)
+    {
+        Debug.Log(spirit + " DISCOVERED");
+
+        //banished was already triggered
+        if (m_BanishedSpirits.Contains(spirit))
+        {
+            UISpiritDiscovered.Instance.Show(spirit);
+        }
+        //banish was not triggered yet
+        else
+        {
+            m_DiscoveredSpirits.Add(spirit);
         }
     }
 
@@ -138,6 +196,8 @@ public class MapView : MonoBehaviour
         AddTokenHandler.OnMarkerAdd -= _OnMapTokenAdd;
         RemoveTokenHandler.OnMarkerRemove -= _OnMapTokenRemove;
         MoveTokenHandler.OnMarkerMove -= _OnMapTokenMove;
+        OnMapEnergyChange.OnMarkerEnergyChange -= _OnMapTokenEnergyUpdated;
+        ExpireSpiritHandler.OnSpiritMarkerExpire -= _OnSpiritExpire;
 
         MapsAPI.Instance.OnCameraUpdate -= OnMapUpdate;
         PlayerManager.onStartFlight -= OnStartFlight;
@@ -157,6 +217,7 @@ public class MapView : MonoBehaviour
         RemoveTokenHandler.OnMarkerRemove += _OnMapTokenRemove;
         MoveTokenHandler.OnMarkerMove += _OnMapTokenMove;
         OnMapEnergyChange.OnMarkerEnergyChange += _OnMapTokenEnergyUpdated;
+        ExpireSpiritHandler.OnSpiritMarkerExpire += _OnSpiritExpire;
 
         MapsAPI.Instance.OnCameraUpdate += OnMapUpdate;
         PlayerManager.onStartFlight += OnStartFlight;

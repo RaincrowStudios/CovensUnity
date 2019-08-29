@@ -70,6 +70,7 @@ public static class PickUpCollectibleAPI
             return;
         }
 
+        MarkerSpawner.DeleteMarker(marker.Token.Id);
         marker.Interactable = false;
         marker.SetAlpha(0, 0.5f);
         Token token = marker.Token;

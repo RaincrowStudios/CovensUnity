@@ -40,6 +40,12 @@ public class APIManagerServer
             retry = www.isNetworkError || (www.isHttpError && www.responseCode > 500);
             retryCount += 1;
 
+            if (retryCount > 0)
+            {
+                LoadingOverlay.Hide();
+                LoadingOverlay.Show();
+            }
+
             if (www.isHttpError && (www.responseCode == 401 || www.downloadHandler.text == "1006"))
             {
                 //refresh auth tokens and repeat the request
@@ -79,46 +85,13 @@ public class APIManagerServer
 
         Dictionary<string, string> responseHeaders = www.GetResponseHeaders();
 
-        //if (responseHeaders.ContainsKey("Set-Cookie"))
-        //{
-        //    string cookie = responseHeaders["Set-Cookie"].Split(';')[0];
-        //    if (Application.isEditor)
-        //        Debug.Log("<color=magenta>settings cookie\n" + cookie + "</color>");
-        //    else
-        //        Debug.Log("<color=magenta>settings cookie</color>");
+        if (retryCount > 0)
+            LoadingOverlay.Hide();
 
-        //    PlayerPrefs.SetString("cookie", cookie);
-        //}
-
-        LoadingOverlay.Hide();
         CallBack(retry ? www.error : www.downloadHandler.text, Convert.ToInt32(www.responseCode));
 
         if (retry)
             APIManager.ThrowCriticalError(www, url, data);
-
-        //if (!requestError)
-        //{
-        //    CallBack(requestError ? www.error : www.downloadHandler.text, Convert.ToInt32(www.responseCode));
-
-        //    LoadingOverlay.Hide();
-        //}
-        //else
-        //{
-        //    // So, here's what this bit is doing right here:
-        //    // If UseBackupServer is true, it means we will forward requests to the backup server if we have a lot
-        //    // of bad gateway errors
-        //    if (UseBackupServer && !CovenConstants.isBackUpServer && badGatewayErrorsCount >= MinBadGatewayErrors)
-        //    {
-        //        CovenConstants.isBackUpServer = true;
-        //        Debug.LogWarningFormat("[APIManagerServer]: Switching to BACKUP SERVER: {0}", CovenConstants.hostAddress);
-
-        //        yield return RequestServerRoutine(endpoint, data, sMethod, bRequiresToken, bRequiresWssToken, CallBack);
-        //    }
-        //    else
-        //    {
-        //        APIManager.ThrowCriticalError(www, url, data);
-        //    }
-        //}
     }
 
     public static IEnumerator RequestAnalyticsRoutine(string endpoint, string data, string sMethod, bool bRequiresToken, bool bRequiresWssToken, Action<string, int> CallBack)

@@ -52,11 +52,13 @@ namespace Raincrow.GameEventResponses
 
         public string EventName => "cast.spell";
         public static event System.Action<string, SpellData, Result> OnPlayerTargeted;
-        public static event System.Action<StatusEffect> OnPlayerApplyStatusEffect;
+        public static System.Action<StatusEffect> OnPlayerApplyStatusEffect;
         public static System.Action<StatusEffect> OnPlayerExpireStatusEffect;
 
         public static event System.Action<string, string, SpellData, Result> OnSpellCast;
         public static event System.Action<string, StatusEffect> OnApplyStatusEffect;
+
+        public static System.Action<string> OnSpiritBanished;
 
         private static Dictionary<string, System.Action<SpellCastEventData, IMarker, IMarker>> m_SpellBehaviorDict = new Dictionary<string, System.Action<SpellCastEventData, IMarker, IMarker>>()
         {
@@ -130,8 +132,7 @@ namespace Raincrow.GameEventResponses
 
                 if (data.result.isSuccess)
                 {
-                    PlayerDataManager.playerData.xp += (ulong)spell.xp;
-                    PlayerManagerUI.Instance.setupXP();
+                    PlayerDataManager.playerData.AddExp(PlayerDataManager.playerData.ApplyExpBuffs(spell.xp));
                 }
             }
 
@@ -165,7 +166,7 @@ namespace Raincrow.GameEventResponses
                     LeanTween.value(0, 0, 0.25f).setOnComplete(() => OnMapEnergyChange.ForceEvent(target, targetNewEnergy, data.timestamp));
 
                     //add status effects to PlayerDataManager.playerData
-                    if (string.IsNullOrEmpty(data.result.statusEffect.spell) == false)
+                    if (data.result.statusEffect != null && string.IsNullOrEmpty(data.result.statusEffect.spell) == false)
                     {
                         OnApplyStatusEffect?.Invoke(data.target.id, data.result.statusEffect);
 
@@ -195,7 +196,7 @@ namespace Raincrow.GameEventResponses
                             (target as WitchMarker).AddImmunityFX();
                     }
 
-                    //
+                    //handle spell/animation
                     if (target != null)
                     {
                         if (data.result.isSuccess)
@@ -243,7 +244,8 @@ namespace Raincrow.GameEventResponses
                     if (playerIsCaster && data.target.energy == 0 && target is SpiritMarker)
                     {
                         SpiritData spiritData = (target as SpiritMarker).spiritData;
-                        UISpiritBanished.Instance.Show(spiritData.id);
+                        OnSpiritBanished?.Invoke(spiritData.id);
+                        //UISpiritBanished.Instance.Show(spiritData.id);
                     }
 
                     //show notification
