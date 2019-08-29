@@ -20,7 +20,6 @@ public class LogScroller : MonoBehaviour, IEnhancedScrollerDelegate
 
     public void InitScroll()
     {
-        log.Reverse();
         scroller.ReloadData();
     }
 
