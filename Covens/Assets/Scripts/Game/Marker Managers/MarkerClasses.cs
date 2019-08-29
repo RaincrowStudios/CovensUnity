@@ -190,6 +190,12 @@ public abstract class CharacterMarkerData : MarkerData
             return result;
         }
     }
+
+
+    public virtual void AddEnergy(int amount)
+    {
+        energy = Mathf.Clamp(energy + amount, 0, maxEnergy);
+    }
 }
 
 public class WitchMarkerData : CharacterMarkerData
@@ -570,6 +576,13 @@ public class PlayerData : WitchMarkerData
     {
         xp += (ulong)amount;
         PlayerManagerUI.Instance.setupXP();
+    }
+
+    public override void AddEnergy(int amount)
+    {
+        base.AddEnergy(amount);
+        if (PlayerManagerUI.Instance)
+            PlayerManagerUI.Instance.UpdateEnergy();
     }
 }
 

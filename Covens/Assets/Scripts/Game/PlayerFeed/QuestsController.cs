@@ -189,12 +189,11 @@ public static class QuestsController
                     PlayerDataManager.playerData.quest.completed = true;
                     PlayerDataManager.playerData.silver += rewards.silver;
                     PlayerDataManager.playerData.gold += rewards.gold;
-                    PlayerDataManager.playerData.energy = Mathf.Min(PlayerDataManager.playerData.energy + rewards.energy, PlayerDataManager.playerData.baseEnergy);
+                    PlayerDataManager.playerData.AddEnergy(rewards.energy);
 
                     if (PlayerDataManager.Instance != null)
                     {
                         PlayerManagerUI.Instance.UpdateDrachs();
-                        PlayerManagerUI.Instance.UpdateEnergy();
                     }
 
                     callback?.Invoke(rewards, null);

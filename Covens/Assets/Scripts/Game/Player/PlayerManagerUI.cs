@@ -493,16 +493,9 @@ public class PlayerManagerUI : UIAnimationManager
 
     public void ShowDeathReason()
     {
-        //Debug.Log(localizeID);
         if (!PlayerDataManager.IsFTF)
         {
-
-            System.DateTime timeNow = System.DateTime.Now;
-            System.DateTime timeMidnight = System.DateTime.Today.AddDays(1);
-            System.TimeSpan ts = timeMidnight.Subtract(timeNow);
-            int hours = (int)ts.TotalHours;
-
-            deathblessing.text = LocalizeLookUp.GetText("blessing_time").Replace("{{Hours}}", hours.ToString());// "Savannah's next blessing will come in " + hours + " hours or you can ask for a fellow witch to revive you.";
+            deathblessing.text = LocalizeLookUp.GetText("blessing_time").Replace("{{Hours}}", ((int)BlessingManager.TimeUntilNextBlessing().TotalHours).ToString());// "Savannah's next blessing will come in " + hours + " hours or you can ask for a fellow witch to revive you.";
             Invoke("deathReasonShow", 2.5f);
         }
     }

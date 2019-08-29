@@ -13,6 +13,8 @@ namespace Raincrow.GameEventResponses
         {
             SpellCastHandler.SpellCastEventData response = JsonConvert.DeserializeObject<SpellCastHandler.SpellCastEventData>(eventData);
 
+            OnCharacterDeath.CheckSpellDeath(response);
+
             bool isCaster = PlayerDataManager.playerData.instance == response.caster.id;
             bool isTarget = PlayerDataManager.playerData.instance == response.target.id;
 

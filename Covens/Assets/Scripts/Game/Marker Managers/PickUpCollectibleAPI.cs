@@ -86,7 +86,7 @@ public static class PickUpCollectibleAPI
             if (result == 200)
             {
                 int amount = token is CollectableToken ? (token as CollectableToken).amount : (token as EnergyToken).amount;
-                PlayerDataManager.playerData.energy = Mathf.Min(PlayerDataManager.playerData.energy + amount, PlayerDataManager.playerData.maxEnergy);
+                PlayerDataManager.playerData.AddEnergy(amount);
 
                 PlayerManagerUI.Instance.UpdateEnergy();
                 UIEnergyBarGlow.Instance.Glow();

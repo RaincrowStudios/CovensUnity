@@ -409,41 +409,16 @@ public class SummoningManager : MonoBehaviour
                 SpiritMarker marker = MarkerSpawner.Instance.AddMarker(token) as SpiritMarker;
 
                 ShowSpiritCastResult(marker);
+
+                int summonCost = PlayerDataManager.SummoningCosts[DownloadedAssets.spiritDict[currentSpiritID].tier - 1];
+
+                OnCharacterDeath.CheckSummonDeath(spiritId, summonCost);
+                PlayerDataManager.playerData.AddEnergy(-summonCost);
             }
             else
             {
                 UIGlobalPopup.ShowError(SummoningController.Instance.Close, APIManager.ParseError(s));
             }
-
-            //if (r == 200)
-            //{
-            //    bool isLocationSummon = (endpoint == "location/summon");
-
-            //    SoundManagerOneShot.Instance.SpiritSummon();
-            //    SummoningController.Instance.Close();
-            //    if (UIPOPOptions.Instance != null)
-            //    {
-            //        UIPOPOptions.Instance.ShowUI();
-            //    }
-
-            //    if (!isLocationSummon)
-            //    {
-            //        JObject d = JObject.Parse(s);
-            //        ShowSpiritCastResult(true, double.Parse(d["summonOn"].ToString()));
-            //    }
-
-            //    RemoveIngredients(spiritId);
-            //}
-            //else if (s == "4902")
-            //{
-            //    //you have summoned your maximum 
-            //    Show(maxReached);
-            //    SoundManagerOneShot.Instance.MenuSound();
-            //}
-            //else
-            //{
-            //    Debug.LogError(s);
-            //}
         });
     }
 

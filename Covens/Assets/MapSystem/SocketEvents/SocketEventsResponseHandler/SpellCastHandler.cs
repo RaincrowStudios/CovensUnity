@@ -77,15 +77,14 @@ namespace Raincrow.GameEventResponses
 
         public static void HandleEvent(SpellCastEventData data, System.Action onTrailStart = null, System.Action onTrailEnd = null)
         {
+            OnCharacterDeath.CheckSpellDeath(data);
 
             if (LocationIslandController.isInBattle)
             {
                 if (data.caster.Type == MarkerManager.MarkerType.WITCH)
                 {
-
                     if (data.target.Type == MarkerManager.MarkerType.SPIRIT && data.target.id == LocationUnitSpawner.guardianInstance)
                     {
-
                         int island = LocationUnitSpawner.GetIsland(data.caster.id);
                         Debug.Log(island);
                         if (LocationIslandController.locationIslands.ContainsKey(island))

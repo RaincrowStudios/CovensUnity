@@ -72,6 +72,13 @@ public static class BlessingManager
         m_TimerId = LeanTween.value(0, 0, 0).setDelay(totalSeconds).setOnStart(CheckDailyBlessing).uniqueId;
     }
 
+    public static System.TimeSpan TimeUntilNextBlessing()
+    {
+        System.DateTime lastBlessingDate = Utilities.FromJavaTime(LastBlessing);
+        System.DateTime nextBlessingDate = lastBlessingDate.AddHours(24);
+        return nextBlessingDate - System.DateTime.UtcNow;
+    }
+
     //IEnumerator CheckTime()
     //{
     //    while (true)
