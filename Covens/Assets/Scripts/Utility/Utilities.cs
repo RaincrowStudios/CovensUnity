@@ -551,6 +551,22 @@ public static class StringExtensions
     }
 }
 
+public static class Vector3Extensions
+{
+    public static void Zero(this Vector3 value)
+    {
+        value = Vector3.zero;
+    }
+    public static void One(this Vector3 value)
+    {
+        value = Vector3.one;
+    }
+    public static void Value(this Vector3 value, float val)
+    {
+        value = Vector3.one * val;
+    }
+}
+
 public static class ArrayExtensions
 {
     public static bool Contains<T>(this T[] a, T b)
