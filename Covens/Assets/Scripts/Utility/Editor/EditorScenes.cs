@@ -16,6 +16,9 @@ public class EditorScenes : MonoBehaviour
     [MenuItem("Scenes/Place of Power", false, 2)]
     static void PopScene() => OpenScene("PlaceOfPower");
 
+    [MenuItem("Scenes/FTF", false, 3)]
+    static void FTFSCene() => OpenScene("FTF");
+
     [MenuItem("Scenes/Screens/Login")]
     static void LoginScene() => OpenScene("LoginScene");
 

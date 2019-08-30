@@ -30,6 +30,7 @@ namespace Raincrow
             WITCH_SCHOOL,
             VIDEO_PLAYER,
             POPUP,
+            FTF,
         }
 
         private static Dictionary<Scene, string> m_SceneNames = new Dictionary<Scene, string>
@@ -52,7 +53,8 @@ namespace Raincrow
             {Scene.SETTINGS,            "Settings" },
             {Scene.WITCH_SCHOOL,        "WitchSchool" },
             {Scene.VIDEO_PLAYER,        "VideoPlayer" },
-            {Scene.POPUP,               "Popup" }
+            {Scene.POPUP,               "Popup" },
+            {Scene.FTF,                 "FTF" }
         };
 
         private static SceneManager m_Instance;

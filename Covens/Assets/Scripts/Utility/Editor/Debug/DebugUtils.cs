@@ -109,7 +109,7 @@ namespace Raincrow.Test
 
         private void Users()
         {
-            ExpandTokens = Foldout(ExpandTokens, "Tokens");
+            ExpandTokens = BoxFoldout(ExpandTokens, "Tokens");
             if (ExpandTokens)
             {
                 using (new BoxScope())
@@ -127,7 +127,7 @@ namespace Raincrow.Test
                 }
             }
 
-            ExpandCurrentUser = Foldout(ExpandCurrentUser, "Current User");
+            ExpandCurrentUser = BoxFoldout(ExpandCurrentUser, "Current User");
             if (ExpandCurrentUser)
             {
                 using (new BoxScope())
@@ -145,7 +145,7 @@ namespace Raincrow.Test
                 }
             }
 
-            ExpandStoredUsers = Foldout(ExpandStoredUsers, "Stored Users");
+            ExpandStoredUsers = BoxFoldout(ExpandStoredUsers, "Stored Users");
             if (ExpandStoredUsers)
             {
                 EditorGUI.BeginChangeCheck();
@@ -239,6 +239,11 @@ namespace Raincrow.Test
 
         private void Others()
         {
+            if(GUILayout.Button("Reflection test"))
+            {
+
+            }
+
             EditorGUI.BeginDisabledGroup(EditorApplication.isCompiling);
 
             using (new BoxScope())
@@ -537,7 +542,7 @@ namespace Raincrow.Test
             return JsonConvert.SerializeObject(obj, Formatting.Indented);
         }
 
-        public static bool Foldout(bool value, string content)
+        public static bool BoxFoldout(bool value, string content)
         {
             using (new BoxScope())
             {
@@ -546,7 +551,12 @@ namespace Raincrow.Test
             return value;
         }
 
-        private void CentralizedLabel(string text)
+        public static bool Foldout(bool value, string content)
+        {
+            return EditorGUILayout.Foldout(value, content, true);
+        }
+
+        public static void CentralizedLabel(string text)
         {
             using (new GUILayout.HorizontalScope())
             {
@@ -580,7 +590,7 @@ namespace Raincrow.Test
 
         private void DrawRequestDebug()
         {
-            m_ShowRequestDebug = Foldout(m_ShowRequestDebug, "Debug requests");
+            m_ShowRequestDebug = BoxFoldout(m_ShowRequestDebug, "Debug requests");
             if (m_ShowRequestDebug)
             {
                 using (new BoxScope())
