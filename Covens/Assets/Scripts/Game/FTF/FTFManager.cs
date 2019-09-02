@@ -5,6 +5,8 @@ using Raincrow;
 using System.Collections.Generic;
 using Raincrow.FTF;
 using UnityEngine.UI;
+using Raincrow.GameEventResponses;
+using Raincrow.Maps;
 
 public class FTFManager : MonoBehaviour
 {
@@ -19,7 +21,9 @@ public class FTFManager : MonoBehaviour
     [SerializeField] private CanvasGroup m_SavannahCanvasGroup;
 
     private static FTFManager m_Instance;
+
     public static bool InFTF => PlayerDataManager.IsFTF;
+    public static event System.Action OnFinishFTF;
 
     public static void StartFTF()
     {
@@ -74,6 +78,7 @@ public class FTFManager : MonoBehaviour
     private int m_PreviousStepIndex;
     private int m_CurrentStepIndex;
     private List<FTFStepData> m_Steps = null;
+    private int m_TimerTweenId;
 
     private void Awake()
     {
@@ -91,23 +96,19 @@ public class FTFManager : MonoBehaviour
         m_SavannahCanvasGroup.alpha = 0;
     }
 
-    private void Start()
-    {
-        _StartFTF();
-    }
-
     private void OnDestroy()
     {
         m_Message.OnClick -= () => StartCoroutine(NextStep(null));
         m_Button.OnClick -= () => StartCoroutine(NextStep(null));
     }
     
+    [ContextMenu("Start FTF")]
     private void _StartFTF()
     {
         //load json
         //start first step
 
-        m_CurrentStepIndex = 0;
+        m_CurrentStepIndex = -1;
         m_PreviousStepIndex = -1;
 
         LoadJson(json =>
@@ -119,16 +120,30 @@ public class FTFManager : MonoBehaviour
 
     private void Setup(int index)
     {
-        //execute previous state's exitActions
-        if (m_CurrentStepIndex >= 0 && m_Steps[m_CurrentStepIndex].onExit != null)
-        {
-            List<FTFActionData> actions = m_Steps[m_CurrentStepIndex].onExit;
-            foreach (FTFActionData _action in actions)
-            {
-                if (string.IsNullOrEmpty(_action.method))
-                    return;
+        //cancel previous running timer
+        LeanTween.cancel(m_TimerTweenId);
 
-                StartCoroutine(_action.method, _action.parameters.ToArray());
+        //execute previous state's exitActions
+        if (m_CurrentStepIndex >= 0)
+        {
+            FTFStepData previousStep = m_Steps[m_CurrentStepIndex];
+
+            m_Button.Hide();
+            m_Message.Hide();
+            m_Pointer.Hide();
+
+            if (previousStep.onExit != null)
+            {
+                foreach (FTFActionData _action in previousStep.onExit)
+                {
+                    if (string.IsNullOrEmpty(_action.method))
+                        return;
+
+                    if (_action.parameters == null)
+                        StartCoroutine(_action.method, new string[0]);
+                    else
+                        StartCoroutine(_action.method, _action.parameters.ToArray());
+                }
             }
         }
 
@@ -144,6 +159,37 @@ public class FTFManager : MonoBehaviour
 
         FTFStepData step = m_Steps[m_CurrentStepIndex];
 
+        //highlight
+        if (step.highlight.show)
+        {
+            m_Highlight.Show(step.highlight);
+        }
+        else
+        {
+            m_Highlight.Hide();
+        }
+
+        //button block
+        if (step.button.show)
+        {
+            m_Button.Show(step.button);
+            m_Message.EnableButton(false);
+        }
+        else
+        {
+            m_Button.Hide();
+        }
+
+        //pointer
+        if (step.pointer.show)
+        {
+            m_Pointer.Show(step.pointer);
+        }
+        else
+        {
+            m_Pointer.Hide();
+        }
+
         //execute new state's enterActions
         if (step.onEnter != null)
         {
@@ -152,13 +198,24 @@ public class FTFManager : MonoBehaviour
                 if (string.IsNullOrEmpty(_action.method))
                     return;
 
-                StartCoroutine(_action.method, _action.parameters.ToArray());
+                if (_action.parameters == null)
+                    StartCoroutine(_action.method, new string[0]);
+                else
+                    StartCoroutine(_action.method, _action.parameters.ToArray());
             }
         }
 
         //setup timer
         if (step.timer > 0)
-            LeanTween.value(0, 0, 0).setDelay(step.timer).setOnStart(() => StartCoroutine(NextStep(null)));
+        {
+            m_TimerTweenId = LeanTween.value(0, 0, 0)
+                .setDelay(step.timer)
+                .setOnStart(() =>
+                {
+                    StartCoroutine(NextStep(null));
+                })
+                .uniqueId;
+        }
     }
 
     private void LoadJson(System.Action<string> onComplete)
@@ -167,34 +224,23 @@ public class FTFManager : MonoBehaviour
     }
 
     #region AVAILABLE ACTIONS
-
-    private IEnumerator SpawnMarker(object[] parameters)
-    {
-        //[0]: token type <string>
-        //[1]: token json <string>
-
-        yield return 0;
-    }
-
-    private IEnumerator GoToStep(object[] parameters)
+    
+    private IEnumerator GoToStep(string[] parameters)
     {
         if (parameters.Length < 1)
             throw new System.Exception("[GoTo] missing param[0] (step index)");
-
-        if (parameters[0] is int == false)
-            throw new System.ArgumentException("[GoTo] invalid param[0] type \"" + parameters[0].GetType());
-
-        int stepIndex = (int)parameters[0];
+        
+        int stepIndex = int.Parse(parameters[0]);
         yield return 0;
     }
 
-    private IEnumerator NextStep(object[] parameters)
+    private IEnumerator NextStep(string[] parameters)
     {
         Setup(m_CurrentStepIndex + 1);
         yield return 0;
     }
 
-    private IEnumerator ShowSavannah(object[] parameters)
+    private IEnumerator ShowSavannah(string[] parameters)
     {
         m_Savannah.gameObject.SetActive(true);
         LeanTween.alphaCanvas(m_SavannahCanvasGroup, 1f, 1f).setEaseOutCubic();
@@ -203,28 +249,175 @@ public class FTFManager : MonoBehaviour
         yield return 0;
     }
 
-    private IEnumerator HideSavannah(object[] parameters)
+    private IEnumerator HideSavannah(string[] parameters)
     {
-        LeanTween.alphaCanvas(m_SavannahCanvasGroup, 0f, 0.2f).setOnComplete(() =>
+        LeanTween.alphaCanvas(m_SavannahCanvasGroup, 0f, 0.25f).setEaseOutCubic().setOnComplete(() =>
         {
             m_Savannah.gameObject.SetActive(false);
         });
-        m_Savannah.Play("out");
+        m_Savannah.Play("out", 0, 0.3f);
 
         yield return 0;
     }
 
-    private IEnumerator ShowMessage(object[] parameters)
+    private IEnumerator ShowMessage(string[] parameters)
     {
         if (parameters.Length < 1)
             throw new System.Exception("[ShowMessage] missing param[0] (message)");
+        
+        string message = parameters[0];
+
+        m_Message.Show(LocalizeLookUp.GetText(message));
+        m_Message.EnableButton(!m_Button.IsShowing);
+
+        yield return 0;
+    }
+
+    private IEnumerator SpawnSpirit(string[] parameters)
+    {
+        if (parameters.Length < 1)
+            throw new System.Exception("[SpawnSpirit] missing param[0] (spirit id)");
 
         if (parameters[0] is string == false)
-            throw new System.ArgumentException("[ShowMessage] invalid param[0] type \"" + parameters[0].GetType());
+            throw new System.ArgumentException("[SpawnSpirit] invalid param[0] type \"" + parameters[0].GetType() + "\"");
+        
+        string json = (string)parameters[0];
+        SpiritToken token = JsonConvert.DeserializeObject<SpiritToken>(json);
+        token.type = "spirit";
+        token.longitude += PlayerDataManager.playerData.longitude;
+        token.latitude += PlayerDataManager.playerData.latitude;
+        AddSpiritHandler.HandleEvent(token);
 
-        string message = (string)parameters[0];
+        yield return 0;
+    }
 
-        m_Message.Show(message);
+    private IEnumerator SelectMarker(string[] parameters)
+    {
+        if (parameters.Length < 1)
+            throw new System.Exception("[SelectMarker] missing param[0] (marker id)");
+
+        if (parameters.Length < 2)
+            throw new System.Exception("[SelectMarker] missing param[1] (marker details json)");
+
+        string id = parameters[0];
+        string json = parameters[1];
+
+        IMarker marker = MarkerSpawner.GetMarker(id);
+
+        if (marker.Type == MarkerManager.MarkerType.SPIRIT)
+        {
+            SelectSpiritData_Map details = JsonConvert.DeserializeObject<SelectSpiritData_Map>(json);
+            details.token = marker.Token as SpiritToken;
+
+            UISpiritInfo.Show(marker as SpiritMarker, details.token);
+            UIQuickCast.Open();
+            yield return new WaitForSeconds(0.5f);
+            UISpiritInfo.SetupDetails(details);
+            UIQuickCast.UpdateCanCast(marker, details);
+        }
+        else if (marker.Type == MarkerManager.MarkerType.WITCH)
+        {
+            SelectWitchData_Map details = JsonConvert.DeserializeObject<SelectWitchData_Map>(json);
+            details.token = marker.Token as WitchToken;
+
+            UIPlayerInfo.Show(marker as WitchMarker, details.token);
+            UIQuickCast.Open();
+            yield return new WaitForSeconds(0.5f);
+            UIPlayerInfo.SetupDetails(details);
+            UIQuickCast.UpdateCanCast(marker, details);
+        }
+
+        yield return 0;
+    }
+
+    private IEnumerator SocketEvent(string[] parameters)
+    {
+        if (parameters.Length < 1)
+            throw new System.Exception("[SocketEvent] missing param[0] (event id)");
+
+        if (parameters.Length < 2)
+            throw new System.Exception("[SocketEvent] missing param[1] (event data)");
+
+        string id = parameters[0];
+        string json = parameters[1];
+
+        SocketClient.Instance.ManageData(new CommandResponse()
+        {
+            Command = id,
+            Data = json
+        });
+
+        yield return 0;
+    }
+
+    private IEnumerator CastSpell(string[] parameters)
+    {
+        string spellId = parameters[0];
+        string targetId = parameters[1];
+        int damage = int.Parse(parameters[2]);
+
+        //load
+        IMarker target = MarkerSpawner.GetMarker(targetId);
+        CharacterToken token = target.Token as CharacterToken;
+        SpellData spell = DownloadedAssets.GetSpell(spellId);
+
+        //show casting UI
+        UIWaitingCastResult.Instance.Show(target, spell, new List<spellIngredientsData>(), null, null);
+
+        //wait few seconds
+        yield return new WaitForSecondsRealtime(1f);
+
+        SpellCastHandler.SpellCastEventData data = new SpellCastHandler.SpellCastEventData();
+
+        data.spell = spellId;
+
+        data.caster.id = PlayerDataManager.playerData.instance;
+        data.caster.name = PlayerDataManager.playerData.name;
+        data.caster.type = "character";
+
+        data.target.id = targetId;
+        data.target.name = target.Name;
+        data.target.energy = token.energy - damage;
+
+        data.result.damage = damage;
+        data.result.isSuccess = damage != 0;
+
+        data.timestamp = Time.unscaledDeltaTime;
+
+        SpellCastHandler.HandleEvent(data);
+
+        UIWaitingCastResult.Instance.ShowResults(spell, data.result);
+
+        yield return 0;
+    }
+
+    private IEnumerator TargetSpell(string[] parameters)
+    {
+        string spellId = parameters[0];
+        string casterId = parameters[1];
+        int damage = int.Parse(parameters[2]);
+
+        IMarker caster = MarkerSpawner.GetMarker(casterId);
+        CharacterToken token = caster.Token as CharacterToken;
+
+        SpellCastHandler.SpellCastEventData data = new SpellCastHandler.SpellCastEventData();
+
+        data.spell = spellId;
+
+        data.target.id = PlayerDataManager.playerData.instance;
+        data.target.name = PlayerDataManager.playerData.name;
+        data.target.type = "character";
+
+        data.caster.id = casterId;
+        data.caster.name = caster.Name;
+        data.caster.energy = token.energy - damage;
+
+        data.result.damage = damage;
+        data.result.isSuccess = damage != 0;
+
+        data.timestamp = Time.unscaledDeltaTime;
+
+        SpellCastHandler.HandleEvent(data);
 
         yield return 0;
     }
@@ -235,32 +428,4 @@ public class FTFManager : MonoBehaviour
     {
         Debug.Log("[<color=cyan>FTFManager</color>] " + message);
     }
-
-#if UNITY_EDITOR
-    [ContextMenu("Test")]
-    private void TestCoroutine()
-    {
-        StartCoroutine("DebugCoroutine", new object[] { 1, "test" });
-    }
-
-    private IEnumerator DebugCoroutine(params object[] parameters)
-    {
-        Debug.Log("len: " + parameters.Length);
-        for (int i = 0; i < parameters.Length; i++)
-            Debug.Log(parameters[i]);
-        yield return 0;
-    }
-
-    [ContextMenu("Test parse")]
-    private void TestParse()
-    {
-        string json = "{\"parameters\":[3, \"outro test\"]}";
-        var action = JsonConvert.DeserializeObject<FTFActionData>(json);
-        //var parameters = action.parameters;
-        //Debug.Log("len: " + parameters.Length);
-        //for (int i = 0; i < parameters.Length; i++)
-        //    Debug.Log(parameters[i]);
-        StartCoroutine("DebugCoroutine", action.parameters.ToArray());
-    }
-#endif
 }

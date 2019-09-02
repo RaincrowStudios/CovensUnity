@@ -112,7 +112,7 @@ namespace Raincrow.FTF
         public string method;
 
         [SerializeField]
-        public List<object> parameters;
+        public List<string> parameters;
     }
 
     [System.Serializable]

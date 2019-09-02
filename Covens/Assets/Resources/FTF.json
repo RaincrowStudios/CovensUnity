@@ -1,3 +1,22 @@
 [
-	{"onEnter":[{"method":"ShowMessage","parameters":["asid ghasui dhsau dha"]}]}
+
+{"onEnter":[{"method":"ShowMessage","parameters":["ftf_0"]},{"method":"ShowSavannah"}]},
+
+{"onEnter":[{"method":"ShowMessage","parameters":["ftf_1"]},{"method":"SpawnSpirit","parameters":["{\"_id\":\"ftf_barghest\",\"spirit\":\"spirit_barghest\",\"energy\":1254,\"baseEnergy\":1254,\"latitude\":0.0003,\"longitude\":0.0006,\"state\":\"\",\"type\":\"spirit\"}"]}]},
+
+{"onEnter":[{"method":"ShowMessage","parameters":["ftf_2"]}]},
+
+{"button":{"show":true,"anchorMin":[0.5,0.5],"anchorMax":[0.5,0.5],"position":[290.0,309.1],"size":[325.9,319.9]},"highlight":{"show":true,"anchorMin":[0.5,0.5],"anchorMax":[0.5,0.5],"position":[290.0,317.0],"size":[796.7,782.1]},"pointer":{"show":true,"anchorMin":[0.5,0.5],"anchorMax":[0.5,0.5],"position":[300.0,313.0]},"onEnter":[{"method":"ShowMessage","parameters":["ftf_3"]}]},
+
+{"timer":1.0,"onEnter":[{"method":"SelectMarker","parameters":["ftf_barghest","{\"effects\":[]}"]}],"onExit":[{"method":"HideSavannah"}]},
+
+{"onEnter":[{"method":"ShowMessage","parameters":["ftf_4"]}]},
+
+{"timer":2.0,"onEnter":[{"method":"SocketEvent","parameters":["cast.spell","{   \"target\": {     \"_id\": \"ftf_barghest\",     \"energy\": 54,     \"type\": \"spirit\"   },   \"caster\": {     \"_id\": \"savannah\",     \"energy\": 30000,     \"type\": \"character\"   },   \"spell\": \"spell_whiteFlame\",   \"result\": {     \"damage\": -1200, \"isSuccess\":true     } }"]}]},
+
+{"onEnter":[{"method":"ShowMessage","parameters":["ftf_5"]}]},
+
+{"button":{"show":true,"anchorMin":[0.0,0.5],"anchorMax":[0.0,0.5],"position":[1109.0,-576.0],"size":[277.3,220.1]},"highlight":{"show":true,"anchorMin":[0.0,0.5],"anchorMax":[0.0,0.5],"position":[1135.0,-585.0],"size":[780.5,782.1]},"pointer":{"show":true,"anchorMin":[0.0,0.5],"anchorMax":[0.0,0.5],"position":[1111.0,-586.0]}},
+
+
 ]

@@ -112,18 +112,15 @@ public class SocketClient : MonoBehaviour
 
     private void OnGameEvent(Socket socket, Packet packet, object[] args)
     {
-        if (!FTFManager.InFTF)
+        string command = args[0].ToString();
+        string data = args[1].ToString();
+
+        CommandResponse response = new CommandResponse()
         {
-            string command = args[0].ToString();
-            string data = args[1].ToString();
-            //Debug.LogFormat("Queueing Response from Socket: {0} - {1}", command, data);
-            CommandResponse response = new CommandResponse()
-            {
-                Command = command,
-                Data = data
-            };
-            responsesQueue.Enqueue(response);
-        }
+            Command = command,
+            Data = data
+        };
+        responsesQueue.Enqueue(response);
     }
 
     private void OnError(Socket socket, Packet packet, object[] args)

@@ -140,6 +140,7 @@ public class SpiritMarker : MuskMarker
             Debug.LogError("spritid not sent [" + Token.instance + "]");
         else
         {
+            m_AvatarRenderer.color = new Color(1, 1, 1, 0);
             DownloadedAssets.GetSprite(spiritToken.spiritId, (sprite) =>
             {
                 if (m_AvatarRenderer != null)
@@ -147,6 +148,7 @@ public class SpiritMarker : MuskMarker
                     float spriteHeight = sprite.rect.height / sprite.pixelsPerUnit;
                     m_AvatarRenderer.transform.localPosition = new Vector3(0, spriteHeight * 0.4f * m_AvatarRenderer.transform.localScale.x, 0);
                     m_AvatarRenderer.sprite = sprite;
+                    LeanTween.color(m_AvatarRenderer.gameObject, new Color(1, 1, 1, 1), 1f).setEaseOutCubic();
                 }
             });
         }

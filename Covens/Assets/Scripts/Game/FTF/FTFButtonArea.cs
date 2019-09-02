@@ -20,6 +20,7 @@ namespace Raincrow.FTF
 
         private void OnClickButton()
         {
+            Hide();
             OnClick?.Invoke();
         }
     }

@@ -271,16 +271,6 @@ public class GameStartup : MonoBehaviour
 
     private void StartGame()
     {
-        //if (PlayerDataManager.IsFTF)
-        //{
-        //    Debug.Log("<color=red>skiping tutorial</color>");
-        //    FTFManager.FinishFTF((result, response) =>
-        //    {
-        //        StartGame();
-        //    });
-        //    return;
-        //}
-
         if (m_ConfigReady == false)
         {
             SplashManager.Instance.ShowLoading(0);
@@ -324,16 +314,19 @@ public class GameStartup : MonoBehaviour
 
         if (PlayerDataManager.IsFTF)
         {
-            LoadingOverlay.Show();
-            Instantiate(Resources.Load<GameObject>("FTF/FTFCanvas"));
-            LoadingOverlay.Hide();
+            FTFManager.OnFinishFTF += OnFinishFTF;
+            FTFManager.StartFTF();
         }
         else
         {
             SocketClient.Instance.InitiateSocketConnection();
             ChatManager.InitChat();
-
             UIDominionSplash.Instance.Show(() => BlessingManager.CheckDailyBlessing());
         }
+    }
+
+    private void OnFinishFTF()
+    {
+        FTFManager.OnFinishFTF -= OnFinishFTF;
     }
 }

@@ -8,8 +8,8 @@ namespace Raincrow.FTF
     //[CustomEditor(typeof(FTFRectBase))]
     public abstract class FTFRectBaseInspector : Editor
     {
-        private string m_HighlightString = null;
         private FTFRectBase m_RectObject;
+        [SerializeField] protected static string m_JsonString = "";
         [SerializeField] private bool m_Indented = false;
         [SerializeField] private Vector2 m_ScrollPosition;
 
@@ -24,33 +24,29 @@ namespace Raincrow.FTF
             if (m_RectObject == null)
             {
                 m_RectObject = target as FTFRectBase;
-                GenerateString();
             }
-
-            if (m_RectObject.GetComponent<RectTransform>().hasChanged)
-                GenerateString();
-
+            
             using (new BoxScope())
             {
-                EditorGUI.BeginChangeCheck();
-
                 m_Indented = EditorGUILayout.Toggle("Indented", m_Indented);
-
-                if (EditorGUI.EndChangeCheck())
-                    GenerateString();
 
                 using (var scroll = new GUILayout.ScrollViewScope(m_ScrollPosition))
                 {
                     m_ScrollPosition = scroll.scrollPosition;
-                    EditorGUILayout.TextArea(m_HighlightString, GUILayout.MinHeight(50));
+                    m_JsonString = EditorGUILayout.TextArea(m_JsonString, GUILayout.MinHeight(50));
                 }
+
+                if (GUILayout.Button("Serialize"))
+                    m_JsonString = GenerateString();
+
+                OnDrawGenerateBox();
             }
         }
 
-        private void GenerateString()
+        protected string GenerateString()
         {
             FTFRectData area = new FTFRectData();
-            RectTransform rect = m_RectObject.GetComponent<RectTransform>();
+            RectTransform rect = m_RectObject.RectTransform;
 
             area.show = true;
             area.anchorMin = rect.anchorMin;
@@ -58,7 +54,12 @@ namespace Raincrow.FTF
             area.position = rect.anchoredPosition;
             area.size = rect.sizeDelta;
 
-            m_HighlightString = "\"" +FieldName+"\":" + Newtonsoft.Json.JsonConvert.SerializeObject(area, m_Indented ? Newtonsoft.Json.Formatting.Indented : Newtonsoft.Json.Formatting.None);
+            return "\"" +FieldName+"\":" + Newtonsoft.Json.JsonConvert.SerializeObject(area, m_Indented ? Newtonsoft.Json.Formatting.Indented : Newtonsoft.Json.Formatting.None);
+        }
+
+        protected virtual void OnDrawGenerateBox()
+        {
+
         }
     }
 }

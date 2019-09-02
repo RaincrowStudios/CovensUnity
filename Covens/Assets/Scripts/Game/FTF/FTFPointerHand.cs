@@ -55,11 +55,10 @@ namespace Raincrow.FTF
 
         private void Hide(System.Action onComplete, float time, LeanTweenType easeType)
         {
-            isShowing = false;
-
             LeanTween.cancel(m_TweenId);
             m_TweenId = LeanTween.alphaCanvas(m_CanvasGroup, 0f, time).setEase(easeType).setOnComplete(() =>
             {
+                isShowing = false;
                 gameObject.SetActive(false);
                 onComplete?.Invoke();
             }).uniqueId;

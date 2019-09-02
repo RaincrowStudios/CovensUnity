@@ -114,9 +114,6 @@ public class MarkerSpawner : MarkerManager
 
     public IMarker AddMarker(Token Data)
     {
-        if (PlayerDataManager.IsFTF)
-            return null;
-
         if (Markers.ContainsKey(Data.instance))
         {
             foreach (var item in Markers[Data.instance])

@@ -22,19 +22,21 @@ namespace Raincrow.FTF
             m_CanvasGroup.alpha = 0;
         }
 
-        public override void Show(Vector2 anchorMin, Vector2 anchorMax, Vector2 position, Vector2 size)
+        public override void Show(FTFRectData data)
         {
             if (Mathf.Approximately(m_CanvasGroup.alpha, 0) == false)
             {
                 //hide first
-                Hide(() => Show(anchorMax, anchorMax, position, size), 0.2f, LeanTweenType.linear);
+                Hide(() => Show(data), 0.2f, LeanTweenType.linear);
                 return;
             }
 
-            base.Show(anchorMin, anchorMax, position, size);
+            base.Show(data);
             gameObject.SetActive(false);
 
             Vector2 canvas = m_Canvas.sizeDelta;
+            Vector2 position = data.position;
+            Vector2 size = data.size;
 
             //animate
             LeanTween.cancel(m_TweenId);
@@ -45,19 +47,25 @@ namespace Raincrow.FTF
             //fit the screen
             m_Top.sizeDelta = new Vector2(
                 m_Top.sizeDelta.x,
-                canvas.y / 2 - position.y - m_RectTransform.pivot.y / 2 - size.y / 2);
+                canvas.y/* / 2 - position.y - m_RectTransform.pivot.y / 2 - size.y / 2*/);
 
             m_Bot.sizeDelta = new Vector2(
                 m_Bot.sizeDelta.x,
-                canvas.y / 2f - position.y - m_RectTransform.pivot.y / 2 - size.y / 2);
+                canvas.y/* - m_Top.sizeDelta.y - size.y*/);
 
-            m_Left.sizeDelta = new Vector2(
-                canvas.x / 2 - position.x - m_RectTransform.pivot.x / 2 - size.x / 2,
-                canvas.y - size.y);
 
             m_Right.sizeDelta = new Vector2(
-                canvas.x / 2f - position.x - m_RectTransform.pivot.x / 2 - size.x / 2,
-                canvas.y - size.y);
+                canvas.x /* / 2f - position.x - m_RectTransform.pivot.x / 2 - size.x / 2*/,
+                canvas.y + size.x/*- size.y*/);
+
+            m_Left.sizeDelta = new Vector2(
+                canvas.x/* - m_Right.sizeDelta.x - size.x*/,
+                canvas.y + size.x/* - size.y*/);
+
+            //if (position.y > 0)
+            //    m_Right.anchoredPosition = m_Left.anchoredPosition = new Vector2(0, -m_Bot.sizeDelta.y / 2);
+            //else
+            //    m_Right.anchoredPosition = m_Left.anchoredPosition = new Vector2(0, m_Top.sizeDelta.y / 2);
 
             gameObject.SetActive(true);
         }
@@ -68,6 +76,7 @@ namespace Raincrow.FTF
             m_TweenId = LeanTween.alphaCanvas(m_CanvasGroup, 0f, time)
                 .setOnComplete(() =>
                 {
+                    IsShowing = false;
                     gameObject.SetActive(false);
                     m_CanvasGroup.alpha = 0;
                     onComplete?.Invoke();
