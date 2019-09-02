@@ -751,6 +751,15 @@ public class UISpellcastBook : MonoBehaviour//, IEnhancedScrollerDelegate
             .uniqueId;
     }
 
+    public static void FocusOn(string spellId)
+    {
+        if (m_Instance == null)
+            return;
+
+        int index = m_Instance.m_Cards.FindIndex(card => card.Spell.id == spellId);
+        m_Instance.FocusOn(index);
+    }
+
     //#region SCROLLER
 
     //public EnhancedScrollerCellView GetCellView(EnhancedScroller scroller, int dataIndex, int cellIndex)

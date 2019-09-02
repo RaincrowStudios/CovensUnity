@@ -77,7 +77,7 @@ public class UISpiritBanished : MonoBehaviour
             m_SpiritArt.color = new Color(1, 1, 1, 0.9f);
 
             LeanTween.cancel(m_TweenId);
-            m_TweenId = LeanTween.value(0, CanvasAlpha, 0.7f)
+            m_TweenId = LeanTween.value(0, CanvasAlpha, 0.7f).setDelay(0.5f)
                 .setEaseOutCubic()
                 .setOnUpdate((float t) =>
                 {
@@ -98,7 +98,7 @@ public class UISpiritBanished : MonoBehaviour
         });
     }
 
-    private void Close()
+    public void Close()
     {
         m_SpiritId = null;
         m_InputRaycaster.enabled = false;

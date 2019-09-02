@@ -11,6 +11,7 @@ namespace Raincrow.FTF
         [SerializeField] private CanvasGroup m_CanvasGroup;
 
         private int m_TweenId;
+        private int m_AnimTweenId;
         private bool isShowing;
         
         private void Awake()
@@ -22,6 +23,22 @@ namespace Raincrow.FTF
 
             gameObject.SetActive(false);
             m_CanvasGroup.alpha = 0;
+        }
+
+        private void AnimateHand()
+        {
+            LeanTween.cancel(m_AnimTweenId);
+            m_AnimTweenId = LeanTween.value(0, 1f, 1f)
+                .setOnUpdate((float t) =>
+                {
+                    float s = LeanTween.easeInOutBack(1, 1.2f, t);
+                    float a = LeanTween.easeInOutCubic(0.5f, 1f, t);
+                    transform.localScale = new Vector3(Mathf.Sign(transform.localScale.x) * s, s, s);
+                    m_CanvasGroup.alpha = a;
+                })
+                //.setEaseInOutBack()
+                .setLoopPingPong()
+                .uniqueId;
         }
 
         public void Show(FTFPointData pointer)
@@ -44,7 +61,10 @@ namespace Raincrow.FTF
                 m_RectTransform.localScale = new Vector3(-1, 1, 1);
 
             LeanTween.cancel(m_TweenId);
-            m_TweenId = LeanTween.alphaCanvas(m_CanvasGroup, 1f, 1f).setEaseOutCubic().uniqueId;
+            m_TweenId = LeanTween.alphaCanvas(m_CanvasGroup, 0.5f, 0.5f)
+                .setEaseOutCubic()
+                .setOnComplete(AnimateHand)
+                .uniqueId;
             gameObject.SetActive(true);
         }
 
@@ -55,7 +75,9 @@ namespace Raincrow.FTF
 
         private void Hide(System.Action onComplete, float time, LeanTweenType easeType)
         {
+            LeanTween.cancel(m_AnimTweenId);
             LeanTween.cancel(m_TweenId);
+
             m_TweenId = LeanTween.alphaCanvas(m_CanvasGroup, 0f, time).setEase(easeType).setOnComplete(() =>
             {
                 isShowing = false;

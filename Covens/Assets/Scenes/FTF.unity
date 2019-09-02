@@ -204,9 +204,9 @@ GameObject:
   m_Component:
   - component: {fileID: 549167940}
   - component: {fileID: 549167944}
+  - component: {fileID: 549167941}
   - component: {fileID: 549167943}
   - component: {fileID: 549167942}
-  - component: {fileID: 549167941}
   m_Layer: 5
   m_Name: Highlight
   m_TagString: Untagged
@@ -1011,6 +1011,7 @@ MonoBehaviour:
   m_Pointer: {fileID: 8342175198585656154}
   m_Savannah: {fileID: 3187979945570501265}
   m_SavannahCanvasGroup: {fileID: 3335922224563657905}
+  m_StartFrom: 18
 --- !u!1 &1914845807562544
 GameObject:
   m_ObjectHideFlags: 0
@@ -1021,9 +1022,9 @@ GameObject:
   m_Component:
   - component: {fileID: 224500816155013762}
   - component: {fileID: 8342175198585656154}
+  - component: {fileID: 4335546328929414664}
   - component: {fileID: 222775025984574356}
   - component: {fileID: 114088331715107112}
-  - component: {fileID: 4335546328929414664}
   m_Layer: 23
   m_Name: PointerHand
   m_TagString: Untagged
@@ -1834,11 +1835,11 @@ GameObject:
   m_Component:
   - component: {fileID: 1796062644109268796}
   - component: {fileID: 934648055135797651}
+  - component: {fileID: 1788391832228512524}
   - component: {fileID: 1793619240485732008}
   - component: {fileID: 1902491323166307720}
   - component: {fileID: 1919457197842889816}
   - component: {fileID: 1933066413268846512}
-  - component: {fileID: 1788391832228512524}
   m_Layer: 23
   m_Name: Message
   m_TagString: Untagged
@@ -2192,11 +2193,11 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 3348350552844834817}
+  - component: {fileID: 3335922224563657905}
   - component: {fileID: 3350250515407686313}
   - component: {fileID: 3242233630107405917}
   - component: {fileID: 3187979945570501265}
   - component: {fileID: 3192019011971571141}
-  - component: {fileID: 3335922224563657905}
   m_Layer: 23
   m_Name: Savanna
   m_TagString: Untagged

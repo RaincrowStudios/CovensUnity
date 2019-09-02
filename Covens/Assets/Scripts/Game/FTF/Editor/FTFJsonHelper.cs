@@ -11,17 +11,27 @@ namespace Raincrow.FTF
     {
         private static FTFJsonHelper m_Window;
         private static List<string> AVAILABLE_METHODS = new List<string> {
+            "SocketEvent",
+            "MoveCamera",
             "",
             "GoToStep",
             "NextStep",
             "ShowSavannah",
             "HideSavannah",
             "ShowMessage",
+            "",
             "SpawnSpirit",
+            "SpawnPop",
+            "",
             "SelectMarker",
-            "SocketEvent",
             "CastSpell",
-            "TargetSpell"
+            "TargetSpell",
+            "",
+            "ShowSpellbook",
+            "CloseSpellbook",
+            "FocusSpellbook",
+            "CloseSpiritBanished",
+            "CloseSpellResults",
         };
 
         [MenuItem("Tools/FTF Helper")]
@@ -380,6 +390,8 @@ namespace Raincrow.FTF
                                     NullValueHandling = NullValueHandling.Ignore,
                                     Formatting = m_Indented ? Formatting.Indented : Formatting.None
                                 });
+
+            m_Json = m_Json + ",";
         }
     }
 }

@@ -20,6 +20,9 @@ public class FTFManager : MonoBehaviour
     [SerializeField] private Animator m_Savannah;
     [SerializeField] private CanvasGroup m_SavannahCanvasGroup;
 
+    [Header("Debug")]
+    [SerializeField] private int m_StartFrom = 0;
+
     private static FTFManager m_Instance;
 
     public static bool InFTF => PlayerDataManager.IsFTF;
@@ -114,12 +117,30 @@ public class FTFManager : MonoBehaviour
         LoadJson(json =>
         {
             m_Steps = JsonConvert.DeserializeObject<List<FTFStepData>>(json);
+
+#if UNITY_EDITOR
+            Setup(0);
+            StartCoroutine(SkipUntil(m_StartFrom));
+            return;
+#endif
             Setup(0);
         });
     }
 
+    private IEnumerator SkipUntil(int index)
+    {
+        while (m_CurrentStepIndex != m_StartFrom)
+        {
+            yield return NextStep(new string[0]);
+            yield return 0;
+            yield return new WaitForSeconds(0.25f);
+        }
+    }
+
     private void Setup(int index)
     {
+        Log("step " + index);
+
         //cancel previous running timer
         LeanTween.cancel(m_TimerTweenId);
 
@@ -277,10 +298,7 @@ public class FTFManager : MonoBehaviour
     {
         if (parameters.Length < 1)
             throw new System.Exception("[SpawnSpirit] missing param[0] (spirit id)");
-
-        if (parameters[0] is string == false)
-            throw new System.ArgumentException("[SpawnSpirit] invalid param[0] type \"" + parameters[0].GetType() + "\"");
-        
+                
         string json = (string)parameters[0];
         SpiritToken token = JsonConvert.DeserializeObject<SpiritToken>(json);
         token.type = "spirit";
@@ -288,6 +306,16 @@ public class FTFManager : MonoBehaviour
         token.latitude += PlayerDataManager.playerData.latitude;
         AddSpiritHandler.HandleEvent(token);
 
+        yield return 0;
+    }
+
+    private IEnumerator SpawnPop(string[] parameters)
+    {
+        string json = parameters[0];
+        PopToken token = JsonConvert.DeserializeObject<PopToken>(json);
+        token.longitude += PlayerDataManager.playerData.longitude;
+        token.latitude += PlayerDataManager.playerData.latitude;
+        AddCollectableHandler.HandleEvent(token);
         yield return 0;
     }
 
@@ -325,6 +353,10 @@ public class FTFManager : MonoBehaviour
             yield return new WaitForSeconds(0.5f);
             UIPlayerInfo.SetupDetails(details);
             UIQuickCast.UpdateCanCast(marker, details);
+        }
+        else if (marker.Type == MarkerManager.MarkerType.PLACE_OF_POWER)
+        {
+            
         }
 
         yield return 0;
@@ -365,7 +397,7 @@ public class FTFManager : MonoBehaviour
         UIWaitingCastResult.Instance.Show(target, spell, new List<spellIngredientsData>(), null, null);
 
         //wait few seconds
-        yield return new WaitForSecondsRealtime(1f);
+        yield return new WaitForSecondsRealtime(1.5f);
 
         SpellCastHandler.SpellCastEventData data = new SpellCastHandler.SpellCastEventData();
 
@@ -374,6 +406,7 @@ public class FTFManager : MonoBehaviour
         data.caster.id = PlayerDataManager.playerData.instance;
         data.caster.name = PlayerDataManager.playerData.name;
         data.caster.type = "character";
+        data.caster.energy = PlayerDataManager.playerData.energy - spell.cost;
 
         data.target.id = targetId;
         data.target.name = target.Name;
@@ -419,6 +452,55 @@ public class FTFManager : MonoBehaviour
 
         SpellCastHandler.HandleEvent(data);
 
+        yield return 0;
+    }
+
+    private IEnumerator ShowSpellbook(string[] parameters)
+    {
+        if (UIPlayerInfo.isShowing)
+            UISpellcastBook.Open(UIPlayerInfo.WitchMarkerDetails, UIPlayerInfo.WitchMarker, PlayerDataManager.playerData.UnlockedSpells, null, null, null);
+
+        if (UISpiritInfo.isOpen)
+            UISpellcastBook.Open(UISpiritInfo.SpiritMarkerDetails, UISpiritInfo.SpiritMarker, PlayerDataManager.playerData.UnlockedSpells, null, null, null);
+
+        yield return 0;
+    }
+
+    private IEnumerator CloseSpellbook(string[] parameters)
+    {
+        UISpellcastBook.Close();
+        yield return 0;
+    }
+
+    private IEnumerator FocusSpellbook(string[] parameters)
+    {
+        string spellId = parameters[0];
+        UISpellcastBook.FocusOn(spellId);
+        yield return 0;
+    }
+
+    private IEnumerator CloseSpiritBanished(string[] parameters)
+    {
+        UISpiritBanished.Instance.Close();
+        yield return 0;
+    }
+
+    private IEnumerator MoveCamera(string[] parameters)
+    {
+        float longitude = PlayerDataManager.playerData.longitude + float.Parse(parameters[0]);
+        float latitude = PlayerDataManager.playerData.latitude+ float.Parse(parameters[1]);
+        float zoom = float.Parse(parameters[2]);
+
+        Vector3 worldPosition = MapsAPI.Instance.GetWorldPosition(longitude, latitude);
+
+        MapCameraUtils.FocusOnPosition(worldPosition, zoom, true);
+
+        yield return 0;
+    }
+
+    private IEnumerator CloseSpellResults(string[] parameters)
+    {
+        UIWaitingCastResult.Instance.Close();
         yield return 0;
     }
 

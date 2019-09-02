@@ -63,7 +63,7 @@ public class UIPlayerInfo : UIInfoPanel
 
     public static void SetupDetails(SelectWitchData_Map data)
     {
-        m_WitchData = data;
+        WitchMarkerDetails = data;
 
         if (m_Instance == null)
             return;
@@ -76,7 +76,7 @@ public class UIPlayerInfo : UIInfoPanel
 
     public static WitchToken WitchToken { get; private set; }
     public static WitchMarker WitchMarker { get; private set; }
-    private static SelectWitchData_Map m_WitchData;
+    public static SelectWitchData_Map WitchMarkerDetails { get; private set; }
 
     protected override void Awake()
     {
@@ -155,8 +155,8 @@ public class UIPlayerInfo : UIInfoPanel
         OnMapEnergyChange.OnEnergyChange += _OnEnergyChange;
         OnMapEnergyChange.OnPlayerDead += _OnCharacterDead;
 
-        if (m_WitchData != null)
-            _SetupDetails(m_WitchData);
+        if (WitchMarkerDetails != null)
+            _SetupDetails(WitchMarkerDetails);
 
         //animate the ui
         Show();
@@ -190,7 +190,7 @@ public class UIPlayerInfo : UIInfoPanel
 
         WitchMarker = null;
         WitchToken = null;
-        m_WitchData = null;
+        WitchMarkerDetails = null;
 
         //aniamte the ui
         base.Close();
@@ -223,7 +223,7 @@ public class UIPlayerInfo : UIInfoPanel
         else
             m_CovenText.text = LocalizeLookUp.GetText("chat_screen_no_coven");
 
-        m_ConditionsList.Setup(m_WitchData.effects);
+        m_ConditionsList.Setup(WitchMarkerDetails.effects);
     }
 
     private void OnClickClose()
@@ -234,15 +234,15 @@ public class UIPlayerInfo : UIInfoPanel
     private void OnClickCoven()
     {
         //show the witche's coven
-        if (string.IsNullOrEmpty(m_WitchData.coven) == false)
+        if (string.IsNullOrEmpty(WitchMarkerDetails.coven) == false)
         {
-            TeamManagerUI.OpenName(m_WitchData.coven);
+            TeamManagerUI.OpenName(WitchMarkerDetails.coven);
         }
     }
 
     private void OnClickPlayer()
     {
-        TeamPlayerView.Instance.Show(m_WitchData);
+        TeamPlayerView.Instance.Show(WitchMarkerDetails);
     }
 
 
@@ -281,15 +281,15 @@ public class UIPlayerInfo : UIInfoPanel
         if (character != WitchToken.instance)
             return;
 
-        foreach (StatusEffect item in m_WitchData.effects)
+        foreach (StatusEffect item in WitchMarkerDetails.effects)
         {
             if (item.spell == statusEffect.spell)
             {
-                m_WitchData.effects.Remove(item);
+                WitchMarkerDetails.effects.Remove(item);
                 break;
             }
         }
-        m_WitchData.effects.Add(statusEffect);
+        WitchMarkerDetails.effects.Add(statusEffect);
         m_ConditionsList.AddCondition(statusEffect);
     }
 
