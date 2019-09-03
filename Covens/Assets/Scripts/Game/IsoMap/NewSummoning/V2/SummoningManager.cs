@@ -58,6 +58,7 @@ public class SummoningManager : MonoBehaviour
     public GameObject noSpiritMsg;
 
     private int currentTier = 0;
+    private int m_TweenId;
 
 
     public static void Open(System.Action onLoaded = null)
@@ -143,6 +144,12 @@ public class SummoningManager : MonoBehaviour
     
     private void _Open()
     {
+        LeanTween.cancel(m_TweenId);
+        StopAllCoroutines();
+        m_TweenId = LeanTween.value(0, 1, 1).setOnComplete(enableBool).uniqueId;
+
+        OnMapEnergyChange.OnPlayerDead += _Close;
+
         UIStateManager.Instance.CallWindowChanged(false);
         SoundManagerOneShot.Instance.MenuSound();
         SoundManagerOneShot.Instance.PlayWhisper(.2f);
@@ -167,9 +174,6 @@ public class SummoningManager : MonoBehaviour
             currentIndex = 0;
         }
         SetPage(false);
-        Invoke("enableBool", 1f);
-
-        OnMapEnergyChange.OnPlayerDead += _Close;
     }
 
     void enableBool()
@@ -188,15 +192,16 @@ public class SummoningManager : MonoBehaviour
 
     private void _Close()
     {
+        LeanTween.cancel(m_TweenId);
+        StopAllCoroutines();
+
         OnMapEnergyChange.OnPlayerDead -= _Close;
 
-        this.CancelInvoke();
         MapsAPI.Instance.HideMap(false);
         UIStateManager.Instance.CallWindowChanged(true);
         isOpen = false;
         SD.canSwipe = false;
         Hide(summonObject);
-        // Destroy(gameObject, 2f);
     }
 
     void SetPage(bool isReset = true)
