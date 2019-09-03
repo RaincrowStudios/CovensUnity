@@ -194,6 +194,8 @@ public class UIQuickCast : MonoBehaviour
             AnimHide();
         else
             AnimOpen();
+
+        UpdateCanCast(m_Target, m_TargetData);
     }
 
     private void AnimOpen()

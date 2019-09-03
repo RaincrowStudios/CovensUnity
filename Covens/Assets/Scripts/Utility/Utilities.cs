@@ -524,7 +524,7 @@ public class Utilities : MonoBehaviour
 
     public static double GetUnixTimestamp(DateTime dateTime)
     {
-        return dateTime.Subtract(new DateTime(1970, 1, 1)).TotalSeconds;
+        return dateTime.Subtract(new DateTime(1970, 1, 1, 0, 0, 0, DateTimeKind.Utc)).TotalMilliseconds;
     }
 
     public static float InverseLerp(long min, long max, long v)

@@ -113,7 +113,7 @@ namespace Raincrow.GameEventResponses
 
             if (playerIsCaster)
             {
-                //lcoaly add spell cooldown
+                //localy add spell cooldown
                 CooldownManager.AddCooldown(spell.id, data.timestamp, data.cooldown);
 
                 //update the player alignment

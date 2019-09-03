@@ -21,12 +21,17 @@ public static class CooldownManager
             this.endDate = Utilities.FromJavaTime(end);
             this.startDate = endDate.AddSeconds(-total);
         }
+
         public Cooldown(string id, double start, double end)
         {
             this.id = id;
             this.startDate = Utilities.FromJavaTime(start);
             this.endDate = Utilities.FromJavaTime(end);
             this.total = (float)(endDate - startDate).TotalSeconds;
+
+            float _remainig = Remaining;
+            if (_remainig > total)
+                endDate = endDate.AddSeconds(total - _remainig);
         }
     }
 
@@ -35,19 +40,27 @@ public static class CooldownManager
     public static void AddCooldown(string id, double endDate, float total)
     {
         id = id.ToLower();
-
         Cooldown cd = new Cooldown(id, endDate, total);
+
+        if (m_CooldownDictionary.ContainsKey(id))
+            Debug.Log("[<color=magenta>Cooldown</color>] Update " + cd.id + "[" + cd.Remaining + "/" + cd.total + "]");
+        else
+            Debug.Log("[<color=magenta>Cooldown</color>] Add " + cd.id + "[" + cd.Remaining + "/" + cd.total + "]");
+
         m_CooldownDictionary[id] = cd;
-        Debug.Log("<color=magenta>add cooldown\n" + cd.id + "(" + cd.Remaining + "/" + cd.total + "</color>");
     }
 
     public static void AddCooldown(string id, double start, double end)
     {
         id = id.ToLower();
-
         Cooldown cd = new Cooldown(id, start, end);
+
+        if (m_CooldownDictionary.ContainsKey(id))
+            Debug.Log("[<color=magenta>Cooldown</color>] Update " + cd.id + "(" + cd.Remaining + "/" + cd.total + ")");
+        else
+            Debug.Log("[<color=magenta>Cooldown</color>] Add " + cd.id + "(" + cd.Remaining + "/" + cd.total + ")");
+
         m_CooldownDictionary[id] = cd;
-        Debug.Log("[<color=magenta>Cooldown</color>] " + cd.id + "(" + cd.Remaining + "/" + cd.total +")");
     }
     
     public static Cooldown? GetCooldown(string id)
@@ -71,5 +84,10 @@ public static class CooldownManager
         {
             return null;
         }
+    }
+
+    public static void RemoveCooldown(string id)
+    {
+        m_CooldownDictionary.Remove(id);
     }
 }
