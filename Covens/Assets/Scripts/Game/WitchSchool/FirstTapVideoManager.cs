@@ -151,7 +151,7 @@ public class FirstTapVideoManager : MonoBehaviour
         else if (m_Id == "summoning")
         {
             IsFirstSummon = false;
-            SummoningController.Instance.Open();
+            SummoningManager.Open();
         }
         else if (m_Id == "spellcasting")
         {

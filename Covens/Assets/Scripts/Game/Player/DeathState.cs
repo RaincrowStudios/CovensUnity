@@ -68,8 +68,6 @@ public class DeathState : MonoBehaviour
         Invoke("HideDeath", 3f);
         // if (!PlayerDataManager.tutorial)
         //     PlayerManagerUI.Instance.ShowElixirVulnerable(true);
-        if (SummoningManager.isOpen)
-            SummoningController.Instance.Close();
     }
 
     public void Revived()
