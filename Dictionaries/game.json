@@ -1191,7 +1191,7 @@
       "cost": 10,
       "align": 2,
       "xp": 2,
-      "cooldown": 5,
+      "cooldown": 1.5,
       "pop": false,
       "casterSchool": [
         -1,

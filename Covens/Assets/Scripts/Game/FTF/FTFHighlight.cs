@@ -47,20 +47,20 @@ namespace Raincrow.FTF
             //fit the screen
             m_Top.sizeDelta = new Vector2(
                 m_Top.sizeDelta.x,
-                canvas.y/* / 2 - position.y - m_RectTransform.pivot.y / 2 - size.y / 2*/);
+                canvas.x/* / 2 - position.y - m_RectTransform.pivot.y / 2 - size.y / 2*/);
 
             m_Bot.sizeDelta = new Vector2(
                 m_Bot.sizeDelta.x,
-                canvas.y/* - m_Top.sizeDelta.y - size.y*/);
+                canvas.x/* - m_Top.sizeDelta.y - size.y*/);
 
 
             m_Right.sizeDelta = new Vector2(
                 canvas.x /* / 2f - position.x - m_RectTransform.pivot.x / 2 - size.x / 2*/,
-                canvas.y + size.x/*- size.y*/);
+                canvas.x/*- size.y*/);
 
             m_Left.sizeDelta = new Vector2(
                 canvas.x/* - m_Right.sizeDelta.x - size.x*/,
-                canvas.y + size.x/* - size.y*/);
+                canvas.x/* - size.y*/);
 
             //if (position.y > 0)
             //    m_Right.anchoredPosition = m_Left.anchoredPosition = new Vector2(0, -m_Bot.sizeDelta.y / 2);
@@ -72,7 +72,8 @@ namespace Raincrow.FTF
 
         public override void Hide(Action onComplete, float time, LeanTweenType easeType)
         {
-            //base.Hide(onComplete, time, easeType); LeanTween.cancel(m_TweenId);
+            //base.Hide(onComplete, time, easeType); 
+            LeanTween.cancel(m_TweenId);
             m_TweenId = LeanTween.alphaCanvas(m_CanvasGroup, 0f, time)
                 .setOnComplete(() =>
                 {

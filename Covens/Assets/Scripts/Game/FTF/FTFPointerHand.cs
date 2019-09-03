@@ -55,7 +55,7 @@ namespace Raincrow.FTF
             m_RectTransform.anchorMax = pointer.anchorMax;
             m_RectTransform.anchoredPosition = pointer.position;
 
-            if (pointer.position.x <= m_Canvas.sizeDelta.x / 2)
+            if (transform.position.x <= m_Canvas.transform.position.x)
                 m_RectTransform.localScale = new Vector3(1, 1, 1);
             else
                 m_RectTransform.localScale = new Vector3(-1, 1, 1);

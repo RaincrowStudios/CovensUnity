@@ -13,19 +13,30 @@ public class FTFManager : MonoBehaviour
     [SerializeField] private TextAsset m_TutorialJson;
     [SerializeField] private FTFHighlight m_Highlight;
     [SerializeField] private FTFButtonArea m_Button;
-    [SerializeField] private FTFMessageBox m_Message;
+    [SerializeField] private FTFMessageBox m_BotMessage;
+    [SerializeField] private FTFMessageBox m_TopMessage;
     [SerializeField] private FTFPointerHand m_Pointer;
 
     [Header("Savannah")]
     [SerializeField] private Animator m_Savannah;
     [SerializeField] private CanvasGroup m_SavannahCanvasGroup;
 
+    [Header("Fortuna")]
+    [SerializeField] private Animator m_Fortuna;
+    [SerializeField] private CanvasGroup m_FortunaCanvasGroup;
+
+    [Header("Witch School")]
+    [SerializeField] private CanvasGroup m_WitchSchool;
+    [SerializeField] private Button m_OpenWitchSchool;
+    [SerializeField] private Button m_SkipWitchSchool;
+    
     [Header("Debug")]
     [SerializeField] private int m_StartFrom = 0;
 
     private static FTFManager m_Instance;
 
     public static bool InFTF => PlayerDataManager.IsFTF;
+    public static event System.Action OnBeginFTF;
     public static event System.Action OnFinishFTF;
 
     public static void StartFTF()
@@ -66,10 +77,13 @@ public class FTFManager : MonoBehaviour
                         PlayerDataManager.playerData.SetIngredient(item.id, item.count);
 
                     PlayerDataManager.playerData.xp = data.xp;
-                        //PlayerDataManager.playerData.spirits = update.spirits;
-                        PlayerDataManager.playerData.tutorial = true;
+                    //PlayerDataManager.playerData.spirits = update.spirits;
+                    PlayerDataManager.playerData.tutorial = true;
+
+                    OnFinishFTF?.Invoke();
                 }
                 callback?.Invoke(result, response);
+
             });
     }
 
@@ -81,7 +95,8 @@ public class FTFManager : MonoBehaviour
     private int m_PreviousStepIndex;
     private int m_CurrentStepIndex;
     private List<FTFStepData> m_Steps = null;
-    private int m_TimerTweenId;
+    private bool m_RunningSetup = false;
+    private int m_WitchSchoolTweenId;
 
     private void Awake()
     {
@@ -92,20 +107,39 @@ public class FTFManager : MonoBehaviour
             new GameObject("EventSystem", typeof(UnityEngine.EventSystems.EventSystem), typeof(UnityEngine.EventSystems.StandaloneInputModule));
         }
 
-        m_Message.OnClick += () => StartCoroutine(NextStep(null));
+        m_BotMessage.OnClick += () => StartCoroutine(NextStep(null));
+        m_TopMessage.OnClick += () => StartCoroutine(NextStep(null));
         m_Button.OnClick += () => StartCoroutine(NextStep(null));
 
+        m_WitchSchool.alpha = 0;
+        m_WitchSchool.gameObject.SetActive(false);
+        m_OpenWitchSchool.onClick.AddListener(OnWitchSchool);
+        m_SkipWitchSchool.onClick.AddListener(OnSkipWitchSchool);
+
+        //
         m_Savannah.gameObject.SetActive(false);
         m_SavannahCanvasGroup.alpha = 0;
-    }
+        m_Fortuna.gameObject.SetActive(false);
+        m_FortunaCanvasGroup.alpha = 0;
+        
+        //override store prices for FTF
+        
+        List<int> originalPrices = new List<int>();
+        foreach (var item in PlayerDataManager.StoreData.bundles)
+        {
+            originalPrices.Add(item.silver);
+            item.silver = 0;
+        }
 
-    private void OnDestroy()
-    {
-        m_Message.OnClick -= () => StartCoroutine(NextStep(null));
-        m_Button.OnClick -= () => StartCoroutine(NextStep(null));
+        OnFinishFTF += () =>
+        {
+            for (int i = 0; i < originalPrices.Count; i++)
+            {
+                PlayerDataManager.StoreData.bundles[i].silver = originalPrices[i];
+            }
+        };
     }
     
-    [ContextMenu("Start FTF")]
     private void _StartFTF()
     {
         //load json
@@ -120,50 +154,63 @@ public class FTFManager : MonoBehaviour
 
 #if UNITY_EDITOR
             Setup(0);
+            OnBeginFTF?.Invoke();
             StartCoroutine(SkipUntil(m_StartFrom));
             return;
 #endif
             Setup(0);
+            OnBeginFTF?.Invoke();
         });
     }
 
     private IEnumerator SkipUntil(int index)
     {
-        while (m_CurrentStepIndex != m_StartFrom)
+        float previousTimeScale = Time.timeScale;
+        Time.timeScale *= 4;
+        while (m_CurrentStepIndex < m_StartFrom && m_CurrentStepIndex < m_Steps.Count)
         {
-            yield return NextStep(new string[0]);
-            yield return 0;
-            yield return new WaitForSeconds(0.25f);
+            yield return StartCoroutine(NextStep(new string[0]));
         }
+        Time.timeScale = previousTimeScale;
     }
 
     private void Setup(int index)
     {
+        StartCoroutine(SetupCoroutine(index));
+    }
+
+    private IEnumerator SetupCoroutine(int index)
+    {
         Log("step " + index);
-
-        //cancel previous running timer
-        LeanTween.cancel(m_TimerTweenId);
-
+        
+        m_RunningSetup = true;
+        
         //execute previous state's exitActions
         if (m_CurrentStepIndex >= 0)
         {
             FTFStepData previousStep = m_Steps[m_CurrentStepIndex];
 
-            m_Button.Hide();
-            m_Message.Hide();
-            m_Pointer.Hide();
+            m_BotMessage.Hide();
+            m_TopMessage.Hide();
 
             if (previousStep.onExit != null)
             {
+                List<Coroutine> coroutines = new List<Coroutine>();
                 foreach (FTFActionData _action in previousStep.onExit)
                 {
                     if (string.IsNullOrEmpty(_action.method))
-                        return;
+                        continue;
 
                     if (_action.parameters == null)
-                        StartCoroutine(_action.method, new string[0]);
+                        coroutines.Add(StartCoroutine(_action.method, new string[0]));
                     else
-                        StartCoroutine(_action.method, _action.parameters.ToArray());
+                        coroutines.Add(StartCoroutine(_action.method, _action.parameters.ToArray()));
+                }
+
+                while(coroutines.Count > 0)
+                {
+                    yield return coroutines[0];
+                    coroutines.RemoveAt(0);
                 }
             }
         }
@@ -175,7 +222,7 @@ public class FTFManager : MonoBehaviour
         if (m_CurrentStepIndex >= m_Steps.Count)
         {
             Log("No more steps");
-            return;
+            yield break;
         }
 
         FTFStepData step = m_Steps[m_CurrentStepIndex];
@@ -194,7 +241,8 @@ public class FTFManager : MonoBehaviour
         if (step.button.show)
         {
             m_Button.Show(step.button);
-            m_Message.EnableButton(false);
+            m_BotMessage.EnableButton(false);
+            m_TopMessage.EnableButton(false);
         }
         else
         {
@@ -214,28 +262,35 @@ public class FTFManager : MonoBehaviour
         //execute new state's enterActions
         if (step.onEnter != null)
         {
+            List<Coroutine> coroutines = new List<Coroutine>();
             foreach (FTFActionData _action in step.onEnter)
             {
                 if (string.IsNullOrEmpty(_action.method))
-                    return;
+                    continue;
 
                 if (_action.parameters == null)
-                    StartCoroutine(_action.method, new string[0]);
+                   coroutines.Add(StartCoroutine(_action.method, new string[0]));
                 else
-                    StartCoroutine(_action.method, _action.parameters.ToArray());
+                    coroutines.Add(StartCoroutine(_action.method, _action.parameters.ToArray()));
+            }
+
+            while (coroutines.Count > 0)
+            {
+                yield return coroutines[0];
+                coroutines.RemoveAt(0);
             }
         }
-
+        
         //setup timer
         if (step.timer > 0)
         {
-            m_TimerTweenId = LeanTween.value(0, 0, 0)
-                .setDelay(step.timer)
-                .setOnStart(() =>
-                {
-                    StartCoroutine(NextStep(null));
-                })
-                .uniqueId;
+            yield return new WaitForSeconds(step.timer);
+            m_RunningSetup = false;
+            yield return StartCoroutine(NextStep(null));
+        }
+        else
+        {
+            m_RunningSetup = false;
         }
     }
 
@@ -244,8 +299,41 @@ public class FTFManager : MonoBehaviour
         onComplete?.Invoke(m_TutorialJson.text);
     }
 
+    public void Log(string message)
+    {
+        Debug.Log("[<color=cyan>FTFManager</color>] " + message);
+    }
+
+    private void OnWitchSchool()
+    {
+        WitchSchoolManager.Open();
+        ShowWitchSchool(false, () => SceneManager.UnloadScene(SceneManager.Scene.FTF, null, null));
+    }
+
+    private void OnSkipWitchSchool()
+    {
+        ShowWitchSchool(false, () => SceneManager.UnloadScene(SceneManager.Scene.FTF, null, null));
+    }
+
+    private void ShowWitchSchool(bool show, System.Action onComplete)
+    {
+        LeanTween.cancel(m_WitchSchoolTweenId);
+        m_WitchSchool.gameObject.SetActive(true);
+        float start = m_WitchSchool.alpha;
+        float end = show ? 1 : 0;
+        m_WitchSchoolTweenId = LeanTween.value(start, end, 1f)
+            .setEaseOutCubic()
+            .setOnUpdate((float v) => m_WitchSchool.alpha = v)
+            .setOnComplete(() =>
+            {
+                m_WitchSchool.gameObject.SetActive(show);
+                onComplete?.Invoke();
+            })
+            .uniqueId;
+    }
+
     #region AVAILABLE ACTIONS
-    
+
     private IEnumerator GoToStep(string[] parameters)
     {
         if (parameters.Length < 1)
@@ -257,15 +345,14 @@ public class FTFManager : MonoBehaviour
 
     private IEnumerator NextStep(string[] parameters)
     {
-        Setup(m_CurrentStepIndex + 1);
-        yield return 0;
+        yield return StartCoroutine(SetupCoroutine(m_CurrentStepIndex + 1));
     }
 
     private IEnumerator ShowSavannah(string[] parameters)
     {
         m_Savannah.gameObject.SetActive(true);
         LeanTween.alphaCanvas(m_SavannahCanvasGroup, 1f, 1f).setEaseOutCubic();
-        m_Savannah.Play("SavannaEnter");
+        m_Savannah.Play("LeftEnter");
 
         yield return 0;
     }
@@ -276,7 +363,27 @@ public class FTFManager : MonoBehaviour
         {
             m_Savannah.gameObject.SetActive(false);
         });
-        m_Savannah.Play("out", 0, 0.3f);
+        m_Savannah.Play("LeftExit", 0, 0.3f);
+
+        yield return 0;
+    }
+
+    private IEnumerator ShowFortuna(string[] parameters)
+    {
+        m_Fortuna.gameObject.SetActive(true);
+        LeanTween.alphaCanvas(m_FortunaCanvasGroup, 1f, 1f).setEaseOutCubic();
+        m_Fortuna.Play("RightEnter");
+
+        yield return 0;
+    }
+
+    private IEnumerator HideFortuna(string[] parameters)
+    {
+        LeanTween.alphaCanvas(m_FortunaCanvasGroup, 0f, 0.25f).setEaseOutCubic().setOnComplete(() =>
+        {
+            m_Fortuna.gameObject.SetActive(false);
+        });
+        m_Fortuna.Play("RightExit", 0, 0.3f);
 
         yield return 0;
     }
@@ -286,10 +393,19 @@ public class FTFManager : MonoBehaviour
         if (parameters.Length < 1)
             throw new System.Exception("[ShowMessage] missing param[0] (message)");
         
-        string message = parameters[0];
+        string message = LocalizeLookUp.GetText(parameters[0]);
+        bool top = parameters.Length > 1 ? bool.Parse(parameters[1]) : false;
 
-        m_Message.Show(LocalizeLookUp.GetText(message));
-        m_Message.EnableButton(!m_Button.IsShowing);
+        if (top)
+        {
+            m_TopMessage.Show(message);
+            m_TopMessage.EnableButton(!m_Button.IsShowing);
+        }
+        else
+        {
+            m_BotMessage.Show(message);
+            m_BotMessage.EnableButton(!m_Button.IsShowing);
+        }
 
         yield return 0;
     }
@@ -332,13 +448,17 @@ public class FTFManager : MonoBehaviour
 
         IMarker marker = MarkerSpawner.GetMarker(id);
 
+        bool screenLoaded = false;
+        bool quickcastLoaded = false;
+
         if (marker.Type == MarkerManager.MarkerType.SPIRIT)
         {
             SelectSpiritData_Map details = JsonConvert.DeserializeObject<SelectSpiritData_Map>(json);
             details.token = marker.Token as SpiritToken;
 
-            UISpiritInfo.Show(marker as SpiritMarker, details.token);
-            UIQuickCast.Open();
+            
+            UISpiritInfo.Show(marker as SpiritMarker, details.token, null, () => screenLoaded = true);
+            UIQuickCast.Open(() => quickcastLoaded = true);
             yield return new WaitForSeconds(0.5f);
             UISpiritInfo.SetupDetails(details);
             UIQuickCast.UpdateCanCast(marker, details);
@@ -348,18 +468,20 @@ public class FTFManager : MonoBehaviour
             SelectWitchData_Map details = JsonConvert.DeserializeObject<SelectWitchData_Map>(json);
             details.token = marker.Token as WitchToken;
 
-            UIPlayerInfo.Show(marker as WitchMarker, details.token);
-            UIQuickCast.Open();
+            UIPlayerInfo.Show(marker as WitchMarker, details.token, null, () => screenLoaded = true);
+            UIQuickCast.Open(() => quickcastLoaded = true);
             yield return new WaitForSeconds(0.5f);
             UIPlayerInfo.SetupDetails(details);
             UIQuickCast.UpdateCanCast(marker, details);
         }
         else if (marker.Type == MarkerManager.MarkerType.PLACE_OF_POWER)
         {
-            
+            screenLoaded = true;
+            quickcastLoaded = true;
         }
 
-        yield return 0;
+        while (screenLoaded == false || quickcastLoaded == false)
+            yield return 0;
     }
 
     private IEnumerator SocketEvent(string[] parameters)
@@ -457,11 +579,24 @@ public class FTFManager : MonoBehaviour
 
     private IEnumerator ShowSpellbook(string[] parameters)
     {
-        if (UIPlayerInfo.isShowing)
-            UISpellcastBook.Open(UIPlayerInfo.WitchMarkerDetails, UIPlayerInfo.WitchMarker, PlayerDataManager.playerData.UnlockedSpells, null, null, null);
+        bool screenLoaded = false;
 
-        if (UISpiritInfo.isOpen)
-            UISpellcastBook.Open(UISpiritInfo.SpiritMarkerDetails, UISpiritInfo.SpiritMarker, PlayerDataManager.playerData.UnlockedSpells, null, null, null);
+        if (UIPlayerInfo.isShowing)
+        {
+            UISpellcastBook.Open(UIPlayerInfo.WitchMarkerDetails, UIPlayerInfo.WitchMarker, PlayerDataManager.playerData.UnlockedSpells, null, null, null, () => screenLoaded = true);
+        }
+        else if (UISpiritInfo.isOpen)
+        {
+            UISpellcastBook.Open(UISpiritInfo.SpiritMarkerDetails, UISpiritInfo.SpiritMarker, PlayerDataManager.playerData.UnlockedSpells, null, null, null, () => screenLoaded = true);
+        }
+        else
+        {
+            Debug.LogError("cant open spellbook in ftf without selecting a witch or spirit first");
+            screenLoaded = true;
+        }
+
+        while (screenLoaded == false)
+            yield return 0;
 
         yield return 0;
     }
@@ -476,7 +611,7 @@ public class FTFManager : MonoBehaviour
     {
         string spellId = parameters[0];
         UISpellcastBook.FocusOn(spellId);
-        yield return 0;
+        yield return new WaitForSeconds(0.5f);
     }
 
     private IEnumerator CloseSpiritBanished(string[] parameters)
@@ -495,19 +630,95 @@ public class FTFManager : MonoBehaviour
 
         MapCameraUtils.FocusOnPosition(worldPosition, zoom, true);
 
-        yield return 0;
+        yield return new WaitForSeconds(1);
     }
 
-    private IEnumerator CloseSpellResults(string[] parameters)
+    private IEnumerator CloseSpellResults()
     {
         UIWaitingCastResult.Instance.Close();
         yield return 0;
     }
 
+    private IEnumerator ShowNearbyPops()
+    {
+        bool screenLoaded = false;
+        UINearbyLocations.Open(() => screenLoaded = true);
+
+        while (screenLoaded == false)
+            yield return 0;
+    }
+
+    private IEnumerator CloseNearbyPops()
+    {
+        UINearbyLocations.Close();
+        yield return 0;
+    }
+
+    private IEnumerator OpenStore()
+    {
+        bool loaded = false;
+        ShopManager.OpenStore(() => loaded = true, false);
+
+        while (loaded == false)
+            yield return 0;
+    }
+
+    private IEnumerator CloseStore()
+    {
+        ShopManager.CloseStore();
+        yield return 0;
+    }
+
+    private IEnumerator OpenIngredientStore()
+    {
+        ShopManager.ShowIngredients();
+        yield return 0;
+    }
+
+    private IEnumerator StoreSelectIngredient(string[] parameters)
+    {
+        string id = parameters[0];
+        ShopManager.SelectIngredient(id);
+        yield return 0;
+    }
+
+    private IEnumerator ShowPurchaseSuccess(string[] parameters)
+    {
+        string id = parameters[0];
+        ShopManager.ShowPurchaseSuccess(id);
+        yield return 0;
+    }
+
+    private IEnumerator ClosePurchaseSuccess()
+    {
+        ShopManager.ClosePurchaseSuccess();
+        yield return 0;
+    }
+       
+    private IEnumerator CompleteFTF()
+    {
+        //show dominion and witch school prompt
+        UIDominionSplash.Instance.Show(() =>
+        {
+            //show whitch school screen
+            m_WitchSchool.gameObject.SetActive(true);
+            ShowWitchSchool(true, null);
+        });
+
+        //remove all spawned markers
+        List<string> ids = new List<string>(MarkerSpawner.Markers.Keys);
+        foreach (string id in ids)
+            RemoveTokenHandler.ForceEvent(id);
+
+        //send finish ftf request
+        FinishFTF((result, response) =>
+        {
+            MarkerManagerAPI.GetMarkers(PlayerDataManager.playerData.longitude, PlayerDataManager.playerData.latitude);
+        });
+
+        yield return 0;
+    }
+
     #endregion
 
-    public void Log(string message)
-    {
-        Debug.Log("[<color=cyan>FTFManager</color>] " + message);
-    }
-}
+} 

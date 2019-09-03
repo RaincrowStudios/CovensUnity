@@ -47,7 +47,7 @@ public static class CooldownManager
 
         Cooldown cd = new Cooldown(id, start, end);
         m_CooldownDictionary[id] = cd;
-        Debug.Log("<color=magenta>add cooldown\n" + cd.id + "(" + cd.Remaining + "/" + cd.total + "</color>");
+        Debug.Log("[<color=magenta>Cooldown</color>] " + cd.id + "(" + cd.Remaining + "/" + cd.total +")");
     }
     
     public static Cooldown? GetCooldown(string id)

@@ -328,5 +328,8 @@ public class GameStartup : MonoBehaviour
     private void OnFinishFTF()
     {
         FTFManager.OnFinishFTF -= OnFinishFTF;
+
+        SocketClient.Instance.InitiateSocketConnection();
+        ChatManager.InitChat();
     }
 }

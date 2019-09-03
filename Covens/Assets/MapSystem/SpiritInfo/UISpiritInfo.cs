@@ -37,7 +37,7 @@ public class UISpiritInfo : UIInfoPanel
         }
     }
 
-    public static void Show(SpiritMarker spirit, SpiritToken data, System.Action onClose = null)
+    public static void Show(SpiritMarker spirit, SpiritToken data, System.Action onClose = null, System.Action onLoad = null)
     {
         SpiritMarker = spirit;
         SpiritToken = data;
@@ -45,6 +45,7 @@ public class UISpiritInfo : UIInfoPanel
         if (m_Instance != null)
         {
             m_Instance._Show(spirit, data, onClose);
+            onLoad?.Invoke();
         }
         else
         {
@@ -55,6 +56,7 @@ public class UISpiritInfo : UIInfoPanel
                 () =>
                 {
                     m_Instance._Show(spirit, data, onClose);
+                    onLoad?.Invoke();
                     LoadingOverlay.Hide();
                 });
         }

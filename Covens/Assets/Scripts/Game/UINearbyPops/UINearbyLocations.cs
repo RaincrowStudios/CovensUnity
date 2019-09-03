@@ -18,11 +18,12 @@ public class UINearbyLocations : MonoBehaviour
 
     private static UINearbyLocations m_Instance;
     
-    public static void Open()
+    public static void Open(System.Action onLoad = null)
     {
         if (m_Instance != null)
         {
             m_Instance.Show();
+            onLoad?.Invoke();
         }
         else
         {
@@ -33,9 +34,18 @@ public class UINearbyLocations : MonoBehaviour
                 () =>
                 {
                     m_Instance.Show();
+                    onLoad?.Invoke();
                     LoadingOverlay.Hide();
                 });
         }
+    }
+
+    public static void Close()
+    {
+        if (m_Instance == null)
+            return;
+
+        m_Instance.Hide();
     }
 
     private int m_AnimTweenId;

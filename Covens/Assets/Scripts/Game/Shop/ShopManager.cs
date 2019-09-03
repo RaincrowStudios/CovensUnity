@@ -29,6 +29,7 @@ public class ShopManager : ShopBase
 
     [Header("BuyPopup")]
     [SerializeField] private GameObject buyObject;
+    [SerializeField] private TextMeshProUGUI m_BuyText;
     [SerializeField] private Image buyObjectIcon;
     [SerializeField] private TextMeshProUGUI buyObjectDesc;
     [SerializeField] private TextMeshProUGUI buyObjectTitle;
@@ -134,12 +135,13 @@ public class ShopManager : ShopBase
         clothing, hairstyles, accessories, skinart
     }
 
-    public static void OpenStore(System.Action onComplete = null)
+    public static void OpenStore(System.Action onLoad = null, bool showFortuna = true)
     {
         if (m_Instance != null)
         {
+            m_Instance.fortuna.gameObject.SetActive(showFortuna);
             m_Instance.Open();
-            onComplete?.Invoke();
+            onLoad?.Invoke();
         }
         else
         {
@@ -153,8 +155,9 @@ public class ShopManager : ShopBase
                 () =>
                 {
                     LoadingOverlay.Hide();
+                    m_Instance.fortuna.gameObject.SetActive(showFortuna);
                     m_Instance.Open();
-                    onComplete?.Invoke();
+                    onLoad?.Invoke();
                 });
         }
     }
@@ -165,6 +168,46 @@ public class ShopManager : ShopBase
         {
             m_Instance.ShowSilver();
         });
+    }
+
+    public static void CloseStore()
+    {
+        if (m_Instance == null)
+            return;
+
+        m_Instance.Close();
+    }
+
+    public static void ShowIngredients()
+    {
+        m_Instance.ShowIngredient();
+    }
+
+    public static void SelectIngredient(string id)
+    {
+        foreach(var item in PlayerDataManager.StoreData.bundles)
+        {
+            if (item.id == id)
+            {
+                m_Instance.OnClickItem(ShopItemType.IngredientCharms, item);
+                return;
+            }
+        }
+    }
+
+    public static void ShowPurchaseSuccess(string item)
+    {
+        SoundManagerOneShot.Instance.PlayReward();
+        m_Instance.CloseBuyPopup();
+        m_Instance.buySuccessObject.SetActive(true);
+        m_Instance.buySuccessTitle.text = LocalizeLookUp.GetStoreTitle(item);
+        m_Instance.buySuccessSubTitle.text = LocalizeLookUp.GetStoreSubtitle(item);
+        DownloadedAssets.GetSprite(item, m_Instance.buySuccessIcon, true);
+    }
+
+    public static void ClosePurchaseSuccess()
+    {
+        m_Instance.buySuccessObject.SetActive(false);
     }
 
     void Awake()
@@ -666,6 +709,17 @@ public class ShopManager : ShopBase
             buyObjectPrice.text = item.silver.ToString();
             buyObjectButton.onClick.RemoveAllListeners();
             buyObjectButton.onClick.AddListener(() => OnBuy(item, type));
+
+            if (item.silver > 0)
+            {
+                m_BuyText.GetComponent<TextMeshProUGUI>().text = LocalizeLookUp.GetText("store_buy");
+                buyObjectPrice.gameObject.SetActive(true);
+            }
+            else
+            {
+                m_BuyText.GetComponent<TextMeshProUGUI>().text = LocalizeLookUp.GetText("ftf_claim");
+                buyObjectPrice.gameObject.SetActive(false);
+            }
         }
     }
 

@@ -44,7 +44,7 @@ public class UISpellcard : MonoBehaviour// : EnhancedScrollerCellView
     [SerializeField] private Sprite m_WhiteCrest;
 
 
-    public SpellData Spell { get; private set; }
+    public SpellData Spell { get; set; }
     public RectTransform RectTransform { get; private set; }
 
     private System.Action<int> m_OnClickSchool;

@@ -38,7 +38,7 @@ public class UIPlayerInfo : UIInfoPanel
         }
     }
 
-    public static void Show(WitchMarker witch, WitchToken data, System.Action onClose = null)
+    public static void Show(WitchMarker witch, WitchToken data, System.Action onClose = null, System.Action onLoad = null)
     {
         WitchMarker = witch;
         WitchToken = data;
@@ -46,6 +46,7 @@ public class UIPlayerInfo : UIInfoPanel
         if (m_Instance != null)
         {
             m_Instance._Show(witch, data, onClose);
+            onLoad?.Invoke();
         }
         else
         {
@@ -56,6 +57,7 @@ public class UIPlayerInfo : UIInfoPanel
                 () =>
                 {
                     m_Instance._Show(witch, data, onClose);
+                    onLoad?.Invoke();
                     LoadingOverlay.Hide();
                 });
         }

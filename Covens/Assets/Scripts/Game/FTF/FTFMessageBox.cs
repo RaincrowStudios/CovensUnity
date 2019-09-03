@@ -83,7 +83,7 @@ namespace Raincrow.FTF
             m_ContinueButton.interactable = false;
 
             //play slide reversed
-            m_Animator.Play("slideOutDiag");
+            //m_Animator.Play("slideOutDiag");
 
             //fade out
             LeanTween.cancel(m_TweenId);

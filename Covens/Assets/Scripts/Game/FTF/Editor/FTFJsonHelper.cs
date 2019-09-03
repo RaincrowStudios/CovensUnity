@@ -18,6 +18,8 @@ namespace Raincrow.FTF
             "NextStep",
             "ShowSavannah",
             "HideSavannah",
+            "ShowFortuna",
+            "HideFortuna",
             "ShowMessage",
             "",
             "SpawnSpirit",
@@ -32,6 +34,15 @@ namespace Raincrow.FTF
             "FocusSpellbook",
             "CloseSpiritBanished",
             "CloseSpellResults",
+            "ShowNearbyPops",
+            "CloseNearbyPops",
+            "",
+            "OpenStore",
+            "CloseStore",
+            "OpenIngredientStore",
+            "StoreSelectIngredient",
+            "ShowPurchaseSuccess",
+            "ClosePurchaseSuccess",
         };
 
         [MenuItem("Tools/FTF Helper")]
