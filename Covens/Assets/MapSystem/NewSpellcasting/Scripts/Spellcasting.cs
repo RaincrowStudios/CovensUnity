@@ -305,6 +305,8 @@ public class Spellcasting
                         //remove the local cooldown if there was an error
                         CooldownManager.RemoveCooldown(spell.id);
 
+                        UIWaitingCastResult.Instance.Close();
+
                         //force a remove token event just in case the marker stayed onthe game
                         if (response == "1002")
                         {
@@ -312,7 +314,6 @@ public class Spellcasting
                             return;
                         }
 
-                        UIWaitingCastResult.Instance.Close();
                         onContinue?.Invoke(new Raincrow.GameEventResponses.SpellCastHandler.Result());
                         UIGlobalPopup.ShowError(null, APIManager.ParseError(response));
                     }
