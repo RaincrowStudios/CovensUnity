@@ -240,17 +240,17 @@ public class GameStartup : MonoBehaviour
         }
         else
         {
+
+            if (SplashManager.Instance.IsShowingHints == false)
+                SplashManager.Instance.ShowHints(null);
+
             //wait for downloads to finish
             if (m_DownloadsReady == false)
                 return;
 
             //wait for the auto login result
             if (m_LoginReady == false)
-            {
-                if (SplashManager.Instance.IsShowingHints == false)
-                    SplashManager.Instance.ShowHints(null);
                 return;
-            }
         }
 
         if (LoginAPIManager.characterLoggedIn)
