@@ -67,6 +67,9 @@ public class EditorScenes : MonoBehaviour
     [MenuItem("Scenes/Screens/Popup")]
     static void PopupScene() => OpenScene("Popup");
 
+    [MenuItem("Scenes/Screens/Summoning")]
+    static void SummoningScene() => OpenScene("Summoning");
+
 
     private static void OpenScene(string name)
     {

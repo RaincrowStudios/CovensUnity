@@ -7,13 +7,14 @@ using UnityEngine.EventSystems;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using Raincrow.Maps;
+using Raincrow;
+using Raincrow.GameEventResponses;
 
-[RequireComponent(typeof(SummoningIngredientManager))]
 [RequireComponent(typeof(SwipeDetector))]
 public class SummoningManager : MonoBehaviour
 {
+    private static SummoningManager m_Instance;
 
-    public static SummoningManager Instance { get; set; }
     public string currentSpiritID = "";
 
     public GameObject summonObject;
@@ -33,54 +34,79 @@ public class SummoningManager : MonoBehaviour
     public Text spiritInfoTier;
     public Text legend;
     public Image SpiritInfoIcon;
-
-    [Header("Auto Ingredients")]
-    public GameObject ingredientObject;
-    public Text gemText;
-    public Text herbText;
-    public Text toolText;
-    public GameObject gemFX;
-    public GameObject herbFX;
-    public GameObject toolFX;
-    public Text gemTextCount;
-    public Text herbTextCount;
-    public Text toolTextCount;
-
+    
     [Space(10)]
 
     public Transform[] headerItems;
 
-    public GameObject RandomizeLoading;
-    // SummonFilter filter = SummonFilter.none;
     public List<string> tempSpList = new List<string>();
     public int currentIndex = 0;
     public static bool isOpen = false;
-    [HideInInspector]
-    public SwipeDetector SD;
+
+    private SwipeDetector SD;
     public GameObject loading;
 
     public GameObject summonSuccess;
-    GameObject summonSuccessInstance;
+    private GameObject summonSuccessInstance;
 
 
     public Button summonButton;
+    public Button closeButton;
     public GameObject[] buttonFX;
-
-    // public Button increasePower;
 
     public GameObject[] disableNoSpirits;
     public GameObject noSpiritMsg;
 
     private int currentTier = 0;
+    private int m_TweenId;
 
-    Coroutine timerRoutine;
+
+    public static void Open(System.Action onLoaded = null)
+    {
+        //wait for the video to be closed/skiped
+        if (!FirstTapVideoManager.Instance.CheckSummon())
+            return;
+
+        if (m_Instance != null)
+        {
+            m_Instance._Open();
+            onLoaded?.Invoke();
+        }
+        else
+        {
+            LoadingOverlay.Show();
+            SceneManager.LoadSceneAsync(SceneManager.Scene.SUMMONING, UnityEngine.SceneManagement.LoadSceneMode.Additive, null, () =>
+            {
+                LoadingOverlay.Hide();
+                m_Instance._Open();
+                onLoaded?.Invoke();
+            });
+        }
+    }
+
+    public static void Close()
+    {
+        if (m_Instance == null)
+            return;
+
+        m_Instance._Close();
+    }
+
     void Awake()
     {
-        Instance = this;
+        m_Instance = this;
         SD = GetComponent<SwipeDetector>();
         SD.SwipeRight += OnSwipeRight;
         SD.SwipeLeft += OnSwipeLeft;
 
+        closeButton.onClick.AddListener(_Close);
+
+        GameResyncHandler.OnResyncStart += _Close;
+    }
+
+    private void OnDestroy()
+    {
+        GameResyncHandler.OnResyncStart -= _Close;
     }
 
     void Update()
@@ -115,22 +141,21 @@ public class SummoningManager : MonoBehaviour
             item.GetChild(0).gameObject.SetActive(false);
         }
     }
-
-    void Start()
+    
+    private void _Open()
     {
-        InitSummon();
-    }
+        LeanTween.cancel(m_TweenId);
+        StopAllCoroutines();
+        m_TweenId = LeanTween.value(0, 1, 1).setOnComplete(enableBool).uniqueId;
 
-    public void InitSummon()
-    {
+        OnMapEnergyChange.OnPlayerDead += _Close;
+
         UIStateManager.Instance.CallWindowChanged(false);
         SoundManagerOneShot.Instance.MenuSound();
         SoundManagerOneShot.Instance.PlayWhisper(.2f);
-
-
+        
         Show(summonObject);
         InitHeader();
-        // RandomizeLoading.SetActive(false);
         summonButton.interactable = true;
         // filter = SummonFilter.none;
         if (currentSpiritID != "")
@@ -149,7 +174,6 @@ public class SummoningManager : MonoBehaviour
             currentIndex = 0;
         }
         SetPage(false);
-        Invoke("enableBool", 1f);
     }
 
     void enableBool()
@@ -163,20 +187,21 @@ public class SummoningManager : MonoBehaviour
         else
         {
             SD.canSwipe = false;
-
         }
     }
 
-    public void Close()
+    private void _Close()
     {
-        Debug.Log("setting summoning false");
-        this.CancelInvoke();
+        LeanTween.cancel(m_TweenId);
+        StopAllCoroutines();
+
+        OnMapEnergyChange.OnPlayerDead -= _Close;
+
         MapsAPI.Instance.HideMap(false);
         UIStateManager.Instance.CallWindowChanged(true);
         isOpen = false;
         SD.canSwipe = false;
         Hide(summonObject);
-        // Destroy(gameObject, 2f);
     }
 
     void SetPage(bool isReset = true)
@@ -372,7 +397,7 @@ public class SummoningManager : MonoBehaviour
     public void FTFCastSummon()
     {
         ShowSpiritCastResult(null);
-        SummoningController.Instance.Close();
+        _Close();
     }
 
     public void CastSummon()
@@ -386,9 +411,6 @@ public class SummoningManager : MonoBehaviour
         loading.SetActive(true);
         string spiritId = currentSpiritID;
         
-        //var data = new { ingredients = GetIngredients() };
-        SummoningIngredientManager.ClearIngredient();
-
         //string endpoint = PlaceOfPower.IsInsideLocation ? "location/summon" : 
         string endpoint = "character/summon/" + currentSpiritID;
         APIManager.Instance.Post(endpoint, "{}", (string s, int r) =>
@@ -402,7 +424,7 @@ public class SummoningManager : MonoBehaviour
                 RemoveIngredients(spiritId);
 
                 SoundManagerOneShot.Instance.SpiritSummon();
-                SummoningController.Instance.Close();
+                _Close();
 
                 //spawn the marker
                 SpiritToken token = JsonConvert.DeserializeObject<SpiritToken>(s);
@@ -417,7 +439,7 @@ public class SummoningManager : MonoBehaviour
             }
             else
             {
-                UIGlobalPopup.ShowError(SummoningController.Instance.Close, APIManager.ParseError(s));
+                UIGlobalPopup.ShowError(_Close, APIManager.ParseError(s));
             }
         });
     }
@@ -446,15 +468,6 @@ public class SummoningManager : MonoBehaviour
         ss.bodyText.text = "";//= spiritTitle.text + " " + LocalizeLookUp.GetText("summoning_time") + " " + Utilities.GetTimeRemaining(result);
         ss.summonSuccessSpirit.overrideSprite = spiritIcon.overrideSprite;
         ss.spirit = spirit;
-        //try
-        //{
-        //    if (timerRoutine != null)
-        //        StopCoroutine(timerRoutine);
-        //}
-        //catch
-        //{
-        //}
-        //timerRoutine = ss.StartCoroutine(StartTimer(result, ss.bodyText));
     }
 
 
@@ -501,8 +514,3 @@ public class SummoningManager : MonoBehaviour
     }
 
 }
-
-// public enum SummonFilter
-// {
-//     forbidden, harvester, healer, protector, trickster, warrior, guardian, familiar, none
-// }

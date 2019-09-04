@@ -10,6 +10,40 @@ namespace Raincrow.FTF
     public class FTFJsonHelper : EditorWindow
     {
         private static FTFJsonHelper m_Window;
+        private static List<string> AVAILABLE_METHODS = new List<string> {
+            "SocketEvent",
+            "MoveCamera",
+            "",
+            "GoToStep",
+            "NextStep",
+            "ShowSavannah",
+            "HideSavannah",
+            "ShowFortuna",
+            "HideFortuna",
+            "ShowMessage",
+            "",
+            "SpawnSpirit",
+            "SpawnPop",
+            "",
+            "SelectMarker",
+            "CastSpell",
+            "TargetSpell",
+            "",
+            "ShowSpellbook",
+            "CloseSpellbook",
+            "FocusSpellbook",
+            "CloseSpiritBanished",
+            "CloseSpellResults",
+            "ShowNearbyPops",
+            "CloseNearbyPops",
+            "",
+            "OpenStore",
+            "CloseStore",
+            "OpenIngredientStore",
+            "StoreSelectIngredient",
+            "ShowPurchaseSuccess",
+            "ClosePurchaseSuccess",
+        };
 
         [MenuItem("Tools/FTF Helper")]
         private static void Init()
@@ -25,6 +59,7 @@ namespace Raincrow.FTF
         [SerializeField] private bool m_ExpandOnEnter = false;
         [SerializeField] private bool m_ExpandOnExit = false;
         [SerializeField] private string m_HighlightAreaJson = "\"highlight\":{}";
+        [SerializeField] private string m_ButtonAreaJson = "\"button\":{}";
         [SerializeField] private string m_PointerJson = "\"pointer\":{}";
 
         [SerializeField] private bool m_Indented = false;
@@ -52,7 +87,11 @@ namespace Raincrow.FTF
 
                         if (GUILayout.Button("Read JSON"))
                         {
-                            m_Step = JsonConvert.DeserializeObject<FTFStepData>(m_Json, new JsonSerializerSettings() { DefaultValueHandling = DefaultValueHandling.IgnoreAndPopulate, NullValueHandling = NullValueHandling.Ignore });
+                            string json = m_Json;
+                            json = json.Trim();
+                            if (json[json.Length - 1] == ',')
+                                json = json.Remove(json.Length - 1);
+                            m_Step = JsonConvert.DeserializeObject<FTFStepData>(json, new JsonSerializerSettings() { DefaultValueHandling = DefaultValueHandling.IgnoreAndPopulate, NullValueHandling = NullValueHandling.Ignore });
                         }
                     }
 
@@ -67,6 +106,14 @@ namespace Raincrow.FTF
 
         public FTFStepData StepField(FTFStepData step)
         {
+            Separator();
+
+            using (new BoxScope())
+            {
+                step.timer = EditorGUILayout.FloatField("timer", step.timer);
+            }
+            GUILayout.Space(4);
+
             using (new BoxScope())
             {
                 GUILayout.Space(2);
@@ -96,7 +143,7 @@ namespace Raincrow.FTF
                     step.button.show = EditorGUILayout.Toggle("Button area", step.button.show);
                     if (step.button.show)
                     {
-                        step.button = HighlightField(step.button);
+                        step.button = ButtonAreaField(step.button);
                     }
                 }
                 GUILayout.Space(4);
@@ -181,22 +228,43 @@ namespace Raincrow.FTF
             }
         }
 
-        public FTFRectData HighlightField(FTFRectData area)
+        public FTFRectData FTFRectField(FTFRectData area)
         {
             area.position = EditorGUILayout.Vector2Field("anchoredPosition", area.position);
             area.size = EditorGUILayout.Vector2Field("size", area.size);
             area.anchorMin = EditorGUILayout.Vector2Field("anchorMin", area.anchorMin);
             area.anchorMax = EditorGUILayout.Vector2Field("anchorMax", area.anchorMax);
 
+            return area;
+        }
+
+        public FTFRectData HighlightField(FTFRectData area)
+        {
+            area = FTFRectField(area);
+
             Separator();
 
             using (new GUILayout.HorizontalScope())
             {
+                if (GUILayout.Button("Read:", GUILayout.Width(100)))
+                    return JsonConvert.DeserializeObject<FTFRectData>(m_HighlightAreaJson.Replace("\"" + "highlight" + "\":", ""));
                 m_HighlightAreaJson = EditorGUILayout.TextArea(m_HighlightAreaJson);
-                if (GUILayout.Button("Read", GUILayout.Width(100)))
-                {
-                    return JsonConvert.DeserializeObject<FTFRectData>(m_HighlightAreaJson.Replace("\"highlight\":", ""));
-                }
+            }
+
+            return area;
+        }
+
+        public FTFRectData ButtonAreaField(FTFRectData area)
+        {
+            area = FTFRectField(area);
+
+            Separator();
+
+            using (new GUILayout.HorizontalScope())
+            {
+                if (GUILayout.Button("Read:", GUILayout.Width(100)))
+                    return JsonConvert.DeserializeObject<FTFRectData>(m_ButtonAreaJson.Replace("\"" + "button" + "\":", ""));
+                m_ButtonAreaJson = EditorGUILayout.TextArea(m_ButtonAreaJson);
             }
 
             return area;
@@ -212,11 +280,11 @@ namespace Raincrow.FTF
 
             using (new GUILayout.HorizontalScope())
             {
-                m_PointerJson = EditorGUILayout.TextArea(m_PointerJson);
-                if (GUILayout.Button("Read", GUILayout.Width(100)))
+                if (GUILayout.Button("Read:", GUILayout.Width(100)))
                 {
                     return JsonConvert.DeserializeObject<FTFPointData>(m_PointerJson.Replace("\"pointer\":", ""));
                 }
+                m_PointerJson = EditorGUILayout.TextArea(m_PointerJson);
             }
 
             return pointer;
@@ -229,7 +297,8 @@ namespace Raincrow.FTF
             using (new GUILayout.HorizontalScope())
             {
                 EditorGUILayout.LabelField("method", GUILayout.Width(labelWidth));
-                action.method = EditorGUILayout.TextField(action.method);
+                int idx = EditorGUILayout.Popup(AVAILABLE_METHODS.IndexOf(action.method), AVAILABLE_METHODS.ToArray());
+                action.method = idx >= 0 ? AVAILABLE_METHODS[idx] : "";
             }
 
             using (new GUILayout.HorizontalScope())
@@ -238,18 +307,18 @@ namespace Raincrow.FTF
 
                 //GUILayout.FlexibleSpace();
 
-                if (GUILayout.Button("+str", GUILayout.Width(45)))
+                if (GUILayout.Button("Add", GUILayout.Width(45)))
                 {
                     if (action.parameters == null)
-                        action.parameters = new List<object>();
+                        action.parameters = new List<string>();
                     action.parameters.Add("string");
                 }
-                if (GUILayout.Button("+num", GUILayout.Width(45)))
-                {
-                    if (action.parameters == null)
-                        action.parameters = new List<object>();
-                    action.parameters.Add(0);
-                }
+                //if (GUILayout.Button("+num", GUILayout.Width(45)))
+                //{
+                //    if (action.parameters == null)
+                //        action.parameters = new List<string>();
+                //    action.parameters.Add(0);
+                //}
                 if (GUILayout.Button("X", GUILayout.Width(45)))
                 {
                     if (action.parameters != null)
@@ -265,11 +334,11 @@ namespace Raincrow.FTF
             EditorGUI.indentLevel++;
             for (int i = 0; i < action.parameters?.Count; i++)
             {
-                if (action.parameters[i] is float)
-                    action.parameters[i] = EditorGUILayout.IntField("param " + i + ". ", (int)(float)action.parameters[i]);
-                else if (action.parameters[i] is int)
-                    action.parameters[i] = EditorGUILayout.IntField("param " + i + ". ", (int)action.parameters[i]);
-                else if (action.parameters[i] is string)
+                //if (action.parameters[i] is float)
+                //    action.parameters[i] = EditorGUILayout.IntField("param " + i + ". ", (int)(float)action.parameters[i]);
+                //else if (action.parameters[i] is int)
+                //    action.parameters[i] = EditorGUILayout.IntField("param " + i + ". ", (int)action.parameters[i]);
+                //else if (action.parameters[i] is string)
                     action.parameters[i] = EditorGUILayout.TextField("param " + i + ". ", (string)action.parameters[i]);
             }
             EditorGUI.indentLevel--;
@@ -332,6 +401,8 @@ namespace Raincrow.FTF
                                     NullValueHandling = NullValueHandling.Ignore,
                                     Formatting = m_Indented ? Formatting.Indented : Formatting.None
                                 });
+
+            m_Json = m_Json + ",";
         }
     }
 }

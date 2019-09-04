@@ -79,7 +79,8 @@ public class UISpellcastBook : MonoBehaviour//, IEnhancedScrollerDelegate
         List<SpellData> spells,
         System.Action<SpellData, List<spellIngredientsData>> onConfirm,
         System.Action onClickBack = null,
-        System.Action onClickClose = null)
+        System.Action onClickClose = null,
+        System.Action onLoad = null)
     {
         if (m_Instance == null)
         {
@@ -90,11 +91,13 @@ public class UISpellcastBook : MonoBehaviour//, IEnhancedScrollerDelegate
                 () =>
                 {
                     m_Instance.Show(target, marker, spells, onConfirm, onClickBack, onClickClose);
+                    onLoad?.Invoke();
                 });
         }
         else
         {
             m_Instance.Show(target, marker, spells, onConfirm, onClickBack, onClickClose);
+            onLoad?.Invoke();
         }
     }
 
@@ -280,6 +283,7 @@ public class UISpellcastBook : MonoBehaviour//, IEnhancedScrollerDelegate
         {
             card = m_CardPool.Spawn(m_ScrollContainer);
             card.SetAlpha(0);
+            card.Spell = spell;
             m_Cards.Add(card);
         }
 
@@ -749,6 +753,15 @@ public class UISpellcastBook : MonoBehaviour//, IEnhancedScrollerDelegate
             .setEaseOutCubic()
             .setOnUpdate((float v) => m_ScrollRect.horizontalNormalizedPosition = v)
             .uniqueId;
+    }
+
+    public static void FocusOn(string spellId)
+    {
+        if (m_Instance == null)
+            return;
+
+        int index = m_Instance.m_Cards.FindIndex(card => card.Spell.id == spellId);
+        m_Instance.FocusOn(index);
     }
 
     //#region SCROLLER

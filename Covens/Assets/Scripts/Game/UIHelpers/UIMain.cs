@@ -121,7 +121,7 @@ public class UIMain : MonoBehaviour
 
     private void OnClickSummoning()
     {
-        SummoningController.Instance.Open();
+        SummoningManager.Open();
     }
 
     private void OnClickStore()

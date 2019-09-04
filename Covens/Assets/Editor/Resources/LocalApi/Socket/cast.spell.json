@@ -1,11 +1,11 @@
 {
   "target": {
-    "id": "5d43269a280ac2321c1230c6",
+    "_id": "5d43269a280ac2321c1230c6",
     "energy": 9648,
     "type": "character"
   },
   "caster": {
-    "id": "5d434674e613e70d24238189",
+    "_id": "5d434674e613e70d24238189",
     "energy": 6846,
     "type": "character"
   },

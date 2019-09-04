@@ -10,13 +10,13 @@ public class MapView : MonoBehaviour
     private List<string> m_DiscoveredSpirits = new List<string>();
     private List<string> m_BanishedSpirits = new List<string>();
 
-    public static void Initialize()
-    {
-        if (m_Instance != null)
-            return;
+    //public static void Initialize()
+    //{
+    //    if (m_Instance != null)
+    //        return;
 
-        m_Instance = new GameObject("MapView").AddComponent<MapView>();
-    }
+    //    m_Instance = new GameObject("MapView").AddComponent<MapView>();
+    //}
 
     private void Awake()
     {

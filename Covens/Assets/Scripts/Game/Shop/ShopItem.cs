@@ -61,14 +61,16 @@ public class ShopItem : MonoBehaviour
         iconID = item.iconId;
         ShopManager.animationFinished += SetSprite;
     }
+
     public void SetupIngredientCharm(StoreApiItem item, System.Action<ShopBase.ShopItemType, StoreApiItem> onClick)
     {
         SetUp(item);
         subtitle.text = LocalizeLookUp.GetStoreSubtitle(item.id);
         cost.text = item.silver.ToString();
         cost.color = item.silver > PlayerDataManager.playerData.silver ? Color.red : Color.white;
-        button.sprite = item.owned ? green : red;
-        //   buy.text = item.owned ? "OWNED" : "BUY";
+        button.sprite = red;
+        buy.text = item.silver > 0 ? LocalizeLookUp.GetText("store_buy_upper") : "CLAIM";
+
         buyButton.interactable = item.silver <= PlayerDataManager.playerData.silver;
         buyButton.onClick.AddListener(() => { onClick(ShopBase.ShopItemType.IngredientCharms, item); });
     }

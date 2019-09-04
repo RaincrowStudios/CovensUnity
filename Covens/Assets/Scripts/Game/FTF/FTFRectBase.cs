@@ -9,24 +9,28 @@ namespace Raincrow.FTF
         [Header("FTFRectBase")]
         [SerializeField] protected RectTransform m_Canvas;
         [SerializeField] protected RectTransform m_RectTransform;
+
+        public RectTransform RectTransform { get => m_RectTransform; }
+        public bool IsShowing { get; protected set; }
         
         protected virtual void Awake()
         {
             gameObject.SetActive(false);
         }
 
-        public virtual void Show(Vector2 anchorMin, Vector2 anchorMax, Vector2 position, Vector2 size)
+        public virtual void Show(FTFRectData data)
         {
+            IsShowing = true;
+
             //setup main rect
-            m_RectTransform.anchorMin = anchorMin;
-            m_RectTransform.anchorMax = anchorMax;
-            m_RectTransform.anchoredPosition = position;
-            m_RectTransform.sizeDelta = size;
+            m_RectTransform.anchorMin = data.anchorMin;
+            m_RectTransform.anchorMax = data.anchorMax;
+            m_RectTransform.anchoredPosition = data.position;
+            m_RectTransform.sizeDelta = data.size;
             
             gameObject.SetActive(true);
         }
 
-        [ContextMenu("Hide")]
         public void Hide()
         {
             Hide(null, 1f, LeanTweenType.easeOutCubic);
@@ -34,6 +38,8 @@ namespace Raincrow.FTF
 
         public virtual void Hide(System.Action onComplete, float time, LeanTweenType easeType)
         {
+            IsShowing = false;
+
             gameObject.SetActive(false);
             onComplete?.Invoke();
         }

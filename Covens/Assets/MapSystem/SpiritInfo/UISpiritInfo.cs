@@ -37,7 +37,7 @@ public class UISpiritInfo : UIInfoPanel
         }
     }
 
-    public static void Show(SpiritMarker spirit, SpiritToken data, System.Action onClose = null)
+    public static void Show(SpiritMarker spirit, SpiritToken data, System.Action onClose = null, System.Action onLoad = null)
     {
         SpiritMarker = spirit;
         SpiritToken = data;
@@ -45,6 +45,7 @@ public class UISpiritInfo : UIInfoPanel
         if (m_Instance != null)
         {
             m_Instance._Show(spirit, data, onClose);
+            onLoad?.Invoke();
         }
         else
         {
@@ -55,6 +56,7 @@ public class UISpiritInfo : UIInfoPanel
                 () =>
                 {
                     m_Instance._Show(spirit, data, onClose);
+                    onLoad?.Invoke();
                     LoadingOverlay.Hide();
                 });
         }
@@ -68,7 +70,7 @@ public class UISpiritInfo : UIInfoPanel
     }
     public static void SetupDetails(SelectSpiritData_Map data)
     {
-        m_SpiritSelectData = data;
+        SpiritMarkerDetails = data;
 
         if (m_Instance == null)
             return;
@@ -82,7 +84,7 @@ public class UISpiritInfo : UIInfoPanel
 
     public static SpiritMarker SpiritMarker { get; private set; }
     public static SpiritToken SpiritToken { get; private set; }
-    private static SelectSpiritData_Map m_SpiritSelectData;
+    public static SelectSpiritData_Map SpiritMarkerDetails { get; private set; }
 
     protected override void Awake()
     {
@@ -143,8 +145,8 @@ public class UISpiritInfo : UIInfoPanel
             MoveTokenHandler.OnTokenMove += _OnMapTokenMove;
         }
 
-        if (m_SpiritSelectData != null)
-            _SetupDetails(m_SpiritSelectData);
+        if (SpiritMarkerDetails != null)
+            _SetupDetails(SpiritMarkerDetails);
 
         Show();
         m_ConditionList.show = false;
@@ -184,7 +186,7 @@ public class UISpiritInfo : UIInfoPanel
 
         SpiritMarker = null;
         SpiritToken = null;
-        m_SpiritSelectData = null;
+        SpiritMarkerDetails = null;
 
         base.Close();
 
@@ -219,7 +221,7 @@ public class UISpiritInfo : UIInfoPanel
             return;
         }
 
-        if (string.IsNullOrEmpty(m_SpiritSelectData.owner))
+        if (string.IsNullOrEmpty(SpiritMarkerDetails.owner))
         {
             if (m_SpiritData.tier == 1)
                 m_Tier.text = LocalizeLookUp.GetText("ftf_wild_spirit") + " (" + LocalizeLookUp.GetText("cast_spirit_lesser") + ")";//"Wild Spirit (Lesser)";
@@ -246,7 +248,7 @@ public class UISpiritInfo : UIInfoPanel
             }
         }
 
-        m_ConditionList.Setup(m_SpiritSelectData.effects);
+        m_ConditionList.Setup(SpiritMarkerDetails.effects);
     }
 
     private void OnClickClose()
@@ -266,7 +268,7 @@ public class UISpiritInfo : UIInfoPanel
 
     private void OnClickCoven()
     {
-        TeamManagerUI.OpenName(m_SpiritSelectData.coven);
+        TeamManagerUI.OpenName(SpiritMarkerDetails.coven);
     }
 
     private void Abort()
@@ -320,15 +322,15 @@ public class UISpiritInfo : UIInfoPanel
         if (character != SpiritToken.instance)
             return;
 
-        foreach (StatusEffect item in m_SpiritSelectData.effects)
+        foreach (StatusEffect item in SpiritMarkerDetails.effects)
         {
             if (item.spell == statusEffect.spell)
             {
-                m_SpiritSelectData.effects.Remove(item);
+                SpiritMarkerDetails.effects.Remove(item);
                 break;
             }
         }
-        m_SpiritSelectData.effects.Add(statusEffect);
+        SpiritMarkerDetails.effects.Add(statusEffect);
         m_ConditionList.AddCondition(statusEffect);
     }
 

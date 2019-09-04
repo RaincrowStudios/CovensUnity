@@ -28,10 +28,21 @@ namespace Raincrow.FTF
 
         public void Show(string message)
         {
+            LeanTween.cancel(m_TweenId);
+            LeanTween.cancel(m_ButtonTweenId);
+
             if (IsOpen)
             {
                 //quickly fade out, set new message, fade in
-                Hide(() => Show(message), 0.2f, LeanTweenType.linear);
+                m_TweenId = LeanTween.alphaCanvas(m_CanvasGroup, 0.0f, 0.2f).setEaseOutCubic().setOnComplete(() =>
+                {
+                    m_Message.text = message;
+                    m_ContinueButton.interactable = false;
+                    m_TweenId = LeanTween.alphaCanvas(m_CanvasGroup, 1, 0.5f).uniqueId;
+                    m_ButtonTweenId = LeanTween.value(0, 0, 0.5f).setOnComplete(() => m_ContinueButton.interactable = true).uniqueId;
+                    m_Animator.Play("slideInDiag", 0, 1f);
+
+                }).uniqueId;
                 return;
             }
 
@@ -42,20 +53,22 @@ namespace Raincrow.FTF
             m_Animator.Play("slideInDiag");
 
             //fade in
-            LeanTween.cancel(m_TweenId);
             m_TweenId = LeanTween.alphaCanvas(m_CanvasGroup, 1f, 1f)
                 .setEaseOutCubic()
                 .uniqueId;
 
             //enable button
-            LeanTween.cancel(m_ButtonTweenId);
             m_ButtonTweenId = LeanTween.value(0, 0, 0.5f).setOnComplete(() => m_ContinueButton.interactable = true).uniqueId;
 
             gameObject.SetActive(true);
             IsOpen = true;
         }
 
-        [ContextMenu("Hide")]
+        public void EnableButton(bool enable)
+        {
+            m_ContinueButton.gameObject.SetActive(enable);
+        }
+
         public void Hide()
         {
             Hide(null, 1, LeanTweenType.easeOutCubic);
@@ -70,7 +83,7 @@ namespace Raincrow.FTF
             m_ContinueButton.interactable = false;
 
             //play slide reversed
-            m_Animator.Play("slideOutDiag");
+            //m_Animator.Play("slideOutDiag");
 
             //fade out
             LeanTween.cancel(m_TweenId);
@@ -78,17 +91,17 @@ namespace Raincrow.FTF
                 .setEase(easeType)
                 .setOnComplete(() =>
                 {
+                    IsOpen = false;
                     gameObject.SetActive(false);
                     onComplete?.Invoke();
                 })
                 .uniqueId;
-
-            IsOpen = false;
         }
 
         private void OnClickNext()
         {
-            Hide(OnClick, 0.5f, LeanTweenType.easeOutCubic);
+            Hide(null, 0.25f, LeanTweenType.easeOutCubic);
+            OnClick?.Invoke();
         }
     }
 }

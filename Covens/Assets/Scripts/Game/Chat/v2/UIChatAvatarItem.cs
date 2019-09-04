@@ -78,7 +78,9 @@ namespace Raincrow.Chat.UI
                      (character, error) =>
                      {
                          OnRequestChatLoading?.Invoke(false);
-                     });
+                     },
+                     false,
+                     () => UIChat.Close());
         }
 
         public void RefreshTimeAgo()
