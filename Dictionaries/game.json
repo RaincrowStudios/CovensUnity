@@ -227,7 +227,7 @@
     },
     "spell_banish": {
       "id": "spell_banish",
-      "level": 3,
+      "level": 6,
       "glyph": 4,
       "school": 0,
       "cost": 30,
@@ -312,7 +312,7 @@
     },
     "spell_burst": {
       "id": "spell_burst",
-      "level": 3,
+      "level": 9,
       "glyph": 27,
       "school": 0,
       "cost": 80,
@@ -344,7 +344,7 @@
     },
     "spell_channeling": {
       "id": "spell_channeling",
-      "level": 3,
+      "level": 2,
       "glyph": 10,
       "school": 0,
       "cost": 5,
@@ -399,7 +399,7 @@
     },
     "spell_crowsEye": {
       "id": "spell_crowsEye",
-      "level": 7,
+      "level": 10,
       "glyph": 24,
       "school": 0,
       "cost": 300,
@@ -478,7 +478,7 @@
     },
     "spell_grace": {
       "id": "spell_grace",
-      "level": 3,
+      "level": 4,
       "glyph": 7,
       "school": 1,
       "cost": 150,
@@ -504,7 +504,7 @@
     },
     "spell_greaterBless": {
       "id": "spell_greaterBless",
-      "level": 3,
+      "level": 7,
       "glyph": 3,
       "school": 1,
       "cost": 30,
@@ -536,7 +536,7 @@
     },
     "spell_greaterDispel": {
       "id": "spell_greaterDispel",
-      "level": 3,
+      "level": 7,
       "glyph": 5,
       "school": 0,
       "cost": 30,
@@ -568,7 +568,7 @@
     },
     "spell_greaterHex": {
       "id": "spell_greaterHex",
-      "level": 3,
+      "level": 7,
       "glyph": 9,
       "school": -1,
       "cost": 30,
@@ -600,7 +600,7 @@
     },
     "spell_greaterSeal": {
       "id": "spell_greaterSeal",
-      "level": 3,
+      "level": 7,
       "glyph": 13,
       "school": 0,
       "cost": 30,
@@ -690,7 +690,7 @@
     },
     "spell_lazurus": {
       "id": "spell_lazurus",
-      "level": 7,
+      "level": 8,
       "glyph": 8,
       "school": 1,
       "cost": 0,
@@ -721,7 +721,7 @@
     },
     "spell_leech": {
       "id": "spell_leech",
-      "level": 5,
+      "level": 8,
       "glyph": 26,
       "school": -1,
       "cost": 0,
@@ -832,7 +832,7 @@
     },
     "spell_resurrection": {
       "id": "spell_resurrection",
-      "level": 5,
+      "level": 3,
       "glyph": 12,
       "school": -1,
       "cost": 100,
@@ -988,7 +988,7 @@
     },
     "spell_silence": {
       "id": "spell_silence",
-      "level": 2,
+      "level": 4,
       "glyph": 14,
       "school": 1,
       "cost": 0,
@@ -1014,7 +1014,7 @@
     },
     "spell_sunEater": {
       "id": "spell_sunEater",
-      "level": 1,
+      "level": 2,
       "glyph": 26,
       "school": -1,
       "cost": 15,
@@ -1041,7 +1041,7 @@
     },
     "spell_tranquility": {
       "id": "spell_tranquility",
-      "level": 5,
+      "level": 4,
       "glyph": 10,
       "school": 0,
       "cost": 50,
@@ -1069,7 +1069,7 @@
     },
     "spell_trueSight": {
       "id": "spell_trueSight",
-      "level": 1,
+      "level": 5,
       "glyph": 11,
       "school": 0,
       "cost": 100,
@@ -1158,7 +1158,7 @@
     },
     "spell_wail": {
       "id": "spell_wail",
-      "level": 7,
+      "level": 8,
       "school": -1,
       "cost": 45,
       "ingredients": [
@@ -1188,7 +1188,7 @@
     },
     "spell_whiteFlame": {
       "id": "spell_whiteFlame",
-      "level": 1,
+      "level": 2,
       "glyph": 28,
       "school": 1,
       "cost": 10,
@@ -1215,7 +1215,7 @@
     },
     "spell_wither": {
       "id": "spell_wither",
-      "level": 7,
+      "level": 8,
       "glyph": 22,
       "school": -1,
       "cost": 0,
