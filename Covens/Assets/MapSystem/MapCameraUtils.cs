@@ -143,6 +143,11 @@ public class MapCameraUtils : MonoBehaviour
         m_Instance.m_Controller.AnimateCamRotation(euler, time, onComplete);
     }
 
+    public static void SetExtraFOV(float value)
+    {
+        m_Instance.m_Controller.ExtraFOV = value;
+    }
+
     // public static void POPEnterAnimation()
     // {
     //     m_Instance.m_Controller.PlaceOfPowerEnter();

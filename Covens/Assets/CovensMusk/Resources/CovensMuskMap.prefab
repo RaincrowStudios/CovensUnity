@@ -1412,7 +1412,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   m_Controller: {fileID: 114497691815219758}
   m_Map: {fileID: 114921964724232780}
-  m_TargetFocusOffset: {x: 64, y: 58}
+  m_TargetFocusOffset: {x: 35, y: 58}
 --- !u!114 &4164780109084455368
 MonoBehaviour:
   m_ObjectHideFlags: 0

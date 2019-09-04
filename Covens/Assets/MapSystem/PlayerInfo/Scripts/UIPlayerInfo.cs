@@ -174,9 +174,14 @@ public class UIPlayerInfo : UIInfoPanel
 
             IMarker marker = MarkerManager.GetMarker(WitchToken.instance);
             if (marker != null)
+            {
                 MapCameraUtils.FocusOnMarker(marker.GameObject.transform.position);
+                MapCameraUtils.SetExtraFOV(-3);
+            }
             else
+            {
                 Close();
+            }
         }
     }
 
@@ -210,6 +215,7 @@ public class UIPlayerInfo : UIInfoPanel
             MainUITransition.Instance.ShowMainUI();
             MapsAPI.Instance.allowControl = true;
             MapCameraUtils.FocusOnPosition(previousMapPosition, m_PreviousMapZoom, true);
+            MapCameraUtils.SetExtraFOV(0);
             MarkerSpawner.HighlightMarker(new List<IMarker> { });
         }
         else

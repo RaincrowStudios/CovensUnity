@@ -231,7 +231,7 @@ namespace Raincrow.Maps
 
         public void InitMap(double longitude, double latitude, float zoom, System.Action callback, bool animate)
         {
-            m_CamController.maxDistanceFromCenter = PlayerDataManager.DisplayRadius * MapsAPI.Instance.OneKmInWorldspace;
+            m_CamController.MaxDistanceFromCenter = PlayerDataManager.DisplayRadius * MapsAPI.Instance.OneKmInWorldspace;
             m_Map.InitMap(longitude, latitude, zoom, callback);
             m_CamController.onUpdate?.Invoke(true, true, true);
         }

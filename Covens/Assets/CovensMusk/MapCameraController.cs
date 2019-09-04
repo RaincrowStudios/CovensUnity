@@ -73,7 +73,8 @@ public class MapCameraController : MonoBehaviour
 
     public Transform CenterPoint { get { return m_CenterPoint; } }
     public Transform RotationPivot { get { return m_AnglePivot; } }
-    public float maxDistanceFromCenter { get; set; }
+    public float MaxDistanceFromCenter { get; set; }
+    public float ExtraFOV { get; set; }
 
     public System.Action onChangeZoom;
     public System.Action onChangePosition;
@@ -102,6 +103,7 @@ public class MapCameraController : MonoBehaviour
     private bool m_LerpZoom;
     private bool m_LerpAngle;
     private bool m_LerpTwist;
+    private float m_ExtraFOV;
     
     private int m_MoveTweenId;
     private int m_ZoomTweenId;
@@ -336,7 +338,8 @@ public class MapCameraController : MonoBehaviour
             m_RotationChanged = true;
         }
 
-        m_Camera.fieldOfView = Mathf.Lerp(m_MinFOV, m_MaxFOV, streetLevelNormalizedZoom);
+        m_ExtraFOV = Mathf.Lerp(m_ExtraFOV, ExtraFOV, Time.deltaTime * 5);
+        m_Camera.fieldOfView = Mathf.Lerp(m_MinFOV, m_MaxFOV, streetLevelNormalizedZoom) + m_ExtraFOV;
         m_AnglePivot.localEulerAngles = new Vector3(Mathf.Lerp(m_MinAngle, m_MaxAngle, streetLevelNormalizedZoom), 0, 0);
 
 
@@ -491,8 +494,8 @@ public class MapCameraController : MonoBehaviour
         if (m_StreetLevel)
         {
             Vector3 dir = (position - m_MuskMapWrapper.transform.position);
-            if (dir.magnitude > maxDistanceFromCenter)
-                position = m_MuskMapWrapper.transform.position + dir.normalized * maxDistanceFromCenter;
+            if (dir.magnitude > MaxDistanceFromCenter)
+                position = m_MuskMapWrapper.transform.position + dir.normalized * MaxDistanceFromCenter;
         }
         else
         {
@@ -714,7 +717,7 @@ public class MapCameraController : MonoBehaviour
     {
         if (m_StreetLevel)
         {
-            Gizmos.DrawWireSphere(m_MuskMapWrapper.transform.position, maxDistanceFromCenter);
+            Gizmos.DrawWireSphere(m_MuskMapWrapper.transform.position, MaxDistanceFromCenter);
         }
     }
 
