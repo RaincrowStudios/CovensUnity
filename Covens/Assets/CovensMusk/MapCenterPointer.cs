@@ -20,7 +20,7 @@ public class MapCenterPointer : MonoBehaviour
             m_Pointer.transform.LookAt(Vector3.zero);
 
             float distance = Vector3.Distance(m_Pointer.position, Vector3.zero);
-            float maxDistance = m_MapController.maxDistanceFromCenter;
+            float maxDistance = m_MapController.MaxDistanceFromCenter;
 
             m_PointerSprite.color = new Color(1, 1, 1, distance / maxDistance);
         }

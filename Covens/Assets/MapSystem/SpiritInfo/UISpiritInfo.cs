@@ -164,9 +164,14 @@ public class UISpiritInfo : UIInfoPanel
             MapsAPI.Instance.allowControl = false;
             //if the spirit was destroyed, close the ui
             if (spirit != null)
+            {
                 MapCameraUtils.FocusOnMarker(spirit.GameObject.transform.position);
+                MapCameraUtils.SetExtraFOV(-3);
+            }
             else
+            {
                 Close();
+            }
         }
         else
         {
@@ -203,6 +208,7 @@ public class UISpiritInfo : UIInfoPanel
 
             MapsAPI.Instance.allowControl = true;
             MapCameraUtils.FocusOnPosition(MapsAPI.Instance.mapCenter.position, m_PreviousMapZoom, true);
+            MapCameraUtils.SetExtraFOV(0);
             MainUITransition.Instance.ShowMainUI();
             MarkerSpawner.HighlightMarker(new List<IMarker> { });
         }

@@ -201,7 +201,7 @@ public class WorldMapMarkerManager : MonoBehaviour
         OnMapChangeZoom();
 
         //get all surrounding markers on starting flight
-        RequestMarkers((int)m_Controller.maxDistanceFromCenter);
+        RequestMarkers((int)m_Controller.MaxDistanceFromCenter);
     }
 
     private void OnStopFlying()
@@ -245,7 +245,7 @@ public class WorldMapMarkerManager : MonoBehaviour
         {
             float range;
             if (m_Map.normalizedZoom > 0.855f)
-                range = m_Controller.maxDistanceFromCenter;
+                range = m_Controller.MaxDistanceFromCenter;
             else
                 range = LeanTween.easeOutQuint(m_MinMarkerRange, m_MaxMarkerRange, m_Map.normalizedZoom);
 
