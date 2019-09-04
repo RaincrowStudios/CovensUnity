@@ -348,7 +348,7 @@ public class QuestLogUI : UIAnimationManager
 
         subTitle.gameObject.SetActive(true);
         subTitle.text = LocalizeLookUp.GetExploreTitle(QuestsController.Quests.explore.type);
-        Desc.text = LocalizeLookUp.GetExploreLore(QuestsController.Quests.explore.type);
+        Desc.text = LocalizeLookUp.GetExploreDesc(QuestsController.Quests.explore.type);
 		title.text = LocalizeLookUp.GetText ("daily_explore");//"Explore";
 
         if (PlayerDataManager.playerData.quest.explore.completed)
