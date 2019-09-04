@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.UI;
+using TMPro;
 
 public class UIQuickcastButton : MonoBehaviour, IPointerDownHandler, IPointerUpHandler, IPointerEnterHandler, IPointerExitHandler
 {
@@ -13,6 +14,7 @@ public class UIQuickcastButton : MonoBehaviour, IPointerDownHandler, IPointerUpH
     [SerializeField] private Image m_CooldownFill;
     [SerializeField] private Image m_Highlight;
     [SerializeField] private Image m_LockOverlay;
+    [SerializeField] private TextMeshProUGUI m_SpellName;
 
     public string Spell { get; private set; }
     public int QuickcastIndex { get; private set; }
@@ -62,6 +64,7 @@ public class UIQuickcastButton : MonoBehaviour, IPointerDownHandler, IPointerUpH
         m_SpellIcon_A.overrideSprite = m_SpellIcon_B.overrideSprite = null;
         if (string.IsNullOrEmpty(Spell) == false)
         {
+            m_SpellName.text = LocalizeLookUp.GetSpellName(Spell);
             DownloadedAssets.GetSprite(Spell, spr =>
             {
                 m_SpellIcon_A.overrideSprite = m_SpellIcon_B.overrideSprite = spr;
@@ -80,7 +83,7 @@ public class UIQuickcastButton : MonoBehaviour, IPointerDownHandler, IPointerUpH
             SetFillAmount(0);
             return;
         }
-        
+
         CooldownManager.Cooldown? cd = CooldownManager.GetCooldown(Spell);
         if (cd.HasValue)
         {
@@ -108,7 +111,7 @@ public class UIQuickcastButton : MonoBehaviour, IPointerDownHandler, IPointerUpH
 
     public void Hightlight(bool highlight)
     {
-        m_Highlight.gameObject.SetActive(highlight);   
+        m_Highlight.gameObject.SetActive(highlight);
     }
 
     public void Show(bool show)
