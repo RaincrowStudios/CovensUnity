@@ -70,7 +70,7 @@ namespace Raincrow.FTF
 
         public void Hide()
         {
-            Hide(null, 1f, LeanTweenType.easeOutCubic);
+            Hide(null, 0.5f, LeanTweenType.easeOutCubic);
         }
 
         private void Hide(System.Action onComplete, float time, LeanTweenType easeType)

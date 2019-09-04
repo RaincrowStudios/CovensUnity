@@ -23,7 +23,6 @@
 
 //open spell book
 {"button":{"show":true,"anchorMin":[0.0,0.5],"anchorMax":[0.0,0.5],"position":[1109.0,-576.0],"size":[277.3,220.1]},"highlight":{"show":true,"anchorMin":[0.0,0.5],"anchorMax":[0.0,0.5],"position":[1135.0,-585.0],"size":[780.5,782.1]},"pointer":{"show":true,"anchorMin":[0.0,0.5],"anchorMax":[0.0,0.5],"position":[1111.0,-586.0]},"onExit":[{"method":"ShowSpellbook"},{"method":"ShowSavannah"}]},
-
 {"timer":0.5},
 //"this is your spellbook"
 {"onEnter":[{"method":"ShowMessage","parameters":["ftf_6"]}]},
@@ -32,11 +31,11 @@
 //"tap on the glyph to cast"
 {"onEnter":[{"method":"ShowMessage","parameters":["ftf_8"]}]},
 //focus on whiteflame and wait 1.2s
-{"timer":0.1, "onEnter":[{"method":"HideSavannah"},{"method":"FocusSpellbook","parameters":["spell_whiteFlame"]}]},
+{"timer":0.1, "onEnter":[{"method":"HideSavannah"},{"method":"FocusSpellbook","parameters":["spell_hex"]}]},
 //wait for glyph tap
-{"button":{"show":true,"anchorMin":[0.0,0.5],"anchorMax":[0.0,0.5],"position":[1243.0,-454.0],"size":[277.3,220.1]},"highlight":{"show":true,"anchorMin":[0.0,0.5],"anchorMax":[0.0,0.5],"position":[1280.0,6.9],"size":[1258.0,2825.6]},"pointer":{"show":true,"anchorMin":[0.0,0.5],"anchorMax":[0.0,0.5],"position":[1232.0,-470.0]},"onExit":[{"method":"CloseSpellbook"}]},
+{"button":{"show":true,"anchorMin":[0.5,0.5],"anchorMax":[0.5,0.5],"position":[-2.0,-454.0],"size":[277.300049,220.1]},"highlight":{"show":true,"anchorMin":[0.5,0.5],"anchorMax":[0.5,0.5],"position":[35.0,6.9],"size":[1258.0,2825.6]},"pointer":{"show":true,"anchorMin":[0.5,0.5],"anchorMax":[0.5,0.5],"position":[-13.0,-470.0]},"onExit":[{"method":"CloseSpellbook"}]},
 //cast the spell and wait 1.5s
-{"timer":1.5, "onEnter":[{"method":"CastSpell","parameters":["spell_whiteFlame","ftf_barghest","54"]}]},
+{"timer":1.5, "onEnter":[{"method":"CastSpell","parameters":["spell_hex","ftf_barghest","54"]}]},
 //"well done, spirit banished"
 {"onEnter":[{"method":"ShowMessage","parameters":["ftf_9"]}]},
 //"spirits can be summoned...""
