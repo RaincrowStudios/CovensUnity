@@ -1010,6 +1010,12 @@ public class TeamManagerUI : MonoBehaviour
 
     private void OnClickSendInvite()
     {
+        if (m_CovenData.Members.Count >= 13)
+        {
+            UIGlobalPopup.ShowError(null, LocalizeLookUp.GetText("coven_request_full"));
+            return;
+        }
+
         m_InputPopup.ShowPopUp(
            confirmAction: (characterName) =>
            {
