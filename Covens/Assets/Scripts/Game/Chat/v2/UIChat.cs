@@ -104,6 +104,14 @@ namespace Raincrow.Chat.UI
             }
         }
 
+        public static void Close()
+        {
+            if (m_Instance == null)
+                return;
+
+            m_Instance.AnimateHide();
+        }
+
         public void Show(ChatCategory category = ChatCategory.WORLD)
         {
             SetCategory(category);

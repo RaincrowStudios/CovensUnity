@@ -864,7 +864,7 @@ public class TeamManagerUI : MonoBehaviour
     private void OnSelectMember(TeamMemberItemUI member)
     {
         LoadingOverlay.Show();
-        TeamPlayerView.ViewCharacter(member.MemberData.Id, (m, s) => LoadingOverlay.Hide());
+        TeamPlayerView.ViewCharacter(member.MemberData.Id, (m, s) => LoadingOverlay.Hide(), false, () => this.Hide());
     }
 
     private void OnClickMemberTitle(TeamMemberItemUI member)

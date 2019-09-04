@@ -210,7 +210,7 @@ public class UIQuickCast : MonoBehaviour
         m_AnimTweenId = LeanTween.value(m_Panel.alpha, 1, 0.6f)
             .setOnUpdate((float t) =>
             {
-                m_Panel.transform.localPosition = new Vector3(Mathf.Lerp(-172, 0, t), 0, 0);
+                m_Panel.transform.localPosition = new Vector3(0, Mathf.Lerp(-172, 0, t), 0);
                 m_Panel.alpha = t;
             })
             .setEaseOutCubic()
@@ -227,7 +227,7 @@ public class UIQuickCast : MonoBehaviour
         m_AnimTweenId = LeanTween.value(m_Panel.alpha, 0, 0.4f)
             .setOnUpdate((float t) =>
             {
-                m_Panel.transform.localPosition = new Vector3(Mathf.Lerp(-172, 0, t), 0, 0);
+                m_Panel.transform.localPosition = new Vector3(0, Mathf.Lerp(-172, 0, t), 0);
                 m_Panel.alpha = t;
             })
             .setOnComplete(() => m_Canvas.enabled = false)

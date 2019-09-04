@@ -68,7 +68,8 @@ public class TeamPlayerView : MonoBehaviour
             inviteToCoven.gameObject.SetActive(false);
         }
 
-        flyToPlayerBtn.interactable = data.covenId == PlayerDataManager.playerData.covenId;
+        flyToPlayerBtn.interactable = true;
+        flyToPlayerBtn.gameObject.SetActive(data.covenId == PlayerDataManager.playerData.covenId);
 
         playerPos.x = data.longitude;
         playerPos.y = data.latitude;
@@ -182,7 +183,7 @@ public class TeamPlayerView : MonoBehaviour
     }
 
 
-    public static void ViewCharacter(string id, System.Action<WitchMarkerData, string> callback, bool searchByName = false)
+    public static void ViewCharacter(string id, System.Action<WitchMarkerData, string> callback, bool searchByName = false, System.Action onFlyTo = null)
     {
         APIManager.Instance.Get(
             "character/select/" + id + "?selection=chat&name=" + searchByName.ToString().ToLower(),
@@ -192,7 +193,7 @@ public class TeamPlayerView : MonoBehaviour
                 if (result == 200)
                 {
                     WitchMarkerData data = JsonConvert.DeserializeObject<WitchMarkerData>(response);
-                    Instance.Show(data);
+                    Instance.Show(data, onFlyTo);
                     callback?.Invoke(data, null);
                 }
                 else
