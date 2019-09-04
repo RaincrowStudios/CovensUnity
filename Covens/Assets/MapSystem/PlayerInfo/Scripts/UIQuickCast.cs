@@ -15,6 +15,7 @@ public class UIQuickCast : MonoBehaviour
     [SerializeField] private LayoutGroup m_SpellContainer;
     [SerializeField] private UIQuickcastButton m_ButtonPrefab;
     [SerializeField] private Button m_MoreSpells;
+    [SerializeField] private CanvasGroup m_Panel;
 
     [Header("others")]
     [SerializeField] private UIQuickCastPicker m_Picker;
@@ -205,7 +206,13 @@ public class UIQuickCast : MonoBehaviour
         m_Canvas.enabled = true;
         m_InputRaycaster.enabled = true;
 
-        m_AnimTweenId = LeanTween.moveLocalY(m_SpellContainer.gameObject, 0f, 0.6f)
+        //m_AnimTweenId = LeanTween.moveLocalY(m_SpellContainer.gameObject, 0f, 0.6f)
+        m_AnimTweenId = LeanTween.value(m_Panel.alpha, 1, 0.6f)
+            .setOnUpdate((float t) =>
+            {
+                m_Panel.transform.localPosition = new Vector3(Mathf.Lerp(-172, 0, t), 0, 0);
+                m_Panel.alpha = t;
+            })
             .setEaseOutCubic()
             .uniqueId;
     }
@@ -216,7 +223,13 @@ public class UIQuickCast : MonoBehaviour
 
         m_InputRaycaster.enabled = false;
 
-        m_AnimTweenId = LeanTween.moveLocalY(m_SpellContainer.gameObject, -138f, 0.4f)
+        //m_AnimTweenId = LeanTween.moveLocalY(m_SpellContainer.gameObject, -138f, 0.4f)
+        m_AnimTweenId = LeanTween.value(m_Panel.alpha, 0, 0.4f)
+            .setOnUpdate((float t) =>
+            {
+                m_Panel.transform.localPosition = new Vector3(Mathf.Lerp(-172, 0, t), 0, 0);
+                m_Panel.alpha = t;
+            })
             .setOnComplete(() => m_Canvas.enabled = false)
             .setEaseOutCubic()
             .uniqueId;
