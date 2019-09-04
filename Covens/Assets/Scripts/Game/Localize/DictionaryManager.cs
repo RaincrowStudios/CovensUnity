@@ -54,6 +54,7 @@ public class DictionaryManager
         return Cultures[languageIndex];
     }
 
+    public static event System.Action<string,float,float> OnDownloadProgress;
 
 
     public static void GetLocalisationDictionary(string version, System.Action onDicionaryReady, System.Action<int, string> onDownloadError, System.Action onParseError)
@@ -100,8 +101,7 @@ public class DictionaryManager
                 Debug.Log($"Dictionary outdated.");
         }
 
-        var url = new System.Uri(baseURL + version + "/" + language + ".json");
-        DownloadFile(url, (resultCode, response) =>
+        DownloadFile(language, version, (resultCode, response) =>
         {
             if (resultCode == 200)
             {
@@ -146,7 +146,7 @@ public class DictionaryManager
 
         if (result == LocalFileState.FILE_AVAILABLE && json != null)
         {
-            Debug.Log($"\"{version}\" already downloaded.");
+            Debug.Log($"\"game{version}\" already downloaded.");
             if (DownloadManager.DeserializeGameDictionary(json))
             {
                 onDicionaryReady?.Invoke();
@@ -167,8 +167,7 @@ public class DictionaryManager
                 Debug.Log($"gamedict outdated.");
         }
 
-        var url = new System.Uri(baseURL + version + "/game.json");
-        DownloadFile(url, (resultCode, response) =>
+        DownloadFile("game", version, (resultCode, response) =>
         {
             if (resultCode == 200)
             {
@@ -213,7 +212,7 @@ public class DictionaryManager
 
         if (result == LocalFileState.FILE_AVAILABLE && json != null)
         {
-            Debug.Log($"store \"{version}\" already downloaded.");
+            Debug.Log($"\"store{version}\" already downloaded.");
             if (DownloadManager.DeserializeStoreDictionary(json))
             {
                 onDicionaryReady?.Invoke();
@@ -234,8 +233,7 @@ public class DictionaryManager
                 Debug.Log($"store outdated.");
         }
 
-        var url = new System.Uri(baseURL + version + "/store.json");
-        DownloadFile(url, (resultCode, response) =>
+        DownloadFile("store", version, (resultCode, response) =>
         {
             if (resultCode == 200)
             {
@@ -289,14 +287,23 @@ public class DictionaryManager
         }
     }
 
-    private async static void DownloadFile(System.Uri url, System.Action<int, string> onComplete, int maxRetries, int tryCount = 0)
+    private async static void DownloadFile(string name, string version, System.Action<int, string> onComplete, int maxRetries, int tryCount = 0)
     {
+        var url = new System.Uri(baseURL + version + "/" + name + ".json");
         Debug.Log("Downloading " + url.ToString());
         using (var webClient = new System.Net.WebClient())
         {
             try
             {
+                //get header
+                var openReadTask = await webClient.OpenReadTaskAsync(url);
+                long size = size = System.Convert.ToInt64(webClient.ResponseHeaders["Content-Length"]);
+                openReadTask.Close();
+
+                //get file
+                webClient.DownloadProgressChanged += (sender, args) => DownloadProgressChanged(name, size, args); 
                 string result = await webClient.DownloadStringTaskAsync(url);
+
                 onComplete(200, result);
             }
             catch (System.Net.WebException e)
@@ -305,7 +312,7 @@ public class DictionaryManager
                 tryCount++;
                 if (tryCount <= maxRetries)
                 {
-                    LeanTween.value(0, 0, 2f).setOnComplete(() => DownloadFile(url, onComplete, maxRetries, tryCount));
+                    LeanTween.value(0, 0, 2f).setOnComplete(() => DownloadFile(name, version, onComplete, maxRetries, tryCount));
                 }
                 else
                 {
@@ -318,5 +325,10 @@ public class DictionaryManager
                 }
             }
         }
-    } 
+    }
+
+    private static void DownloadProgressChanged(string name, long size, System.Net.DownloadProgressChangedEventArgs e)
+    {
+        OnDownloadProgress?.Invoke(name, size * 0.000001f, e.ProgressPercentage/100f);
+    }
 }

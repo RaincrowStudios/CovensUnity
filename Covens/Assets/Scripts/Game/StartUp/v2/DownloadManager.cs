@@ -245,7 +245,6 @@ public class DownloadManager : MonoBehaviour
         //download the store dictionary
         //OnDictionaryDownloadStart?.Invoke();
         {
-
             bool isDictionaryComplete = false;
             bool isDictionaryParseError = false;
             string dictionaryDownloadError = null;

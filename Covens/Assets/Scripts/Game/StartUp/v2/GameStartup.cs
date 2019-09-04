@@ -31,6 +31,8 @@ public class GameStartup : MonoBehaviour
         DownloadManager.OnDictionaryError += OnDictionaryError;
         DownloadManager.OnDictionaryParserError += OnDictionaryParseError;
 
+        DictionaryManager.OnDownloadProgress += OnDictionaryDownloadProgress;
+
         DownloadManager.OnDownloadStart += OnAssetDownloadStart;
         DownloadManager.OnDownloadProgress += OnAssetDownloadProgress;
         DownloadManager.OnDownloadError += OnAssetDownloadError;
@@ -48,6 +50,8 @@ public class GameStartup : MonoBehaviour
         DownloadManager.OnDownloadedDictionary -= OnDictionaryReady;
         DownloadManager.OnDictionaryError -= OnDictionaryError;
         DownloadManager.OnDictionaryParserError -= OnDictionaryParseError;
+
+        DictionaryManager.OnDownloadProgress += OnDictionaryDownloadProgress;
 
         DownloadManager.OnDownloadStart -= OnAssetDownloadStart;
         DownloadManager.OnDownloadProgress -= OnAssetDownloadProgress;
@@ -152,6 +156,12 @@ public class GameStartup : MonoBehaviour
     private void OnDictionaryParseError(string error, string stackTrace)
     {
         HandleServerDown.Instance.ShowErrorParseDictionary();
+    }
+
+    private void OnDictionaryDownloadProgress(string name, float size, float progress)
+    {
+        name = (LocalizeLookUp.HasKey("chat_settings") ? LocalizeLookUp.GetText("chat_settings") : "settings") + " (" + name + ")";
+        SplashManager.Instance.SetDownloadProgress(name, 0, 0, size, progress);
     }
     
 

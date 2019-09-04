@@ -125,12 +125,17 @@ public class SplashManager : MonoBehaviour
             title += " .";
 
         //downloading description
-        msg =
-        "Downloading: " +
-        (fileIndex).ToString() +
-        " out of " +
-        totalFiles.ToString() +
-        " (" + (progress * fileSize).ToString("F2") + "/" + fileSize.ToString("F2") + "MB)";
+        msg = "";
+
+        if (totalFiles > 0)
+            msg = "Downloading: " + (fileIndex).ToString() + " out of " + totalFiles.ToString();
+        else if (string.IsNullOrEmpty(fileName) == false)
+            msg = fileName;
+
+        if (fileSize > 0)
+            msg += " (" + (progress * fileSize).ToString("F2") + "/" + fileSize.ToString("F2") + "MB)";
+        else if (progress > 0)
+            msg += " (" + (int)(progress * 100) + "%)";
 
         slider.gameObject.SetActive(true);
         LeanTween.cancel(m_SliderTweenId);
