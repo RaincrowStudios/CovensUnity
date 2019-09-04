@@ -77,6 +77,8 @@ public class GardenMarkers : MonoBehaviour
 
     public void SetupGardens()
     {
+        Debug.LogError("TODO: ENABLE GARDENS");
+        return;
         map = MapsAPI.Instance;
 
         map.OnExitStreetLevel += OnStartFlying;
