@@ -123,6 +123,8 @@ public static class LoginAPIManager
 
     public static void Login(System.Action<int, LoginResponse> callback)
     {
+        APIManager.Instance.Put("place-of-power/leave", "{}", (s, r) => { Debug.Log(s); Debug.Log("TODO: Move pop leave logic"); });
+
         //check for saved tokens
         if (accountLoggedIn)
         {
@@ -270,7 +272,6 @@ public static class LoginAPIManager
             if (result == 200)
             {
                 PlayerDataManager.playerData = ParsePlayerData(response);
-                APIManager.Instance.Put("place-of-power/leave", "{}", (s, r) => { Debug.Log(s); Debug.Log("TODO: Move pop leave logic"); });
 
                 //TeamManager.GetCoven(null);
                 OnCharacterReceived?.Invoke();
