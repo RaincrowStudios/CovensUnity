@@ -40,7 +40,8 @@ public class UILevelUp : MonoBehaviour
         StartCoroutine(SpawnRewards());
 
         SoundManagerOneShot.Instance.PlayLevel();
-        
+        SoundManagerOneShot.Instance.IngredientAdded();
+
         m_CloseButton.interactable = false;
         LeanTween.value(0, 0, 0).setDelay(0.25f).setOnStart(() => { m_CloseButton.interactable = true; });
 
@@ -64,7 +65,7 @@ public class UILevelUp : MonoBehaviour
 
         yield return new WaitForSeconds(0.5f);
 
-        int left = unlockedSpells.Count / 2-1;
+        int left = unlockedSpells.Count / 2 - 1;
         int right = left + 1;
 
         //center first
