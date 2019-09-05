@@ -201,15 +201,16 @@ public class SocketClient : MonoBehaviour
                 catch (System.Exception e)
                 {
                     string innerException = e.InnerException != null ? e.InnerException.Message : string.Empty;
+                    string innerStackTrace = e.InnerException != null ? e.InnerException.StackTrace : string.Empty;
+
                     string debugString = string.Concat("Error parsing ws event.",
                                                        System.Environment.NewLine, "Exception: ", e.Message,
                                                        System.Environment.NewLine, "InnerException: ", innerException,
                                                        System.Environment.NewLine, "Stacktrace: ", e.StackTrace,
+                                                       System.Environment.NewLine, "InnerStacktrace: ", innerStackTrace,
                                                        System.Environment.NewLine, "SocketEvent: ", response.Command,
                                                        System.Environment.NewLine, "SocketMessage: ", response.Data);
                     Debug.LogError(debugString);
-                    Debug.Log(response.Data);
-                    Debug.Log(response.Command);
                 }
 
                 batchIndex++;

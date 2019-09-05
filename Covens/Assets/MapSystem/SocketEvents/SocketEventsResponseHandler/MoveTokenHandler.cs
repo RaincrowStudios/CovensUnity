@@ -48,10 +48,10 @@ namespace Raincrow.GameEventResponses
                 //remove if the token is too far away
                 else 
                 {
-                    RemoveTokenHandler.OnTokenRemove(data.instance);
+                    RemoveTokenHandler.OnTokenRemove?.Invoke(data.instance);
                     if (marker != null)
                     {
-                        RemoveTokenHandler.OnMarkerRemove(marker);
+                        RemoveTokenHandler.OnMarkerRemove?.Invoke(marker);
 
                         MarkerSpawner.DeleteMarker(data.instance);
                         //animate it 
