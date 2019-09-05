@@ -12,8 +12,10 @@
 //4
 {"onEnter":[{"method":"ShowMessage","parameters":["ftf_3"]}]},
 //5
-{"timer":2.0,"onEnter":[{"method":"SocketEvent","parameters":["cast.spell","{   \"target\": {     \"_id\": \"ftf_barghest\",     \"energy\": 54,     \"type\": \"spirit\"   },   \"caster\": {     \"_id\": \"savannah\",     \"energy\": 30000,     \"type\": \"character\"   },   \"spell\": \"spell_whiteFlame\",   \"result\": {     \"damage\": -1200, \"isSuccess\":true     } }"]}]},
+{"timer":1.0,"onEnter":[{"method":"SpawnFX","parameters":["fancy_whiteFlame","0.0006","0.0003"]}]},
 //6
+{"timer":1.5,"onEnter":[{"method":"SocketEvent","parameters":["cast.spell","{   \"target\": {     \"_id\": \"ftf_barghest\",     \"energy\": 54,     \"type\": \"spirit\"   },   \"caster\": {     \"_id\": \"savannah\",     \"energy\": 30000,     \"type\": \"character\"   },   \"spell\": \"spell_whiteFlame\",   \"result\": {     \"damage\": -1200, \"isSuccess\":true     } }"]}]},
+//7
 {"onEnter":[{"method":"ShowMessage","parameters":["ftf_4"]}]},
 
 

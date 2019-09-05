@@ -17,6 +17,7 @@ public class FTFManager : MonoBehaviour
     [SerializeField] private FTFMessageBox m_BotMessage;
     [SerializeField] private FTFMessageBox m_TopMessage;
     [SerializeField] private FTFPointerHand m_Pointer;
+    [SerializeField] private FTFSpawn m_FXSpawner;
 
     [Header("Savannah")]
     [SerializeField] private Animator m_Savannah;
@@ -108,9 +109,9 @@ public class FTFManager : MonoBehaviour
             new GameObject("EventSystem", typeof(UnityEngine.EventSystems.EventSystem), typeof(UnityEngine.EventSystems.StandaloneInputModule));
         }
 
-        m_BotMessage.OnClick += () => StartCoroutine(NextStep(null));
-        m_TopMessage.OnClick += () => StartCoroutine(NextStep(null));
-        m_Button.OnClick += () => StartCoroutine(NextStep(null));
+        m_BotMessage.OnClick += () => StartCoroutine(NextStep());
+        m_TopMessage.OnClick += () => StartCoroutine(NextStep());
+        m_Button.OnClick += () => StartCoroutine(NextStep());
 
         m_WitchSchool.alpha = 0;
         m_WitchSchool.gameObject.SetActive(false);
@@ -175,7 +176,7 @@ public class FTFManager : MonoBehaviour
         Time.timeScale *= 4;
         while (m_CurrentStepIndex < m_StartFrom && m_CurrentStepIndex < m_Steps.Count)
         {
-            yield return StartCoroutine(NextStep(new string[0]));
+            yield return StartCoroutine(NextStep());
         }
         Time.timeScale = previousTimeScale;
     }
@@ -292,7 +293,7 @@ public class FTFManager : MonoBehaviour
         {
             yield return new WaitForSeconds(step.timer);
             m_RunningSetup = false;
-            yield return StartCoroutine(NextStep(null));
+            yield return StartCoroutine(NextStep());
         }
         else
         {
@@ -340,21 +341,12 @@ public class FTFManager : MonoBehaviour
 
     #region AVAILABLE ACTIONS
 
-    private IEnumerator GoToStep(string[] parameters)
-    {
-        if (parameters.Length < 1)
-            throw new System.Exception("[GoTo] missing param[0] (step index)");
-        
-        int stepIndex = int.Parse(parameters[0]);
-        yield return 0;
-    }
-
-    private IEnumerator NextStep(string[] parameters)
+    private IEnumerator NextStep()
     {
         yield return StartCoroutine(SetupCoroutine(m_CurrentStepIndex + 1));
     }
 
-    private IEnumerator ShowSavannah(string[] parameters)
+    private IEnumerator ShowSavannah()
     {
         m_Savannah.gameObject.SetActive(true);
         LeanTween.alphaCanvas(m_SavannahCanvasGroup, 1f, 1f).setEaseOutCubic();
@@ -363,7 +355,7 @@ public class FTFManager : MonoBehaviour
         yield return 0;
     }
 
-    private IEnumerator HideSavannah(string[] parameters)
+    private IEnumerator HideSavannah()
     {
         LeanTween.alphaCanvas(m_SavannahCanvasGroup, 0f, 0.25f).setEaseOutCubic().setOnComplete(() =>
         {
@@ -374,7 +366,7 @@ public class FTFManager : MonoBehaviour
         yield return 0;
     }
 
-    private IEnumerator ShowFortuna(string[] parameters)
+    private IEnumerator ShowFortuna()
     {
         m_Fortuna.gameObject.SetActive(true);
         LeanTween.alphaCanvas(m_FortunaCanvasGroup, 1f, 1f).setEaseOutCubic();
@@ -383,7 +375,7 @@ public class FTFManager : MonoBehaviour
         yield return 0;
     }
 
-    private IEnumerator HideFortuna(string[] parameters)
+    private IEnumerator HideFortuna()
     {
         LeanTween.alphaCanvas(m_FortunaCanvasGroup, 0f, 0.25f).setEaseOutCubic().setOnComplete(() =>
         {
@@ -590,7 +582,7 @@ public class FTFManager : MonoBehaviour
         yield return 0;
     }
 
-    private IEnumerator ShowSpellbook(string[] parameters)
+    private IEnumerator ShowSpellbook()
     {
         bool screenLoaded = false;
 
@@ -614,7 +606,7 @@ public class FTFManager : MonoBehaviour
         yield return 0;
     }
 
-    private IEnumerator CloseSpellbook(string[] parameters)
+    private IEnumerator CloseSpellbook()
     {
         UISpellcastBook.Close();
         yield return 0;
@@ -627,7 +619,7 @@ public class FTFManager : MonoBehaviour
         yield return new WaitForSeconds(0.5f);
     }
 
-    private IEnumerator CloseSpiritBanished(string[] parameters)
+    private IEnumerator CloseSpiritBanished()
     {
         UISpiritBanished.Instance.Close();
         yield return 0;
@@ -729,6 +721,16 @@ public class FTFManager : MonoBehaviour
             MarkerManagerAPI.GetMarkers(PlayerDataManager.playerData.longitude, PlayerDataManager.playerData.latitude);
         });
 
+        yield return 0;
+    }
+
+    private IEnumerator SpawnFX(string[] parameters)
+    {
+        string id = parameters[0];
+        float longitude = PlayerDataManager.playerData.longitude + float.Parse(parameters[1]);
+        float latitude = PlayerDataManager.playerData.latitude + float.Parse(parameters[2]);
+
+        m_FXSpawner.Spawn(id, longitude, latitude);
         yield return 0;
     }
 
