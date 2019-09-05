@@ -1,10 +1,11 @@
 using UnityEngine;
 using UnityEngine.UI;
+using TMPro;
 public class SummonSuccess : MonoBehaviour
 {
     public Image summonSuccessSpirit;
-    public Text headingText;
-    public Text bodyText;
+    public TextMeshProUGUI headingText;
+    public TextMeshProUGUI bodyText;
     public Button close;
     public SpiritMarker spirit;
 

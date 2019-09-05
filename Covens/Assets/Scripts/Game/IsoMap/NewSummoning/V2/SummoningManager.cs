@@ -34,7 +34,7 @@ public class SummoningManager : MonoBehaviour
     public Text spiritInfoTier;
     public Text legend;
     public Image SpiritInfoIcon;
-    
+
     [Space(10)]
 
     public Transform[] headerItems;
@@ -141,7 +141,7 @@ public class SummoningManager : MonoBehaviour
             item.GetChild(0).gameObject.SetActive(false);
         }
     }
-    
+
     private void _Open()
     {
         LeanTween.cancel(m_TweenId);
@@ -153,7 +153,7 @@ public class SummoningManager : MonoBehaviour
         UIStateManager.Instance.CallWindowChanged(false);
         SoundManagerOneShot.Instance.MenuSound();
         SoundManagerOneShot.Instance.PlayWhisper(.2f);
-        
+
         Show(summonObject);
         InitHeader();
         summonButton.interactable = true;
@@ -319,7 +319,7 @@ public class SummoningManager : MonoBehaviour
         DownloadedAssets.GetSprite(currentSpiritID, SpiritInfoIcon);
 
         SpiritData spiritData = DownloadedAssets.GetSpirit(currentSpiritID);
-        
+
 
         string kind = "";
         if (DownloadedAssets.spiritDict[currentSpiritID].tier == 1)
@@ -410,7 +410,7 @@ public class SummoningManager : MonoBehaviour
 
         loading.SetActive(true);
         string spiritId = currentSpiritID;
-        
+
         //string endpoint = PlaceOfPower.IsInsideLocation ? "location/summon" : 
         string endpoint = "character/summon/" + currentSpiritID;
         APIManager.Instance.Post(endpoint, "{}", (string s, int r) =>
@@ -465,7 +465,7 @@ public class SummoningManager : MonoBehaviour
         var ss = summonSuccessInstance.GetComponent<SummonSuccess>();
 
         ss.headingText.text = LocalizeLookUp.GetText("summoning_success");//"Summoning Successful";
-        ss.bodyText.text = "";//= spiritTitle.text + " " + LocalizeLookUp.GetText("summoning_time") + " " + Utilities.GetTimeRemaining(result);
+        ss.bodyText.text = spiritTitle.text;//= spiritTitle.text + " " + LocalizeLookUp.GetText("summoning_time") + " " + Utilities.GetTimeRemaining(result);
         ss.summonSuccessSpirit.overrideSprite = spiritIcon.overrideSprite;
         ss.spirit = spirit;
     }
