@@ -309,8 +309,22 @@ public class UIWaitingCastResult : UIInfoPanel
         {
             CurrentDegree.gameObject.SetActive(true);
             NextDegree.gameObject.SetActive(true);
-            CurrentDegree.text = Mathf.Abs(PlayerDataManager.playerData.degree).ToString();
-            NextDegree.text = (Mathf.Abs(PlayerDataManager.playerData.degree) + 1).ToString();
+
+            int currentDegree = Mathf.Abs(PlayerDataManager.playerData.degree);
+            int nextDegree = (Mathf.Abs(PlayerDataManager.playerData.degree) + 1);
+            if (nextDegree >= PlayerDataManager.alignmentPerDegree.Length)
+            {
+                NextDegree.transform.parent.localScale = Vector3.one * 1.2f;
+                currentDegree -= 1;
+                nextDegree -= 1;
+            }
+            else
+            {
+                NextDegree.transform.parent.localScale = Vector3.one;
+            }
+
+            CurrentDegree.text = currentDegree.ToString();
+            NextDegree.text = nextDegree.ToString();
 
             if (PlayerDataManager.playerData.degree > 0) //White Witch
             {

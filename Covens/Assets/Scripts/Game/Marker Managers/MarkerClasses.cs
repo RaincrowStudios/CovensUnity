@@ -540,7 +540,7 @@ public class PlayerData : WitchMarkerData
     {
         get
         {
-            int absDegree = Mathf.Abs(degree);
+            int absDegree = Mathf.Min(Mathf.Abs(degree), PlayerDataManager.playerData.level - 1);
             if (degree < 0)
                 return PlayerDataManager.alignmentPerDegree[absDegree + 1] * -1;
             else
@@ -553,7 +553,7 @@ public class PlayerData : WitchMarkerData
     {
         get
         {
-            int absDegree = Mathf.Abs(degree);
+            int absDegree = Mathf.Min(Mathf.Abs(degree), PlayerDataManager.playerData.level - 1);
             if (degree < 0)
                 return PlayerDataManager.alignmentPerDegree[absDegree] * -1;
             else
