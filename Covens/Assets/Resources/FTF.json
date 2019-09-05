@@ -12,7 +12,7 @@
 //4
 {"onEnter":[{"method":"ShowMessage","parameters":["ftf_3"]}]},
 //5
-{"timer":1.0,"onEnter":[{"method":"SpawnFX","parameters":["fancy_whiteFlame","0.0006","0.0003"]}]},
+{"timer":1.25,"onEnter":[{"method":"SpawnFX","parameters":["fancy_whiteFlame","0.0006","0.0003"]}]},
 //6
 {"timer":1.5,"onEnter":[{"method":"SocketEvent","parameters":["cast.spell","{   \"target\": {     \"_id\": \"ftf_barghest\",     \"energy\": 54,     \"type\": \"spirit\"   },   \"caster\": {     \"_id\": \"savannah\",     \"energy\": 30000,     \"type\": \"character\"   },   \"spell\": \"spell_whiteFlame\",   \"result\": {     \"damage\": -1200, \"isSuccess\":true     } }"]}]},
 //7
@@ -62,7 +62,7 @@
 //ACT 3.d NEARBY POPS
 
 {"timer":0.5},
-{"onEnter":[{"method":"ShowMessage","parameters":["ftf_14"]},{"method":"ShowSavannah"}]},
+{"onEnter":[{"method":"ShowMessage","parameters":["ftf_14"]},{"method":"ShowSavannah"}],"onExit":[{"method":"HideSavannah"}]},
 //highlight nearby pops
 {"button":{"show":true,"anchorMin":[1.0,1.0],"anchorMax":[1.0,1.0],"position":[-129.0,-335.0],"size":[209.699951,183.0]},"highlight":{"show":true,"anchorMin":[1.0,1.0],"anchorMax":[1.0,1.0],"position":[-119.0,-348.0],"size":[532.199951,426.800049]},"pointer":{"show":true,"anchorMin":[1.0,1.0],"anchorMax":[1.0,1.0],"position":[-125.0,-342.999969]}},
 //open nearby pops

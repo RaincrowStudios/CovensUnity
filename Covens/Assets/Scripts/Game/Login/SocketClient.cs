@@ -205,7 +205,8 @@ public class SocketClient : MonoBehaviour
                                                        System.Environment.NewLine, "Exception: ", e.Message,
                                                        System.Environment.NewLine, "InnerException: ", innerException,
                                                        System.Environment.NewLine, "Stacktrace: ", e.StackTrace,
-                                                       System.Environment.NewLine, "nData: ", response);
+                                                       System.Environment.NewLine, "SocketEvent: ", response.Command,
+                                                       System.Environment.NewLine, "SocketMessage: ", response.Data);
                     Debug.LogError(debugString);
                     Debug.Log(response.Data);
                     Debug.Log(response.Command);
