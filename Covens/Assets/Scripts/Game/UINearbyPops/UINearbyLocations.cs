@@ -17,7 +17,11 @@ public class UINearbyLocations : MonoBehaviour
     [SerializeField] private Button m_CloseButton;
 
     private static UINearbyLocations m_Instance;
-    
+
+    public static List<UINearbyLocationItem.LocationData> CachedLocations { get; private set; }
+    private static float m_LastRequestTime = 0;
+    private static float m_RequestCooldown = 60;
+
     public static void Open(System.Action onLoad = null)
     {
         if (m_Instance != null)
@@ -49,9 +53,6 @@ public class UINearbyLocations : MonoBehaviour
     }
 
     private int m_AnimTweenId;
-    private List<UINearbyLocationItem.LocationData> m_Locations = null;
-    private float m_LastRequestTime = 0;
-    private float m_RequestCooldown = 60;
     private SimplePool<UINearbyLocationItem> m_ItemPool;
 
     private void Awake()
@@ -78,7 +79,7 @@ public class UINearbyLocations : MonoBehaviour
         m_Canvas.enabled = true;
         m_InputRaycaster.enabled = true;
         AnimShow(null);
-        GetLocations();
+        GetLocations(locations => SetupLocations(locations));
     }
 
     [ContextMenu("Close")]
@@ -117,9 +118,9 @@ public class UINearbyLocations : MonoBehaviour
             .uniqueId;
     }
 
-    private void GetLocations()
+    public static void GetLocations(System.Action<List<UINearbyLocationItem.LocationData>> onComplete)
     {
-        if (m_Locations == null || Time.unscaledTime - m_LastRequestTime > m_RequestCooldown)
+        if (CachedLocations == null || Time.unscaledTime - m_LastRequestTime > m_RequestCooldown)
         {
             m_LastRequestTime = Time.unscaledTime;
             LoadingOverlay.Show();
@@ -128,25 +129,26 @@ public class UINearbyLocations : MonoBehaviour
                 LoadingOverlay.Hide();
                 if (result == 200)
                 {
-                    List<UINearbyLocationItem.LocationData> nearbyPops = JsonConvert.DeserializeObject<List<UINearbyLocationItem.LocationData>>(response);
-                    SetupLocations(nearbyPops);
+                    CachedLocations = JsonConvert.DeserializeObject<List<UINearbyLocationItem.LocationData>>(response);
+                    onComplete?.Invoke(CachedLocations);
                 }
                 else
                 {
                     UIGlobalPopup.ShowError(null, APIManager.ParseError(response));
+                    onComplete?.Invoke(null);
                 }
             });
         }
         else
         {
-            SetupLocations(m_Locations);
+            onComplete?.Invoke(CachedLocations);
         }
     }
 
     private void SetupLocations(List<UINearbyLocationItem.LocationData> locations)
     {
         m_ItemPool.DespawnAll();
-        m_Locations = locations;
+        CachedLocations = locations;
         foreach(var location in locations)
         {
             UINearbyLocationItem item = m_ItemPool.Spawn(m_Container.transform);

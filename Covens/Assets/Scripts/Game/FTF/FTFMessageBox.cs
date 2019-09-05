@@ -9,6 +9,7 @@ namespace Raincrow.FTF
     public class FTFMessageBox : MonoBehaviour
     {
         [SerializeField] private Animator m_Animator;
+        [SerializeField] private Animator m_GlitterFx;
         [SerializeField] private CanvasGroup m_CanvasGroup;
         [SerializeField] private TextMeshProUGUI m_Message;
         [SerializeField] private Button m_ContinueButton;
@@ -26,10 +27,13 @@ namespace Raincrow.FTF
             gameObject.SetActive(false);
         }
 
-        public void Show(string message)
+        public void Show(string message, List<string> replace)
         {
             LeanTween.cancel(m_TweenId);
             LeanTween.cancel(m_ButtonTweenId);
+
+            if (replace != null && replace.Count > 0)
+                message = ReplaceWords(message, replace);
 
             if (IsOpen)
             {
@@ -40,7 +44,8 @@ namespace Raincrow.FTF
                     m_ContinueButton.interactable = false;
                     m_TweenId = LeanTween.alphaCanvas(m_CanvasGroup, 1, 0.5f).uniqueId;
                     m_ButtonTweenId = LeanTween.value(0, 0, 0.5f).setOnComplete(() => m_ContinueButton.interactable = true).uniqueId;
-                    m_Animator.Play("slideInDiag", 0, 1f);
+                    m_Animator.Play("slideInDiag", 0, 0.8f);
+                    m_GlitterFx.Play("menuFX", 0, 0);
 
                 }).uniqueId;
                 return;
@@ -51,6 +56,7 @@ namespace Raincrow.FTF
 
             //play slide anim
             m_Animator.Play("slideInDiag");
+            m_GlitterFx.Play("menuFX", 0, 0);
 
             //fade in
             m_TweenId = LeanTween.alphaCanvas(m_CanvasGroup, 1f, 1f)
@@ -102,6 +108,55 @@ namespace Raincrow.FTF
         {
             Hide(null, 0.25f, LeanTweenType.easeOutCubic);
             OnClick?.Invoke();
+        }
+
+
+        private delegate string ReplaceStringDelegate();
+
+        private string ReplaceWords(string message, List<string> keys)
+        {
+            var replacers = new Dictionary<string, ReplaceStringDelegate>()
+            {
+                { "{witch name}", GetPlayerName  },
+                { "{he/she}", GetHeShe },
+                { "{his/her}", GetHisHer },
+                { "{locationName}", GetNearbyPoPName },
+            };
+
+            string word;
+            foreach (string k in keys)
+            {
+                if (replacers.ContainsKey(k))
+                    word = replacers[k].Invoke();
+                else
+                    word = k;
+
+                message = message.Replace(k, word);
+            }
+
+            return message;
+        }
+
+        private string GetPlayerName()
+        {
+            return "<color=#4FD5FF>" + PlayerDataManager.playerData.name + "</color>";
+        }
+
+        private string GetHeShe()
+        {
+            return PlayerDataManager.playerData.male ? LocalizeLookUp.GetText("ftf_he") : LocalizeLookUp.GetText("ftf_she");
+        }
+
+        private string GetHisHer()
+        {
+            return PlayerDataManager.playerData.male ? LocalizeLookUp.GetText("ftf_his") : LocalizeLookUp.GetText("ftf_her");
+        }
+
+        private string GetNearbyPoPName()
+        {
+            return UINearbyLocations.CachedLocations != null && UINearbyLocations.CachedLocations.Count > 0 ?
+                "<color=#4FD5FF>" + UINearbyLocations.CachedLocations[0].name + "</color>" :
+                "<color=#FF3939></color>";
         }
     }
 }

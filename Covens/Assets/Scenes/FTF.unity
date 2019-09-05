@@ -351,6 +351,36 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 31091430}
   m_CullTransparentMesh: 0
+--- !u!1 &45321929
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 45321930}
+  m_Layer: 0
+  m_Name: FX
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &45321930
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 45321929}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 39.917114, y: 19.257227, z: -16.409946}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_RootOrder: 2
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &69706604
 GameObject:
   m_ObjectHideFlags: 0
@@ -945,6 +975,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Animator: {fileID: 427785842}
+  m_GlitterFx: {fileID: 1937329258}
   m_CanvasGroup: {fileID: 427785841}
   m_Message: {fileID: 1164752340}
   m_ContinueButton: {fileID: 267165436}
@@ -978,7 +1009,7 @@ CanvasGroup:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 427785838}
   m_Enabled: 1
-  m_Alpha: 0
+  m_Alpha: 1
   m_Interactable: 1
   m_BlocksRaycasts: 1
   m_IgnoreParentGroups: 0
@@ -2092,6 +2123,63 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1239801475}
   m_CullTransparentMesh: 0
+--- !u!1 &1306346171
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1306346173}
+  - component: {fileID: 1306346172}
+  m_Layer: 0
+  m_Name: FTFManager
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &1306346172
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1306346171}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a17a2d2ec95c20e4b8c3ef1a381f6213, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_TutorialJson: {fileID: 4900000, guid: 783172133d6860549a5f7752e20278ca, type: 3}
+  m_Highlight: {fileID: 549167944}
+  m_Button: {fileID: 1772254872}
+  m_BotMessage: {fileID: 934648055135797651}
+  m_TopMessage: {fileID: 427785839}
+  m_Pointer: {fileID: 8342175198585656154}
+  m_Savannah: {fileID: 3187979945570501265}
+  m_SavannahCanvasGroup: {fileID: 3335922224563657905}
+  m_Fortuna: {fileID: 1610592917}
+  m_FortunaCanvasGroup: {fileID: 1610592918}
+  m_WitchSchool: {fileID: 413832343}
+  m_OpenWitchSchool: {fileID: 1598413016}
+  m_SkipWitchSchool: {fileID: 31091433}
+  m_StartFrom: 20
+--- !u!4 &1306346173
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1306346171}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 39.917114, y: 19.257227, z: -16.409946}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_RootOrder: 0
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1496331524
 GameObject:
   m_ObjectHideFlags: 0
@@ -2717,7 +2805,6 @@ GameObject:
   m_Component:
   - component: {fileID: 1937329256}
   - component: {fileID: 1937329258}
-  - component: {fileID: 1937329257}
   m_Layer: 23
   m_Name: FX
   m_TagString: Untagged
@@ -2746,19 +2833,6 @@ RectTransform:
   m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
---- !u!114 &1937329257
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1937329255}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 635b4cc80d470ef4688bfc9eb5a982c0, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  timer: 1.3
 --- !u!95 &1937329258
 Animator:
   serializedVersion: 3
@@ -2790,7 +2864,6 @@ GameObject:
   - component: {fileID: 1960719310}
   - component: {fileID: 1960719309}
   - component: {fileID: 1960719308}
-  - component: {fileID: 1960719312}
   m_Layer: 5
   m_Name: Canvas
   m_TagString: Untagged
@@ -2879,39 +2952,13 @@ RectTransform:
   - {fileID: 1772254868}
   - {fileID: 413832342}
   m_Father: {fileID: 0}
-  m_RootOrder: 0
+  m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 0, y: 0}
   m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: 0, y: 0}
---- !u!114 &1960719312
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1960719307}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: a17a2d2ec95c20e4b8c3ef1a381f6213, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  m_TutorialJson: {fileID: 4900000, guid: 783172133d6860549a5f7752e20278ca, type: 3}
-  m_Highlight: {fileID: 549167944}
-  m_Button: {fileID: 1772254872}
-  m_BotMessage: {fileID: 934648055135797651}
-  m_TopMessage: {fileID: 427785839}
-  m_Pointer: {fileID: 8342175198585656154}
-  m_Savannah: {fileID: 3187979945570501265}
-  m_SavannahCanvasGroup: {fileID: 3335922224563657905}
-  m_Fortuna: {fileID: 1610592917}
-  m_FortunaCanvasGroup: {fileID: 1610592918}
-  m_WitchSchool: {fileID: 413832343}
-  m_OpenWitchSchool: {fileID: 1598413016}
-  m_SkipWitchSchool: {fileID: 31091433}
-  m_StartFrom: 0
 --- !u!1 &1914845807562544
 GameObject:
   m_ObjectHideFlags: 0
@@ -3001,6 +3048,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Animator: {fileID: 1919457197842889816}
+  m_GlitterFx: {fileID: 1919636246613351110}
   m_CanvasGroup: {fileID: 1788391832228512524}
   m_Message: {fileID: 1902537054495450380}
   m_ContinueButton: {fileID: 2014551595962633201}
@@ -3513,19 +3561,6 @@ MonoBehaviour:
   - {fileID: 0}
   m_baseMaterial: {fileID: 0}
   m_maskOffset: {x: 0, y: 0, z: 0, w: 0}
---- !u!114 &1902653328729966270
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2014284724424018900}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 635b4cc80d470ef4688bfc9eb5a982c0, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  timer: 1.3
 --- !u!114 &1902988225815363492
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -3699,7 +3734,6 @@ GameObject:
   m_Component:
   - component: {fileID: 1796435334671698402}
   - component: {fileID: 1919636246613351110}
-  - component: {fileID: 1902653328729966270}
   m_Layer: 23
   m_Name: FX
   m_TagString: Untagged

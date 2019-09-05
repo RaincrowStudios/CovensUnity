@@ -7,6 +7,7 @@ using Raincrow.FTF;
 using UnityEngine.UI;
 using Raincrow.GameEventResponses;
 using Raincrow.Maps;
+using System.Text.RegularExpressions;
 
 public class FTFManager : MonoBehaviour
 {
@@ -122,6 +123,7 @@ public class FTFManager : MonoBehaviour
         m_Fortuna.gameObject.SetActive(false);
         m_FortunaCanvasGroup.alpha = 0;
         
+
         //override store prices for FTF
         
         List<int> originalPrices = new List<int>();
@@ -138,8 +140,12 @@ public class FTFManager : MonoBehaviour
                 PlayerDataManager.StoreData.bundles[i].silver = originalPrices[i];
             }
         };
+
+        //retrieve nearby locations for FTF
+        UINearbyLocations.GetLocations(null);
     }
     
+    [ContextMenu("Start FTF")]
     private void _StartFTF()
     {
         //load json
@@ -392,18 +398,25 @@ public class FTFManager : MonoBehaviour
     {
         if (parameters.Length < 1)
             throw new System.Exception("[ShowMessage] missing param[0] (message)");
-        
+
         string message = LocalizeLookUp.GetText(parameters[0]);
         bool top = parameters.Length > 1 ? bool.Parse(parameters[1]) : false;
+        List<string> specialKeys = new List<string>();
 
+        MatchCollection matches = Regex.Matches(message, @"{[^}]*}", RegexOptions.IgnoreCase);
+        foreach (Match m in matches)
+        {
+            specialKeys.Add(m.Value);
+        }
+        
         if (top)
         {
-            m_TopMessage.Show(message);
+            m_TopMessage.Show(message, specialKeys);
             m_TopMessage.EnableButton(!m_Button.IsShowing);
         }
         else
         {
-            m_BotMessage.Show(message);
+            m_BotMessage.Show(message, specialKeys);
             m_BotMessage.EnableButton(!m_Button.IsShowing);
         }
 
