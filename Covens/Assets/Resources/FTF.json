@@ -6,17 +6,15 @@
 //1
 {"onEnter":[{"method":"ShowMessage","parameters":["ftf_1"]},{"method":"SpawnSpirit","parameters":["{\"_id\":\"ftf_barghest\",\"spirit\":\"spirit_barghest\",\"energy\":1254,\"baseEnergy\":1254,\"latitude\":0.0003,\"longitude\":0.0006,\"state\":\"\",\"type\":\"spirit\"}"]}]},
 //2
-{"onEnter":[{"method":"ShowMessage","parameters":["ftf_2"]}]},
+{"button":{"show":true,"anchorMin":[0.5,0.5],"anchorMax":[0.5,0.5],"position":[290.0,309.1],"size":[325.9,319.9]},"highlight":{"show":true,"anchorMin":[0.5,0.5],"anchorMax":[0.5,0.5],"position":[290.0,317.0],"size":[796.7,782.1]},"pointer":{"show":true,"anchorMin":[0.5,0.5],"anchorMax":[0.5,0.5],"position":[300.0,313.0]},"onEnter":[{"method":"ShowMessage","parameters":["ftf_2"]}]},
 //3
-{"button":{"show":true,"anchorMin":[0.5,0.5],"anchorMax":[0.5,0.5],"position":[290.0,309.1],"size":[325.9,319.9]},"highlight":{"show":true,"anchorMin":[0.5,0.5],"anchorMax":[0.5,0.5],"position":[290.0,317.0],"size":[796.7,782.1]},"pointer":{"show":true,"anchorMin":[0.5,0.5],"anchorMax":[0.5,0.5],"position":[300.0,313.0]},"onEnter":[{"method":"ShowMessage","parameters":["ftf_3"]}]},
-//4
 {"timer":0.25,"onEnter":[{"method":"SelectMarker","parameters":["ftf_barghest","{\"effects\":[]}"]},{"method":"HideSavannah"}]},
+//4
+{"onEnter":[{"method":"ShowMessage","parameters":["ftf_3"]}]},
 //5
-{"onEnter":[{"method":"ShowMessage","parameters":["ftf_4"]}]},
-//6
 {"timer":2.0,"onEnter":[{"method":"SocketEvent","parameters":["cast.spell","{   \"target\": {     \"_id\": \"ftf_barghest\",     \"energy\": 54,     \"type\": \"spirit\"   },   \"caster\": {     \"_id\": \"savannah\",     \"energy\": 30000,     \"type\": \"character\"   },   \"spell\": \"spell_whiteFlame\",   \"result\": {     \"damage\": -1200, \"isSuccess\":true     } }"]}]},
-//7
-{"onEnter":[{"method":"ShowMessage","parameters":["ftf_5"]}]},
+//6
+{"onEnter":[{"method":"ShowMessage","parameters":["ftf_4"]}]},
 
 
 //ACT 2. SPIRIT
@@ -25,11 +23,11 @@
 {"button":{"show":true,"anchorMin":[0.0,0.5],"anchorMax":[0.0,0.5],"position":[1109.0,-576.0],"size":[277.3,220.1]},"highlight":{"show":true,"anchorMin":[0.0,0.5],"anchorMax":[0.0,0.5],"position":[1135.0,-585.0],"size":[780.5,782.1]},"pointer":{"show":true,"anchorMin":[0.0,0.5],"anchorMax":[0.0,0.5],"position":[1111.0,-586.0]},"onExit":[{"method":"ShowSpellbook"},{"method":"ShowSavannah"}]},
 {"timer":0.5},
 //"this is your spellbook"
-{"onEnter":[{"method":"ShowMessage","parameters":["ftf_6"]}]},
+{"onEnter":[{"method":"ShowMessage","parameters":["ftf_5"]}]},
 //"you can tap on the spell to select it"
-{"onEnter":[{"method":"ShowMessage","parameters":["ftf_7"]}]},
+{"onEnter":[{"method":"ShowMessage","parameters":["ftf_6"]}]},
 //"tap on the glyph to cast"
-{"onEnter":[{"method":"ShowMessage","parameters":["ftf_8"]}]},
+{"onEnter":[{"method":"ShowMessage","parameters":["ftf_7"]}]},
 //focus on whiteflame and wait 1.2s
 {"timer":0.1, "onEnter":[{"method":"HideSavannah"},{"method":"FocusSpellbook","parameters":["spell_hex"]}]},
 //wait for glyph tap
@@ -37,15 +35,15 @@
 //cast the spell and wait 1.5s
 {"timer":1.5, "onEnter":[{"method":"CastSpell","parameters":["spell_hex","ftf_barghest","54"]}]},
 //"well done, spirit banished"
-{"onEnter":[{"method":"ShowMessage","parameters":["ftf_9"]}]},
+{"onEnter":[{"method":"ShowMessage","parameters":["ftf_8"]}]},
 //"spirits can be summoned...""
-{"onEnter":[{"method":"ShowMessage","parameters":["ftf_10"]}], "onExit":[{"method":"CloseSpiritBanished"},{"method":"CloseSpellResults"}]},
+{"onEnter":[{"method":"ShowMessage","parameters":["ftf_9"]}], "onExit":[{"method":"CloseSpiritBanished"},{"method":"CloseSpellResults"}]},
 //focus on player, wait 1s, spawn pop
 {"timer":0.5,"onEnter":[{"method":"MoveCamera","parameters":["0","0","0.98"]}], "onExit":[{"method":"SpawnPop","parameters":["{\"_id\":\"ftf_pop\",\"tier\":1, \"longitude\":0.0004, \"latitude\":-0.0005}"]}]},
 //focus on pop
 {"timer":0.5,"onEnter":[{"method":"MoveCamera","parameters":["0.0004","-0.0005","0.99"]}]},
 //"this is a place of power"
-{"onEnter":[{"method":"ShowMessage","parameters":["ftf_11"]},{"method":"ShowSavannah"}], "onExit":[{"method":"HideSavannah"}]},
+{"onEnter":[{"method":"ShowMessage","parameters":["ftf_10"]},{"method":"ShowSavannah"}], "onExit":[{"method":"HideSavannah"}]},
 //highlight pop
 {"button":{"show":true,"anchorMin":[0.5,0.5],"anchorMax":[0.5,0.5],"position":[12.0,10.9],"size":[277.300049,241.9]},"highlight":{"show":true,"anchorMin":[0.5,0.5],"anchorMax":[0.5,0.5],"position":[0.0,-12.0],"size":[1258.0,1008.7]},"pointer":{"show":true,"anchorMin":[0.5,0.5],"anchorMax":[0.5,0.5],"position":[6.0,23.0]}},
 
@@ -62,32 +60,33 @@
 //ACT 3.d NEARBY POPS
 
 {"timer":0.5},
+{"onEnter":[{"method":"ShowMessage","parameters":["ftf_14"]},{"method":"ShowSavannah"}]},
 //highlight nearby pops
 {"button":{"show":true,"anchorMin":[1.0,1.0],"anchorMax":[1.0,1.0],"position":[-129.0,-335.0],"size":[209.699951,183.0]},"highlight":{"show":true,"anchorMin":[1.0,1.0],"anchorMax":[1.0,1.0],"position":[-119.0,-348.0],"size":[532.199951,426.800049]},"pointer":{"show":true,"anchorMin":[1.0,1.0],"anchorMax":[1.0,1.0],"position":[-125.0,-342.999969]}},
 //open nearby pops
 {"timer":1, "onEnter":[{"method":"ShowNearbyPops"}]},
 
-{"onEnter":[{"method":"ShowMessage","parameters":["ftf_12"]},{"method":"ShowSavannah"}], "onExit":[{"method":"HideSavannah"}]},
+{"onEnter":[{"method":"ShowMessage","parameters":["ftf_15"]},{"method":"ShowSavannah"}], "onExit":[{"method":"HideSavannah"}]},
 
 {"timer":0.5},
 //close nearby pop and focus on player
 {"timer":0.5, "onEnter":[{"method":"CloseNearbyPops"},{"method":"MoveCamera","parameters":["0.0","0.0","0.98"]}]},
 //highlight fly button, "yo ucan tap here to fly"
-{"highlight":{"show":true,"anchorMin":[0.0,0.0],"anchorMax":[0.0,0.0],"position":[131.0,132.0],"size":[730.4,563.0]},"onEnter":[{"method":"ShowMessage","parameters":["ftf_13","true"]}]},
+{"highlight":{"show":true,"anchorMin":[0.0,0.0],"anchorMax":[0.0,0.0],"position":[131.0,132.0],"size":[730.4,563.0]},"onEnter":[{"method":"ShowMessage","parameters":["ftf_16","true"]}]},
 
 
 //ACT 4. STORE
 
 //"its time introduce you to madame fortuna"
-{"onEnter":[{"method":"ShowMessage","parameters":["ftf_14"]},{"method":"ShowSavannah"}], "onExit":[{"method":"HideSavannah"}]},
+{"onEnter":[{"method":"ShowMessage","parameters":["ftf_17"]},{"method":"ShowSavannah"}], "onExit":[{"method":"HideSavannah"}]},
 //highlight store button
 {"button":{"show":true,"anchorMin":[1.0,1.0],"anchorMax":[1.0,1.0],"position":[-139.0,-126.0],"size":[209.699951,183.0]},"highlight":{"show":true,"anchorMin":[1.0,1.0],"anchorMax":[1.0,1.0],"position":[-112.0,-112.0],"size":[542.3999,490.199951]},"pointer":{"show":true,"anchorMin":[1.0,1.0],"anchorMax":[1.0,1.0],"position":[-144.0,-149.0]}},
 //open store and wait 1s
 {"timer":0.5, "onEnter":[{"method":"OpenStore"}]},
 //"sastipe, dea grey"
-{"onEnter":[{"method":"ShowMessage","parameters":["ftf_15"]},{"method":"ShowFortuna"}]},
+{"onEnter":[{"method":"ShowMessage","parameters":["ftf_18"]},{"method":"ShowFortuna"}]},
 //"the pleasure is mine, dear friend"
-{"onEnter":[{"method":"ShowMessage","parameters":["ftf_16"]},{"method":"ShowSavannah"}]},
+{"onEnter":[{"method":"ShowMessage","parameters":["ftf_19"]},{"method":"ShowSavannah"}]},
 //highlight ingredients
 {"button":{"show":true,"anchorMin":[0.5,0.5],"anchorMax":[0.5,0.5],"position":[5.0,-414.0],"size":[416.7,377.3]},"highlight":{"show":true,"anchorMin":[0.5,0.5],"anchorMax":[0.5,0.5],"position":[17.0,-424.0],"size":[894.7,718.0]},"pointer":{"show":true,"anchorMin":[0.5,0.5],"anchorMax":[0.5,0.5],"position":[0.0,-463.0]}},
 //open ingredients
@@ -96,25 +95,25 @@
 {"button":{"show":true,"anchorMin":[0.5,0.5],"anchorMax":[0.5,0.5],"position":[-688.8,83.3],"size":[577.1,422.6]},"highlight":{"show":true,"anchorMin":[0.5,0.5],"anchorMax":[0.5,0.5],"position":[-707.0,38.0],"size":[1284.7,1031.1]},"pointer":{"show":true,"anchorMin":[0.5,0.5],"anchorMax":[0.5,0.5],"position":[-527.0,-83.0]}},
 //select abondias best
 {"timer":0.3, "onEnter":[{"method":"StoreSelectIngredient","parameters":["bundle_abondiasBest"]}]},
-//highlight claim
-{"button":{"show":true,"anchorMin":[0.5,0.5],"anchorMax":[0.5,0.5],"position":[-11.0,-564.0],"size":[605.2,230.9]},"pointer":{"show":true,"anchorMin":[0.5,0.5],"anchorMax":[0.5,0.5],"position":[61.0,-559.0]}},
-//show purchase success, "abondias collection added 940 items"
-{"onEnter":[{"method":"ShowPurchaseSuccess", "parameters":["bundle_abondiasBest"]},{"method":"ShowMessage","parameters":["ftf_17"]},{"method":"ShowSavannah"}], "onExit":[{"method":"HideSavannah"}]},
+//highlight claim, show purchase success
+{"onExit":[{"method":"ShowPurchaseSuccess", "parameters":["bundle_abondiasBest"]}],"button":{"show":true,"anchorMin":[0.5,0.5],"anchorMax":[0.5,0.5],"position":[-11.0,-564.0],"size":[605.2,230.9]},"pointer":{"show":true,"anchorMin":[0.5,0.5],"anchorMax":[0.5,0.5],"position":[61.0,-559.0]}},
+//click confirm to close purchase succ
+{"onExit":[{"method":"ClosePurchaseSuccess"}],"button":{"show":true,"anchorMin":[0.5,0.5],"anchorMax":[0.5,0.5],"position":[102.0,-211.0],"size":[605.2,230.9]},"highlight":{"show":true,"anchorMin":[0.5,0.5],"anchorMax":[0.5,0.5],"position":[101.0,38.0],"size":[2392.2,1549.2]},"pointer":{"show":true,"anchorMin":[0.5,0.5],"anchorMax":[0.5,0.5],"position":[52.0,-229.0]}},
+//"abondias collection added 940 items"
+{"onEnter":[{"method":"ShowMessage","parameters":["ftf_20"]},{"method":"ShowSavannah"}], "onExit":[{"method":"HideSavannah"}]},
 
 {"timer":0.5},
-
-//{"timer":0.5,"onEnter":[{"method":"ClosePurchaseSuccess"}]},
 
 {"timer":1,"onEnter":[{"method":"CloseStore"}]},
 
 //FINAL ACT
 
 //"well, thats quite enough hand holding"
-{"onEnter":[{"method":"ShowMessage","parameters":["ftf_18"]},{"method":"ShowSavannah"}]},
+{"onEnter":[{"method":"ShowMessage","parameters":["ftf_21"]},{"method":"ShowSavannah"}]},
 //"this is just the beginning"
-{"onEnter":[{"method":"ShowMessage","parameters":["ftf_19"]},{"method":"ShowSavannah"}]},
+{"onEnter":[{"method":"ShowMessage","parameters":["ftf_22"]},{"method":"ShowSavannah"}]},
 //"abide rules, daily blessing"
-{"onEnter":[{"method":"ShowMessage","parameters":["ftf_20"]},{"method":"ShowSavannah"}],"onExit":[{"method":"HideSavannah"}]},
+{"onEnter":[{"method":"ShowMessage","parameters":["ftf_23"]},{"method":"ShowSavannah"}],"onExit":[{"method":"HideSavannah"}]},
 //send request to server and show witchschool
 {"onEnter":[{"method":"CompleteFTF"}]},
 ]

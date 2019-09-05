@@ -121,6 +121,8 @@ namespace Raincrow.FTF
                 { "{he/she}", GetHeShe },
                 { "{his/her}", GetHisHer },
                 { "{locationName}", GetNearbyPoPName },
+                { "{tribunalSeason}", GetTribunalSeason },
+                { "{tribunalDays}", GetTribunalDays },
             };
 
             string word;
@@ -157,6 +159,31 @@ namespace Raincrow.FTF
             return UINearbyLocations.CachedLocations != null && UINearbyLocations.CachedLocations.Count > 0 ?
                 "<color=#4FD5FF>" + UINearbyLocations.CachedLocations[0].name + "</color>" :
                 "<color=#FF3939></color>";
+        }
+
+        private string GetTribunalSeason()
+        {
+            int tribunal = PlayerDataManager.tribunal;
+
+            string season = "";
+            if (tribunal == 2)
+                season = LocalizeLookUp.GetText("ftf_summer");
+            else if (tribunal == 1)
+                season = LocalizeLookUp.GetText("ftf_spring");
+            else if (tribunal == 3)
+                season = LocalizeLookUp.GetText("ftf_autumn");
+            else
+                season = LocalizeLookUp.GetText("ftf_winter");
+
+            return "<color=#4FD5FF>" + season + "</color>";
+        }
+
+        private string GetTribunalDays()
+        {
+            System.DateTime dtDateTime = new System.DateTime(1970, 1, 1, 0, 0, 0, 0, System.DateTimeKind.Utc);
+            dtDateTime = dtDateTime.AddSeconds(PlayerDataManager.tribunalStamps[PlayerDataManager.tribunal]).ToUniversalTime();
+            var timeSpan = dtDateTime.Subtract(System.DateTime.UtcNow);
+            return "<color=#4FD5FF>" + timeSpan.TotalDays.ToString("N0") + "</color>";
         }
     }
 }
