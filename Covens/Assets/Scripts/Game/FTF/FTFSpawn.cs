@@ -28,7 +28,7 @@ public class FTFSpawn : MonoBehaviour
             Debug.LogError("[FTFSpawn] " + id + " not found");
             return;
         }
-        Debug.LogError(id + " " + longitude + " " + latitude);
+
         GameObject go = m_AvailableFX[id];
         Instantiate(go, MapsAPI.Instance.GetWorldPosition(longitude, latitude), Quaternion.identity).gameObject.SetActive(true);
     }
