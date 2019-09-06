@@ -59,8 +59,8 @@ public class LoadingOverlay : MonoBehaviour
         if (m_Stack < 0)
             m_Stack = 0;
 
-        if (m_Stack > 0)
-            return;
+        //if (m_Stack > 0)
+        //    return;
 
         if (m_Canvas.enabled == false && m_InputRaycaster.enabled == false)
             return;
