@@ -64,7 +64,7 @@
 {"timer":0.5},
 {"onEnter":[{"method":"ShowMessage","parameters":["ftf_14"]},{"method":"ShowSavannah"}],"onExit":[{"method":"HideSavannah"}]},
 //highlight nearby pops
-{"button":{"show":true,"anchorMin":[1.0,1.0],"anchorMax":[1.0,1.0],"position":[-129.0,-335.0],"size":[209.699951,183.0]},"highlight":{"show":true,"anchorMin":[1.0,1.0],"anchorMax":[1.0,1.0],"position":[-119.0,-348.0],"size":[532.199951,426.800049]},"pointer":{"show":true,"anchorMin":[1.0,1.0],"anchorMax":[1.0,1.0],"position":[-125.0,-342.999969]}},
+{"button":{"show":true,"anchorMin":[1.0,1.0],"anchorMax":[1.0,1.0],"position":[-112.0,-114.0],"size":[209.699951,183.0]},"highlight":{"show":true,"anchorMin":[1.0,1.0],"anchorMax":[1.0,1.0],"position":[-102.0,-127.0],"size":[532.199951,426.800049]},"pointer":{"show":true,"anchorMin":[1.0,1.0],"anchorMax":[1.0,1.0],"position":[-108.0,-122.0]}},
 //open nearby pops
 {"timer":1, "onEnter":[{"method":"ShowNearbyPops"}]},
 
@@ -82,7 +82,7 @@
 //"its time introduce you to madame fortuna"
 {"onEnter":[{"method":"ShowMessage","parameters":["ftf_17"]},{"method":"ShowSavannah"}], "onExit":[{"method":"HideSavannah"}]},
 //highlight store button
-{"button":{"show":true,"anchorMin":[1.0,1.0],"anchorMax":[1.0,1.0],"position":[-139.0,-126.0],"size":[209.699951,183.0]},"highlight":{"show":true,"anchorMin":[1.0,1.0],"anchorMax":[1.0,1.0],"position":[-112.0,-112.0],"size":[542.3999,490.199951]},"pointer":{"show":true,"anchorMin":[1.0,1.0],"anchorMax":[1.0,1.0],"position":[-144.0,-149.0]}},
+{"button":{"show":true,"anchorMin":[0.0,0.0],"anchorMax":[0.0,0.0],"position":[377.0,137.0],"size":[209.699951,183.0]},"highlight":{"show":true,"anchorMin":[0.0,0.0],"anchorMax":[0.0,0.0],"position":[404.0,151.0],"size":[542.3999,490.199951]},"pointer":{"show":true,"anchorMin":[0.0,0.0],"anchorMax":[0.0,0.0],"position":[372.0,113.999939]}},
 //open store and wait 1s
 {"timer":0.5, "onEnter":[{"method":"OpenStore"}]},
 //"sastipe, dea grey"

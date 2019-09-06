@@ -16476,7 +16476,6 @@ MonoBehaviour:
   m_WitchSchool: {fileID: 413832343}
   m_OpenWitchSchool: {fileID: 1598413016}
   m_SkipWitchSchool: {fileID: 31091433}
-  m_StartFrom: 0
 --- !u!4 &1306346173
 Transform:
   m_ObjectHideFlags: 0
