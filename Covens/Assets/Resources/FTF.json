@@ -36,43 +36,44 @@
 {"button":{"show":true,"anchorMin":[0.5,0.5],"anchorMax":[0.5,0.5],"position":[-2.0,-454.0],"size":[277.300049,220.1]},"highlight":{"show":true,"anchorMin":[0.5,0.5],"anchorMax":[0.5,0.5],"position":[35.0,6.9],"size":[1258.0,2825.6]},"pointer":{"show":true,"anchorMin":[0.5,0.5],"anchorMax":[0.5,0.5],"position":[-13.0,-470.0]},"onExit":[{"method":"CloseSpellbook"}]},
 //cast the spell and wait 1.5s
 {"timer":1.5, "onEnter":[{"method":"CastSpell","parameters":["spell_hex","ftf_barghest","-54"]}]},
+
 //"well done, spirit banished"
-{"onEnter":[{"method":"ShowMessage","parameters":["ftf_8"]}]},
-//"spirits can be summoned...""
-{"onEnter":[{"method":"ShowMessage","parameters":["ftf_9"]}], "onExit":[{"method":"CloseSpiritBanished"},{"method":"CloseSpellResults"}]},
-//focus on player, wait 1s, spawn pop
-{"timer":0.5,"onEnter":[{"method":"MoveCamera","parameters":["0","0","0.98"]}], "onExit":[{"method":"SpawnPop","parameters":["{\"_id\":\"ftf_pop\",\"tier\":1, \"longitude\":0.0004, \"latitude\":-0.0005}"]}]},
-//focus on pop
-{"timer":0.5,"onEnter":[{"method":"MoveCamera","parameters":["0.0004","-0.0005","0.99"]}]},
-//"this is a place of power"
-{"onEnter":[{"method":"ShowMessage","parameters":["ftf_10"]},{"method":"ShowSavannah"}], "onExit":[{"method":"HideSavannah"}]},
-//highlight pop
-{"button":{"show":true,"anchorMin":[0.5,0.5],"anchorMax":[0.5,0.5],"position":[12.0,10.9],"size":[277.300049,241.9]},"highlight":{"show":true,"anchorMin":[0.5,0.5],"anchorMax":[0.5,0.5],"position":[0.0,-12.0],"size":[1258.0,1008.7]},"pointer":{"show":true,"anchorMin":[0.5,0.5],"anchorMax":[0.5,0.5],"position":[6.0,23.0]}},
+{"onEnter":[{"method":"ShowMessage","parameters":["ftf_8"]}],"onExit":[{"method":"CloseSpiritBanished"},{"method":"CloseSpellResults"}]},
+// //"spirits can be summoned...""
+// {"onEnter":[{"method":"ShowMessage","parameters":["ftf_9"]}]]},
+// //focus on player, wait 1s, spawn pop
+// {"timer":0.5,"onEnter":[{"method":"MoveCamera","parameters":["0","0","0.98"]}], "onExit":[{"method":"SpawnPop","parameters":["{\"_id\":\"ftf_pop\",\"tier\":1, \"longitude\":0.0004, \"latitude\":-0.0005}"]}]},
+// //focus on pop
+// {"timer":0.5,"onEnter":[{"method":"MoveCamera","parameters":["0.0004","-0.0005","0.99"]}]},
+// //"this is a place of power"
+// {"onEnter":[{"method":"ShowMessage","parameters":["ftf_10"]},{"method":"ShowSavannah"}], "onExit":[{"method":"HideSavannah"}]},
+// //highlight pop
+// {"button":{"show":true,"anchorMin":[0.5,0.5],"anchorMax":[0.5,0.5],"position":[12.0,10.9],"size":[277.300049,241.9]},"highlight":{"show":true,"anchorMin":[0.5,0.5],"anchorMax":[0.5,0.5],"position":[0.0,-12.0],"size":[1258.0,1008.7]},"pointer":{"show":true,"anchorMin":[0.5,0.5],"anchorMax":[0.5,0.5],"position":[6.0,23.0]}},
 
 
-//ACT 3. PLACE OF POWER
+// //ACT 3. PLACE OF POWER
 
-//ACT 3.a POP INFO UI
+// //ACT 3.a POP INFO UI
 
-//ACT 3.b POP BATTLE
+// //ACT 3.b POP BATTLE
 
-//ACT 3.c POP VIDEO
+// //ACT 3.c POP VIDEO
 
 
-//ACT 3.d NEARBY POPS
+// //ACT 3.d NEARBY POPS
 
-{"timer":0.5},
-{"onEnter":[{"method":"ShowMessage","parameters":["ftf_14"]},{"method":"ShowSavannah"}],"onExit":[{"method":"HideSavannah"}]},
-//highlight nearby pops
-{"button":{"show":true,"anchorMin":[1.0,1.0],"anchorMax":[1.0,1.0],"position":[-112.0,-114.0],"size":[209.699951,183.0]},"highlight":{"show":true,"anchorMin":[1.0,1.0],"anchorMax":[1.0,1.0],"position":[-102.0,-127.0],"size":[532.199951,426.800049]},"pointer":{"show":true,"anchorMin":[1.0,1.0],"anchorMax":[1.0,1.0],"position":[-108.0,-122.0]}},
-//open nearby pops
-{"timer":1, "onEnter":[{"method":"ShowNearbyPops"}]},
+// {"timer":0.5},
+// {"onEnter":[{"method":"ShowMessage","parameters":["ftf_14"]},{"method":"ShowSavannah"}],"onExit":[{"method":"HideSavannah"}]},
+// //highlight nearby pops
+// {"button":{"show":true,"anchorMin":[1.0,1.0],"anchorMax":[1.0,1.0],"position":[-112.0,-114.0],"size":[209.699951,183.0]},"highlight":{"show":true,"anchorMin":[1.0,1.0],"anchorMax":[1.0,1.0],"position":[-102.0,-127.0],"size":[532.199951,426.800049]},"pointer":{"show":true,"anchorMin":[1.0,1.0],"anchorMax":[1.0,1.0],"position":[-108.0,-122.0]}},
+// //open nearby pops
+// {"timer":1, "onEnter":[{"method":"ShowNearbyPops"}]},
 
-{"onEnter":[{"method":"ShowMessage","parameters":["ftf_15"]},{"method":"ShowSavannah"}], "onExit":[{"method":"HideSavannah"}]},
+// {"onEnter":[{"method":"ShowMessage","parameters":["ftf_15"]},{"method":"ShowSavannah"}], "onExit":[{"method":"HideSavannah"}]},
 
-{"timer":0.5},
-//close nearby pop and focus on player
-{"timer":0.5, "onEnter":[{"method":"CloseNearbyPops"},{"method":"MoveCamera","parameters":["0.0","0.0","0.98"]}]},
+// {"timer":0.5},
+// //close nearby pop and focus on player
+// {"timer":0.5, "onEnter":[{"method":"CloseNearbyPops"},{"method":"MoveCamera","parameters":["0.0","0.0","0.98"]}]},
 //highlight fly button, "yo ucan tap here to fly"
 {"highlight":{"show":true,"anchorMin":[0.0,0.0],"anchorMax":[0.0,0.0],"position":[131.0,132.0],"size":[730.4,563.0]},"onEnter":[{"method":"ShowMessage","parameters":["ftf_16","true"]}]},
 
