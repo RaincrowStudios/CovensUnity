@@ -24,11 +24,8 @@ public class PlayerCompass : MonoBehaviour
         };
 
         GetComponent<Button>().onClick.AddListener(OnClick);
-    }
 
-    public void FTFCompass(float f)
-    {
-        arrow.localEulerAngles = new Vector3(0, 0, f);
+        arrow.localEulerAngles = new Vector3(0, 0, centerPoint.localEulerAngles.y);
     }
 
     private void OnClick()
