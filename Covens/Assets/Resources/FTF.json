@@ -25,7 +25,7 @@
 {"button":{"show":true,"anchorMin":[0.0,0.5],"anchorMax":[0.0,0.5],"position":[1109.0,-576.0],"size":[277.3,220.1]},"highlight":{"show":true,"anchorMin":[0.0,0.5],"anchorMax":[0.0,0.5],"position":[1135.0,-585.0],"size":[780.5,782.1]},"pointer":{"show":true,"anchorMin":[0.0,0.5],"anchorMax":[0.0,0.5],"position":[1111.0,-586.0]},"onExit":[{"method":"ShowSpellbook"},{"method":"ShowSavannah"}]},
 {"timer":0.5},
 //"this is your spellbook"
-{"onEnter":[{"method":"ShowMessage","parameters":["ftf_5"]}]},
+{"onEnter":[{"method":"ShowMessage","parameters":["ftf_5"]}],"highlight":{"show":true,"anchorMin":[0.0,0.0],"anchorMax":[1.0,1.0],"position":[301.5,529.0],"size":[904.5,-1061.6]}},
 //"you can tap on the spell to select it"
 {"onEnter":[{"method":"ShowMessage","parameters":["ftf_6"]}]},
 //"tap on the glyph to cast"
