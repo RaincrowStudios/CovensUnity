@@ -32,9 +32,6 @@ public class FTFManager : MonoBehaviour
     [SerializeField] private Button m_OpenWitchSchool;
     [SerializeField] private Button m_SkipWitchSchool;
     
-    [Header("Debug")]
-    [SerializeField] private int m_StartFrom = 0;
-
     private static FTFManager m_Instance;
 
     public static bool InFTF => PlayerDataManager.IsFTF;
@@ -162,7 +159,7 @@ public class FTFManager : MonoBehaviour
 #if UNITY_EDITOR
             Setup(0);
             OnBeginFTF?.Invoke();
-            StartCoroutine(SkipUntil(m_StartFrom));
+            StartCoroutine(SkipUntil(UnityEditor.EditorPrefs.GetInt("FTFManager.StartFrom", 0)));
             return;
 #endif
             Setup(0);
@@ -174,7 +171,7 @@ public class FTFManager : MonoBehaviour
     {
         float previousTimeScale = Time.timeScale;
         Time.timeScale *= 4;
-        while (m_CurrentStepIndex < m_StartFrom && m_CurrentStepIndex < m_Steps.Count)
+        while (m_CurrentStepIndex < index && m_CurrentStepIndex < m_Steps.Count)
         {
             yield return StartCoroutine(NextStep());
         }

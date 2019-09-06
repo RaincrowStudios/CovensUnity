@@ -239,7 +239,8 @@ namespace Raincrow.Test
 
         private void Others()
         {
-            if(GUILayout.Button("Reflection test"))
+            
+            using (new BoxScope())
             {
 
             }
@@ -288,41 +289,7 @@ namespace Raincrow.Test
             using (new BoxScope())
             {
                 CentralizedLabel("Editor");
-
-                //Raincrow.SceneManager.Scene scene = (Raincrow.SceneManager.Scene)EditorGUILayout.EnumPopup("start scene", m_StartScene);
-                //if (scene != m_StartScene)
-                //{
-                //    m_StartScene = scene;
-                //    PlayerPrefs.SetInt("DEBUGSCENE", (int)m_StartScene);
-                //}
-
-                bool debugLocation = true;
-#if DEBUG_LOCATION == false
-                debugLocation = false;
-#endif
-
-                string sDebugLocationLabel = "DebugLocation[" + (debugLocation ? "ON" : "OFF") + "]";
-                if (EditorApplication.isCompiling)
-                {
-                    sDebugLocationLabel = "compiling";
-                    for (int i = 0; i <= ((int)EditorApplication.timeSinceStartup) % 3; i++)
-                        sDebugLocationLabel += ".";
-                }
-
-                if (GUILayout.Button(sDebugLocationLabel))
-                {
-                    string definesString = PlayerSettings.GetScriptingDefineSymbolsForGroup(EditorUserBuildSettings.selectedBuildTargetGroup);
-                    List<string> allDefines = new List<string>(definesString.Split(';'));
-
-                    if (debugLocation)
-                        allDefines.Remove("DEBUG_LOCATION");
-                    else
-                        allDefines.Add("DEBUG_LOCATION");
-
-                    definesString = string.Join(";", allDefines.ToArray());
-                    PlayerSettings.SetScriptingDefineSymbolsForGroup(EditorUserBuildSettings.selectedBuildTargetGroup, definesString);
-                }
-
+                
                 if (GUILayout.Button("persistentDataPath"))
                 {
                     EditorUtility.RevealInFinder(Application.persistentDataPath);
@@ -373,26 +340,20 @@ namespace Raincrow.Test
 
                 GUILayout.Space(10);
 
-                if (GUILayout.Button("login"))
+                if (GUILayout.Button("Login"))
                 {
                     DownloadManager.OnDownloadsComplete += () => LoginAPIManager.Login((result, response) => LoginAPIManager.GetCharacter(null));
                     DownloadManager.DownloadAssets(null);
                 }
-
-                if (GUILayout.Button("SpiritForm?"))
+                
+                if (GUILayout.Button("Log PlayerData"))
                 {
-                    Debug.Log(PlayerManager.inSpiritForm);
+                    string debug = "[" + PlayerDataManager.playerData.instance + "] " + PlayerDataManager.playerData.name + "\n";
+                    debug += SerializeObj(PlayerDataManager.playerData);
+                    Debug.Log(debug);
                 }
 
-                if (GUILayout.Button("Player stats"))
-                {
-                    Debug.Log($"Power: {PlayerDataManager.playerData.Power} ({PlayerDataManager.playerData.basePower})");
-                    Debug.Log($"Power: {PlayerDataManager.playerData.Resilience} ({PlayerDataManager.playerData.baseResilience})");
-                    Debug.Log($"Power: {PlayerDataManager.playerData.Aptitude} ({PlayerDataManager.playerData.baseAptitude})");
-                    //Debug.Log($"Power: {PlayerDataManager.playerData.Power} ({PlayerDataManager.playerData.basePower})");
-                }
-
-                if (GUILayout.Button("notification"))
+                if (GUILayout.Button("Pop Notification"))
                 {
                     Sprite spr = null;
                     AvatarSpriteUtil.Instance.GeneratePortrait(
@@ -413,28 +374,36 @@ namespace Raincrow.Test
                     FTFManager.SkipFTF();
                 }
 
-                m_SpellId = EditorGUILayout.TextField("spell id", m_SpellId);
-                if (GUILayout.Button(m_SpellId.Replace("spell_", "").ToUpper() + " EVERYONE!"))
-                {
-                    SpellData spell = new List<SpellData>(DownloadedAssets.spellDictData.Values).Find(_spell => _spell.id.ToLower().Contains(m_SpellId));
+                //m_SpellId = EditorGUILayout.TextField("spell id", m_SpellId);
+                //if (GUILayout.Button(m_SpellId.Replace("spell_", "").ToUpper() + " EVERYONE!"))
+                //{
+                //    SpellData spell = new List<SpellData>(DownloadedAssets.spellDictData.Values).Find(_spell => _spell.id.ToLower().Contains(m_SpellId));
 
-                    if (spell != null)
-                    {
-                        foreach (var markers in MarkerSpawner.Markers.Values)
-                        {
-                            if (Spellcasting.CanCast(spell, markers[0]) == Spellcasting.SpellState.CanCast)
-                            {
-                                if (markers[0].Type == MarkerSpawner.MarkerType.SPIRIT || markers[0].Type == MarkerSpawner.MarkerType.WITCH)
-                                    LeanTween.value(0, 0, 0.05f).setOnComplete(() => Spellcasting.CastSpell(spell, markers[0], new List<spellIngredientsData>(), null, null));
-                            }
-                        }
-                    }
-                    else
-                    {
-                        Debug.LogError(m_SpellId + " not found");
-                    }
-                }
+                //    if (spell != null)
+                //    {
+                //        foreach (var markers in MarkerSpawner.Markers.Values)
+                //        {
+                //            if (Spellcasting.CanCast(spell, markers[0]) == Spellcasting.SpellState.CanCast)
+                //            {
+                //                if (markers[0].Type == MarkerSpawner.MarkerType.SPIRIT || markers[0].Type == MarkerSpawner.MarkerType.WITCH)
+                //                    LeanTween.value(0, 0, 0.05f).setOnComplete(() => Spellcasting.CastSpell(spell, markers[0], new List<spellIngredientsData>(), null, null));
+                //            }
+                //        }
+                //    }
+                //    else
+                //    {
+                //        Debug.LogError(m_SpellId + " not found");
+                //    }
+                //}
+
                 EditorGUI.EndDisabledGroup();
+
+                GUILayout.Space(10);
+                CentralizedLabel("Tutorial");
+                int ftfStartingStep = EditorPrefs.GetInt("FTFManager.StartFrom", 0);
+                ftfStartingStep = EditorGUILayout.IntField("Start from", ftfStartingStep);
+                if (ftfStartingStep != EditorPrefs.GetInt("FTFManager.StartFrom", 0))
+                    EditorPrefs.SetInt("FTFManager.StartFrom", ftfStartingStep);
             }
         }
 
