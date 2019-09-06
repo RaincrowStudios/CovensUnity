@@ -88,6 +88,8 @@ public static class CooldownManager
 
     public static void RemoveCooldown(string id)
     {
+        id = id.ToLower();
+        Debug.Log("[<color=magenta>Cooldown</color>] Remove " + id);
         m_CooldownDictionary.Remove(id);
     }
 }
