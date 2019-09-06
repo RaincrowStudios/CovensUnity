@@ -28,10 +28,10 @@ public class UIGlobalPopup : MonoBehaviour
 
     private System.Action m_OnConfirm;
     private System.Action m_OnCancel;
-    
+
     private int m_AlphaTweenId;
     private int m_ScaleTweenId;
-    
+
     private void Awake()
     {
         m_Instance = this;
@@ -74,7 +74,7 @@ public class UIGlobalPopup : MonoBehaviour
             m_Instance.SetMessage(txt, false);
             m_Instance.Show();
         };
-        
+
         if (m_Instance == null)
         {
             m_Queue.Add(show);
@@ -92,7 +92,7 @@ public class UIGlobalPopup : MonoBehaviour
     {
         System.Action show = () =>
         {
-            m_Instance.SetButtons("Ok", confirmAction);
+            m_Instance.SetButtons(LocalizeLookUp.GetText("blessing_continue"), confirmAction);
             m_Instance.SetMessage(txt, false);
             m_Instance.Show();
         };
@@ -109,12 +109,12 @@ public class UIGlobalPopup : MonoBehaviour
         else
             show();
     }
-    
+
     public static void ShowError(Action confirmAction, string txt)
     {
         System.Action show = () =>
         {
-            m_Instance.SetButtons("Ok", confirmAction);
+            m_Instance.SetButtons(LocalizeLookUp.GetText("blessing_continue"), confirmAction);
             m_Instance.SetMessage(txt, true);
             m_Instance.Show();
         };
@@ -180,7 +180,7 @@ public class UIGlobalPopup : MonoBehaviour
     {
         m_MessageText.text = message;
         m_SizeFitter.text = message;
-        m_MessageText.color = error ? Color.red : Color.white;
+        //m_MessageText.color = error ? Color.red : Color.white;
     }
 
     private void SetButtons(string confirm, System.Action onConfirm)
@@ -219,7 +219,7 @@ public class UIGlobalPopup : MonoBehaviour
         m_OnCancel = null;
         Hide();
     }
-    
+
 #if UNITY_EDITOR
     [SerializeField] private string m_DebugString;
 
