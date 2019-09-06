@@ -17,8 +17,8 @@ public class UIQuickCastPicker : MonoBehaviour
     [SerializeField] private RectTransform m_ShadowContainer;
     private CanvasGroup UIQCPCanvasGroup;
     
-    private bool m_SpellsSpawned = false;
     private string m_SelectedSpell = null;
+    private List<CanvasGroup> m_SpawnedItems = new List<CanvasGroup>();
     private System.Action<string> m_OnSelectSpell;
     private System.Action m_OnClose;
 
@@ -43,11 +43,8 @@ public class UIQuickCastPicker : MonoBehaviour
             return;
 
         IsOpen = true;
-
-        if (!m_SpellsSpawned)
-        {
-            StartCoroutine(SpawnSpellsCoroutine());
-        }
+        StopAllCoroutines();
+        StartCoroutine(SpawnSpellsCoroutine());
 
         m_Canvas.enabled = true;
         LeanTween.alphaCanvas(UIQCPCanvasGroup, 1f, 0.6f).setEaseOutCubic().setOnComplete(() =>
@@ -61,6 +58,8 @@ public class UIQuickCastPicker : MonoBehaviour
         IsOpen = false;
         m_OnClose?.Invoke();
         m_OnClose = null;
+        StopAllCoroutines();
+
         LeanTween.alphaCanvas(UIQCPCanvasGroup, 0f, 0.4f).setEaseInCubic().setOnComplete(() =>
         {
             m_Canvas.enabled = false;
@@ -82,8 +81,9 @@ public class UIQuickCastPicker : MonoBehaviour
             Debug.LogError("player data not initialized");
             yield break;
         }
-
-        m_SpellsSpawned = true;
+        
+        foreach (CanvasGroup t in m_SpawnedItems)
+            t.gameObject.SetActive(false);
 
         foreach (SpellData spell in PlayerDataManager.playerData.UnlockedSpells)
         {
@@ -94,7 +94,21 @@ public class UIQuickCastPicker : MonoBehaviour
 
     private void SetupSpell(SpellData spell)
     {
-        Transform item = Instantiate(m_ItemPrefab);
+        Transform item = null;
+        for (int i = 0; i < m_SpawnedItems.Count; i++)
+        {
+            if (m_SpawnedItems[i].gameObject.activeSelf == false)
+            {
+                item = m_SpawnedItems[i].transform;
+                break;
+            }
+        }
+
+        if (item == null)
+        {
+            item = Instantiate(m_ItemPrefab);
+            m_SpawnedItems.Add(item.GetComponent<CanvasGroup>());
+        }
 
         if (spell.school < 0)
             item.SetParent(m_ShadowContainer);
@@ -104,14 +118,20 @@ public class UIQuickCastPicker : MonoBehaviour
             item.SetParent(m_GreyContainer);
 
         item.localScale = Vector3.one;
-        item.gameObject.SetActive(true);
 
+        CanvasGroup cg = item.GetComponent<CanvasGroup>();
         Button button = item.GetComponent<Button>();
         TextMeshProUGUI title = item.GetComponentInChildren<TextMeshProUGUI>();
         Image icon = item.GetChild(0).GetChild(0).GetComponent<Image>();
 
         button.onClick.AddListener(() => OnClickSpell(spell.id));
         title.text = spell.Name;
-        DownloadedAssets.GetSprite(spell.id, icon);
+        cg.alpha = 0;
+        DownloadedAssets.GetSprite(spell.id, spr =>
+        {
+            icon.overrideSprite = spr;
+            LeanTween.alphaCanvas(cg, 1f, 1f);
+        });
+        item.gameObject.SetActive(true);
     }
 }
