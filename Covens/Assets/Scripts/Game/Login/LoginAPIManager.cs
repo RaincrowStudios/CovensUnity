@@ -123,7 +123,8 @@ public static class LoginAPIManager
 
     public static void Login(System.Action<int, LoginResponse> callback)
     {
-        APIManager.Instance.Put("place-of-power/leave", "{}", (s, r) => { Debug.Log(s); Debug.Log("TODO: Move pop leave logic"); });
+        if (accountLoggedIn)
+            APIManager.Instance.Put("place-of-power/leave", "{}", (s, r) => { Debug.Log(s); Debug.Log("TODO: Move pop leave logic"); });
 
         //check for saved tokens
         if (accountLoggedIn)

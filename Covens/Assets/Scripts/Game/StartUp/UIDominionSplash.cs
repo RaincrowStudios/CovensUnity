@@ -21,17 +21,18 @@ public class UIDominionSplash : MonoBehaviour
 
     private void Awake()
     {
-
         Instance = this;
         m_CloseButton.gameObject.SetActive(false);
         m_CloseButton.onClick.AddListener(Close);
 
+        //just hide so it can be shown on the end of the tutorial
         if (FTFManager.InFTF)
         {
             m_Canvas.enabled = false;
             m_InputRaycaster.enabled = false;
             m_CanvasGroup.alpha = 0;
         }
+        //show as soon as the scene loads
         else
         {
             m_InputRaycaster.enabled = true;
