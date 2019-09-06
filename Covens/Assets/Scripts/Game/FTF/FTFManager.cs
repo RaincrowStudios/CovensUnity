@@ -534,7 +534,7 @@ public class FTFManager : MonoBehaviour
 
         data.target.id = targetId;
         data.target.name = target.Name;
-        data.target.energy = token.energy - damage;
+        data.target.energy = token.energy + damage;
 
         data.result.damage = damage;
         data.result.isSuccess = damage != 0;

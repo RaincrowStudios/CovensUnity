@@ -35,7 +35,7 @@
 //wait for glyph tap
 {"button":{"show":true,"anchorMin":[0.5,0.5],"anchorMax":[0.5,0.5],"position":[-2.0,-454.0],"size":[277.300049,220.1]},"highlight":{"show":true,"anchorMin":[0.5,0.5],"anchorMax":[0.5,0.5],"position":[35.0,6.9],"size":[1258.0,2825.6]},"pointer":{"show":true,"anchorMin":[0.5,0.5],"anchorMax":[0.5,0.5],"position":[-13.0,-470.0]},"onExit":[{"method":"CloseSpellbook"}]},
 //cast the spell and wait 1.5s
-{"timer":1.5, "onEnter":[{"method":"CastSpell","parameters":["spell_hex","ftf_barghest","54"]}]},
+{"timer":1.5, "onEnter":[{"method":"CastSpell","parameters":["spell_hex","ftf_barghest","-54"]}]},
 //"well done, spirit banished"
 {"onEnter":[{"method":"ShowMessage","parameters":["ftf_8"]}]},
 //"spirits can be summoned...""
