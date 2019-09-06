@@ -135,6 +135,9 @@ public class MapView : MonoBehaviour
 
     private void _OnSpiritBanished(string spirit)
     {
+        if (FTFManager.InFTF)
+            return;
+
         Debug.Log(spirit + " BANISHED");
         
         //discover.spirit was triggered before the banish
