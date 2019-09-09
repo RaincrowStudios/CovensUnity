@@ -219,22 +219,11 @@ public class IAPSilver : MonoBehaviour, IStoreListener
 
     public void OnPurchaseFailed(Product product, PurchaseFailureReason failureReason)
     {
-        string id = m_ProductMap[product.definition.id];
-        string error = null;
-
-        switch (failureReason)
-        {
-            case PurchaseFailureReason.ExistingPurchasePending: error = "A purchase is alredy pending for this product."; break;
-            case PurchaseFailureReason.ProductUnavailable: error = "Product unavailable."; break;
-            case PurchaseFailureReason.PurchasingUnavailable: error = "Store unavailable."; break;
-            case PurchaseFailureReason.PaymentDeclined: error = "Payment declined."; break;
-            case PurchaseFailureReason.DuplicateTransaction: error = "Duplicate transaction."; break;
-            case PurchaseFailureReason.UserCancelled: error = "Purchase cancelled." ; break;
-            case PurchaseFailureReason.Unknown: error = "Unknown error."; break;
-        }
-
-        FinishPurchase(id, error);
         Log($"OnPurchaseFailed: FAIL. Product: '{product.definition.storeSpecificId}', PurchaseFailureReason: {failureReason}");
+
+        string id = m_ProductMap[product.definition.id];
+        string error = "PurchaseFailureReason" + ((int)failureReason).ToString();
+        FinishPurchase(id, error);
     }
 
     public Product GetProduct(string productId)
