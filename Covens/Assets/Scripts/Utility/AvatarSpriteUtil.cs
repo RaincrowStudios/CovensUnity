@@ -228,8 +228,33 @@ public class AvatarSpriteUtil : MonoBehaviour
 #if UNITY_EDITOR
     //////////////DEBUG
     [Header("Debug")]
-    [SerializeField] private string m_EquipList;
-    [SerializeField] private SpriteRenderer m_Renderer;
+    [SerializeField] private bool m_DebugMale;
+    [SerializeField] private string m_DebugEquipList;
+    [SerializeField] private SpriteRenderer m_DebugRenderer;
+
+    [ContextMenu("DebugGen")]
+    private void DebugGenerate()
+    {
+        if (Application.isPlaying == false)
+        {
+            Debug.LogError("not playing");
+            return;
+        }
+        if (PlayerDataManager.playerData == null)
+        {
+            Debug.LogError("not logged in");
+            return;
+        }
+
+        List<EquippedApparel> equips = Newtonsoft.Json.JsonConvert.DeserializeObject<List<EquippedApparel>>(m_DebugEquipList);
+        GenerateFullbodySprite(m_DebugMale, equips, spr =>
+        {
+            if (m_DebugRenderer != null)
+                m_DebugRenderer.sprite = spr;
+            else
+                Destroy(spr.texture);
+        });
+    }
     
     private void SaveTexture(Texture2D tex)
     {
