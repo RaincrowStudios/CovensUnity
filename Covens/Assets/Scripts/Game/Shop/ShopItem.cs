@@ -24,6 +24,7 @@ public class ShopItem : MonoBehaviour
     [SerializeField] private GameObject goldDrachs;
     [SerializeField] private GameObject silveDrachs;
     [SerializeField] private GameObject orText;
+
     private string iconID;
 
     public void SetBought()
@@ -109,7 +110,16 @@ public class ShopItem : MonoBehaviour
                 }
                 else if (string.IsNullOrEmpty(error) == false)
                 {
-                    UIGlobalPopup.ShowError(null, APIManager.ParseError(error));
+                    if (error.StartsWith("PurchaseFailureReason"))
+                    {
+                        UnityEngine.Purchasing.PurchaseFailureReason reason = (UnityEngine.Purchasing.PurchaseFailureReason)int.Parse(error.Replace("PurchaseFailureReason", ""));
+                        if (reason != UnityEngine.Purchasing.PurchaseFailureReason.UserCancelled)
+                            UIGlobalPopup.ShowError(null, reason.ToString());
+                    }
+                    else
+                    {
+                        UIGlobalPopup.ShowError(null, APIManager.ParseError(error));
+                    }
                 }
             });
         });
@@ -123,10 +133,45 @@ public class ShopItem : MonoBehaviour
         gold.text = item.gold.ToString();
         silver.color = item.silver > PlayerDataManager.playerData.silver ? Color.red : Color.white;
         gold.color = item.gold > PlayerDataManager.playerData.gold ? Color.red : Color.white;
-        //Debug.Log(item.gold < PlayerDataManager.playerData.gold || item.silver < PlayerDataManager.playerData.silver);
-        // buyButton.interactable = !item.owned;
-        // buyButton.interactable = (item.gold < PlayerDataManager.playerData.gold || item.silver < PlayerDataManager.playerData.silver);
-        if (!item.locked)
+
+        bool locked = false;
+
+        if (Utilities.TimespanFromJavaTime(item.unlockOn).TotalMinutes > 0)
+        {
+            locked = true;
+        }
+
+        if (item.position == "carryOnRight" || item.position == "carryOnLeft")
+        {
+            if (item.id == "cosmetic_f_CR_SHADOW" && PlayerDataManager.playerData.degree != -14)
+                locked = true;
+            else if (item.id == "cosmetic_f_CR_GRAY")
+                locked = true;
+            else if (item.id == "cosmetic_f_CR_WHITE" && PlayerDataManager.playerData.degree != 14)
+                locked = true;
+        }
+        else if (item.position == "petFeet")
+        {
+            string spirit = null;
+            switch (item.id)
+            {
+                case "cosmetic_f_PF_SENTINALOWL": spirit = "spirit_sentinelOwl"; break;
+                case "cosmetic_m_PF_SENTINALOWL": spirit = "spirit_sentinelOwl"; break;
+                case "cosmetic_f_PF_WENDIGO": spirit = "spirit_wendigo"; break;
+                case "cosmetic_m_PF_WENDIGO": spirit = "spirit_wendigo"; break;
+                case "cosmetic_f_PF_BARGHEST": spirit = "spirit_barghest"; break;
+                case "cosmetic_m_PF_BARGHEST": spirit = "spirit_barghest"; break;
+                case "cosmetic_f_PF_GRINDYLOW": spirit = "spirit_grindylow"; break;
+                case "cosmetic_m_PF_GRINDYLOW": spirit = "spirit_grindylow"; break;
+                case "cosmetic_f_PF_CATSIDHE": spirit = "spirit_catSidhe"; break;
+                case "cosmetic_m_PF_CATSIDHE": spirit = "spirit_catSidhe"; break;
+            }
+
+            if (string.IsNullOrEmpty(spirit) == false && PlayerDataManager.playerData.knownSpirits.Exists(spr => spr.spirit == spirit) == false)
+                locked = true;
+        }
+
+        if (!locked)
         {
             buy.text = item.owned ? LocalizeLookUp.GetText("store_gear_owned_upper")/*"OWNED"*/ : LocalizeLookUp.GetText("store_buy_upper");//"BUY";
             button.sprite = item.owned ? green : red;
@@ -140,15 +185,13 @@ public class ShopItem : MonoBehaviour
             {
                 UIGlobalPopup.ShowPopUp(
                     null,
-                    DownloadedAssets.localizedText["shop_condition_locked"] + " " + GetTimeStampDate(item.unlockOn).Replace("unknown", "") + "\n" + DownloadedAssets.localizedText[item.tooltip]
+                    LocalizeLookUp.GetText("shop_condition_locked") + " " + GetTimeStampDate(item.unlockOn).Replace("unknown", "") + "\n" + LocalizeLookUp.GetText(item.tooltip)
                 );
                     //ShopManager.Instance.ShowLocked(LocalizeLookUp.GetStoreTitle(item.id), GetTimeStampDate(item.unlockOn), DownloadedAssets.localizedText[item.tooltip]);
             });
 
         }
-
-
-
+               
         if (item.unlockOn > 0)
         {
             string s = GetTimeRemaining(item.unlockOn);

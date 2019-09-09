@@ -1103,11 +1103,13 @@
     },
     {
       "id": "cosmetic_m_PF_SENTINALOWL",
+      "tooltip": "shop_locked_owl",
       "silver": 1000,
       "gold": 10
     },
     {
       "id": "cosmetic_m_PF_WENDIGO",
+      "tooltip": "shop_locked_wndg",
       "silver": 1000,
       "gold": 10
     },
@@ -1123,16 +1125,19 @@
     },
     {
       "id": "cosmetic_m_PF_BARGHEST",
+      "tooltip": "shop_locked_barg",
       "silver": 1000,
       "gold": 10
     },
     {
       "id": "cosmetic_m_PF_GRINDYLOW",
+      "tooltip": "shop_locked_grdlw",
       "silver": 1000,
       "gold": 10
     },
     {
       "id": "cosmetic_m_PF_CATSIDHE",
+      "tooltip": "shop_locked_sidh",
       "silver": 1000,
       "gold": 10
     },
@@ -1203,11 +1208,13 @@
     },
     {
       "id": "cosmetic_m_CL_SHADOW",
+      "tooltip": "shop_locked_shadow",
       "silver": 1200,
       "gold": 12
     },
     {
       "id": "cosmetic_m_CL_WHITE",
+      "tooltip": "shop_locked_white",
       "silver": 1200,
       "gold": 12
     },
