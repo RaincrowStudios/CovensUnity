@@ -96,18 +96,23 @@ public class ShopItem : MonoBehaviour
         if (tagAmount.text == "")
             tagAmount.transform.parent.gameObject.SetActive(false);
         amount.text = item.amount.ToString();
-        buyButton.onClick.AddListener(() => 
-        IAPSilver.instance.BuyProductID(item, (error) =>
+
+        buyButton.onClick.AddListener(() =>
         {
-            if (string.IsNullOrEmpty(error))
+            LoadingOverlay.Show();
+            IAPSilver.instance.BuyProductID(item, (error) =>
             {
-                ShopManager.OnBuySilver(item);
-            }
-            else
-            {
-                UIGlobalPopup.ShowError(null, APIManager.ParseError(error));
-            }
-        }));
+                LoadingOverlay.Hide();
+                if (string.IsNullOrEmpty(error))
+                {
+                    ShopManager.OnBuySilver(item);
+                }
+                else if (string.IsNullOrEmpty(error) == false)
+                {
+                    UIGlobalPopup.ShowError(null, APIManager.ParseError(error));
+                }
+            });
+        });
 
     }
 
