@@ -77,17 +77,18 @@ public class IAPSilver : MonoBehaviour, IStoreListener
             Raincrow.Analytics.Events.PurchaseAnalytics.StartIAP(storeProduct.productId);
             
             Product product = m_StoreController.products.WithID(storeProduct.productId);
-
-            m_OngoingPurchase = new OngoingPurchase
-            {
-                id = storeProduct.id,
-                data = StoreManagerAPI.GetSilverBundle(storeProduct.id),
-                callback = callback
-            };
-
+            
             if (product != null && product.availableToPurchase)
             {
                 Log($"Purchasing product asychronously: '{product.definition.id}'");
+
+                m_OngoingPurchase = new OngoingPurchase
+                {
+                    id = storeProduct.id,
+                    data = StoreManagerAPI.GetSilverBundle(storeProduct.id),
+                    callback = callback
+                };
+
                 m_StoreController.InitiatePurchase(product);
             }
             else
@@ -185,12 +186,15 @@ public class IAPSilver : MonoBehaviour, IStoreListener
             null,
             args.purchasedProduct.receipt,
             (error) =>
-            {
+            {                
                 if (string.IsNullOrEmpty(error))
                 {
                     LogError("Processing success");
 
-                    PlayerDataManager.playerData.silver += data.amount;
+                    int bonus = 0;
+                    int.TryParse(data.extra, out bonus);
+
+                    PlayerDataManager.playerData.silver += (data.amount + bonus);
                     if (PlayerManagerUI.Instance != null)
                         PlayerManagerUI.Instance.UpdateDrachs();
 
@@ -216,7 +220,20 @@ public class IAPSilver : MonoBehaviour, IStoreListener
     public void OnPurchaseFailed(Product product, PurchaseFailureReason failureReason)
     {
         string id = m_ProductMap[product.definition.id];
-        FinishPurchase(id, failureReason.ToString());
+        string error = null;
+
+        switch (failureReason)
+        {
+            case PurchaseFailureReason.ExistingPurchasePending: error = "A purchase is alredy pending for this product."; break;
+            case PurchaseFailureReason.ProductUnavailable: error = "Product unavailable."; break;
+            case PurchaseFailureReason.PurchasingUnavailable: error = "Store unavailable."; break;
+            case PurchaseFailureReason.PaymentDeclined: error = "Payment declined."; break;
+            case PurchaseFailureReason.DuplicateTransaction: error = "Duplicate transaction."; break;
+            case PurchaseFailureReason.UserCancelled: error = null; break;
+            case PurchaseFailureReason.Unknown: error = "Unknown error"; break;
+        }
+
+        FinishPurchase(id, error);
         Log($"OnPurchaseFailed: FAIL. Product: '{product.definition.storeSpecificId}', PurchaseFailureReason: {failureReason}");
     }
 
