@@ -395,12 +395,20 @@ namespace Raincrow.Store
 
         private static void Log(string msg)
         {
+#if UNITY_EDITOR
             Debug.Log("[<color=cyan>StoreAPI</color>] " + msg);
+            return;
+#endif
+            Debug.Log("[StoreAPI] " + msg);
         }
 
         private static void LogError(string msg)
         {
+#if UNITY_EDITOR
             Debug.LogError("[<color=cyan>StoreAPI</color>] " + msg);
+            return;
+#endif
+            Debug.LogError("[StoreAPI] " + msg);
         }
     }
 }

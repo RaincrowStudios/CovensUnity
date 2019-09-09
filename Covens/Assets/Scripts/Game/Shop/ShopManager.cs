@@ -870,22 +870,21 @@ public class ShopManager : ShopBase
 
     public void _OnBuySilver(StoreApiItem item)
     {
-        Debug.Log(PlayerDataManager.playerData.silver);
-        Debug.Log("buy silver");
-
         CloseBuyPopup();
         buySuccessObject.SetActive(true);
         buySuccessTitle.text = LocalizeLookUp.GetStoreTitle(item.id);
         buySuccessSubTitle.text = LocalizeLookUp.GetStoreSubtitle(item.id);
         DownloadedAssets.GetSprite(item.id, buySuccessIcon, true);
-        LeanTween.value(PlayerDataManager.playerData.silver, PlayerDataManager.playerData.silver + item.amount, 1f).setOnUpdate((float v) =>
-                         {
-                             playerSilver.text = ((int)v).ToString();
-                         }).setOnComplete(() =>
-                         {
-                             PlayerDataManager.playerData.silver += item.amount;
-                             PlayerManagerUI.Instance.UpdateDrachs();
-                         });
+        playerSilver.text = PlayerDataManager.playerData.silver.ToString();
+
+        //LeanTween.value(PlayerDataManager.playerData.silver, PlayerDataManager.playerData.silver + item.amount, 1f).setOnUpdate((float v) =>
+        //                 {
+        //                     playerSilver.text = ((int)v).ToString();
+        //                 }).setOnComplete(() =>
+        //                 {
+        //                     PlayerDataManager.playerData.silver += item.amount;
+        //                     PlayerManagerUI.Instance.UpdateDrachs();
+        //                 });
     }
 
     private void OnBuy(CosmeticData item, bool isBuySilver, ShopItem buttonItem = null)

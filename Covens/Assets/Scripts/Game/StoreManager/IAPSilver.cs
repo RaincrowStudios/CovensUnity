@@ -229,8 +229,8 @@ public class IAPSilver : MonoBehaviour, IStoreListener
             case PurchaseFailureReason.PurchasingUnavailable: error = "Store unavailable."; break;
             case PurchaseFailureReason.PaymentDeclined: error = "Payment declined."; break;
             case PurchaseFailureReason.DuplicateTransaction: error = "Duplicate transaction."; break;
-            case PurchaseFailureReason.UserCancelled: error = null; break;
-            case PurchaseFailureReason.Unknown: error = "Unknown error"; break;
+            case PurchaseFailureReason.UserCancelled: error = "Purchase cancelled." ; break;
+            case PurchaseFailureReason.Unknown: error = "Unknown error."; break;
         }
 
         FinishPurchase(id, error);
@@ -252,11 +252,19 @@ public class IAPSilver : MonoBehaviour, IStoreListener
 
     private static void Log(string msg)
     {
+#if UNITY_EDITOR
         Debug.Log("[<color=cyan>IAPSilver</color>] " + msg);
+        return;
+#endif
+        Debug.Log("[IAPSilver] " + msg);
     }
 
     private static void LogError(string msg)
     {
+#if UNITY_EDITOR
         Debug.LogError("[<color=cyan>IAPSilver</color>] " + msg);
+        return;
+#endif
+        Debug.LogError("[IAPSilver] " + msg);
     }
 }
