@@ -119,10 +119,10 @@ public class SplashManager : MonoBehaviour
         string msg = "";
 
         //downloading title
-        title = "Downloading";
-        int points = (int)(Time.time) % 3;
-        for (int i = 0; i <= points; i++)
-            title += " .";
+        //title = "Downloading";
+        //int points = (int)(Time.time) % 3;
+        //for (int i = 0; i <= points; i++)
+        //    title += " .";
 
         //downloading description
         msg = "";
