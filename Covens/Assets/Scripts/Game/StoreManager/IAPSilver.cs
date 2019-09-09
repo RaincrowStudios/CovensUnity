@@ -35,7 +35,7 @@ public class IAPSilver : MonoBehaviour, IStoreListener
     {
         if (IsInitialized())
         {
-            Debug.LogError("IAP already initialized");
+            LogError("IAP already initialized");
             return;
         }
         
@@ -50,7 +50,7 @@ public class IAPSilver : MonoBehaviour, IStoreListener
 
             log += "\n\t" + prod.Value.product;
         }
-        Debug.Log(log);
+        Log(log);
 
         UnityPurchasing.Initialize(this, builder);
     }
@@ -65,17 +65,17 @@ public class IAPSilver : MonoBehaviour, IStoreListener
     {
         if (m_OngoingPurchase != null)
         {
-            callback?.Invoke("another purchase is in progress [" + m_OngoingPurchase.id + "]");
+            LogError("Another purchase is in progress [" + m_OngoingPurchase.id + "]");
+            callback?.Invoke("Another purchase is in progress [" + m_OngoingPurchase.id + "]");
             return;
         }
 
-        Debug.Log("Initializing purchase: " + storeProduct.productId);
+        Log("Initializing purchase: " + storeProduct.productId);
 
         if (IsInitialized())
         {
             Raincrow.Analytics.Events.PurchaseAnalytics.StartIAP(storeProduct.productId);
-
-
+            
             Product product = m_StoreController.products.WithID(storeProduct.productId);
 
             m_OngoingPurchase = new OngoingPurchase
@@ -87,34 +87,36 @@ public class IAPSilver : MonoBehaviour, IStoreListener
 
             if (product != null && product.availableToPurchase)
             {
-                Debug.Log(string.Format("Purchasing product asychronously: '{0}'", product.definition.id));
+                Log($"Purchasing product asychronously: '{product.definition.id}'");
                 m_StoreController.InitiatePurchase(product);
             }
             else
             {
                 string error = "Purchase failed. Not purchasing product, either is not found or is not available for purchase";
-                Debug.LogError(error);
+                LogError(error);
                 callback?.Invoke(error);
             }
         }
         else
         {
             string error = "Purchase failed. Store not ready.";
-            Debug.LogError(error);
+            LogError(error);
             callback?.Invoke(error);
         }
     }
 
     private void FinishPurchase(string id, string error)
     {
+        Log("Finishing pruchase for \"" + id + "\"");
+
         if (m_OngoingPurchase == null)
         {
-            Debug.LogError("no pruchase ongoing");
+            LogError("No purchase ongoing");
             return;
         }
 
         if (string.IsNullOrEmpty(error) == false)
-            Debug.LogError(error);
+            LogError(error);
 
         if (m_OngoingPurchase != null && m_OngoingPurchase.id == id)
         {
@@ -129,22 +131,23 @@ public class IAPSilver : MonoBehaviour, IStoreListener
     {
         if (!IsInitialized())
         {
-            Debug.LogError("RestorePurchases FAIL. Not initialized.");
+            LogError("RestorePurchases FAIL. Not initialized.");
             return;
         }
+
         if (Application.platform == RuntimePlatform.IPhonePlayer ||
             Application.platform == RuntimePlatform.OSXPlayer)
         {
-            Debug.Log("RestorePurchases started ...");
+            Log("RestorePurchases started ...");
             var apple = m_StoreExtensionProvider.GetExtension<IAppleExtensions>();
             apple.RestoreTransactions((result) =>
             {
-                Debug.Log("RestorePurchases continuing: " + result + ". If no further messages, no purchases available to restore.");
+                Log("RestorePurchases continuing: " + result + ". If no further messages, no purchases available to restore.");
             });
         }
         else
         {
-            Debug.Log("RestorePurchases FAIL. Not supported on this platform. Current = " + Application.platform);
+            Log("RestorePurchases FAIL. Not supported on this platform. Current = " + Application.platform);
         }
     }
 
@@ -152,24 +155,29 @@ public class IAPSilver : MonoBehaviour, IStoreListener
     {
         m_StoreController = controller;
         m_StoreExtensionProvider = extensions;
-        Debug.Log("IAP initialized");
+        Log("IAP initialized");
     }
 
 
     public void OnInitializeFailed(InitializationFailureReason error)
     {
-        Debug.LogError("OnInitializeFailed InitializationFailureReason:" + error);
+        LogError("OnInitializeFailed InitializationFailureReason:" + error);
     }
 
     public PurchaseProcessingResult ProcessPurchase(PurchaseEventArgs args)
     {
+        Log("Processing purchase for \"" + args.purchasedProduct.definition.id + "\"");
+
         if (!LoginAPIManager.characterLoggedIn)
         {
+            Log("Character not logged in. Purchase pending");
             return PurchaseProcessingResult.Pending;
         }
 
         string id = m_ProductMap[args.purchasedProduct.definition.id];
         SilverBundleData data = StoreManagerAPI.GetSilverBundle(id);
+
+        Log("id: " + id + "\nreceipt: " + args.purchasedProduct.receipt);
 
         StoreManagerAPI.Purchase(
             id,
@@ -180,6 +188,8 @@ public class IAPSilver : MonoBehaviour, IStoreListener
             {
                 if (string.IsNullOrEmpty(error))
                 {
+                    LogError("Processing success");
+
                     PlayerDataManager.playerData.silver += data.amount;
                     if (PlayerManagerUI.Instance != null)
                         PlayerManagerUI.Instance.UpdateDrachs();
@@ -189,6 +199,8 @@ public class IAPSilver : MonoBehaviour, IStoreListener
                 }
                 else
                 {
+                    LogError("Processing error: " + error);
+
                     //remove from pending so its not processed again
                     if (error == "6006" || error == "6005" || error == "6004")
                         m_StoreController.ConfirmPendingPurchase(args.purchasedProduct);
@@ -205,7 +217,7 @@ public class IAPSilver : MonoBehaviour, IStoreListener
     {
         string id = m_ProductMap[product.definition.id];
         FinishPurchase(id, failureReason.ToString());
-        Debug.Log(string.Format("OnPurchaseFailed: FAIL. Product: '{0}', PurchaseFailureReason: {1}", product.definition.storeSpecificId, failureReason));
+        Log($"OnPurchaseFailed: FAIL. Product: '{product.definition.storeSpecificId}', PurchaseFailureReason: {failureReason}");
     }
 
     public Product GetProduct(string productId)
@@ -219,5 +231,15 @@ public class IAPSilver : MonoBehaviour, IStoreListener
         }
 
         return null;
+    }
+
+    private static void Log(string msg)
+    {
+        Debug.Log("[<color=cyan>IAPSilver</color>] " + msg);
+    }
+
+    private static void LogError(string msg)
+    {
+        Debug.LogError("[<color=cyan>IAPSilver</color>] " + msg);
     }
 }

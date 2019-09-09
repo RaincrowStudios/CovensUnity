@@ -148,13 +148,13 @@ namespace Raincrow.Store
             if (receipt != null)
                 data.Add("receipt", receipt);
 
-            Debug.Log("<color=magenta>" + id + "</color>");
+            Log("purchasing \"" + id + "\"");
 
             APIManager.Instance.Post("shop/purchase", JsonConvert.SerializeObject(data), (response, result) =>
             {
                 if (result == 200)
                 {
-                    string debug = "<color=magenta>purchase complete:</color>\n";
+                    string debug = "purchase complete:\n";
                     int silver = 0;
                     int gold = 0;
 
@@ -239,7 +239,7 @@ namespace Raincrow.Store
                     if (PlayerManagerUI.Instance != null)
                         PlayerManagerUI.Instance.UpdateDrachs();
 
-                    Debug.Log(debug);
+                    Log(debug);
 
                     callback(null);
                 }
@@ -258,7 +258,7 @@ namespace Raincrow.Store
             }
             else
             {
-                Debug.LogError($"ingredient bundle not found (\"{id}\")");
+                LogError($"ingredient bundle not found (\"{id}\")");
                 return new IngredientBundleData();
             }
         }
@@ -271,7 +271,7 @@ namespace Raincrow.Store
             }
             else
             {
-                Debug.LogError($"consumable not found (\"{id}\")");
+                LogError($"consumable not found (\"{id}\")");
                 return new ConsumableData();
             }
         }
@@ -284,7 +284,7 @@ namespace Raincrow.Store
             }
             else
             {
-                Debug.LogError($"silver bundle not found (\"{id}\")");
+                LogError($"silver bundle not found (\"{id}\")");
                 return new SilverBundleData();
             }
         }
@@ -391,6 +391,16 @@ namespace Raincrow.Store
                 aux.gold = item.gold;
                 m_OldStore.styles.Add(aux);
             }
+        }
+
+        private static void Log(string msg)
+        {
+            Debug.Log("[<color=cyan>StoreAPI</color>] " + msg);
+        }
+
+        private static void LogError(string msg)
+        {
+            Debug.LogError("[<color=cyan>StoreAPI</color>] " + msg);
         }
     }
 }
