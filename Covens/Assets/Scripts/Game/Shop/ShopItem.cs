@@ -140,14 +140,17 @@ public class ShopItem : MonoBehaviour
         {
             locked = true;
         }
-
-        if (item.position == "carryOnRight" || item.position == "carryOnLeft")
+        else if (item.position == "carryOnRight" || item.position == "carryOnLeft")
         {
             if (item.id == "cosmetic_f_CR_SHADOW" && PlayerDataManager.playerData.degree != -14)
                 locked = true;
             else if (item.id == "cosmetic_f_CR_GRAY")
                 locked = true;
             else if (item.id == "cosmetic_f_CR_WHITE" && PlayerDataManager.playerData.degree != 14)
+                locked = true;
+            else if (string.IsNullOrEmpty(item.tooltip) == false)
+                locked = true;
+            else if (string.IsNullOrEmpty(item.tooltip) == false)
                 locked = true;
         }
         else if (item.position == "petFeet")
@@ -170,6 +173,8 @@ public class ShopItem : MonoBehaviour
             if (string.IsNullOrEmpty(spirit) == false && PlayerDataManager.playerData.knownSpirits.Exists(spr => spr.spirit == spirit) == false)
                 locked = true;
         }
+        else if (string.IsNullOrEmpty(item.tooltip) == false)
+            locked = true;
 
         if (!locked)
         {
@@ -225,7 +230,7 @@ public class ShopItem : MonoBehaviour
                 }
                 else
                 {
-                    if (!item.locked)
+                    if (!locked)
                     {
                         goldDrachs.SetActive(false);
                         silveDrachs.SetActive(false);
