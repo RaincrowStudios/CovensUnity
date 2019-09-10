@@ -29,11 +29,10 @@ public class AvatarSpriteUtil : MonoBehaviour
     [SerializeField] private Camera m_FullbodyCamera;
 
     [Header("Portrait")]
-    [SerializeField] private Mask m_PortraitMask;
-    [SerializeField] private Image m_PortraitImage;
     [SerializeField] private Image m_PortraitBackground;
     [SerializeField] private Image m_PortraitFrame;
     [SerializeField] private Camera m_PortraitCamera;
+    [SerializeField, Range(0f,1f)] private float m_PortraitRadiusFactor = 1;
 
     [Header("Wardrobe Portrait")]
     [SerializeField] private Image m_PortraitFrame_Wardrobe;
@@ -52,11 +51,11 @@ public class AvatarSpriteUtil : MonoBehaviour
 
         Instance = this;
 
-        if (m_PortraitImage == null)
-            m_PortraitImage = m_PortraitMask.GetComponent<Image>();
+        //if (m_PortraitImage == null)
+        //    m_PortraitImage = m_PortraitMask.GetComponent<Image>();
 
-        m_PortraitMask.enabled = false;
-        m_PortraitImage.enabled = false;
+        //m_PortraitMask.enabled = false;
+        //m_PortraitImage.enabled = false;
         m_PortraitFrame.enabled = false;
         m_PortraitBackground.enabled = false;
         m_PortraitFrame_Wardrobe.enabled = false;
@@ -147,8 +146,8 @@ public class AvatarSpriteUtil : MonoBehaviour
                                    
             if (properties.types[i] == Type.Portrait)
             {
-                m_PortraitImage.enabled = true;
-                m_PortraitMask.enabled = true;
+                //m_PortraitImage.enabled = true;
+                //m_PortraitMask.enabled = true;
                 m_PortraitFrame.enabled = true;
                 m_PortraitBackground.enabled = true;
 
@@ -156,8 +155,8 @@ public class AvatarSpriteUtil : MonoBehaviour
             }
             else if (properties.types[i] == Type.WardrobePortrait)
             {
-                m_PortraitImage.enabled = true;
-                m_PortraitMask.enabled = true;
+                //m_PortraitImage.enabled = true;
+                //m_PortraitMask.enabled = true;
                 m_PortraitFrame_Wardrobe.enabled = true;
 
                 cam = m_PortraitCamera_Wardrobe;
@@ -172,13 +171,30 @@ public class AvatarSpriteUtil : MonoBehaviour
             //generate the texture and sprite
             int width = (int)properties.sizes[i].x;
             int height = (int)properties.sizes[i].y;
-            RenderTexture rt = new RenderTexture(width, height, 32);
+
+            RenderTexture rt = new RenderTexture(width, height, 0);
             cam.targetTexture = rt;
-            Texture2D texture = new Texture2D(width, height, TextureFormat.RGBA32, false);
+            Texture2D texture = new Texture2D(width, height, TextureFormat.ARGB32, false);
             cam.Render();
             RenderTexture prev = RenderTexture.active;
             RenderTexture.active = rt;
             texture.ReadPixels(new Rect(0, 0, width, height), 0, 0);
+
+            if (properties.types[i] != Type.Avatar)
+            {
+                float cx = width / 2f;
+                float cy = height / 2f;
+                float r2 = width / 2f;
+                for(int x = 0; x < width; x++)
+                {
+                    for (int y = 0; y < height; y++)
+                    {
+                        if (Mathf.Sqrt(Mathf.Pow(x - cx, 2) + Mathf.Pow(y - cy, 2)) >= r2 * m_PortraitRadiusFactor)
+                            texture.SetPixel(x, y, new Color(0, 0, 0, 0));
+                    }
+                }
+            }
+
             texture.Apply();
             RenderTexture.active = prev;
             cam.targetTexture = null;
@@ -193,15 +209,15 @@ public class AvatarSpriteUtil : MonoBehaviour
 
             if (properties.types[i] == Type.Portrait)
             {
-                m_PortraitImage.enabled = false;
-                m_PortraitMask.enabled = false;
+                //m_PortraitImage.enabled = false;
+                //m_PortraitMask.enabled = false;
                 m_PortraitFrame.enabled = false;
                 m_PortraitBackground.enabled = false;
             }
             else if (properties.types[i] == Type.WardrobePortrait)
             {
-                m_PortraitImage.enabled = false;
-                m_PortraitMask.enabled = false;
+                //m_PortraitImage.enabled = false;
+                //m_PortraitMask.enabled = false;
                 m_PortraitFrame_Wardrobe.enabled = false;
             }
         }
@@ -232,7 +248,7 @@ public class AvatarSpriteUtil : MonoBehaviour
     [SerializeField] private string m_DebugEquipList;
     [SerializeField] private SpriteRenderer m_DebugRenderer;
 
-    [ContextMenu("DebugGen")]
+    [ContextMenu("GenAvatar")]
     private void DebugGenerate()
     {
         if (Application.isPlaying == false)
@@ -248,6 +264,30 @@ public class AvatarSpriteUtil : MonoBehaviour
 
         List<EquippedApparel> equips = Newtonsoft.Json.JsonConvert.DeserializeObject<List<EquippedApparel>>(m_DebugEquipList);
         GenerateFullbodySprite(m_DebugMale, equips, spr =>
+        {
+            if (m_DebugRenderer != null)
+                m_DebugRenderer.sprite = spr;
+            else
+                Destroy(spr.texture);
+        });
+    }
+
+    [ContextMenu("GenPortrait")]
+    private void GenPortrait()
+    {
+        if (Application.isPlaying == false)
+        {
+            Debug.LogError("not playing");
+            return;
+        }
+        if (PlayerDataManager.playerData == null)
+        {
+            Debug.LogError("not logged in");
+            return;
+        }
+
+        List<EquippedApparel> equips = Newtonsoft.Json.JsonConvert.DeserializeObject<List<EquippedApparel>>(m_DebugEquipList);
+        GeneratePortrait(m_DebugMale, equips, spr =>
         {
             if (m_DebugRenderer != null)
                 m_DebugRenderer.sprite = spr;
