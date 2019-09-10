@@ -25,7 +25,7 @@ public class CovenConstants : MonoBehaviour
             }
             else if (UnityEditor.EditorPrefs.GetString("game") == "Release")
             {
-                return isBackUpServer ? "http://35.222.147.118:8080/api/" : "http://35.227.71.49:8080/api/";
+                return "https://game-server-production-dot-covens.appspot.com/api/";
             }
             else if (UnityEditor.EditorPrefs.GetString("game") == "Gustavo")
             {
@@ -36,7 +36,7 @@ public class CovenConstants : MonoBehaviour
                 return "http://34.73.145.51:9000/api/";
             }
 #elif PRODUCTION
-           return isBackUpServer?"http://35.222.147.118:8080/api/" : "https://game-server-dot-raincrow-pantheon.appspot.com/api/";
+           return "https://game-server-production-dot-covens.appspot.com/api/";
 #else
             return "http://34.73.145.51:9000/api/";
 #endif
@@ -69,7 +69,7 @@ public class CovenConstants : MonoBehaviour
             }
             else if (UnityEditor.EditorPrefs.GetString("ws") == "Release")
             {
-                return "ws://mqtt.raincrowstudios.xyz:8084?";
+                return "https://comms-server-production-dot-covens.appspot.com/socket.io/?";
             }
             else if (UnityEditor.EditorPrefs.GetString("ws") == "Gustavo")
             {
@@ -80,7 +80,7 @@ public class CovenConstants : MonoBehaviour
                 return "http://34.73.145.51:8084/socket.io/?";
             }
 #elif PRODUCTION
-            return "ws://mqtt.raincrowstudios.xyz:8084?";
+                return "https://comms-server-production-dot-covens.appspot.com/socket.io/?";
 #else
             return "http://34.73.145.51:8084/socket.io/?";
 #endif
