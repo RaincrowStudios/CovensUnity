@@ -147,7 +147,7 @@ public class CovenConstants : MonoBehaviour
 #if UNITY_EDITOR
             if (UnityEditor.EditorPrefs.GetString("map") == "Release")
             {
-                return "wss://map-server-dot-raincrow-pantheon.appspot.com/";
+                return "https://map-server-production-dot-covens.appspot.com/";
             }
             else if (UnityEditor.EditorPrefs.GetString("map") == "Local")
             {
@@ -162,7 +162,7 @@ public class CovenConstants : MonoBehaviour
                 return "http://34.73.145.51:8081/";
             }
 #elif PRODUCTION
-            return "wss://map-server-dot-raincrow-pantheon.appspot.com/";
+            return "https://map-server-production-dot-covens.appspot.com/";
 #else
             return "http://34.73.145.51:8081/";
 #endif
