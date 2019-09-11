@@ -164,21 +164,45 @@ public class PlayerManagerUI : UIAnimationManager
     void SetupEnergy()
     {
         var pData = PlayerDataManager.playerData;
-        if (pData.baseEnergy >= pData.energy)
+        //if (pData.baseEnergy >= pData.energy)
+        //{
+        var fEnergy = (float)pData.energy;
+        var energyLeftText = Energy.transform.GetChild(0).GetComponent<TextMeshProUGUI>();
+        var energyRightText = Energy.transform.GetChild(2).GetComponent<TextMeshProUGUI>();
+        var iEnergy = (float)Int32.Parse(energyLeftText.text);
+        var fMax = pData.baseEnergy;
+        energyRightText.text = fMax.ToString();
+        LeanTween.value(iEnergy, fEnergy, 1f).setOnUpdate((float f) =>
         {
-            Energy.text = pData.energy.ToString() + "/" + pData.baseEnergy;
-            EnergySlider.maxValue = pData.baseEnergy;
-            EnergySlider.value = pData.energy;
-            overFlowEn.SetActive(false);
+            f = (int)f;
+            energyLeftText.text = f.ToString();
+            if (pData.baseEnergy >= pData.energy)
+            {
+                EnergySlider.maxValue = fMax;
+                EnergySlider.value = f;
+                overFlowEn.SetActive(false);
+            }
+            else
+            {
+                EnergySlider.maxValue = fMax;
+                EnergySlider.value = fMax;
+                overFlowEn.SetActive(true);
+            }
+        }).setEaseInOutQuad();
 
-        }
-        else
-        {
-            overFlowEn.SetActive(true);
-            EnergySlider.maxValue = pData.baseEnergy;
-            EnergySlider.value = pData.baseEnergy;
-            Energy.text = "<b>" + pData.energy.ToString() + "</b>/" + pData.baseEnergy;
-        }
+        //     Energy.text = pData.energy.ToString() + "/" + pData.baseEnergy;
+        //     EnergySlider.maxValue = pData.baseEnergy;
+        //     EnergySlider.value = pData.energy;
+        //     overFlowEn.SetActive(false);
+
+        //  }
+        //  else
+        //  {
+        //      overFlowEn.SetActive(true);
+        //      EnergySlider.maxValue = pData.baseEnergy;
+        //      EnergySlider.value = pData.baseEnergy;
+        //      Energy.text = "<b>" + pData.energy.ToString() + "</b>/" + pData.baseEnergy;
+        //  }
 
 
 
