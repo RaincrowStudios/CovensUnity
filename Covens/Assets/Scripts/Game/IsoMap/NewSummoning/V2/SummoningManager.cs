@@ -60,12 +60,16 @@ public class SummoningManager : MonoBehaviour
     private int currentTier = 0;
     private int m_TweenId;
 
+    private static bool m_IsFirst = false;
 
     public static void Open(System.Action onLoaded = null)
     {
         //wait for the video to be closed/skiped
         if (!FirstTapVideoManager.Instance.CheckSummon())
+        {
+            m_IsFirst = true;
             return;
+        }
 
         if (m_Instance != null)
         {
@@ -432,10 +436,15 @@ public class SummoningManager : MonoBehaviour
 
                 ShowSpiritCastResult(marker);
 
-                int summonCost = PlayerDataManager.SummoningCosts[DownloadedAssets.spiritDict[currentSpiritID].tier - 1];
+                int tier = DownloadedAssets.spiritDict[currentSpiritID].tier;
+                int summonCost = PlayerDataManager.SummoningCosts[tier - 1];
+                int xpGained = tier * 25 * (m_IsFirst ? 2 : 1);
 
                 OnCharacterDeath.CheckSummonDeath(spiritId, summonCost);
                 PlayerDataManager.playerData.AddEnergy(-summonCost);
+                PlayerDataManager.playerData.AddExp(xpGained);
+
+                m_IsFirst = false;
             }
             else
             {
