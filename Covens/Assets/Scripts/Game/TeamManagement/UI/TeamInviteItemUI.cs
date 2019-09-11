@@ -139,7 +139,7 @@ public class TeamInviteItemUI : MonoBehaviour
                         LoadingOverlay.Hide();
                         if (string.IsNullOrEmpty(error))
                         {
-                            UIGlobalPopup.ShowPopUp(onAccept, LocalizeLookUp.GetText("coven_request_accept_success"));
+                            UIGlobalPopup.ShowPopUp(onAccept, LocalizeLookUp.GetText("coven_member_new").Replace("{{Coven Name}}", TeamManager.MyCovenData.Name));
                         }
                         else
                         {
