@@ -76,7 +76,19 @@ public class TeamMemberItemUI : MonoBehaviour
     {
         m_Level.text = MemberData.Level.ToString();
         m_PlayerName.text = MemberData.Name;
-        m_Title.text = string.IsNullOrEmpty(MemberData.Title) ? LocalizeLookUp.GetText("team_member_member_role") : MemberData.Title;
+        if (string.IsNullOrEmpty(MemberData.Title))
+        {
+            if (MemberData.Role == CovenRole.ADMIN)
+                m_Title.text = LocalizeLookUp.GetText("team_member_admin_role");
+            else if (MemberData.Role == CovenRole.MODERATOR)
+                m_Title.text = LocalizeLookUp.GetText("team_member_moderator_role");
+            else
+                m_Title.text = LocalizeLookUp.GetText("team_member_member_role");
+        }
+        else
+        {
+            m_Title.text = MemberData.Title;
+        }
         //m_TitleField.text = MemberData.Title;
         m_AdminIcon.SetActive(MemberData.Role == CovenRole.ADMIN);
         m_ModIcon.SetActive(MemberData.Role == CovenRole.MODERATOR);

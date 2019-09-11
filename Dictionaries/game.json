@@ -187,7 +187,7 @@
         0,
         1
       ],
-      "targetType": "ANY",
+      "targetType": 0,
       "states": [
         "vulnerable",
         ""
@@ -218,7 +218,7 @@
         0,
         1
       ],
-      "targetType": "ANY",
+      "targetType": 0,
       "states": [
         "vulnerable",
         ""
@@ -251,7 +251,7 @@
         0,
         1
       ],
-      "targetType": "ANY",
+      "targetType": 0,
       "states": [
         "vulnerable",
         ""
@@ -278,7 +278,7 @@
         0,
         1
       ],
-      "targetType": "ANY",
+      "targetType": 0,
       "states": [
         "vulnerable"
       ]
@@ -304,7 +304,7 @@
         0,
         1
       ],
-      "targetType": "ANY",
+      "targetType": 0,
       "states": [
         "vulnerable",
         ""
@@ -336,7 +336,7 @@
         0,
         1
       ],
-      "targetType": "ANY",
+      "targetType": 0,
       "states": [
         "vulnerable",
         ""
@@ -363,7 +363,7 @@
         0,
         1
       ],
-      "targetType": "ANY",
+      "targetType": 0,
       "states": [
         "vulnerable",
         ""
@@ -391,7 +391,7 @@
         0,
         1
       ],
-      "targetType": "ANY",
+      "targetType": 0,
       "states": [
         "vulnerable",
         ""
@@ -416,7 +416,7 @@
       "targetSchool": [
         0
       ],
-      "targetType": "ANY",
+      "targetType": 0,
       "states": [
         "vulnerable",
         ""
@@ -443,7 +443,7 @@
         0,
         1
       ],
-      "targetType": "ANY",
+      "targetType": 0,
       "states": [
         "vulnerable",
         ""
@@ -470,7 +470,7 @@
         0,
         1
       ],
-      "targetType": "ANY",
+      "targetType": 0,
       "states": [
         "vulnerable",
         ""
@@ -497,7 +497,7 @@
         0,
         1
       ],
-      "targetType": "ANY",
+      "targetType": 0,
       "states": [
         "dead"
       ]
@@ -528,7 +528,7 @@
         0,
         1
       ],
-      "targetType": "ANY",
+      "targetType": 0,
       "states": [
         "vulnerable",
         ""
@@ -560,7 +560,7 @@
         0,
         1
       ],
-      "targetType": "ANY",
+      "targetType": 0,
       "states": [
         "vulnerable",
         ""
@@ -592,7 +592,7 @@
         0,
         1
       ],
-      "targetType": "ANY",
+      "targetType": 0,
       "states": [
         "vulnerable",
         ""
@@ -623,7 +623,7 @@
         0,
         1
       ],
-      "targetType": "ANY",
+      "targetType": 0,
       "states": [
         "vulnerable",
         ""
@@ -650,7 +650,7 @@
         0,
         1
       ],
-      "targetType": "ANY",
+      "targetType": 0,
       "states": [
         "vulnerable",
         ""
@@ -682,7 +682,7 @@
         0,
         1
       ],
-      "targetType": "ANY",
+      "targetType": 0,
       "states": [
         "vulnerable",
         ""
@@ -714,7 +714,7 @@
         0,
         1
       ],
-      "targetType": "ANY",
+      "targetType": 0,
       "states": [
         "dead"
       ]
@@ -1159,6 +1159,7 @@
     "spell_wail": {
       "id": "spell_wail",
       "level": 8,
+      "glyph": 32,
       "school": -1,
       "cost": 45,
       "ingredients": [
