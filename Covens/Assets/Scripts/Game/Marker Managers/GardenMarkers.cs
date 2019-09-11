@@ -82,18 +82,17 @@ public class GardenMarkers : MonoBehaviour
         map.OnExitStreetLevel += OnStartFlying;
         map.OnEnterStreetLevel += OnStopFlying;
 
-        Debug.LogError("TODO: ENABLE GARDENS");
-        //foreach (var item in DownloadedAssets.gardenDict)
-        //{
-        //    var g = Utilities.InstantiateObject(gardenPrefab, map.trackedContainer, 0);
-        //    g.name = item.Key;
-        //    g.transform.position = map.GetWorldPosition(item.Value.longitude, item.Value.latitude);
-        //    g.transform.localEulerAngles = new Vector3(90, 0, 180);
-        //    g.GetComponentInChildren<TextMeshPro>().text = LocalizeLookUp.GetGardenName(item.Key);
+        foreach (var item in DownloadedAssets.gardenDict)
+        {
+            var g = Utilities.InstantiateObject(gardenPrefab, map.trackedContainer, 0);
+            g.name = item.Key;
+            g.transform.position = map.GetWorldPosition(item.Value.longitude, item.Value.latitude);
+            g.transform.localEulerAngles = new Vector3(90, 0, 180);
+            g.GetComponentInChildren<TextMeshPro>().text = LocalizeLookUp.GetGardenName(item.Key);
 
-        //    gardensTransform.Add(g.transform);
-        //    gardens.Add(item.Value);
-        //}
+            gardensTransform.Add(g.transform);
+            gardens.Add(item.Value);
+        }
 
         for (int i = 0; i < greyHandOffices.Length; i++)
         {
