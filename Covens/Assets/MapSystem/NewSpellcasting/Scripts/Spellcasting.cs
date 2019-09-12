@@ -93,7 +93,7 @@ public class Spellcasting
     private static Dictionary <string, System.Action<SpellData, IMarker, List<spellIngredientsData>, System.Action<Raincrow.GameEventResponses.SpellCastHandler.Result>, System.Action>> m_SpecialSpells = 
         new Dictionary<string, System.Action<SpellData, IMarker, List<spellIngredientsData>, System.Action<Raincrow.GameEventResponses.SpellCastHandler.Result>, System.Action>>
         {
-            //{ "spell_channeling", SpellChanneling.CastSpell }
+            { "spell_channeling", SpellChanneling.CastSpell }
         };
 
     public static SpellState CanCast(SpellData spell = null, IMarker target = null, CharacterMarkerData targetData = null)
@@ -250,30 +250,30 @@ public class Spellcasting
         //simulate cooldown localy
         CooldownManager.AddCooldown(spell.id, Utilities.GetUnixTimestamp(System.DateTime.UtcNow.AddSeconds(100)), spell.cooldown);
 
-        ///// SPECIAL FLOW (SPELLS THAT HAVE THEIR OWN REQUESTS
-        //if (m_SpecialSpells.ContainsKey(spell.id))
-        //{
-        //    m_SpecialSpells[spell.id].Invoke(
-        //        spell,
-        //        target,
-        //        ingredients,
-        //        (result) =>
-        //        {
-        //            //on finish spell flow
-        //            onContinue?.Invoke(result);
-        //        },
-        //        () =>
-        //        {
-        //            //on cancel spell flow
-        //            onClose?.Invoke();
-        //        }
-        //    );
-        //}
-        ///// DEFAULT FLOW (SEND A SPELL/TARGETED REQUEST)
-        //else
-        //{
-        //show the animted UI
-        UIWaitingCastResult.Instance.Show(target, spell, ingredients,
+        /// SPECIAL FLOW (SPELLS THAT HAVE THEIR OWN REQUESTS
+        if (m_SpecialSpells.ContainsKey(spell.id))
+        {
+            m_SpecialSpells[spell.id].Invoke(
+                spell,
+                target,
+                ingredients,
+                (result) =>
+                {
+                    //on finish spell flow
+                    onContinue?.Invoke(result);
+                },
+                () =>
+                {
+                    //on cancel spell flow
+                    onClose?.Invoke();
+                }
+            );
+        }
+        /// DEFAULT FLOW (SEND A SPELL/TARGETED REQUEST)
+        else
+        {
+            //show the animted UI
+            UIWaitingCastResult.Instance.Show(target, spell, ingredients,
                 (result) =>
                 { // on click continue (after spellcast result)
                     onContinue?.Invoke(result);
@@ -283,84 +283,56 @@ public class Spellcasting
                     onClose?.Invoke();
                 });
 
-        System.Action<string, int> handleResult = (a, b) => { };
-        handleResult = (response, result) =>
-        {
-            if (result == 200)
+            System.Action<string, int> handleResult = (a, b) => { };
+            handleResult = (response, result) =>
             {
-                foreach (spellIngredientsData _ing in toRemove)
-                    PlayerDataManager.playerData.SubIngredient(_ing.collectible, _ing.count);
+                if (result == 200)
+                {
+                    foreach (spellIngredientsData _ing in toRemove)
+                        PlayerDataManager.playerData.SubIngredient(_ing.collectible, _ing.count);
 
-                Raincrow.GameEventResponses.SpellCastHandler.SpellCastEventData eventData = JsonConvert.DeserializeObject<Raincrow.GameEventResponses.SpellCastHandler.SpellCastEventData>(response);
-                SpellCastHandler.HandleEvent(
-                    eventData,
-                    null,
-                    () => UIWaitingCastResult.Instance.ShowResults(spell, eventData.result));
-            }
-            else
-            {
+                    Raincrow.GameEventResponses.SpellCastHandler.SpellCastEventData eventData = JsonConvert.DeserializeObject<Raincrow.GameEventResponses.SpellCastHandler.SpellCastEventData>(response);
+                    SpellCastHandler.HandleEvent(
+                        eventData,
+                        null,
+                        () => UIWaitingCastResult.Instance.ShowResults(spell, eventData.result));
+                }
+                else
+                {
                 //retry
                 if (response == "2016")
-                {
-                    APIManager.Instance.Post(
-                        "character/cast/" + targetId,
-                        JsonConvert.SerializeObject(data),
-                        handleResult
-                    );
-                    return;
-                }
+                    {
+                        APIManager.Instance.Post(
+                            "character/cast/" + targetId,
+                            JsonConvert.SerializeObject(data),
+                            handleResult
+                        );
+                        return;
+                    }
 
                 //remove the local cooldown if there was an error
                 CooldownManager.RemoveCooldown(spell.id);
 
-                UIWaitingCastResult.Instance.Close();
+                    UIWaitingCastResult.Instance.Close();
 
                 //force a remove token event just in case the marker stayed onthe game
                 if (response == "1002")
-                {
-                    RemoveTokenHandler.ForceEvent(targetId);
-                    return;
+                    {
+                        RemoveTokenHandler.ForceEvent(targetId);
+                        return;
+                    }
+
+                    onContinue?.Invoke(new Raincrow.GameEventResponses.SpellCastHandler.Result());
+                    UIGlobalPopup.ShowError(null, APIManager.ParseError(response));
                 }
+            };
 
-                onContinue?.Invoke(new Raincrow.GameEventResponses.SpellCastHandler.Result());
-                UIGlobalPopup.ShowError(null, APIManager.ParseError(response));
-            }
-        };
-
-        //LoadingOverlay.Show();
-        APIManager.Instance.Post(
-                "character/cast/" + targetId,
-                JsonConvert.SerializeObject(data),
-                handleResult
-            );
-        //}
+            //LoadingOverlay.Show();
+            APIManager.Instance.Post(
+                    "character/cast/" + targetId,
+                    JsonConvert.SerializeObject(data),
+                    handleResult
+                );
+        }
     }
-
-    //private static void CastSpellCallback(string response, int result)
-    //{
-    //    if (result == 200)
-    //    {
-
-    //    }
-    //    else
-    //    {
-    //        if (response == "4301") //target dead
-    //        {
-    //        }
-    //        else if (response == "4700") //you are dead
-    //        {
-    //        }
-    //        else if (response == "4704") //target escaped
-    //        {
-    //        }
-    //        else if (response == "4601") // target immune
-    //        {
-
-    //        }
-    //        else
-    //        {
-    //            UIGlobalErrorPopup.ShowError(() => { }, "Error: " + response);
-    //        }
-    //    }
-    //}
 }

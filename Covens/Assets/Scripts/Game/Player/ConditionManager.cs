@@ -30,18 +30,19 @@ public static class ConditionManager
         OnPlayerApplyStatusEffect?.Invoke(statusEffect);
 
         //schedule expiration
-        data.result.statusEffect.ScheduleExpiration();
+        statusEffect.ScheduleExpiration();
 
-        //TriggerStatusEffect(effect);
-
+        TriggerStatusEffect(statusEffect);
     }
 
-    //public static void TriggerStatusEffect(StatusEffect effect)
-    //{
-
-    //    if (m_StatusBehaviorDict.ContainsKey(effect.modifiers))
-    //    {
-    //        m_StatusBehaviorDict[spell.id].Invoke(data, caster, target);
-    //    }
-    //}
+    public static void TriggerStatusEffect(StatusEffect effect)
+    {
+        //foreach (string status in effect.modifiers.status)
+        //{
+        //    if (m_StatusBehaviorDict.ContainsKey(status))
+        //    {
+        //        m_StatusBehaviorDict[effect.spell].Invoke(data, caster, target);
+        //    }
+        //}
+    }
 }
