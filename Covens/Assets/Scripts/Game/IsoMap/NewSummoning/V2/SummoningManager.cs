@@ -417,6 +417,9 @@ public class SummoningManager : MonoBehaviour
 
         //string endpoint = PlaceOfPower.IsInsideLocation ? "location/summon" : 
         string endpoint = "character/summon/" + currentSpiritID;
+
+        bool first = m_IsFirst;
+
         APIManager.Instance.Post(endpoint, "{}", (string s, int r) =>
         {
             summonButton.interactable = true;
@@ -436,15 +439,18 @@ public class SummoningManager : MonoBehaviour
 
                 ShowSpiritCastResult(marker);
 
+                if (first && PlayerDataManager.playerData.firsts.Contains("summon"))
+                    first = false;
+
                 int tier = DownloadedAssets.spiritDict[currentSpiritID].tier;
                 int summonCost = PlayerDataManager.SummoningCosts[tier - 1];
-                int xpGained = tier * 25 * (m_IsFirst ? 2 : 1);
+                int xpGained = tier * 25 * (first ? 2 : 1);
 
                 OnCharacterDeath.CheckSummonDeath(spiritId, summonCost);
                 PlayerDataManager.playerData.AddEnergy(-summonCost);
                 PlayerDataManager.playerData.AddExp(xpGained);
 
-                m_IsFirst = false;
+                first = false;
             }
             else
             {

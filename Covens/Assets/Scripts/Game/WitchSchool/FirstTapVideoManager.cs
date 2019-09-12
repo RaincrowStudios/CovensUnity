@@ -47,13 +47,13 @@ public class FirstTapVideoManager : MonoBehaviour
 
     public static bool IsFirstSummon
     {
-        get => PlayerPrefs.GetInt("first.summon." + PlayerDataManager.playerData.instance, 1) == 1;
+        get => PlayerPrefs.GetInt("first.summon." + PlayerDataManager.playerData.instance, PlayerDataManager.playerData.firsts.Contains("summon") ? 0 : 1) == 1;
         set => PlayerPrefs.SetInt("first.summon." + PlayerDataManager.playerData.instance, value ? 1 : 0);
     }
 
     public static bool IsFirstCast
     {
-        get => PlayerPrefs.GetInt("first.cast." + PlayerDataManager.playerData.instance, 1) == 1;
+        get => PlayerPrefs.GetInt("first.cast." + PlayerDataManager.playerData.instance, PlayerDataManager.playerData.firsts.Contains("cast") ? 0 : 1) == 1;
         set => PlayerPrefs.SetInt("first.cast." + PlayerDataManager.playerData.instance, value ? 1 : 0);
     }
 
