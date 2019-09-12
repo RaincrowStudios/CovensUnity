@@ -73,6 +73,8 @@ public class GameStartup : MonoBehaviour
                 return;
             }
         }
+
+        LeanTween.init(0);
     }
 
     private void Start()
