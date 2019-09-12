@@ -43,7 +43,7 @@ public class StatusEffect
     public void Expire()
     {
         LeanTween.cancel(m_ExpireTimerId);
-        Raincrow.GameEventResponses.SpellCastHandler.OnPlayerExpireStatusEffect?.Invoke(this);
+        ConditionManager.OnPlayerExpireStatusEffect?.Invoke(this);
     }
 }
 

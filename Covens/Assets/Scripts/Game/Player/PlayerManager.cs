@@ -101,6 +101,10 @@ public class PlayerManager : MonoBehaviour
 
         GardenMarkers.instance.SetupGardens();
         SoundManagerOneShot.Instance.PlayWelcome();
+
+
+        if (PlayerDataManager.playerData.state == "dead")
+            DeathState.Instance.ShowDeath();
     }
     
     void onMapChangePos()

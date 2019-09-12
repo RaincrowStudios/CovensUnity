@@ -29,10 +29,9 @@ public class BanishManager : MonoBehaviour
 
     public static void Banish(SpellCastHandler.SpellCastEventData data, IMarker caster, IMarker target)
     {
-        double longitude = data.result.moveCharacter.Value.longitude;
-        double latitude = data.result.moveCharacter.Value.latitude;
-
-
+        double longitude = data.result.moveCharacter.longitude;
+        double latitude = data.result.moveCharacter.latitude;
+        
         if (target != null)
         {
             if (target.IsPlayer)
@@ -80,7 +79,7 @@ public class BanishManager : MonoBehaviour
                     if (statusEffect.spell != "spell_bind")
                         return;
 
-                    SpellCastHandler.OnPlayerExpireStatusEffect -= waitExpiration;
+                    ConditionManager.OnPlayerExpireStatusEffect -= waitExpiration;
 
                     isBind = false;
 
@@ -92,7 +91,7 @@ public class BanishManager : MonoBehaviour
                         PlayerNotificationManager.Instance.spellBookIcon);
                 };
 
-                SpellCastHandler.OnPlayerExpireStatusEffect += waitExpiration;
+                ConditionManager.OnPlayerExpireStatusEffect += waitExpiration;
             }
             else
             {
@@ -118,7 +117,7 @@ public class BanishManager : MonoBehaviour
                     if (statusEffect.spell != "spell_silence")
                         return;
 
-                    SpellCastHandler.OnPlayerExpireStatusEffect -= waitExpiration;
+                    ConditionManager.OnPlayerExpireStatusEffect -= waitExpiration;
 
                     isSilenced = false;
                     PlayerNotificationManager.Instance.ShowNotification(
@@ -127,7 +126,7 @@ public class BanishManager : MonoBehaviour
                     );
                 };
 
-                SpellCastHandler.OnPlayerExpireStatusEffect += waitExpiration;
+                ConditionManager.OnPlayerExpireStatusEffect += waitExpiration;
             }
             else
             {

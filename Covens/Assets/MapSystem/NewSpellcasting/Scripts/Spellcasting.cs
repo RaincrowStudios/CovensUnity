@@ -212,10 +212,10 @@ public class Spellcasting
         return SpellState.InvalidSpell;
     }
 
-    public static void CastSpell(SpellData spell, 
-                                 IMarker target, 
-                                 List<spellIngredientsData> ingredients, 
-                                 System.Action<Raincrow.GameEventResponses.SpellCastHandler.Result> onContinue, 
+    public static void CastSpell(SpellData spell,
+                                 IMarker target,
+                                 List<spellIngredientsData> ingredients,
+                                 System.Action<Raincrow.GameEventResponses.SpellCastHandler.Result> onContinue,
                                  System.Action onClose)
     {
         string targetId = target == PlayerManager.marker ? PlayerDataManager.playerData.instance : target.Token.instance;
@@ -282,42 +282,56 @@ public class Spellcasting
                 { //on click close
                     onClose?.Invoke();
                 });
-            
-            //LoadingOverlay.Show();
-            APIManager.Instance.Post(
+
+        System.Action<string, int> handleResult = (a, b) => { };
+        handleResult = (response, result) =>
+        {
+            if (result == 200)
+            {
+                foreach (spellIngredientsData _ing in toRemove)
+                    PlayerDataManager.playerData.SubIngredient(_ing.collectible, _ing.count);
+
+                Raincrow.GameEventResponses.SpellCastHandler.SpellCastEventData eventData = JsonConvert.DeserializeObject<Raincrow.GameEventResponses.SpellCastHandler.SpellCastEventData>(response);
+                SpellCastHandler.HandleEvent(
+                    eventData,
+                    null,
+                    () => UIWaitingCastResult.Instance.ShowResults(spell, eventData.result));
+            }
+            else
+            {
+                //retry
+                if (response == "2016")
+                {
+                    APIManager.Instance.Post(
+                        "character/cast/" + targetId,
+                        JsonConvert.SerializeObject(data),
+                        handleResult
+                    );
+                    return;
+                }
+
+                //remove the local cooldown if there was an error
+                CooldownManager.RemoveCooldown(spell.id);
+
+                UIWaitingCastResult.Instance.Close();
+
+                //force a remove token event just in case the marker stayed onthe game
+                if (response == "1002")
+                {
+                    RemoveTokenHandler.ForceEvent(targetId);
+                    return;
+                }
+
+                onContinue?.Invoke(new Raincrow.GameEventResponses.SpellCastHandler.Result());
+                UIGlobalPopup.ShowError(null, APIManager.ParseError(response));
+            }
+        };
+
+        //LoadingOverlay.Show();
+        APIManager.Instance.Post(
                 "character/cast/" + targetId,
                 JsonConvert.SerializeObject(data),
-                (response, result) =>
-                {
-                    if (result == 200)
-                    {
-                        foreach (spellIngredientsData _ing in toRemove)
-                            PlayerDataManager.playerData.SubIngredient(_ing.collectible, _ing.count);
-
-                        Raincrow.GameEventResponses.SpellCastHandler.SpellCastEventData eventData = JsonConvert.DeserializeObject<Raincrow.GameEventResponses.SpellCastHandler.SpellCastEventData>(response);
-                        SpellCastHandler.HandleEvent(
-                            eventData,
-                            null,
-                            () => UIWaitingCastResult.Instance.ShowResults(spell, eventData.result));
-                    }
-                    else
-                    {
-                        //remove the local cooldown if there was an error
-                        CooldownManager.RemoveCooldown(spell.id);
-
-                        UIWaitingCastResult.Instance.Close();
-
-                        //force a remove token event just in case the marker stayed onthe game
-                        if (response == "1002")
-                        {
-                            RemoveTokenHandler.ForceEvent(targetId);
-                            return;
-                        }
-
-                        onContinue?.Invoke(new Raincrow.GameEventResponses.SpellCastHandler.Result());
-                        UIGlobalPopup.ShowError(null, APIManager.ParseError(response));
-                    }
-                }
+                handleResult
             );
         //}
     }
