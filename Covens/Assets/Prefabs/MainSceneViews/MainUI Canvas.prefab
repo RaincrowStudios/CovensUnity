@@ -32664,7 +32664,7 @@ RectTransform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1436194565463576}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: -0}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1.0000306, y: 1.0000306, z: 1.0000306}
   m_Children:
   - {fileID: 224731049648411020}
@@ -32674,7 +32674,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 1, y: 1}
   m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: -106, y: -99}
+  m_AnchoredPosition: {x: -325.30054, y: -99}
   m_SizeDelta: {x: 173, y: 173}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &222908615257637146
@@ -119144,7 +119144,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 1, y: 1}
   m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: -297.69934, y: -99}
+  m_AnchoredPosition: {x: -517, y: -99}
   m_SizeDelta: {x: 172.99, y: 172.99}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &222819963976687428
@@ -126400,7 +126400,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 1, y: 1}
   m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: 102, y: -115}
+  m_AnchoredPosition: {x: -117.30054, y: -115}
   m_SizeDelta: {x: 205, y: 205}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &4933618897539389977
@@ -126490,7 +126490,7 @@ MonoBehaviour:
     m_PressedTrigger: Pressed
     m_SelectedTrigger: Highlighted
     m_DisabledTrigger: Disabled
-  m_Interactable: 0
+  m_Interactable: 1
   m_TargetGraphic: {fileID: 4709044944711401357}
   m_OnClick:
     m_PersistentCalls:
