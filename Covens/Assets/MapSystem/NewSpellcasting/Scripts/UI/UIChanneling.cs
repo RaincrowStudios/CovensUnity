@@ -46,7 +46,7 @@ public class UIChanneling : UIInfoPanel
     private int m_ChannelingTweenId;
     private int m_ResultsTweenId;
     private int m_DelayTweenId;
-    private string m_ChannelInstance;
+    //private string m_ChannelInstance;
 
     protected override void Awake()
     {
@@ -63,32 +63,32 @@ public class UIChanneling : UIInfoPanel
     {
         //m_ChannelInstance = null;
         //m_Results = null;
-        //m_OnClickContinue = onClickContinue;
+        m_OnClickContinue = onClickContinue;
 
-        //LeanTween.cancel(m_ChannelingTweenId);
-        //LeanTween.cancel(m_DelayTweenId);
-        //HideResults();
+        LeanTween.cancel(m_ChannelingTweenId);
+        LeanTween.cancel(m_DelayTweenId);
+        HideResults();
 
-        //m_ChannelingCanvasGroup.blocksRaycasts = true;
-        //m_ChannelingCanvasGroup.interactable = false;
+        m_ChannelingCanvasGroup.blocksRaycasts = true;
+        m_ChannelingCanvasGroup.interactable = false;
 
         ////animate the channeling ui
-        //m_ChannelingTweenId = LeanTween.alphaCanvas(m_ChannelingCanvasGroup, 1f, 0.5f).uniqueId;
-        
-        //base.Show();
+        m_ChannelingTweenId = LeanTween.alphaCanvas(m_ChannelingCanvasGroup, 1f, 0.5f).uniqueId;
+
+        base.Show();
     }
 
-    public void SetChannelingInstance(string instance)
+    public void SetInteractable(bool interactable)
     {
-        m_ChannelInstance = instance;
+        LeanTween.cancel(m_DelayTweenId);
 
-        //add delay to enable the stop button
-        m_DelayTweenId = LeanTween.value(0, 0, 2f).setOnComplete(() =>
+        m_DelayTweenId = LeanTween.value(0, 0, 0.1f).setOnComplete(() =>
         {
-            m_ChannelingCanvasGroup.interactable = true;
+            m_ChannelingCanvasGroup.interactable = interactable;
+            m_ResultsCanvasGroup.interactable = interactable;
         }).uniqueId;
     }
-
+    
     private void HideChanneling()
     {
         LeanTween.cancel(m_DelayTweenId);
@@ -103,18 +103,18 @@ public class UIChanneling : UIInfoPanel
 
     public void ShowResults(Raincrow.GameEventResponses.SpellCastHandler.Result result, string error)
     {
-        //LeanTween.cancel(m_ResultsTweenId);
+        LeanTween.cancel(m_ResultsTweenId);
 
-        //if (string.IsNullOrEmpty(error))
-        //    m_ResultsContent.text = Newtonsoft.Json.JsonConvert.SerializeObject(result);
-        //else
-        //    m_ResultsContent.text = "error: " + error;
+        if (string.IsNullOrEmpty(error))
+            m_ResultsContent.text = Newtonsoft.Json.JsonConvert.SerializeObject(result);
+        else
+            m_ResultsContent.text = "error: " + error;
 
-        //m_ResultsCanvasGroup.interactable = true;
-        //m_ResultsCanvasGroup.blocksRaycasts = true;
+        m_ResultsCanvasGroup.interactable = true;
+        m_ResultsCanvasGroup.blocksRaycasts = true;
 
-        //m_ResultsTweenId = LeanTween.alphaCanvas(m_ResultsCanvasGroup, 1f, 0.5f).uniqueId;
-        //HideChanneling();
+        m_ResultsTweenId = LeanTween.alphaCanvas(m_ResultsCanvasGroup, 1f, 0.5f).uniqueId;
+        HideChanneling();
     }
 
     private void HideResults()
@@ -142,7 +142,6 @@ public class UIChanneling : UIInfoPanel
 
         //send stop channeling request
         SpellChanneling.StopChanneling(
-            m_ChannelInstance,
             (res, error) =>
             {
                 ShowResults(res, error);

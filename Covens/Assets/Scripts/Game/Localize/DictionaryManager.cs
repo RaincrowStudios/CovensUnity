@@ -59,18 +59,6 @@ public class DictionaryManager
 
     public static void GetLocalisationDictionary(string version, System.Action onDicionaryReady, System.Action<int, string> onDownloadError, System.Action onParseError)
     {
-#if UNITY_EDITOR
-        if (!Application.isPlaying)
-            return;
-
-        //TextAsset english = (TextAsset)UnityEditor.EditorGUIUtility.Load("english.json");
-        //if (DownloadManager.DeserializeLocalisationDictionary(version, english.text))
-        //    onDicionaryReady?.Invoke();
-        //else
-        //    onParseError?.Invoke();
-        //return;
-#endif
-
         string json;
         string language = Languages[languageIndex];
         string localPath = System.IO.Path.Combine(Application.persistentDataPath, language + ".text");
@@ -126,16 +114,20 @@ public class DictionaryManager
 
     public static void GetGameDictionary(string version, System.Action onDicionaryReady, System.Action<int, string> onDownloadError, System.Action onParseError)
     {
+
 #if UNITY_EDITOR
         if (!Application.isPlaying)
             return;
 
-        //TextAsset gamedata = (TextAsset)UnityEditor.EditorGUIUtility.Load("gamedata.json");
-        //if (DownloadManager.DeserializeGameDictionary(version, gamedata.text))
-        //    onDicionaryReady?.Invoke();
-        //else
-        //    onParseError?.Invoke();
-        //return;
+        if (UnityEditor.EditorPrefs.GetBool("DebugUtils.UseLocalGameDict", false))
+        {
+            TextAsset gamedata = (TextAsset)UnityEditor.EditorGUIUtility.Load("game.json");
+            if (DownloadManager.DeserializeGameDictionary(gamedata.text))
+                onDicionaryReady?.Invoke();
+            else
+                onParseError?.Invoke();
+            return;
+        }
 #endif
 
         CrashReportHandler.SetUserMetadata("gamedata", version);

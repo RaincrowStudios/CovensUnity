@@ -265,7 +265,7 @@ public class UIApothecary : MonoBehaviour
             );
 
             StatusEffect effect = JsonConvert.DeserializeObject<StatusEffect>(response);
-            SpellCastHandler.OnPlayerApplyStatusEffect?.Invoke(effect);
+            ConditionManager.OnPlayerApplyStatusEffect?.Invoke(effect);
         }
         else
         {

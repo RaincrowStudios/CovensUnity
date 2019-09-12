@@ -91,11 +91,6 @@ public class PlayerManagerUI : UIAnimationManager
 
         SetupAlignmentPhase();
         setupXP();
-
-        if (PlayerDataManager.playerData.state == "dead")
-        {
-            DeathState.Instance.ShowDeath();
-        }
     }
 
     public void checkTime()

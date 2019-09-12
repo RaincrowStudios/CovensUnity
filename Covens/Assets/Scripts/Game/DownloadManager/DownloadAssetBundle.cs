@@ -26,6 +26,7 @@ public class AssetCacheJson
 
 public struct ConditionData
 {
+    [JsonProperty("spellId")]
     public string spellID;
 }
 
@@ -54,34 +55,55 @@ public struct SpiritData
 
 public struct PlaceOfPowerSettings
 {
+    public struct EntryCost
+    {
+        public int gold;
+        public int silver;
+    }
+
     public int[] openTimeWindow;
     public int[] cooldownWindow;
-    public int[] silverCost;
-    public int[] goldCost;
+    public List<EntryCost> entryCosts;
 }
 
 public class GameSettingsData
 {
     public int[] summoningCosts;
     public float idleTimeLimit;
-    public float interactionRadius;
+    //public float interactionRadius;
     [JsonProperty("witchVideos")]
     public string[] witchSchool;
     public long[] alignment;
+    [JsonProperty("xp")]
     public ulong[] exp;
     public int[] baseEnergy;
     public float[] lunarEfficiency;
 
+    [JsonProperty("placeOfPower")]
     public PlaceOfPowerSettings PlaceOfPower;
 
+    [JsonProperty("spells")]
     public Dictionary<string, SpellData> Spells;
+
+    [JsonProperty("spirits")]
     public Dictionary<string, SpiritData> Spirits;
-    public Dictionary<string, GardenData> Gardens;
+    
+    [JsonProperty("collectibles")]
     public Dictionary<string, IngredientData> Collectibles;
+
+    [JsonProperty("conditions")]
     public Dictionary<string, ConditionData> Conditions;
+
+    [JsonProperty("cosmetics")]
     public Dictionary<string, CosmeticData> Cosmetics;
-    public Dictionary<string, IngredientBundleData> Bundles;
+
+    [JsonProperty("bundles")]
+    public Dictionary<string, List<ItemData>> Bundles;
+
+    [JsonProperty("consumables")]
     public Dictionary<string, ConsumableData> Consumables;
+
+    [JsonProperty("silver")]
     public Dictionary<string, SilverBundleData> Silver;
 }
 

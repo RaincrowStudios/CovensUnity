@@ -27,6 +27,8 @@ namespace Raincrow.GameEventResponses
                 public double longitude;
                 [JsonProperty("newLatitude")]
                 public double latitude;
+                [JsonProperty("shouldMove")]
+                public bool move;
             }
 
             public long damage;
@@ -37,7 +39,7 @@ namespace Raincrow.GameEventResponses
             public StatusEffect statusEffect;
 
             [JsonProperty("moveCharacter")]
-            public MoveData? moveCharacter;
+            public MoveData moveCharacter;
         }
 
         public struct SpellCastEventData
@@ -53,20 +55,12 @@ namespace Raincrow.GameEventResponses
 
         public string EventName => "cast.spell";
         public static event System.Action<string, SpellData, Result> OnPlayerTargeted;
-        public static System.Action<StatusEffect> OnPlayerApplyStatusEffect;
-        public static System.Action<StatusEffect> OnPlayerExpireStatusEffect;
 
         public static event System.Action<string, string, SpellData, Result> OnSpellCast;
         public static event System.Action<string, StatusEffect> OnApplyStatusEffect;
 
         public static System.Action<string> OnSpiritBanished;
 
-        private static Dictionary<string, System.Action<SpellCastEventData, IMarker, IMarker>> m_SpellBehaviorDict = new Dictionary<string, System.Action<SpellCastEventData, IMarker, IMarker>>()
-        {
-            { "spell_banish",   BanishManager.Banish },
-            { "spell_bind",     BanishManager.Bind },
-            { "spell_silence",  BanishManager.Silence }
-        };
 
 
         public void HandleResponse(string eventData)
@@ -171,21 +165,7 @@ namespace Raincrow.GameEventResponses
                         OnApplyStatusEffect?.Invoke(data.target.id, data.result.statusEffect);
 
                         if (playerIsTarget)
-                        {
-                            foreach (StatusEffect item in PlayerDataManager.playerData.effects)
-                            {
-                                if (item.spell == data.result.statusEffect.spell)
-                                {
-                                    PlayerDataManager.playerData.effects.Remove(item);
-                                    break;
-                                }
-                            }
-                            PlayerDataManager.playerData.effects.Add(data.result.statusEffect);
-                            OnPlayerApplyStatusEffect?.Invoke(data.result.statusEffect);
-
-                            //schedule expiration
-                            data.result.statusEffect.ScheduleExpiration();
-                        }
+                            ConditionManager.AddCondition(data.result.statusEffect, data);
                     }
 
                     //add the immunity if the server said so
@@ -201,15 +181,11 @@ namespace Raincrow.GameEventResponses
                     {
                         if (data.result.isSuccess)
                         {
-                            if (m_SpellBehaviorDict.ContainsKey(spell.id))
-                            {
-                                m_SpellBehaviorDict[spell.id].Invoke(data, caster, target);
-                            }
-                            else
-                            {
-                                SpellcastingFX.SpawnGlyph(target, spell, data.spell);
-                                SpellcastingFX.SpawnDamage(target, damage, data.result.isCritical);
-                            }
+                            if (data.result.moveCharacter.move)
+                                BanishManager.Banish(data, caster, target);
+                                                        
+                            SpellcastingFX.SpawnGlyph(target, spell, data.spell);
+                            SpellcastingFX.SpawnDamage(target, damage, data.result.isCritical);
                         }
 
                         else

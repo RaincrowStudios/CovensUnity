@@ -444,7 +444,7 @@ public class DownloadManager : MonoBehaviour
             {
                 DefaultValueHandling = DefaultValueHandling.Populate
             });
-
+            
             PlayerDataManager.SummoningCosts = data.summoningCosts;
             PlayerDataManager.alignmentPerDegree = data.alignment;
             PlayerDataManager.xpToLevelup = data.exp;
@@ -452,8 +452,19 @@ public class DownloadManager : MonoBehaviour
             MoonManager.LunarEffeciency = data.lunarEfficiency;
 
             DownloadedAssets.spellDictData = data.Spells;
+            DownloadedAssets.spellDictData["attack"] = new SpellData
+            {
+                id = "attack",
+                baseSpell = "",
+                glyph = 9,
+                school = -1,
+                target = SpellData.Target.OTHER,
+                states = new List<string> { "", "vulnerable" },
+                hidden = true
+            };
+
             DownloadedAssets.spiritDict = data.Spirits;
-            DownloadedAssets.gardenDict = data.Gardens;
+            //DownloadedAssets.gardenDict = data.Gardens;
             DownloadedAssets.conditionsDict = data.Conditions;
             DownloadedAssets.ingredientDict = data.Collectibles;
             WitchSchoolManager.witchVideos = data.witchSchool;
