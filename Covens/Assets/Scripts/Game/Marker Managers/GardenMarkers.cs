@@ -55,6 +55,8 @@ public class GardenMarkers : MonoBehaviour
 
     IMaps map;
 
+    private const string m_GardensJson = @"{""garden_brockenMountain"":{""latitude"":51.7996,""longitude"":10.61525,""distance"":75000},""garden_hellfireClub"":{""latitude"":53.25235,""longitude"":-6.330009,""distance"":35000},""garden_crossroadsAncient"":{""latitude"":34.52653,""longitude"":69.15392,""distance"":75000},""garden_xunantunich"":{""latitude"":17.092,""longitude"":-89.14152,""distance"":75000},""garden_crossroadsAmerica"":{""latitude"":40.75998,""longitude"":-73.98418,""distance"":10000},""garden_bellWitch"":{""latitude"":36.5916,""longitude"":-87.05484,""distance"":75000},""garden_lostLaNoria"":{""latitude"":-27.92623,""longitude"":-70.87649,""distance"":100000},""garden_fengdu"":{""latitude"":29.88803,""longitude"":107.7188,""distance"":35000},""garden_nakagusukuRift"":{""latitude"":26.28284,""longitude"":127.7972,""distance"":75000},""garden_hoghtonBottoms"":{""latitude"":53.7328,""longitude"":-2.574073,""distance"":75000}}";
+
     private void Awake()
     {
         instance = this;
@@ -77,12 +79,15 @@ public class GardenMarkers : MonoBehaviour
 
     public void SetupGardens()
     {
+        //Debug.LogError("TODO: ENABLE GARDENS");
+        //return;
+        var gardenDict = JsonConvert.DeserializeObject<Dictionary<string, GardenData>>(m_GardensJson);
         map = MapsAPI.Instance;
 
         map.OnExitStreetLevel += OnStartFlying;
         map.OnEnterStreetLevel += OnStopFlying;
 
-        foreach (var item in DownloadedAssets.gardenDict)
+        foreach (var item in gardenDict)
         {
             var g = Utilities.InstantiateObject(gardenPrefab, map.trackedContainer, 0);
             g.name = item.Key;

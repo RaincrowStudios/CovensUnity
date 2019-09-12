@@ -7,12 +7,6 @@ using System.ComponentModel;
 
 namespace Raincrow.Store
 {
-    public struct IngredientBundleData
-    {
-        public List<string> collectables;
-        public int[] amount;
-    }
-
     public struct ConsumableData
     {
         public float duration;
@@ -124,7 +118,7 @@ namespace Raincrow.Store
             }
         }
 
-        public static Dictionary<string, IngredientBundleData> BundleDict { get; set; }
+        public static Dictionary<string, List<ItemData>> BundleDict { get; set; }
         public static Dictionary<string, ConsumableData> ConsumableDict { get; set; }
         public static Dictionary<string, SilverBundleData> SilverBundleDict { get; set; }
 
@@ -181,7 +175,7 @@ namespace Raincrow.Store
 
                         case "bundles":
                             debug += "[bundles] " + id;
-                            IngredientBundleData bundle = StoreManagerAPI.GetBundle(id);
+                            ItemData[] bundle = StoreManagerAPI.GetBundle(id);
 
                             //get the price
                             if (currency == "silver")
@@ -190,10 +184,10 @@ namespace Raincrow.Store
                                 gold = Store.GetPrice(type, id, false);
 
                             //add the ingredients to the inventory
-                            for (int i = 0; i < bundle.collectables.Count; i++)
+                            for (int i = 0; i < bundle.Length; i++)
                             {
-                                debug += "\n\t" + bundle.collectables[i] + " +" + bundle.amount[i];
-                                PlayerDataManager.playerData.AddIngredient(bundle.collectables[i], bundle.amount[i]);
+                                debug += "\n\t" + bundle[i].id+ " +" + bundle[i].count;
+                                PlayerDataManager.playerData.AddIngredient(bundle[i].id, bundle[i].count);
                             }
                             break;
 
@@ -250,16 +244,16 @@ namespace Raincrow.Store
             });
         }
 
-        public static IngredientBundleData GetBundle(string id)
+        public static ItemData[] GetBundle(string id)
         {
             if (BundleDict.ContainsKey(id))
             {
-                return BundleDict[id];
+                return BundleDict[id].ToArray();
             }
             else
             {
                 LogError($"ingredient bundle not found (\"{id}\")");
-                return new IngredientBundleData();
+                return new ItemData[0];
             }
         }
 
@@ -298,7 +292,7 @@ namespace Raincrow.Store
             m_OldStore.bundles = new List<StoreApiItem>();
             foreach (StoreItem item in data.Bundles)
             {
-                IngredientBundleData bundle = GetBundle(item.id);
+                ItemData[] bundle = GetBundle(item.id);
 
                 StoreApiItem aux = new StoreApiItem();
                 aux.id = item.id;
@@ -306,15 +300,15 @@ namespace Raincrow.Store
                 aux.silver = item.silver;
                 aux.gold = item.gold;
 
-                if (bundle.collectables != null)
+                if (bundle != null)
                 {
                     aux.contents = new List<StoreItemContent>();
-                    for (int i = 0; i < bundle.collectables.Count; i++)
+                    for (int i = 0; i < bundle.Length; i++)
                     {
                         aux.contents.Add(new StoreItemContent()
                         {
-                            id = bundle.collectables[i],
-                            count = bundle.amount[i]
+                            id = bundle[i].id,
+                            count = bundle[i].count
                         });
                     }
                 }
