@@ -93,7 +93,7 @@ public class Spellcasting
     private static Dictionary <string, System.Action<SpellData, IMarker, List<spellIngredientsData>, System.Action<Raincrow.GameEventResponses.SpellCastHandler.Result>, System.Action>> m_SpecialSpells = 
         new Dictionary<string, System.Action<SpellData, IMarker, List<spellIngredientsData>, System.Action<Raincrow.GameEventResponses.SpellCastHandler.Result>, System.Action>>
         {
-            //{ "spell_channeling", SpellChanneling.CastSpell }
+            { "spell_channeling", SpellChanneling.CastSpell }
         };
 
     public static SpellState CanCast(SpellData spell = null, IMarker target = null, CharacterMarkerData targetData = null)
@@ -250,39 +250,28 @@ public class Spellcasting
         //simulate cooldown localy
         CooldownManager.AddCooldown(spell.id, Utilities.GetUnixTimestamp(System.DateTime.UtcNow.AddSeconds(100)), spell.cooldown);
 
-        ///// SPECIAL FLOW (SPELLS THAT HAVE THEIR OWN REQUESTS
-        //if (m_SpecialSpells.ContainsKey(spell.id))
-        //{
-        //    m_SpecialSpells[spell.id].Invoke(
-        //        spell,
-        //        target,
-        //        ingredients,
-        //        (result) =>
-        //        {
-        //            //on finish spell flow
-        //            onContinue?.Invoke(result);
-        //        },
-        //        () =>
-        //        {
-        //            //on cancel spell flow
-        //            onClose?.Invoke();
-        //        }
-        //    );
-        //}
-        ///// DEFAULT FLOW (SEND A SPELL/TARGETED REQUEST)
-        //else
-        //{
-        //show the animted UI
-        UIWaitingCastResult.Instance.Show(target, spell, ingredients,
-                (result) =>
-                { // on click continue (after spellcast result)
-                    onContinue?.Invoke(result);
-                },
-                () =>
-                { //on click close
-                    onClose?.Invoke();
-                });
-            
+        /// SPECIAL FLOW (SPELLS THAT HAVE THEIR OWN REQUESTS
+        if (m_SpecialSpells.ContainsKey(spell.id))
+        {
+            m_SpecialSpells[spell.id].Invoke(
+                spell,
+                target,
+                ingredients,
+                (result) => onContinue?.Invoke(result),
+                () => onClose?.Invoke()
+            );
+        }
+        /// DEFAULT FLOW (SEND A SPELL/TARGETED REQUEST)
+        else
+        {
+            //show the animted UI
+            UIWaitingCastResult.Instance.Show(
+                target, 
+                spell, 
+                ingredients,
+                (result) => onContinue?.Invoke(result),
+                () => onClose?.Invoke());
+
             //LoadingOverlay.Show();
             APIManager.Instance.Post(
                 "character/cast/" + targetId,
@@ -319,7 +308,7 @@ public class Spellcasting
                     }
                 }
             );
-        //}
+        }
     }
 
     //private static void CastSpellCallback(string response, int result)
