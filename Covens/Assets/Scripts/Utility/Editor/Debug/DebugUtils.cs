@@ -225,26 +225,25 @@ namespace Raincrow.Test
         }
 
 
-        private string m_sCommandResponse = "{}";
-        private string m_sCommandResponseData = "{}";
-        private string m_sItemData = "{}";
-        private double m_JavascriptDate = 0;
-        private float m_Longitude;
-        private float m_Latitude;
+        [SerializeField] private string m_sCommandResponse = "{}";
+        [SerializeField] private string m_sCommandResponseData = "{}";
+        [SerializeField] private string m_sItemData = "{}";
+        [SerializeField] private double m_JavascriptDate = 0;
+        [SerializeField] private float m_Longitude;
+        [SerializeField] private float m_Latitude;
 
-        private Vector2 m_ChatPlayerScroll = Vector2.zero;
+        public static bool UseLocalGameDictionary
+        {
+            get => EditorPrefs.GetBool("DebugUtils.UseLocalGameDict", false);
+            set => EditorPrefs.SetBool("DebugUtils.UseLocalGameDict", value);
+        }
+
+        [SerializeField] private Vector2 m_ChatPlayerScroll = Vector2.zero;
         private Raincrow.Chat.ChatPlayer m_ChatDebugPlayer = null;
         private Raincrow.Chat.ChatMessage m_ChatDebugMessage;
-        public Raincrow.SceneManager.Scene m_StartScene = Raincrow.SceneManager.Scene.GAME;
 
         private void Others()
         {
-            
-            using (new BoxScope())
-            {
-
-            }
-
             EditorGUI.BeginDisabledGroup(EditorApplication.isCompiling);
 
             using (new BoxScope())
@@ -294,6 +293,10 @@ namespace Raincrow.Test
                 {
                     EditorUtility.RevealInFinder(Application.persistentDataPath);
                 }
+
+                GUILayout.Space(5);
+                GUILayout.Label("Dictionary");
+                UseLocalGameDictionary = EditorGUILayout.ToggleLeft("Use local game.json (\"Editor Default Resources/game.json\"", UseLocalGameDictionary);
             }
 
             EditorGUI.EndDisabledGroup();
