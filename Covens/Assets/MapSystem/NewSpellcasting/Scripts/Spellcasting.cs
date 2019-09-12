@@ -172,24 +172,24 @@ public class Spellcasting
                 if (spell.states.Contains(targetData.state) == false)
                     return SpellState.InvalidState;
 
-                //target status effect
-                if (spell.targetStatus != null && spell.targetStatus.Count > 0)
-                {
-                    bool statusValid = false;
-                    foreach (string requiredStatus in spell.targetStatus)
-                    {
-                        foreach (var statusEffect in targetData.effects)
-                        {
-                            if (statusEffect.spell == requiredStatus)
-                            {
-                                statusValid = true;
-                                break;
-                            }
-                        }
-                    }
-                    if (statusValid == false)
-                        return SpellState.InvalidTargetStatus;
-                }
+                ////target status effect
+                //if (spell.targetStatus != null && spell.targetStatus.Count > 0)
+                //{
+                //    bool statusValid = false;
+                //    foreach (string requiredStatus in spell.targetStatus)
+                //    {
+                //        foreach (var statusEffect in targetData.effects)
+                //        {
+                //            if (statusEffect.spell == requiredStatus)
+                //            {
+                //                statusValid = true;
+                //                break;
+                //            }
+                //        }
+                //    }
+                //    if (statusValid == false)
+                //        return SpellState.InvalidTargetStatus;
+                //}
             }
         }
         else if (target != null)
