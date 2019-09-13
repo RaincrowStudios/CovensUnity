@@ -105,6 +105,9 @@ public class PlayerManager : MonoBehaviour
 
         if (PlayerDataManager.playerData.state == "dead")
             DeathState.Instance.ShowDeath();
+
+        foreach (var condition in PlayerDataManager.playerData.effects)
+            ConditionManager.TriggerStatusEffect(condition, null);
     }
     
     void onMapChangePos()

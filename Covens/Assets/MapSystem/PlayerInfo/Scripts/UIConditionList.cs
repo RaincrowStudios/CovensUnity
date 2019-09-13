@@ -77,8 +77,8 @@ public class UIConditionList : MonoBehaviour
         {
             if (_conditionItem.condition.spell == condition.spell)
             {
-                _conditionItem.OnTimerFinish = () => RemoveCondition(condition);
                 _conditionItem.Setup(condition, () => UIConditionInfo.Instance.Show(condition.spell, _conditionItem.GetComponent<RectTransform>(), new Vector2(1, 1)));
+                condition.ScheduleExpiration(() => RemoveCondition(condition));
                 return;
             }
         }
@@ -87,8 +87,8 @@ public class UIConditionList : MonoBehaviour
 
         UIConditionItem instance = m_ItemPool.Spawn(m_Container.transform);
         instance.transform.localScale = Vector3.one;
-        instance.OnTimerFinish = () => RemoveCondition(condition);
         instance.Setup(condition, () => UIConditionInfo.Instance.Show(condition.spell, instance.GetComponent<RectTransform>(), new Vector2(1, 1)));
+        condition.ScheduleExpiration(() => RemoveCondition(condition));
 
         show = true;
     }

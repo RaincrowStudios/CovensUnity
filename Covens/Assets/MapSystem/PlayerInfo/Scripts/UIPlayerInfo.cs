@@ -294,6 +294,7 @@ public class UIPlayerInfo : UIInfoPanel
             if (item.spell == statusEffect.spell)
             {
                 WitchMarkerDetails.effects.Remove(item);
+                item.CancelExpiration();
                 break;
             }
         }

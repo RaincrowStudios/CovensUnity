@@ -15,7 +15,7 @@ public class UIConditionItem : MonoBehaviour
     private System.Action m_OnClick;
     public StatusEffect condition { get; private set; }
 
-    public System.Action OnTimerFinish;
+    //public System.Action OnTimerFinish;
 
     private void Awake()
     {
@@ -83,8 +83,8 @@ public class UIConditionItem : MonoBehaviour
                 if (timespan.TotalSeconds <= 0)
                 {
                     m_TimerText.text = "00:00";
-                    OnTimerFinish?.Invoke();
-                    OnTimerFinish = null;
+                    //OnTimerFinish?.Invoke();
+                    //OnTimerFinish = null;
                 }
                 else
                 {

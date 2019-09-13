@@ -29,7 +29,9 @@ public class StatusEffect
     public double expiresOn;
 
     private int m_ExpireTimerId;
-    public void ScheduleExpiration()
+    private System.Action m_OnExpire;
+    
+    public void ScheduleExpiration(System.Action onExpire)
     {
         LeanTween.cancel(m_ExpireTimerId, false);
 
@@ -37,13 +39,20 @@ public class StatusEffect
             return;
 
         float duration = (float)Utilities.TimespanFromJavaTime(expiresOn).TotalSeconds;
-        LeanTween.value(0, 0, duration).setOnComplete(Expire);
+        m_ExpireTimerId = LeanTween.value(0, 0, duration).setOnComplete(Expire).uniqueId;
+        this.m_OnExpire = onExpire;
+    }
+
+    public void CancelExpiration()
+    {
+        LeanTween.cancel(m_ExpireTimerId);
+        m_OnExpire = null;
     }
 
     public void Expire()
     {
-        LeanTween.cancel(m_ExpireTimerId);
-        ConditionManager.OnPlayerExpireStatusEffect?.Invoke(this);
+        LeanTween.cancel(m_ExpireTimerId);        
+        m_OnExpire?.Invoke();
     }
 }
 

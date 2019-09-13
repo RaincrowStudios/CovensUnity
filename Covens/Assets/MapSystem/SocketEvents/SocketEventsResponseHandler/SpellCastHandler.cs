@@ -165,7 +165,7 @@ namespace Raincrow.GameEventResponses
                         OnApplyStatusEffect?.Invoke(data.target.id, data.result.statusEffect);
 
                         if (playerIsTarget)
-                            ConditionManager.AddCondition(data.result.statusEffect, data);
+                            ConditionManager.AddCondition(data.result.statusEffect, caster);
                     }
 
                     //add the immunity if the server said so
@@ -175,15 +175,15 @@ namespace Raincrow.GameEventResponses
                         if (target != null && target is WitchMarker)
                             (target as WitchMarker).AddImmunityFX();
                     }
+                    
+                    if (data.result.moveCharacter.move && playerIsTarget)
+                        BanishManager.Banish(data, caster, target);
 
                     //handle spell/animation
                     if (target != null)
                     {
                         if (data.result.isSuccess)
-                        {
-                            if (data.result.moveCharacter.move)
-                                BanishManager.Banish(data, caster, target);
-                                                        
+                        {                                                        
                             SpellcastingFX.SpawnGlyph(target, spell, data.spell);
                             SpellcastingFX.SpawnDamage(target, damage, data.result.isCritical);
                         }

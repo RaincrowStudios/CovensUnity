@@ -45,6 +45,7 @@ public class UIPlayerConditions : MonoBehaviour
         m_InputRaycaster.enabled = false;
 
         ConditionManager.OnPlayerApplyStatusEffect += AddCondition;
+        ConditionManager.OnPlayerExpireStatusEffect += OnConditionExpire;
         OnMapEnergyChange.OnPlayerDead += SetupCounter;
     }
 
@@ -132,7 +133,7 @@ public class UIPlayerConditions : MonoBehaviour
         {
             if (_item.condition.spell == condition.spell)
             {
-                _item.OnTimerFinish = () => RemoveCondition(condition.spell);
+                //_item.OnTimerFinish = () => RemoveCondition(condition.spell);
                 _item.Setup(
                     condition,
                     () => UIConditionInfo.Instance.Show(condition.spell, _item.GetComponent<RectTransform>(), new Vector2(0, 1), true));
@@ -153,6 +154,11 @@ public class UIPlayerConditions : MonoBehaviour
         SetupCounter();
     }
 
+    private void OnConditionExpire(StatusEffect condition)
+    {
+        RemoveCondition(condition.spell);
+    }
+
     private void RemoveCondition(string condition)
     {
         List<UIConditionItem> active = m_ItemPool.GetInstances();
@@ -160,7 +166,6 @@ public class UIPlayerConditions : MonoBehaviour
         {
             if (_item.condition.spell == condition)
             {
-                _item.condition.Expire();
                 m_ItemPool.Despawn(_item);
                 break;
             }

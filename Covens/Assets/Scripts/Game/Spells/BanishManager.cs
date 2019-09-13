@@ -17,8 +17,52 @@ public class BanishManager : MonoBehaviour
     public static double bindTimeStamp { get; private set; }
     public static double silenceTimeStamp { get; private set; }
 
-    public static bool isSilenced { get; private set; }
-    public static bool isBind { get; private set; }
+    public static bool isSilenced
+    {
+        get
+        {
+            if (PlayerDataManager.playerData.effects == null)
+                return false;
+
+            foreach(var effect in PlayerDataManager.playerData.effects)
+            {
+                if (effect.modifiers.status == null)
+                    continue;
+
+                foreach (string status in effect.modifiers.status)
+                {
+                    if (status == "silenced")
+                        return true;
+                }
+            }
+
+            return false;
+        }
+    }
+
+    public static bool isBind
+    {
+        get
+        {
+            if (PlayerDataManager.playerData.effects == null)
+                return false;
+
+            foreach (var effect in PlayerDataManager.playerData.effects)
+            {
+                if (effect.modifiers.status == null)
+                    continue;
+
+                foreach (string status in effect.modifiers.status)
+                {
+                    if (status == "bound")
+                        return true;
+                }
+            }
+
+            return false;
+        }
+    }
+
 
     public static event System.Action OnBanished;
 
@@ -57,83 +101,50 @@ public class BanishManager : MonoBehaviour
         }
     }
 
-    public static void Bind(SpellCastHandler.SpellCastEventData data, IMarker caster, IMarker target)
+    public static void Bind(StatusEffect effect, IMarker caster)
     {
-        if (target != null)
-        {
-            if (target.IsPlayer)
-            {
-                isBind = true;
+        if (isBind == false)
+            return;
 
-                PlayerManager.Instance.CancelFlight();
-                //bindTimeStamp = condition.expiresOn;
-                Instance.flyButton.SetActive(false);
-                Instance.bindLock.SetActive(true);
-                Instance.recallButton.interactable = false;
+        PlayerManager.Instance.CancelFlight();
+        //bindTimeStamp = condition.expiresOn;
+        Instance.flyButton.SetActive(false);
+        Instance.bindLock.SetActive(true);
+        Instance.recallButton.interactable = false;
 
-                UIPlayerBound.Show(caster == null ? "" : caster.Name);
-
-                System.Action<StatusEffect> waitExpiration = (se) => { };
-                waitExpiration = (statusEffect) =>
-                {
-                    if (statusEffect.spell != "spell_bind")
-                        return;
-
-                    ConditionManager.OnPlayerExpireStatusEffect -= waitExpiration;
-
-                    isBind = false;
-
-                    Instance.recallButton.interactable = true;
-                    Instance.flyButton.SetActive(true);
-                    Instance.bindLock.SetActive(false);
-                    PlayerNotificationManager.Instance.ShowNotification(
-                        LocalizeLookUp.GetText("spell_bound_null"),
-                        PlayerNotificationManager.Instance.spellBookIcon);
-                };
-
-                ConditionManager.OnPlayerExpireStatusEffect += waitExpiration;
-            }
-            else
-            {
-
-                SpellData spell = DownloadedAssets.GetSpell(data.spell);
-                SpellcastingFX.SpawnGlyph(target, spell, spell.baseSpell);
-            }
-        }
+        UIPlayerBound.Show(caster == null ? "" : caster.Name, effect.expiresOn);
     }
 
-    public static void Silence(SpellCastHandler.SpellCastEventData data, IMarker caster, IMarker target)
+    public static void Unbind(StatusEffect effect, IMarker caster)
     {
-        if (target != null)
-        {
-            if (target.IsPlayer)
-            {
-                isSilenced = true;
-                UIPlayerSilenced.Show(caster == null ? "" : caster.Name);
+        if (isBind)
+            return;
 
-                System.Action<StatusEffect> waitExpiration = (se) => { };
-                waitExpiration = (statusEffect) =>
-                {
-                    if (statusEffect.spell != "spell_silence")
-                        return;
+        Instance.recallButton.interactable = true;
+        Instance.flyButton.SetActive(true);
+        Instance.bindLock.SetActive(false);
+        PlayerNotificationManager.Instance.ShowNotification(
+            LocalizeLookUp.GetText("spell_bound_null"),
+            PlayerNotificationManager.Instance.spellBookIcon);
+    }
 
-                    ConditionManager.OnPlayerExpireStatusEffect -= waitExpiration;
+    public static void Silence(StatusEffect effect, IMarker caster)
+    {
+        if (isSilenced == false)
+            return;
 
-                    isSilenced = false;
-                    PlayerNotificationManager.Instance.ShowNotification(
-                        LocalizeLookUp.GetText("spell_silenced_null"),
-                        PlayerNotificationManager.Instance.spellBookIcon
-                    );
-                };
+        UIPlayerSilenced.Show(caster == null ? "" : caster.Name, effect.expiresOn);
+    }
 
-                ConditionManager.OnPlayerExpireStatusEffect += waitExpiration;
-            }
-            else
-            {
-                SpellData spell = DownloadedAssets.GetSpell(data.spell);
-                SpellcastingFX.SpawnGlyph(target, spell, spell.baseSpell);
-            }
-        }
+    public static void Unsilence(StatusEffect effect, IMarker caster)
+    {
+        if (isSilenced)
+            return;
+
+        PlayerNotificationManager.Instance.ShowNotification(
+            LocalizeLookUp.GetText("spell_silenced_null"),
+            PlayerNotificationManager.Instance.spellBookIcon
+        );
     }
 }
 
