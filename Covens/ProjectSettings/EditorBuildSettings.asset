@@ -68,4 +68,7 @@ EditorBuildSettings:
   - enabled: 1
     path: Assets/Scenes/Summoning.unity
     guid: 66d72adc60c408743be7e51af0c5cd3d
+  - enabled: 1
+    path: Assets/Scenes/FirstTap.unity
+    guid: 5f72a47453767084ab83cc1713291de4
   m_configObjects: {}

@@ -9,6 +9,7 @@ using Newtonsoft.Json.Linq;
 using Raincrow.Maps;
 using Raincrow;
 using Raincrow.GameEventResponses;
+using Raincrow.FTF;
 
 [RequireComponent(typeof(SwipeDetector))]
 public class SummoningManager : MonoBehaviour
@@ -60,15 +61,17 @@ public class SummoningManager : MonoBehaviour
     private int currentTier = 0;
     private int m_TweenId;
 
-    private static bool m_IsFirst = false;
+    //private static bool m_IsFirst = false;
 
     public static void Open(System.Action onLoaded = null)
     {
         //wait for the video to be closed/skiped
-        if (!FirstTapVideoManager.Instance.CheckSummon())
+        if (FirstTapManager.IsFirstTime("summoning"))
         {
-            m_IsFirst = true;
-            return;
+            //m_IsFirst = true;
+
+            FirstTapManager.Show("summoning", null);//, () => Open(onLoaded));
+            //return;
         }
 
         if (m_Instance != null)
@@ -418,7 +421,7 @@ public class SummoningManager : MonoBehaviour
         //string endpoint = PlaceOfPower.IsInsideLocation ? "location/summon" : 
         string endpoint = "character/summon/" + currentSpiritID;
 
-        bool first = m_IsFirst;
+        //bool first = m_IsFirst;
 
         APIManager.Instance.Post(endpoint, "{}", (string s, int r) =>
         {
@@ -439,18 +442,18 @@ public class SummoningManager : MonoBehaviour
 
                 ShowSpiritCastResult(marker);
 
-                if (first && PlayerDataManager.playerData.firsts.Contains("summon"))
-                    first = false;
+                //if (first && PlayerDataManager.playerData.firsts.Contains("summon"))
+                //    first = false;
 
                 int tier = DownloadedAssets.spiritDict[currentSpiritID].tier;
                 int summonCost = PlayerDataManager.SummoningCosts[tier - 1];
-                int xpGained = tier * 25 * (first ? 2 : 1);
+                int xpGained = tier * 25;// * (first ? 2 : 1);
 
                 OnCharacterDeath.CheckSummonDeath(spiritId, summonCost);
                 PlayerDataManager.playerData.AddEnergy(-summonCost);
                 PlayerDataManager.playerData.AddExp(xpGained);
 
-                first = false;
+                //first = false;
             }
             else
             {

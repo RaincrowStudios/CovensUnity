@@ -4,6 +4,7 @@ using UnityEditor;
 using Newtonsoft.Json;
 using Raincrow.Chat.UI;
 using UnityEditor.Callbacks;
+using Raincrow.FTF;
 
 namespace Raincrow.Test
 {
@@ -342,6 +343,11 @@ namespace Raincrow.Test
                 EditorGUI.BeginDisabledGroup(EditorApplication.isPlaying == false);
 
                 GUILayout.Space(10);
+
+                if (GUILayout.Button("Reset Firsts"))
+                {
+                    FirstTapManager.ResetFirsts();
+                }
 
                 if (GUILayout.Button("Login"))
                 {

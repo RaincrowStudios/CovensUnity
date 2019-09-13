@@ -9,6 +9,7 @@ namespace Raincrow.FTF
         [SerializeField] private RectTransform m_Canvas;
         [SerializeField] private RectTransform m_RectTransform;
         [SerializeField] private CanvasGroup m_CanvasGroup;
+        [SerializeField] private bool m_Animate = true;
 
         private int m_TweenId;
         private int m_AnimTweenId;
@@ -27,6 +28,9 @@ namespace Raincrow.FTF
 
         private void AnimateHand()
         {
+            if (m_Animate == false)
+                return;
+
             LeanTween.cancel(m_AnimTweenId);
             m_AnimTweenId = LeanTween.value(0, 1f, 1f)
                 .setOnUpdate((float t) =>
@@ -56,9 +60,9 @@ namespace Raincrow.FTF
             m_RectTransform.anchoredPosition = pointer.position;
 
             if (transform.position.x <= m_Canvas.transform.position.x)
-                m_RectTransform.localScale = new Vector3(1, 1, 1);
+                m_RectTransform.localScale = new Vector3(pointer.scale, pointer.scale, pointer.scale);
             else
-                m_RectTransform.localScale = new Vector3(-1, 1, 1);
+                m_RectTransform.localScale = new Vector3(-pointer.scale, pointer.scale, pointer.scale);
 
             LeanTween.cancel(m_TweenId);
             m_TweenId = LeanTween.alphaCanvas(m_CanvasGroup, 0.5f, 0.5f)

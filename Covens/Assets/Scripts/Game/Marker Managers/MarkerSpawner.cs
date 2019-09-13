@@ -7,6 +7,7 @@ using Newtonsoft.Json;
 using Raincrow.Maps;
 using TMPro;
 using Raincrow.GameEventResponses;
+using Raincrow.FTF;
 
 public class MarkerSpawner : MarkerManager
 {
@@ -306,7 +307,8 @@ public class MarkerSpawner : MarkerManager
 
                 if (code == 200)
                 {
-                    FirstTapVideoManager.Instance.CheckSpellCasting();
+                    //FirstTapVideoManager.Instance.CheckSpellCasting();
+                    //if(FirstTapManager.IsFirstTime()
 
                     SelectWitchData_Map witch = JsonConvert.DeserializeObject<SelectWitchData_Map>(response);
                     witch.token = marker.Token as WitchToken;
@@ -325,7 +327,7 @@ public class MarkerSpawner : MarkerManager
 
                 if (code == 200)
                 {
-                    FirstTapVideoManager.Instance.CheckSpellCasting();
+                    //FirstTapVideoManager.Instance.CheckSpellCasting();
 
                     SelectSpiritData_Map spirit = JsonConvert.DeserializeObject<SelectSpiritData_Map>(response);
                     spirit.token = marker.Token as SpiritToken;

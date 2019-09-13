@@ -21,6 +21,9 @@ namespace Raincrow.FTF
         [JsonProperty("position"), SerializeField]
         private List<float> _position;
 
+        [JsonProperty("scale"), SerializeField, DefaultValue(1.0)]
+        public float scale;
+
 
         [JsonIgnore]
         public Vector2 anchorMin

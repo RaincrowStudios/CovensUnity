@@ -53,6 +53,7 @@ namespace Raincrow.FTF
             pointer.anchorMin = rect.anchorMin;
             pointer.anchorMax = rect.anchorMax;
             pointer.position = rect.anchoredPosition;
+            pointer.scale = rect.localScale.x;
 
             m_PointerString = "\"pointer\":" + Newtonsoft.Json.JsonConvert.SerializeObject(pointer, m_Indented ? Newtonsoft.Json.Formatting.Indented : Newtonsoft.Json.Formatting.None);
         }

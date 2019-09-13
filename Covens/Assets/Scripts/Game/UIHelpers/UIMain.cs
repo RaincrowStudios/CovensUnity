@@ -5,14 +5,12 @@ using UnityEngine.UI;
 using TMPro;
 using Raincrow.Chat;
 using Raincrow.Chat.UI;
+using Raincrow.FTF;
 
 public class UIMain : MonoBehaviour
 {
     public static UIMain Instance { get; private set; }
-
-    //[Header("Anim")]
-    //[SerializeField] private CanvasGroup m_CanvasGroup;
-
+    
     [Header("Buttons")]
     [SerializeField] private Button m_WardrobeButton;
     [SerializeField] private Button m_MoonphaseButton;
@@ -28,14 +26,14 @@ public class UIMain : MonoBehaviour
     [SerializeField] private Button m_LeaderboardButton;
     [SerializeField] private Button m_ChatButton;
     [SerializeField] private Button m_NearbyPopsButton;
-
-
+    
     [Header("Screens")]
     [SerializeField] private GameObject m_BookOfShadows;
     [SerializeField] private Transform m_bosTransform;
     [SerializeField] private GameObject m_leaderBoards;
     [SerializeField] private Transform m_leaderboardTransform;
 
+    
     private void Awake()
     {
         Instance = this;
@@ -106,6 +104,11 @@ public class UIMain : MonoBehaviour
 
     private void OnClickFly()
     {
+        if (FirstTapManager.IsFirstTime("flight"))
+        {
+            FirstTapManager.Show("flight", OnClickFly);
+            return;
+        }
         MapFlightTransition.Instance.FlyOut();
     }
 

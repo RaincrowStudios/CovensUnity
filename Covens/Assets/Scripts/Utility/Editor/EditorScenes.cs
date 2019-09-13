@@ -70,6 +70,9 @@ public class EditorScenes : MonoBehaviour
     [MenuItem("Scenes/Screens/Summoning")]
     static void SummoningScene() => OpenScene("Summoning");
 
+    [MenuItem("Scenes/Screens/FirstTap")]
+    static void FirstTapScene() => OpenScene("FirstTap");
+
 
     private static void OpenScene(string name)
     {

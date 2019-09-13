@@ -67,8 +67,6 @@ public class MapFlightTransition : MonoBehaviour
     private bool m_IsFlyingAnim;
     public void FlyOut()
     {
-        if (!FirstTapVideoManager.Instance.CheckFlight()) return;
-        Debug.Log("fly");
         if (map == null)
         {
             map = MapsAPI.Instance;

@@ -275,6 +275,7 @@ namespace Raincrow.FTF
             pointer.position = EditorGUILayout.Vector2Field("anchoredPosition", pointer.position);
             pointer.anchorMin = EditorGUILayout.Vector2Field("anchorMin", pointer.anchorMin);
             pointer.anchorMax = EditorGUILayout.Vector2Field("anchorMax", pointer.anchorMax);
+            pointer.scale = EditorGUILayout.FloatField("scale", pointer.scale);
 
             Separator();
 

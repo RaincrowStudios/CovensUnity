@@ -1,11 +1,23 @@
 fileFormatVersion: 2
 guid: a17a2d2ec95c20e4b8c3ef1a381f6213
-timeCreated: 1539458933
-licenseType: Pro
 MonoImporter:
   externalObjects: {}
   serializedVersion: 2
-  defaultReferences: []
+  defaultReferences:
+  - m_TutorialJson: {fileID: 4900000, guid: 783172133d6860549a5f7752e20278ca, type: 3}
+  - m_Highlight: {instanceID: 0}
+  - m_Button: {instanceID: 0}
+  - m_BotMessage: {instanceID: 0}
+  - m_TopMessage: {instanceID: 0}
+  - m_Pointer: {instanceID: 0}
+  - m_FXSpawner: {instanceID: 0}
+  - m_Savannah: {instanceID: 0}
+  - m_SavannahCanvasGroup: {instanceID: 0}
+  - m_Fortuna: {instanceID: 0}
+  - m_FortunaCanvasGroup: {instanceID: 0}
+  - m_WitchSchool: {instanceID: 0}
+  - m_OpenWitchSchool: {instanceID: 0}
+  - m_SkipWitchSchool: {instanceID: 0}
   executionOrder: 0
   icon: {instanceID: 0}
   userData: 
