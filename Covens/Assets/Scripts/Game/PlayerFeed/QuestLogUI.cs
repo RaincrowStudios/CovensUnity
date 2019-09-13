@@ -5,6 +5,7 @@ using UnityEngine.UI;
 using Newtonsoft.Json;
 using Raincrow;
 using Raincrow.GameEventResponses;
+using Raincrow.FTF;
 
 public class QuestLogUI : UIAnimationManager
 {
@@ -113,6 +114,9 @@ public class QuestLogUI : UIAnimationManager
             OnClickQuest();
         else
             OnClickLog();
+
+        if (FirstTapManager.IsFirstTime("daily"))
+            FirstTapManager.Show("daily", null);
     }
 
     [ContextMenu("Hide")]

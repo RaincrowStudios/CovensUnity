@@ -253,12 +253,22 @@ public class MarkerSpawner : MarkerManager
 
         if (Data.Type == MarkerType.HERB || Data.Type == MarkerType.TOOL || Data.Type == MarkerType.GEM)
         {
+            if (FirstTapManager.IsFirstTime("ingredients"))
+            {
+                FirstTapManager.Show("ingredients", () => onClickMarker(m));
+                return;
+            }
             PickUpCollectibleAPI.PickUpCollectable(m as CollectableMarker);
             return;
         }
 
         if (Data.Type == MarkerType.ENERGY)
         {
+            if (FirstTapManager.IsFirstTime("energy"))
+            {
+                FirstTapManager.Show("energy", () => onClickMarker(m));
+                return;
+            }
             PickUpCollectibleAPI.CollectEnergy(m);
             return;
         }
@@ -269,6 +279,14 @@ public class MarkerSpawner : MarkerManager
             UIQuickCast.Open();
             UIQuickCast.UpdateCanCast(m, null);
             UIPlayerInfo.Show(m as WitchMarker, Data as WitchToken, UIQuickCast.Close);
+
+            if (FirstTapManager.IsFirstTime("spellcasting"))
+            {
+                FirstTapManager.Show("spellcasting", () =>
+                {
+                    FirstTapManager.Show("quickcasting", null);
+                });
+            }
         }
         else if (Data.Type == MarkerType.SPIRIT)
         {
@@ -307,9 +325,6 @@ public class MarkerSpawner : MarkerManager
 
                 if (code == 200)
                 {
-                    //FirstTapVideoManager.Instance.CheckSpellCasting();
-                    //if(FirstTapManager.IsFirstTime()
-
                     SelectWitchData_Map witch = JsonConvert.DeserializeObject<SelectWitchData_Map>(response);
                     witch.token = marker.Token as WitchToken;
 
@@ -327,8 +342,6 @@ public class MarkerSpawner : MarkerManager
 
                 if (code == 200)
                 {
-                    //FirstTapVideoManager.Instance.CheckSpellCasting();
-
                     SelectSpiritData_Map spirit = JsonConvert.DeserializeObject<SelectSpiritData_Map>(response);
                     spirit.token = marker.Token as SpiritToken;
 

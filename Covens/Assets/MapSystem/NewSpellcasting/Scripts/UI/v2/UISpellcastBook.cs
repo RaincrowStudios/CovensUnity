@@ -6,6 +6,7 @@ using TMPro;
 using Raincrow;
 using Raincrow.Maps;
 using Raincrow.GameEventResponses;
+using Raincrow.FTF;
 
 public class UISpellcastBook : MonoBehaviour//, IEnhancedScrollerDelegate
 {
@@ -454,6 +455,9 @@ public class UISpellcastBook : MonoBehaviour//, IEnhancedScrollerDelegate
         {
             m_ScrollRect.enabled = true;
         }
+
+        if (FirstTapManager.IsFirstTime("empower"))
+            FirstTapManager.Show("empower", null);
     }
 
     private void UpdateCanCast(string spell = null)

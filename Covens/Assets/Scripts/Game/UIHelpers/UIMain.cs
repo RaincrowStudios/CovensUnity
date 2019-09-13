@@ -71,6 +71,12 @@ public class UIMain : MonoBehaviour
 
     private void OnClickRecall()
     {
+        if (FirstTapManager.IsFirstTime("recall"))
+        {
+            FirstTapManager.Show("recall", OnClickRecall);
+            return;
+        }
+
         PlayerManager.Instance.RecallHome();
     }
 

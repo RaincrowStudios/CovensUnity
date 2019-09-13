@@ -283,6 +283,11 @@ namespace Raincrow.Test
                 {
                     BlessingManager.CheckDailyBlessing();
                 }
+                if (GUILayout.Button("Reset Firsts"))
+                {
+                    FirstTapManager.ResetFirsts();
+                }
+
                 EditorGUI.EndDisabledGroup();
             }
 
@@ -343,11 +348,6 @@ namespace Raincrow.Test
                 EditorGUI.BeginDisabledGroup(EditorApplication.isPlaying == false);
 
                 GUILayout.Space(10);
-
-                if (GUILayout.Button("Reset Firsts"))
-                {
-                    FirstTapManager.ResetFirsts();
-                }
 
                 if (GUILayout.Button("Login"))
                 {

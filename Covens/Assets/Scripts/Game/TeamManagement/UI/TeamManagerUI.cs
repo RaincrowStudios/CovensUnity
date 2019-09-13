@@ -4,6 +4,7 @@ using TMPro;
 using Raincrow;
 using Raincrow.Team;
 using Raincrow.GameEventResponses;
+using Raincrow.FTF;
 
 public class TeamManagerUI : MonoBehaviour
 {
@@ -343,6 +344,12 @@ public class TeamManagerUI : MonoBehaviour
             SetScreen(Screen.INVITES);
         else
             SetScreen(Screen.HOME);
+        
+        if (FirstTapManager.IsFirstTime("coven"))
+        {
+            FirstTapManager.Show("coven", null);
+            return;
+        }
     }
 
     private void Hide()

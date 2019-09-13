@@ -68,10 +68,7 @@ public class SummoningManager : MonoBehaviour
         //wait for the video to be closed/skiped
         if (FirstTapManager.IsFirstTime("summoning"))
         {
-            //m_IsFirst = true;
-
-            FirstTapManager.Show("summoning", null);//, () => Open(onLoaded));
-            //return;
+            FirstTapManager.Show("summoning", null);
         }
 
         if (m_Instance != null)
