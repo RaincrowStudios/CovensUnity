@@ -23,6 +23,7 @@ public class DownloadedAssets : MonoBehaviour
 
     public static Dictionary<string, SpellData> spellDictData = new Dictionary<string, SpellData>();
     public static Dictionary<string, SpiritData> spiritDict = new Dictionary<string, SpiritData>();
+    public static Dictionary<string, GardenData> gardenDict = new Dictionary<string, GardenData>();
     public static Dictionary<string, ConditionData> conditionsDict = new Dictionary<string, ConditionData>();
     public static Dictionary<string, IngredientData> ingredientDict = new Dictionary<string, IngredientData>();
     public static Dictionary<string, CosmeticData> cosmeticDict = new Dictionary<string, CosmeticData>();

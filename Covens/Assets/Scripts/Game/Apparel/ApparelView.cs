@@ -136,9 +136,6 @@ public class ApparelView : MonoBehaviour
         if (string.IsNullOrEmpty(data.id))
             return;
 
-        if (string.IsNullOrEmpty(data.position))
-            return;
-
         if (data.position == "style")
         {
             string assetId = "";

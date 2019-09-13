@@ -10,7 +10,6 @@ public static class SpellChanneling
     public static event System.Action<string, string> OnChannelingFinish;
 
     public static bool IsChanneling { get; private set; }
-    public static string TargetId { get; private set; }
 
     /*{
         "command":"map_channel_start",
@@ -40,30 +39,12 @@ public static class SpellChanneling
 
     public static void CastSpell(SpellData spell, IMarker target, List<spellIngredientsData> ingredients, System.Action<Raincrow.GameEventResponses.SpellCastHandler.Result> onFinishFlow, System.Action onCancelFlow)
     {
-        //send begin channeling
-        //if fail, send failed Result and stop listening for map_channel_start
-        //if success, show the channeling screen
+        ////send begin channeling
+        ////if fail, send failed Result and stop listening for map_channel_start
+        ////if success, show the channeling screen
 
-        if (IsChanneling)
-        {
-            return;
-        }
+        //UIChanneling.Instance.Show(onFinishFlow);
 
-        IsChanneling = true;
-        TargetId = target.Token.instance;
-        TickSpellHandler.OnPlayerSpellTick += OnSpellTick;
-
-        UIChanneling.Instance.Show(onFinishFlow);
-        UIChanneling.Instance.SetInteractable(false);
-        
-        APIManager.Instance.Post(
-                "character/cast/" + TargetId,
-                $"{{\"spell\":\"spell_channeling\"}}",
-                (response, result) => 
-                {
-                    UIChanneling.Instance.SetInteractable(true);
-                });
-        
         //string data = $"{{\"spell\":\"{spell.id}\"}}";
         //APIManager.Instance.Post("spell/begin-channel", data, (response, result) =>
         //{
@@ -92,21 +73,8 @@ public static class SpellChanneling
         //});
     }
 
-    public static void StopChanneling(System.Action<Raincrow.GameEventResponses.SpellCastHandler.Result, string> callback)
+    public static void StopChanneling(string instance, System.Action<Raincrow.GameEventResponses.SpellCastHandler.Result, string> callback)
     {
-        if (IsChanneling == false)
-            return;
-
-        APIManager.Instance.Post(
-                   "character/cast/" + TargetId,
-                   $"{{\"spell\":\"spell_channeling\"}}",
-                   (response, result) =>
-                   {
-                       IsChanneling = false;
-                       TargetId = null;
-                       TickSpellHandler.OnPlayerSpellTick -= OnSpellTick;
-                   });
-        
         //string data = $"{{\"spellInstance\":\"{instance}\"}}";
 
         //APIManager.Instance.Post("spell/end-channel", data, (response, result) =>
@@ -147,14 +115,6 @@ public static class SpellChanneling
         //            callback?.Invoke(null, result.ToString());
         //    }
         //});
-    }
-
-    private static void OnSpellTick(SpellCastHandler.SpellCastEventData data)
-    {
-        if (data.spell == "spell_channeling")
-        {
-            Debug.LogError("spell tick");
-        }
     }
 
     private static SimplePool<Transform> m_ShadowFx = new SimplePool<Transform>("SpellFX/Channeling/ChannelingShadow");

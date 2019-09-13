@@ -622,10 +622,5 @@ public partial class Content
     public long Count { get; set; }
 }
 
-public struct ItemData
-{
-    public string id;
-    public int count;
-}
 
 #endregion

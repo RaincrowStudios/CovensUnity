@@ -53,14 +53,14 @@ public class UINearbyLocationItem : MonoBehaviour
         m_ClaimedBy.text = "Unclaimed";
 
         //setup cost
-        int goldCost = DownloadedAssets.PlaceOfPowerSettings.entryCosts[data.tier - 1].gold;
+        int goldCost = DownloadedAssets.PlaceOfPowerSettings.goldCost[data.tier - 1];
         if (goldCost != 0)
         {
             m_Cost.text = goldCost.ToString();
         }
         else
         {
-            int silverCost = DownloadedAssets.PlaceOfPowerSettings.entryCosts[data.tier - 1].silver;
+            int silverCost = DownloadedAssets.PlaceOfPowerSettings.silverCost[data.tier - 1];
             m_Cost.text = silverCost.ToString();
         }
 

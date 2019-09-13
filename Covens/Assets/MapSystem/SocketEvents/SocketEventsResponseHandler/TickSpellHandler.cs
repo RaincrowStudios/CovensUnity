@@ -8,8 +8,6 @@ namespace Raincrow.GameEventResponses
     public class TickSpellHandler : IGameEventHandler
     {
         public string EventName => "tick.spell";
-
-        public static event System.Action<SpellCastHandler.SpellCastEventData> OnPlayerSpellTick;
         
         public void HandleResponse(string eventData)
         {
@@ -35,8 +33,6 @@ namespace Raincrow.GameEventResponses
                 //sohw effect on player marker
                 if (spell != null)
                     SpawnFx(PlayerManager.marker, spell.school, (int)response.result.damage);
-
-                OnPlayerSpellTick?.Invoke(response);
             }
             else
             {
