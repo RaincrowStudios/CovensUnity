@@ -66,7 +66,7 @@ namespace Raincrow.FTF
 
         public static void ResetFirsts()
         {
-            foreach (string id in m_FirstTapDict.Keys)
+            foreach (string id in FirstTapDict.Keys)
                 SetFirstTime(id, true);
         }
     }
