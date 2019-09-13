@@ -129,7 +129,7 @@ public class UISpiritInfo : UIInfoPanel
             case 4: tier = LocalizeLookUp.GetText("cast_spirit_legendary"); break;
             default: tier = "?"; break;
         };
-        m_Tier.text = tier;
+        m_Tier.text = tier + " " + LocalizeLookUp.GetText("attacked_spirit");
 
         OnMapEnergyChange.OnPlayerDead += _OnCharacterDead;
         OnMapEnergyChange.OnEnergyChange += _OnMapEnergyChange;
@@ -229,6 +229,7 @@ public class UISpiritInfo : UIInfoPanel
 
         if (string.IsNullOrEmpty(SpiritMarkerDetails.owner))
         {
+
             if (m_SpiritData.tier == 1)
                 m_Tier.text = LocalizeLookUp.GetText("ftf_wild_spirit") + " (" + LocalizeLookUp.GetText("cast_spirit_lesser") + ")";//"Wild Spirit (Lesser)";
             else if (m_SpiritData.tier == 2)
@@ -237,6 +238,14 @@ public class UISpiritInfo : UIInfoPanel
                 m_Tier.text = LocalizeLookUp.GetText("ftf_wild_spirit") + " (" + LocalizeLookUp.GetText("cast_spirit_superior") + ")";//"Wild Spirit (Superior)";
             else
                 m_Tier.text = LocalizeLookUp.GetText("ftf_wild_spirit") + " (" + LocalizeLookUp.GetText("cast_spirit_legendary") + ")";//"Wild Spirit (Legendary)";
+
+            foreach (var item in PlayerDataManager.playerData.knownSpirits)
+            {
+                if (item.spirit.ToString() == m_SpiritData.id)
+                {
+                    m_Tier.text = m_Tier.text + "\n<color=#616161>" + LocalizeLookUp.GetText("generic_known");
+                }
+            }
 
             m_Desc.text = LocalizeLookUp.GetText("cast_spirit_knowledge");// "Defeating this spirit will give you the power to summon it.";
         }
