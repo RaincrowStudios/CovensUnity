@@ -39,9 +39,11 @@ namespace Raincrow.Maps
 
             m_CamController.onUserPan += () => m_DidPanSinceLand = true;
             m_CamController.onEnterStreetLevel += () => m_DidPanSinceLand = false;
-            m_CamController.disablePanning = () => (BanishManager.isBind);
+            m_CamController.disablePanning = () => (PlayerDataManager.playerData == null || BanishManager.isBind);
             m_CamController.minZoomOverride = () =>
             {
+                if (PlayerDataManager.playerData == null)
+                    return 0.05f;
                 if (BanishManager.isBind || DeathState.IsDead)
                     return 0.91f;
                 return 0.05f;
