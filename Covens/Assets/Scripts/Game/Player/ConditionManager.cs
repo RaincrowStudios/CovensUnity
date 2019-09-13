@@ -48,6 +48,9 @@ public static class ConditionManager
 
     public static void TriggerStatusEffect(StatusEffect effect, IMarker caster)
     {
+        if (effect.modifiers.status == null)
+            return;
+
         foreach (string status in effect.modifiers.status)
         {
             if (m_StatusBehavior.ContainsKey(status))
