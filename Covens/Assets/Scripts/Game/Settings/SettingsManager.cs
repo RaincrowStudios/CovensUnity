@@ -7,6 +7,7 @@ using System.Collections.Generic;
 using Facebook.Unity.Example;
 using Newtonsoft.Json;
 using TMPro;
+using Raincrow.FTF;
 
 public class SettingsManager : MonoBehaviour
 {
@@ -32,11 +33,13 @@ public class SettingsManager : MonoBehaviour
 
     public Button tOS;
     public Button privacyPolicy;
-    
+
 
     public GameObject LanguageSelect;
     public CanvasGroup LanguageCG;
     public Button Language;
+
+    public Button FirstTapBtn;
 
     public Color buttonSelected;
     public Color buttonNotSelected;
@@ -48,7 +51,7 @@ public class SettingsManager : MonoBehaviour
     public GameObject container;
 
     private static SettingsManager m_Instance;
-    
+
     public static bool AudioEnabled
     {
         get
@@ -117,7 +120,8 @@ public class SettingsManager : MonoBehaviour
         m_Canvas.enabled = false;
         m_InputRaycast.enabled = false;
         CG.alpha = 0;
-
+        FirstTapBtn.GetComponentInChildren<Image>().color = buttonSelected;
+        FirstTapBtn.onClick.AddListener(ToggleFirstTap);
         LanguageCG.alpha = 0f;
         LeanTween.scale(LanguageSelect, Vector3.zero, 0.1f);
         LanguageSelect.SetActive(false);
@@ -178,7 +182,7 @@ public class SettingsManager : MonoBehaviour
         ToggleSound(AudioEnabled);
         EnableDisableBuildings(BuildingsEnabled);
     }
-    
+
     public void ToggleLanguage(object obj)
     {
         var ClickedButton = (int)obj;
@@ -197,7 +201,11 @@ public class SettingsManager : MonoBehaviour
             }
         }
     }
-
+    public void ToggleFirstTap()
+    {
+        FirstTapManager.ResetFirsts();
+        FirstTapBtn.GetComponentInChildren<Image>().color = buttonNotSelected;
+    }
     public void ToggleSound(bool soundOn)
     {
         SoundManagerOneShot.Instance.PlayButtonTap();
@@ -257,7 +265,7 @@ public class SettingsManager : MonoBehaviour
         Application.OpenURL(CovenConstants.TERMS_OF_SERVICE_URL);
     }
 
-    public void ShowPrivacyPolicy ()
+    public void ShowPrivacyPolicy()
     {
         Application.OpenURL(CovenConstants.PRIVACY_POLICY_URL);
     }
@@ -266,7 +274,7 @@ public class SettingsManager : MonoBehaviour
     {
         AudioListener.volume = value;
     }
-    
+
     public void Show()
     {
         OnAudioToggle += _OnToggleAudio;
@@ -274,7 +282,7 @@ public class SettingsManager : MonoBehaviour
 
         m_Canvas.enabled = true;
         m_InputRaycast.enabled = true;
-        
+
         float start = CG.alpha;
         float end = 1;
 
@@ -287,7 +295,7 @@ public class SettingsManager : MonoBehaviour
                 CG.alpha = t;
                 container.transform.localScale = Vector3.Lerp(Vector3.zero, Vector3.one, t2);
             })
-            .setOnComplete(() => 
+            .setOnComplete(() =>
             {
                 UIStateManager.Instance.CallWindowChanged(false);
                 MapsAPI.Instance.HideMap(true);
@@ -314,7 +322,7 @@ public class SettingsManager : MonoBehaviour
         m_TweenId = LeanTween.value(0, 1, 0.45f)
             .setOnUpdate((float t) =>
             {
-                float t1 = (1-t) * (0.35f/0.45f);
+                float t1 = (1 - t) * (0.35f / 0.45f);
                 float t2 = LeanTween.easeOutCirc(start, end, t);
 
                 CG.alpha = t1;
