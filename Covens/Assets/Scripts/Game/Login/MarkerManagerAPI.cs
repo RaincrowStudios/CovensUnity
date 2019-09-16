@@ -51,7 +51,17 @@ public class MarkerManagerAPI : MonoBehaviour
         IsSpiritForm = !physical;
 
         if (PlayerDataManager.IsFTF)
+        {
             return;
+        }
+
+        if (DeathState.IsDead)
+        {
+            physical = true;
+            longitude = GetGPS.longitude;
+            latitude = GetGPS.latitude;
+            IsSpiritForm = !physical;
+        }
 
         var data = new
         {
