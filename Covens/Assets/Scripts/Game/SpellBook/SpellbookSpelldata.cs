@@ -18,7 +18,7 @@ public class SpellbookSpelldata : MonoBehaviour
 		data = sd; 
 		energy.text = LocalizeLookUp.GetText ("spell_data_cost").Replace ("{{Energy Cost}}", sd.cost.ToString ());//"Cost: <color=#000000>" + sd.cost.ToString() + " Energy </color>";
         baseDesc.text = sd.Lore;
-		desc.text = sd.PhysicalDescription;
+		desc.text = sd.Description;
 		var sigList = new List<string> ();  
 
 //		foreach (var item in PlayerDataManager.playerData.spells) {

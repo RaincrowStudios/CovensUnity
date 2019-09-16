@@ -85,7 +85,7 @@ public class UISpellcard : MonoBehaviour// : EnhancedScrollerCellView
 
         m_SpellName.text = spell.Name;
         m_SpellCost.text = LocalizeLookUp.GetText("spell_data_cost").Replace("{{Energy Cost}}", spell.cost.ToString());
-        m_SpellDescription.text = PlayerManager.inSpiritForm ? spell.SpiritDescription : spell.PhysicalDescription;
+        m_SpellDescription.text = spell.Description;
 
         if (spell.school < 0)
         {
