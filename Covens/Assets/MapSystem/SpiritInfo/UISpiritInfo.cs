@@ -302,22 +302,7 @@ public class UISpiritInfo : UIInfoPanel
     {
         Close();
     }
-
-    private void UISpellcasting_OnCastResult()
-    {
-        //if token is gone
-        if (MarkerSpawner.GetMarker(SpiritToken.instance) == null)
-        {
-            Close();
-        }
-    }
-
-    private void UISpellcasting_OnClickClose()
-    {
-        //close this too
-        Close();
-    }
-
+    
     private void _OnCharacterDead()
     {
         Abort();
@@ -325,7 +310,7 @@ public class UISpiritInfo : UIInfoPanel
 
     private void _OnMapTokenMove(string instance, Vector3 position)
     {
-        if (SpiritToken.instance == instance)
+        if (SpiritToken?.instance == instance)
         {
             MapCameraUtils.FocusOnMarker(position);
         }
@@ -333,10 +318,7 @@ public class UISpiritInfo : UIInfoPanel
 
     private void _OnMapEnergyChange(string instance, int newEnergy)
     {
-        if (SpiritToken == null)
-            return;
-
-        if (instance == SpiritToken.instance)
+        if (instance == SpiritToken?.instance)
         {
             m_Energy.text = LocalizeLookUp.GetText("card_witch_energy").ToUpper() + " <color=black>" + newEnergy.ToString() + "</color>";
 
@@ -349,7 +331,7 @@ public class UISpiritInfo : UIInfoPanel
 
     private void _OnStatusEffectApplied(string character, StatusEffect statusEffect)
     {
-        if (character != SpiritToken.instance)
+        if (character != SpiritToken?.instance)
             return;
 
         foreach (StatusEffect item in SpiritMarkerDetails.effects)
@@ -366,7 +348,7 @@ public class UISpiritInfo : UIInfoPanel
 
     private void _OnMapTokenRemove(string instance)
     {
-        if (instance == SpiritToken.instance)
+        if (instance == SpiritToken?.instance)
         {
             Abort();
             //UIGlobalErrorPopup.ShowPopUp(null, LocalizeLookUp.GetText("spellbook_witch_is_gone").Replace("{{witch name}}", m_SpiritData.spiritName));// + " is gone.");
