@@ -84,31 +84,31 @@ public class DictionaryManager
             if (result == LocalFileState.FILE_NOT_FOUND)
                 Debug.Log($"Dictionary \"{language + version}\" is marked as download but no file was found.");
             else if (result == LocalFileState.KEY_NOT_FOUND)
-                Debug.Log("No dictionary found");
+                Debug.Log("No localization dictionary found");
             else if (result == LocalFileState.VERSION_OUTDATED)
-                Debug.Log($"Dictionary outdated.");
+                Debug.Log($"Localization dictionary outdated.");
         }
 
-        DownloadFile(language, version, (resultCode, response) =>
-        {
-            if (resultCode == 200)
-            {
-                if (DownloadManager.DeserializeLocalisationDictionary(response))
-                {
-                    PlayerPrefs.SetString(LOCALISATION_DICT_KEY + language, version);
-                    System.IO.File.WriteAllText(localPath, response);
-                    onDicionaryReady?.Invoke();
-                }
-                else
-                {
-                    onParseError?.Invoke();
-                }
-            }
-            else
-            {
-                onDownloadError?.Invoke(resultCode, response);
-            }
-        },
+        DownloadFile(baseURL + "localization/" + version + "/" + language + ".json", language, version, (resultCode, response) =>
+         {
+             if (resultCode == 200)
+             {
+                 if (DownloadManager.DeserializeLocalisationDictionary(response))
+                 {
+                     PlayerPrefs.SetString(LOCALISATION_DICT_KEY + language, version);
+                     System.IO.File.WriteAllText(localPath, response);
+                     onDicionaryReady?.Invoke();
+                 }
+                 else
+                 {
+                     onParseError?.Invoke();
+                 }
+             }
+             else
+             {
+                 onDownloadError?.Invoke(resultCode, response);
+             }
+         },
         5, 0);
     }
 
@@ -159,7 +159,7 @@ public class DictionaryManager
                 Debug.Log($"gamedict outdated.");
         }
 
-        DownloadFile("game", version, (resultCode, response) =>
+        DownloadFile(baseURL + version + "/game.json", "game", version, (resultCode, response) =>
         {
             if (resultCode == 200)
             {
@@ -225,7 +225,7 @@ public class DictionaryManager
                 Debug.Log($"store outdated.");
         }
 
-        DownloadFile("store", version, (resultCode, response) =>
+        DownloadFile(baseURL + version + "/store.json", "store", version, (resultCode, response) =>
         {
             if (resultCode == 200)
             {
@@ -279,22 +279,22 @@ public class DictionaryManager
         }
     }
 
-    private async static void DownloadFile(string name, string version, System.Action<int, string> onComplete, int maxRetries, int tryCount = 0)
+    private async static void DownloadFile(string url, string name, string version, System.Action<int, string> onComplete, int maxRetries, int tryCount = 0)
     {
-        var url = new System.Uri(baseURL + version + "/" + name + ".json");
-        Debug.Log("Downloading " + url.ToString());
+        var uri = new System.Uri(url);
+        Debug.Log("Downloading " + uri.ToString());
         using (var webClient = new System.Net.WebClient())
         {
             try
             {
                 //get header
-                var openReadTask = await webClient.OpenReadTaskAsync(url);
+                var openReadTask = await webClient.OpenReadTaskAsync(uri);
                 long size = size = System.Convert.ToInt64(webClient.ResponseHeaders["Content-Length"]);
                 openReadTask.Close();
 
                 //get file
                 webClient.DownloadProgressChanged += (sender, args) => DownloadProgressChanged(name, size, args); 
-                string result = await webClient.DownloadStringTaskAsync(url);
+                string result = await webClient.DownloadStringTaskAsync(uri);
 
                 onComplete(200, result);
             }
@@ -304,7 +304,7 @@ public class DictionaryManager
                 tryCount++;
                 if (tryCount <= maxRetries)
                 {
-                    LeanTween.value(0, 0, 2f).setOnComplete(() => DownloadFile(name, version, onComplete, maxRetries, tryCount));
+                    LeanTween.value(0, 0, 2f).setOnComplete(() => DownloadFile(url, name, version, onComplete, maxRetries, tryCount));
                 }
                 else
                 {
