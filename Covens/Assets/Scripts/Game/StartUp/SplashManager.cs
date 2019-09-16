@@ -91,8 +91,23 @@ public class SplashManager : MonoBehaviour
             m_LogoSpeed = 1f;
     }
 
+    private void OnDestroy()
+    {
+        LeanTween.cancel(m_HintTweenId);
+        LeanTween.cancel(m_SliderTweenId);
+
+        if (m_HintsCoroutine != null)
+            StopCoroutine(m_HintsCoroutine);
+
+        if (m_TribunalCoroutine != null)
+            StopCoroutine(m_TribunalCoroutine);
+    }
+
     public void ShowLoading(float progress)
     {
+        if (LoadingImage == null)
+            return;
+
         LoadingImage.SetActive(progress < 1);
 
         LeanTween.cancel(m_SliderTweenId);
