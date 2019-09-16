@@ -21,7 +21,6 @@ public class MapView : MonoBehaviour
     private void Awake()
     {
         m_Instance = this;
-        OnLeavePoP();
 
         //get the markers at the current position
         MarkerManagerAPI.GetMarkers(
@@ -32,6 +31,11 @@ public class MapView : MonoBehaviour
             false,
             true
         );
+    }
+
+    private void Start()
+    {
+        OnLeavePoP();
 
         LineRendererBasedDome.Instance.Setup(PlayerDataManager.DisplayRadius * MapsAPI.Instance.OneKmInWorldspace);
 
