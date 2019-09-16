@@ -3,6 +3,7 @@ using UnityEngine.UI;
 using System.Collections;
 using Newtonsoft.Json;
 using Raincrow.GameEventResponses;
+using Raincrow.FTF;
 
 public class ShoutBox : MonoBehaviour
 {
@@ -14,6 +15,13 @@ public class ShoutBox : MonoBehaviour
     bool show = false;
     public void OnShout()
     {
+
+        if (FirstTapManager.IsFirstTime("shout"))
+        {
+            FirstTapManager.Show("shout", OnShout);
+            return;
+        }
+
         if (!show)
         {
             //			shoutButton.gameObject.SetActive (false);
