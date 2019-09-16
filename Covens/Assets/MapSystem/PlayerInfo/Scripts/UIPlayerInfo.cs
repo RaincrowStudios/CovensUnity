@@ -27,14 +27,14 @@ public class UIPlayerInfo : UIInfoPanel
 
     private static UIPlayerInfo m_Instance;
 
-    public static bool isShowing
+    public static bool IsShowing
     {
         get
         {
             if (m_Instance == null)
                 return false;
             else
-                return m_Instance.IsShowing;
+                return m_Instance.m_IsShowing;
         }
     }
 
@@ -90,7 +90,6 @@ public class UIPlayerInfo : UIInfoPanel
 
         base.Awake();
     }
-
 
     public static void SetVisibility(bool isVisible)
     {

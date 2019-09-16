@@ -29,7 +29,7 @@ public abstract class UIInfoPanel : MonoBehaviour
 
     private int m_TweenId;
 
-    public bool IsShowing { get; private set; }
+    protected bool m_IsShowing;
 
     protected virtual void Awake()
     {
@@ -43,24 +43,25 @@ public abstract class UIInfoPanel : MonoBehaviour
         DownloadedAssets.OnWillUnloadAssets += OnWillUnloadAssets;
     }
 
-    private void OnWillUnloadAssets()
+    protected virtual void OnWillUnloadAssets()
     {
-        if (IsShowing)
+        if (m_IsShowing)
             return;
 
+        LeanTween.cancel(m_TweenId);
         DownloadedAssets.OnWillUnloadAssets -= OnWillUnloadAssets;
         Destroy(this.gameObject);
     }
 
     protected virtual void Show()
     {
-        IsShowing = true;
+        m_IsShowing = true;
         ReOpen();
     }
 
     public virtual void Close()
     {
-        IsShowing = false;
+        m_IsShowing = false;
         Hide();
     }
 

@@ -70,7 +70,7 @@ public class PlayerNotificationManager : MonoBehaviour
             return;
 
         Anchoring targetAnchor = Anchoring.DEFAULT;
-        if (UIPlayerInfo.isShowing || UISpiritInfo.isOpen)
+        if (UIPlayerInfo.IsShowing || UISpiritInfo.IsShowing)
             targetAnchor = Anchoring.LEFT;
 
         if (targetAnchor == Anchoring.LEFT)
@@ -90,7 +90,7 @@ public class PlayerNotificationManager : MonoBehaviour
             () =>
             {
                 targetAnchor = Anchoring.DEFAULT;
-                if (UIPlayerInfo.isShowing || UISpiritInfo.isOpen)
+                if (UIPlayerInfo.IsShowing || UISpiritInfo.IsShowing)
                     targetAnchor = Anchoring.LEFT;
 
                 if (targetAnchor == Anchoring.LEFT)

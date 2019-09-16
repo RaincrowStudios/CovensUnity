@@ -26,14 +26,14 @@ public class UISpiritInfo : UIInfoPanel
 
     private static UISpiritInfo m_Instance;
 
-    public static bool isOpen
+    public static bool IsShowing
     {
         get
         {
             if (m_Instance == null)
                 return false;
             else
-                return m_Instance.IsShowing;
+                return m_Instance.m_IsShowing;
         }
     }
 
@@ -65,9 +65,10 @@ public class UISpiritInfo : UIInfoPanel
     {
         if (m_Instance != null)
         {
-            LeanTween.alphaCanvas(m_Instance.m_CanvasGroup, isVisible ? 1 : 0, .5f);
+            m_Instance.m_TweenId = LeanTween.alphaCanvas(m_Instance.m_CanvasGroup, isVisible ? 1 : 0, .5f).uniqueId;
         }
     }
+
     public static void SetupDetails(SelectSpiritData_Map data)
     {
         SpiritMarkerDetails = data;
@@ -78,6 +79,7 @@ public class UISpiritInfo : UIInfoPanel
         m_Instance._SetupDetails(data);
     }
 
+    private int m_TweenId;
     private SpiritData m_SpiritData;
     private System.Action m_OnClose;
     private float m_PreviousMapZoom;
@@ -94,6 +96,17 @@ public class UISpiritInfo : UIInfoPanel
 
         m_CloseButton.onClick.AddListener(OnClickClose);
         m_InfoButton.onClick.AddListener(OnClickInfo);
+    }
+
+
+    protected override void OnWillUnloadAssets()
+    {
+        base.OnWillUnloadAssets();
+
+        if (IsShowing)
+            return;
+
+        LeanTween.cancel(m_TweenId);
     }
 
     private void _Show(IMarker spirit, Token token, System.Action onClose)
@@ -216,7 +229,6 @@ public class UISpiritInfo : UIInfoPanel
         {
             LocationUnitSpawner.EnableMarkers();
         }
-
     }
 
     private void _SetupDetails(SelectSpiritData_Map details)
@@ -321,6 +333,9 @@ public class UISpiritInfo : UIInfoPanel
 
     private void _OnMapEnergyChange(string instance, int newEnergy)
     {
+        if (SpiritToken == null)
+            return;
+
         if (instance == SpiritToken.instance)
         {
             m_Energy.text = LocalizeLookUp.GetText("card_witch_energy").ToUpper() + " <color=black>" + newEnergy.ToString() + "</color>";

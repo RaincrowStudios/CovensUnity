@@ -123,9 +123,9 @@ public class LocationPlayerAction : MonoBehaviour
                   RenderSettings.fogColor = new Color(0.14f, 0.14f, 0.14f);
                   CenterOnPlayer();
                   UIQuickCast.EnableQuickcastButtons(false);
-                  if (UIPlayerInfo.isShowing)
+                  if (UIPlayerInfo.IsShowing)
                       UIPlayerInfo.SetVisibility(false);
-                  if (UISpiritInfo.isOpen)
+                  if (UISpiritInfo.IsShowing)
                       UISpiritInfo.SetVisibility(false);
                   LeanTween.value(1, 0, .5f).setOnUpdate((float v) => CloakingFX(v));
                   isCloaked = true;
@@ -186,12 +186,12 @@ public class LocationPlayerAction : MonoBehaviour
             item.Value.ScaleNamePlate(true, .5f);
             // item.Value.EnergyRingFade(0, .5f);
         }
-        if (UIPlayerInfo.isShowing)
+        if (UIPlayerInfo.IsShowing)
             UIPlayerInfo.SetVisibility(true);
-        if (UISpiritInfo.isOpen)
+        if (UISpiritInfo.IsShowing)
             UISpiritInfo.SetVisibility(true);
 
-        if (UIPlayerInfo.isShowing || UISpiritInfo.isOpen)
+        if (UIPlayerInfo.IsShowing || UISpiritInfo.IsShowing)
             UIQuickCast.EnableQuickcastButtons(true);
 
 
@@ -213,7 +213,7 @@ public class LocationPlayerAction : MonoBehaviour
     private static void CenterOnPlayer()
     {
         SoundManagerOneShot.Instance.PlayButtonTap();
-        if (!UIPlayerInfo.isShowing && !UISpellcastBook.IsOpen)
+        if (!UIPlayerInfo.IsShowing && !UISpellcastBook.IsOpen)
         {
             LocationIslandController.moveCamera(playerMarker.AvatarTransform.position);
         }
