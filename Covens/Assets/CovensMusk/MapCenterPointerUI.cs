@@ -54,34 +54,22 @@ public class MapCenterPointerUI : MonoBehaviour
             return;
         }
 
-        if (PlayerManager.marker == null)
-            return;
-               
-        Vector3 viewportPos = MapsAPI.Instance.camera.WorldToViewportPoint(PlayerManager.marker.AvatarTransform.position);
+        //if (MapsAPI.Instance.IsPointInsideView(Vector3.zero, -100))
+        //{
+        //    HidePointer();
+        //    return;
+        //}
 
-        if (viewportPos.x > 0 && viewportPos.x < 1 && viewportPos.y > 0 && viewportPos.y < 1)
+        Vector2 screenPos = MapsAPI.Instance.camera.WorldToScreenPoint(Vector3.zero);
+        Vector2 canvasPos = new Vector2(screenPos.x * (m_CanvasRect.sizeDelta.x/ Screen.width), screenPos.y * (m_CanvasRect.sizeDelta.y/ Screen.height));
+
+        Debug.Log(canvasPos);
+
+        if (canvasPos.x > m_HorizontalBorders.x && canvasPos.x < m_CanvasRect.sizeDelta.x - m_HorizontalBorders.y && canvasPos.y > m_VerticalBorders.x && canvasPos.y < m_CanvasRect.sizeDelta.y - m_VerticalBorders.y)
         {
             HidePointer();
             return;
         }
-        else
-        {
-            viewportPos = -MapsAPI.Instance.mapCenter.position.normalized;
-            viewportPos.x += 0.5f;
-            viewportPos.y = viewportPos.z + 0.5f;
-            viewportPos.z = 0;
-
-            ShowPointer();
-        }
-
-        viewportPos.x = Mathf.Clamp(viewportPos.x, 0, 1);
-        viewportPos.y = Mathf.Clamp(viewportPos.y, 0, 1);
-
-        //pointer position
-        Vector2 canvasPos = new Vector2(
-            viewportPos.x * m_CanvasRect.sizeDelta.x,
-            viewportPos.y * m_CanvasRect.sizeDelta.y
-        );
 
         canvasPos.x = Mathf.Clamp(
             canvasPos.x,
@@ -96,8 +84,10 @@ public class MapCenterPointerUI : MonoBehaviour
 
         m_PointerTransform.anchoredPosition = canvasPos;
 
-        //arrow rotation
-        m_PointerArrow.localRotation = Quaternion.LookRotation(Vector3.forward, (viewportPos - new Vector3(0.5f, 0.5f)).normalized);
+        Vector3 mapCenter = MapsAPI.Instance.mapCenter.position.normalized;
+        m_PointerArrow.localRotation = Quaternion.LookRotation(Vector3.forward, new Vector3(-mapCenter.x, -mapCenter.z));
+        
+        ShowPointer();
     }
 
     private void ShowPointer()
@@ -110,7 +100,12 @@ public class MapCenterPointerUI : MonoBehaviour
             PlayerManager.witchMarker.GetPortrait(spr =>
             {
                 m_Portrait.sprite = spr;
+                m_Portrait.gameObject.SetActive(true);
             });
+        }
+        else
+        {
+            m_Portrait.gameObject.SetActive(false);
         }
 
         m_Showing = true;
