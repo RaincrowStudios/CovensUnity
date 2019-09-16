@@ -459,7 +459,7 @@ public class UISpellcastBook : MonoBehaviour//, IEnhancedScrollerDelegate
             m_ScrollRect.enabled = true;
         }
 
-        if (FirstTapManager.IsFirstTime("empower"))
+        if (card != null && FirstTapManager.IsFirstTime("empower"))
             FirstTapManager.Show("empower", null);
     }
 
