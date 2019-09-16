@@ -57,7 +57,7 @@ public class MapCenterPointerUI : MonoBehaviour
         if (PlayerManager.marker == null)
             return;
                
-        Vector3 viewportPos = MapsAPI.Instance.camera.WorldToViewportPoint(Vector3.zero);
+        Vector3 viewportPos = MapsAPI.Instance.camera.WorldToViewportPoint(PlayerManager.marker.AvatarTransform.position);
 
         if (viewportPos.x > 0 && viewportPos.x < 1 && viewportPos.y > 0 && viewportPos.y < 1)
         {

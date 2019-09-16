@@ -87,11 +87,9 @@ public class PlayerManager : MonoBehaviour
     {
         MapsAPI.Instance.OnEnterStreetLevel += OnFinishFlying;
         MapsAPI.Instance.OnExitStreetLevel += OnStartFlying;
-
-        CreatePlayerStart();
     }
 
-    private void CreatePlayerStart()
+    public void CreatePlayerStart()
     {
         if (marker != null)
             return;
