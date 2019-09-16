@@ -62,9 +62,7 @@ public class MapCenterPointerUI : MonoBehaviour
 
         Vector2 screenPos = MapsAPI.Instance.camera.WorldToScreenPoint(Vector3.zero);
         Vector2 canvasPos = new Vector2(screenPos.x * (m_CanvasRect.sizeDelta.x/ Screen.width), screenPos.y * (m_CanvasRect.sizeDelta.y/ Screen.height));
-
-        Debug.Log(canvasPos);
-
+        
         if (canvasPos.x > m_HorizontalBorders.x && canvasPos.x < m_CanvasRect.sizeDelta.x - m_HorizontalBorders.y && canvasPos.y > m_VerticalBorders.x && canvasPos.y < m_CanvasRect.sizeDelta.y - m_VerticalBorders.y)
         {
             HidePointer();
