@@ -77,12 +77,12 @@ public class CovenConstants : MonoBehaviour
             }
             else
             {
-                return "https://comms-server.raincrow.pw/socket.io/";
+                return "http://34.73.145.51:8084/socket.io/";
             }
 #elif PRODUCTION
                 return "http://35.186.184.246:8084/socket.io/";
 #else
-            return "https://comms-server.raincrow.pw/socket.io/?";
+                return "http://34.73.145.51:8084/socket.io/";
 #endif
         }
     }

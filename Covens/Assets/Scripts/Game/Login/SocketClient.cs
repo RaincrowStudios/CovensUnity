@@ -44,7 +44,7 @@ public class SocketClient : MonoBehaviour
 
             if (string.IsNullOrEmpty(instance.EventName))
             {
-                Debug.LogError(_type.ToString() + " improper Eventname");
+                LogError(_type.ToString() + " improper Eventname");
                 continue;
             }
 
@@ -73,11 +73,11 @@ public class SocketClient : MonoBehaviour
 
     private void ConnectToSocket()
     {
-        Debug.Log("Connecting to Socket");
+        Log("Connecting to Socket");
 
         SocketOptions socketOptions = new SocketOptions()
         {
-            ConnectWith = BestHTTP.SocketIO.Transports.TransportTypes.WebSocket,
+            ConnectWith = BestHTTP.SocketIO.Transports.TransportTypes.Polling,
             AdditionalQueryParams = new PlatformSupport.Collections.ObjectModel.ObservableDictionary<string, string>()
         };
         socketOptions.AdditionalQueryParams.Add("token", LoginAPIManager.wssToken);
@@ -102,7 +102,7 @@ public class SocketClient : MonoBehaviour
 
     private void OnConnect(Socket socket, Packet packet, object[] args)
     {
-        Debug.LogFormat("Connected to Socket: {0} - Token: {1}", CovenConstants.wssAddress, LoginAPIManager.wssToken);
+        Log($"Connected to Socket: { CovenConstants.wssAddress} - Token: {LoginAPIManager.wssToken}");
 
         if (!_isRefreshingConnection)
         {
@@ -115,6 +115,8 @@ public class SocketClient : MonoBehaviour
     {
         string command = args[0].ToString();
         string data = args[1].ToString();
+
+        //Log(command + "\n" + data);
 
         CommandResponse response = new CommandResponse()
         {
@@ -132,7 +134,7 @@ public class SocketClient : MonoBehaviour
         if (args != null && args.Length > 0)
         {
             string errorMessage = args[0].ToString();
-            Debug.LogErrorFormat("Socket Error: {0}", errorMessage);
+            LogError("Socket Error: " + errorMessage);
         }
 
         if (!LoginAPIManager.accountLoggedIn)
@@ -150,7 +152,7 @@ public class SocketClient : MonoBehaviour
         if (args != null && args.Length > 0)
         {
             string errorMessage = args[0].ToString();
-            Debug.Log(string.Concat("Disconnected from Socket: ", errorMessage));
+            Log(string.Concat("Disconnected from Socket: ", errorMessage));
         }
     }
 
@@ -158,7 +160,7 @@ public class SocketClient : MonoBehaviour
 
     private void DisconnectFromSocket()
     {
-        Debug.Log("Disconnecting from socket");
+        Log("Disconnecting from socket");
 
         StopAllCoroutines();
 
@@ -211,7 +213,7 @@ public class SocketClient : MonoBehaviour
                                                        System.Environment.NewLine, "InnerStacktrace: ", innerStackTrace,
                                                        System.Environment.NewLine, "SocketEvent: ", response.Command,
                                                        System.Environment.NewLine, "SocketMessage: ", response.Data);
-                    Debug.LogError(debugString);
+                    LogError(debugString);
                 }
 
                 batchIndex++;
@@ -232,13 +234,23 @@ public class SocketClient : MonoBehaviour
 
         if (m_EventActionDictionary.ContainsKey(response.Command))
         {
-            //Debug.LogFormat("Invoking Response from Socket: {0} - {1}", response.Command, response.Data);
+            //LogFormat("Invoking Response from Socket: {0} - {1}", response.Command, response.Data);
             m_EventActionDictionary[response.Command].HandleResponse(response.Data);
         }
         else if (response.Command != "character_daily_reset")
         {
-            Debug.LogError("Command not implemented: " + response.Command + "\n" + response.Data);
+            LogError("Command not implemented: " + response.Command + "\n" + response.Data);
         }
+    }
+
+    private static void Log(string msg)
+    {
+        Debug.Log("[<color=green>SocketClient</color>] " + msg);
+    }
+
+    private static void LogError(string msg)
+    {
+        Debug.LogError("[<color=green>SocketClient</color>] " + msg);
     }
 }
 
