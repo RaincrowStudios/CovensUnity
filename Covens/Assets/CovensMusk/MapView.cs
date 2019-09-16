@@ -28,9 +28,9 @@ public class MapView : MonoBehaviour
             PlayerDataManager.playerData.longitude,
             PlayerDataManager.playerData.latitude,
             null,
+            true,
             false,
-            false,
-            false
+            true
         );
 
         LineRendererBasedDome.Instance.Setup(PlayerDataManager.DisplayRadius * MapsAPI.Instance.OneKmInWorldspace);

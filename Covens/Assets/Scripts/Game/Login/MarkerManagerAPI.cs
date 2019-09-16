@@ -55,7 +55,7 @@ public class MarkerManagerAPI : MonoBehaviour
             return;
         }
 
-        if (DeathState.IsDead)
+        if (PlayerDataManager.playerData.state == "dead")
         {
             physical = true;
             longitude = GetGPS.longitude;
@@ -176,10 +176,14 @@ public class MarkerManagerAPI : MonoBehaviour
                 {
                     LeanTween.cancel(m_MoveTweenId);
                     Vector3 targetPosition = MapsAPI.Instance.GetWorldPosition(longitude, latitude);
-                    if (Vector3.Distance(targetPosition, PlayerManager.marker.GameObject.transform.position) < 200)
-                        m_MoveTweenId = LeanTween.move(PlayerManager.marker.GameObject, targetPosition, 1f).setEaseOutCubic().uniqueId;
-                    else
-                        PlayerManager.marker.GameObject.transform.position = targetPosition;
+
+                    if (PlayerManager.marker != null)
+                    {
+                        if (Vector3.Distance(targetPosition, PlayerManager.marker.GameObject.transform.position) < 200)
+                            m_MoveTweenId = LeanTween.move(PlayerManager.marker.GameObject, targetPosition, 1f).setEaseOutCubic().uniqueId;
+                        else
+                            PlayerManager.marker.GameObject.transform.position = targetPosition;
+                    }
 
                     onComplete?.Invoke();
                 },
