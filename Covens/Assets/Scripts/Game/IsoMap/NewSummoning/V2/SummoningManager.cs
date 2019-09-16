@@ -343,13 +343,59 @@ public class SummoningManager : MonoBehaviour
             kind = LocalizeLookUp.GetText("rarity_exotic");// "Exotic";
         }
         spiritInfoTier.text = kind;
-        legend.text = spiritData.legend;
+        var l = spiritData.legend;
+        Debug.Log(l);
+        if (string.IsNullOrEmpty(l))
+        { legend.text = ""; }
+        else
+        {
+            if (l.Length > 1)
+            { l = l.Remove(0, 5); }
+            Debug.Log(l);
+            legend.text = LocalizeLookUp.GetZoneName(int.Parse(l));
+        }
 
         string s = "";
-        s += (string.IsNullOrEmpty(spiritData.gem) ? "" : " " + LocalizeLookUp.GetCollectableName(spiritData.gem));
-        s += (string.IsNullOrEmpty(spiritData.herb) ? "" : " " + LocalizeLookUp.GetCollectableName(spiritData.herb));
-        s += (string.IsNullOrEmpty(spiritData.tool) ? "" : " " + LocalizeLookUp.GetCollectableName(spiritData.tool));
-        ingredientsReq.text = (s == "" ? LocalizeLookUp.GetText("card_witch_noCoven") + "." /*"None."*/ : s);
+        if (!string.IsNullOrEmpty(spiritData.gem))
+        {
+            s = s + LocalizeLookUp.GetCollectableName(spiritData.gem);
+        }
+        if (!string.IsNullOrEmpty(spiritData.herb))
+        {
+            if (string.IsNullOrEmpty(s))
+            {
+                s = s + LocalizeLookUp.GetCollectableName(spiritData.herb);
+
+            }
+            else
+            {
+                s = s + ", " + LocalizeLookUp.GetCollectableName(spiritData.herb);
+            }
+        }
+        if (!string.IsNullOrEmpty(spiritData.tool))
+        {
+            if (string.IsNullOrEmpty(s))
+            {
+                s = s + LocalizeLookUp.GetCollectableName(spiritData.tool);
+            }
+            else
+            {
+                s = s + ", " + LocalizeLookUp.GetCollectableName(spiritData.tool);
+            }
+        }
+        //s += (string.IsNullOrEmpty(spiritData.gem) ? "" : " " + LocalizeLookUp.GetCollectableName(spiritData.gem));
+        //s += (string.IsNullOrEmpty(spiritData.herb) ? "" : " " + LocalizeLookUp.GetCollectableName(spiritData.herb));
+        //s += (string.IsNullOrEmpty(spiritData.tool) ? "" : " " + LocalizeLookUp.GetCollectableName(spiritData.tool));
+        ingredientsReq.text = s;
+        if (string.IsNullOrEmpty(s))
+        {
+            s = LocalizeLookUp.GetText("card_witch_noCoven") + ".";
+        }
+        //(s == "" ? LocalizeLookUp.GetText("card_witch_noCoven") + "." /*"None."*/ : s);
+        Debug.Log(LocalizeLookUp.GetCollectableName(spiritData.gem));
+        Debug.Log(LocalizeLookUp.GetCollectableName(spiritData.herb));
+        Debug.Log(LocalizeLookUp.GetCollectableName(spiritData.tool));
+
     }
 
     public void CloseMoreInfo()
