@@ -251,6 +251,9 @@ public class UISpellcastBook : MonoBehaviour//, IEnhancedScrollerDelegate
     }
     private void Hide()
     {
+        SpellCastHandler.OnPlayerTargeted -= SpellCastHandler_OnPlayerTargeted;
+        OnMapEnergyChange.OnEnergyChange -= OnMapEnergyChange_OnEnergyChange;
+
         AnimClose();
         //m_Canvas.enabled = false;
         m_InputRaycaster.enabled = false;
