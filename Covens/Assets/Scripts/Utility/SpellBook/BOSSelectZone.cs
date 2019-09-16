@@ -64,7 +64,7 @@ public class BOSSelectZone : BOSBase
                 g.GetChild(1).GetComponent<TextMeshProUGUI>().text = spirit.tier.ToString();
                 g.GetChild(2).GetComponent<TextMeshProUGUI>().text = spirit.Name;
                 DownloadedAssets.GetSprite(item.spirit, g.GetChild(3).GetComponent<Image>());
-                g.GetChild(4).GetComponent<TextMeshProUGUI>().text = item.dominion + ",\n" + Utilities.GetTimeStampBOS(item.banishedOn);
+                g.GetChild(4).GetComponent<TextMeshProUGUI>().text = (string.IsNullOrEmpty(item.dominion) ? "Ronin" : item.dominion) + ",\n" + Utilities.GetTimeStampBOS(item.banishedOn);
 
                 g.GetComponentInChildren<Button>().onClick.AddListener(() => UIDetailedSpiritInfo.Instance.Show(spirit, null));
             }
