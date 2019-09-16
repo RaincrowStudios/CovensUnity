@@ -22,6 +22,12 @@ public class PlayerNotificationItem : MonoBehaviour
         m_CanvasGroup.alpha = 0;
     }
 
+    private void OnDestroy()
+    {
+        LeanTween.cancel(m_ScaleTweenId);
+        LeanTween.cancel(m_FadeTweenId);
+    }
+
     public void Show(string text, Sprite icon, System.Action onClose, System.Action onUpdate)
     {
         m_Text.text = text;
