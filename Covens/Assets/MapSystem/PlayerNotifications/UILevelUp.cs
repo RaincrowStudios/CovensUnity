@@ -53,6 +53,7 @@ public class UILevelUp : MonoBehaviour
     {
         List<SpellData> unlockedSpells = new List<SpellData>();
         List<UILevelUpReward> rewardItems = new List<UILevelUpReward>();
+
         foreach (var spell in PlayerDataManager.playerData.UnlockedSpells)
         {
             if (spell.level == PlayerDataManager.playerData.level)
@@ -95,6 +96,7 @@ public class UILevelUp : MonoBehaviour
 
     private void Close()
     {
+        m_Instance = null;
         m_CloseButton.interactable = false;
 
         LeanTween.alphaCanvas(m_CanvasGroup, 0, 0.4f)

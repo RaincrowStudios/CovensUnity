@@ -16,12 +16,17 @@ public class DebugInitializer : MonoBehaviour
         return;
 #endif
 
+#if !UNITY_EDITOR
+        Destroy(this.gameObject);
+        return;
+#endif
+
         if (m_InitializeMap)
         {
             MapsAPI.Instance.InstantiateMap();
         }
 
-        if (m_Login)
+        if (m_Login && !LoginAPIManager.characterLoggedIn)
         {
             DownloadManager.OnDownloadsComplete += () => LoginAPIManager.Login((result, response) => LoginAPIManager.GetCharacter(null));
             DownloadManager.DownloadAssets(null);
@@ -32,5 +37,10 @@ public class DebugInitializer : MonoBehaviour
     {
         if (m_InitializeMap)
             LeanTween.delayedCall(1f, () => MapsAPI.Instance.InitMap(m_Longitude, m_Latitude, 0.98f, null, true));
+
+        if (UnityEngine.EventSystems.EventSystem.current == null)
+        {
+            new GameObject("EventSystem", typeof(UnityEngine.EventSystems.EventSystem), typeof(UnityEngine.EventSystems.StandaloneInputModule));
+        }
     }
 }

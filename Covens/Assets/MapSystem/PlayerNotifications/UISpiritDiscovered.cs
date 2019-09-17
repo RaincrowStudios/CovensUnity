@@ -9,10 +9,10 @@ public class UISpiritDiscovered : MonoBehaviour
     [SerializeField] private GameObject m_Content;
     [SerializeField] private CanvasGroup m_CanvasGroup;
     [SerializeField] private Button m_CloseButton;
-    [SerializeField] private TextMeshProUGUI m_Title;
-    [SerializeField] private TextMeshProUGUI m_Description;
+    [SerializeField] protected TextMeshProUGUI m_Title;
+    [SerializeField] protected TextMeshProUGUI m_Description;
     [SerializeField] private Animator m_Animator;
-    [SerializeField] private Image m_SpiritArt;
+    [SerializeField] protected Image m_SpiritArt;
 
     private static UISpiritDiscovered m_Instance;
     public static UISpiritDiscovered Instance
@@ -26,6 +26,7 @@ public class UISpiritDiscovered : MonoBehaviour
     }
 
     private int m_TweenId;
+    private System.Action m_OnClose;
 
     private void Awake()
     {
@@ -36,8 +37,10 @@ public class UISpiritDiscovered : MonoBehaviour
         m_Animator.enabled = false;
     }
 
-    public void Show(string spiritId)
+    public void Show(string spiritId, System.Action onClose = null)
     {
+        m_OnClose = onClose;
+
         DownloadedAssets.GetSprite(spiritId, (sprite) =>
         {
             StartCoroutine(ShowCoroutine(spiritId, sprite));
@@ -48,6 +51,8 @@ public class UISpiritDiscovered : MonoBehaviour
     {
         m_Animator.enabled = false;
         m_CloseButton.interactable = false;
+        m_OnClose?.Invoke();
+        m_OnClose = null;
 
         LeanTween.cancel(m_TweenId);
         m_TweenId = LeanTween.value(1, 0, 0.4f)
@@ -66,22 +71,23 @@ public class UISpiritDiscovered : MonoBehaviour
 
     private IEnumerator ShowCoroutine(string id, Sprite sprite)
     {
-        ////wait for the spirit banished ui to close
-        //while (UISpiritBanished.IsOpen)
-        //    yield return 1;
-
-        string spiritName = LocalizeLookUp.GetSpiritName(id);
-
-        m_Title.text = spiritName + " Discovered!";
-        m_Description.text = "You now have the knowledge to summon " + spiritName;
-
-        m_SpiritArt.overrideSprite = sprite;
+        Setup(id, sprite);
         
         m_Animator.enabled = true;
         m_Content.SetActive(true);
 
         m_CloseButton.interactable = false;
-        yield return new WaitForSeconds(0.1f);
+        yield return new WaitForSeconds(0.2f);
         m_CloseButton.interactable = true;
+    }
+
+    protected virtual void Setup(string id, Sprite sprite)
+    {
+        string spiritName = LocalizeLookUp.GetSpiritName(id);
+
+        m_Title.text = spiritName + " Discovered!";
+        m_Description.text = "You now have the knowledge to summon " + spiritName;
+        
+        m_SpiritArt.overrideSprite = sprite;
     }
 }

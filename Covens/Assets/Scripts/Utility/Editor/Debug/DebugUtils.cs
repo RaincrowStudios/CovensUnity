@@ -287,6 +287,18 @@ namespace Raincrow.Test
                 {
                     FirstTapManager.ResetFirsts();
                 }
+                if (GUILayout.Button("spirit discovered"))
+                {
+                    UISpiritDiscovered.Instance.Show("spirit_barghest");
+                }
+                if(GUILayout.Button("summon success"))
+                {
+                    UISummonSuccess.Instance.Show("spirit_barghest");
+                }
+                if (GUILayout.Button("Trigger low memory"))
+                {
+                    DownloadedAssets.Instance.OnApplicationLowMemory();
+                }
 
                 EditorGUI.EndDisabledGroup();
             }

@@ -101,11 +101,6 @@ public class FTFManager : MonoBehaviour
     {
         m_Instance = this;
 
-        if (UnityEngine.EventSystems.EventSystem.current == null)
-        {
-            new GameObject("EventSystem", typeof(UnityEngine.EventSystems.EventSystem), typeof(UnityEngine.EventSystems.StandaloneInputModule));
-        }
-
         m_BotMessage.OnClick += () => StartCoroutine(NextStep());
         m_TopMessage.OnClick += () => StartCoroutine(NextStep());
         m_Button.OnClick += () => StartCoroutine(NextStep());

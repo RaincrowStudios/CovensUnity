@@ -1,13 +1,12 @@
 ﻿using UnityEngine;
-using System.Collections;
 using System;
 using System.Collections.Generic;
 using Newtonsoft.Json;
 using System.ComponentModel;
 
-public class JsonClasses : MonoBehaviour
+public enum IngredientType
 {
-
+    gem, tool, herb, none
 }
 
 //public class Result

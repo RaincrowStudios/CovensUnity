@@ -130,7 +130,14 @@ public class UIMain : MonoBehaviour
 
     private void OnClickSummoning()
     {
-        SummoningManager.Open();
+        UISummoning.Open(
+            () => MapsAPI.Instance.HideMap(true),
+            (spirit) => 
+            {
+                UISummoning.Close();
+                UISummonSuccess.Instance.Show(spirit.spiritData.id, () => MapCameraUtils.FocusOnPosition(spirit.transform.position, false, 2));
+            },
+            () => MapsAPI.Instance.HideMap(false));
     }
 
     private void OnClickStore()

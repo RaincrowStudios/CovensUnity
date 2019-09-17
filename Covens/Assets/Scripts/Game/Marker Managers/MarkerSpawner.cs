@@ -411,6 +411,9 @@ public class MarkerSpawner : MarkerManager
 
     public static Sprite GetSpiritTierSprite(string spiritType)
     {
+        if (Instance == null)
+            return null;
+
         if (spiritType != null && Instance.m_SpiritIcons.ContainsKey(spiritType))
             return Instance.m_SpiritIcons[spiritType];
         else

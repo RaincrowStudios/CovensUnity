@@ -44,7 +44,7 @@ public class DownloadedAssets : MonoBehaviour
         Application.lowMemory += OnApplicationLowMemory;
     }
 
-    private void OnApplicationLowMemory()
+    public void OnApplicationLowMemory()
     {
         if (!UnloadingMemory)
         {
