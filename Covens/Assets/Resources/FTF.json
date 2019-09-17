@@ -38,7 +38,7 @@
 {"timer":1.5, "onEnter":[{"method":"CastSpell","parameters":["spell_hex","ftf_barghest","-54"]}]},
 
 //"well done, spirit banished"
-{"onEnter":[{"method":"ShowMessage","parameters":["ftf_8"]}],"onExit":[{"method":"CloseSpiritBanished"},{"method":"CloseSpellResults"}]},
+{"onEnter":[{"method":"ShowMessage","parameters":["ftf_8", "true"]}],"onExit":[{"method":"CloseSpiritBanished"},{"method":"CloseSpellResults"}]},
 // //"spirits can be summoned...""
 // {"onEnter":[{"method":"ShowMessage","parameters":["ftf_9"]}]]},
 // //focus on player, wait 1s, spawn pop
