@@ -75,6 +75,7 @@ public class UIPlayerInfo : UIInfoPanel
 
     private float m_PreviousMapZoom;
     private System.Action m_OnClose;
+    private int m_AlphaTweenId;
 
     public static WitchToken WitchToken { get; private set; }
     public static WitchMarker WitchMarker { get; private set; }
@@ -89,13 +90,26 @@ public class UIPlayerInfo : UIInfoPanel
         m_CovenButton.onClick.AddListener(OnClickCoven);
 
         base.Awake();
+
+        DownloadedAssets.OnWillUnloadAssets += OnWillUnloadAssets;
+    }
+    
+    private void OnWillUnloadAssets()
+    {
+        if (IsShowing)
+            return;
+
+        DownloadedAssets.OnWillUnloadAssets -= OnWillUnloadAssets;
+        LeanTween.cancel(m_TweenId);
+        LeanTween.cancel(m_AlphaTweenId);
+        Destroy(this.gameObject);
     }
 
     public static void SetVisibility(bool isVisible)
     {
         if (m_Instance != null)
         {
-            LeanTween.alphaCanvas(m_Instance.m_CanvasGroup, isVisible ? 1 : 0, .5f);
+            m_Instance.m_AlphaTweenId = LeanTween.alphaCanvas(m_Instance.m_CanvasGroup, isVisible ? 1 : 0, .5f).uniqueId;
         }
     }
 

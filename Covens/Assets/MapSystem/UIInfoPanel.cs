@@ -27,7 +27,7 @@ public abstract class UIInfoPanel : MonoBehaviour
         }
     }
 
-    private int m_TweenId;
+    protected int m_TweenId;
 
     protected bool m_IsShowing;
 
@@ -39,18 +39,6 @@ public abstract class UIInfoPanel : MonoBehaviour
         m_CanvasGroup.alpha = 0;
         m_InputRaycaster.enabled = false;
         m_Canvas.enabled = false;
-
-        DownloadedAssets.OnWillUnloadAssets += OnWillUnloadAssets;
-    }
-
-    protected virtual void OnWillUnloadAssets()
-    {
-        if (m_IsShowing)
-            return;
-
-        LeanTween.cancel(m_TweenId);
-        DownloadedAssets.OnWillUnloadAssets -= OnWillUnloadAssets;
-        Destroy(this.gameObject);
     }
 
     protected virtual void Show()

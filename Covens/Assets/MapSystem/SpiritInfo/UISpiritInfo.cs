@@ -65,7 +65,7 @@ public class UISpiritInfo : UIInfoPanel
     {
         if (m_Instance != null)
         {
-            m_Instance.m_TweenId = LeanTween.alphaCanvas(m_Instance.m_CanvasGroup, isVisible ? 1 : 0, .5f).uniqueId;
+            m_Instance.m_AlphaTweenId = LeanTween.alphaCanvas(m_Instance.m_CanvasGroup, isVisible ? 1 : 0, .5f).uniqueId;
         }
     }
 
@@ -79,10 +79,10 @@ public class UISpiritInfo : UIInfoPanel
         m_Instance._SetupDetails(data);
     }
 
-    private int m_TweenId;
     private SpiritData m_SpiritData;
     private System.Action m_OnClose;
     private float m_PreviousMapZoom;
+    private int m_AlphaTweenId;
 
     public static SpiritMarker SpiritMarker { get; private set; }
     public static SpiritToken SpiritToken { get; private set; }
@@ -96,17 +96,20 @@ public class UISpiritInfo : UIInfoPanel
 
         m_CloseButton.onClick.AddListener(OnClickClose);
         m_InfoButton.onClick.AddListener(OnClickInfo);
+
+        DownloadedAssets.OnWillUnloadAssets += OnWillUnloadAssets;
     }
 
 
-    protected override void OnWillUnloadAssets()
+    private void OnWillUnloadAssets()
     {
-        base.OnWillUnloadAssets();
-
         if (IsShowing)
             return;
 
+        DownloadedAssets.OnWillUnloadAssets -= OnWillUnloadAssets;
         LeanTween.cancel(m_TweenId);
+        LeanTween.cancel(m_AlphaTweenId);
+        Destroy(this.gameObject);
     }
 
     private void _Show(IMarker spirit, Token token, System.Action onClose)
@@ -131,7 +134,11 @@ public class UISpiritInfo : UIInfoPanel
         m_Desc.text = LocalizeLookUp.GetText("location_owned").Replace("{{Controller}}", "[" + LocalizeLookUp.GetText("loading") + "]");//"Belongs to [Loading...]";
 
         m_SpiritArt.overrideSprite = null;
-        DownloadedAssets.GetSprite(SpiritToken.spiritId, m_SpiritArt);
+        DownloadedAssets.GetSprite(SpiritToken.spiritId, spr => 
+        {
+            if (m_SpiritArt != null)
+                m_SpiritArt.overrideSprite = spr;
+        });
 
         string tier;
         switch (m_SpiritData.tier)
