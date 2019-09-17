@@ -583,11 +583,11 @@ public class FTFManager : MonoBehaviour
     {
         bool screenLoaded = false;
 
-        if (UIPlayerInfo.isShowing)
+        if (UIPlayerInfo.IsShowing)
         {
             UISpellcastBook.Open(UIPlayerInfo.WitchMarkerDetails, UIPlayerInfo.WitchMarker, PlayerDataManager.playerData.UnlockedSpells, null, null, null, () => screenLoaded = true);
         }
-        else if (UISpiritInfo.isOpen)
+        else if (UISpiritInfo.IsShowing)
         {
             UISpellcastBook.Open(UISpiritInfo.SpiritMarkerDetails, UISpiritInfo.SpiritMarker, PlayerDataManager.playerData.UnlockedSpells, null, null, null, () => screenLoaded = true);
         }

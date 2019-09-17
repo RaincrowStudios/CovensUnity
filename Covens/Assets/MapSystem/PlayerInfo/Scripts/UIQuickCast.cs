@@ -118,6 +118,11 @@ public class UIQuickCast : MonoBehaviour
 
     private void DownloadedAssets_OnWillUnloadAssets()
     {
+        if (IsOpen)
+            return;
+
+        LeanTween.cancel(m_AnimTweenId);
+
         DownloadedAssets.OnWillUnloadAssets -= DownloadedAssets_OnWillUnloadAssets;
         SceneManager.UnloadScene(SceneManager.Scene.QUICKCAST, null, null);
     }

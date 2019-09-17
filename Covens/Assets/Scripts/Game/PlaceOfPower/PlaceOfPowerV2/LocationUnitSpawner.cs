@@ -214,7 +214,7 @@ public class LocationUnitSpawner : MonoBehaviour
                     SelectWitchData_Map witch = JsonConvert.DeserializeObject<SelectWitchData_Map>(response);
                     witch.token = token as WitchToken;
 
-                    if (UIPlayerInfo.isShowing && UIPlayerInfo.WitchToken.instance == token.instance)
+                    if (UIPlayerInfo.IsShowing && UIPlayerInfo.WitchToken.instance == token.instance)
                     {
                         UIPlayerInfo.SetupDetails(witch);
                         UIQuickCast.UpdateCanCast(m, witch);
@@ -225,7 +225,7 @@ public class LocationUnitSpawner : MonoBehaviour
                     SelectSpiritData_Map spirit = JsonConvert.DeserializeObject<SelectSpiritData_Map>(response);
                     spirit.token = token as SpiritToken;
 
-                    if (UISpiritInfo.isOpen && UISpiritInfo.SpiritToken.instance == token.instance)
+                    if (UISpiritInfo.IsShowing && UISpiritInfo.SpiritToken.instance == token.instance)
                     {
                         UISpiritInfo.SetupDetails(spirit);
                         UIQuickCast.UpdateCanCast(m, spirit);

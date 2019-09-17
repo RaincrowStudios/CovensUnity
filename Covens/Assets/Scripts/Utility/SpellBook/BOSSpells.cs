@@ -170,7 +170,7 @@ public class BOSSpells : BOSBase
         cost.text = LocalizeLookUp.GetText("spell_cost") + ": <b>" + curSpell.cost.ToString();
         title.text = curSpell.Name;
 
-        descShort.text = PlayerManager.inSpiritForm ? curSpell.SpiritDescription : curSpell.PhysicalDescription;
+        descShort.text = curSpell.Description;
 
         toolText.text = gemText.text = herbText.text = LocalizeLookUp.GetText("lt_none");
         foreach (string ingredientId in curSpell.ingredients)

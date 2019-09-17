@@ -15,7 +15,7 @@ namespace Raincrow.Maps
         /// <summary>
         /// check if the given worldPosition is inside the camera view
         /// </summary>
-        bool IsPointInsideView(Vector3 point);
+        bool IsPointInsideView(Vector3 point, float feather = 0);
 
         /// <summary>
         /// the camera view bounds, in longitude,latitude coordinates. Obs: only works when the camera is not rotated.

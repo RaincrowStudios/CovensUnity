@@ -65,7 +65,7 @@ public class UIWaitingCastResult : UIInfoPanel
             if (m_Instance == null)
                 return false;
             else
-                return m_Instance.IsShowing;
+                return m_Instance.m_IsShowing;
         }
     }
 

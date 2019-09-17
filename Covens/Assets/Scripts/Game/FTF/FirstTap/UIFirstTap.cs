@@ -23,7 +23,7 @@ namespace Raincrow.FTF
                
         private static UIFirstTap m_Instance;
 
-        private List<FTFPointData> m_InstantiatedGlow = new List<FTFPointData>();
+        private List<GameObject> m_InstantiatedGlow = new List<GameObject>();
         private System.Action m_OnClose;
         private int m_AnimTweenId;
         private int m_ButtonTweenId;
@@ -72,9 +72,14 @@ namespace Raincrow.FTF
             {
                 FTFPointerHand instance;
                 if (i == 0)
+                {
                     instance = m_Glow;
+                }
                 else
+                {
                     instance = GameObject.Instantiate(m_Glow, m_Glow.transform.parent);
+                    m_InstantiatedGlow.Add(instance.gameObject);
+                }
 
                 instance.Show(entry.glow[i]);
             }
@@ -101,6 +106,10 @@ namespace Raincrow.FTF
                 .setOnComplete(() =>
                 {
                     m_Canvas.enabled = false;
+
+                    for (int i = 0; i < m_InstantiatedGlow.Count; i++)
+                        Destroy(m_InstantiatedGlow[i]);
+
                     if (FirstTapManager.CompletedAll())
                         Unload();
                 })

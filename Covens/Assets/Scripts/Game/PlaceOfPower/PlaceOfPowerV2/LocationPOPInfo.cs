@@ -56,7 +56,7 @@ public class LocationPOPInfo : UIInfoPanel
         get
         {
             if (m_Instance == null) return false;
-            else return m_Instance.IsShowing;
+            else return m_Instance.m_IsShowing;
         }
     }
 

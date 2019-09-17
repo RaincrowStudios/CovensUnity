@@ -272,9 +272,12 @@ public class SpellData
     [JsonIgnore]
     public string Name => LocalizeLookUp.GetSpellName(id);
     [JsonIgnore]
-    public string SpiritDescription => LocalizeLookUp.GetSpellSpiritDescription(id);
-    [JsonIgnore]
-    public string PhysicalDescription => LocalizeLookUp.GetSpellPhyisicalDescription(id);
+    public string Description => LocalizeLookUp.GetSpellSpiritDescription(id)
+                                    .Replace("{{minDamage}}", "")
+                                    .Replace("{{maxDamage}}", "")
+                                    .Replace("{{duration}}", "")
+                                    .Replace("{{maxStacks}}", "")
+                                    .Replace("{{levelRequired}}", level.ToString());
     [JsonIgnore]
     public string Lore => LocalizeLookUp.GetSpellLore(id);
 }

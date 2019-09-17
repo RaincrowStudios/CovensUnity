@@ -10,36 +10,35 @@ public class MapView : MonoBehaviour
     private List<string> m_DiscoveredSpirits = new List<string>();
     private List<string> m_BanishedSpirits = new List<string>();
 
-    //public static void Initialize()
-    //{
-    //    if (m_Instance != null)
-    //        return;
-
-    //    m_Instance = new GameObject("MapView").AddComponent<MapView>();
-    //}
-
     private void Awake()
     {
         m_Instance = this;
+    }
+
+    private void Start()
+    {
         OnLeavePoP();
-
-        //get the markers at the current position
-        MarkerManagerAPI.GetMarkers(
-            PlayerDataManager.playerData.longitude,
-            PlayerDataManager.playerData.latitude,
-            null,
-            false,
-            false,
-            false
-        );
-
-        LineRendererBasedDome.Instance.Setup(PlayerDataManager.DisplayRadius * MapsAPI.Instance.OneKmInWorldspace);
 
         LocationIslandController.OnEnterLocation += OnEnterPoP;
         LocationIslandController.OnExitLocation += OnLeavePoP;
 
         SpiritDicoveredHandler.OnSpiritDiscovered += _OnSpiritDiscovered;
         SpellCastHandler.OnSpiritBanished += _OnSpiritBanished;
+
+        PlayerManager.Instance.CreatePlayerStart();
+
+        //get the markers at the current position
+        MarkerManagerAPI.GetMarkers(
+            PlayerDataManager.playerData.longitude,
+            PlayerDataManager.playerData.latitude,
+            null,
+            true,
+            false,
+            true
+        );
+
+        LineRendererBasedDome.Instance.Setup(PlayerDataManager.DisplayRadius * MapsAPI.Instance.OneKmInWorldspace);
+
     }
 
     private void _OnPlayerEnergyUpdated(int energy)

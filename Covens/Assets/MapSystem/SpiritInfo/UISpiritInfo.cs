@@ -26,14 +26,14 @@ public class UISpiritInfo : UIInfoPanel
 
     private static UISpiritInfo m_Instance;
 
-    public static bool isOpen
+    public static bool IsShowing
     {
         get
         {
             if (m_Instance == null)
                 return false;
             else
-                return m_Instance.IsShowing;
+                return m_Instance.m_IsShowing;
         }
     }
 
@@ -65,9 +65,10 @@ public class UISpiritInfo : UIInfoPanel
     {
         if (m_Instance != null)
         {
-            LeanTween.alphaCanvas(m_Instance.m_CanvasGroup, isVisible ? 1 : 0, .5f);
+            m_Instance.m_AlphaTweenId = LeanTween.alphaCanvas(m_Instance.m_CanvasGroup, isVisible ? 1 : 0, .5f).uniqueId;
         }
     }
+
     public static void SetupDetails(SelectSpiritData_Map data)
     {
         SpiritMarkerDetails = data;
@@ -81,6 +82,7 @@ public class UISpiritInfo : UIInfoPanel
     private SpiritData m_SpiritData;
     private System.Action m_OnClose;
     private float m_PreviousMapZoom;
+    private int m_AlphaTweenId;
 
     public static SpiritMarker SpiritMarker { get; private set; }
     public static SpiritToken SpiritToken { get; private set; }
@@ -94,6 +96,20 @@ public class UISpiritInfo : UIInfoPanel
 
         m_CloseButton.onClick.AddListener(OnClickClose);
         m_InfoButton.onClick.AddListener(OnClickInfo);
+
+        DownloadedAssets.OnWillUnloadAssets += OnWillUnloadAssets;
+    }
+
+
+    private void OnWillUnloadAssets()
+    {
+        if (IsShowing)
+            return;
+
+        DownloadedAssets.OnWillUnloadAssets -= OnWillUnloadAssets;
+        LeanTween.cancel(m_TweenId);
+        LeanTween.cancel(m_AlphaTweenId);
+        Destroy(this.gameObject);
     }
 
     private void _Show(IMarker spirit, Token token, System.Action onClose)
@@ -118,7 +134,11 @@ public class UISpiritInfo : UIInfoPanel
         m_Desc.text = LocalizeLookUp.GetText("location_owned").Replace("{{Controller}}", "[" + LocalizeLookUp.GetText("loading") + "]");//"Belongs to [Loading...]";
 
         m_SpiritArt.overrideSprite = null;
-        DownloadedAssets.GetSprite(SpiritToken.spiritId, m_SpiritArt);
+        DownloadedAssets.GetSprite(SpiritToken.spiritId, spr => 
+        {
+            if (m_SpiritArt != null)
+                m_SpiritArt.overrideSprite = spr;
+        });
 
         string tier;
         switch (m_SpiritData.tier)
@@ -216,7 +236,6 @@ public class UISpiritInfo : UIInfoPanel
         {
             LocationUnitSpawner.EnableMarkers();
         }
-
     }
 
     private void _SetupDetails(SelectSpiritData_Map details)
@@ -290,22 +309,7 @@ public class UISpiritInfo : UIInfoPanel
     {
         Close();
     }
-
-    private void UISpellcasting_OnCastResult()
-    {
-        //if token is gone
-        if (MarkerSpawner.GetMarker(SpiritToken.instance) == null)
-        {
-            Close();
-        }
-    }
-
-    private void UISpellcasting_OnClickClose()
-    {
-        //close this too
-        Close();
-    }
-
+    
     private void _OnCharacterDead()
     {
         Abort();
@@ -313,7 +317,7 @@ public class UISpiritInfo : UIInfoPanel
 
     private void _OnMapTokenMove(string instance, Vector3 position)
     {
-        if (SpiritToken.instance == instance)
+        if (SpiritToken?.instance == instance)
         {
             MapCameraUtils.FocusOnMarker(position);
         }
@@ -321,7 +325,7 @@ public class UISpiritInfo : UIInfoPanel
 
     private void _OnMapEnergyChange(string instance, int newEnergy)
     {
-        if (instance == SpiritToken.instance)
+        if (instance == SpiritToken?.instance)
         {
             m_Energy.text = LocalizeLookUp.GetText("card_witch_energy").ToUpper() + " <color=black>" + newEnergy.ToString() + "</color>";
 
@@ -334,7 +338,7 @@ public class UISpiritInfo : UIInfoPanel
 
     private void _OnStatusEffectApplied(string character, StatusEffect statusEffect)
     {
-        if (character != SpiritToken.instance)
+        if (character != SpiritToken?.instance)
             return;
 
         foreach (StatusEffect item in SpiritMarkerDetails.effects)
@@ -351,7 +355,7 @@ public class UISpiritInfo : UIInfoPanel
 
     private void _OnMapTokenRemove(string instance)
     {
-        if (instance == SpiritToken.instance)
+        if (instance == SpiritToken?.instance)
         {
             Abort();
             //UIGlobalErrorPopup.ShowPopUp(null, LocalizeLookUp.GetText("spellbook_witch_is_gone").Replace("{{witch name}}", m_SpiritData.spiritName));// + " is gone.");

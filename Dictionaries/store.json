@@ -1326,30 +1326,6 @@
       "gold": "7"
     },
     {
-      "id": "cosmetic_f_S_THUNDERMOON",
-      "unlockOn": 1563249600000,
-      "silver": 8000,
-      "gold": "7"
-    },
-    {
-      "id": "cosmetic_f_S_ECLIPSE",
-      "unlockOn": 1562040000000,
-      "silver": 8000,
-      "gold": "7"
-    },
-    {
-      "id": "cosmetic_f_S_CORNMOON",
-      "unlockOn": 1565841600000,
-      "silver": 8000,
-      "gold": "7"
-    },
-    {
-      "id": "cosmetic_f_S_BRNNGWTCH",
-      "unlockOn": 1566705600000,
-      "silver": 8000,
-      "gold": "7"
-    },
-    {
       "id": "cosmetic_f_S_CALYPSO",
       "unlockOn": 1564977600000,
       "silver": 8000,
@@ -1381,32 +1357,12 @@
       "gold": "7"
     },
     {
-      "id": "cosmetic_m_S_CORNMOON",
-      "silver": 8000,
-      "gold": "7"
-    },
-    {
       "id": "cosmetic_m_S_CALYPSO",
       "silver": 8000,
       "gold": "7"
     },
     {
       "id": "cosmetic_m_S_FIREDANCER",
-      "silver": 8000,
-      "gold": "7"
-    },
-    {
-      "id": "cosmetic_m_S_BRNNGWTCH",
-      "silver": 8000,
-      "gold": "7"
-    },
-    {
-      "id": "cosmetic_m_S_ECLIPSE",
-      "silver": 8000,
-      "gold": "7"
-    },
-    {
-      "id": "cosmetic_m_S_THUNDERMOON",
       "silver": 8000,
       "gold": "7"
     }

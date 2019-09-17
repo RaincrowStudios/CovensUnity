@@ -10,7 +10,7 @@ if [%1]==[] goto usage
 SET PROJ_PATH=%CD%\..\
 SET SRC_PATH=%PROJ_PATH%Dictionaries
 
-SET DEST_FOLDER=dictionary_v3
+SET DEST_FOLDER=dictionary_v3/localization
 SET DEST_PATH=gs://raincrow-covens/%DEST_FOLDER%/
 
 ::del %1 /q

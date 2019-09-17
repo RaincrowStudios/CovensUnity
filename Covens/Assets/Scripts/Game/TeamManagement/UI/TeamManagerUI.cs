@@ -311,6 +311,9 @@ public class TeamManagerUI : MonoBehaviour
         if (IsOpen)
             return;
 
+        LeanTween.cancel(m_TweenId);
+        LeanTween.cancel(m_ScreenTweenId);
+
         DownloadedAssets.OnWillUnloadAssets -= DownloadedAssets_OnWillUnloadAssets;
         m_Members.m_Pool.DestroyAll();
         m_Invites.m_Pool.DestroyAll();

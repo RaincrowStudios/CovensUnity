@@ -54,6 +54,11 @@ public class UIQuickcastButton : MonoBehaviour, IPointerDownHandler, IPointerUpH
         Interactable = false;
     }
 
+    private void OnDestroy()
+    {
+        LeanTween.cancel(m_CooldownTweenId);
+    }
+
     public void Setup(int index, System.Action onClick, System.Action onHold)
     {
         Spell = PlayerManager.GetQuickcastSpell(index);

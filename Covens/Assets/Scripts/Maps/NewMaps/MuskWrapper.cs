@@ -61,9 +61,9 @@ namespace Raincrow.Maps
 
         public bool streetLevel { get { return m_CamController.streetLevel; } }
 
-        public bool IsPointInsideView(Vector3 point)
+        public bool IsPointInsideView(Vector3 point, float feather)
         {
-            return m_Map.IsPointInsideView(point);
+            return m_Map.IsPointInsideView(point, feather);
         }
 
         public Bounds coordinateBounds { get { return m_Map.coordsBounds; } }

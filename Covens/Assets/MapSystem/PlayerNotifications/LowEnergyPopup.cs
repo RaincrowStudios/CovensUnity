@@ -84,7 +84,6 @@ public class LowEnergyPopup : MonoBehaviour
 
     void Close()
     {
-        Debug.Log("Closing");
         LeanTween.alphaCanvas(thisCG, 0f, 0.4f).setOnComplete(() =>
         {
             Destroy(gameObject);
