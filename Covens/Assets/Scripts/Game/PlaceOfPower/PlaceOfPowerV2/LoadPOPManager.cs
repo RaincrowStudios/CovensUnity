@@ -17,6 +17,7 @@ public class LoadPOPManager : MonoBehaviour
     void Awake()
     {
         Instance = this;
+        Debug.Log("LOADING POP MANAGER");
     }
     void OnGUI()
     {
@@ -47,6 +48,7 @@ public class LoadPOPManager : MonoBehaviour
         {
             Instance.map = MapsAPI.Instance;
         }
+        LoadingOverlay.Show();
         LocationIslandController.ExitPOP(() =>
         {
             APIManager.Instance.Get("place-of-power/view/" + id, (response, result) =>
@@ -54,11 +56,9 @@ public class LoadPOPManager : MonoBehaviour
                   Debug.Log(response);
                   if (result == 200)
                   {
+                      LoadingOverlay.Hide();
                       var popInfo = LocationPOPInfo.Instance;
                       var data = JsonConvert.DeserializeObject<LocationViewData>(response);
-                      data.battleBeginsOn = GetFakeTime();
-                      Debug.Log(GetFakeTime());
-                      Debug.Log(data.battleBeginsOn);
                       popInfo.Show(data);
                       Instance.isViewVisible = true;
                   }
@@ -73,12 +73,18 @@ public class LoadPOPManager : MonoBehaviour
 
     public static void LoadScene(System.Action onComplete)
     {
+        Debug.Log("LOADING POP SCENE");
+
         previousEnergy = PlayerDataManager.playerData.energy;
         previousState = PlayerDataManager.playerData.state;
 
         foreach (var item in Instance.MainUIDisable)
         {
             item.SetActive(false);
+        }
+        if (Instance.map == null)
+        {
+            Instance.map = MapsAPI.Instance;
         }
         Instance.map.HideMap(true);
         SceneManager.LoadSceneAsync(SceneManager.Scene.PLACE_OF_POWER, UnityEngine.SceneManagement.LoadSceneMode.Additive, null, () =>
@@ -110,13 +116,6 @@ public class LoadPOPManager : MonoBehaviour
        });
         OnMapEnergyChange.OnPlayerDead -= LoadPOPManager.UnloadScene;
         OnMapEnergyChange.OnMarkerEnergyChange -= LocationUnitSpawner.OnEnergyChange;
-    }
-
-    private static double GetFakeTime()
-    {
-        System.DateTime dtDateTime = System.DateTime.UtcNow;
-        dtDateTime = dtDateTime.AddSeconds(30);
-        return ((System.DateTimeOffset)dtDateTime).ToUnixTimeMilliseconds();
     }
 
     public static void HandleQuickCastOpen(System.Action OnOpen)

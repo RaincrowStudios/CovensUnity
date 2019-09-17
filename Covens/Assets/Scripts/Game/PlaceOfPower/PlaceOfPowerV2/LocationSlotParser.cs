@@ -12,7 +12,7 @@ using System.Collections.Generic;
 public static class LocationSlotParser
 {
 
-    public static LocationData HandleResponse(string eventData)
+    public static LocationData HandleResponse(string eventData, bool checkSpirit = false)
     {
         MultiKeyDictionary<int, string, object> tokens = new MultiKeyDictionary<int, string, object>();
         JObject data = JObject.Parse(eventData);
@@ -21,7 +21,19 @@ public static class LocationSlotParser
         locationData._id = data["_id"].ToString();
         locationData.maxSlots = (int)data["maxSlots"];
         locationData.currentOccupants = (int)data["currentOccupants"];
-
+        // IF SPIRIT IS DEAD
+        if (checkSpirit)
+        {
+            try
+            {
+                locationData.spirit = JsonConvert.DeserializeObject<SpiritToken>((data["spirit"]).ToString());
+                locationData.spirit.island = -1;
+            }
+            catch
+            {
+                locationData.spirit = null;
+            }
+        }
         int island = 0;
 
         foreach (var slot in (IEnumerable)data["slots"])

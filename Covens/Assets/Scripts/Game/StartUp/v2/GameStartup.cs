@@ -166,7 +166,7 @@ public class GameStartup : MonoBehaviour
         name = (LocalizeLookUp.HasKey("chat_settings") ? LocalizeLookUp.GetText("chat_settings") : "settings") + " (" + name + ")";
         SplashManager.Instance.SetDownloadProgress(name, 0, 0, size, progress);
     }
-    
+
 
     private void OnAssetDownloadStart(string name, int index, int total, float fileSize)
     {
@@ -192,16 +192,16 @@ public class GameStartup : MonoBehaviour
     {
         HandleServerDown.Instance.AssetDownloadError(name);
     }
-    
+
     private void OnAllDownloadsCompleted()
     {
         SplashManager.Instance.ShowDownloadSlider(false);
         SplashManager.Instance.SetDownloadMessage("", "");
 
-         m_DownloadsReady = true;
+        m_DownloadsReady = true;
         CompleteStartup();
     }
-    
+
     private void OnSplashLogosFinished()
     {
         m_LogosReady = true;
@@ -270,7 +270,7 @@ public class GameStartup : MonoBehaviour
                 startingScreen = LoginUIManager.Screen.CHOOSE_CHARACTER;
             else
                 startingScreen = LoginUIManager.Screen.WELCOME;
-            
+
             if (SplashManager.Instance.IsShowingHints)
             {
                 SplashManager.Instance.HideHints(1, () => LoginUIManager.Open(startingScreen));
@@ -336,6 +336,10 @@ public class GameStartup : MonoBehaviour
             SocketClient.Instance.InitiateSocketConnection();
             ChatManager.InitChat();
             UIDominionSplash.Instance.Show(() => BlessingManager.CheckDailyBlessing());
+            if (PlayerDataManager.playerData.insidePlaceOfPower && PlayerDataManager.playerData.placeOfPower != "")
+            {
+                LocationIslandController.ResumeBattle(PlayerDataManager.playerData.placeOfPower);
+            }
         }
     }
 

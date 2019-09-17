@@ -15,7 +15,7 @@ public class EnergyMarker : CollectableMarker
         //EnergyTokenData = data as EnergyToken;
 
 #if UNITY_EDITOR
-        Debug.Log("<color=red>todo</color>: add new socket message for add.token.energy instead of using add.token.item");
+        //  Debug.Log("<color=red>todo</color>: add new socket message for add.token.energy instead of using add.token.item");
 #endif
         if (data is EnergyToken)
             m_EnergyAmount.text = (data as EnergyToken).amount.ToString();
