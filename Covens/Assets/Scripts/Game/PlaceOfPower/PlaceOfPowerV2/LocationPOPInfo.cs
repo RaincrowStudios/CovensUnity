@@ -83,7 +83,7 @@ public class LocationPOPInfo : UIInfoPanel
         base.Show();
         ShowUI();
     }
-    private void ShowUI()
+    private void ShowUI(bool disableInit = false)
     {
         SoundManagerOneShot.Instance.SummonRiser();
 
@@ -95,7 +95,8 @@ public class LocationPOPInfo : UIInfoPanel
             m_EnterBtn.onClick.RemoveAllListeners();
             if (compareTime(m_LocationViewData.battleBeginsOn))
             {
-                InitiateTimeUI();
+                if (!disableInit)
+                    InitiateTimeUI();
                 UpdateEnterTimer();
                 m_Locked.SetActive(false);
                 m_Content.text = "Place of power is open and accepting players, pay 1 gold drach to go in";
@@ -216,6 +217,7 @@ public class LocationPOPInfo : UIInfoPanel
 
         if (tStamp == 0 && !m_HasEnteredPOP)
         {
+            await Task.Delay(1000);
             RefreshViewData();
             Debug.Log("updating Enter Timer | Refresh View");
         }
@@ -238,7 +240,7 @@ public class LocationPOPInfo : UIInfoPanel
             {
                 m_LocationViewData = JsonConvert.DeserializeObject<LocationViewData>(x);
                 Debug.Log(x);
-                ShowUI();
+                ShowUI(true);
             }
             else
             {

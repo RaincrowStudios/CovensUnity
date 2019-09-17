@@ -29,7 +29,7 @@ public class MarkerManagerAPI : MonoBehaviour
     public static event System.Action<string> OnChangeDominion;
     public static bool IsSpiritForm { get; private set; }
     public static bool IsSpawningTokens { get; private set; }
-    
+
     private static MarkerManagerAPI m_Instance;
     private static int m_MoveTweenId;
     private static Coroutine m_SpawnCoroutine;
@@ -50,7 +50,7 @@ public class MarkerManagerAPI : MonoBehaviour
         bool physical = dist < PlayerDataManager.DisplayRadius;
         IsSpiritForm = !physical;
 
-        if (PlayerDataManager.IsFTF)
+        if (PlayerDataManager.IsFTF || PlayerDataManager.playerData.insidePlaceOfPower)
         {
             return;
         }
@@ -123,7 +123,7 @@ public class MarkerManagerAPI : MonoBehaviour
             }
         }
     }
-    
+
     private static void GetMarkersFailed(float longitude, float latitude, bool animateMap, bool loadMap, string result, int response)
     {
         //move back to previous position
@@ -153,15 +153,15 @@ public class MarkerManagerAPI : MonoBehaviour
         PlayerManager.marker.Coords = new Vector2(longitude, latitude);
         PlayerDataManager.playerData.longitude = longitude;
         PlayerDataManager.playerData.latitude = latitude;
-        
+
         MapMoveResponse moveResponse = JsonConvert.DeserializeObject<MapMoveResponse>(result);
-        
+
         UpdateDominion(moveResponse.location);
 
         SpawnMarkers(
-            moveResponse.characters, 
-            moveResponse.spirits, 
-            moveResponse.items, 
+            moveResponse.characters,
+            moveResponse.spirits,
+            moveResponse.items,
             moveResponse.energies,
             moveResponse.placesOfPower);
     }
@@ -290,7 +290,7 @@ public class MarkerManagerAPI : MonoBehaviour
 
         foreach (string id in toRemove)
             MarkerSpawner.DeleteMarker(id);
-        
+
         m_SpawnCoroutine = null;
         IsSpawningTokens = false;
     }

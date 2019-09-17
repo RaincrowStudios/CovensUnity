@@ -183,7 +183,7 @@ public class SummoningManager : MonoBehaviour
     void enableBool()
     {
         isOpen = true;
-        MapsAPI.Instance.HideMap(true);
+        // MapsAPI.Instance.HideMap(true);
         if (!PlayerDataManager.IsFTF)
         {
             SD.canSwipe = true;
@@ -201,7 +201,7 @@ public class SummoningManager : MonoBehaviour
 
         OnMapEnergyChange.OnPlayerDead -= _Close;
 
-        MapsAPI.Instance.HideMap(false);
+        // MapsAPI.Instance.HideMap(false);
         UIStateManager.Instance.CallWindowChanged(true);
         isOpen = false;
         SD.canSwipe = false;

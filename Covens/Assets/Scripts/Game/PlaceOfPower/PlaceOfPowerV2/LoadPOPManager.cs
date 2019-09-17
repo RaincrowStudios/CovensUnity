@@ -17,6 +17,7 @@ public class LoadPOPManager : MonoBehaviour
     void Awake()
     {
         Instance = this;
+        Debug.Log("LOADING POP MANAGER");
     }
     void OnGUI()
     {
@@ -72,12 +73,18 @@ public class LoadPOPManager : MonoBehaviour
 
     public static void LoadScene(System.Action onComplete)
     {
+        Debug.Log("LOADING POP SCENE");
+
         previousEnergy = PlayerDataManager.playerData.energy;
         previousState = PlayerDataManager.playerData.state;
 
         foreach (var item in Instance.MainUIDisable)
         {
             item.SetActive(false);
+        }
+        if (Instance.map == null)
+        {
+            Instance.map = MapsAPI.Instance;
         }
         Instance.map.HideMap(true);
         SceneManager.LoadSceneAsync(SceneManager.Scene.PLACE_OF_POWER, UnityEngine.SceneManagement.LoadSceneMode.Additive, null, () =>

@@ -100,6 +100,7 @@ public class LocationIslandController : MonoBehaviour
         LocationBattleEnd.OnLocationBattleEnd -= BattleStopPOP;
         ExpireAstralHandler.OnExpireAstral -= LocationUnitSpawner.DisableCloaking;
         isInBattle = false;
+        PlayerDataManager.playerData.insidePlaceOfPower = false;
     }
 
     private static void WitchJoined(WitchToken token)
@@ -155,7 +156,13 @@ public class LocationIslandController : MonoBehaviour
                 Debug.Log(response);
 
                 // kick player out of pop
-                APIManager.Instance.Put($"place-of-power/leave", "{}", (s, r) => { });
+                APIManager.Instance.Put($"place-of-power/leave", "{}", (s, r) =>
+                {
+                    if (r == 200)
+                    {
+                        PlayerDataManager.playerData.insidePlaceOfPower = false;
+                    }
+                });
                 UIGlobalPopup.ShowError(() => { }, "Entering in pop failed.");
             }
         });
@@ -166,6 +173,7 @@ public class LocationIslandController : MonoBehaviour
         LocationRewardInfo.Instance.Setup(LocationPOPInfo.popName, rewardData, () =>
         {
             LoadingOverlay.Show("Loading Map...");
+            PlayerDataManager.playerData.insidePlaceOfPower = false;
             LoadPOPManager.UnloadScene();
         });
         RewardHandlerPOP.LocationReward -= OnReward;

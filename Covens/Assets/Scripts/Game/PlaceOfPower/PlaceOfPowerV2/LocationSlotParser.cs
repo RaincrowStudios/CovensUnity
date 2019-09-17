@@ -27,6 +27,7 @@ public static class LocationSlotParser
             try
             {
                 locationData.spirit = JsonConvert.DeserializeObject<SpiritToken>((data["spirit"]).ToString());
+                locationData.spirit.island = -1;
             }
             catch
             {
