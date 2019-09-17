@@ -38,7 +38,7 @@ public class CovenConstants : MonoBehaviour
 #elif PRODUCTION
            return "https://game-server-production-dot-covens.appspot.com/api/";
 #else
-            return "https://game-server.raincrow.pw/api/";
+            return "http://34.73.145.51:9000/api/";
 #endif
         }
     }

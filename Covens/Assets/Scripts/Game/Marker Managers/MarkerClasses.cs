@@ -307,6 +307,9 @@ public class PlayerData : WitchMarkerData
     public bool shadowMastery;
     public bool greyMastery;
 
+    public string placeOfPower;
+    public bool insidePlaceOfPower;
+
     public int silver;
     public int gold;
 

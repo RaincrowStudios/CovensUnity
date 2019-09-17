@@ -41,7 +41,7 @@ public abstract class UIInfoPanel : MonoBehaviour
         m_Canvas.enabled = false;
     }
 
-    protected virtual void Show()
+    protected void Show()
     {
         m_IsShowing = true;
         ReOpen();
@@ -63,7 +63,7 @@ public abstract class UIInfoPanel : MonoBehaviour
         ReOpenAnimation();
     }
 
-    protected virtual void ReOpenAnimation()
+    protected void ReOpenAnimation()
     {
         System.Action<float> onUpdate;
         if (m_Panel)
