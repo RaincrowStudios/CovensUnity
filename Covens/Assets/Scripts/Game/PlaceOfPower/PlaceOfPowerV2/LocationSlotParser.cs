@@ -21,7 +21,12 @@ public static class LocationSlotParser
         locationData._id = data["_id"].ToString();
         locationData.maxSlots = (int)data["maxSlots"];
         locationData.currentOccupants = (int)data["currentOccupants"];
-
+        // TODO IF SPIRIT IS DEAD
+        var t = data["currentOccupants1"].ToString();
+        Debug.Log("Json parsing test");
+        Debug.Log(t);
+        Debug.Log(t.Length);
+        locationData.spirit = JsonConvert.DeserializeObject<SpiritToken>((data["spirit"]).ToString());
         int island = 0;
 
         foreach (var slot in (IEnumerable)data["slots"])

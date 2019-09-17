@@ -2888,7 +2888,7 @@ MonoBehaviour:
     spaceCount: 11
     wordCount: 12
     linkCount: 0
-    lineCount: 2
+    lineCount: 1
     pageCount: 1
     materialCount: 1
   m_isUsingLegacyAnimationComponent: 0
@@ -3114,9 +3114,6 @@ MonoBehaviour:
   m_PlayerJoinedTitle: {fileID: 973837150840024578}
   m_PlayerJoinedSubtitle: {fileID: 8270968675822046023}
   m_PlayerJoinedColor: {fileID: 580179720018635947}
-  disneyPark: {fileID: 21300000, guid: 209f39401e75a72488295a2b284bf1a8, type: 3}
-  Hollywood: {fileID: 21300000, guid: 750e3e75f412e24419361b499ba49705, type: 3}
-  Winchester: {fileID: 21300000, guid: 0a491badd0a59e04c8e6798894ac42f4, type: 3}
   m_EnterBtn: {fileID: 3282237857058142325}
 --- !u!1 &8370872736402372589
 GameObject:

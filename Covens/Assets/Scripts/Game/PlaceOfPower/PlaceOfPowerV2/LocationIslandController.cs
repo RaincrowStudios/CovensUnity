@@ -126,6 +126,34 @@ public class LocationIslandController : MonoBehaviour
         }
     }
 
+    public static void ResumeBattle(string id)
+    {
+        APIManager.Instance.Put($"place-of-power/{id}", "{}", (response, result) =>
+        {
+            if (result == 200)
+            {
+                Debug.Log("PUTTING PLAYER IN POP");
+                Debug.Log(result);
+                Debug.Log(response);
+                m_LocationData = LocationSlotParser.HandleResponse(response);
+                LoadPOPManager.LoadScene(() =>
+                  {
+                      ExpireAstralHandler.OnExpireAstral += LocationUnitSpawner.DisableCloaking;
+                      OnMapEnergyChange.OnPlayerDead += LoadPOPManager.UnloadScene;
+                      OnMapEnergyChange.OnMarkerEnergyChange += LocationUnitSpawner.OnEnergyChange;
+                      LocationBattleEnd.OnLocationBattleEnd += BattleStopPOP;
+                      instance.BattleBeginPOP(m_LocationData.spirit);
+                  });
+            }
+            else
+            {
+                // kick player out of pop
+                APIManager.Instance.Put($"place-of-power/leave", "{}", (s, r) => { });
+                UIGlobalPopup.ShowError(() => { }, "Entering in pop failed.");
+            }
+        });
+    }
+
     public static void EnterPOP(string id, System.Action<LocationData> OnComplete)
     {
         APIManager.Instance.Put($"place-of-power/enter/{id}", "{}", async (response, result) =>
@@ -302,6 +330,7 @@ public class LocationData
         }
     }
     public MultiKeyDictionary<int, string, object> tokens = new MultiKeyDictionary<int, string, object>();
+    public SpiritToken spirit { get; set; }
 }
 
 public class LocationViewData

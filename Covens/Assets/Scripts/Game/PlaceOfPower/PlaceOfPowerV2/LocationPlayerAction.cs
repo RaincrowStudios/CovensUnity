@@ -103,7 +103,10 @@ public class LocationPlayerAction : MonoBehaviour
         m_BtnArr[1] = btn;
 
         btn = Instantiate(m_ActionBtn, transform) as LocationActionButton;
-        btn.Setup(SUMMON_TIMER, m_SummonSprite, () => { });
+        btn.Setup(SUMMON_TIMER, m_SummonSprite, () =>
+        {
+            SummoningManager.Open();
+        });
         m_BtnArr[2] = btn;
 
         btn = Instantiate(m_ActionBtn, transform) as LocationActionButton;
@@ -118,24 +121,31 @@ public class LocationPlayerAction : MonoBehaviour
               "character/cast/" + playerWitchToken.instance,
               JsonConvert.SerializeObject(data), (s, r) =>
               {
-                  RenderSettings.fog = true;
-                  RenderSettings.fogMode = FogMode.Linear;
-                  RenderSettings.fogColor = new Color(0.14f, 0.14f, 0.14f);
-                  CenterOnPlayer();
-                  UIQuickCast.EnableQuickcastButtons(false);
-                  if (UIPlayerInfo.IsShowing)
-                      UIPlayerInfo.SetVisibility(false);
-                  if (UISpiritInfo.IsShowing)
-                      UISpiritInfo.SetVisibility(false);
-                  LeanTween.value(1, 0, .5f).setOnUpdate((float v) => CloakingFX(v));
-                  isCloaked = true;
-                  SoundManagerOneShot.Instance.FadeOutBGTrack();
-                  Debug.Log("isCloaked = true");
-                  SoundManagerOneShot.Instance.PlayCloakingSFX(true);
-                  foreach (var item in LocationUnitSpawner.Markers)
+                  if (r == 200)
                   {
-                      item.Value.ScaleNamePlate(false, .5f);
-                      //   item.Value.EnergyRingFade(1, .5f);
+                      RenderSettings.fog = true;
+                      RenderSettings.fogMode = FogMode.Linear;
+                      RenderSettings.fogColor = new Color(0.14f, 0.14f, 0.14f);
+                      CenterOnPlayer();
+                      UIQuickCast.EnableQuickcastButtons(false);
+                      if (UIPlayerInfo.IsShowing)
+                          UIPlayerInfo.SetVisibility(false);
+                      if (UISpiritInfo.IsShowing)
+                          UISpiritInfo.SetVisibility(false);
+                      LeanTween.value(1, 0, .5f).setOnUpdate((float v) => CloakingFX(v));
+                      isCloaked = true;
+                      SoundManagerOneShot.Instance.FadeOutBGTrack();
+                      SoundManagerOneShot.Instance.PlayCloakingSFX(true);
+                      foreach (var item in LocationUnitSpawner.Markers)
+                      {
+                          item.Value.ScaleNamePlate(false, .5f);
+                          //   item.Value.EnergyRingFade(1, .5f);
+                      }
+                  }
+                  else
+                  {
+                      Debug.LogError("Cloaking failed");
+                      UIGlobalPopup.ShowError(() => { }, "Cloaking failed. Error Code: " + s);
                   }
               });
        }, true);

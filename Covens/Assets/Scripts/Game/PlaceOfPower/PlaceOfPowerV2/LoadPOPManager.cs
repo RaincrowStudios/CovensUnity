@@ -47,6 +47,7 @@ public class LoadPOPManager : MonoBehaviour
         {
             Instance.map = MapsAPI.Instance;
         }
+        LoadingOverlay.Show();
         LocationIslandController.ExitPOP(() =>
         {
             APIManager.Instance.Get("place-of-power/view/" + id, (response, result) =>
@@ -54,6 +55,7 @@ public class LoadPOPManager : MonoBehaviour
                   Debug.Log(response);
                   if (result == 200)
                   {
+                      LoadingOverlay.Hide();
                       var popInfo = LocationPOPInfo.Instance;
                       var data = JsonConvert.DeserializeObject<LocationViewData>(response);
                       popInfo.Show(data);

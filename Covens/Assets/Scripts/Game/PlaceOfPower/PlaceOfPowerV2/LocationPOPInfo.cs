@@ -29,11 +29,6 @@ public class LocationPOPInfo : UIInfoPanel
     [SerializeField] private TextMeshProUGUI m_PlayerJoinedSubtitle;
     [SerializeField] private Image m_PlayerJoinedColor;
 
-    public Sprite disneyPark;
-    public Sprite Hollywood;
-    public Sprite Winchester;
-
-    Dictionary<string, Sprite> imgs = new Dictionary<string, Sprite>();
 
     [SerializeField] private Button m_EnterBtn;
     private LocationViewData m_LocationViewData;
@@ -63,9 +58,6 @@ public class LocationPOPInfo : UIInfoPanel
     protected override void Awake()
     {
         m_Instance = this;
-        imgs["5d642429d1bdb244e91395b0"] = disneyPark;
-        imgs["5d64251fd1bdb244e913ae7f"] = Winchester;
-        imgs["5d642429d1bdb244e91395b0"] = Hollywood;
         m_CloseBtn.onClick.AddListener(Close);
         base.Awake();
     }
@@ -75,39 +67,50 @@ public class LocationPOPInfo : UIInfoPanel
         m_LocationViewData = data;
         LocationIslandController.OnWitchEnter += AddWitch;
         LocationIslandController.OnWitchExit += RemoveWitch;
+        m_TimeCG.alpha = 0;
+        m_TimeCG.gameObject.SetActive(false);
+        m_FadeOut.alpha = 0;
+        m_FadeOut.gameObject.SetActive(false);
+        m_Progress.gameObject.SetActive(false);
+        m_HasEnteredPOP = false;
+
         base.Show();
         ShowUI();
     }
     private void ShowUI()
     {
         SoundManagerOneShot.Instance.SummonRiser();
-        try
-        {
-            m_locationImage.sprite = imgs[m_LocationViewData._id];
 
-        }
-        catch (System.Exception)
-        {
-        }
-        m_HasEnteredPOP = false;
         m_EnterAnimation.SetActive(false);
         m_Title.text = m_LocationViewData.name;
-        FadeOutUITimer();
         if (m_LocationViewData.isOpen)
         {
-            m_Locked.SetActive(false);
-            m_Content.text = "Place of power is open and accepting players, pay 1 gold drach to go in";
-            m_Enter.gameObject.SetActive(true);
-
             m_Enter.color = m_EnoughSilver;
             m_EnterBtn.onClick.RemoveAllListeners();
-            InitiateTimeUI();
-            UpdateEnterTimer();
+            if (compareTime(m_LocationViewData.battleBeginsOn))
+            {
+                InitiateTimeUI();
+                UpdateEnterTimer();
+                m_Locked.SetActive(false);
+                m_Content.text = "Place of power is open and accepting players, pay 1 gold drach to go in";
+                m_Enter.gameObject.SetActive(true);
+            }
+            else
+            {
+                m_Locked.SetActive(true);
+                m_Content.text = "Place of power is unavailable";
+                m_TimeTitle.text = "--";
+                m_Enter.gameObject.SetActive(false);
+                m_TimeSubtitle.text = "seconds";
+                Debug.LogError("Wrong battle begins on timer for pop " + m_LocationViewData._id);
+            }
+
             if (PlayerDataManager.playerData.gold >= 1)
                 m_EnterBtn.onClick.AddListener(() => LocationIslandController.EnterPOP(m_LocationViewData._id, OnEnterPOP));
             else
             {
                 m_Enter.color = m_NotEnoughSilver;
+                m_EnterBtn.onClick.AddListener(() => UIGlobalPopup.ShowPopUp(() => { }, "Not enough gold."));
                 //handle taking to store
             }
 
@@ -166,19 +169,25 @@ public class LocationPOPInfo : UIInfoPanel
 
         if (!Application.isPlaying || !gameObject.activeInHierarchy) return;
 
-        var tStamp = GetTime(m_LocationViewData.coolDownEndOn);
-        var tSec = GetSeconds(m_LocationViewData.coolDownEndOn);
+        var cooldownEnd = m_LocationViewData.battleFinishedOn + (m_LocationViewData.coolDownTimeWindow * 1000);
+
+        var tStamp = GetTime(cooldownEnd);
+        var tSec = GetSeconds(cooldownEnd);
         if (tSec == 0)
         {
+            Debug.Log("updating cooldown Timer | Refresh View");
             RefreshViewData();
         }
-        else
+        else if (tSec > 0)
         {
             m_TimeTitle.text = tStamp.timeStamp;
             m_TimeSubtitle.text = tStamp.timeType;
             m_Progress.fillAmount = MapUtils.scale(0, 1, 0, m_LocationViewData.coolDownTimeWindow, tSec);
-
             UpdateCooldownTimer();
+        }
+        else
+        {
+            Debug.LogError("Enter Timer Value Negetive : " + tStamp);
         }
     }
 
@@ -192,19 +201,27 @@ public class LocationPOPInfo : UIInfoPanel
         var tStamp = GetSeconds(m_LocationViewData.battleBeginsOn);
 
         m_TimeTitle.text = tStamp.ToString();
-        if (!m_HasEnteredPOP)
-            m_TimeSubtitle.text = "seconds";
-
         m_Progress.fillAmount = MapUtils.scale(0, 1, 0, m_LocationViewData.openTimeWindow, tStamp);
 
-        if (tStamp < 1)
+        if (!m_HasEnteredPOP)
         {
-            RefreshViewData();
-            return;
+            m_TimeSubtitle.text = "seconds";
         }
 
+        if (tStamp == 0 && !m_HasEnteredPOP)
+        {
+            RefreshViewData();
+            Debug.Log("updating Enter Timer | Refresh View");
+        }
+        else if (tStamp > 0)
+        {
+            UpdateEnterTimer();
+        }
+        else
+        {
+            Debug.Log("Enter Timer Value Negetive : " + tStamp);
+        }
 
-        UpdateEnterTimer();
     }
 
     private void RefreshViewData()
@@ -214,6 +231,7 @@ public class LocationPOPInfo : UIInfoPanel
             if (y == 200)
             {
                 m_LocationViewData = JsonConvert.DeserializeObject<LocationViewData>(x);
+                Debug.Log(x);
                 ShowUI();
             }
             else
@@ -317,6 +335,15 @@ public class LocationPOPInfo : UIInfoPanel
         dtDateTime = dtDateTime.AddMilliseconds(javaTimeStamp).ToUniversalTime();
         var timeSpan = dtDateTime.Subtract(DateTime.UtcNow);
         return timeSpan;
+    }
+
+    private Boolean compareTime(double timeStamp)
+    {
+
+        double current = (double)DateTimeOffset.UtcNow.ToUnixTimeMilliseconds();
+        Debug.Log(current);
+        Debug.Log(timeStamp);
+        return timeStamp > current;
     }
 
 }
