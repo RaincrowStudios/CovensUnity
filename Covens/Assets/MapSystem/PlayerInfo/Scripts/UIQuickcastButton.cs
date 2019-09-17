@@ -57,10 +57,13 @@ public class UIQuickcastButton : MonoBehaviour, IPointerDownHandler, IPointerUpH
     private void OnDestroy()
     {
         LeanTween.cancel(m_CooldownTweenId);
+        StopAllCoroutines();
     }
 
     public void Setup(int index, System.Action onClick, System.Action onHold)
     {
+        StopAllCoroutines();
+
         Spell = PlayerManager.GetQuickcastSpell(index);
         QuickcastIndex = index;
         m_OnClick = onClick;

@@ -269,6 +269,7 @@ public class UIQuickCast : MonoBehaviour
         SpellData spell = DownloadedAssets.GetSpell(button.Spell);
 
         this._Hide(true);
+
         Spellcasting.CastSpell(spell, m_Target, new List<spellIngredientsData>(),
             (result) => this._Hide(false),
             () => this._Hide(false));
@@ -285,20 +286,13 @@ public class UIQuickCast : MonoBehaviour
             button.Spell,
             spell =>
             {
-                //SpellData data = DownloadedAssets.GetSpell(spell);
-
-                //if (data == null)
-                //    return;
-
-                //if (data.level > PlayerDataManager.playerData.level)
-                //    return;
-
                 PlayerManager.SetQuickcastSpell(button.QuickcastIndex, spell);
 
                 button.Setup(
                     button.QuickcastIndex,
                     () => OnClickSpell(button),
                     () => OnHoldSpell(button));
+
                 button.UpdateCanCast(m_Target, m_TargetData);
             },
             () => button.Hightlight(false)
