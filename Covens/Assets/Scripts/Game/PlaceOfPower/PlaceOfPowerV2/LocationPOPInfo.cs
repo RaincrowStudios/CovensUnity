@@ -102,14 +102,14 @@ public class LocationPOPInfo : UIInfoPanel
             m_Enter.color = m_EnoughSilver;
             m_EnterBtn.onClick.RemoveAllListeners();
             InitiateTimeUI();
-            // UpdateEnterTimer();
-            // if (PlayerDataManager.playerData.gold >= 1)
-            m_EnterBtn.onClick.AddListener(() => LocationIslandController.EnterPOP(m_LocationViewData._id, OnEnterPOP));
-            // else
-            // {
-            //     m_Enter.color = m_NotEnoughSilver;
-            //     //handle taking to store
-            // }
+            UpdateEnterTimer();
+            if (PlayerDataManager.playerData.gold >= 1)
+                m_EnterBtn.onClick.AddListener(() => LocationIslandController.EnterPOP(m_LocationViewData._id, OnEnterPOP));
+            else
+            {
+                m_Enter.color = m_NotEnoughSilver;
+                //handle taking to store
+            }
 
         }
         else
@@ -125,7 +125,7 @@ public class LocationPOPInfo : UIInfoPanel
             {
                 InitiateTimeUI();
                 m_Content.text = "This place is under cooldown, check back later";
-                //  UpdateCooldownTimer();
+                UpdateCooldownTimer();
             }
         }
     }

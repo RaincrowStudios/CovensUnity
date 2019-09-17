@@ -56,9 +56,6 @@ public class LoadPOPManager : MonoBehaviour
                   {
                       var popInfo = LocationPOPInfo.Instance;
                       var data = JsonConvert.DeserializeObject<LocationViewData>(response);
-                      data.battleBeginsOn = GetFakeTime();
-                      Debug.Log(GetFakeTime());
-                      Debug.Log(data.battleBeginsOn);
                       popInfo.Show(data);
                       Instance.isViewVisible = true;
                   }
@@ -110,13 +107,6 @@ public class LoadPOPManager : MonoBehaviour
        });
         OnMapEnergyChange.OnPlayerDead -= LoadPOPManager.UnloadScene;
         OnMapEnergyChange.OnMarkerEnergyChange -= LocationUnitSpawner.OnEnergyChange;
-    }
-
-    private static double GetFakeTime()
-    {
-        System.DateTime dtDateTime = System.DateTime.UtcNow;
-        dtDateTime = dtDateTime.AddSeconds(30);
-        return ((System.DateTimeOffset)dtDateTime).ToUnixTimeMilliseconds();
     }
 
     public static void HandleQuickCastOpen(System.Action OnOpen)
