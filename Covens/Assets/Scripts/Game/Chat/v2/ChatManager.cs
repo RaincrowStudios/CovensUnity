@@ -538,7 +538,7 @@ namespace Raincrow.Chat
 
         public static void Log(string message)
         {
-            Debug.Log("<color=#00FF28>[ChatManager] " + message + "</color>");
+            Debug.Log("<color=#00FF28>[ChatManager]</color> " + message );
         }
 
         public static void LogError(string message)
