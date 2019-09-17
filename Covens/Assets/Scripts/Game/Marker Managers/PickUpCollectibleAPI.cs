@@ -8,7 +8,7 @@ public static class PickUpCollectibleAPI
 {
     private static SimplePool<Transform> m_CollectFxPool = new SimplePool<Transform>("OnCollectEnergy");
     private static SimplePool<Transform> m_UiCollectFxPool = new SimplePool<Transform>("OnCollectEnergyUI");
-    
+
     public static void PickUpCollectable(CollectableMarker marker)
     {
         string instance = marker.Token.instance;
@@ -46,10 +46,16 @@ public static class PickUpCollectibleAPI
 
                 //ui feedback
                 IngredientData collData = DownloadedAssets.GetCollectable(collectable);
+                var color = "<color=#6ED3FF>";
+                if (collData.forbidden)
+                {
+                    color = "<color=#FF0000>";
+                }
                 string msg = LocalizeLookUp.GetText("add_to_inventory")
                     .Replace("{{count}}", marker.collectableToken.amount.ToString())
-                    .Replace("{{item}}", LocalizeLookUp.GetCollectableName(marker.collectableToken.collectible));
-                
+                    .Replace("{{item}}", color + LocalizeLookUp.GetCollectableName(marker.collectableToken.collectible) + "</color>");
+
+
                 PlayerNotificationManager.Instance.ShowNotification(msg, UICollectableInfo.Instance.m_IconDict[type]);
                 SoundManagerOneShot.Instance.PlayItemAdded();
             }
