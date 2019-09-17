@@ -146,6 +146,7 @@ public class LocationIslandController : MonoBehaviour
                       OnMapEnergyChange.OnPlayerDead += LoadPOPManager.UnloadScene;
                       OnMapEnergyChange.OnMarkerEnergyChange += LocationUnitSpawner.OnEnergyChange;
                       LocationBattleEnd.OnLocationBattleEnd += BattleStopPOP;
+                      RewardHandlerPOP.LocationReward += OnReward;
                       instance.BattleBeginPOP(m_LocationData.spirit);
                   });
             }
@@ -158,6 +159,16 @@ public class LocationIslandController : MonoBehaviour
                 UIGlobalPopup.ShowError(() => { }, "Entering in pop failed.");
             }
         });
+    }
+
+    private static void OnReward(RewardHandlerPOP.RewardPOPData rewardData)
+    {
+        LocationRewardInfo.Instance.Setup(LocationPOPInfo.popName, rewardData, () =>
+        {
+            LoadingOverlay.Show("Loading Map...");
+            LoadPOPManager.UnloadScene();
+        });
+        RewardHandlerPOP.LocationReward -= OnReward;
     }
 
     public static void EnterPOP(string id, System.Action<LocationData> OnComplete)

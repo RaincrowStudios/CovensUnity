@@ -34,7 +34,13 @@ public class LocationPOPInfo : UIInfoPanel
     private LocationViewData m_LocationViewData;
     private static LocationPOPInfo m_Instance;
     private bool m_HasEnteredPOP = false;
-
+    public static string popName
+    {
+        get
+        {
+            return Instance.m_LocationViewData.name;
+        }
+    }
     public static LocationPOPInfo Instance
     {
         get
