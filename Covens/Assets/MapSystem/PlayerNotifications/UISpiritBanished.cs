@@ -53,6 +53,7 @@ public class UISpiritBanished : MonoBehaviour
         if (IsOpen)
             return;
 
+        LeanTween.cancel(m_TweenId);
         DownloadedAssets.OnWillUnloadAssets -= OnWillUnloadAssets;
         Destroy(this.gameObject);
     }
