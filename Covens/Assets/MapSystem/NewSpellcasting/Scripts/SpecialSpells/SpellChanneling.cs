@@ -1,4 +1,5 @@
-﻿using Raincrow.GameEventResponses;
+﻿using Newtonsoft.Json;
+using Raincrow.GameEventResponses;
 using Raincrow.Maps;
 using System.Collections;
 using System.Collections.Generic;
@@ -6,236 +7,96 @@ using UnityEngine;
 
 public static class SpellChanneling
 {
-    public static event System.Action<string, string> OnChannelingStart;
-    public static event System.Action<string, string> OnChannelingFinish;
+    public static IMarker Target { get; private set; }
 
-    public static bool IsChanneling { get; private set; }
-    public static string TargetId { get; private set; }
-
-    /*{
-        "command":"map_channel_start",
-        "casterInstance":"local:db1a793d-a294-4a22-802d-85b94857d2a9",
-        "spell":"spell_channeling",
-        "channeling":{"instance":"local:23cc3a98-aa1e-4259-b4c6-851cc1fe2977","power":10,"resilience":10,"crit":1,"limit":20,"tick":1},
-        "timestamp":1562003633345
-     }*/
-    public static void OnMapChannelingStart(WSData data)
-    {
-        if (string.IsNullOrEmpty(data.casterInstance))
-            return;
-        
-        IMarker marker = MarkerSpawner.GetMarker(data.casterInstance);
-        if (marker != null)
-        {
-            SpawnChannelingSFX(marker, data.channeling.instance, data.channeling.tick, data.channeling.limit);
-        }
-
-        OnChannelingStart?.Invoke(data.casterInstance, data.channeling.instance);
-    }
-
-    public static void OnMapChannelingFinish(WSData data)
-    {
-        OnChannelingFinish?.Invoke(data.casterInstance, data.instance);
-    }
-
-    public static void CastSpell(SpellData spell, IMarker target, List<spellIngredientsData> ingredients, System.Action<Raincrow.GameEventResponses.SpellCastHandler.Result> onFinishFlow, System.Action onCancelFlow)
-    {
-        //send begin channeling
-        //if fail, send failed Result and stop listening for map_channel_start
-        //if success, show the channeling screen
-
-        if (IsChanneling)
-        {
-            return;
-        }
-
-        IsChanneling = true;
-        TargetId = target.Token.instance;
-        TickSpellHandler.OnPlayerSpellTick += OnSpellTick;
-
-        UIChanneling.Instance.Show(onFinishFlow);
-        UIChanneling.Instance.SetInteractable(false);
-        
-        APIManager.Instance.Post(
-                "character/cast/" + TargetId,
-                $"{{\"spell\":\"spell_channeling\"}}",
-                (response, result) => 
-                {
-                    UIChanneling.Instance.SetInteractable(true);
-                });
-        
-        //string data = $"{{\"spell\":\"{spell.id}\"}}";
-        //APIManager.Instance.Post("spell/begin-channel", data, (response, result) =>
-        //{
-        //    /*{
-        //        "instance":"local:f4ff9966-7880-4b30-b897-52c455cd903d",
-        //        "power":10,
-        //        "resilience":10,
-        //        "crit":1,
-        //        "limit":20,
-        //        "tick":1
-        //      }*/
-
-        //    if (result == 200)
-        //    {
-        //        Dictionary<string, object> responseData = Newtonsoft.Json.JsonConvert.DeserializeObject<Dictionary<string, object>>(response);
-        //        string instance = responseData["instance"] as string;
-        //        UIChanneling.Instance.SetChannelingInstance(instance);
-
-        //        SpawnChannelingSFX(PlayerManager.marker, instance, 1f, 5f);
-        //    }
-        //    else
-        //    {
-        //        UIChanneling.Instance.ShowResults(null, response);
-        //        onFinishFlow?.Invoke(null);
-        //    }
-        //});
-    }
-
-    public static void StopChanneling(System.Action<Raincrow.GameEventResponses.SpellCastHandler.Result, string> callback)
-    {
-        if (IsChanneling == false)
-            return;
-
-        APIManager.Instance.Post(
-                   "character/cast/" + TargetId,
-                   $"{{\"spell\":\"spell_channeling\"}}",
-                   (response, result) =>
-                   {
-                       IsChanneling = false;
-                       TargetId = null;
-                       TickSpellHandler.OnPlayerSpellTick -= OnSpellTick;
-                   });
-        
-        //string data = $"{{\"spellInstance\":\"{instance}\"}}";
-
-        //APIManager.Instance.Post("spell/end-channel", data, (response, result) =>
-        //{
-        //    /*{
-        //        "power":{
-        //            "oldPower":20,
-        //            "newPower":20
-        //        },
-        //        "resilience":{
-        //            "oldResilience":20,
-        //            "newResilience":20
-        //        }
-        //     }*/
-        //    if (result == 200)
-        //    {
-        //        Dictionary<string, Dictionary<string, int>> resultDict = Newtonsoft.Json.JsonConvert.DeserializeObject<Dictionary<string, Dictionary<string, int>>>(response);
-        //        Dictionary<string, int> power = resultDict["power"] as Dictionary<string, int>;
-        //        Dictionary<string, int> resilience = resultDict["resilience"] as Dictionary<string, int>;
-
-        //        callback?.Invoke(
-        //            new Result
-        //            {
-        //                newPower = power["newPower"],
-        //                newResilience = resilience["newResilience"]
-        //            },
-        //            null
-        //        );
-
-        //        //simulate event to despawn the fx
-        //        OnChannelingFinish?.Invoke(PlayerDataManager.playerData.instance, instance);
-        //    }
-        //    else
-        //    {
-        //        if (result == 400)
-        //            callback?.Invoke(null, response);
-        //        else
-        //            callback?.Invoke(null, result.ToString());
-        //    }
-        //});
-    }
-
-    private static void OnSpellTick(SpellCastHandler.SpellCastEventData data)
-    {
-        if (data.spell == "spell_channeling")
-        {
-            Debug.LogError("spell tick");
-        }
-    }
+    public static bool IsChanneling => PlayerDataManager.playerData.HasStatus("channeling");
+    public static bool IsChanneled => PlayerDataManager.playerData.HasStatus("channeled");
 
     private static SimplePool<Transform> m_ShadowFx = new SimplePool<Transform>("SpellFX/Channeling/ChannelingShadow");
     private static SimplePool<Transform> m_GreyFx = new SimplePool<Transform>("SpellFX/Channeling/ChannelingGrey");
     private static SimplePool<Transform> m_WhiteFx = new SimplePool<Transform>("SpellFX/Channeling/ChannelingWhite");
 
-    private static void SpawnChannelingSFX(IMarker marker, string instance, float timePerTick, float maxTime)
+
+    public static void CastSpell(SpellData spell, IMarker target, List<spellIngredientsData> ingredients, System.Action<Raincrow.GameEventResponses.SpellCastHandler.Result> onFinishFlow, System.Action onCancelFlow)
     {
-        SocketClient.Instance.StartCoroutine(ChannelingFxCoroutine(marker, instance, timePerTick, maxTime));
+        Target = target;
+        TickSpellHandler.OnPlayerSpellTick += OnSpellTick;
+
+        UIChanneling.Instance.Show(onFinishFlow);
+        UIChanneling.Instance.SetInteractable(false);
+
+        //if already channeling, just show the ui
+        if (IsChanneling)
+        {
+            UIChanneling.Instance.SetInteractable(true);
+            return;
+        }
+        
+        APIManager.Instance.Post(
+            "character/cast/" + target.Token.Id,
+            $"{{\"spell\":\"spell_channeling\"}}",
+            (response, result) =>
+            {
+                SpellCastHandler.SpellCastEventData data = JsonConvert.DeserializeObject<SpellCastHandler.SpellCastEventData>(response);
+
+                OnMapEnergyChange.ForceEvent(target, data.target.energy, data.timestamp);
+
+                if (data.result.statusEffect != null && string.IsNullOrEmpty(data.result.statusEffect.spell) == false)
+                    ConditionManager.AddCondition(data.result.statusEffect, Target);
+
+                UIChanneling.Instance.SetInteractable(true);
+            });
     }
 
-    private static IEnumerator ChannelingFxCoroutine(IMarker marker, string instance, float timePerTick, float maxTime)
+    public static void StopChanneling(System.Action<Raincrow.GameEventResponses.SpellCastHandler.Result, string> callback)
     {
-        bool channeling = true;
-        System.Action<string, string> onFinish = (_caster, _channel) =>
+        if (IsChanneling == false)
         {
-            if (_channel == instance)
-                channeling = false;
-        };
-        OnChannelingFinish += onFinish;
-
-        //Transform newFx;
-        ////spawn fx
-        //if (PlayerDataManager.playerData.degree > 0)
-        //{
-        //    newFx = m_WhiteFx.Spawn();
-        //}
-        //else if (PlayerDataManager.playerData.degree < 0)
-        //{
-        //    newFx = m_ShadowFx.Spawn();
-        //}
-        //else
-        //{
-        //    newFx = m_GreyFx.Spawn();
-        //}
-        //marker.AddChild(newFx, marker.characterTransform, m_GreyFx);
-        //ParticleSystem[] particles = newFx.GetComponentsInChildren<ParticleSystem>();
-
-        //foreach (ParticleSystem _ps in particles)
-        //    _ps.Play(false);
-
-        int tweenId = 0;
-        float totalTime = 0;
-
-        while (channeling && !marker.isNull)
-        {
-            yield return new WaitForSeconds(timePerTick);
-            totalTime += timePerTick;
-            //var p = newFx.transform.GetChild(0).GetComponent<ParticleSystem>();
-            //var main = p.main;
-
-            //if (totalTime <= maxTime)
-            //{
-            //    main.loop = true;
-            //    //animate pulse fx
-            //    //newFx.localScale = Vector3.one * 1.2f;
-            //    //tweenId = LeanTween.scale(newFx.gameObject, Vector3.one, timePerTick / 2).setEaseOutCubic().uniqueId;
-            //}
-            //else
-            //{
-            //    main.loop = false;
-            //    //animate max reached fx
-            //    //tweenId = LeanTween.scale(newFx.gameObject, Vector3.one * 1.05f, timePerTick / 4f).setLoopPingPong().uniqueId;
-            //    yield return new WaitUntil(() => !channeling || marker.isNull);
-            //}
+            TickSpellHandler.OnPlayerSpellTick -= OnSpellTick;
+            Target = null;
+            return;
         }
 
-        OnChannelingFinish -= onFinish;
+        APIManager.Instance.Post(
+            "character/cast/" + Target.Token.Id,
+            $"{{\"spell\":\"spell_channeling\"}}",
+            (response, result) =>
+            {
+                if (IsChanneling)
+                {
+                    if (result == 200)
+                    {
+                        SpellCastHandler.SpellCastEventData data = JsonConvert.DeserializeObject<SpellCastHandler.SpellCastEventData>(response);
 
-        LeanTween.cancel(tweenId);
+                        ////remove the channeling status
+                        //for (int i = PlayerDataManager.playerData.effects.Count - 1; i >= 0 ; i--)
+                        //{
+                        //    if (PlayerDataManager.playerData.effects[i].spell == "spell_channeling")
+                        //        PlayerDataManager.playerData.effects.RemoveAt(i);
+                        //}
 
-        ////stop particles
-        //foreach (ParticleSystem _ps in particles)
-        //    _ps.Stop(false, ParticleSystemStopBehavior.StopEmitting);
+                        //add the new status effect
+                        if (data.result.statusEffect != null && string.IsNullOrEmpty(data.result.statusEffect.spell) == false)
+                            ConditionManager.AddCondition(data.result.statusEffect, Target);
 
-        ////animate channelign complete
-        //tweenId = LeanTween.scale(newFx.gameObject, Vector3.one * 1.5f, timePerTick).uniqueId;
+                        UIChanneling.Instance.ShowResults(data.result, null);
+                    }
+                    else
+                    {
+                        UIChanneling.Instance.ShowResults(new SpellCastHandler.Result(), APIManager.ParseError(response));
+                    }
+                }
 
-        //desapwn fx
-        yield return new WaitForSeconds(5f);
-        //marker.RemoveChild(newFx);
-        //m_GreyFx.Despawn(newFx);
+                TickSpellHandler.OnPlayerSpellTick -= OnSpellTick;
+                Target = null;
+            });
+    }
+
+    private static void OnSpellTick(SpellCastHandler.SpellCastEventData data)
+    {
+        if (data.caster.id == PlayerDataManager.playerData.instance && data.spell == "spell_channeling")
+        {
+
+        }
     }
 }

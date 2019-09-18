@@ -47,6 +47,7 @@ public class UIChanneling : UIInfoPanel
     private int m_ResultsTweenId;
     private int m_DelayTweenId;
     //private string m_ChannelInstance;
+    SpellCastHandler.Result m_Results;
 
     protected override void Awake()
     {
@@ -103,6 +104,7 @@ public class UIChanneling : UIInfoPanel
 
     public void ShowResults(Raincrow.GameEventResponses.SpellCastHandler.Result result, string error)
     {
+        m_Results = result;
         LeanTween.cancel(m_ResultsTweenId);
 
         if (string.IsNullOrEmpty(error))
@@ -150,11 +152,10 @@ public class UIChanneling : UIInfoPanel
 
     private void OnClickContinue()
     {
-        ////propagate results back to whom called this UIChanneling.Show
-        //m_OnClickContinue?.Invoke(m_Results);
-        //m_Results = null;
-        //m_OnClickContinue = null;
+        //propagate results back to whom called this UIChanneling.Show
+        m_OnClickContinue?.Invoke(m_Results);
+        m_OnClickContinue = null;
 
-        //Close();
+        Close();
     }
 }

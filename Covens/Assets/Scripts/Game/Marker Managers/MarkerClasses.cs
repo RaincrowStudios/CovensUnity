@@ -205,6 +205,27 @@ public abstract class CharacterMarkerData : MarkerData
     {
         energy = Mathf.Clamp(energy + amount, 0, maxEnergy);
     }
+
+
+    public bool HasStatus(string status)
+    {
+        if (effects == null)
+            return false;
+
+        for(int i = 0; i < effects.Count; i++)
+        {
+            if (effects[i].modifiers.status == null)
+                return false;
+
+            for (int j = 0; j < effects[i].modifiers.status.Count; j++)
+            {
+                if (effects[i].modifiers.status[j] == status)
+                    return true;
+            }
+        }
+
+        return false;
+    }
 }
 
 public class WitchMarkerData : CharacterMarkerData
@@ -386,6 +407,9 @@ public class PlayerData : WitchMarkerData
         }
 
         UpdateSpells();
+
+        if (effects == null)
+            effects = new List<StatusEffect>();
     }
 
     public void UpdateSpells()
