@@ -53,6 +53,37 @@ public static class SummoningManager
         });
     }
 
+    public static void SummonPoP(string spirit, int position, int island, System.Action<string> callback)
+    {
+        Dictionary<string, object> data = new Dictionary<string, object>
+        {
+            { "position", position },
+            { "island", island }
+        };
+
+        APIManager.Instance.Post("character/summon/" + spirit, JsonConvert.SerializeObject(data), (string s, int r) =>
+        {
+            if (r == 200)
+            {
+                //remove the ingredients
+                RemoveIngredients(spirit);
+                
+                SpiritData spiritData = DownloadedAssets.GetSpirit(spirit);
+                int tier = spiritData.tier;
+                int summonCost = PlayerDataManager.SummoningCosts[tier - 1] * 3;
+
+                OnCharacterDeath.CheckSummonDeath(spirit, summonCost);
+                PlayerDataManager.playerData.AddEnergy(-summonCost);
+
+                callback(null);
+            }
+            else
+            {
+                callback(s);
+            }
+        });
+    }
+
     private static void RemoveIngredients(string spiritId)
     {
         SpiritData spirit = DownloadedAssets.GetSpirit(spiritId);

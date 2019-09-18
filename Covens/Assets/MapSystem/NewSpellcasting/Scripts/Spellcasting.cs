@@ -247,9 +247,6 @@ public class Spellcasting
             10f
         );
 
-        //simulate cooldown localy
-        CooldownManager.AddCooldown(spell.id, Utilities.GetUnixTimestamp(System.DateTime.UtcNow.AddSeconds(100)), spell.cooldown);
-
         /// SPECIAL FLOW (SPELLS THAT HAVE THEIR OWN REQUESTS
         if (m_SpecialSpells.ContainsKey(spell.id))
         {
@@ -272,6 +269,9 @@ public class Spellcasting
         /// DEFAULT FLOW (SEND A SPELL/TARGETED REQUEST)
         else
         {
+            //simulate cooldown localy
+            CooldownManager.AddCooldown(spell.id, Utilities.GetUnixTimestamp(System.DateTime.UtcNow.AddSeconds(100)), spell.cooldown);
+
             //show the animted UI
             UIWaitingCastResult.Instance.Show(target, spell, ingredients,
                 (result) =>
@@ -299,8 +299,8 @@ public class Spellcasting
                 }
                 else
                 {
-                //retry
-                if (response == "2016")
+                    //retry
+                    if (response == "2016")
                     {
                         APIManager.Instance.Post(
                             "character/cast/" + targetId,
@@ -310,13 +310,13 @@ public class Spellcasting
                         return;
                     }
 
-                //remove the local cooldown if there was an error
-                CooldownManager.RemoveCooldown(spell.id);
+                    //remove the local cooldown if there was an error
+                    CooldownManager.RemoveCooldown(spell.id);
 
                     UIWaitingCastResult.Instance.Close();
 
-                //force a remove token event just in case the marker stayed onthe game
-                if (response == "1002")
+                    //force a remove token event just in case the marker stayed onthe game
+                    if (response == "1002")
                     {
                         RemoveTokenHandler.ForceEvent(targetId);
                         return;
