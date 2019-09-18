@@ -25,9 +25,10 @@ namespace Raincrow.DynamicPlacesOfPower
         [SerializeField] private float m_ZoomSensivity = 0.1f;
         [SerializeField] private float m_RotateSensivity = 1f;
 
+        private static PopCameraController Instance { get; set; }
 
-        public new Camera camera { get { return m_Camera; } }
-        public float fov { get { return m_Camera.fieldOfView; } }
+        public new Camera camera { get { return Instance.m_Camera; } }
+        public float fov { get { return Instance.m_Camera.fieldOfView; } }
 
         public bool controlEnabled { get; private set; }
         public bool zoomEnabled { get; private set; }
@@ -65,9 +66,15 @@ namespace Raincrow.DynamicPlacesOfPower
         // private int m_FlyButtonTweenId;
         // private int m_ElasticTweenId;
 
+        void OnEnable()
+        {
+            if (Instance == null)
+                Instance = this;
+        }
+
         private void Awake()
         {
-            //Instance = this;
+            Instance = this;
             LeanTouch.OnFingerUp += OnFingerUp;
             controlEnabled = true;
             panEnabled = true;
@@ -103,7 +110,7 @@ namespace Raincrow.DynamicPlacesOfPower
 
                 if (delta.magnitude > 10)
                 {
-                    Vector3 worldDelta = -m_CenterPoint.forward * delta.y * (m_MaxAngle / m_AnglePivot.eulerAngles.x) - m_CenterPoint.right * delta.x;
+                    Vector3 worldDelta = -Instance.m_CenterPoint.forward * delta.y * (m_MaxAngle / Instance.m_AnglePivot.eulerAngles.x) - Instance.m_CenterPoint.right * delta.x;
                     m_PositionDelta = worldDelta;
                 }
             }
@@ -130,8 +137,8 @@ namespace Raincrow.DynamicPlacesOfPower
             if (delta.magnitude > 1)
             {
                 m_PositionDelta = Vector3.zero;
-                Vector3 worldDelta = -m_CenterPoint.forward * delta.y * (m_MaxAngle / m_AnglePivot.eulerAngles.x) - m_CenterPoint.right * delta.x;
-                m_CenterPoint.position = ClampPosition(m_CenterPoint.position + worldDelta);
+                Vector3 worldDelta = -Instance.m_CenterPoint.forward * delta.y * (m_MaxAngle / Instance.m_AnglePivot.eulerAngles.x) - Instance.m_CenterPoint.right * delta.x;
+                Instance.m_CenterPoint.position = ClampPosition(Instance.m_CenterPoint.position + worldDelta);
 
                 onUserPan?.Invoke();
             }
@@ -208,7 +215,7 @@ namespace Raincrow.DynamicPlacesOfPower
             if (m_PositionDelta.magnitude > 1)
             {
                 Vector3 newDelta = Vector3.Lerp(m_PositionDelta, Vector3.zero, Time.deltaTime * 10 / m_DragInertia);
-                m_CenterPoint.position = ClampPosition(m_CenterPoint.position + (m_PositionDelta - newDelta));
+                Instance.m_CenterPoint.position = ClampPosition(Instance.m_CenterPoint.position + (m_PositionDelta - newDelta));
                 m_PositionDelta = newDelta;
                 m_PositionChanged = true;
             }
@@ -224,12 +231,12 @@ namespace Raincrow.DynamicPlacesOfPower
             if (m_CurrentTwist != m_TargetTwist)
             {
                 m_CurrentTwist = Mathf.Approximately(m_CurrentTwist, m_TargetTwist) ? m_TargetTwist : Mathf.Lerp(m_CurrentTwist, m_TargetTwist, Time.deltaTime * 5);
-                m_CenterPoint.eulerAngles = new Vector3(0, m_CurrentTwist, 0);
+                Instance.m_CenterPoint.eulerAngles = new Vector3(0, m_CurrentTwist, 0);
                 m_RotationChanged = true;
             }
 
             m_Camera.fieldOfView = Mathf.Lerp(m_MinFOV, m_MaxFOV, m_CurrentZoom);
-            m_AnglePivot.localEulerAngles = new Vector3(Mathf.Lerp(m_MinAngle, m_MaxAngle, m_CurrentZoom), 0, 0);
+            Instance.m_AnglePivot.localEulerAngles = new Vector3(Mathf.Lerp(m_MinAngle, m_MaxAngle, m_CurrentZoom), 0, 0);
 
             if (m_PositionChanged || m_ZoomChanged || m_RotationChanged)
             {
@@ -242,8 +249,8 @@ namespace Raincrow.DynamicPlacesOfPower
             m_CenterPosition = center;
             m_BoundRadius = radius;
 
-            Vector3 targetPosition = ClampPosition(m_CenterPoint.transform.position + m_PositionDelta);
-            m_PositionDelta = targetPosition - m_CenterPoint.transform.position;
+            Vector3 targetPosition = ClampPosition(Instance.m_CenterPoint.transform.position + m_PositionDelta);
+            m_PositionDelta = targetPosition - Instance.m_CenterPoint.transform.position;
         }
 
 
@@ -256,7 +263,7 @@ namespace Raincrow.DynamicPlacesOfPower
                 cancelAction = () => LeanTween.cancel(m_MoveTweenId, true);
             onUserPan += cancelAction;
 
-            m_MoveTweenId = LeanTween.move(m_CenterPoint.gameObject, pos, time)
+            m_MoveTweenId = LeanTween.move(Instance.m_CenterPoint.gameObject, pos, time)
                 .setEaseOutCubic()
                 .setOnUpdate((float t) =>
                 {
@@ -274,7 +281,7 @@ namespace Raincrow.DynamicPlacesOfPower
             // position.x += 85;
             // position.z += 50;
             position.y = 0;
-            AnimatePosition(position + m_CenterPoint.right * m_TargetFocusOffset.x + m_CenterPoint.forward * m_TargetFocusOffset.y, time, false);
+            AnimatePosition(position + Instance.m_CenterPoint.right * m_TargetFocusOffset.x + Instance.m_CenterPoint.forward * m_TargetFocusOffset.y, time, false);
         }
     }
 }

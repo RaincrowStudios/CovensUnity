@@ -33,7 +33,8 @@ public class LocationActionButton : MonoBehaviour
             m_Btn.interactable = false;
             LeanTween.value(1, 0, cooldown).setOnUpdate((float v) =>
             {
-                m_Progress.fillAmount = v;
+                if (m_Progress != null)
+                    m_Progress.fillAmount = v;
             }).setOnComplete(() =>
             {
                 if (isCloak)
@@ -55,7 +56,8 @@ public class LocationActionButton : MonoBehaviour
         m_Progress.fillAmount = 0;
         LeanTween.value(1, 0, cooldown).setOnUpdate((float v) =>
         {
-            m_Progress.fillAmount = v;
+            if (m_Progress != null)
+                m_Progress.fillAmount = v;
         }).setOnComplete(() =>
         {
             m_Btn.interactable = true;

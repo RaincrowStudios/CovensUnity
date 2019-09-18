@@ -65,13 +65,22 @@ public class LocationPlayerAction : MonoBehaviour
             LocationUnitSpawner.DisableMarkers();
     }
 
+    void OnEnable()
+    {
+        if (Instance == null)
+            Instance = this;
+    }
+
     private void Awake()
     {
+        Debug.Log("LOCATION SETUP");
         Instance = this;
 
         m_MoveCloserCloseBtn.onClick.AddListener(HideMoveCloser);
         m_CenterOnPlayerBtn.onClick.AddListener(CenterOnPlayer);
         m_DisableCloakBtn.onClick.AddListener(RequestDisableCloaking);
+        LocationIslandController.OnEnterLocation += () => Debug.Log("||||||||||||||POPS IN"); ;
+
         LocationIslandController.OnEnterLocation += Setup;
         LocationIslandController.OnExitLocation -= Setup;
         LocationIslandController.OnExitLocation -= () =>
@@ -92,24 +101,29 @@ public class LocationPlayerAction : MonoBehaviour
 
     private void Setup()
     {
+        Debug.Log("Setting up Player Actions");
         LocationActionButton btn;
         UpdateEnergy(0);
         OnMapEnergyChange.OnPlayerEnergyChange += UpdateEnergy;
-        btn = Instantiate(m_ActionBtn, transform) as LocationActionButton;
+
+        btn = Instantiate(Instance.m_ActionBtn, Instance.transform) as LocationActionButton;
         btn.Setup(MOVE_TIMER, m_flySprite, () =>
         {
             LocationUnitSpawner.MoveWitch(selectedPosition.island, selectedPosition.position);
         });
         m_BtnArr[1] = btn;
 
-        btn = Instantiate(m_ActionBtn, transform) as LocationActionButton;
+        btn = Instantiate(Instance.m_ActionBtn, Instance.transform) as LocationActionButton;
         btn.Setup(SUMMON_TIMER, m_SummonSprite, () =>
         {
-            UISummoning.Open(selectedPosition.position, selectedPosition.island, null, null, null);
+            UISummoning.Open(selectedPosition.position, selectedPosition.island, null, (s) =>
+            {
+                UISummoning.Close();
+            }, null);
         });
         m_BtnArr[2] = btn;
 
-        btn = Instantiate(m_ActionBtn, transform) as LocationActionButton;
+        btn = Instantiate(Instance.m_ActionBtn, Instance.transform) as LocationActionButton;
         btn.Setup(PlayerDataManager.playerData.level + 20, m_CloakSprite, () =>
        {
 
@@ -248,11 +262,14 @@ public class LocationPlayerAction : MonoBehaviour
 
     public static void ShowActions()
     {
+
         UIQuickCast.Open(() =>
         {
             UIQuickCast.EnableQuickcastButtons(false);
+            Debug.Log(m_BtnArr.Length);
             for (int i = 0; i < m_BtnArr.Length; i++)
             {
+                Debug.Log(m_BtnArr[i].gameObject.name);
                 UIQuickCast.AddItem(m_BtnArr[i].gameObject, i, () =>
                 {
 
@@ -271,6 +288,7 @@ public class LocationPlayerAction : MonoBehaviour
     public static void HideActions()
     {
         UIQuickCast.EnableQuickcastButtons(true);
+        Debug.Log(m_BtnArr.Length);
         for (int i = 0; i < m_BtnArr.Length; i++)
         {
             if (m_BtnArr[i].gameObject.activeInHierarchy)
@@ -296,7 +314,8 @@ public class LocationPlayerAction : MonoBehaviour
                     if (m_BtnArr[0].gameObject.activeInHierarchy)
                     {
                         m_BtnArr[0].gameObject.SetActive(false);
-                        m_BtnArr[0].transform.SetParent(Instance.transform);
+                        if (Instance.transform != null)
+                            m_BtnArr[0].transform.SetParent(Instance.transform);
                     }
                 });
         m_BtnArr[0].gameObject.SetActive(true);

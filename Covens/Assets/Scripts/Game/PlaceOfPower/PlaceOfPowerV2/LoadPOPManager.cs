@@ -121,6 +121,10 @@ public class LoadPOPManager : MonoBehaviour
         }
         if (UIWaitingCastResult.isOpen)
             UIWaitingCastResult.Instance.Close();
+        if (UIPlayerInfo.IsShowing)
+            UIPlayerInfo.SetVisibility(false);
+        if (UISpiritInfo.IsShowing)
+            UISpiritInfo.SetVisibility(false);
         Instance.map.HideMap(false);
         LocationIslandController.BattleStopPOP();
         LocationUnitSpawner.UnloadScene();

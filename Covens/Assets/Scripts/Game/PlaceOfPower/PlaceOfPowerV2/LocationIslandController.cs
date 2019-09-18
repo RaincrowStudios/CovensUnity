@@ -55,6 +55,7 @@ public class LocationIslandController : MonoBehaviour
     {
         if (!isInBattle)
         {
+            Debug.Log("[PLACE OF POWER] battle Starting");
             isInBattle = true;
             OnEnterLocation?.Invoke();
             MoveTokenHandlerPOP.OnMarkerMovePOP += instance.locationUnitSpawner.MoveMarker;
@@ -135,11 +136,11 @@ public class LocationIslandController : MonoBehaviour
     public static void ResumeBattle(string id)
     {
         LoadingOverlay.Show("Loading the place of power battle...");
+        isInBattle = false;
         APIManager.Instance.Get($"place-of-power/{id}", "{}", (response, result) =>
         {
             if (result == 200)
             {
-                Debug.Log("PUTTING PLAYER IN POP");
                 Debug.Log(result);
                 Debug.Log(response);
                 response.CopyToClipboard();
@@ -387,6 +388,13 @@ public class LocationViewData
 public class LocationWitchToken
 {
     public WitchToken character;
+    public int island { get; set; }
+    public int position { get; set; }
+}
+
+public class LocationSpiritToken
+{
+    public SpiritToken spirit;
     public int island { get; set; }
     public int position { get; set; }
 }

@@ -47,7 +47,10 @@ public class LocationIsland : MonoBehaviour
             var childTransform = transform.GetChild(0);
             LeanTween.value(0, 1, 1).setOnUpdate((float value) =>
             {
-                m_Renderer.SetPosition(1, Vector3.Lerp(Vector3.zero, childTransform.position, value));
+                if (childTransform != null)
+                {
+                    m_Renderer.SetPosition(1, Vector3.Lerp(Vector3.zero, childTransform.position, value));
+                }
             });
         }
         isConnected = isActive;
