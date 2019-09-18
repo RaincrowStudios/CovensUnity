@@ -182,7 +182,8 @@ public class LocationPOPInfo : UIInfoPanel
         var tSec = GetSeconds(cooldownEnd);
         if (tSec == 0)
         {
-            Debug.Log("updating cooldown Timer | Refresh View");
+            LoadingOverlay.Show("Updating Place of power status...");
+            await Task.Delay(2000);
             RefreshViewData();
         }
         else if (tSec > 0)
@@ -217,7 +218,8 @@ public class LocationPOPInfo : UIInfoPanel
 
         if (tStamp == 0 && !m_HasEnteredPOP)
         {
-            await Task.Delay(1000);
+            LoadingOverlay.Show("Updating Place of power status...");
+            await Task.Delay(2000);
             RefreshViewData();
             Debug.Log("updating Enter Timer | Refresh View");
         }
@@ -239,6 +241,7 @@ public class LocationPOPInfo : UIInfoPanel
             if (y == 200)
             {
                 m_LocationViewData = JsonConvert.DeserializeObject<LocationViewData>(x);
+                LoadingOverlay.Hide();
                 Debug.Log(x);
                 ShowUI(true);
             }

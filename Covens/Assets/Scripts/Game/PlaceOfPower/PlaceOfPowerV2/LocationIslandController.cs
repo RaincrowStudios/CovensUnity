@@ -200,6 +200,7 @@ public class LocationIslandController : MonoBehaviour
                       OnMapEnergyChange.OnMarkerEnergyChange += LocationUnitSpawner.OnEnergyChange;
                       LocationBattleStart.OnLocationBattleStart += instance.BattleBeginPOP;
                       LocationBattleEnd.OnLocationBattleEnd += BattleStopPOP;
+                      RewardHandlerPOP.LocationReward += OnReward;
                   });
               }
               else
