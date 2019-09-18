@@ -307,6 +307,8 @@ public class UISummoning : MonoBehaviour
         m_SpiritArt.overrideSprite = null;
         m_SpiritArt.color = Color.black;
         m_SummonButton.interactable = SummoningManager.CanSummon(spirit.id);
+        int summonCost = PlayerDataManager.SummoningCosts[spirit.tier - 1] * (PlayerDataManager.playerData.insidePlaceOfPower ? 3 : 1);
+        m_SummonCost.text = LocalizeLookUp.GetText("spell_data_cost").Replace("{{Energy Cost}}", summonCost.ToString());
 
         DownloadedAssets.GetSprite(spirit.id, spr =>
         {
