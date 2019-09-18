@@ -549,6 +549,14 @@ public static class StringExtensions
         }
         return true;
     }
+
+    public static void CopyToClipboard(this string s)
+    {
+        TextEditor te = new TextEditor();
+        te.text = s;
+        te.SelectAll();
+        te.Copy();
+    }
 }
 
 public static class Vector3Extensions

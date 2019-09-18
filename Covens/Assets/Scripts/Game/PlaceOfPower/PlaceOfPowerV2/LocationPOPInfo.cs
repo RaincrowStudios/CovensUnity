@@ -7,6 +7,7 @@ using UnityEngine;
 using UnityEngine.UI;
 using Newtonsoft.Json.Linq;
 using Newtonsoft.Json;
+using System.Collections;
 
 public class LocationPOPInfo : UIInfoPanel
 {
@@ -34,13 +35,7 @@ public class LocationPOPInfo : UIInfoPanel
     private LocationViewData m_LocationViewData;
     private static LocationPOPInfo m_Instance;
     private bool m_HasEnteredPOP = false;
-    public static string popName
-    {
-        get
-        {
-            return Instance.m_LocationViewData.name;
-        }
-    }
+
     public static LocationPOPInfo Instance
     {
         get
@@ -73,6 +68,7 @@ public class LocationPOPInfo : UIInfoPanel
         m_LocationViewData = data;
         LocationIslandController.OnWitchEnter += AddWitch;
         LocationIslandController.OnWitchExit += RemoveWitch;
+        LocationIslandController.popName = data.name;
         m_TimeCG.alpha = 0;
         m_TimeCG.gameObject.SetActive(false);
         m_FadeOut.alpha = 0;
@@ -96,8 +92,8 @@ public class LocationPOPInfo : UIInfoPanel
             if (compareTime(m_LocationViewData.battleBeginsOn))
             {
                 if (!disableInit)
-                    InitiateTimeUI();
-                UpdateEnterTimer();
+                    StartCoroutine(InitiateTimeUI());
+                StartCoroutine(UpdateEnterTimer());
                 m_Locked.SetActive(false);
                 m_Content.text = "Place of power is open and accepting players, pay 1 gold drach to go in";
                 m_Enter.gameObject.SetActive(true);
@@ -133,16 +129,16 @@ public class LocationPOPInfo : UIInfoPanel
             }
             else
             {
-                InitiateTimeUI();
+                StartCoroutine(InitiateTimeUI());
                 m_Content.text = "This place is under cooldown, check back later";
-                UpdateCooldownTimer();
+                StartCoroutine(UpdateCooldownTimer());
             }
         }
     }
 
-    private async void InitiateTimeUI()
+    IEnumerator InitiateTimeUI()
     {
-        await Task.Delay(3000);
+        yield return new WaitForSeconds(3);
         m_TimeCG.alpha = 0;
         m_TimeCG.gameObject.SetActive(true);
         m_FadeOut.alpha = 0;
@@ -170,11 +166,11 @@ public class LocationPOPInfo : UIInfoPanel
         }
     }
 
-    private async void UpdateCooldownTimer()
+    IEnumerator UpdateCooldownTimer()
     {
-        await Task.Delay(1000);
+        yield return new WaitForSeconds(1);
 
-        if (!Application.isPlaying || !gameObject.activeInHierarchy) return;
+        if (!Application.isPlaying || !gameObject.activeInHierarchy) yield break;
 
         var cooldownEnd = m_LocationViewData.battleFinishedOn + (m_LocationViewData.coolDownTimeWindow * 1000);
 
@@ -183,7 +179,7 @@ public class LocationPOPInfo : UIInfoPanel
         if (tSec == 0)
         {
             LoadingOverlay.Show("Updating Place of power status...");
-            await Task.Delay(2000);
+            yield return new WaitForSeconds(2);
             RefreshViewData();
         }
         else if (tSec > 0)
@@ -191,7 +187,7 @@ public class LocationPOPInfo : UIInfoPanel
             m_TimeTitle.text = tStamp.timeStamp;
             m_TimeSubtitle.text = tStamp.timeType;
             m_Progress.fillAmount = MapUtils.scale(0, 1, 0, m_LocationViewData.coolDownTimeWindow, tSec);
-            UpdateCooldownTimer();
+            StartCoroutine(UpdateCooldownTimer());
         }
         else
         {
@@ -199,12 +195,12 @@ public class LocationPOPInfo : UIInfoPanel
         }
     }
 
-    private async void UpdateEnterTimer()
+    IEnumerator UpdateEnterTimer()
     {
+        yield return new WaitForSeconds(1);
+        //await Task.Delay(1000);
 
-        await Task.Delay(1000);
-
-        if (!Application.isPlaying || !gameObject.activeInHierarchy) return;
+        if (!Application.isPlaying || !gameObject.activeInHierarchy) yield break;
 
         var tStamp = GetSeconds(m_LocationViewData.battleBeginsOn);
 
@@ -219,13 +215,12 @@ public class LocationPOPInfo : UIInfoPanel
         if (tStamp == 0 && !m_HasEnteredPOP)
         {
             LoadingOverlay.Show("Updating Place of power status...");
-            await Task.Delay(2000);
+            yield return new WaitForSeconds(2);
             RefreshViewData();
-            Debug.Log("updating Enter Timer | Refresh View");
         }
         else if (tStamp > 0)
         {
-            UpdateEnterTimer();
+            StartCoroutine(UpdateEnterTimer());
         }
         else
         {
@@ -312,6 +307,7 @@ public class LocationPOPInfo : UIInfoPanel
     public override void Close()
     {
         UnsubscribeWitchEvents();
+        StopAllCoroutines();
         base.Close();
     }
 

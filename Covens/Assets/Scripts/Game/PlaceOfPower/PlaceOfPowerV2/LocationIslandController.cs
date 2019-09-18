@@ -21,6 +21,9 @@ public class LocationIslandController : MonoBehaviour
 
     private Vector2 m_MouseDownPosition;
 
+    public static string popName = "";
+
+
     public static bool isInBattle
     {
         get
@@ -139,6 +142,7 @@ public class LocationIslandController : MonoBehaviour
                 Debug.Log("PUTTING PLAYER IN POP");
                 Debug.Log(result);
                 Debug.Log(response);
+                response.CopyToClipboard();
                 m_LocationData = LocationSlotParser.HandleResponse(response, true);
                 LoadPOPManager.LoadScene(() =>
                   {
@@ -170,11 +174,11 @@ public class LocationIslandController : MonoBehaviour
 
     private static void OnReward(RewardHandlerPOP.RewardPOPData rewardData)
     {
-        LocationRewardInfo.Instance.Setup(LocationPOPInfo.popName, rewardData, () =>
+        Debug.Log("REWARD!!!");
+        LocationRewardInfo.Instance.Setup(popName, rewardData, () =>
         {
-            LoadingOverlay.Show("Loading Map...");
             PlayerDataManager.playerData.insidePlaceOfPower = false;
-            LoadPOPManager.UnloadScene();
+            LoadPOPManager.UnloadSceneReward();
         });
         RewardHandlerPOP.LocationReward -= OnReward;
     }

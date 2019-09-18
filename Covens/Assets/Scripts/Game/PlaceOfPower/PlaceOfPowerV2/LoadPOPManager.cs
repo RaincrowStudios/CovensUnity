@@ -96,26 +96,47 @@ public class LoadPOPManager : MonoBehaviour
 
     public static void UnloadScene()
     {
+        HandleUnload();
+        SceneManager.UnloadScene(SceneManager.Scene.PLACE_OF_POWER, null, () =>
+        {
+            sceneLoaded = false;
+            var t = LocationExitInfo.Instance;
+            UIQuickCast.Close();
+            t.ShowUI();
+            LoadingOverlay.Hide();
+            //   PlayerDataManager.playerData.energy = previousEnergy;
+            //  PlayerDataManager.playerData.state = previousState;
+            //onComplete();
+        });
+        OnMapEnergyChange.OnPlayerDead -= LoadPOPManager.UnloadScene;
+        OnMapEnergyChange.OnMarkerEnergyChange -= LocationUnitSpawner.OnEnergyChange;
+    }
 
+    private static void HandleUnload()
+    {
+        LoadingOverlay.Show("Loading Map...");
         foreach (var item in Instance.MainUIDisable)
         {
             item.SetActive(true);
         }
+        if (UIWaitingCastResult.isOpen)
+            UIWaitingCastResult.Instance.Close();
         Instance.map.HideMap(false);
         LocationIslandController.BattleStopPOP();
         LocationUnitSpawner.UnloadScene();
+    }
+
+    public static void UnloadSceneReward()
+    {
+        HandleUnload();
         SceneManager.UnloadScene(SceneManager.Scene.PLACE_OF_POWER, null, () =>
-       {
-           sceneLoaded = false;
-           var t = LocationExitInfo.Instance;
-           UIQuickCast.Close();
-           t.ShowUI();
-           PlayerDataManager.playerData.energy = previousEnergy;
-           PlayerDataManager.playerData.state = previousState;
-           //onComplete();
-       });
-        OnMapEnergyChange.OnPlayerDead -= LoadPOPManager.UnloadScene;
-        OnMapEnergyChange.OnMarkerEnergyChange -= LocationUnitSpawner.OnEnergyChange;
+        {
+            LoadingOverlay.Hide();
+            sceneLoaded = false;
+            UIQuickCast.Close();
+            OnMapEnergyChange.OnPlayerDead -= LoadPOPManager.UnloadScene;
+            OnMapEnergyChange.OnMarkerEnergyChange -= LocationUnitSpawner.OnEnergyChange;
+        });
     }
 
     public static void HandleQuickCastOpen(System.Action OnOpen)

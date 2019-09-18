@@ -51,16 +51,26 @@ public static class LocationSlotParser
                         witchToken.position = pos;
                         witchToken.island = island;
                         Debug.Log(witchToken.popIndex + " On Enter");
-                        tokens.Add(witchToken.popIndex, witchToken.instance, result);
+
+
+                        if (witchToken.type == "spirit")
+                        {
+                            Debug.Log("SPIRIT");
+                            token.TryParseJson<SpiritToken>(out result);
+                            SpiritToken spiritToken = result as SpiritToken;
+                            spiritToken.position = pos;
+                            spiritToken.island = island;
+                            AddSpiritHandlerPOP.RaiseEvent(spiritToken);
+                            tokens.Add(spiritToken.popIndex, spiritToken.instance, result);
+                            Debug.Log(spiritToken.spiritId + "|||||||||");
+                        }
+                        else
+                        {
+                            tokens.Add(witchToken.popIndex, witchToken.instance, result);
+                        }
                     }
-                    else if (token.TryParseJson<SpiritToken>(out result))
-                    {
-                        SpiritToken spiritToken = result as SpiritToken;
-                        spiritToken.position = pos;
-                        spiritToken.island = island;
-                        AddSpiritHandlerPOP.RaiseEvent(spiritToken);
-                        tokens.Add(spiritToken.popIndex, spiritToken.instance, result);
-                    }
+
+
                     //tokenList.Add(result);
                 }
                 pos++;
