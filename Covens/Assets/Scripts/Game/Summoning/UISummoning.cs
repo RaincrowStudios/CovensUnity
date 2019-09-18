@@ -13,6 +13,14 @@ public class UISummoning : MonoBehaviour
 
     public static bool IsOpen { get; private set; }
 
+    private static int m_PoPPosition;
+    private static int m_PoPIsland;
+
+    private static System.Action m_OnOpen;
+    private static System.Action<SpiritMarker> m_OnSummon;
+    private static System.Action<string> m_OnSummonPoP;
+    private static System.Action m_OnClose;
+
     /// <summary>
     /// 
     /// </summary>
@@ -24,6 +32,9 @@ public class UISummoning : MonoBehaviour
         m_OnOpen = onOpen;
         m_OnSummon = onSummon;
         m_OnClose = onClose;
+        m_PoPPosition = -1;
+        m_PoPIsland = -1;
+        m_OnSummonPoP = null;
 
         if (m_Instance != null)
         {
@@ -38,6 +49,14 @@ public class UISummoning : MonoBehaviour
                 m_Instance._Open();
             });
         }
+    }
+
+    public static void Open(int position, int island, System.Action onOpen, System.Action<string> onSummon, System.Action onClose)
+    {
+        Open(onOpen, null, onClose);
+        m_PoPPosition = position;
+        m_PoPIsland = island;
+        m_OnSummonPoP = onSummon;
     }
 
     public static void Close()
@@ -83,11 +102,7 @@ public class UISummoning : MonoBehaviour
     private int m_CurrentTier = 1;
     private RectTransform m_CanvasRect;
     private List<List<SpiritData>> m_SpiritsByTier;
-
-    private static System.Action m_OnOpen;
-    private static System.Action<SpiritMarker> m_OnSummon;
-    private static System.Action m_OnClose;
-
+    
     private void Awake()
     {
         m_Instance = this;
@@ -321,20 +336,40 @@ public class UISummoning : MonoBehaviour
         int spiritIdx = m_CurrentIndex;
         string spiritId = PlayerDataManager.playerData.knownSpirits[spiritIdx].spirit;
 
-        LoadingOverlay.Show();
-        SummoningManager.Summon(spiritId, (marker, error) =>
+        if (m_PoPPosition < 0 || m_PoPIsland < 0)
         {
-            LoadingOverlay.Hide();
-            if (string.IsNullOrEmpty(error))
+            LoadingOverlay.Show();
+            SummoningManager.Summon(spiritId, (marker, error) =>
             {
-                SoundManagerOneShot.Instance.SpiritSummon();
-                m_OnSummon?.Invoke(marker);
-            }
-            else
+                LoadingOverlay.Hide();
+                if (string.IsNullOrEmpty(error))
+                {
+                    SoundManagerOneShot.Instance.SpiritSummon();
+                    m_OnSummon?.Invoke(marker);
+                }
+                else
+                {
+                    UIGlobalPopup.ShowError(_Close, APIManager.ParseError(error));
+                }
+            });
+        }
+        else
+        {
+            LoadingOverlay.Show();
+            SummoningManager.SummonPoP(spiritId, m_PoPPosition, m_PoPIsland, (error) =>
             {
-                UIGlobalPopup.ShowError(_Close, APIManager.ParseError(error));
-            }
-        });
+                LoadingOverlay.Hide();
+                if (string.IsNullOrEmpty(error))
+                {
+                    SoundManagerOneShot.Instance.SpiritSummon();
+                    m_OnSummonPoP?.Invoke(null);
+                }
+                else
+                {
+                    m_OnSummonPoP?.Invoke(error);
+                }
+            });
+        }
     }
 
     private void OnClickInfo()
