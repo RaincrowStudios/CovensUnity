@@ -710,7 +710,14 @@ public class FTFManager : MonoBehaviour
         //send finish ftf request
         FinishFTF((result, response) =>
         {
-            MarkerManagerAPI.GetMarkers(PlayerDataManager.playerData.longitude, PlayerDataManager.playerData.latitude);
+            if (result == 200)
+            {
+                MarkerManagerAPI.GetMarkers(PlayerDataManager.playerData.longitude, PlayerDataManager.playerData.latitude);
+            }
+            else
+            {
+                UIGlobalPopup.ShowError(() => Application.Quit(), APIManager.ParseError(response));
+            }
         });
 
         yield return 0;
