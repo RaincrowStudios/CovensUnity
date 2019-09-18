@@ -105,14 +105,7 @@ public class LocationPlayerAction : MonoBehaviour
         btn = Instantiate(m_ActionBtn, transform) as LocationActionButton;
         btn.Setup(SUMMON_TIMER, m_SummonSprite, () =>
         {
-            UISummoning.Open(
-                null,
-                (spirit) =>
-                {
-                    UISummoning.Close();
-                    UISummonSuccess.Instance.Show(spirit.spiritData.id, () => MapCameraUtils.FocusOnPosition(spirit.transform.position, false, 2));
-                },
-                null);
+            UISummoning.Open(selectedPosition.position, selectedPosition.island, null, null, null);
         });
         m_BtnArr[2] = btn;
 

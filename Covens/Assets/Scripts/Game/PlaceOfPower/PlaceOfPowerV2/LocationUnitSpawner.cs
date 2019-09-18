@@ -122,6 +122,7 @@ public class LocationUnitSpawner : MonoBehaviour
             }
             else if (token.Type == MarkerType.SPIRIT)
             {
+                Debug.Log(JsonConvert.SerializeObject(token));
                 go = m_SpiritPool.Spawn().gameObject;
                 go.name = "[spirit] " + (token as SpiritToken).spiritId + " [" + token.instance + "]";
             }
