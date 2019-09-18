@@ -20,6 +20,8 @@ namespace Raincrow.GameEventResponses
 
         public void HandleResponse(string eventData)
         {
+            Debug.Log(eventData);
+            Debug.Log("POP REWARD");
             RewardPOPData data = JsonConvert.DeserializeObject<RewardPOPData>(eventData);
             LocationReward?.Invoke(data);
         }
