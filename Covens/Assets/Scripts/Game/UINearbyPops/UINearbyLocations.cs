@@ -54,6 +54,85 @@ public class UINearbyLocations : MonoBehaviour
 
     private int m_AnimTweenId;
     private SimplePool<UINearbyLocationItem> m_ItemPool;
+    private static bool m_IsRetrieving = false;
+
+    public static void GetLocations(System.Action<List<UINearbyLocationItem.LocationData>> onComplete, bool showLoading = true)
+    {
+        //if (CachedLocations == null || Time.unscaledTime - m_LastRequestTime > m_RequestCooldown)
+        //{
+            m_LastRequestTime = Time.unscaledTime;
+            m_IsRetrieving = true;
+            if (showLoading)
+                LoadingOverlay.Show();
+            APIManager.Instance.Get("place-of-power/near", (response, result) =>
+            {
+                if (showLoading)
+                    LoadingOverlay.Hide();
+
+                if (result == 200)
+                {
+                    CachedLocations = JsonConvert.DeserializeObject<List<UINearbyLocationItem.LocationData>>(response);
+                    onComplete?.Invoke(CachedLocations);
+                }
+                else
+                {
+                    UIGlobalPopup.ShowError(null, APIManager.ParseError(response));
+                    onComplete?.Invoke(null);
+                }
+                m_IsRetrieving = false;
+            });
+        //}
+        //else
+        //{
+        //    onComplete?.Invoke(CachedLocations);
+        //}
+    }
+
+    public static void Refresh()
+    {
+        if (m_Instance == null || m_Instance.m_Canvas.enabled == false)
+            return;
+
+        if (m_IsRetrieving)
+            return;
+
+        Debug.Log("Refreshing nearby pops");
+        CachedLocations = null;
+        GetLocations(pops =>
+        {
+            var items = m_Instance.m_ItemPool.GetInstances();
+            for (int i = pops.Count - 1; i >= 0; i--)
+            {
+                var data = pops[i];
+                foreach (var item in items)
+                {
+                    if (item.m_Data.id == data.id)
+                    {
+                        item.Setup(data, () =>
+                        {
+                            PlayerManager.Instance.FlyTo(data.longitude, data.latitude);
+                            m_Instance.Hide();
+                        });
+                        pops.RemoveAt(i);
+                        break;
+                    }
+                }
+            }
+
+            for (int i = 0; i < pops.Count; i++)
+            {
+                var data = pops[i];
+                UINearbyLocationItem item = m_Instance.m_ItemPool.Spawn(m_Instance.m_Container.transform);
+                item.Setup(data, () =>
+                {
+                    PlayerManager.Instance.FlyTo(data.longitude, data.latitude);
+                    m_Instance.Hide();
+                });
+            }
+        }, 
+        false);
+    }
+
 
     private void Awake()
     {
@@ -116,33 +195,6 @@ public class UINearbyLocations : MonoBehaviour
             .setOnComplete(onComplete)
             .setEaseOutCubic()
             .uniqueId;
-    }
-
-    public static void GetLocations(System.Action<List<UINearbyLocationItem.LocationData>> onComplete)
-    {
-        if (CachedLocations == null || Time.unscaledTime - m_LastRequestTime > m_RequestCooldown)
-        {
-            m_LastRequestTime = Time.unscaledTime;
-            LoadingOverlay.Show();
-            APIManager.Instance.Get("place-of-power/near", (response, result) =>
-            {
-                LoadingOverlay.Hide();
-                if (result == 200)
-                {
-                    CachedLocations = JsonConvert.DeserializeObject<List<UINearbyLocationItem.LocationData>>(response);
-                    onComplete?.Invoke(CachedLocations);
-                }
-                else
-                {
-                    UIGlobalPopup.ShowError(null, APIManager.ParseError(response));
-                    onComplete?.Invoke(null);
-                }
-            });
-        }
-        else
-        {
-            onComplete?.Invoke(CachedLocations);
-        }
     }
 
     private void SetupLocations(List<UINearbyLocationItem.LocationData> locations)

@@ -351,6 +351,11 @@ namespace Raincrow.Test
 
                     Debug.Log(debugString);
                 }
+
+                if (GUILayout.Button("utc now"))
+                {
+                    Debug.Log(System.DateTime.UtcNow);
+                }
             }
 
             using (new BoxScope())

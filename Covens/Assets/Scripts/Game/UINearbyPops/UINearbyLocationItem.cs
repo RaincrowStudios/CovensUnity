@@ -35,6 +35,7 @@ public class UINearbyLocationItem : MonoBehaviour
     [SerializeField] private Button m_FlyTo;
 
     private System.Action m_OnFlyTo;
+    public LocationData m_Data;
 
     private void Awake()
     {
@@ -46,8 +47,15 @@ public class UINearbyLocationItem : MonoBehaviour
         m_OnFlyTo?.Invoke();
     }
 
+    private void OnDisable()
+    {
+        StopAllCoroutines();
+    }
+
     public void Setup(LocationData data, System.Action onFlyTo)
     {
+        StopAllCoroutines();
+        m_Data = data;
         m_OnFlyTo = onFlyTo;
         m_NameText.text = data.name;
         m_ClaimedBy.text = "Unclaimed";
@@ -72,7 +80,7 @@ public class UINearbyLocationItem : MonoBehaviour
         else if (data.isOpen)
         {
             StartCoroutine(TimerCoroutine(
-                false,
+                true,
                 (float)(Utilities.FromJavaTime(data.battleBeginsOn) - System.DateTime.UtcNow).TotalSeconds
             ));
         }
@@ -95,10 +103,13 @@ public class UINearbyLocationItem : MonoBehaviour
 
         while (seconds > 0)
         {
-            m_Status.text = string.Format(text, seconds);
+            m_Status.text = string.Format(text, (int)seconds);
             yield return new WaitForSeconds(1);
             seconds -= 1;
         }
         m_Status.text = string.Format(text, Mathf.Max(seconds, 0));
+        
+        //Setup(m_Data, m_OnFlyTo);
+        UINearbyLocations.Refresh();
     }
 }
