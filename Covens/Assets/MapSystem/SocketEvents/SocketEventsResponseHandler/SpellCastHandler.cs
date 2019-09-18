@@ -57,7 +57,7 @@ namespace Raincrow.GameEventResponses
         public static event System.Action<string, SpellData, Result> OnPlayerTargeted;
 
         public static event System.Action<string, string, SpellData, Result> OnSpellCast;
-        public static event System.Action<string, StatusEffect> OnApplyStatusEffect;
+        public static System.Action<string, StatusEffect> OnApplyStatusEffect;
 
         public static System.Action<string> OnSpiritBanished;
 

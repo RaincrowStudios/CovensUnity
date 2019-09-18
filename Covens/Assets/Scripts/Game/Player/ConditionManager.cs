@@ -40,7 +40,14 @@ public static class ConditionManager
         
         TriggerStatusEffect(statusEffect, caster);
 
-        Log(statusEffect.spell + " added");
+        string debug = statusEffect.spell + " added";
+        if (statusEffect.modifiers.status != null)
+        {
+            debug += "\n\t";
+            foreach (string status in statusEffect.modifiers.status)
+                debug += status;
+        }
+        Log(debug);
 
         //schedule expiration
         statusEffect.ScheduleExpiration(() => ExpireStatusEffect(statusEffect, caster));
@@ -61,7 +68,7 @@ public static class ConditionManager
         }
     }
 
-    private static void ExpireStatusEffect(StatusEffect statusEffect, IMarker caster)
+    public static void ExpireStatusEffect(StatusEffect statusEffect, IMarker caster)
     {
         foreach (StatusEffect item in PlayerDataManager.playerData.effects)
         {

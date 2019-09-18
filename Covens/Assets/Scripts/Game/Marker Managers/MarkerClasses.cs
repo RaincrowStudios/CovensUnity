@@ -18,6 +18,7 @@ public class StatusEffect
         public int aptitude;
         public int wisdom;
         public int beCrit;
+        public int toCrit;
     }
 
     public string spell;

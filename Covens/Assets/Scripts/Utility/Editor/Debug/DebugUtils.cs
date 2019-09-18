@@ -561,11 +561,11 @@ namespace Raincrow.Test
             }
         }
 
-        private string m_DebugRequest;
-        private string m_DebugData = "{}";
-        private string m_DebugResponse;
-        private string m_RequestType = "GET";
-        private bool m_RequireAuth = true;
+        [SerializeField] private string m_DebugRequest;
+        [SerializeField] private string m_DebugData = "{}";
+        [SerializeField] private string m_DebugResponse;
+        [SerializeField] private string m_RequestType = "GET";
+        [SerializeField] private bool m_RequireAuth = true;
         private static List<string> m_RequestTypeOptions = new List<string>
         {
             "GET",

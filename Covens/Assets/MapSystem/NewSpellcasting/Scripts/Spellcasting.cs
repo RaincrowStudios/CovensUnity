@@ -322,7 +322,7 @@ public class Spellcasting
                         return;
                     }
 
-                    onContinue?.Invoke(new Raincrow.GameEventResponses.SpellCastHandler.Result());
+                    onContinue?.Invoke(new SpellCastHandler.Result());
                     UIGlobalPopup.ShowError(null, APIManager.ParseError(response));
                 }
             };

@@ -12,6 +12,7 @@ public class UIChanneling : UIInfoPanel
 
     [Header("Channeling")]
     [SerializeField] private CanvasGroup m_ChannelingCanvasGroup;
+    [SerializeField] private TextMeshProUGUI m_ChannelingContent;
     [SerializeField] private Button m_StopChannelingBtn;
 
     [Header("Results")]
@@ -46,7 +47,8 @@ public class UIChanneling : UIInfoPanel
     private int m_ChannelingTweenId;
     private int m_ResultsTweenId;
     private int m_DelayTweenId;
-    //private string m_ChannelInstance;
+    private int m_ChannelingTextTweenId;
+
     SpellCastHandler.Result m_Results;
 
     protected override void Awake()
@@ -72,6 +74,11 @@ public class UIChanneling : UIInfoPanel
 
         m_ChannelingCanvasGroup.blocksRaycasts = true;
         m_ChannelingCanvasGroup.interactable = false;
+
+        m_ChannelingContent.text = 
+            "+0 " + LocalizeLookUp.GetText("generic_power") +
+            "\n+0 " + LocalizeLookUp.GetText("generic_resilience") +
+            "\n+0 " + LocalizeLookUp.GetText("cast_crit");
 
         ////animate the channeling ui
         m_ChannelingTweenId = LeanTween.alphaCanvas(m_ChannelingCanvasGroup, 1f, 0.5f).uniqueId;
@@ -108,9 +115,16 @@ public class UIChanneling : UIInfoPanel
         LeanTween.cancel(m_ResultsTweenId);
 
         if (string.IsNullOrEmpty(error))
-            m_ResultsContent.text = Newtonsoft.Json.JsonConvert.SerializeObject(result);
+        {
+            m_ResultsContent.text =
+               "+" + result.statusEffect?.modifiers.power + LocalizeLookUp.GetText("generic_power") +
+               "\n+" + result.statusEffect?.modifiers.resilience + LocalizeLookUp.GetText("generic_resilience") +
+               "\n+" + result.statusEffect?.modifiers.toCrit + LocalizeLookUp.GetText("cast_crit");
+        }
         else
+        {
             m_ResultsContent.text = "error: " + error;
+        }
 
         m_ResultsCanvasGroup.interactable = true;
         m_ResultsCanvasGroup.blocksRaycasts = true;
@@ -157,5 +171,22 @@ public class UIChanneling : UIInfoPanel
         m_OnClickContinue = null;
 
         Close();
+    }
+
+    public void OnTickChanneling(SpellCastHandler.SpellCastEventData data)
+    {
+        if (data.result.statusEffect == null)
+        {
+            //energy only tick
+            return;
+        }
+        m_ChannelingContent.transform.localScale = Vector3.one * 1.2f;
+        LeanTween.cancel(m_ChannelingTextTweenId);
+        m_ChannelingTextTweenId = LeanTween.scale(m_ChannelingContent.gameObject, Vector3.one, 2f).setEaseOutCubic().uniqueId;
+        
+        m_ChannelingContent.text =
+            "+" + data.result.statusEffect?.modifiers.power + LocalizeLookUp.GetText("generic_power") +
+            "\n+" + data.result.statusEffect?.modifiers.resilience + LocalizeLookUp.GetText("generic_resilience") +
+            "\n+" + data.result.statusEffect?.modifiers.toCrit + LocalizeLookUp.GetText("cast_crit");
     }
 }

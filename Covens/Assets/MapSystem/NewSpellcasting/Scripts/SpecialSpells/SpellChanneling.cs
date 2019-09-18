@@ -74,6 +74,8 @@ public static class SpellChanneling
                         //    if (PlayerDataManager.playerData.effects[i].spell == "spell_channeling")
                         //        PlayerDataManager.playerData.effects.RemoveAt(i);
                         //}
+                        //add cooldown
+                        CooldownManager.AddCooldown("spell_channeling", data.timestamp, data.cooldown);
 
                         //add the new status effect
                         if (data.result.statusEffect != null && string.IsNullOrEmpty(data.result.statusEffect.spell) == false)
@@ -96,7 +98,7 @@ public static class SpellChanneling
     {
         if (data.caster.id == PlayerDataManager.playerData.instance && data.spell == "spell_channeling")
         {
-
+            UIChanneling.Instance.OnTickChanneling(data);
         }
     }
 }
