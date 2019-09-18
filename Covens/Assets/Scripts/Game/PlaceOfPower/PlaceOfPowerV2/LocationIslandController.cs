@@ -50,7 +50,7 @@ public class LocationIslandController : MonoBehaviour
     {
         instance = this;
     }
-
+    private static SpiritToken preInitializedSpirit = null;
     private void BattleBeginPOP(SpiritToken guardianSpirit)
     {
         if (!isInBattle)
@@ -192,9 +192,14 @@ public class LocationIslandController : MonoBehaviour
               Debug.Log(response);
               AddWitchHandlerPOP.OnWitchAddPOP += WitchJoined;
               RemoveTokenHandlerPOP.OnRemoveTokenPOP += WitchRemoved;
+              preInitializedSpirit = null;
               if (result == 200)
               {
-
+                  LocationBattleStart.OnLocationBattleStart += (s) =>
+                  {
+                      Debug.Log("BATTLE STARTING");
+                      preInitializedSpirit = s;
+                  };
                   m_LocationData = LocationSlotParser.HandleResponse(response);
                   OnComplete(locationData);
                   await Task.Delay(2200);
@@ -203,9 +208,16 @@ public class LocationIslandController : MonoBehaviour
                       ExpireAstralHandler.OnExpireAstral += LocationUnitSpawner.DisableCloaking;
                       OnMapEnergyChange.OnPlayerDead += LoadPOPManager.UnloadScene;
                       OnMapEnergyChange.OnMarkerEnergyChange += LocationUnitSpawner.OnEnergyChange;
-                      LocationBattleStart.OnLocationBattleStart += instance.BattleBeginPOP;
                       LocationBattleEnd.OnLocationBattleEnd += BattleStopPOP;
                       RewardHandlerPOP.LocationReward += OnReward;
+                      if (preInitializedSpirit != null)
+                      {
+                          Debug.Log("PRE INTIALIZED");
+                          instance.BattleBeginPOP(preInitializedSpirit);
+                      }
+                      LocationBattleStart.OnLocationBattleStart += instance.BattleBeginPOP;
+
+
                   });
               }
               else

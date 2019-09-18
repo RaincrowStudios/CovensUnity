@@ -128,6 +128,7 @@ public class LoadPOPManager : MonoBehaviour
         Instance.map.HideMap(false);
         LocationIslandController.BattleStopPOP();
         LocationUnitSpawner.UnloadScene();
+        MarkerManagerAPI.GetMarkers();
     }
 
     public static void UnloadSceneReward()
