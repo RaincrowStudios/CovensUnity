@@ -9,13 +9,13 @@ public class ExpireAstralHandler : IGameEventHandler
 
     public struct ExpireAstralData
     {
-        public string instance;
+        public string _id;
         public double timestamp;
     }
 
     public void HandleResponse(string eventData)
     {
         ExpireAstralData data = JsonConvert.DeserializeObject<ExpireAstralData>(eventData);
-        OnExpireAstral?.Invoke(data.instance);
+        OnExpireAstral?.Invoke(data._id);
     }
 }

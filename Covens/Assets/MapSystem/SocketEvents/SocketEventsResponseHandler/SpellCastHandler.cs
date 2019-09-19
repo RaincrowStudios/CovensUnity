@@ -89,6 +89,11 @@ namespace Raincrow.GameEventResponses
                             }
                         }
                     }
+
+                    if (PlayerDataManager.playerData.instance != data.caster.id)
+                    {
+                        LocationUnitSpawner.EnableCloaking(data.target.id);
+                    }
                 }
             }
 
@@ -163,7 +168,7 @@ namespace Raincrow.GameEventResponses
                     if (data.result.statusEffect != null && string.IsNullOrEmpty(data.result.statusEffect.spell) == false)
                     {
                         OnApplyStatusEffect?.Invoke(data.target.id, data.result.statusEffect);
-                        
+
                         if (playerIsTarget)
                             ConditionManager.AddCondition(data.result.statusEffect, target);
 
@@ -177,7 +182,7 @@ namespace Raincrow.GameEventResponses
                         if (target != null && target is WitchMarker)
                             (target as WitchMarker).AddImmunityFX();
                     }
-                    
+
                     if (data.result.moveCharacter.move && playerIsTarget)
                         BanishManager.Banish(data, caster, target);
 

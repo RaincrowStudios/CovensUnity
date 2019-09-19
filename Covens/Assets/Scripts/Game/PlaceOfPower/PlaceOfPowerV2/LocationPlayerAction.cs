@@ -111,7 +111,7 @@ public class LocationPlayerAction : MonoBehaviour
 
         AvatarSpriteUtil.Instance.GenerateWardrobePortrait((s) =>
            {
-               m_CenterOnPlayerBtn.GetComponent<Image>().sprite = s;
+               Instance.m_CenterOnPlayerBtn.GetComponent<Image>().sprite = s;
            });
         LocationActionButton btn;
         UpdateEnergy(0);
