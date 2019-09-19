@@ -116,7 +116,7 @@ namespace Raincrow.FTF
                 .setEaseOutCubic()
                 .uniqueId;
             m_OnClose?.Invoke();
-            m_OnClose = null;
+            //m_OnClose = null;
         }
     }
 }
