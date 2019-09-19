@@ -30,6 +30,17 @@ namespace Raincrow.GameEventResponses
             if (target != null)
                 OnMapEnergyChange.ForceEvent(target, response.target.energy, response.timestamp);
 
+
+            if (response.result.statusEffect != null && string.IsNullOrEmpty(response.result.statusEffect.spell) == false)
+            {
+                SpellCastHandler.OnApplyStatusEffect?.Invoke(response.target.id, response.result.statusEffect);
+
+                if (isTarget)
+                    ConditionManager.AddCondition(response.result.statusEffect, target);
+
+                //target?.ApplyStatusEffect(response.result.statusEffect);
+            }
+
             if (isTarget)
             {
                 //sohw effect on player marker
@@ -43,14 +54,6 @@ namespace Raincrow.GameEventResponses
                 //if target marker is on screen, show it
                 if (spell != null && target != null && target.inMapView && target.IsShowingAvatar)
                     SpawnFx(target, spell.school, (int)response.result.damage);
-
-                if (response.result.statusEffect != null && string.IsNullOrEmpty(response.result.statusEffect.spell) == false)
-                {
-                    SpellCastHandler.OnApplyStatusEffect?.Invoke(response.target.id, response.result.statusEffect);
-
-                    if (isTarget)
-                        ConditionManager.AddCondition(response.result.statusEffect, target);
-                }
             }
 
             if (isCaster && response.target.energy == 0 && target is SpiritMarker)

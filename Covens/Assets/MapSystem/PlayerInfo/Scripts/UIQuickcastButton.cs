@@ -76,6 +76,7 @@ public class UIQuickcastButton : MonoBehaviour, IPointerDownHandler, IPointerUpH
             DownloadedAssets.GetSprite(Spell, spr =>
             {
                 m_SpellIcon_A.overrideSprite = m_SpellIcon_B.overrideSprite = spr;
+                m_SpellIcon_A.gameObject.GetComponent<CanvasGroup>().alpha = 1f;
             });
         }
     }

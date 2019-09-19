@@ -51,6 +51,8 @@ public static class ConditionManager
 
         //schedule expiration
         statusEffect.ScheduleExpiration(() => ExpireStatusEffect(statusEffect, caster));
+
+        StatusEffectFX.SpawnFX(PlayerManager.marker, statusEffect);
     }
 
     public static void TriggerStatusEffect(StatusEffect effect, IMarker caster)
@@ -93,6 +95,8 @@ public static class ConditionManager
         Log(debug);
         
         OnPlayerExpireStatusEffect?.Invoke(statusEffect);
+
+        StatusEffectFX.DespawnFX(PlayerManager.marker, statusEffect);
     }
 
     private static void Log(string msg)

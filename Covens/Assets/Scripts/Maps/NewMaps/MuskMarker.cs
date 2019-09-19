@@ -53,6 +53,8 @@ namespace Raincrow.Maps
         protected Color m_SchoolColor = Color.white;
         private float m_EnergyFill = 0;
 
+        protected List<Transform> m_SpawnedItems = new List<Transform>();
+
         public float scale
         {
             get { return transform.localScale.x; }
@@ -69,6 +71,10 @@ namespace Raincrow.Maps
             LeanTween.cancel(m_MoveTweenId);
 
             OnClick = null;
+
+            for (int i = 0; i < m_SpawnedItems.Count; i++)
+                Destroy(m_SpawnedItems[i].gameObject);
+            m_SpawnedItems.Clear();
 
             GameObject.SetActive(false);
         }
@@ -385,6 +391,26 @@ namespace Raincrow.Maps
                     onComplete?.Invoke();
                 })
                 .uniqueId;
+        }
+
+        public Transform SpawnItem(string resourcePath)
+        {
+            Transform instance = Instantiate(Resources.Load<Transform>(resourcePath));
+            instance.SetParent(AvatarTransform);
+            instance.localPosition = Vector3.zero;
+            instance.localScale = Vector3.one;
+            m_SpawnedItems.Add(instance);
+            return instance;
+        }
+
+        public virtual void ApplyStatusEffect(StatusEffect effect)
+        {
+
+        }
+
+        public virtual void ExpireStatusEffect(StatusEffect effect)
+        {
+
         }
 
 

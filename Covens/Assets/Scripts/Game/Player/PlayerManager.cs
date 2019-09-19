@@ -99,13 +99,16 @@ public class PlayerManager : MonoBehaviour
 
         GardenMarkers.instance.SetupGardens();
         SoundManagerOneShot.Instance.PlayWelcome();
-
-
+        
         if (PlayerDataManager.playerData.state == "dead")
             DeathState.Instance.ShowDeath();
 
-        foreach (var condition in PlayerDataManager.playerData.effects)
-            ConditionManager.TriggerStatusEffect(condition, null);
+        List<StatusEffect> conditions = new List<StatusEffect>();
+        if (PlayerDataManager.playerData.effects != null)
+            conditions = new List<StatusEffect>(PlayerDataManager.playerData.effects);
+
+        foreach (var condition in conditions)
+            ConditionManager.AddCondition(condition, null);
     }
     
     void onMapChangePos()
