@@ -300,26 +300,23 @@ public class MarkerSpawner : MarkerManager
                 {
                     FirstTapManager.Show("quickcasting", () =>
                     {
-                        CheckTierFirstTap();
+                        FirstTapManager.Show("tier", null);
                     });
                 });
             }
             else
             {
-                CheckTierFirstTap();
+                if (FirstTapManager.IsFirstTime("tier"))
+                {
+                    FirstTapManager.Show("tier", null);
+                }
             }
         }
-        
+
         SoundManagerOneShot.Instance.PlayWhisperFX();
         GetMarkerDetails(Data.instance, (result, response) => GetResponse(m, Data.instance, response, result));
     }
-    public void CheckTierFirstTap()
-    {
-        if (FirstTapManager.IsFirstTime("tier"))
-        {
-            FirstTapManager.Show("tier", null);
-        }
-    }
+
     public static void GetMarkerDetails(string id, System.Action<int, string> callback)
     {
         APIManager.Instance.Get(
