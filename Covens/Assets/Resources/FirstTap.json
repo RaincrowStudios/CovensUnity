@@ -1,65 +1,292 @@
 {
-	"flight":
-	{
-		"highlight":{"show":true,"anchorMin":[0.0,0.0],"anchorMax":[0.0,0.0],"position":[137.0,124.0],"size":[668.9,644.3]},
-		"glow":[{"show":true,"anchorMin":[0.0,0.0],"anchorMax":[0.0,0.0],"position":[126.0,125.0],"scale":1.2}]
-	},
-	"spellcasting":
-	{
-		
-	},
-	"quickcasting":
-	{
-		"highlight":{"show":true,"anchorMin":[0.0,0.0],"anchorMax":[0.0,0.0],"position":[504.0,125.0],"size":[3169.1,981.8]},
-		"glow":[
-			{"show":true,"anchorMin":[0.0,0.0],"anchorMax":[0.0,0.0],"position":[141.0,170.0],"scale":1.0},
-			{"show":true,"anchorMin":[0.0,0.0],"anchorMax":[0.0,0.0],"position":[385.0,170.0],"scale":1.0},
-			{"show":true,"anchorMin":[0.0,0.0],"anchorMax":[0.0,0.0],"position":[619.0,170.0],"scale":1.0},
-			{"show":true,"anchorMin":[0.0,0.0],"anchorMax":[0.0,0.0],"position":[863.0,170.0],"scale":1.0}
+	"flight": {
+		"highlight": {
+			"show": true,
+			"anchorMin": [
+				0.0,
+				0.0
+			],
+			"anchorMax": [
+				0.0,
+				0.0
+			],
+			"position": [
+				137.0,
+				124.0
+			],
+			"size": [
+				668.9,
+				644.3
+			]
+		},
+		"glow": [
+			{
+				"show": true,
+				"anchorMin": [
+					0.0,
+					0.0
+				],
+				"anchorMax": [
+					0.0,
+					0.0
+				],
+				"position": [
+					126.0,
+					125.0
+				],
+				"scale": 1.2
+			}
 		]
 	},
-	"energy":
-	{
-
+	"spellcasting": {},
+	"quickcasting": {
+		"highlight": {
+			"show": true,
+			"anchorMin": [
+				0.0,
+				0.0
+			],
+			"anchorMax": [
+				0.0,
+				0.0
+			],
+			"position": [
+				504.0,
+				125.0
+			],
+			"size": [
+				3169.1,
+				981.8
+			]
+		},
+		"glow": [
+			{
+				"show": true,
+				"anchorMin": [
+					0.0,
+					0.0
+				],
+				"anchorMax": [
+					0.0,
+					0.0
+				],
+				"position": [
+					141.0,
+					170.0
+				],
+				"scale": 1.0
+			},
+			{
+				"show": true,
+				"anchorMin": [
+					0.0,
+					0.0
+				],
+				"anchorMax": [
+					0.0,
+					0.0
+				],
+				"position": [
+					385.0,
+					170.0
+				],
+				"scale": 1.0
+			},
+			{
+				"show": true,
+				"anchorMin": [
+					0.0,
+					0.0
+				],
+				"anchorMax": [
+					0.0,
+					0.0
+				],
+				"position": [
+					619.0,
+					170.0
+				],
+				"scale": 1.0
+			},
+			{
+				"show": true,
+				"anchorMin": [
+					0.0,
+					0.0
+				],
+				"anchorMax": [
+					0.0,
+					0.0
+				],
+				"position": [
+					863.0,
+					170.0
+				],
+				"scale": 1.0
+			}
+		]
 	},
-	"ingredients":
-	{
-		"highlight":{"show":true,"anchorMin":[0.0,0.0],"anchorMax":[0.0,0.0],"position":[169.0,578.0],"size":[394.1,351.8]},
-		"glow":[{"show":true,"anchorMin":[0.0,0.0],"anchorMax":[0.0,0.0],"position":[138.0,584.0],"scale":0.8}]
+	"energy": {},
+	"ingredients": {
+		"highlight": {
+			"show": true,
+			"anchorMin": [
+				0.0,
+				0.0
+			],
+			"anchorMax": [
+				0.0,
+				0.0
+			],
+			"position": [
+				169.0,
+				578.0
+			],
+			"size": [
+				394.1,
+				351.8
+			]
+		},
+		"glow": [
+			{
+				"show": true,
+				"anchorMin": [
+					0.0,
+					0.0
+				],
+				"anchorMax": [
+					0.0,
+					0.0
+				],
+				"position": [
+					138.0,
+					584.0
+				],
+				"scale": 0.8
+			}
+		]
 	},
-	"summoning":
-	{
-
+	"summoning": {},
+	"empower": {
+		"highlight": {
+			"show": true,
+			"anchorMin": [
+				0.0,
+				0.0
+			],
+			"anchorMax": [
+				0.0,
+				0.0
+			],
+			"position": [
+				167.0,
+				180.0
+			],
+			"size": [
+				562.9,
+				502.5
+			]
+		},
+		"glow": [
+			{
+				"show": true,
+				"anchorMin": [
+					0.0,
+					0.0
+				],
+				"anchorMax": [
+					0.0,
+					0.0
+				],
+				"position": [
+					166.0,
+					175.0
+				],
+				"scale": 1.1
+			}
+		]
 	},
-	"empower":
-	{
-		"highlight":{"show":true,"anchorMin":[0.0,0.0],"anchorMax":[0.0,0.0],"position":[167.0,180.0],"size":[562.9,502.5]},
-		"glow":[{"show":true,"anchorMin":[0.0,0.0],"anchorMax":[0.0,0.0],"position":[166.0,175.0],"scale":1.1}]
+	"coven": {},
+	"bos": {},
+	"daily": {},
+	"recall": {
+		"highlight": {
+			"show": true,
+			"anchorMin": [
+				0.0,
+				0.0
+			],
+			"anchorMax": [
+				0.0,
+				0.0
+			],
+			"position": [
+				154.0,
+				977.0
+			],
+			"size": [
+				561.8,
+				501.5
+			]
+		},
+		"glow": [
+			{
+				"show": true,
+				"anchorMin": [
+					0.0,
+					0.0
+				],
+				"anchorMax": [
+					0.0,
+					0.0
+				],
+				"position": [
+					140.0,
+					983.0
+				],
+				"scale": 0.8
+			}
+		]
 	},
-	"coven":
-	{
-
+	"shout": {
+		"highlight": {
+			"show": true,
+			"anchorMin": [
+				0.0,
+				0.0
+			],
+			"anchorMax": [
+				0.0,
+				0.0
+			],
+			"position": [
+				2136.2,
+				100.0
+			],
+			"size": [
+				666.6,
+				453.9
+			]
+		},
+		"glow": [
+			{
+				"show": true,
+				"anchorMin": [
+					1.0,
+					0.0
+				],
+				"anchorMax": [
+					1.0,
+					0.0
+				],
+				"position": [
+					-514.0,
+					106.0
+				],
+				"scale": 0.8
+			}
+		]
 	},
-	"bos":
-	{
-
-	},
-	"daily":
-	{
-
-	},
-	"recall":
-	{
-		"highlight":{"show":true,"anchorMin":[0.0,0.0],"anchorMax":[0.0,0.0],"position":[154.0,977.0],"size":[561.8,501.5]},
-		"glow":[{"show":true,"anchorMin":[0.0,0.0],"anchorMax":[0.0,0.0],"position":[140.0,983.0],"scale":0.8}]
-	},
-	"shout":
-	{
-		"highlight":{"show":true,"anchorMin":[0.0,0.0],"anchorMax":[0.0,0.0],"position":[2136.2,100.0],"size":[666.6,453.9]},
-		"glow":[{"show":true,"anchorMin":[1.0,0.0],"anchorMax":[1.0,0.0],"position":[-514.0,106.0],"scale":0.8}]
-	},	
-	"greyhand":
-	{
-		
-	}
+	"greyhand": {},
+	"tier": {}
 }

@@ -72,9 +72,9 @@ namespace Raincrow.FTF
             gameObject.SetActive(true);
         }
 
-        public void Hide()
+        public void Hide(System.Action onComplete = null)
         {
-            Hide(null, 0.5f, LeanTweenType.easeOutCubic);
+            Hide(onComplete, 0.5f, LeanTweenType.easeOutCubic);
         }
 
         private void Hide(System.Action onComplete, float time, LeanTweenType easeType)

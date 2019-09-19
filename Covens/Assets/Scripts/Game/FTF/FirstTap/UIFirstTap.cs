@@ -23,7 +23,7 @@ namespace Raincrow.FTF
                
         private static UIFirstTap m_Instance;
 
-        private List<GameObject> m_InstantiatedGlow = new List<GameObject>();
+        private List<FTFPointerHand> m_InstantiatedGlow = new List<FTFPointerHand>();
         private System.Action m_OnClose;
         private int m_AnimTweenId;
         private int m_ButtonTweenId;
@@ -68,7 +68,11 @@ namespace Raincrow.FTF
             m_Message.text = LocalizeLookUp.GetText("first_tap_info_" + id + "_desc");
             m_Highlight.Show(entry.highlight);
 
-            for(int i = 0; i < entry.glow?.Count; i++)
+            for (int i = 0; i < m_InstantiatedGlow.Count; i++)
+                Destroy(m_InstantiatedGlow[i].gameObject);
+            m_InstantiatedGlow.Clear();
+
+            for (int i = 0; i < entry.glow?.Count; i++)
             {
                 FTFPointerHand instance;
                 if (i == 0)
@@ -78,11 +82,14 @@ namespace Raincrow.FTF
                 else
                 {
                     instance = GameObject.Instantiate(m_Glow, m_Glow.transform.parent);
-                    m_InstantiatedGlow.Add(instance.gameObject);
+                    m_InstantiatedGlow.Add(instance);
                 }
 
                 instance.Show(entry.glow[i]);
             }
+
+            if (entry.glow == null)
+                m_Glow.gameObject.SetActive(false);
                 
             LeanTween.cancel(m_AnimTweenId);
             LeanTween.cancel(m_ButtonTweenId);
@@ -106,17 +113,14 @@ namespace Raincrow.FTF
                 .setOnComplete(() =>
                 {
                     m_Canvas.enabled = false;
-
-                    for (int i = 0; i < m_InstantiatedGlow.Count; i++)
-                        Destroy(m_InstantiatedGlow[i]);
-
+                    
                     if (FirstTapManager.CompletedAll())
                         Unload();
                 })
                 .setEaseOutCubic()
                 .uniqueId;
+
             m_OnClose?.Invoke();
-            m_OnClose = null;
         }
     }
 }
