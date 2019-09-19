@@ -293,12 +293,34 @@ public class MarkerSpawner : MarkerManager
             UIQuickCast.Open();
             UIQuickCast.UpdateCanCast(m, null);
             UISpiritInfo.Show(m as SpiritMarker, Data as SpiritToken, UIQuickCast.Close);
+
+            if (FirstTapManager.IsFirstTime("spellcasting"))
+            {
+                FirstTapManager.Show("spellcasting", () =>
+                {
+                    FirstTapManager.Show("quickcasting", () =>
+                    {
+                        CheckTierFirstTap();
+                    });
+                });
+            }
+            else
+            {
+                CheckTierFirstTap();
+            }
+
+
+            SoundManagerOneShot.Instance.PlayWhisperFX();
+            GetMarkerDetails(Data.instance, (result, response) => GetResponse(m, Data.instance, response, result));
         }
-
-        SoundManagerOneShot.Instance.PlayWhisperFX();
-        GetMarkerDetails(Data.instance, (result, response) => GetResponse(m, Data.instance, response, result));
     }
-
+    public void CheckTierFirstTap()
+    {
+        if (FirstTapManager.IsFirstTime("tier"))
+        {
+            FirstTapManager.Show("tier", null);
+        }
+    }
     public static void GetMarkerDetails(string id, System.Action<int, string> callback)
     {
         APIManager.Instance.Get(
