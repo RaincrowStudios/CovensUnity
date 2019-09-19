@@ -326,6 +326,28 @@ public class WitchMarker : MuskMarker
             SetCharacterAlpha(AvatarAlpha, 1f);
     }
 
+    public override void ApplyStatusEffect(StatusEffect effect)
+    {
+        if (effect.modifiers.status == null)
+            return;
+
+        //foreach (string status in effect.modifiers.status)
+        //{
+
+        //}
+    }
+
+    public override void ExpireStatusEffect(StatusEffect effect)
+    {
+        if (effect.modifiers.status == null)
+            return;
+
+        //foreach (string status in effect.modifiers.status)
+        //{
+
+        //}
+    }
+
 #if UNITY_EDITOR
     [ContextMenu("Update nameplate")]
     private void DebugNameplate()

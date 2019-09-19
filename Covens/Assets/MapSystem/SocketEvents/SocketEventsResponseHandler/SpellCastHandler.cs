@@ -61,7 +61,7 @@ namespace Raincrow.GameEventResponses
 
         public static System.Action<string> OnSpiritBanished;
 
-
+        private static HashSet<string> m_NonDamagingSpells = new HashSet<string> { "spell_bind", "spell_silence", "spell_seal", "spell_invisibility", "spell_dispel", "spell_clarity", "spell_sealBalance", "spell_sealLight", "spell_sealShadow", "spell_reflectiveWard", "spell_rageWard", "spell_greaterSeal", "spell_greaterDispel", "spell_banish", "spell_mirrors", "spell_trueSight", "spell_crowsEye", "spell_shadowMark", "spell_channeling", "spell_transquility", "spell_addledMind", "spell_whiteRain" };
 
         public void HandleResponse(string eventData)
         {
@@ -99,7 +99,7 @@ namespace Raincrow.GameEventResponses
 
             IMarker caster = playerIsCaster ? PlayerManager.marker : MarkerManager.GetMarker(data.caster.id);
             IMarker target = playerIsTarget ? PlayerManager.marker : MarkerManager.GetMarker(data.target.id);
-            int damage = (int)data.result.damage;
+            int energyChange = (int)data.result.damage;
             int casterNewEnergy = data.caster.energy;
             int targetNewEnergy = data.target.energy;
 
@@ -140,7 +140,7 @@ namespace Raincrow.GameEventResponses
 
                     //spell text for the energy lost casting the spell
                     if (playerIsCaster && caster != null)
-                        SpellcastingFX.SpawnDamage(caster, -spell.cost, false);
+                        SpellcastingFX.SpawnEnergyChange(caster, -spell.cost, 1);
 
                     //localy remove the immunity so you may attack again
                     if (playerIsTarget)
@@ -163,9 +163,11 @@ namespace Raincrow.GameEventResponses
                     if (data.result.statusEffect != null && string.IsNullOrEmpty(data.result.statusEffect.spell) == false)
                     {
                         OnApplyStatusEffect?.Invoke(data.target.id, data.result.statusEffect);
-
+                        
                         if (playerIsTarget)
-                            ConditionManager.AddCondition(data.result.statusEffect, caster);
+                            ConditionManager.AddCondition(data.result.statusEffect, target);
+
+                        //target?.ApplyStatusEffect(data.result.statusEffect);
                     }
 
                     //add the immunity if the server said so
@@ -183,9 +185,11 @@ namespace Raincrow.GameEventResponses
                     if (target != null)
                     {
                         if (data.result.isSuccess)
-                        {                                                        
-                            SpellcastingFX.SpawnGlyph(target, spell, data.spell);
-                            SpellcastingFX.SpawnDamage(target, damage, data.result.isCritical);
+                        {
+                            if (m_NonDamagingSpells.Contains(spell.id))
+                                SpellcastingFX.SpawnText(target, LocalizeLookUp.GetSpellName(spell.id), 1);
+                            //SpellcastingFX.SpawnGlyph(target, spell, data.spell);
+                            SpellcastingFX.SpawnEnergyChange(target, energyChange, data.result.isCritical ? 1.4f : 1f);
                         }
 
                         else
@@ -197,7 +201,7 @@ namespace Raincrow.GameEventResponses
                     //screen shake
                     if (playerIsTarget || playerIsCaster)
                     {
-                        if (damage > 0) //healed
+                        if (energyChange > 0) //healed
                         {
                             MapCameraUtils.ShakeCamera(
                                 new Vector3(1, -5, 1),
@@ -206,7 +210,7 @@ namespace Raincrow.GameEventResponses
                                 2f
                             );
                         }
-                        else if (damage < 0) //dealt damage
+                        else if (energyChange < 0) //dealt damage
                         {
                             MapCameraUtils.ShakeCamera(
                                 new Vector3(1, -5, 5),

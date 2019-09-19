@@ -80,6 +80,22 @@ public class UIChanneling : UIInfoPanel
             "\n+0 " + LocalizeLookUp.GetText("generic_resilience") +
             "\n+0 " + LocalizeLookUp.GetText("cast_crit");
 
+        foreach (StatusEffect eff in PlayerDataManager.playerData.effects)
+        {
+            if (eff.modifiers.status == null)
+                continue;
+            foreach (string status in eff.modifiers.status)
+            {
+                if (status == "channeling")
+                {
+                    m_ChannelingContent.text =
+                       "+" + eff.modifiers.power + LocalizeLookUp.GetText("generic_power") +
+                       "\n+" + eff.modifiers.resilience + LocalizeLookUp.GetText("generic_resilience") +
+                       "\n+" + eff.modifiers.toCrit + LocalizeLookUp.GetText("cast_crit");
+                }
+            }
+        }
+
         ////animate the channeling ui
         m_ChannelingTweenId = LeanTween.alphaCanvas(m_ChannelingCanvasGroup, 1f, 0.5f).uniqueId;
 

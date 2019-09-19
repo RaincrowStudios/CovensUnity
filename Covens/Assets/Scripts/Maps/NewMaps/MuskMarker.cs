@@ -53,6 +53,8 @@ namespace Raincrow.Maps
         protected Color m_SchoolColor = Color.white;
         private float m_EnergyFill = 0;
 
+        protected List<(SimplePool<Transform>, Transform)> m_PooledItems = new List<(SimplePool<Transform>, Transform)>();
+
         public float scale
         {
             get { return transform.localScale.x; }
@@ -69,6 +71,10 @@ namespace Raincrow.Maps
             LeanTween.cancel(m_MoveTweenId);
 
             OnClick = null;
+
+            for(int i = 0; i < m_PooledItems.Count; i++)
+                m_PooledItems[i].Item1.Despawn(m_PooledItems[i].Item2);
+            m_PooledItems.Clear();
 
             GameObject.SetActive(false);
         }
@@ -385,6 +391,23 @@ namespace Raincrow.Maps
                     onComplete?.Invoke();
                 })
                 .uniqueId;
+        }
+
+        public Transform SpawnItem(SimplePool<Transform> pool)
+        {
+            Transform instance = pool.Spawn(this.transform);
+            m_PooledItems.Add((pool, instance));
+            return instance;
+        }
+
+        public virtual void ApplyStatusEffect(StatusEffect effect)
+        {
+
+        }
+
+        public virtual void ExpireStatusEffect(StatusEffect effect)
+        {
+
         }
 
 
