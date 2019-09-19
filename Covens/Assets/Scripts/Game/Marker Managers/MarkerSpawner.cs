@@ -308,11 +308,10 @@ public class MarkerSpawner : MarkerManager
             {
                 CheckTierFirstTap();
             }
-
-
-            SoundManagerOneShot.Instance.PlayWhisperFX();
-            GetMarkerDetails(Data.instance, (result, response) => GetResponse(m, Data.instance, response, result));
         }
+        
+        SoundManagerOneShot.Instance.PlayWhisperFX();
+        GetMarkerDetails(Data.instance, (result, response) => GetResponse(m, Data.instance, response, result));
     }
     public void CheckTierFirstTap()
     {
