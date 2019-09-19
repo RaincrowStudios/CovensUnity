@@ -364,8 +364,8 @@ public class LocationPOPInfo : UIInfoPanel
         }
         else
         {
-            m_locationImage.color = Color.black;
-            string url = DownloadAssetBundle.baseURL + "pops/" + id + ".jpg";
+            m_locationImage.color = new Color(1, 1, 1, 0);
+            string url = DownloadAssetBundle.baseURL + "pop-circle/" + id + ".png";
             UnityWebRequest www = UnityWebRequestTexture.GetTexture(url);
             yield return www.SendWebRequest();
 
@@ -382,7 +382,6 @@ public class LocationPOPInfo : UIInfoPanel
                 }
                 else
                 {
-                    Debug.Log("GotTexture");
                     Texture2D texture = DownloadHandlerTexture.GetContent(www);
                     if (texture != null)
                     {

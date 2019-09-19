@@ -41,6 +41,7 @@ public class LocationUnitSpawner : MonoBehaviour
     public static string currentSelection { get; private set; }
     public static Dictionary<string, IMarker> Markers = new Dictionary<string, IMarker>();
 
+
     void Awake()
     {
         Instance = this;
@@ -75,8 +76,8 @@ public class LocationUnitSpawner : MonoBehaviour
             go.transform.localPosition = Vector3.zero;
             go.transform.localScale = Vector3.zero;
             go.SetActive(true);
-            if (m_cloaks.ContainsKey(instance)) DisableCloaking(instance);
-            m_cloaks.Add(instance, go);
+            //  if (m_cloaks.ContainsKey(instance)) DisableCloaking(instance);
+            m_cloaks[instance] = go;
             LeanTween.scale(go, Vector3.one, .5f).setEaseOutQuad();
         }
     }
@@ -85,7 +86,6 @@ public class LocationUnitSpawner : MonoBehaviour
     {
         if (m_cloaks.ContainsKey(instance))
         {
-
             LeanTween.scale(m_cloaks[instance], Vector3.zero, .5f).setEaseOutQuad().setOnComplete(() =>
             {
                 m_CloakingPool.Despawn(m_cloaks[instance].transform);
@@ -270,7 +270,6 @@ public class LocationUnitSpawner : MonoBehaviour
                     "",
                     (response, result) => callback(result, response));
     }
-
 
     public async void RemoveMarker(string instance, bool remove = true)
     {
