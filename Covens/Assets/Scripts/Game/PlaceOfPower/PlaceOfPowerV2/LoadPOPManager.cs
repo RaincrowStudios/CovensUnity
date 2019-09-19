@@ -92,6 +92,8 @@ public class LoadPOPManager : MonoBehaviour
             sceneLoaded = true;
             onComplete();
         });
+        OnMapEnergyChange.OnPlayerDead += LoadPOPManager.UnloadScene;
+        OnMapEnergyChange.OnMarkerEnergyChange += LocationUnitSpawner.OnEnergyChange;
     }
 
     public static void UnloadScene()
