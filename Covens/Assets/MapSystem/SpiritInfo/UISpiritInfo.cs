@@ -15,7 +15,7 @@ public class UISpiritInfo : UIInfoPanel
     [Header("Texts")]
     [SerializeField] private TextMeshProUGUI m_SpiritName;
     [SerializeField] private TextMeshProUGUI m_Tier;
-    [SerializeField] private TextMeshProUGUI m_Level;
+    //[SerializeField] private TextMeshProUGUI m_Level;
     [SerializeField] private TextMeshProUGUI m_Energy;
     [SerializeField] private TextMeshProUGUI m_Desc;
 
@@ -129,12 +129,12 @@ public class UISpiritInfo : UIInfoPanel
         m_OwnerButton.onClick.RemoveAllListeners();
 
         m_SpiritName.text = m_SpiritData.Name;
-        m_Level.text = "";
+        //m_Level.text = "";
         m_Energy.text = LocalizeLookUp.GetText("cast_energy").ToUpper() + " <color=black>" + SpiritToken.energy.ToString();
         m_Desc.text = LocalizeLookUp.GetText("location_owned").Replace("{{Controller}}", "[" + LocalizeLookUp.GetText("loading") + "]");//"Belongs to [Loading...]";
 
         m_SpiritArt.overrideSprite = null;
-        DownloadedAssets.GetSprite(SpiritToken.spiritId, spr => 
+        DownloadedAssets.GetSprite(SpiritToken.spiritId, spr =>
         {
             if (m_SpiritArt != null)
                 m_SpiritArt.overrideSprite = spr;
@@ -262,7 +262,7 @@ public class UISpiritInfo : UIInfoPanel
             {
                 if (item.spirit.ToString() == m_SpiritData.id)
                 {
-                    m_Tier.text = m_Tier.text + "\n<color=#616161>" + LocalizeLookUp.GetText("generic_known");
+                    m_Tier.text = m_Tier.text + "\n<color=#616161>" + LocalizeLookUp.GetText("spirit_known");
                 }
             }
 
@@ -309,7 +309,7 @@ public class UISpiritInfo : UIInfoPanel
     {
         Close();
     }
-    
+
     private void _OnCharacterDead()
     {
         Abort();
