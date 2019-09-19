@@ -33,7 +33,7 @@ namespace Raincrow.Maps
         void SetWorldPosition(Vector3 worldPos, float time = 0, System.Action onComplete = null);
         void ApplyStatusEffect(StatusEffect effect);
         void ExpireStatusEffect(StatusEffect effect);
-        Transform SpawnItem(SimplePool<Transform> pool);
+        Transform SpawnItem(string resourcePath);
         Transform AvatarTransform { get; }
 
         //void AddChild(Transform t, Transform parent, SimplePool<Transform> pool);

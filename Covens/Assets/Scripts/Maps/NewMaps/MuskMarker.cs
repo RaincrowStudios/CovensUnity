@@ -53,7 +53,7 @@ namespace Raincrow.Maps
         protected Color m_SchoolColor = Color.white;
         private float m_EnergyFill = 0;
 
-        protected List<(SimplePool<Transform>, Transform)> m_PooledItems = new List<(SimplePool<Transform>, Transform)>();
+        protected List<Transform> m_SpawnedItems = new List<Transform>();
 
         public float scale
         {
@@ -72,9 +72,9 @@ namespace Raincrow.Maps
 
             OnClick = null;
 
-            for(int i = 0; i < m_PooledItems.Count; i++)
-                m_PooledItems[i].Item1.Despawn(m_PooledItems[i].Item2);
-            m_PooledItems.Clear();
+            for (int i = 0; i < m_SpawnedItems.Count; i++)
+                Destroy(m_SpawnedItems[i].gameObject);
+            m_SpawnedItems.Clear();
 
             GameObject.SetActive(false);
         }
@@ -393,10 +393,13 @@ namespace Raincrow.Maps
                 .uniqueId;
         }
 
-        public Transform SpawnItem(SimplePool<Transform> pool)
+        public Transform SpawnItem(string resourcePath)
         {
-            Transform instance = pool.Spawn(this.transform);
-            m_PooledItems.Add((pool, instance));
+            Transform instance = Instantiate(Resources.Load<Transform>(resourcePath));
+            instance.SetParent(AvatarTransform);
+            instance.localPosition = Vector3.zero;
+            instance.localScale = Vector3.one;
+            m_SpawnedItems.Add(instance);
             return instance;
         }
 
