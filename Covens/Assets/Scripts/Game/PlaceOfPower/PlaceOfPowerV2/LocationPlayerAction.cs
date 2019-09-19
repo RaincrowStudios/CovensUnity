@@ -12,6 +12,9 @@ public class LocationPlayerAction : MonoBehaviour
     [SerializeField] private GameObject m_MoveCloser;
     [SerializeField] private Button m_MoveCloserCloseBtn;
     [SerializeField] private Button m_CenterOnPlayerBtn;
+    [SerializeField] private Button m_SpellBookBtn;
+    [SerializeField] private Transform m_MainUITransform;
+    [SerializeField] private GameObject m_Bos;
 
     [SerializeField] private LocationActionButton m_ActionBtn;
     [SerializeField] private Sprite m_flySprite;
@@ -75,7 +78,10 @@ public class LocationPlayerAction : MonoBehaviour
     {
         Debug.Log("LOCATION SETUP");
         Instance = this;
-
+        m_SpellBookBtn.onClick.AddListener(() =>
+        {
+            Utilities.InstantiateUI(m_Bos, m_MainUITransform);
+        });
         m_MoveCloserCloseBtn.onClick.AddListener(HideMoveCloser);
         m_CenterOnPlayerBtn.onClick.AddListener(CenterOnPlayer);
         m_DisableCloakBtn.onClick.AddListener(RequestDisableCloaking);
@@ -102,6 +108,11 @@ public class LocationPlayerAction : MonoBehaviour
     private void Setup()
     {
         Debug.Log("Setting up Player Actions");
+
+        AvatarSpriteUtil.Instance.GenerateWardrobePortrait((s) =>
+           {
+               m_CenterOnPlayerBtn.GetComponent<Image>().sprite = s;
+           });
         LocationActionButton btn;
         UpdateEnergy(0);
         OnMapEnergyChange.OnPlayerEnergyChange += UpdateEnergy;
@@ -119,6 +130,10 @@ public class LocationPlayerAction : MonoBehaviour
             UISummoning.Open(selectedPosition.position, selectedPosition.island, null, (s) =>
             {
                 UISummoning.Close();
+                if (s != null)
+                {
+                    UIGlobalPopup.ShowError(null, "Summoning Failed");
+                }
             }, null);
         });
         m_BtnArr[2] = btn;

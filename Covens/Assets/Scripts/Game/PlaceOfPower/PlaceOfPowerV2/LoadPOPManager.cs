@@ -103,10 +103,11 @@ public class LoadPOPManager : MonoBehaviour
             var t = LocationExitInfo.Instance;
             UIQuickCast.Close();
             t.ShowUI();
-            LoadingOverlay.Hide();
-            //   PlayerDataManager.playerData.energy = previousEnergy;
-            //  PlayerDataManager.playerData.state = previousState;
-            //onComplete();
+            LoginAPIManager.GetCharacter((s, r) =>
+          {
+              LoadingOverlay.Hide();
+          });
+
         });
         OnMapEnergyChange.OnPlayerDead -= LoadPOPManager.UnloadScene;
         OnMapEnergyChange.OnMarkerEnergyChange -= LocationUnitSpawner.OnEnergyChange;
@@ -129,6 +130,7 @@ public class LoadPOPManager : MonoBehaviour
         LocationIslandController.BattleStopPOP();
         LocationUnitSpawner.UnloadScene();
         MarkerManagerAPI.GetMarkers();
+
     }
 
     public static void UnloadSceneReward()
@@ -136,7 +138,11 @@ public class LoadPOPManager : MonoBehaviour
         HandleUnload();
         SceneManager.UnloadScene(SceneManager.Scene.PLACE_OF_POWER, null, () =>
         {
-            LoadingOverlay.Hide();
+            LoginAPIManager.GetCharacter((s, r) =>
+            {
+                LoadingOverlay.Hide();
+
+            });
             sceneLoaded = false;
             UIQuickCast.Close();
             OnMapEnergyChange.OnPlayerDead -= LoadPOPManager.UnloadScene;

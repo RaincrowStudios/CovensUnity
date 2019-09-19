@@ -134,7 +134,7 @@ public class UISpiritInfo : UIInfoPanel
         m_Desc.text = LocalizeLookUp.GetText("location_owned").Replace("{{Controller}}", "[" + LocalizeLookUp.GetText("loading") + "]");//"Belongs to [Loading...]";
 
         m_SpiritArt.overrideSprite = null;
-        DownloadedAssets.GetSprite(SpiritToken.spiritId, spr => 
+        DownloadedAssets.GetSprite(SpiritToken.spiritId, spr =>
         {
             if (m_SpiritArt != null)
                 m_SpiritArt.overrideSprite = spr;
@@ -281,7 +281,10 @@ public class UISpiritInfo : UIInfoPanel
                 m_OwnerButton.onClick.AddListener(OnClickCoven);
             }
         }
-
+        if (SpiritMarkerDetails.effects == null)
+        {
+            SpiritMarkerDetails.effects = new List<StatusEffect>();
+        }
         m_ConditionList.Setup(SpiritMarkerDetails.effects);
     }
 
@@ -309,7 +312,7 @@ public class UISpiritInfo : UIInfoPanel
     {
         Close();
     }
-    
+
     private void _OnCharacterDead()
     {
         Abort();

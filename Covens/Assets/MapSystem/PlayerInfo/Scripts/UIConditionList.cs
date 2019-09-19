@@ -35,8 +35,8 @@ public class UIConditionList : MonoBehaviour
         }
 
         m_ItemPool.DespawnAll();
-        
-        if (effects.Count == 0)
+
+        if (effects == null || effects.Count == 0)
             return;
 
         m_SetupCoroutine = StartCoroutine(SetupCoroutine(effects));
@@ -99,7 +99,7 @@ public class UIConditionList : MonoBehaviour
 
         foreach (UIConditionItem item in active)
         {
-            if ( item.condition.spell == condition.spell)
+            if (item.condition.spell == condition.spell)
             {
                 m_ItemPool.Despawn(item);
 

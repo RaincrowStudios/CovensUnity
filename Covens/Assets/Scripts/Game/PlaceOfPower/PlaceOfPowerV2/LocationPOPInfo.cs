@@ -8,6 +8,7 @@ using UnityEngine.UI;
 using Newtonsoft.Json.Linq;
 using Newtonsoft.Json;
 using System.Collections;
+using UnityEngine.Networking;
 
 public class LocationPOPInfo : UIInfoPanel
 {
@@ -30,6 +31,7 @@ public class LocationPOPInfo : UIInfoPanel
     [SerializeField] private TextMeshProUGUI m_PlayerJoinedSubtitle;
     [SerializeField] private Image m_PlayerJoinedColor;
 
+    private Dictionary<string, Sprite> m_LocationImagesCache = new Dictionary<string, Sprite>();
 
     [SerializeField] private Button m_EnterBtn;
     private LocationViewData m_LocationViewData;
@@ -65,6 +67,7 @@ public class LocationPOPInfo : UIInfoPanel
 
     public void Show(LocationViewData data)
     {
+        StartCoroutine(DownloadThumb(data.name));
         m_LocationViewData = data;
         LocationIslandController.OnWitchEnter += AddWitch;
         LocationIslandController.OnWitchExit += RemoveWitch;
@@ -351,6 +354,45 @@ public class LocationPOPInfo : UIInfoPanel
         Debug.Log(current);
         Debug.Log(timeStamp);
         return timeStamp > current;
+    }
+
+    IEnumerator DownloadThumb(string id)
+    {
+        if (m_LocationImagesCache.ContainsKey(id))
+        {
+            m_locationImage.sprite = m_LocationImagesCache[id];
+        }
+        else
+        {
+            m_locationImage.color = Color.black;
+            string url = DownloadAssetBundle.baseURL + "pops/" + id + ".jpg";
+            UnityWebRequest www = UnityWebRequestTexture.GetTexture(url);
+            yield return www.SendWebRequest();
+
+            if (www.isNetworkError)
+            {
+                yield return new WaitForSeconds(1f);
+                StartCoroutine(DownloadThumb(id));
+            }
+            else
+            {
+                if (www.isHttpError)
+                {
+                    Debug.LogError($"failed to download \"{url}\"");
+                }
+                else
+                {
+                    Debug.Log("GotTexture");
+                    Texture2D texture = DownloadHandlerTexture.GetContent(www);
+                    if (texture != null)
+                    {
+                        m_LocationImagesCache[id] = Sprite.Create(texture, new Rect(0, 0, texture.width, texture.height), new Vector2(0, 0));
+                        m_locationImage.color = Color.white;
+                        m_locationImage.sprite = m_LocationImagesCache[id];
+                    }
+                }
+            }
+        }
     }
 
 }
