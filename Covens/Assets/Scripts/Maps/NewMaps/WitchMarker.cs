@@ -328,24 +328,18 @@ public class WitchMarker : MuskMarker
 
     public override void ApplyStatusEffect(StatusEffect effect)
     {
-        if (effect.modifiers.status == null)
-            return;
+        //if (effect.modifiers.status == null)
+        //    return;
 
-        //foreach (string status in effect.modifiers.status)
-        //{
-
-        //}
+        //StatusEffectFX.SpawnFX(this, effect);
     }
 
     public override void ExpireStatusEffect(StatusEffect effect)
     {
-        if (effect.modifiers.status == null)
-            return;
+        //if (effect.modifiers.status == null)
+        //    return;
 
-        //foreach (string status in effect.modifiers.status)
-        //{
-
-        //}
+        //StatusEffectFX.DespawnFX(this, effect);
     }
 
 #if UNITY_EDITOR

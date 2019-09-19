@@ -11,14 +11,16 @@ public static class ConditionManager
 
     private static Dictionary<string, System.Action<StatusEffect, IMarker>> m_StatusBehavior = new Dictionary<string, System.Action<StatusEffect, IMarker>>()
     {
-        { "bound",     BanishManager.Bind },
-        { "silenced",  BanishManager.Silence }
+        { "bound",      BanishManager.Bind },
+        { "silenced",   BanishManager.Silence },
+        { "channeling", SpellChanneling.SpawnFX },
+        { "channeled",     SpellChanneling.DespawnFX }
     };
 
     private static Dictionary<string, System.Action<StatusEffect, IMarker>> m_StatusExpireBehavior = new Dictionary<string, System.Action<StatusEffect, IMarker>>()
     {
-        { "bound",     BanishManager.Unbind },
-        { "silenced",  BanishManager.Unsilence }
+        { "bound",          BanishManager.Unbind },
+        { "silenced",       BanishManager.Unsilence },
     };
 
     private static Dictionary<string, double> m_StatusDict = new Dictionary<string, double>();
@@ -37,37 +39,40 @@ public static class ConditionManager
         }
         PlayerDataManager.playerData.effects.Add(statusEffect);
         OnPlayerApplyStatusEffect?.Invoke(statusEffect);
-        
-        TriggerStatusEffect(statusEffect, caster);
 
         string debug = statusEffect.spell + " added";
+
         if (statusEffect.modifiers.status != null)
         {
             debug += "\n\t";
             foreach (string status in statusEffect.modifiers.status)
-                debug += status;
+                debug += status + " ";
         }
+
+        if (statusEffect.modifiers.status != null)
+        {
+            debug += "\n\t";
+            foreach (string status in statusEffect.modifiers.status)
+            {
+                if (m_StatusBehavior.ContainsKey(status))
+                {
+                    debug += status + " triggered\n\t";
+                    m_StatusBehavior[status].Invoke(statusEffect, caster);
+                }
+            }
+        }
+
         Log(debug);
 
         //schedule expiration
         statusEffect.ScheduleExpiration(() => ExpireStatusEffect(statusEffect, caster));
 
-        StatusEffectFX.SpawnFX(PlayerManager.marker, statusEffect);
+        //StatusEffectFX.SpawnFX(PlayerManager.marker, statusEffect);
     }
 
     public static void TriggerStatusEffect(StatusEffect effect, IMarker caster)
     {
-        if (effect.modifiers.status == null)
-            return;
-
-        foreach (string status in effect.modifiers.status)
-        {
-            if (m_StatusBehavior.ContainsKey(status))
-            {
-                Log(status + " triggered");
-                m_StatusBehavior[status].Invoke(effect, caster);
-            }
-        }
+        
     }
 
     public static void ExpireStatusEffect(StatusEffect statusEffect, IMarker caster)
@@ -96,7 +101,7 @@ public static class ConditionManager
         
         OnPlayerExpireStatusEffect?.Invoke(statusEffect);
 
-        StatusEffectFX.DespawnFX(PlayerManager.marker, statusEffect);
+        //StatusEffectFX.DespawnFX(PlayerManager.marker, statusEffect);
     }
 
     private static void Log(string msg)
