@@ -81,13 +81,17 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_AvatarRenderer: {fileID: 602544375318008166}
+  m_NameBanner: {fileID: 0}
+  m_StatsContainer: {fileID: 0}
+  m_EnergyRing: {fileID: 0}
+  m_EnergyRingEmpty: {fileID: 0}
   m_Shadows: []
+  m_DebugFloat: 0
   m_AvatarGroup: {fileID: 766087333534344284}
   m_IconGroup: {fileID: 766035142490527798}
   m_Ring: {fileID: 602544375318008166}
   m_CharacterTransform: {fileID: 774123828689219792}
   m_IconTransform: {fileID: 774500147205152080}
-  m_particleSystem: {fileID: 4033460463022030547}
 --- !u!1 &768622161843041634
 GameObject:
   m_ObjectHideFlags: 0
@@ -186,7 +190,7 @@ SpriteRenderer:
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: 0
   m_SortingLayer: 0
-  m_SortingOrder: 1
+  m_SortingOrder: -2
   m_Sprite: {fileID: 21300000, guid: 130e63c023d0c574293578ebd36bf423, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
@@ -5143,7 +5147,7 @@ ParticleSystemRenderer:
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: 0
   m_SortingLayer: 0
-  m_SortingOrder: 1
+  m_SortingOrder: 0
   m_RenderMode: 1
   m_SortMode: 0
   m_MinParticleSize: 0
@@ -5235,7 +5239,7 @@ SpriteRenderer:
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: 0
   m_SortingLayer: 0
-  m_SortingOrder: 1
+  m_SortingOrder: -2
   m_Sprite: {fileID: 21300000, guid: 8f2c7041327245f48bb12f2b9afd2bff, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
@@ -5326,7 +5330,7 @@ SpriteRenderer:
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: 0
   m_SortingLayer: 0
-  m_SortingOrder: 0
+  m_SortingOrder: -3
   m_Sprite: {fileID: 21300000, guid: e511a5e1cc999ce4ba83e392fb0acef1, type: 3}
   m_Color: {r: 0.1254902, g: 0.13725491, b: 0.1254902, a: 1}
   m_FlipX: 0
@@ -5335,6 +5339,6 @@ SpriteRenderer:
   m_Size: {x: 4.64, y: 6.64}
   m_AdaptiveModeThreshold: 0.5
   m_SpriteTileMode: 0
-  m_WasSpriteAssigned: 1
+  m_WasSpriteAssigned: 0
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
