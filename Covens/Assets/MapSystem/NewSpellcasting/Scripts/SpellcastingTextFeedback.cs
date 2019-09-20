@@ -110,7 +110,7 @@ public static class SpellcastingTextFeedback
             }
 
             //Debug.Log("contains key");
-            Debug.Log("str format: " + str);
+            //Debug.Log("str format: " + str);
             string formatedString;
             try
             {
