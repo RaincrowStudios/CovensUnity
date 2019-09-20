@@ -12,6 +12,8 @@ public class BOSCharacter : BOSBase
     [SerializeField] private TextMeshProUGUI coven;
     [SerializeField] private TextMeshProUGUI dominionRank;
     [SerializeField] private TextMeshProUGUI worldRank;
+    [SerializeField] private TextMeshProUGUI power;
+    [SerializeField] private TextMeshProUGUI resilience;
     [SerializeField] private TextMeshProUGUI favoriteSpell;
     [SerializeField] private TextMeshProUGUI nemesis;
     [SerializeField] private TextMeshProUGUI benefactor;
@@ -35,7 +37,8 @@ public class BOSCharacter : BOSBase
         dominionRank.text = LocalizeLookUp.GetText("generic_rank") + " " + pData.dominionRank.ToString() + " " + LocalizeLookUp.GetText("dominion_location_short") + " " + pData.dominion;
         //dominionRank.text = LocalizeLookUp.GetText("lt_dominion") + " " + pData.dominion; ;
         worldRank.text = LocalizeLookUp.GetText("generic_rank") + " " + pData.worldRank.ToString() + " " + LocalizeLookUp.GetText("dominion_world");
-
+        power.text = LocalizeLookUp.GetText("generic_power") + ": " + PlayerDataManager.playerData.Power;
+        resilience.text = LocalizeLookUp.GetText("generic_resilience") + ": " + PlayerDataManager.playerData.Resilience;
         favoriteSpell.text = LocalizeLookUp.GetText("spell_favorite") + " " + (string.IsNullOrEmpty(pData.favoriteSpell) ? LocalizeLookUp.GetText("lt_none") : LocalizeLookUp.GetSpellName(pData.favoriteSpell));
 
         nemesis.text = LocalizeLookUp.GetText("generic_nemesis") + ": " + (string.IsNullOrEmpty(pData.nemesis) ? LocalizeLookUp.GetText("lt_none") : pData.nemesis);

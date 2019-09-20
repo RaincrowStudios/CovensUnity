@@ -17,12 +17,15 @@ public class LocationIslandController : MonoBehaviour
     public static event System.Action OnEnterLocation;
     public static event System.Action OnExitLocation;
 
+
+
     private static bool m_IsInBattle = false;
 
     private Vector2 m_MouseDownPosition;
 
     public static string popName = "";
 
+    public static bool isGuardianActive { get; private set; }
 
     public static bool isInBattle
     {
@@ -46,15 +49,21 @@ public class LocationIslandController : MonoBehaviour
     [SerializeField] private PopCameraController popCameraController;
     [SerializeField] private LocationUnitSpawner locationUnitSpawner;
 
+
     private void Awake()
     {
         instance = this;
     }
+
     private static SpiritToken preInitializedSpirit = null;
+
     private void BattleBeginPOP(SpiritToken guardianSpirit)
     {
         if (!isInBattle)
         {
+            // TODO CHANGE FOR RESUME BATTLE
+            isGuardianActive = false;
+
             Debug.Log("[PLACE OF POWER] battle Starting");
             isInBattle = true;
             OnEnterLocation?.Invoke();
@@ -64,10 +73,12 @@ public class LocationIslandController : MonoBehaviour
             CreateTokens();
             if (guardianSpirit != null)
                 locationUnitSpawner.AddMarker(guardianSpirit);
-            UpdateMarkers(false, true, true);
+            //   UpdateMarkers(false, true, true);
             LocationPOPInfo.Instance.Close();
             SetActiveIslands();
             instance.popCameraController.onUpdate += UpdateMarkers;
+            if (popName != "")
+                PlayerNotificationManager.Instance.ShowNotification($"The battle for {popName} has started!");
         }
         else
         {
@@ -77,6 +88,7 @@ public class LocationIslandController : MonoBehaviour
             SetActiveIslands();
         }
     }
+
 
     private async void CreateTokens()
     {
@@ -154,6 +166,11 @@ public class LocationIslandController : MonoBehaviour
                       LocationBattleEnd.OnLocationBattleEnd += BattleStopPOP;
                       RewardHandlerPOP.LocationReward += OnReward;
                       instance.BattleBeginPOP(m_LocationData.spirit);
+                      if (m_LocationData.spirit != null)
+                          foreach (var item in m_LocationData.spirit.islands)
+                          {
+                              locationIslands[item].SetSpiritConnection(true);
+                          }
                   });
             }
             else
@@ -278,8 +295,17 @@ public class LocationIslandController : MonoBehaviour
     {
         foreach (var item in LocationUnitSpawner.Markers)
         {
+            // Debug.Log(instance.popCameraController.camera.transform.rotation);
             item.Value.AvatarTransform.rotation = instance.popCameraController.camera.transform.rotation;
         }
+    }
+
+    public static void UpdateMarker(IMarker m)
+    {
+        // Debug.Log("fixing orientation");
+        // Debug.Log(instance.popCameraController.camera.transform.rotation);
+        // Debug.Log(instance.popCameraController.camera.transform.localEulerAngles);
+        m.AvatarTransform.rotation = instance.popCameraController.camera.transform.rotation;
     }
 
     public static void SetActiveIslands()
@@ -298,6 +324,24 @@ public class LocationIslandController : MonoBehaviour
             else
             {
                 item.Value.ActivateIsland(false);
+            }
+        }
+    }
+
+    public static void ActivateSpiritConnection(string id)
+    {
+        int island = LocationUnitSpawner.GetIsland(id);
+        if (locationIslands.ContainsKey(island))
+        {
+            if (!locationIslands[island].IsConnected)
+            {
+                locationIslands[island].SetSpiritConnection(true);
+                if (!isGuardianActive)
+                {
+                    PlayerNotificationManager.Instance.ShowNotification("The Guardian Spirit has awakened!");
+                    isGuardianActive = true;
+                }
+                locationIslands[island].SetSpiritConnection(true);
             }
         }
     }

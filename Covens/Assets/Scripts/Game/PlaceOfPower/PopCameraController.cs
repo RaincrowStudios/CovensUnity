@@ -212,6 +212,7 @@ namespace Raincrow.DynamicPlacesOfPower
             }
 
             //position innertia
+            // Debug.Log(m_PositionDelta);
             if (m_PositionDelta.magnitude > 1)
             {
                 Vector3 newDelta = Vector3.Lerp(m_PositionDelta, Vector3.zero, Time.deltaTime * 10 / m_DragInertia);

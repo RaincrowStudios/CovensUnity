@@ -48,6 +48,7 @@ public abstract class Token
 
     public int position;
     public int island;
+    public int[] islands;   // For the Guardian Spirit in pops, I get an array of islands it can attack.
     [JsonIgnore]
     public int popIndex
     {
