@@ -43,6 +43,7 @@ public class LocationUnitSpawner : MonoBehaviour
     public static string currentSelection { get; private set; }
     public static Dictionary<string, IMarker> Markers = new Dictionary<string, IMarker>();
 
+    private static Dictionary<string, string> witchNames = new Dictionary<string, string>();
 
     void Awake()
     {
@@ -112,9 +113,9 @@ public class LocationUnitSpawner : MonoBehaviour
     private void ShowSummonMsg(SpiritToken spiritToken)
     {
 
-        if (spiritToken.popIndex != -1)
+        if (spiritToken.popIndex != -1 && witchNames.ContainsKey(spiritToken.owner))
         {
-            PlayerNotificationManager.Instance.ShowNotification($"{spiritToken.owner} has summoned {DownloadedAssets.spiritDict[spiritToken.spiritId].Name}.");
+            PlayerNotificationManager.Instance.ShowNotification($"{witchNames[spiritToken.owner]} has summoned <color=#00C5FF>{DownloadedAssets.spiritDict[spiritToken.spiritId].Name}</color>.");
         }
     }
 
@@ -129,9 +130,10 @@ public class LocationUnitSpawner : MonoBehaviour
 
             if (token.Type == MarkerType.WITCH)
             {
-
+                var witchToken = token as WitchToken;
+                witchNames[witchToken.instance] = witchToken.displayName;
                 go = m_WitchPool.Spawn().gameObject;
-                go.name = "[witch] " + (token as WitchToken).displayName + " [" + token.instance + "]";
+                go.name = "[witch] " + witchToken.displayName + " [" + token.instance + "]";
             }
             else if (token.Type == MarkerType.SPIRIT)
             {
