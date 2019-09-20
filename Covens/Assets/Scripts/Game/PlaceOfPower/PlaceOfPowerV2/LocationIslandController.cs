@@ -212,6 +212,7 @@ public class LocationIslandController : MonoBehaviour
               preInitializedSpirit = null;
               if (result == 200)
               {
+                  MarkerSpawner.ClearImmunities();
                   LocationBattleStart.OnLocationBattleStart += (s) =>
                   {
                       Debug.Log("BATTLE STARTING");
