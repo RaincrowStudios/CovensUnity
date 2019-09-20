@@ -90,12 +90,10 @@ namespace Raincrow.GameEventResponses
                         }
                     }
 
-                    if (data.target.energy == 0)
-                    {
-                        LocationUnitSpawner.RemoveMarker(data.target.id);
-                        LocationUnitSpawner.ShowDeathNotification(data);
-                    }
-
+                }
+                if (data.target.energy == 0)
+                {
+                    LocationUnitSpawner.RemoveMarker(data);
                 }
             }
 

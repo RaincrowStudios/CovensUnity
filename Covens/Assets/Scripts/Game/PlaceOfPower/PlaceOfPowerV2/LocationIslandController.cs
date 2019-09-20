@@ -295,7 +295,7 @@ public class LocationIslandController : MonoBehaviour
     {
         foreach (var item in LocationUnitSpawner.Markers)
         {
-            Debug.Log(instance.popCameraController.camera.transform.rotation);
+            // Debug.Log(instance.popCameraController.camera.transform.rotation);
             item.Value.AvatarTransform.rotation = instance.popCameraController.camera.transform.rotation;
         }
     }

@@ -9,6 +9,7 @@ using Newtonsoft.Json;
 using static Raincrow.GameEventResponses.MoveTokenHandlerPOP;
 using UnityEngine.UI;
 using static Raincrow.GameEventResponses.SpellCastHandler;
+using System.Collections;
 
 public class LocationUnitSpawner : MonoBehaviour
 {
@@ -108,15 +109,12 @@ public class LocationUnitSpawner : MonoBehaviour
         }
     }
 
-    private void CheckSpiritSummoned(Token token)
+    private void ShowSummonMsg(SpiritToken spiritToken)
     {
-        if (token.type == "spirit")
+
+        if (spiritToken.popIndex != -1)
         {
-            var spiritToken = (token as SpiritToken);
-            if (spiritToken.owner != "")
-            {
-                PlayerNotificationManager.Instance.ShowNotification($"{spiritToken.owner} has summoned {DownloadedAssets.spiritDict[spiritToken.spiritId].Name}.");
-            }
+            PlayerNotificationManager.Instance.ShowNotification($"{spiritToken.owner} has summoned {DownloadedAssets.spiritDict[spiritToken.spiritId].Name}.");
         }
     }
 
@@ -127,6 +125,8 @@ public class LocationUnitSpawner : MonoBehaviour
             Debug.Log("Adding ");
             GameObject go = null;
 
+
+
             if (token.Type == MarkerType.WITCH)
             {
 
@@ -135,9 +135,10 @@ public class LocationUnitSpawner : MonoBehaviour
             }
             else if (token.Type == MarkerType.SPIRIT)
             {
-                Debug.Log(JsonConvert.SerializeObject(token));
+                var spiritToken = (token as SpiritToken);
+                ShowSummonMsg(spiritToken);
                 go = m_SpiritPool.Spawn().gameObject;
-                go.name = "[spirit] " + (token as SpiritToken).spiritId + " [" + token.instance + "]";
+                go.name = "[spirit] " + spiritToken.spiritId + " [" + token.instance + "]";
             }
             else if (token.Type == MarkerType.ENERGY)
             {
@@ -304,23 +305,32 @@ public class LocationUnitSpawner : MonoBehaviour
         }
     }
 
-    public static void RemoveMarker(string instance)
+    public static void RemoveMarker(SpellCastEventData data)
     {
-        Instance.RemoveMarker(instance);
+        Instance.RemoveMarker(data.target.id);
+        Instance.ShowDeathNotification(data);
     }
 
-    public static async void ShowDeathNotification(SpellCastEventData data)
+    private void ShowDeathNotification(SpellCastEventData data)
     {
-        await Task.Delay(1500);
-        if (Instance != null && LocationIslandController.isInBattle)
+        StartCoroutine(ShowDeathMsg(data));
+    }
+
+    IEnumerator ShowDeathMsg(SpellCastEventData data)
+    {
+        Debug.Log("Showing Death Notification");
+
+        yield return new WaitForSeconds(1.5f);
+        if (LocationIslandController.isInBattle)
         {
+            Debug.Log("Showing Death Notification1");
             string casterType, casterName, targetType, targetName;
             casterType = data.caster.type;
             casterName = data.caster.type == "witch" ? data.caster.name : DownloadedAssets.spiritDict[data.caster.name].Name;
             targetType = data.target.type;
             targetName = data.target.type == "witch" ? data.target.name : DownloadedAssets.spiritDict[data.target.name].Name;
-            string msg = String.Format("The {0} {1} has been <color=red>defeated</color> by {2} {4}.", casterType, casterName, targetType, targetName);
-
+            string msg = String.Format("The {0} {1} has been <color=red>defeated</color> by {2} {3}.", targetType, targetName, casterType, casterName);
+            Debug.Log(msg);
             PlayerNotificationManager.Instance.ShowNotification(msg);
         }
     }
