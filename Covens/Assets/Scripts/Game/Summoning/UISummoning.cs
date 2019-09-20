@@ -174,6 +174,10 @@ public class UISummoning : MonoBehaviour
             foreach(KnownSpirits item in PlayerDataManager.playerData.knownSpirits)
             {
                 SpiritData data = DownloadedAssets.GetSpirit(item.spirit);
+
+                if (LocationIslandController.isInBattle && data.type == "forbidden")
+                    continue;
+
                 if (data.tier == i + 1)
                     m_SpiritsByTier[i].Add(data);
             }
