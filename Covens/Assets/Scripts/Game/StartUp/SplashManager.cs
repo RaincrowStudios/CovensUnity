@@ -97,12 +97,12 @@ public class SplashManager : MonoBehaviour
 
         LeanTween.cancel(m_SliderTweenId);
         m_SliderTweenId = LeanTween.value(slider.value, progress, 0.2f)
-                .setOnUpdate((float v) =>
-                {
-                    if (progressBar)
-                        progressBar.fillAmount = v;
-                })
-                .uniqueId;
+            .setOnUpdate((float v) =>
+            {
+                if (progressBar)
+                    progressBar.fillAmount = v;
+            })
+            .uniqueId;
     }
 
     public void OutDatedBuild()
@@ -111,6 +111,8 @@ public class SplashManager : MonoBehaviour
             appleIcon.SetActive(true);
         else if (Application.platform == RuntimePlatform.Android)
             playstoreIcon.SetActive(true);
+
+        OutdatedBuild.SetActive(true);
     }
 
     public void SetDownloadProgress(string fileName, int fileIndex, int totalFiles, float fileSize, float progress)
