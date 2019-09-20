@@ -1,3 +1,4 @@
+using System.Linq;
 using System;
 using Raincrow.Maps;
 using UnityEngine;
@@ -116,69 +117,71 @@ public class LocationPlayerAction : MonoBehaviour
         LocationActionButton btn;
         UpdateEnergy(0);
         OnMapEnergyChange.OnPlayerEnergyChange += UpdateEnergy;
-
-        btn = Instantiate(Instance.m_ActionBtn, Instance.transform) as LocationActionButton;
-        btn.Setup(MOVE_TIMER, m_flySprite, () =>
+        if (m_BtnArr[0] == null)
         {
-            LocationUnitSpawner.MoveWitch(selectedPosition.island, selectedPosition.position);
-        });
-        m_BtnArr[1] = btn;
-
-        btn = Instantiate(Instance.m_ActionBtn, Instance.transform) as LocationActionButton;
-        btn.Setup(SUMMON_TIMER, m_SummonSprite, () =>
-        {
-            UISummoning.Open(selectedPosition.position, selectedPosition.island, null, (s) =>
+            btn = Instantiate(Instance.m_ActionBtn, Instance.transform) as LocationActionButton;
+            btn.Setup(MOVE_TIMER, m_flySprite, () =>
             {
-                UISummoning.Close();
-                if (s != null)
+                LocationUnitSpawner.MoveWitch(selectedPosition.island, selectedPosition.position);
+            });
+            m_BtnArr[1] = btn;
+
+            btn = Instantiate(Instance.m_ActionBtn, Instance.transform) as LocationActionButton;
+            btn.Setup(SUMMON_TIMER, m_SummonSprite, () =>
+            {
+                UISummoning.Open(selectedPosition.position, selectedPosition.island, null, (s) =>
                 {
-                    UIGlobalPopup.ShowError(null, "Summoning Failed");
-                }
-            }, null);
-        });
-        m_BtnArr[2] = btn;
+                    UISummoning.Close();
+                    if (s != null)
+                    {
+                        UIGlobalPopup.ShowError(null, "Summoning Failed");
+                    }
+                }, null);
+            });
+            m_BtnArr[2] = btn;
 
-        btn = Instantiate(Instance.m_ActionBtn, Instance.transform) as LocationActionButton;
-        btn.Setup(PlayerDataManager.playerData.level + 20, m_CloakSprite, () =>
-       {
-
-           var data = new
+            btn = Instantiate(Instance.m_ActionBtn, Instance.transform) as LocationActionButton;
+            btn.Setup(PlayerDataManager.playerData.level + 20, m_CloakSprite, () =>
            {
-               spell = "spell_astral"
-           };
-           APIManager.Instance.Post(
-              "character/cast/" + playerWitchToken.instance,
-              JsonConvert.SerializeObject(data), (s, r) =>
-              {
-                  if (r == 200)
+
+               var data = new
+               {
+                   spell = "spell_astral"
+               };
+               APIManager.Instance.Post(
+                  "character/cast/" + playerWitchToken.instance,
+                  JsonConvert.SerializeObject(data), (s, r) =>
                   {
-                      RenderSettings.fog = true;
-                      RenderSettings.fogMode = FogMode.Linear;
-                      RenderSettings.fogColor = new Color(0.14f, 0.14f, 0.14f);
-                      CenterOnPlayer();
-                      UIQuickCast.EnableQuickcastButtons(false);
-                      if (UIPlayerInfo.IsShowing)
-                          UIPlayerInfo.SetVisibility(false);
-                      if (UISpiritInfo.IsShowing)
-                          UISpiritInfo.SetVisibility(false);
-                      LeanTween.value(1, 0, .5f).setOnUpdate((float v) => CloakingFX(v));
-                      isCloaked = true;
-                      SoundManagerOneShot.Instance.FadeOutBGTrack();
-                      SoundManagerOneShot.Instance.PlayCloakingSFX(true);
-                      foreach (var item in LocationUnitSpawner.Markers)
+                      if (r == 200)
                       {
-                          item.Value.ScaleNamePlate(false, .5f);
+                          RenderSettings.fog = true;
+                          RenderSettings.fogMode = FogMode.Linear;
+                          RenderSettings.fogColor = new Color(0.14f, 0.14f, 0.14f);
+                          CenterOnPlayer();
+                          UIQuickCast.EnableQuickcastButtons(false);
+                          if (UIPlayerInfo.IsShowing)
+                              UIPlayerInfo.SetVisibility(false);
+                          if (UISpiritInfo.IsShowing)
+                              UISpiritInfo.SetVisibility(false);
+                          LeanTween.value(1, 0, .5f).setOnUpdate((float v) => CloakingFX(v));
+                          isCloaked = true;
+                          SoundManagerOneShot.Instance.FadeOutBGTrack();
+                          SoundManagerOneShot.Instance.PlayCloakingSFX(true);
+                          foreach (var item in LocationUnitSpawner.Markers)
+                          {
+                              item.Value.ScaleNamePlate(false, .5f);
                           //   item.Value.EnergyRingFade(1, .5f);
                       }
-                  }
-                  else
-                  {
-                      Debug.LogError("Cloaking failed");
-                      UIGlobalPopup.ShowError(() => { }, "Cloaking failed. Error Code: " + s);
-                  }
-              });
-       }, true);
-        m_BtnArr[0] = btn;
+                      }
+                      else
+                      {
+                          Debug.LogError("Cloaking failed");
+                          UIGlobalPopup.ShowError(() => { }, "Cloaking failed. Error Code: " + s);
+                      }
+                  });
+           }, true);
+            m_BtnArr[0] = btn;
+        }
     }
 
     private void CloakingFX(float v)

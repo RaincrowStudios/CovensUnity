@@ -34,11 +34,13 @@ public class LocationUnitSpawner : MonoBehaviour
     [SerializeField] private Transform m_SelfSelectionRing;
     [SerializeField] private Transform m_FlightFX;
     [SerializeField] private Transform m_CloakingFX;
+    [SerializeField] private Transform m_DeathFX;
 
     private static SimplePool<Transform> m_WitchPool;
     private static SimplePool<Transform> m_SpiritPool;
     private static SimplePool<Transform> m_EnergyPool;
     private static SimplePool<Transform> m_CloakingPool;
+    private static SimplePool<Transform> m_DeathFXPool;
     private static Dictionary<string, GameObject> m_cloaks = new Dictionary<string, GameObject>();
     public static string currentSelection { get; private set; }
     public static Dictionary<string, IMarker> Markers = new Dictionary<string, IMarker>();
@@ -53,6 +55,7 @@ public class LocationUnitSpawner : MonoBehaviour
         m_SpiritPool = new SimplePool<Transform>(spiritIcon.transform, 2);
         // m_EnergyPool = new SimplePool<Transform>(witchIcon.transform, 1);
         m_CloakingPool = new SimplePool<Transform>(m_CloakingFX, 2);
+        m_DeathFXPool = new SimplePool<Transform>(m_DeathFX, 2);
     }
 
     public static void EnableCloaking(string instance)
@@ -294,12 +297,16 @@ public class LocationUnitSpawner : MonoBehaviour
         if (Markers.ContainsKey(instance))
         {
             var marker = Markers[instance];
+
+            var go = m_DeathFXPool.Spawn().gameObject;
+            go.transform.SetParent(Markers[instance].GameObject.transform.GetChild(0));
+
             marker.SetAlpha(0, 1);
             marker.Interactable = false;
             if (remove)
                 Markers.Remove(instance);
             await Task.Delay(2000);
-            Debug.Log("Despawning");
+            m_DeathFXPool.Despawn(go.transform);
             marker.OnDespawn();
             if (marker.Type == MarkerType.WITCH) m_WitchPool.Despawn(marker.GameObject.transform);
             else if (marker.Type == MarkerType.SPIRIT) m_SpiritPool.Despawn(marker.GameObject.transform);
@@ -362,6 +369,8 @@ public class LocationUnitSpawner : MonoBehaviour
         Debug.Log(LocationIslandController.isInBattle);
         m_WitchPool.DespawnAll();
         m_SpiritPool.DespawnAll();
+        m_CloakingPool.DespawnAll();
+        m_DeathFXPool.DespawnAll();
         // m_EnergyPool.DespawnAll();
         Markers.Clear();
     }

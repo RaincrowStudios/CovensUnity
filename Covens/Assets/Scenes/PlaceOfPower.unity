@@ -246,7 +246,7 @@ Transform:
 --- !u!199 &71336793
 ParticleSystemRenderer:
   serializedVersion: 6
-  m_ObjectHideFlags: 2
+  m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
@@ -5992,7 +5992,7 @@ Transform:
 --- !u!199 &382805885
 ParticleSystemRenderer:
   serializedVersion: 6
-  m_ObjectHideFlags: 2
+  m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
@@ -11646,7 +11646,7 @@ Transform:
 --- !u!199 &822766473
 ParticleSystemRenderer:
   serializedVersion: 6
-  m_ObjectHideFlags: 2
+  m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
@@ -16991,7 +16991,7 @@ Transform:
 --- !u!199 &1055838017
 ParticleSystemRenderer:
   serializedVersion: 6
-  m_ObjectHideFlags: 2
+  m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
@@ -22163,7 +22163,7 @@ Transform:
 --- !u!199 &1216975919
 ParticleSystemRenderer:
   serializedVersion: 6
-  m_ObjectHideFlags: 2
+  m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
@@ -27313,7 +27313,7 @@ Transform:
 --- !u!199 &1485493920
 ParticleSystemRenderer:
   serializedVersion: 6
-  m_ObjectHideFlags: 2
+  m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
@@ -32065,7 +32065,7 @@ Transform:
 --- !u!199 &1501217023
 ParticleSystemRenderer:
   serializedVersion: 6
-  m_ObjectHideFlags: 2
+  m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
@@ -36850,6 +36850,8 @@ MonoBehaviour:
   m_FlightFX: {fileID: 1218424623}
   m_CloakingFX: {fileID: 4445222335403471906, guid: a30c548edbe6efa4fa7369b0b595257f,
     type: 3}
+  m_DeathFX: {fileID: 2727480967845765367, guid: 71cbdbaf82f675f45a3812f1aebdf522,
+    type: 3}
 --- !u!1 &1539544219
 GameObject:
   m_ObjectHideFlags: 0
@@ -36885,7 +36887,7 @@ Transform:
 --- !u!199 &1539544221
 ParticleSystemRenderer:
   serializedVersion: 6
-  m_ObjectHideFlags: 2
+  m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
