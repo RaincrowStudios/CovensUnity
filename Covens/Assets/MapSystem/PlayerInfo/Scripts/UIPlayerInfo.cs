@@ -89,8 +89,19 @@ public class UIPlayerInfo : UIInfoPanel
         m_CovenButton.onClick.AddListener(OnClickCoven);
 
         base.Awake();
-    }
 
+        DownloadedAssets.OnWillUnloadAssets += OnWillUnloadAssets;
+    }
+    
+    private void OnWillUnloadAssets()
+    {
+        if (IsShowing)
+            return;
+
+        DownloadedAssets.OnWillUnloadAssets -= OnWillUnloadAssets;
+        LeanTween.cancel(m_TweenId);
+        SceneManager.UnloadScene(SceneManager.Scene.PLAYER_SELECT, null, null);
+    }
 
     public static void SetVisibility(bool isVisible)
     {

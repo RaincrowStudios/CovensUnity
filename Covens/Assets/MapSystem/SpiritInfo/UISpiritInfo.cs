@@ -94,6 +94,17 @@ public class UISpiritInfo : UIInfoPanel
 
         m_CloseButton.onClick.AddListener(OnClickClose);
         m_InfoButton.onClick.AddListener(OnClickInfo);
+        DownloadedAssets.OnWillUnloadAssets += OnWillUnloadAssets;
+    }
+
+    private void OnWillUnloadAssets()
+    {
+        if (IsShowing)
+            return;
+
+        DownloadedAssets.OnWillUnloadAssets -= OnWillUnloadAssets;
+        LeanTween.cancel(m_TweenId);
+        SceneManager.UnloadScene(SceneManager.Scene.SPIRIT_SELECT, null, null);
     }
 
     private void _Show(IMarker spirit, Token token, System.Action onClose)

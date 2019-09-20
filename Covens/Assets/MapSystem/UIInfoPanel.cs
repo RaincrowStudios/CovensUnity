@@ -27,7 +27,7 @@ public abstract class UIInfoPanel : MonoBehaviour
         }
     }
 
-    private int m_TweenId;
+    protected int m_TweenId;
 
     public bool IsShowing { get; private set; }
 
@@ -39,19 +39,8 @@ public abstract class UIInfoPanel : MonoBehaviour
         m_CanvasGroup.alpha = 0;
         m_InputRaycaster.enabled = false;
         m_Canvas.enabled = false;
-
-        DownloadedAssets.OnWillUnloadAssets += OnWillUnloadAssets;
     }
-
-    private void OnWillUnloadAssets()
-    {
-        if (IsShowing)
-            return;
-
-        DownloadedAssets.OnWillUnloadAssets -= OnWillUnloadAssets;
-        Destroy(this.gameObject);
-    }
-
+    
     protected virtual void Show()
     {
         IsShowing = true;

@@ -283,6 +283,10 @@ namespace Raincrow.Test
                 {
                     BlessingManager.CheckDailyBlessing();
                 }
+                if (GUILayout.Button("trigger low memory"))
+                {
+                    DownloadedAssets.Instance.OnApplicationLowMemory();
+                }
                 EditorGUI.EndDisabledGroup();
             }
 
