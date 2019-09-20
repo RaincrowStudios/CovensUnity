@@ -6,6 +6,8 @@ using Raincrow.Maps;
 
 public static class SummoningManager
 {
+    public static event System.Action<SpiritMarker> OnSpiritSummoned;
+
     public static bool CanSummon(string spirit)
     {
         SpiritData data = DownloadedAssets.GetSpirit(spirit);
@@ -40,11 +42,14 @@ public static class SummoningManager
                 int summonCost = PlayerDataManager.SummoningCosts[tier - 1];
                 int xpGained = tier * 25;
 
-                OnCharacterDeath.CheckSummonDeath(spirit, summonCost);
-                PlayerDataManager.playerData.AddEnergy(-summonCost);
-                PlayerDataManager.playerData.AddExp(xpGained);
+                if (summonCost > PlayerDataManager.playerData.energy)
+                    OnCharacterDeath.OnSummonDeath?.Invoke(spirit);
 
+                OnMapEnergyChange.ForceEvent(PlayerManager.marker, PlayerDataManager.playerData.energy - summonCost);
+
+                PlayerDataManager.playerData.AddExp(xpGained);
                 callback(marker, null);
+                OnSpiritSummoned?.Invoke(marker);
             }
             else
             {
@@ -72,8 +77,7 @@ public static class SummoningManager
                 int tier = spiritData.tier;
                 int summonCost = PlayerDataManager.SummoningCosts[tier - 1] * 3;
 
-                OnCharacterDeath.CheckSummonDeath(spirit, summonCost);
-                PlayerDataManager.playerData.AddEnergy(-summonCost);
+                OnMapEnergyChange.ForceEvent(PlayerManager.marker, PlayerDataManager.playerData.energy - summonCost);
 
                 callback(null);
             }

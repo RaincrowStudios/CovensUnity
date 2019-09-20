@@ -126,6 +126,7 @@ public class SplashManager : MonoBehaviour
             appleIcon.SetActive(true);
         else if (Application.platform == RuntimePlatform.Android)
             playstoreIcon.SetActive(true);
+        OutdatedBuild.SetActive(true);
     }
 
     public void SetDownloadProgress(string fileName, int fileIndex, int totalFiles, float fileSize, float progress)
