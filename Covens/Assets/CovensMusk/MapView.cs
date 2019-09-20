@@ -176,6 +176,27 @@ public class MapView : MonoBehaviour
             m_DiscoveredSpirits.Add(spirit);
         }
     }
+    
+    private void _OnSummonDeath(string spirit)
+    {
+        OnCharacterDeath.ShowSummonDeath();
+    }
+
+    private void _OnSpiritDeath(string spirit)
+    {
+        string spiritName = LocalizeLookUp.GetSpiritName(spirit);
+        OnCharacterDeath.ShowSpiritDeath(spiritName);
+    }
+
+    private void _OnWitchDeath(string witch)
+    {
+        OnCharacterDeath.ShowWitchDeath(witch);
+    }
+
+    private void _OnSpellSuicide(string spell)
+    {
+        OnCharacterDeath.ShowSpellCastSuicide();
+    }
 
 
     private void OnStartFlight()
@@ -203,6 +224,11 @@ public class MapView : MonoBehaviour
 
         MapsAPI.Instance.OnCameraUpdate -= OnMapUpdate;
         PlayerManager.onStartFlight -= OnStartFlight;
+
+        OnCharacterDeath.OnCastSuicide -= _OnSpellSuicide;
+        OnCharacterDeath.OnSpiritDeath -= _OnSpiritDeath;
+        OnCharacterDeath.OnWitchDeath -= _OnWitchDeath;
+        OnCharacterDeath.OnSummonDeath -= _OnSummonDeath;
     }
 
     private void OnLeavePoP()
@@ -223,5 +249,10 @@ public class MapView : MonoBehaviour
 
         MapsAPI.Instance.OnCameraUpdate += OnMapUpdate;
         PlayerManager.onStartFlight += OnStartFlight;
+
+        OnCharacterDeath.OnCastSuicide += _OnSpellSuicide;
+        OnCharacterDeath.OnSpiritDeath += _OnSpiritDeath;
+        OnCharacterDeath.OnWitchDeath += _OnWitchDeath;
+        OnCharacterDeath.OnSummonDeath += _OnSummonDeath;
     }
 }

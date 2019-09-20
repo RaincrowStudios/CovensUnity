@@ -34,11 +34,12 @@ public static class OnMapEnergyChange
 
         if (instance == player.instance) //update the players energy
         {
-            if (player.lastEnergyUpdate > timestamp)
+            marker = PlayerManager.marker;
+
+            if (marker.Token.lastEnergyUpdate > timestamp)
                 return;
 
-            marker = PlayerManager.marker;
-            player.lastEnergyUpdate = timestamp;
+            marker.Token.lastEnergyUpdate = timestamp;
             energy = player.energy = Mathf.Clamp(newEnergy, 0, player.maxEnergy);
             string previousState = player.state;
             player.state = newState;
@@ -75,6 +76,11 @@ public static class OnMapEnergyChange
         OnEnergyChange?.Invoke(instance, energy);
         if (marker != null)
             OnMarkerEnergyChange?.Invoke(marker, energy);
+    }
+
+    public static void ForceEvent(IMarker marker, int newEnergy)
+    {
+        ForceEvent(marker, newEnergy, marker.Token.lastEnergyUpdate + Time.deltaTime);
     }
 
     public static void ForceEvent(IMarker marker, int newEnergy, double timestamp)

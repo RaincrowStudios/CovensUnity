@@ -56,6 +56,8 @@ namespace Raincrow.GameEventResponses
 
         public string EventName => "cast.spell";
         public static event System.Action<string, SpellData, Result> OnPlayerTargeted;
+        public static event System.Action<SpellCastEventData> OnPlayerCast;
+        public static event System.Action<SpellCastEventData> OnWillProcessSpell;
 
         public static event System.Action<string, string, SpellData, Result> OnSpellCast;
         public static System.Action<string, StatusEffect> OnApplyStatusEffect;
@@ -72,7 +74,8 @@ namespace Raincrow.GameEventResponses
 
         public static void HandleEvent(SpellCastEventData data, System.Action onTrailStart = null, System.Action onTrailEnd = null)
         {
-            OnCharacterDeath.CheckSpellDeath(data);
+            //OnCharacterDeath.CheckSpellDeath(data);
+            OnWillProcessSpell?.Invoke(data);
 
             if (LocationIslandController.isInBattle)
             {
@@ -142,11 +145,22 @@ namespace Raincrow.GameEventResponses
                     onTrailStart?.Invoke();
 
                     //trigger a map_energy_change event for the caster
-                    LeanTween.value(0, 0, 0.25f).setOnComplete(() => OnMapEnergyChange.ForceEvent(caster, casterNewEnergy, data.timestamp));
+                    LeanTween.value(0, 0, 0.25f).setOnComplete(() =>
+                    {
+                        if (playerIsCaster && spell.cost >= PlayerDataManager.playerData.energy)
+                            OnCharacterDeath.OnCastSuicide?.Invoke(spell.id);
+
+                        OnMapEnergyChange.ForceEvent(caster, casterNewEnergy, data.timestamp);
+
+                        if (playerIsCaster)
+                            OnPlayerCast?.Invoke(data);
+                    });
 
                     //spell text for the energy lost casting the spell
-                    if (playerIsCaster && caster != null)
+                    if (playerIsCaster)
+                    {
                         SpellcastingFX.SpawnEnergyChange(caster, -spell.cost, 1);
+                    }
 
                     //localy remove the immunity so you may attack again
                     if (playerIsTarget)
@@ -154,8 +168,6 @@ namespace Raincrow.GameEventResponses
                         MarkerSpawner.RemoveImmunity(data.caster.id, data.target.id);
                         if (caster != null && caster is WitchMarker)
                             (caster as WitchMarker).RemoveImmunityFX();
-
-                        OnPlayerTargeted?.Invoke(data.caster.id, spell, data.result);
                     }
                 },
                 onComplete: () =>
@@ -163,7 +175,25 @@ namespace Raincrow.GameEventResponses
                     onTrailEnd?.Invoke();
 
                     //trigger a map_energy_change event for the target
-                    LeanTween.value(0, 0, 0.25f).setOnComplete(() => OnMapEnergyChange.ForceEvent(target, targetNewEnergy, data.timestamp));
+                    LeanTween.value(0, 0, 0.25f).setOnComplete(() =>
+                    {
+                        if (playerIsTarget && targetNewEnergy == 0)
+                        {
+                            if (playerIsCaster)
+                            {
+                                OnCharacterDeath.OnCastSuicide?.Invoke(spell.id);
+                            }
+                            else
+                            {
+                                if (data.caster.Type == MarkerManager.MarkerType.SPIRIT)
+                                    OnCharacterDeath.OnSpiritDeath?.Invoke(data.caster.name);
+                                else if (data.caster.Type == MarkerManager.MarkerType.WITCH)
+                                    OnCharacterDeath.OnWitchDeath?.Invoke(data.caster.name);
+                            }
+                        }
+
+                        OnMapEnergyChange.ForceEvent(target, targetNewEnergy, data.timestamp);
+                    });
 
                     //add status effects to PlayerDataManager.playerData
                     if (data.result.statusEffect != null && string.IsNullOrEmpty(data.result.statusEffect.spell) == false)
@@ -237,6 +267,8 @@ namespace Raincrow.GameEventResponses
                     //show notification
                     if (playerIsTarget && !playerIsCaster)
                     {
+                        OnPlayerTargeted?.Invoke(data.caster.id, spell, data.result);
+
                         if (caster != null && target != null)
                         {
                             if (caster is WitchMarker)

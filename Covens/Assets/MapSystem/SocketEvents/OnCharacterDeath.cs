@@ -5,6 +5,11 @@ using Raincrow.Maps;
 
 public static class OnCharacterDeath
 {
+    public static System.Action<string> OnSummonDeath;
+    public static System.Action<string> OnSpiritDeath;
+    public static System.Action<string> OnWitchDeath;
+    public static System.Action<string> OnCastSuicide;
+
     public static void HandleEvent(string name, string type, string reason)
     {
         UnityEngine.UI.Text txt = PlayerManagerUI.Instance.deathDesc;
@@ -45,41 +50,23 @@ public static class OnCharacterDeath
         PlayerManagerUI.Instance.ShowDeathReason();
     }
 
-    public static void CheckSummonDeath(string spirit, int cost)
+    public static void ShowSpellCastSuicide()
     {
-        if (PlayerDataManager.playerData.energy <= cost)
-            HandleEvent(PlayerDataManager.playerData.name, "witch", "summon");
+        HandleEvent(PlayerDataManager.playerData.name, "witch", "spell");
     }
 
-    public static void CheckSpellDeath(SpellCastHandler.SpellCastEventData data)
+    public static void ShowSpiritDeath(string spiritName)
     {
-        bool isCaster = data.caster.name == PlayerDataManager.playerData.name;
-        bool isTarget = data.target.name == PlayerDataManager.playerData.name;
+        HandleEvent(spiritName, "spirit", "spell");
+    }
 
-        bool died = (isCaster && data.caster.energy == 0) || (isTarget && data.target.energy == 0);
+    public static void ShowWitchDeath(string witchName)
+    {
+        HandleEvent(witchName, "witch", "spell");
+    }
 
-        if (!died)
-            return;
-
-        int previousEnergy = PlayerDataManager.playerData.energy;
-        SpellData spell = DownloadedAssets.GetSpell(data.spell);
-
-        if (isCaster && spell.cost > previousEnergy)
-        {
-            HandleEvent(PlayerDataManager.playerData.name, "witch", "spell");
-            return;
-        }
-
-        if (isTarget)
-        {
-            if (data.caster.Type == MarkerManager.MarkerType.SPIRIT)
-            {
-                HandleEvent(data.caster.name, "spirit", "spell");
-            }
-            else  if (data.caster.Type == MarkerManager.MarkerType.WITCH)
-            {
-                HandleEvent(data.caster.name, "witch", "spell");
-            }
-        }
+    public static void ShowSummonDeath()
+    {
+        HandleEvent(PlayerDataManager.playerData.name, "witch", "summon");
     }
 }

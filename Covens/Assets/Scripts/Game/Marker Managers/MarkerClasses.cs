@@ -562,10 +562,7 @@ public class PlayerData : WitchMarkerData
             return m_Inventory;
         }
     }
-
-    [JsonIgnore]
-    public double lastEnergyUpdate;
-
+    
     [JsonIgnore]
     public List<SpellData> Spells => m_AllSpells;
 
