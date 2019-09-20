@@ -375,7 +375,7 @@ public class UISummoning : MonoBehaviour
 
     private void OnClickInfo()
     {
-        string spiritId = PlayerDataManager.playerData.knownSpirits[m_CurrentIndex].spirit;
+        string spiritId = m_SpiritsByTier[m_CurrentTier - 1][m_CurrentIndex].id;
         SpiritData spirit = DownloadedAssets.GetSpirit(spiritId);
         m_InfoPopup.Show(spirit);
     }
