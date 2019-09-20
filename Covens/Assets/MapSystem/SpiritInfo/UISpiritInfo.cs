@@ -248,7 +248,7 @@ public class UISpiritInfo : UIInfoPanel
 
         if (string.IsNullOrEmpty(SpiritMarkerDetails.owner))
         {
-
+            m_Desc.text = LocalizeLookUp.GetText("cast_spirit_knowledge");// "Defeating this spirit will give you the power to summon it.";
             if (m_SpiritData.tier == 1)
                 m_Tier.text = LocalizeLookUp.GetText("ftf_wild_spirit") + " (" + LocalizeLookUp.GetText("cast_spirit_lesser") + ")";//"Wild Spirit (Lesser)";
             else if (m_SpiritData.tier == 2)
@@ -263,10 +263,11 @@ public class UISpiritInfo : UIInfoPanel
                 if (item.spirit.ToString() == m_SpiritData.id)
                 {
                     m_Tier.text = m_Tier.text + "\n<color=#616161>" + LocalizeLookUp.GetText("spirit_known");
+                    return;
                 }
             }
 
-            m_Desc.text = LocalizeLookUp.GetText("cast_spirit_knowledge");// "Defeating this spirit will give you the power to summon it.";
+
         }
         else
         {
