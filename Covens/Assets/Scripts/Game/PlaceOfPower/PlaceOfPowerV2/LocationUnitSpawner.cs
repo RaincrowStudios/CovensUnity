@@ -8,6 +8,7 @@ using static MarkerManager;
 using Newtonsoft.Json;
 using static Raincrow.GameEventResponses.MoveTokenHandlerPOP;
 using UnityEngine.UI;
+using static Raincrow.GameEventResponses.SpellCastHandler;
 
 public class LocationUnitSpawner : MonoBehaviour
 {
@@ -107,6 +108,18 @@ public class LocationUnitSpawner : MonoBehaviour
         }
     }
 
+    private void CheckSpiritSummoned(Token token)
+    {
+        if (token.type == "spirit")
+        {
+            var spiritToken = (token as SpiritToken);
+            if (spiritToken.owner != "")
+            {
+                PlayerNotificationManager.Instance.ShowNotification($"{spiritToken.owner} has summoned {DownloadedAssets.spiritDict[spiritToken.spiritId].Name}.");
+            }
+        }
+    }
+
     public void AddMarker(Token token)
     {
         if (!Markers.ContainsKey(token.instance))
@@ -155,6 +168,8 @@ public class LocationUnitSpawner : MonoBehaviour
                 m_FlightFX.localScale = Vector3.one * 1.2f;
                 SetSelfDegreeRing();
             }
+            //fix rotation
+            LocationIslandController.UpdateMarker(marker);
         }
         else
         {
@@ -286,6 +301,27 @@ public class LocationUnitSpawner : MonoBehaviour
             if (marker.Type == MarkerType.WITCH) m_WitchPool.Despawn(marker.GameObject.transform);
             else if (marker.Type == MarkerType.SPIRIT) m_SpiritPool.Despawn(marker.GameObject.transform);
             else throw new NotImplementedException("Unhandled Marker Type: " + marker.Type);
+        }
+    }
+
+    public static void RemoveMarker(string instance)
+    {
+        Instance.RemoveMarker(instance);
+    }
+
+    public static async void ShowDeathNotification(SpellCastEventData data)
+    {
+        await Task.Delay(1500);
+        if (Instance != null && LocationIslandController.isInBattle)
+        {
+            string casterType, casterName, targetType, targetName;
+            casterType = data.caster.type;
+            casterName = data.caster.type == "witch" ? data.caster.name : DownloadedAssets.spiritDict[data.caster.name].Name;
+            targetType = data.target.type;
+            targetName = data.target.type == "witch" ? data.target.name : DownloadedAssets.spiritDict[data.target.name].Name;
+            string msg = String.Format("The {0} {1} has been <color=red>defeated</color> by {2} {4}.", casterType, casterName, targetType, targetName);
+
+            PlayerNotificationManager.Instance.ShowNotification(msg);
         }
     }
 

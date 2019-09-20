@@ -79,21 +79,23 @@ namespace Raincrow.GameEventResponses
                 {
                     if (data.target.Type == MarkerManager.MarkerType.SPIRIT && data.target.id == LocationUnitSpawner.guardianInstance)
                     {
-                        int island = LocationUnitSpawner.GetIsland(data.caster.id);
-                        Debug.Log(island);
-                        if (LocationIslandController.locationIslands.ContainsKey(island))
-                        {
-                            if (!LocationIslandController.locationIslands[island].IsConnected)
-                            {
-                                LocationIslandController.locationIslands[island].SetSpiritConnection(true);
-                            }
-                        }
+                        LocationIslandController.ActivateSpiritConnection(data.caster.id);
                     }
 
                     if (PlayerDataManager.playerData.instance != data.caster.id)
                     {
-                        LocationUnitSpawner.EnableCloaking(data.target.id);
+                        if (data.spell == "spell_astral")
+                        {
+                            LocationUnitSpawner.EnableCloaking(data.target.id);
+                        }
                     }
+
+                    if (data.target.energy == 0)
+                    {
+                        LocationUnitSpawner.RemoveMarker(data.target.id);
+                        LocationUnitSpawner.ShowDeathNotification(data);
+                    }
+
                 }
             }
 
