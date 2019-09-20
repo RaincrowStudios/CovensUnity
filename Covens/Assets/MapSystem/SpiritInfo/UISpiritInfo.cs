@@ -109,7 +109,7 @@ public class UISpiritInfo : UIInfoPanel
         DownloadedAssets.OnWillUnloadAssets -= OnWillUnloadAssets;
         LeanTween.cancel(m_TweenId);
         LeanTween.cancel(m_AlphaTweenId);
-        Destroy(this.gameObject);
+        SceneManager.UnloadScene(SceneManager.Scene.SPIRIT_SELECT, null, null);
     }
 
     private void _Show(IMarker spirit, Token token, System.Action onClose)
