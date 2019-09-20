@@ -96,6 +96,7 @@ public static class SpellcastingTextFeedback
             else if (response.spell == "attack")
             {
                 str = str.Insert(21, "{1} ");
+                str = str.Replace("{6}", "<color=red>{6}</color>");
             }
             else if (caster.Type == MarkerSpawner.MarkerType.SPIRIT)
             {
@@ -107,8 +108,9 @@ public static class SpellcastingTextFeedback
                 Debug.LogError($"empty feedback string for {response.spell}");
                 return null;
             }
+
             //Debug.Log("contains key");
-            //Debug.Log("str format: " + str);
+            Debug.Log("str format: " + str);
             string formatedString;
             try
             {
@@ -189,24 +191,24 @@ public static class SpellcastingTextFeedback
             {
                 if (response.result.damage > 0)
                 {
-                    return LocalizeLookUp.GetText("spell_caster_buff").Replace("{{Caster_Name}}", casterName).Replace("{{damage}}", damage.ToString());
+                    return LocalizeLookUp.GetText("spell_caster_buff").Replace("{{Caster_Name}}", casterName).Replace("{{damage}}", "<color=yellow>" + damage.ToString() + "</color>");
                     //$"{casterName} buffed you. You gained {damage} energy.";
                 }
                 else if (response.result.damage < 0)
                 {
-                    return LocalizeLookUp.GetText("spell_caster_attacked").Replace("{{Target_Name}}", targetName).Replace("{{damage}}", damage.ToString());
+                    return LocalizeLookUp.GetText("spell_caster_attacked").Replace("{{Target_Name}}", targetName).Replace("{{damage}}", "<color=red>" + damage.ToString() + "</color>");
                     //$"{targetName} attacked you. You lost {damage} energy.";
                 }
                 else return null;
             }
             else if (response.result.damage > 0)
             {
-                return LocalizeLookUp.GetText("spell_you_buffed").Replace("{{Target_Name}}", targetName).Replace("{{damage}}", damage.ToString());
+                return LocalizeLookUp.GetText("spell_you_buffed").Replace("{{Target_Name}}", targetName).Replace("{{damage}}", "<color=yellow>" + damage.ToString() + "</color>");
                 //$"You buffed {targetName}. {targetName} gained {damage} energy.";
             }
             else if (response.result.damage < 0)
             {
-                return LocalizeLookUp.GetText("spell_you_attacked").Replace("{{Target_Name}}", targetName).Replace("{{damage}}", damage.ToString());
+                return LocalizeLookUp.GetText("spell_you_attacked").Replace("{{Target_Name}}", targetName).Replace("{{damage}}", "<color=red>" + damage.ToString() + "</color>");
                 //$"You attacked {targetName}. {targetName} lost {damage} energy.";
             }
             else return null;
