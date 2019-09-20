@@ -426,6 +426,11 @@ public class MarkerSpawner : MarkerManager
         OnImmunityChange?.Invoke(caster, target, false);
     }
 
+    public static void ClearImmunities()
+    {
+        PlayerDataManager.playerData.immunities.Clear();
+    }
+
 
     public static Sprite GetSpiritTierSprite(string spiritType)
     {

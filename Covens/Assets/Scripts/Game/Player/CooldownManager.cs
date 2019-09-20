@@ -28,6 +28,7 @@ public static class CooldownManager
             this.startDate = Utilities.FromJavaTime(start);
             this.endDate = Utilities.FromJavaTime(end);
             this.total = (float)(endDate - startDate).TotalSeconds;
+            this.endDate = System.DateTime.UtcNow.AddSeconds(this.total);
 
             float _remainig = Remaining;
             if (_remainig > total)

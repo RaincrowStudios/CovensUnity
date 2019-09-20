@@ -45,7 +45,7 @@ namespace Raincrow.GameEventResponses
             {
                 //sohw effect on player marker
                 if (spell != null)
-                    SpawnFx(PlayerManager.marker, spell.school, (int)response.result.damage);
+                    SpawnFx(PlayerManager.marker, spell.school, (int)response.result.amount);
 
                 OnPlayerSpellTick?.Invoke(response);
             }
@@ -54,8 +54,8 @@ namespace Raincrow.GameEventResponses
                 //if target marker is on screen, show it
                 if (spell != null && target != null && target.inMapView && target.IsShowingAvatar)
                 {
-                    if (response.result.damage != 0)
-                        SpawnFx(target, spell.school, (int)response.result.damage);
+                    if (response.result.amount != 0)
+                        SpawnFx(target, spell.school, (int)response.result.amount);
                     else if (SpellCastHandler.m_NonDamagingSpells.Contains(spell.id))
                         SpellcastingFX.SpawnText(target, LocalizeLookUp.GetSpellName(spell.id), 1);
                 }

@@ -207,9 +207,9 @@ public class UIWaitingCastResult : UIInfoPanel
 
         //stats
         m_DamageDealt.text =
-            result.damage <= 0 ?
-            LocalizeLookUp.GetText("generic_damage") + " : " + Mathf.Abs(result.damage)/*$"Damage: {Mathf.Abs(result.total)}"*/ :
-            LocalizeLookUp.GetText("generic_healed") + " : " + result.damage;//$"Healed: {result.total}";
+            result.amount <= 0 ?
+            LocalizeLookUp.GetText("generic_damage") + " : " + Mathf.Abs(result.amount)/*$"Damage: {Mathf.Abs(result.total)}"*/ :
+            LocalizeLookUp.GetText("generic_healed") + " : " + result.amount;//$"Healed: {result.total}";
 
 
         m_XPGained.gameObject.SetActive(result.isSuccess);

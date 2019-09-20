@@ -139,10 +139,11 @@ public class DownloadManager : MonoBehaviour
 
         //setup the AppVersion
         int appVersion = 0;
-        if (Application.platform == RuntimePlatform.Android)
-            appVersion = assets.android;
-        else if (Application.platform == RuntimePlatform.IPhonePlayer)
-            appVersion = assets.apple;
+#if UNITY_ANDROID
+        appVersion = assets.android;
+#elif UNITY_IOS
+        appVersion = assets.apple;
+#endif
 
         DownloadedAssets.AppVersion = string.Concat(appVersion, ".", assets.version);
 
