@@ -531,7 +531,7 @@ public class FTFManager : MonoBehaviour
         data.target.name = target.Name;
         data.target.energy = token.energy + damage;
 
-        data.result.damage = damage;
+        data.result.amount = damage;
         data.result.isSuccess = damage != 0;
 
         data.timestamp = Time.unscaledDeltaTime;
@@ -564,7 +564,7 @@ public class FTFManager : MonoBehaviour
         data.caster.name = caster.Name;
         data.caster.energy = token.energy - damage;
 
-        data.result.damage = damage;
+        data.result.amount = damage;
         data.result.isSuccess = damage != 0;
 
         data.timestamp = Time.unscaledDeltaTime;

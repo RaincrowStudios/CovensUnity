@@ -31,7 +31,8 @@ namespace Raincrow.GameEventResponses
                 public bool move;
             }
 
-            public long damage;
+            [JsonProperty("damage")]
+            public long amount;
             public bool isCritical;
             public bool isSuccess;
 
@@ -104,7 +105,7 @@ namespace Raincrow.GameEventResponses
 
             IMarker caster = playerIsCaster ? PlayerManager.marker : MarkerManager.GetMarker(data.caster.id);
             IMarker target = playerIsTarget ? PlayerManager.marker : MarkerManager.GetMarker(data.target.id);
-            int energyChange = (int)data.result.damage;
+            int energyChange = (int)data.result.amount;
             int casterNewEnergy = data.caster.energy;
             int targetNewEnergy = data.target.energy;
 
@@ -256,9 +257,13 @@ namespace Raincrow.GameEventResponses
                         }
                         else
                         {
-                            MarkerSpawner.MarkerType casterType = data.caster.Type;
-                            MarkerSpawner.MarkerType targetType = data.target.Type;
-                            string msg = "todo: generic attack notification";
+                            //MarkerSpawner.MarkerType casterType = data.caster.Type;
+                            //MarkerSpawner.MarkerType targetType = data.target.Type;
+                            string msg = "";
+                            if (data.result.amount > 0)
+                                msg = LocalizeLookUp.GetText("spell_generic_gain").Replace("{amount}", data.result.amount.ToString("+#;-#"));
+                            else if (data.result.amount < 0)
+                                msg = LocalizeLookUp.GetText("spell_generic_lose").Replace("{amount}", data.result.amount.ToString("+#;-#"));
                             PlayerNotificationManager.Instance.ShowNotification(msg);
                         }
                     }
