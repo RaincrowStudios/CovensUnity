@@ -90,7 +90,7 @@ public static class SpellChanneling
                         CooldownManager.AddCooldown("spell_channeling", data.timestamp, data.cooldown);
 
                         //add the new status effect
-                        ConditionManager.ExpireStatusEffect(data.result.statusEffect, PlayerManager.marker);
+                        ConditionManager.ExpireStatusEffect("spell_channeling");
                         ConditionManager.AddCondition(data.result.statusEffect, Target);
                         
                         UIChanneling.Instance.ShowResults(data.result, null);
@@ -112,7 +112,7 @@ public static class SpellChanneling
             UIChanneling.Instance.OnTickChanneling(data);
             if (IsChanneled)
             {
-                DespawnFX(data.result.statusEffect, Target);
+                DespawnFX(data.result.statusEffect);
                 StopChanneling(null);
                 UIChanneling.Instance.ShowResults(data.result, null);
             }
@@ -159,11 +159,11 @@ public static class SpellChanneling
 
         if (channeled)
         {
-            DespawnFX(effect, marker);
+            DespawnFX(effect);
         }
     }
 
-    public static void DespawnFX(StatusEffect effect, IMarker caster)
+    public static void DespawnFX(StatusEffect effect)
     {
         IMarker marker = PlayerManager.marker;
 

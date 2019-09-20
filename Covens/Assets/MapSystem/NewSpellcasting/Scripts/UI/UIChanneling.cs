@@ -106,7 +106,7 @@ public class UIChanneling : UIInfoPanel
     {
         LeanTween.cancel(m_DelayTweenId);
 
-        m_DelayTweenId = LeanTween.value(0, 0, 0.1f).setOnComplete(() =>
+        m_DelayTweenId = LeanTween.value(0, 0, 1f).setOnComplete(() =>
         {
             m_ChannelingCanvasGroup.interactable = interactable;
             m_ResultsCanvasGroup.interactable = interactable;

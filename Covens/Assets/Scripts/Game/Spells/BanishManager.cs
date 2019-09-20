@@ -115,7 +115,7 @@ public class BanishManager : MonoBehaviour
         UIPlayerBound.Show(caster == null ? "" : caster.Name, effect.expiresOn);
     }
 
-    public static void Unbind(StatusEffect effect, IMarker caster)
+    public static void Unbind(StatusEffect effect)
     {
         if (isBind)
             return;
@@ -136,7 +136,7 @@ public class BanishManager : MonoBehaviour
         UIPlayerSilenced.Show(caster == null ? "" : caster.Name, effect.expiresOn);
     }
 
-    public static void Unsilence(StatusEffect effect, IMarker caster)
+    public static void Unsilence(StatusEffect effect)
     {
         if (isSilenced)
             return;
