@@ -335,8 +335,7 @@ public class UISummoning : MonoBehaviour
 
     private void OnClickSummon()
     {
-        int spiritIdx = m_CurrentIndex;
-        string spiritId = PlayerDataManager.playerData.knownSpirits[spiritIdx].spirit;
+        string spiritId = m_SpiritsByTier[m_CurrentTier-1][m_CurrentIndex].id;
 
         if (m_PoPPosition < 0 || m_PoPIsland < 0)
         {
