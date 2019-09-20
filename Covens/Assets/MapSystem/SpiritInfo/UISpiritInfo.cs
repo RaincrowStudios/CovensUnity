@@ -263,7 +263,7 @@ public class UISpiritInfo : UIInfoPanel
                 if (item.spirit.ToString() == m_SpiritData.id)
                 {
                     m_Tier.text = m_Tier.text + "\n<color=#616161>" + LocalizeLookUp.GetText("spirit_known");
-                    return;
+                    break;
                 }
             }
 
