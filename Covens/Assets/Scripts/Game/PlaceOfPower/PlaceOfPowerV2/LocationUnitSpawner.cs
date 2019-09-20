@@ -300,17 +300,26 @@ public class LocationUnitSpawner : MonoBehaviour
 
             var go = m_DeathFXPool.Spawn().gameObject;
             go.transform.SetParent(Markers[instance].GameObject.transform.GetChild(0));
+            go.transform.localPosition = Vector3.zero;
+            go.transform.localScale = Vector3.one;
 
             marker.SetAlpha(0, 1);
             marker.Interactable = false;
             if (remove)
                 Markers.Remove(instance);
             await Task.Delay(2000);
-            m_DeathFXPool.Despawn(go.transform);
-            marker.OnDespawn();
-            if (marker.Type == MarkerType.WITCH) m_WitchPool.Despawn(marker.GameObject.transform);
-            else if (marker.Type == MarkerType.SPIRIT) m_SpiritPool.Despawn(marker.GameObject.transform);
-            else throw new NotImplementedException("Unhandled Marker Type: " + marker.Type);
+            LeanTween.scale(go, Vector3.zero, .4f).setOnComplete(() =>
+          {
+              m_DeathFXPool.Despawn(go.transform);
+              marker.OnDespawn();
+              if (marker.Type == MarkerType.WITCH) m_WitchPool.Despawn(marker.GameObject.transform);
+              else if (marker.Type == MarkerType.SPIRIT) m_SpiritPool.Despawn(marker.GameObject.transform);
+              else throw new NotImplementedException("Unhandled Marker Type: " + marker.Type);
+          });
+
+
+            // await Task.Delay(1000);
+
         }
     }
 
