@@ -11,14 +11,17 @@ public static class ConditionManager
 
     private static Dictionary<string, System.Action<StatusEffect, IMarker>> m_StatusBehavior = new Dictionary<string, System.Action<StatusEffect, IMarker>>()
     {
-        { "bound",     BanishManager.Bind },
-        { "silenced",  BanishManager.Silence }
+        { "bound",      BanishManager.Bind },
+        { "silenced",   BanishManager.Silence },
+        { "channeling", SpellChanneling.SpawnFX },
+        //{ "channeled",  SpellChanneling.SpawnFX }
     };
 
-    private static Dictionary<string, System.Action<StatusEffect, IMarker>> m_StatusExpireBehavior = new Dictionary<string, System.Action<StatusEffect, IMarker>>()
+    private static Dictionary<string, System.Action<StatusEffect>> m_StatusExpireBehavior = new Dictionary<string, System.Action<StatusEffect>>()
     {
-        { "bound",     BanishManager.Unbind },
-        { "silenced",  BanishManager.Unsilence }
+        { "bound",          BanishManager.Unbind },
+        { "silenced",       BanishManager.Unsilence },
+        { "channeling",     SpellChanneling.DespawnFX }
     };
 
     private static Dictionary<string, double> m_StatusDict = new Dictionary<string, double>();
@@ -37,40 +40,55 @@ public static class ConditionManager
         }
         PlayerDataManager.playerData.effects.Add(statusEffect);
         OnPlayerApplyStatusEffect?.Invoke(statusEffect);
-        
-        TriggerStatusEffect(statusEffect, caster);
 
         string debug = statusEffect.spell + " added";
+
         if (statusEffect.modifiers.status != null)
         {
             debug += "\n\t";
             foreach (string status in statusEffect.modifiers.status)
-                debug += status;
+                debug += status + " ";
         }
+
+        if (statusEffect.modifiers.status != null)
+        {
+            debug += "\n\t";
+            foreach (string status in statusEffect.modifiers.status)
+            {
+                if (m_StatusBehavior.ContainsKey(status))
+                {
+                    debug += status + " triggered\n\t";
+                    m_StatusBehavior[status].Invoke(statusEffect, caster);
+                }
+            }
+        }
+
         Log(debug);
 
         //schedule expiration
-        statusEffect.ScheduleExpiration(() => ExpireStatusEffect(statusEffect, caster));
+        statusEffect.ScheduleExpiration(() => ExpireStatusEffect(statusEffect));
 
-        StatusEffectFX.SpawnFX(PlayerManager.marker, statusEffect);
+        //StatusEffectFX.SpawnFX(PlayerManager.marker, statusEffect);
     }
 
     public static void TriggerStatusEffect(StatusEffect effect, IMarker caster)
     {
-        if (effect.modifiers.status == null)
-            return;
+        
+    }
 
-        foreach (string status in effect.modifiers.status)
+    public static void ExpireStatusEffect(string spell)
+    {
+        foreach (StatusEffect item in PlayerDataManager.playerData.effects)
         {
-            if (m_StatusBehavior.ContainsKey(status))
+            if (item.spell == spell)
             {
-                Log(status + " triggered");
-                m_StatusBehavior[status].Invoke(effect, caster);
+                ExpireStatusEffect(item);
+                return;
             }
         }
     }
 
-    public static void ExpireStatusEffect(StatusEffect statusEffect, IMarker caster)
+    public static void ExpireStatusEffect(StatusEffect statusEffect)
     {
         foreach (StatusEffect item in PlayerDataManager.playerData.effects)
         {
@@ -88,7 +106,7 @@ public static class ConditionManager
             {
                 debug += "\t" + s + "\n";
                 if (m_StatusExpireBehavior.ContainsKey(s))
-                    m_StatusExpireBehavior[s].Invoke(statusEffect, caster);
+                    m_StatusExpireBehavior[s].Invoke(statusEffect);
             }
         }
 
@@ -96,7 +114,7 @@ public static class ConditionManager
         
         OnPlayerExpireStatusEffect?.Invoke(statusEffect);
 
-        StatusEffectFX.DespawnFX(PlayerManager.marker, statusEffect);
+        //StatusEffectFX.DespawnFX(PlayerManager.marker, statusEffect);
     }
 
     private static void Log(string msg)

@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
+using static Raincrow.GameEventResponses.LevelUpHandler;
 
 public class UILevelUp : MonoBehaviour
 {
@@ -33,11 +34,11 @@ public class UILevelUp : MonoBehaviour
         m_RewardPrefab.gameObject.SetActive(false);
     }
 
-    public void Show()
+    public void Show(LevelUpEventData data)
     {
         m_LevelText.text = LocalizeLookUp.GetText("leveled_number") + ": " + PlayerDataManager.playerData.level;
 
-        StartCoroutine(SpawnRewards());
+        StartCoroutine(SpawnRewards(data));
 
         SoundManagerOneShot.Instance.PlayLevel();
         SoundManagerOneShot.Instance.IngredientAdded();
@@ -49,49 +50,56 @@ public class UILevelUp : MonoBehaviour
             .setEaseOutCubic();
     }
 
-    private IEnumerator SpawnRewards()
+    private IEnumerator SpawnRewards(LevelUpEventData data)
     {
-        List<SpellData> unlockedSpells = new List<SpellData>();
         List<UILevelUpReward> rewardItems = new List<UILevelUpReward>();
+
+        UILevelUpReward silverReward = Instantiate(m_RewardPrefab, m_RewardContainer.transform);
+        silverReward.SetupSilver(data.silver);
+        silverReward.gameObject.SetActive(true);
+        rewardItems.Add(silverReward);
 
         foreach (var spell in PlayerDataManager.playerData.UnlockedSpells)
         {
             if (spell.level == PlayerDataManager.playerData.level)
             {
-                unlockedSpells.Add(spell);
-                rewardItems.Add(Instantiate(m_RewardPrefab, m_RewardContainer.transform));
-                rewardItems[rewardItems.Count - 1].gameObject.SetActive(true);
+                UILevelUpReward item = Instantiate(m_RewardPrefab, m_RewardContainer.transform);
+                item.SetupSpell(spell.id);
+                item.gameObject.SetActive(true);
+                rewardItems.Add(item);
             }
         }
 
         yield return new WaitForSeconds(0.5f);
 
-        int left = unlockedSpells.Count / 2 - 1;
+        int left = rewardItems.Count / 2 - 1;
         int right = left + 1;
 
         //center first
-        if (unlockedSpells.Count % 2 == 1)
+        if (rewardItems.Count % 2 == 1)
         {
-            rewardItems[right].SetupSpell(unlockedSpells[right].id);
+            rewardItems[right].Show();
             right++;
             yield return new WaitForSeconds(0.45f);
         }
 
         //setup from center to borders
-        while (left >= 0 || right < unlockedSpells.Count)
+        while (left >= 0 || right < rewardItems.Count)
         {
             if (left >= 0)
             {
-                rewardItems[left].SetupSpell(unlockedSpells[left].id);
+                rewardItems[left].Show();
                 left--;
             }
-            if (right < unlockedSpells.Count)
+            if (right < rewardItems.Count)
             {
-                rewardItems[right].SetupSpell(unlockedSpells[right].id);
+                rewardItems[right].Show();
                 right++;
             }
             yield return new WaitForSeconds(0.5f);
         }
+
+        silverReward.SetupSilver(data.silver);
     }
 
     private void Close()

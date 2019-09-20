@@ -25,7 +25,7 @@ namespace Raincrow.GameEventResponses
             ExpireEventData data = JsonConvert.DeserializeObject<ExpireEventData>(eventData);
             if (data.id == PlayerDataManager.playerData.instance)// ? PlayerManager.marker : MarkerSpawner.GetMarker(data.id);
             {
-                ConditionManager.ExpireStatusEffect(data.effect, null);
+                ConditionManager.ExpireStatusEffect(data.effect);
                 OnPlayerStatusEffectExpire?.Invoke(data.effect.spell);
             }
         }

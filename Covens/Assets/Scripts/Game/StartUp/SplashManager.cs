@@ -331,11 +331,15 @@ public class SplashManager : MonoBehaviour
         //get a random spirit
         spirit.overrideSprite = null;
         spiritName.text = "";
+
         if (DownloadedAssets.spiritDict.Count > 0)
         {
             SpiritData spiritData = DownloadedAssets.spiritDict.ElementAt(Random.Range(0, DownloadedAssets.spiritDict.Count)).Value;
             DownloadedAssets.GetSprite(spiritData.id, (spr) =>
             {
+                if (spirit == null)
+                    return;
+
                 if (spr != null)
                 {
                     spirit.overrideSprite = spr;

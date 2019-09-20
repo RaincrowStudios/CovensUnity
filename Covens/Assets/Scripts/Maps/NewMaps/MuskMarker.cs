@@ -73,7 +73,10 @@ namespace Raincrow.Maps
             OnClick = null;
 
             for (int i = 0; i < m_SpawnedItems.Count; i++)
-                Destroy(m_SpawnedItems[i].gameObject);
+            {
+                if (m_SpawnedItems[i] != null)
+                    Destroy(m_SpawnedItems[i].gameObject);
+            }
             m_SpawnedItems.Clear();
 
             GameObject.SetActive(false);

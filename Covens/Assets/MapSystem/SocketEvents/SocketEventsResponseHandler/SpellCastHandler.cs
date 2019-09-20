@@ -61,7 +61,7 @@ namespace Raincrow.GameEventResponses
 
         public static System.Action<string> OnSpiritBanished;
 
-        private static HashSet<string> m_NonDamagingSpells = new HashSet<string> { "spell_bind", "spell_silence", "spell_seal", "spell_invisibility", "spell_dispel", "spell_clarity", "spell_sealBalance", "spell_sealLight", "spell_sealShadow", "spell_reflectiveWard", "spell_rageWard", "spell_greaterSeal", "spell_greaterDispel", "spell_banish", "spell_mirrors", "spell_trueSight", "spell_crowsEye", "spell_shadowMark", "spell_channeling", "spell_transquility", "spell_addledMind", "spell_whiteRain" };
+        public static HashSet<string> m_NonDamagingSpells = new HashSet<string> { "spell_bind", "spell_silence", "spell_seal", "spell_invisibility", "spell_dispel", "spell_clarity", "spell_sealBalance", "spell_sealLight", "spell_sealShadow", "spell_reflectiveWard", "spell_rageWard", "spell_greaterSeal", "spell_greaterDispel", "spell_banish", "spell_mirrors", "spell_trueSight", "spell_crowsEye", "spell_shadowMark", "spell_channeling", "spell_transquility", "spell_addledMind", "spell_whiteRain" };
 
         public void HandleResponse(string eventData)
         {
@@ -228,11 +228,11 @@ namespace Raincrow.GameEventResponses
                         }
                     }
 
+                    //check if player banished a spirit
                     if (playerIsCaster && data.target.energy == 0 && target is SpiritMarker)
                     {
                         SpiritData spiritData = (target as SpiritMarker).spiritData;
                         OnSpiritBanished?.Invoke(spiritData.id);
-                        //UISpiritBanished.Instance.Show(spiritData.id);
                     }
 
                     //show notification

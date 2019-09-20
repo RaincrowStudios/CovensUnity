@@ -53,7 +53,12 @@ namespace Raincrow.GameEventResponses
             {
                 //if target marker is on screen, show it
                 if (spell != null && target != null && target.inMapView && target.IsShowingAvatar)
-                    SpawnFx(target, spell.school, (int)response.result.damage);
+                {
+                    if (response.result.damage != 0)
+                        SpawnFx(target, spell.school, (int)response.result.damage);
+                    else if (SpellCastHandler.m_NonDamagingSpells.Contains(spell.id))
+                        SpellcastingFX.SpawnText(target, LocalizeLookUp.GetSpellName(spell.id), 1);
+                }
             }
 
             if (isCaster && response.target.energy == 0 && target is SpiritMarker)
@@ -66,6 +71,9 @@ namespace Raincrow.GameEventResponses
         private void SpawnFx(IMarker marker, int school, int amount)
         {
             if (marker == null)
+                return;
+
+            if (amount == 0)
                 return;
             
             Transform fx = SpellcastingFX.m_TickFxPool.Spawn(marker.AvatarTransform, 3f);

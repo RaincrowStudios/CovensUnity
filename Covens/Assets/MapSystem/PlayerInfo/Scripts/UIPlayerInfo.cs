@@ -102,7 +102,7 @@ public class UIPlayerInfo : UIInfoPanel
         DownloadedAssets.OnWillUnloadAssets -= OnWillUnloadAssets;
         LeanTween.cancel(m_TweenId);
         LeanTween.cancel(m_AlphaTweenId);
-        Destroy(this.gameObject);
+        SceneManager.UnloadScene(SceneManager.Scene.PLAYER_SELECT, null, null);
     }
 
     public static void SetVisibility(bool isVisible)

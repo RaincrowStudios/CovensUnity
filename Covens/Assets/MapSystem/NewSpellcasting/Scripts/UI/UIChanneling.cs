@@ -75,10 +75,10 @@ public class UIChanneling : UIInfoPanel
         m_ChannelingCanvasGroup.blocksRaycasts = true;
         m_ChannelingCanvasGroup.interactable = false;
 
-        m_ChannelingContent.text = 
+        m_ChannelingContent.text =
             "+0 " + LocalizeLookUp.GetText("generic_power") +
             "\n+0 " + LocalizeLookUp.GetText("generic_resilience") +
-            "\n+0 " + LocalizeLookUp.GetText("cast_crit");
+            "\n+0% " + LocalizeLookUp.GetText("generic_critical_cast_rate");
 
         foreach (StatusEffect eff in PlayerDataManager.playerData.effects)
         {
@@ -89,9 +89,9 @@ public class UIChanneling : UIInfoPanel
                 if (status == "channeling")
                 {
                     m_ChannelingContent.text =
-                       "+" + eff.modifiers.power + LocalizeLookUp.GetText("generic_power") +
-                       "\n+" + eff.modifiers.resilience + LocalizeLookUp.GetText("generic_resilience") +
-                       "\n+" + eff.modifiers.toCrit + LocalizeLookUp.GetText("cast_crit");
+                       "+" + eff.modifiers.power + " " + LocalizeLookUp.GetText("generic_power") +
+                       "\n+" + eff.modifiers.resilience + " " + LocalizeLookUp.GetText("generic_resilience") +
+                       "\n+" + eff.modifiers.toCrit + "% " + LocalizeLookUp.GetText("generic_critical_cast_rate");
                 }
             }
         }
@@ -106,13 +106,13 @@ public class UIChanneling : UIInfoPanel
     {
         LeanTween.cancel(m_DelayTweenId);
 
-        m_DelayTweenId = LeanTween.value(0, 0, 0.1f).setOnComplete(() =>
+        m_DelayTweenId = LeanTween.value(0, 0, 1f).setOnComplete(() =>
         {
             m_ChannelingCanvasGroup.interactable = interactable;
             m_ResultsCanvasGroup.interactable = interactable;
         }).uniqueId;
     }
-    
+
     private void HideChanneling()
     {
         LeanTween.cancel(m_DelayTweenId);
@@ -133,9 +133,9 @@ public class UIChanneling : UIInfoPanel
         if (string.IsNullOrEmpty(error))
         {
             m_ResultsContent.text =
-               "+" + result.statusEffect?.modifiers.power + LocalizeLookUp.GetText("generic_power") +
-               "\n+" + result.statusEffect?.modifiers.resilience + LocalizeLookUp.GetText("generic_resilience") +
-               "\n+" + result.statusEffect?.modifiers.toCrit + LocalizeLookUp.GetText("cast_crit");
+               "+" + result.statusEffect?.modifiers.power + " " + LocalizeLookUp.GetText("generic_power") +
+               "\n+" + result.statusEffect?.modifiers.resilience + " " + LocalizeLookUp.GetText("generic_resilience") +
+               "\n+" + result.statusEffect?.modifiers.toCrit + "% " + LocalizeLookUp.GetText("generic_critical_cast_rate");
         }
         else
         {
@@ -198,11 +198,11 @@ public class UIChanneling : UIInfoPanel
         }
         m_ChannelingContent.transform.localScale = Vector3.one * 1.2f;
         LeanTween.cancel(m_ChannelingTextTweenId);
-        m_ChannelingTextTweenId = LeanTween.scale(m_ChannelingContent.gameObject, Vector3.one, 2f).setEaseOutCubic().uniqueId;
-        
+        m_ChannelingTextTweenId = LeanTween.scale(m_ChannelingContent.gameObject, Vector3.one, 1f).setEaseOutCubic().uniqueId;
+
         m_ChannelingContent.text =
-            "+" + data.result.statusEffect?.modifiers.power + LocalizeLookUp.GetText("generic_power") +
-            "\n+" + data.result.statusEffect?.modifiers.resilience + LocalizeLookUp.GetText("generic_resilience") +
-            "\n+" + data.result.statusEffect?.modifiers.toCrit + LocalizeLookUp.GetText("cast_crit");
+            "+" + data.result.statusEffect?.modifiers.power + " " + LocalizeLookUp.GetText("generic_power") +
+            "\n+" + data.result.statusEffect?.modifiers.resilience + " " + LocalizeLookUp.GetText("generic_resilience") +
+            "\n+" + data.result.statusEffect?.modifiers.toCrit + "% " + LocalizeLookUp.GetText("generic_critical_cast_rate");
     }
 }

@@ -40,14 +40,23 @@ public static class SpellChanneling
             $"{{\"spell\":\"spell_channeling\"}}",
             (response, result) =>
             {
-                SpellCastHandler.SpellCastEventData data = JsonConvert.DeserializeObject<SpellCastHandler.SpellCastEventData>(response);
+                if (result == 200)
+                {
+                    SpellCastHandler.SpellCastEventData data = JsonConvert.DeserializeObject<SpellCastHandler.SpellCastEventData>(response);
 
-                OnMapEnergyChange.ForceEvent(target, data.target.energy, data.timestamp);
+                    OnMapEnergyChange.ForceEvent(target, data.target.energy, data.timestamp);
 
-                if (data.result.statusEffect != null && string.IsNullOrEmpty(data.result.statusEffect.spell) == false)
-                    ConditionManager.AddCondition(data.result.statusEffect, Target);
+                    if (data.result.statusEffect != null && string.IsNullOrEmpty(data.result.statusEffect.spell) == false)
+                        ConditionManager.AddCondition(data.result.statusEffect, Target);
 
-                UIChanneling.Instance.SetInteractable(true);
+                    UIChanneling.Instance.SetInteractable(true);
+                }
+                else
+                {
+                    UIChanneling.Instance.Close();
+                    TickSpellHandler.OnPlayerSpellTick -= OnSpellTick;
+                    UIGlobalPopup.ShowError(null, APIManager.ParseError(response));
+                }
             });
     }
 
@@ -56,7 +65,6 @@ public static class SpellChanneling
         if (IsChanneling == false)
         {
             TickSpellHandler.OnPlayerSpellTick -= OnSpellTick;
-            Target = null;
             return;
         }
 
@@ -82,7 +90,7 @@ public static class SpellChanneling
                         CooldownManager.AddCooldown("spell_channeling", data.timestamp, data.cooldown);
 
                         //add the new status effect
-                        ConditionManager.ExpireStatusEffect(data.result.statusEffect, PlayerManager.marker);
+                        ConditionManager.ExpireStatusEffect("spell_channeling");
                         ConditionManager.AddCondition(data.result.statusEffect, Target);
                         
                         UIChanneling.Instance.ShowResults(data.result, null);
@@ -94,7 +102,6 @@ public static class SpellChanneling
                 }
 
                 TickSpellHandler.OnPlayerSpellTick -= OnSpellTick;
-                Target = null;
             });
     }
 
@@ -105,17 +112,19 @@ public static class SpellChanneling
             UIChanneling.Instance.OnTickChanneling(data);
             if (IsChanneled)
             {
-                DespawnFX(Target, data.result.statusEffect);
+                DespawnFX(data.result.statusEffect);
                 StopChanneling(null);
                 UIChanneling.Instance.ShowResults(data.result, null);
             }
         }
     }
 
-    public static void SpawnFX(IMarker marker, StatusEffect effect)
+    public static void SpawnFX(StatusEffect effect, IMarker caster)
     {
         if (effect.modifiers.status == null)
             return;
+
+        IMarker marker = PlayerManager.marker;
 
         if (m_SpawnedFX.ContainsKey(marker))
             return;
@@ -150,12 +159,14 @@ public static class SpellChanneling
 
         if (channeled)
         {
-            DespawnFX(marker, effect);
+            DespawnFX(effect);
         }
     }
 
-    public static void DespawnFX(IMarker marker, StatusEffect effect)
+    public static void DespawnFX(StatusEffect effect)
     {
+        IMarker marker = PlayerManager.marker;
+
         if (m_SpawnedFX.ContainsKey(marker) == false)
             return;
 

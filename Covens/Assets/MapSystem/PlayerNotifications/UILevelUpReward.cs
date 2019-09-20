@@ -25,7 +25,7 @@ public class UILevelUpReward : MonoBehaviour
         m_Title.text = LocalizeLookUp.GetText("ftf_reward_upper");
         m_Subtitle.text = LocalizeLookUp.GetText("store_bought_drachs_upper").Replace("{{Number}}", amount.ToString());
         m_Art.overrideSprite = m_SilverDrachsArt;
-        Show();
+        //Show();
     }
 
     public void SetupSpell(string id)
@@ -39,10 +39,10 @@ public class UILevelUpReward : MonoBehaviour
             m_Art.overrideSprite = spr;
             LeanTween.color(m_Art.rectTransform, Color.white, 1f);
         });
-        Show();
+        //Show();
     }
 
-    private void Show()
+    public void Show()
     {
         gameObject.SetActive(true);
         LeanTween.alphaCanvas(m_CanvasGroup, 1, 1);

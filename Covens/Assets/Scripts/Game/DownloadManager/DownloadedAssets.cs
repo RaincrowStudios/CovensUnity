@@ -54,6 +54,7 @@ public class DownloadedAssets : MonoBehaviour
 
     private IEnumerator UnloadMemory()
     {
+        Debug.LogError("Memory is low. Unloading assets.");
         UnloadingMemory = true;
         OnWillUnloadAssets?.Invoke();
 

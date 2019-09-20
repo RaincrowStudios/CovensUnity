@@ -11,6 +11,7 @@ namespace Raincrow.GameEventResponses
             [JsonProperty("_id")]
             public string instance;
             public int level;
+            public int silver;
             public double timestamp;
         }
 
@@ -19,23 +20,26 @@ namespace Raincrow.GameEventResponses
         public void HandleResponse(string eventData)
         {
             LevelUpEventData data = JsonConvert.DeserializeObject<LevelUpEventData>(eventData);
-            PlayerData player = PlayerDataManager.playerData;
 
-            if (data.instance == player.instance)
+            if (data.instance == PlayerDataManager.playerData.instance)
             {
+                PlayerData player = PlayerDataManager.playerData;
+
                 if (data.level == 3)
                     AppsFlyerAPI.ReachedLevelThree();
 
                 //update level
                 player.level = data.level;
+                player.silver += data.silver;
                 PlayerDataManager.playerData.UpdateSpells();
                 
                 //udpate UI
                 PlayerManagerUI.Instance.playerlevelUp();
                 PlayerManagerUI.Instance.UpdateEnergy();
+                PlayerManagerUI.Instance.UpdateDrachs();
 
                 //show ui feedback
-                UILevelUp.Instance.Show();
+                UILevelUp.Instance.Show(data);
             }
             else
             {
