@@ -201,7 +201,7 @@ namespace Raincrow.GameEventResponses
                         OnApplyStatusEffect?.Invoke(data.target.id, data.result.statusEffect);
 
                         if (playerIsTarget)
-                            ConditionManager.AddCondition(data.result.statusEffect, target);
+                            ConditionManager.AddCondition(data.result.statusEffect, caster);
 
                         //target?.ApplyStatusEffect(data.result.statusEffect);
                     }

@@ -49,7 +49,7 @@ namespace Raincrow.GameEventResponses
                 SpellCastHandler.OnApplyStatusEffect?.Invoke(data.target.id, data.result.statusEffect);
 
                 if (isTarget)
-                    ConditionManager.AddCondition(data.result.statusEffect, target);
+                    ConditionManager.AddCondition(data.result.statusEffect, caster);
 
                 //target?.ApplyStatusEffect(response.result.statusEffect);
             }
