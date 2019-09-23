@@ -12,6 +12,7 @@ public class UISummoningSpiritInfo : MonoBehaviour
     [SerializeField] private TextMeshProUGUI m_Title;
     [SerializeField] private TextMeshProUGUI m_Lore;
     [SerializeField] private TextMeshProUGUI m_Ingredients;
+    [SerializeField] private TextMeshProUGUI m_Required;
     [SerializeField] private TextMeshProUGUI m_Tier;
     [SerializeField] private TextMeshProUGUI m_WorldZone;
 
@@ -69,6 +70,7 @@ public class UISummoningSpiritInfo : MonoBehaviour
             if (string.IsNullOrEmpty(spirit.tool) == false)
                 m_Ingredients.text += (string.IsNullOrEmpty(m_Ingredients.text) ? "" : ", ") + LocalizeLookUp.GetCollectableName(spirit.tool);
         }
+        m_Required.text = LocalizeLookUp.GetText("pop_required_ingredients").Replace(" {{ingredient}}", ":");
 
         m_SpiritArt.overrideSprite = null;
         DownloadedAssets.GetSprite(spirit.id, spr =>
