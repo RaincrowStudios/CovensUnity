@@ -4157,6 +4157,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: MainUI Canvas
       objectReference: {fileID: 0}
+    - target: {fileID: 1238055491566132, guid: 5413aaf865d33104f8f1a0d39ea07b25, type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 224640381093854292, guid: 5413aaf865d33104f8f1a0d39ea07b25,
         type: 3}
       propertyPath: m_LocalPosition.x
@@ -4500,6 +4504,27 @@ PrefabInstance:
     - target: {fileID: 3359340034801170710, guid: 5413aaf865d33104f8f1a0d39ea07b25,
         type: 3}
       propertyPath: m_SizeDelta.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1559424896648324, guid: 5413aaf865d33104f8f1a0d39ea07b25, type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1200587120275052, guid: 5413aaf865d33104f8f1a0d39ea07b25, type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1058051343674318, guid: 5413aaf865d33104f8f1a0d39ea07b25, type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1983042279369106, guid: 5413aaf865d33104f8f1a0d39ea07b25, type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 224297275438286640, guid: 5413aaf865d33104f8f1a0d39ea07b25,
+        type: 3}
+      propertyPath: m_SizeDelta.y
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 224800477697673122, guid: 5413aaf865d33104f8f1a0d39ea07b25,
