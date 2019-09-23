@@ -78,7 +78,7 @@ public class LocationPOPInfo : UIInfoPanel
         m_FadeOut.gameObject.SetActive(false);
         m_Progress.gameObject.SetActive(false);
         m_HasEnteredPOP = false;
-
+        m_CloseBtn.gameObject.SetActive(true);
         base.Show();
         ShowUI();
     }
@@ -254,6 +254,7 @@ public class LocationPOPInfo : UIInfoPanel
     {
         if (locationData != null)
         {
+            m_CloseBtn.gameObject.SetActive(false);
             SoundManagerOneShot.Instance.IngredientAdded();
             m_HasEnteredPOP = true;
             UpdateWitchCount();
