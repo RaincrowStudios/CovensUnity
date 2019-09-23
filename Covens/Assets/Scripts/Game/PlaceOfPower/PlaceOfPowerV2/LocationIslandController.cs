@@ -166,11 +166,13 @@ public class LocationIslandController : MonoBehaviour
                       LocationBattleEnd.OnLocationBattleEnd += BattleStopPOP;
                       RewardHandlerPOP.LocationReward += OnReward;
                       instance.BattleBeginPOP(m_LocationData.spirit);
-                      if (m_LocationData.spirit != null)
+                      if (m_LocationData.spirit != null && m_LocationData.spirit.islands != null)
+                      {
                           foreach (var item in m_LocationData.spirit.islands)
                           {
                               locationIslands[item].SetSpiritConnection(true);
                           }
+                      }
                   });
             }
             else
@@ -280,6 +282,7 @@ public class LocationIslandController : MonoBehaviour
             {
                 m_LinePrefab.SetPosition(i, transform.GetChild(i).GetChild(0).position);
             }
+            UpdateMarkers(true,true,true);
         }).setEase(LeanTweenType.easeInOutQuad);
     }
 

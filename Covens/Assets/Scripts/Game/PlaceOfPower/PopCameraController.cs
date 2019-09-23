@@ -141,6 +141,7 @@ namespace Raincrow.DynamicPlacesOfPower
                 Instance.m_CenterPoint.position = ClampPosition(Instance.m_CenterPoint.position + worldDelta);
 
                 onUserPan?.Invoke();
+                m_PositionChanged = true;
             }
         }
 
@@ -202,8 +203,6 @@ namespace Raincrow.DynamicPlacesOfPower
 
         private void Update()
         {
-            m_PositionChanged = m_ZoomChanged = m_RotationChanged = false;
-
             if (controlEnabled)
             {
                 HandlePan();
@@ -243,6 +242,8 @@ namespace Raincrow.DynamicPlacesOfPower
             {
                 onUpdate?.Invoke(m_PositionChanged, m_ZoomChanged, m_RotationChanged);
             }
+
+            m_PositionChanged = m_ZoomChanged = m_RotationChanged = false; ;
         }
 
         public void SetCameraBounds(Vector3 center, float radius)
@@ -268,7 +269,8 @@ namespace Raincrow.DynamicPlacesOfPower
                 .setEaseOutCubic()
                 .setOnUpdate((float t) =>
                 {
-                    onUpdate?.Invoke(true, false, false);
+                    //onUpdate?.Invoke(true, false, false);
+                    m_PositionChanged = true;
                 })
                 .setOnComplete(() =>
                 {

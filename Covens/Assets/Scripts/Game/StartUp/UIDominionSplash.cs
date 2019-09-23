@@ -26,7 +26,7 @@ public class UIDominionSplash : MonoBehaviour
         m_CloseButton.onClick.AddListener(Close);
 
         //just hide so it can be shown on the end of the tutorial
-        if (FTFManager.InFTF)
+        if (FTFManager.InFTF || PlayerDataManager.playerData.insidePlaceOfPower)
         {
             m_Canvas.enabled = false;
             m_InputRaycaster.enabled = false;

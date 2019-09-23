@@ -20,7 +20,7 @@ public class WitchMarker : MuskMarker
     
     public WitchToken witchToken { get => Token as WitchToken; }
 
-    public override string Name => m_DisplayName.text;
+    public override string Name => witchToken.displayName;
 
     private int m_TweenId;
     private Transform m_DeathIcon;
