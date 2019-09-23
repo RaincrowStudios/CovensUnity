@@ -372,26 +372,25 @@ public class SplashManager : MonoBehaviour
 
         //setup the UI
 
-        //double currentTime = (double)System.DateTimeOffset.UtcNow.ToUnixTimeSeconds();
-        //int currentI = 0;
-        //for (int i = 0; i < PlayerDataManager.tribunalStamps.Length; i++)
-        //{
-        //    if (PlayerDataManager.tribunalStamps[i] > currentTime)
-        //    {
-        //        currentI = --i;
-        //        break;
-        //    }
-        //}
+        double currentTime = (double)System.DateTimeOffset.UtcNow.ToUnixTimeSeconds();
+        int currentI = 0;
+        for (int i = 0; i < PlayerDataManager.tribunalStamps.Length; i++)
+        {
+            if (PlayerDataManager.tribunalStamps[i] > currentTime)
+            {
+                currentI = --i;
+                break;
+            }
+        }
 
-        //int tribunal = tribunals[currentI];
-        int tribunal = PlayerDataManager.tribunal;
+        PlayerDataManager.tribunal = tribunals[currentI];
 
         //tribunal title
-        if (tribunal == 2)
+        if (PlayerDataManager.tribunal == 2)
             tribunalTitle.text = LocalizeLookUp.GetText("summer_tribunal_upper");
-        else if (tribunal == 1)
+        else if (PlayerDataManager.tribunal == 1)
             tribunalTitle.text = LocalizeLookUp.GetText("spring_tribunal_upper");
-        else if (tribunal == 3)
+        else if (PlayerDataManager.tribunal == 3)
             tribunalTitle.text = LocalizeLookUp.GetText("autumn_tribunal_upper");
         else
             tribunalTitle.text = LocalizeLookUp.GetText("winter_tribunal_upper");
@@ -406,5 +405,10 @@ public class SplashManager : MonoBehaviour
         yield return new WaitForSeconds(1f);
 
         onShow?.Invoke();
+    }
+
+    private void SetTribunal(int tribunal)
+    {
+
     }
 }
