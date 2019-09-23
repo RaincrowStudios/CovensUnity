@@ -5226,7 +5226,7 @@ ParticleSystem:
   m_GameObject: {fileID: 458638165855700214}
   serializedVersion: 6
   lengthInSec: 3
-  simulationSpeed: 1.25
+  simulationSpeed: 0.75
   stopAction: 0
   cullingMode: 3
   ringBufferMode: 0
@@ -5469,8 +5469,8 @@ ParticleSystem:
     startSize:
       serializedVersion: 2
       minMaxState: 3
-      scalar: 0.2
-      minScalar: 0.5
+      scalar: 0.4
+      minScalar: 0.6
       maxCurve:
         serializedVersion: 2
         m_Curve:
@@ -9893,8 +9893,8 @@ ParticleSystemRenderer:
   m_RenderingLayerMask: 4294967295
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: 9aaa13d175bcf1c4b8acc4d930ee06ee, type: 2}
-  - {fileID: 2100000, guid: 19bff87611657694f9d6232c15cb96da, type: 2}
+  - {fileID: 0}
+  - {fileID: 2100000, guid: 8af3f513c3ae589439e25a76297acc29, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -9913,7 +9913,7 @@ ParticleSystemRenderer:
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: 0
   m_SortingLayer: 0
-  m_SortingOrder: 45
+  m_SortingOrder: 0
   m_RenderMode: 5
   m_SortMode: 0
   m_MinParticleSize: 0
@@ -19294,7 +19294,7 @@ ParticleSystemRenderer:
   m_RendererPriority: 0
   m_Materials:
   - {fileID: 2100000, guid: 0211f340120cb404ba55202a0eba1e26, type: 2}
-  - {fileID: 2100000, guid: 776677ab3818fb249adaca05f4e04545, type: 2}
+  - {fileID: 0}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
