@@ -39,8 +39,11 @@
 
 //"well done, spirit banished"
 {"onEnter":[{"method":"ShowMessage","parameters":["ftf_8", "true"]}],"onExit":[{"method":"CloseSpiritBanished"},{"method":"CloseSpellResults"}]},
-// //"spirits can be summoned...""
-// {"onEnter":[{"method":"ShowMessage","parameters":["ftf_9"]}]]},
+//"spirits can be summoned...""
+// {"onEnter":[{"method":"ShowMessage","parameters":["ftf_9"]}],"onExit":[{"method":"FlyToNearbyPoP"}]},
+
+// {"timer":1},
+
 // //focus on player, wait 1s, spawn pop
 // {"timer":0.5,"onEnter":[{"method":"MoveCamera","parameters":["0","0","0.98"]}], "onExit":[{"method":"SpawnPop","parameters":["{\"_id\":\"ftf_pop\",\"tier\":1, \"longitude\":0.0004, \"latitude\":-0.0005}"]}]},
 // //focus on pop

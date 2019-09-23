@@ -733,6 +733,47 @@ public class FTFManager : MonoBehaviour
         yield return 0;
     }
 
+    private IEnumerator LoadScene(string[] parameters)
+    {
+        string sceneName = parameters[0];
+        LoadingOverlay.Show();
+        AsyncOperation op = UnityEngine.SceneManagement.SceneManager.LoadSceneAsync(sceneName);
+        op.allowSceneActivation = true;
+
+        yield return op;
+        LoadingOverlay.Hide();
+    }
+
+    private IEnumerator UnloadScene(string[] parameters)
+    {
+        string sceneName = parameters[0];
+        AsyncOperation op = UnityEngine.SceneManagement.SceneManager.UnloadSceneAsync(sceneName);
+        op.allowSceneActivation = true;
+
+        yield return op;
+    }
+
+    private IEnumerator FlyToNearbyPoP()
+    {
+        if (UINearbyLocations.CachedLocations.Count > 0)
+        {
+            double longitude = UINearbyLocations.CachedLocations[0].longitude - 0.0006;
+            double latitude = UINearbyLocations.CachedLocations[0].latitude - 0.0003;
+            bool done = false;
+            MarkerManagerAPI.LoadMap(longitude, latitude, true, () => done = true);
+
+            while (!done)
+                yield return 0;
+        }
+    }
+
+    private IEnumerator SelectNearbyPoP()
+    {
+        if (UINearbyLocations.CachedLocations.Count > 0)
+            LoadPOPManager.EnterPOP(UINearbyLocations.CachedLocations[0].id);
+        yield return 0;
+    }
+
     #endregion
 
 } 

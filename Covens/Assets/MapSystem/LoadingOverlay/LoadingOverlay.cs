@@ -96,4 +96,23 @@ public class LoadingOverlay : MonoBehaviour
 
         Instance._Hide();
     }
+
+    //public string allCosmetics;
+    //public string currenCosmeticst;
+
+    //[ContextMenu("run")]
+    //private void DebugCosmetics()
+    //{
+    //    List<string> all = Newtonsoft.Json.JsonConvert.DeserializeObject<List<string>>(allCosmetics);
+    //    var current = Newtonsoft.Json.JsonConvert.DeserializeObject<Dictionary<string, object>>(currenCosmeticst);
+
+    //    string result = "";
+    //    foreach (string id in current.Keys)
+    //    {
+    //        if (all.Contains(id) == false)
+    //            result += id + "\n";
+    //    }
+    //    Debug.Log(result);
+    //    Debug.Log("curr: " + current.Count + "\nall: " + all.Count);
+    //}
 }

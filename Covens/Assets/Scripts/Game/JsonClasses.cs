@@ -255,6 +255,7 @@ public class SpellData
     public int xp;
     public int level;
 
+    [JsonProperty("ingredients")]
     public List<string> ingredients;
     public Target target;
     public int align;
