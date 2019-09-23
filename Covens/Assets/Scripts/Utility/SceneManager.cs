@@ -33,6 +33,7 @@ namespace Raincrow
             FTF,
             SUMMONING,
             FIRST_TAP,
+            WARDROBE
         }
 
         private static Dictionary<Scene, string> m_SceneNames = new Dictionary<Scene, string>
@@ -58,7 +59,8 @@ namespace Raincrow
             {Scene.POPUP,               "Popup" },
             {Scene.FTF,                 "FTF" },
             {Scene.SUMMONING,           "Summoning" },
-            {Scene.FIRST_TAP,           "FirstTap" }
+            {Scene.FIRST_TAP,           "FirstTap" },
+            {Scene.WARDROBE,            "Wardrobe" },
         };
 
         private static SceneManager m_Instance;

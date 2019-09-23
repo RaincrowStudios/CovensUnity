@@ -61,7 +61,7 @@ public class UIMain : MonoBehaviour
 
     private void OnClickWardrobe()
     {
-        ApparelManagerUI.Instance.Show();
+        ApparelManagerUI.Show();
     }
 
     private void OnClickMoonphase()

@@ -73,6 +73,9 @@ public class EditorScenes : MonoBehaviour
     [MenuItem("Scenes/Screens/FirstTap")]
     static void FirstTapScene() => OpenScene("FirstTap");
 
+    [MenuItem("Scenes/Screens/Wardrobe")]
+    static void WardrobeScene() => OpenScene("Wardrobe");
+
 
     private static void OpenScene(string name)
     {

@@ -5,6 +5,7 @@ using UnityEngine.UI;
 using Newtonsoft.Json;
 using System.Linq;
 using Raincrow.Analytics.Events;
+using Raincrow;
 
 public class ApparelManagerUI : MonoBehaviour
 {
@@ -20,15 +21,50 @@ public class ApparelManagerUI : MonoBehaviour
     [SerializeField] private UIKytelerGrid ringsUI;
     [SerializeField] private Canvas m_Canvas;
     [SerializeField] private GraphicRaycaster m_InputRaycaster;
-        
+
+    public bool IsOpen { get; private set; }
+    
+    public static void Show()
+    {
+        if (Instance != null)
+        {
+            Instance._Show();
+        }
+        else
+        {
+            LoadingOverlay.Show();
+            SceneManager.LoadSceneAsync(SceneManager.Scene.WARDROBE, UnityEngine.SceneManagement.LoadSceneMode.Additive,
+                (progress) => { },
+                () =>
+                {
+                    LoadingOverlay.Hide();
+                    Instance._Show();
+                });
+        }
+    }
+    
     void Awake()
     {
         Instance = this;
         DisableObjects();
+
+        DownloadedAssets.OnWillUnloadAssets += DownloadedAssets_OnWillUnloadAssets;
     }
 
-    public void Show()
+    private void DownloadedAssets_OnWillUnloadAssets()
     {
+        if (IsOpen)
+            return;
+
+        DownloadedAssets.OnWillUnloadAssets -= DownloadedAssets_OnWillUnloadAssets;
+
+        SceneManager.UnloadScene(SceneManager.Scene.WARDROBE, null, null);
+    }
+
+    public void _Show()
+    {
+        IsOpen = true;
+
         ApparelManager.instance.SetupApparel();
 
         UIStateManager.Instance.CallWindowChanged(false);
@@ -61,6 +97,7 @@ public class ApparelManagerUI : MonoBehaviour
     {
         m_Canvas.enabled = false;
         m_InputRaycaster.enabled = false;
+        IsOpen = false;
     }
 
     private bool CheckEquipsChanged()
