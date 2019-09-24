@@ -155,7 +155,7 @@ RectTransform:
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
   m_AnchoredPosition: {x: -464.99997, y: -540.69995}
-  m_SizeDelta: {x: 606.3, y: 113.7}
+  m_SizeDelta: {x: 1440, y: 113.7}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &30367765
 MonoBehaviour:
@@ -4300,7 +4300,7 @@ RectTransform:
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
   m_AnchoredPosition: {x: -7.993347, y: -243}
-  m_SizeDelta: {x: 606.3, y: 113.7}
+  m_SizeDelta: {x: 1440, y: 113.7}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &1660720539
 CanvasRenderer:
@@ -4376,7 +4376,7 @@ MonoBehaviour:
   m_enableWordWrapping: 1
   m_wordWrappingRatios: 0.4
   m_overflowMode: 0
-  m_firstOverflowCharacterIndex: 19
+  m_firstOverflowCharacterIndex: -1
   m_linkedTextComponent: {fileID: 0}
   m_isLinkedTextComponent: 0
   m_isTextTruncated: 0
@@ -4405,7 +4405,7 @@ MonoBehaviour:
     spaceCount: 5
     wordCount: 6
     linkCount: 0
-    lineCount: 3
+    lineCount: 1
     pageCount: 1
     materialCount: 1
   m_isUsingLegacyAnimationComponent: 0
