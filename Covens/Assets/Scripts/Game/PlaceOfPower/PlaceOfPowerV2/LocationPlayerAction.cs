@@ -37,6 +37,7 @@ public class LocationPlayerAction : MonoBehaviour
     public static LocationPosition selectedPosition { get; private set; }
     public static int getCurrentIsland => playerWitchToken.island;
     public static int playerPopIndex => playerWitchToken.popIndex;
+
     public static WitchToken playerWitchToken => playerMarker.Token as WitchToken;
     public static bool isCloaked { get; private set; }
 
@@ -44,7 +45,7 @@ public class LocationPlayerAction : MonoBehaviour
 
     public static void OnSummon(SpiritToken spirit)
     {
-        if (spirit.owner == playerWitchToken.instance)
+        if (spirit.owner == PlayerDataManager.playerData.instance)
         {
             summonedSpirit = spirit;
             m_BtnArr[2].SetLock(true);
@@ -54,7 +55,8 @@ public class LocationPlayerAction : MonoBehaviour
 
     public static void RemoveSummonedSpirit(string instance)
     {
-        if (instance == summonedSpirit.instance)
+
+        if (summonedSpirit != null && instance == summonedSpirit.instance)
         {
             summonedSpirit = null;
             m_BtnArr[2].SetLock(false);
