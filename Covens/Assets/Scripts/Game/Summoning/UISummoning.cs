@@ -86,6 +86,8 @@ public class UISummoning : MonoBehaviour
     [SerializeField] private Image m_SpiritArt;
     [SerializeField] private TextMeshProUGUI m_SpiritName;
     [SerializeField] private TextMeshProUGUI m_SpiritBehavior;
+    [SerializeField] private TextMeshProUGUI m_SpiritRequiredIngredients;
+    [SerializeField] private TextMeshProUGUI m_Required;
     [SerializeField] private TextMeshProUGUI m_SummonCost;
     [SerializeField] private Button m_SummonButton;
     [SerializeField] private Button m_InfoButton;
@@ -102,7 +104,7 @@ public class UISummoning : MonoBehaviour
     private int m_CurrentTier = 1;
     private RectTransform m_CanvasRect;
     private List<List<SpiritData>> m_SpiritsByTier;
-    
+
     private void Awake()
     {
         m_Instance = this;
@@ -171,7 +173,7 @@ public class UISummoning : MonoBehaviour
         for (int i = 0; i < m_TierButtons.Count; i++)
         {
             m_SpiritsByTier.Add(new List<SpiritData>());
-            foreach(KnownSpirits item in PlayerDataManager.playerData.knownSpirits)
+            foreach (KnownSpirits item in PlayerDataManager.playerData.knownSpirits)
             {
                 SpiritData data = DownloadedAssets.GetSpirit(item.spirit);
 
@@ -263,9 +265,9 @@ public class UISummoning : MonoBehaviour
     private void NextPage()
     {
         m_CurrentIndex += 1;
-        if (m_CurrentIndex >= m_SpiritsByTier[m_CurrentTier-1].Count)
+        if (m_CurrentIndex >= m_SpiritsByTier[m_CurrentTier - 1].Count)
             m_CurrentIndex = 0;
-        
+
         //pan and fade out
         AnimateLeft(() =>
         {
@@ -304,10 +306,32 @@ public class UISummoning : MonoBehaviour
         m_NoSpiritContainer.SetActive(false);
 
         int spiritIdx = m_CurrentIndex;
-        SpiritData spirit = m_SpiritsByTier[m_CurrentTier-1][spiritIdx];
-                
+        SpiritData spirit = m_SpiritsByTier[m_CurrentTier - 1][spiritIdx];
+
         m_SpiritName.text = spirit.Name;
         m_SpiritBehavior.text = spirit.Behavior;
+        m_Required.text = LocalizeLookUp.GetText("pop_required_ingredients").Replace(" {{ingredient}}", ":");
+        if (string.IsNullOrEmpty(spirit.herb) && string.IsNullOrEmpty(spirit.tool) && string.IsNullOrEmpty(spirit.gem))
+        {
+            m_SpiritRequiredIngredients.text = LocalizeLookUp.GetText("lt_none");
+        }
+        else
+        {
+            m_SpiritRequiredIngredients.text = "";
+
+            if (string.IsNullOrEmpty(spirit.gem) == false)
+                m_SpiritRequiredIngredients.text += LocalizeLookUp.GetCollectableName(spirit.gem);
+
+            if (string.IsNullOrEmpty(spirit.herb) == false)
+                m_SpiritRequiredIngredients.text += (string.IsNullOrEmpty(m_SpiritRequiredIngredients.text) ? "" : ", ") + LocalizeLookUp.GetCollectableName(spirit.herb);
+
+            if (string.IsNullOrEmpty(spirit.tool) == false)
+                m_SpiritRequiredIngredients.text += (string.IsNullOrEmpty(m_SpiritRequiredIngredients.text) ? "" : ", ") + LocalizeLookUp.GetCollectableName(spirit.tool);
+        }
+
+
+
+
         m_SpiritArt.overrideSprite = null;
         m_SpiritArt.color = Color.black;
         m_SummonButton.interactable = SummoningManager.CanSummon(spirit.id);
@@ -329,7 +353,7 @@ public class UISummoning : MonoBehaviour
 
     private void SetupPageCounter()
     {
-        m_PageCounter.text = $"{m_CurrentIndex+1}/{m_SpiritsByTier[m_CurrentTier-1].Count}";
+        m_PageCounter.text = $"{m_CurrentIndex + 1}/{m_SpiritsByTier[m_CurrentTier - 1].Count}";
     }
 
     private void OnClickClose()
@@ -339,7 +363,7 @@ public class UISummoning : MonoBehaviour
 
     private void OnClickSummon()
     {
-        string spiritId = m_SpiritsByTier[m_CurrentTier-1][m_CurrentIndex].id;
+        string spiritId = m_SpiritsByTier[m_CurrentTier - 1][m_CurrentIndex].id;
 
         if (m_PoPPosition < 0 || m_PoPIsland < 0)
         {

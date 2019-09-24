@@ -248,7 +248,9 @@ public class UISpiritInfo : UIInfoPanel
 
         if (string.IsNullOrEmpty(SpiritMarkerDetails.owner))
         {
-            m_Desc.text = LocalizeLookUp.GetText("cast_spirit_knowledge");// "Defeating this spirit will give you the power to summon it.";
+            m_Desc.text = "";
+            if (!LocationIslandController.isInBattle)
+            { m_Desc.text = LocalizeLookUp.GetText("cast_spirit_knowledge"); }// "Defeating this spirit will give you the power to summon it.";
             if (m_SpiritData.tier == 1)
                 m_Tier.text = LocalizeLookUp.GetText("ftf_wild_spirit") + " (" + LocalizeLookUp.GetText("cast_spirit_lesser") + ")";//"Wild Spirit (Lesser)";
             else if (m_SpiritData.tier == 2)
