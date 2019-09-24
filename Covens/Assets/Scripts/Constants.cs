@@ -25,7 +25,7 @@ public class CovenConstants : MonoBehaviour
             }
             else if (UnityEditor.EditorPrefs.GetString("game") == "Release")
             {
-                return "https://game-server-production-dot-covens.appspot.com/api/";
+                return "https://game-server.raincrow.pw/api/";
             }
             else if (UnityEditor.EditorPrefs.GetString("game") == "Gustavo")
             {
@@ -36,7 +36,7 @@ public class CovenConstants : MonoBehaviour
                 return "http://34.73.145.51:9000/api/";
             }
 #elif PRODUCTION
-           return "https://game-server-production-dot-covens.appspot.com/api/";
+           return "https://game-server.raincrow.pw/api/";
 #else
             return "http://34.73.145.51:9000/api/";
 #endif
@@ -69,7 +69,7 @@ public class CovenConstants : MonoBehaviour
             }
             else if (UnityEditor.EditorPrefs.GetString("ws") == "Release")
             {
-                return "http://35.186.184.246:8084/socket.io/";
+                return "http://34.73.54.25:8084/socket.io/";
             }
             else if (UnityEditor.EditorPrefs.GetString("ws") == "Gustavo")
             {
@@ -80,7 +80,7 @@ public class CovenConstants : MonoBehaviour
                 return "http://34.73.145.51:8084/socket.io/";
             }
 #elif PRODUCTION
-                return "http://35.186.184.246:8084/socket.io/";
+                return "http://34.73.54.25:8084/socket.io/";
 #else
                 return "http://34.73.145.51:8084/socket.io/";
 #endif
@@ -121,7 +121,7 @@ public class CovenConstants : MonoBehaviour
             }
             else if (UnityEditor.EditorPrefs.GetString("chat") == "Release")
             {
-                return "http://35.186.184.246:8083/socket.io/";
+                return "http://34.73.54.25:8083/socket.io/";
             }
             else if (UnityEditor.EditorPrefs.GetString("chat") == "Gustavo")
             {
@@ -132,7 +132,7 @@ public class CovenConstants : MonoBehaviour
                 return "http://34.73.145.51:8083/socket.io/";
             }
 #elif PRODUCTION
-            return "http://35.186.184.246:8083/socket.io/";
+            return "http://34.73.54.25:8083/socket.io/";
 #else
             return "http://34.73.145.51:8083/socket.io/";
 #endif
@@ -147,7 +147,7 @@ public class CovenConstants : MonoBehaviour
 #if UNITY_EDITOR
             if (UnityEditor.EditorPrefs.GetString("map") == "Release")
             {
-                return "https://map-server-production-dot-covens.appspot.com/";
+                return "https://map-server.raincrow.pw/";
             }
             else if (UnityEditor.EditorPrefs.GetString("map") == "Local")
             {
@@ -162,7 +162,7 @@ public class CovenConstants : MonoBehaviour
                 return "http://34.73.145.51:8081/";
             }
 #elif PRODUCTION
-            return "https://map-server-production-dot-covens.appspot.com/";
+            return "https://map-server.raincrow.pw/";
 #else
             return "http://34.73.145.51:8081/";
 #endif
