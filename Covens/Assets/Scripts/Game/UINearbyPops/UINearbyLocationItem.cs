@@ -58,7 +58,7 @@ public class UINearbyLocationItem : MonoBehaviour
         m_Data = data;
         m_OnFlyTo = onFlyTo;
         m_NameText.text = data.name;
-        m_ClaimedBy.text = "Unclaimed";
+        m_ClaimedBy.text = LocalizeLookUp.GetText("location_unclaimed");// "Unclaimed";
 
         //setup cost
         int goldCost = DownloadedAssets.PlaceOfPowerSettings.entryCosts[data.tier - 1].gold;
@@ -75,7 +75,7 @@ public class UINearbyLocationItem : MonoBehaviour
         //setup status
         if (data.isActive)
         {
-            m_Status.text = "<In Battle>";
+            m_Status.text = LocalizeLookUp.GetText("pop_ongoing");// "<In Battle>";
         }
         else if (data.isOpen)
         {
@@ -97,9 +97,9 @@ public class UINearbyLocationItem : MonoBehaviour
     {
         string text;
         if (isOpen)
-            text = "Open for: {0}";
+            text = LocalizeLookUp.GetText("pop_open_for");// "Open for: {0}";
         else
-            text = "Cooldown: {0}";
+            text = LocalizeLookUp.GetText("pop_cooldown").Replace("{{time}}", "{0}");// "Cooldown: {0}";
 
         while (seconds > 0)
         {
@@ -108,7 +108,7 @@ public class UINearbyLocationItem : MonoBehaviour
             seconds -= 1;
         }
         m_Status.text = string.Format(text, Mathf.Max(seconds, 0));
-        
+
         //Setup(m_Data, m_OnFlyTo);
         UINearbyLocations.Refresh();
     }

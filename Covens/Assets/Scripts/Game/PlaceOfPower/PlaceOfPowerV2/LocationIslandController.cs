@@ -89,7 +89,6 @@ public class LocationIslandController : MonoBehaviour
         }
     }
 
-
     private async void CreateTokens()
     {
         if (LocationUnitSpawner.Markers.Count > 0)
@@ -282,7 +281,7 @@ public class LocationIslandController : MonoBehaviour
             {
                 m_LinePrefab.SetPosition(i, transform.GetChild(i).GetChild(0).position);
             }
-            UpdateMarkers(true,true,true);
+            UpdateMarkers(true, true, true);
         }).setEase(LeanTweenType.easeInOutQuad);
     }
 
@@ -400,8 +399,12 @@ public class LocationIslandController : MonoBehaviour
                 LocationPosition LP = hit.transform.GetComponent<LocationPosition>();
                 if (LP != null)
                 {
-                    LP.OnClick();
+                    if (unitPositions[LP.popIndex].childCount < 2)
+                    {
+                        LP.OnClick();
+                    }
                 }
+
             }
         }
     }

@@ -67,7 +67,7 @@ public class UIChanneling : UIInfoPanel
         //m_ChannelInstance = null;
         //m_Results = null;
         m_OnClickContinue = onClickContinue;
-
+        m_Title.text = LocalizeLookUp.GetSpellName("spell_channeling");
         LeanTween.cancel(m_ChannelingTweenId);
         LeanTween.cancel(m_DelayTweenId);
         HideResults();
@@ -129,7 +129,7 @@ public class UIChanneling : UIInfoPanel
     {
         m_Results = result;
         LeanTween.cancel(m_ResultsTweenId);
-
+        m_ResultsTitle.text = LocalizeLookUp.GetText("portal_energy_channel").Replace(": {{number}}", "");
         if (string.IsNullOrEmpty(error))
         {
             m_ResultsContent.text =
