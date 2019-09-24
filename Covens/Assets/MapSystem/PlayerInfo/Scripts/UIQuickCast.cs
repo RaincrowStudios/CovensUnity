@@ -160,6 +160,7 @@ public class UIQuickCast : MonoBehaviour
         SpellCastHandler.OnPlayerTargeted += _OnPlayerAttacked;
         MarkerSpawner.OnImmunityChange += _OnImmunityChange;
         SpellCastHandler.OnApplyStatusEffect += _OnStatusEffectApplied;
+        ConditionManager.OnPlayerExpireStatusEffect += _OnStatusEffectExpired;
         BanishManager.OnBanished += _OnBanished;
         OnMapEnergyChange.OnEnergyChange += _OnEnergyChange;
         RemoveTokenHandler.OnTokenRemove += _OnMapTokenRemove;
@@ -172,6 +173,7 @@ public class UIQuickCast : MonoBehaviour
         SpellCastHandler.OnPlayerTargeted -= _OnPlayerAttacked;
         MarkerSpawner.OnImmunityChange -= _OnImmunityChange;
         SpellCastHandler.OnApplyStatusEffect -= _OnStatusEffectApplied;
+        ConditionManager.OnPlayerExpireStatusEffect -= _OnStatusEffectExpired;
         BanishManager.OnBanished -= _OnBanished;
         OnMapEnergyChange.OnEnergyChange -= _OnEnergyChange;
         RemoveTokenHandler.OnTokenRemove -= _OnMapTokenRemove;
@@ -340,6 +342,11 @@ public class UIQuickCast : MonoBehaviour
     private void _OnCharacterDead()
     {
         _UpdateCanCast(null, null);
+    }
+
+    private void _OnStatusEffectExpired(StatusEffect effect)
+    {
+        UpdateCanCast(m_Target, m_TargetData);
     }
 
     private void _OnStatusEffectApplied(string instance, StatusEffect statusEffect)
