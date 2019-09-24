@@ -537,7 +537,7 @@ public class LocationUnitSpawner : MonoBehaviour
     {
         if (index > LocationIslandController.unitPositions.Count - 1)
             throw new System.Exception("Position Out of bounds");
-        return LocationIslandController.unitPositions[index].childCount == 2;
+        return LocationIslandController.unitPositions[index].childCount == 3;
     }
 
     private Token GetTokenAtIndex(int index)
