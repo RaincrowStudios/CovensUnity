@@ -7,6 +7,16 @@ public class LocationPosition : MonoBehaviour
     public int position { get; private set; }
     public int island { get; private set; }
 
+    public int popIndex
+    {
+        get
+        {
+            if (island >= 0) return island * 3 + position;
+            else
+                return -1;
+        }
+    }
+
     public void Setup(int position, int island)
     {
         this.position = position;
@@ -15,6 +25,7 @@ public class LocationPosition : MonoBehaviour
 
     public void OnClick()
     {
+
         SoundManagerOneShot.Instance.PlayButtonTap();
         Debug.Log("onclick");
         if (CheckEmpty())
