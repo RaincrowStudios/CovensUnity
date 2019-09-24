@@ -72,11 +72,14 @@ public class LocationIslandController : MonoBehaviour
             CreateIslands(m_LocationData);
             CreateTokens();
             if (guardianSpirit != null)
-                locationUnitSpawner.AddMarker(guardianSpirit);
+                AddGuardianSpirit(guardianSpirit);
             //   UpdateMarkers(false, true, true);
             LocationPOPInfo.Instance.Close();
             SetActiveIslands();
             instance.popCameraController.onUpdate += UpdateMarkers;
+
+            PreActivateGuardian();
+
             if (popName != "")
                 PlayerNotificationManager.Instance.ShowNotification($"The battle for {popName} has started!");
         }
@@ -87,6 +90,11 @@ public class LocationIslandController : MonoBehaviour
                 locationUnitSpawner.AddMarker(guardianSpirit);
             SetActiveIslands();
         }
+    }
+
+    private void AddGuardianSpirit(SpiritToken spiritToken)
+    {
+        locationUnitSpawner.AddMarker(spiritToken);
     }
 
     private async void CreateTokens()
@@ -114,6 +122,7 @@ public class LocationIslandController : MonoBehaviour
         LocationBattleStart.OnLocationBattleStart -= instance.BattleBeginPOP;
         LocationBattleEnd.OnLocationBattleEnd -= BattleStopPOP;
         ExpireAstralHandler.OnExpireAstral -= LocationUnitSpawner.DisableCloaking;
+        RespawnSpiritPOP.OnSpiritRewspawn -= instance.AddGuardianSpirit;
         isInBattle = false;
         PlayerDataManager.playerData.insidePlaceOfPower = false;
     }
@@ -131,6 +140,7 @@ public class LocationIslandController : MonoBehaviour
 
     private static void WitchRemoved(RemoveTokenHandlerPOP.RemoveEventData removeData)
     {
+        Debug.Log("Trying to Remove Token");
         if (m_LocationData.tokens.ContainsKey2(removeData.instance))
         {
             int popIndex = removeData.island * 3 + removeData.position;
@@ -139,9 +149,31 @@ public class LocationIslandController : MonoBehaviour
             m_LocationData.tokens.Remove(popIndex, removeData.instance);
             if (isInBattle)
             {
+                Debug.Log("Removing Token");
                 instance.locationUnitSpawner.RemoveMarker(removeData.instance);
             }
         }
+    }
+
+    private static bool PreActivateGuardian()
+    {
+        int witchCount = 0;
+        foreach (var item in LocationUnitSpawner.Markers)
+        {
+            if (item.Value.Token.Type == MarkerManager.MarkerType.WITCH)
+            {
+                witchCount++;
+            }
+        }
+
+        if (witchCount < 4)
+        {
+            foreach (var item in locationIslands)
+            {
+                item.Value.SetSpiritConnection(true);
+            }
+        }
+        return witchCount < 4;
     }
 
     public static void ResumeBattle(string id)
@@ -163,8 +195,12 @@ public class LocationIslandController : MonoBehaviour
                       OnMapEnergyChange.OnPlayerDead += LoadPOPManager.UnloadScene;
                       OnMapEnergyChange.OnMarkerEnergyChange += LocationUnitSpawner.OnEnergyChange;
                       LocationBattleEnd.OnLocationBattleEnd += BattleStopPOP;
+                      RespawnSpiritPOP.OnSpiritRewspawn += instance.AddGuardianSpirit;
                       RewardHandlerPOP.LocationReward += OnReward;
                       instance.BattleBeginPOP(m_LocationData.spirit);
+
+
+
                       if (m_LocationData.spirit != null && m_LocationData.spirit.islands != null)
                       {
                           foreach (var item in m_LocationData.spirit.islands)
@@ -177,8 +213,6 @@ public class LocationIslandController : MonoBehaviour
             else
             {
                 Debug.Log(response);
-
-                // kick player out of pop
                 APIManager.Instance.Put($"place-of-power/leave", "{}", (s, r) =>
                 {
                     if (r == 200)
@@ -224,6 +258,8 @@ public class LocationIslandController : MonoBehaviour
                   await Task.Delay(2200);
                   LoadPOPManager.LoadScene(() =>
                   {
+
+                      RespawnSpiritPOP.OnSpiritRewspawn += instance.AddGuardianSpirit;
                       ExpireAstralHandler.OnExpireAstral += LocationUnitSpawner.DisableCloaking;
                       OnMapEnergyChange.OnPlayerDead += LoadPOPManager.UnloadScene;
                       OnMapEnergyChange.OnMarkerEnergyChange += LocationUnitSpawner.OnEnergyChange;

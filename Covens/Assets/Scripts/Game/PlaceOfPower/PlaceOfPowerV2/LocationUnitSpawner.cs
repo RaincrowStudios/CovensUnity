@@ -144,6 +144,7 @@ public class LocationUnitSpawner : MonoBehaviour
                 ShowSummonMsg(spiritToken);
                 go = m_SpiritPool.Spawn().gameObject;
                 go.name = "[spirit] " + spiritToken.spiritId + " [" + token.instance + "]";
+                LocationPlayerAction.OnSummon(spiritToken);
             }
             else if (token.Type == MarkerType.ENERGY)
             {
@@ -297,6 +298,7 @@ public class LocationUnitSpawner : MonoBehaviour
         if (Markers.ContainsKey(instance))
         {
             var marker = Markers[instance];
+            LocationPlayerAction.RemoveSummonedSpirit(instance);
 
             var go = m_DeathFXPool.Spawn().gameObject;
             go.transform.SetParent(Markers[instance].GameObject.transform.GetChild(0));
@@ -307,6 +309,7 @@ public class LocationUnitSpawner : MonoBehaviour
             marker.Interactable = false;
             if (remove)
                 Markers.Remove(instance);
+
             await Task.Delay(2000);
             LeanTween.scale(go, Vector3.zero, .4f).setOnComplete(() =>
           {
@@ -344,9 +347,9 @@ public class LocationUnitSpawner : MonoBehaviour
             Debug.Log("Showing Death Notification1");
             string casterType, casterName, targetType, targetName;
             casterType = data.caster.type;
-            casterName = data.caster.type == "witch" ? data.caster.name : DownloadedAssets.spiritDict[data.caster.name].Name;
+            casterName = data.caster.type == "character" ? data.caster.name : DownloadedAssets.spiritDict[data.caster.name].Name;
             targetType = data.target.type;
-            targetName = data.target.type == "witch" ? data.target.name : DownloadedAssets.spiritDict[data.target.name].Name;
+            targetName = data.target.type == "character" ? data.target.name : DownloadedAssets.spiritDict[data.target.name].Name;
             string msg = String.Format("The {0} {1} has been <color=red>defeated</color> by {2} {3}.", targetType, targetName, casterType, casterName);
             Debug.Log(msg);
             PlayerNotificationManager.Instance.ShowNotification(msg);

@@ -10,6 +10,7 @@ public class LocationActionButton : MonoBehaviour
     [SerializeField] private Image m_Progress;
     [SerializeField] private Image m_BtnImg;
     [SerializeField] private Button m_Btn;
+    [SerializeField] private GameObject m_locked;
     // System.Action m_OnClick;
     public bool isInteractable
     {
@@ -20,9 +21,15 @@ public class LocationActionButton : MonoBehaviour
     {
     }
 
+    public void SetLock(bool locked)
+    {
+        m_locked.SetActive(locked);
+    }
+
     public void Setup(int cooldown, Sprite sprite, System.Action onClick, bool isCloak = false)
     {
         // m_OnClick = onClick;
+        SetLock(false);
         m_Progress.fillAmount = 0;
         m_BtnImg.sprite = sprite;
         m_Btn.interactable = true;

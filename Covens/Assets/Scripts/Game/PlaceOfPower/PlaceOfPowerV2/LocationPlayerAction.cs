@@ -40,6 +40,27 @@ public class LocationPlayerAction : MonoBehaviour
     public static WitchToken playerWitchToken => playerMarker.Token as WitchToken;
     public static bool isCloaked { get; private set; }
 
+    private static SpiritToken summonedSpirit;
+
+    public static void OnSummon(SpiritToken spirit)
+    {
+        if (spirit.owner == playerWitchToken.instance)
+        {
+            summonedSpirit = spirit;
+            m_BtnArr[2].SetLock(true);
+        }
+
+    }
+
+    public static void RemoveSummonedSpirit(string instance)
+    {
+        if (instance == summonedSpirit.instance)
+        {
+            summonedSpirit = null;
+            m_BtnArr[2].SetLock(false);
+        }
+    }
+
     public static void UpdateEnergy(int energy)
     {
         Instance.m_EnergySlider.maxValue = PlayerDataManager.playerData.baseEnergy;
@@ -170,8 +191,8 @@ public class LocationPlayerAction : MonoBehaviour
                           foreach (var item in LocationUnitSpawner.Markers)
                           {
                               item.Value.ScaleNamePlate(false, .5f);
-                          //   item.Value.EnergyRingFade(1, .5f);
-                      }
+                              //   item.Value.EnergyRingFade(1, .5f);
+                          }
                       }
                       else
                       {
@@ -332,7 +353,7 @@ public class LocationPlayerAction : MonoBehaviour
                     if (m_BtnArr[0].gameObject.activeInHierarchy)
                     {
                         m_BtnArr[0].gameObject.SetActive(false);
-                        if (Instance.transform != null)
+                        if (Instance != null && Instance.transform != null)
                             m_BtnArr[0].transform.SetParent(Instance.transform);
                     }
                 });
