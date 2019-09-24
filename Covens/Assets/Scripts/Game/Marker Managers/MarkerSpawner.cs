@@ -161,10 +161,6 @@ public class MarkerSpawner : MarkerManager
         }
         else if (Data.Type == MarkerType.PLACE_OF_POWER)
         {
-#if UNITY_EDITOR
-            Debug.Log("<color=red>place of power disabled</color>");
-#endif
-            return null;
             go = m_PopPool.Spawn().gameObject;
             go.name = $"[PlaceOfPower] {Data.instance}";
         }
