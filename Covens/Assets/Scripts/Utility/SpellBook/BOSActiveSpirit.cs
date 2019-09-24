@@ -49,10 +49,15 @@ public class BOSActiveSpirit : MonoBehaviour
             items.Add(Utilities.InstantiateObject(prefab, container).GetComponent<BOSActiveSpiritItem>());
         }
 
-        for(int i = 0; i < items.Count; i++)
+        for (int i = 0; i < items.Count; i++)
         {
             items[i].Setup(spirits[i]);
             yield return 0;
+        }
+        if (spirits.Length == 0)
+        {
+            m_Error.text = LocalizeLookUp.GetText("card_witch_noCoven");
+            m_Error.gameObject.SetActive(true);
         }
     }
 

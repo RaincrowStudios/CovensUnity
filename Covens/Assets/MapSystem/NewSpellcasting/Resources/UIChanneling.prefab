@@ -354,6 +354,7 @@ GameObject:
   - component: {fileID: 1795170631794302390}
   - component: {fileID: 1795170631794302391}
   - component: {fileID: 1795170631794302384}
+  - component: {fileID: 4329183636441467075}
   m_Layer: 0
   m_Name: StopChanneling
   m_TagString: Untagged
@@ -546,6 +547,21 @@ MonoBehaviour:
   - {fileID: 0}
   m_baseMaterial: {fileID: 0}
   m_maskOffset: {x: 0, y: 0, z: 0, w: 0}
+--- !u!114 &4329183636441467075
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1795170631794302386}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 64a59a015644a4f44b632497e81f3cc7, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  prefix: 
+  id: generic_stop
+  suffix: 
 --- !u!1 &1795868342701291050
 GameObject:
   m_ObjectHideFlags: 0
