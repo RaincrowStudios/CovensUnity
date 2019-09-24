@@ -30,6 +30,7 @@ public class LocationPOPInfo : UIInfoPanel
     [SerializeField] private TextMeshProUGUI m_PlayerJoinedTitle;
     [SerializeField] private TextMeshProUGUI m_PlayerJoinedSubtitle;
     [SerializeField] private Image m_PlayerJoinedColor;
+    [SerializeField] private GameObject m_FTFEnter;
 
     private Dictionary<string, Sprite> m_LocationImagesCache = new Dictionary<string, Sprite>();
 
@@ -67,6 +68,7 @@ public class LocationPOPInfo : UIInfoPanel
 
     public void Show(LocationViewData data)
     {
+        m_FTFEnter.SetActive(false);
         StartCoroutine(DownloadThumb(data.name));
         m_LocationViewData = data;
         LocationIslandController.OnWitchEnter += AddWitch;
@@ -82,6 +84,20 @@ public class LocationPOPInfo : UIInfoPanel
         base.Show();
         ShowUI();
     }
+
+    public void FTFOpen()
+    {
+        //m_Enter.gameObject.SetActive(false);
+        m_Locked.SetActive(false);
+        m_TimeCG.gameObject.SetActive(false);
+        m_Content.text = "There is a battle going on in this place of power, check back later";
+
+        m_Enter.color = m_EnoughSilver;
+        m_EnterBtn.onClick.RemoveAllListeners();
+        m_Enter.gameObject.SetActive(false);
+        m_FTFEnter.SetActive(true);
+    }
+
     private void ShowUI(bool disableInit = false)
     {
         SoundManagerOneShot.Instance.SummonRiser();

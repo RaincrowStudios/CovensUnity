@@ -41,7 +41,7 @@ public class LoadPOPManager : MonoBehaviour
         // }
     }
 
-    public static void EnterPOP(string id)
+    public static void EnterPOP(string id, System.Action onLoad = null)
     {
         Debug.Log(id);
         if (Instance.map == null)
@@ -66,7 +66,7 @@ public class LoadPOPManager : MonoBehaviour
                   {
                       Debug.Log(result);
                   }
-
+                  onLoad?.Invoke();
               });
         });
     }
