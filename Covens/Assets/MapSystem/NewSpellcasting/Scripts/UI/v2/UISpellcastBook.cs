@@ -54,6 +54,7 @@ public class UISpellcastBook : MonoBehaviour//, IEnhancedScrollerDelegate
     private System.Action m_OnClose;
 
     private int m_MoveTweenId;
+    private int m_AlphaTweenId;
 
     [Header("Unity scroll")]
     [SerializeField] private ScrollRect m_ScrollRect;
@@ -144,6 +145,9 @@ public class UISpellcastBook : MonoBehaviour//, IEnhancedScrollerDelegate
 
         //m_Scroller.ClearAll();
         m_CardPool.DestroyAll();
+        LeanTween.cancel(m_AlphaTweenId);
+        LeanTween.cancel(m_MoveTweenId);
+        LeanTween.cancel(m_FocusTweenId);
         SceneManager.UnloadScene(SceneManager.Scene.SPELLCAST_BOOK, null, null);
     }
 
@@ -226,22 +230,25 @@ public class UISpellcastBook : MonoBehaviour//, IEnhancedScrollerDelegate
         SoundManagerOneShot.Instance.PlayWooshShort();
 
         LeanTween.cancel(m_MoveTweenId);
+        LeanTween.cancel(m_AlphaTweenId);
+
         m_MoveTweenId = LeanTween.value(Container.anchoredPosition.x, 0, 0.5f)
             .setEase(LeanTweenType.easeInCubic)
             .setOnUpdate((float x) => Container.anchoredPosition = new Vector3(x, 0, 0))
             .uniqueId;
-        //LeanTween.moveLocalX(Container.gameObject, 0f, 0.5f).setEase(LeanTweenType.easeInCubic);
-        LeanTween.value(0f, 1f, 0.45f).setOnComplete(() =>
+
+        m_AlphaTweenId = LeanTween.value(0f, 1f, 0.45f).setOnComplete(() =>
         {
-            LeanTween.alphaCanvas(m_ScrollerCanvasGroup, 1f, 1f);
-        });
+            m_AlphaTweenId = LeanTween.alphaCanvas(m_ScrollerCanvasGroup, 1f, 1f).uniqueId;
+        })
+        .uniqueId;
     }
     private void AnimClose()
     {
         SoundManagerOneShot.Instance.PlayWhisperFX();
-        LeanTween.alphaCanvas(m_ScrollerCanvasGroup, 0f, 0.4f);
+        LeanTween.cancel(m_AlphaTweenId);
+        m_AlphaTweenId = LeanTween.alphaCanvas(m_ScrollerCanvasGroup, 0f, 0.4f).uniqueId;
 
-        //LeanTween.moveLocalX(Container.gameObject, 1308, 0.5f).setEase(LeanTweenType.easeInCubic).setOnComplete(() => { m_Canvas.enabled = false; });
         LeanTween.cancel(m_MoveTweenId);
         m_MoveTweenId = LeanTween.value(Container.anchoredPosition.x, Container.rect.width + 50, 0.5f)
             .setEase(LeanTweenType.easeInCubic)
