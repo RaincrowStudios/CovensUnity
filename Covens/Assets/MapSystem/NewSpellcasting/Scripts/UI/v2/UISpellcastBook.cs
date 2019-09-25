@@ -189,6 +189,7 @@ public class UISpellcastBook : MonoBehaviour//, IEnhancedScrollerDelegate
 
         SpellCastHandler.OnPlayerTargeted += SpellCastHandler_OnPlayerTargeted;
         OnMapEnergyChange.OnEnergyChange += OnMapEnergyChange_OnEnergyChange;
+        RemoveTokenHandler.OnTokenRemove += OnMapTokenRemove;
     }
 
     private void OnMapEnergyChange_OnEnergyChange(string character, int energy)
@@ -202,6 +203,17 @@ public class UISpellcastBook : MonoBehaviour//, IEnhancedScrollerDelegate
             m_TargetMarker.Type == MarkerManager.MarkerType.SPIRIT ? new int?() : (m_TargetMarker as WitchMarker).witchToken.degree);
 
         UpdateCanCast();
+    }
+
+    private void OnMapTokenRemove(string id)
+    {
+        if (m_TargetMarker == null)
+            return;
+
+        if (id != m_TargetMarker.Token.instance)
+            return;
+
+        Close();
     }
 
     private void SpellCastHandler_OnPlayerTargeted(string attacker, SpellData spell, SpellCastHandler.Result Result)
@@ -260,6 +272,7 @@ public class UISpellcastBook : MonoBehaviour//, IEnhancedScrollerDelegate
     {
         SpellCastHandler.OnPlayerTargeted -= SpellCastHandler_OnPlayerTargeted;
         OnMapEnergyChange.OnEnergyChange -= OnMapEnergyChange_OnEnergyChange;
+        RemoveTokenHandler.OnTokenRemove -= OnMapTokenRemove;
 
         AnimClose();
         //m_Canvas.enabled = false;

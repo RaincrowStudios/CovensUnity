@@ -209,6 +209,9 @@ public class UISpellcard : MonoBehaviour// : EnhancedScrollerCellView
 
         foreach (string ingr in requiredIngredients)
         {
+            if (ingr == null)
+                return;
+
             var data = DownloadedAssets.GetCollectable(ingr);
             if (data.Type == IngredientType.gem)
             {
