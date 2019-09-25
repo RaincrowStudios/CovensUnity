@@ -329,10 +329,10 @@ public class LocationPlayerAction : MonoBehaviour
     public static void HideActions()
     {
         UIQuickCast.EnableQuickcastButtons(true);
-        Debug.Log(m_BtnArr.Length);
+        // Debug.Log(m_BtnArr.Length);
         for (int i = 0; i < m_BtnArr.Length; i++)
         {
-            if (m_BtnArr[i].gameObject.activeInHierarchy)
+            if (m_BtnArr[i] != null && m_BtnArr[i].gameObject.activeInHierarchy)
             {
                 m_BtnArr[i].gameObject.SetActive(false);
                 m_BtnArr[i].transform.SetParent(Instance.transform);
