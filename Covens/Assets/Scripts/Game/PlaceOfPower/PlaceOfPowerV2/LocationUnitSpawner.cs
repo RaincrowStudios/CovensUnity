@@ -116,7 +116,7 @@ public class LocationUnitSpawner : MonoBehaviour
     private void ShowSummonMsg(SpiritToken spiritToken)
     {
 
-        if (spiritToken.popIndex != -1 && witchNames.ContainsKey(spiritToken.owner))
+        if (spiritToken.popIndex != -1 && spiritToken.owner != null && witchNames.ContainsKey(spiritToken.owner))
         {
             PlayerNotificationManager.Instance.ShowNotification($"{witchNames[spiritToken.owner]} has summoned <color=#00C5FF>{DownloadedAssets.spiritDict[spiritToken.spiritId].Name}</color>.");
         }

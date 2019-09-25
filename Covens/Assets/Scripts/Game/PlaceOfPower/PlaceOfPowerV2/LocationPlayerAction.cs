@@ -210,7 +210,8 @@ public class LocationPlayerAction : MonoBehaviour
     {
         foreach (var item in m_CloakUIDisable)
         {
-            item.alpha = v;
+            if (item != null)
+                item.alpha = v;
         }
         m_CloakUI.gameObject.SetActive(true);
         m_CloakUI.alpha = Mathf.Lerp(1, 0, v);

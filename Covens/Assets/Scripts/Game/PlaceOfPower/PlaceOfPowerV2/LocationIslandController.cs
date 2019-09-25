@@ -94,6 +94,7 @@ public class LocationIslandController : MonoBehaviour
 
     private void AddGuardianSpirit(SpiritToken spiritToken)
     {
+        Debug.Log("<color=green>ADDING GUARDIAN SPIRIT</color>");
         locationUnitSpawner.AddMarker(spiritToken);
     }
 
