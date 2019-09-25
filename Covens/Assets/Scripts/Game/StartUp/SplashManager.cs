@@ -298,9 +298,10 @@ public class SplashManager : MonoBehaviour
         {
             if (Input.GetMouseButtonDown(0))
             {
-                LeanTween.alphaCanvas(m_HintScreen, 0, 0.25f)
+                m_HintTweenId = LeanTween.alphaCanvas(m_HintScreen, 0, 0.25f)
                     .setEaseOutCubic()
-                    .setOnComplete(ShowNewHint);
+                    .setOnComplete(ShowNewHint)
+                    .uniqueId;
                 //HideHints(0.5f, ShowNewHint);
             }
             yield return 0;

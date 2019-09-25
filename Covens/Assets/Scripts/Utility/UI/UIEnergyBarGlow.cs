@@ -6,11 +6,12 @@ using UnityEngine.UI;
 public class UIEnergyBarGlow : MonoBehaviour
 {
     public static UIEnergyBarGlow Instance { get; set; }
-    // Use this for initialization
-    void Start()
+
+    void Awake()
     {
         Instance = this;
     }
+
     public void Glow()
     {
         var y = this.GetComponent<CanvasGroup>();
@@ -25,7 +26,6 @@ public class UIEnergyBarGlow : MonoBehaviour
         }
     }
 
-    // Update is called once per frame
     void Countup()
     {
         var y = this.GetComponent<CanvasGroup>();

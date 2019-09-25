@@ -110,4 +110,9 @@ public class UIConditionList : MonoBehaviour
             }
         }
     }
+
+    private void OnDestroy()
+    {
+        m_ItemPool.DestroyAll();
+    }
 }

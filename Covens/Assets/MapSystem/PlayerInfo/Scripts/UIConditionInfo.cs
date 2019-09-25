@@ -55,7 +55,8 @@ public class UIConditionInfo : MonoBehaviour
     {
         ConditionData condition = DownloadedAssets.GetCondition(conditionId);
         SpellData spell = DownloadedAssets.GetSpell(condition.spellID);
-        Show(spell.Name, LocalizeLookUp.GetConditionDesc(conditionId), referencePosition, pivot, oldCanvas);
+
+        Show(spell != null ? spell.Name : LocalizeLookUp.GetText(conditionId), LocalizeLookUp.GetConditionDesc(conditionId), referencePosition, pivot, oldCanvas);
     }
 
     public void Show(string title, string description, RectTransform parent, Vector2 pivot, bool oldCanvas = false)

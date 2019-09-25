@@ -323,8 +323,19 @@ public class UISummoning : MonoBehaviour
         int spiritIdx = m_CurrentIndex;
         SpiritData spirit = m_SpiritsByTier[m_CurrentTier - 1][spiritIdx];
 
+
         m_SpiritName.text = spirit.Name;
-        m_SpiritBehavior.text = spirit.Behavior;
+        var m_zone = "";
+        foreach (var item in spirit.zones)
+        {
+            m_zone = LocalizeLookUp.GetZoneName(item);
+            break;
+        }
+        m_SpiritBehavior.text = LocalizeLookUp.GetText("spirit_behavior")
+        .Replace("{{type}}", LocalizeLookUp.GetText("spirit_type_" + spirit.type))
+        .Replace("{{behavior}}", LocalizeLookUp.GetText("spirit_behavior_" + spirit.type))
+        .Replace("{{zone}}", m_zone);
+
         m_Required.text = LocalizeLookUp.GetText("pop_required_ingredients").Replace(" {{ingredient}}", ":");
         if (string.IsNullOrEmpty(spirit.herb) && string.IsNullOrEmpty(spirit.tool) && string.IsNullOrEmpty(spirit.gem))
         {
@@ -336,43 +347,6 @@ public class UISummoning : MonoBehaviour
             IngredientStringSetup(spirit.gem);
             IngredientStringSetup(spirit.herb);
             IngredientStringSetup(spirit.tool);
-            /*if (!string.IsNullOrEmpty(spirit.gem))
-            {
-                m_SpiritRequiredIngredients.text += string.Concat(LocalizeLookUp.GetCollectableName(spirit.gem), " ({}/1)");
-                if (PlayerDataManager.playerData.GetIngredient(spirit.gem) == 0)
-                {
-                    m_SpiritRequiredIngredients.text = m_SpiritRequiredIngredients.text.Replace("({}/1)", "<color=red>(0/1)</color>");
-                }
-                else { m_SpiritRequiredIngredients.text = m_SpiritRequiredIngredients.text.Replace("{}", string.Concat("<b>", PlayerDataManager.playerData.GetIngredient(spirit.gem).ToString(), "</b>")); }
-            }
-            if (!string.IsNullOrEmpty(spirit.herb))
-            {
-                if (m_SpiritRequiredIngredients.text != "")
-                {
-                    m_SpiritRequiredIngredients.text += "\n";
-                }
-                m_SpiritRequiredIngredients.text += string.Concat(LocalizeLookUp.GetCollectableName(spirit.herb), " ({}/1)");
-                if (PlayerDataManager.playerData.GetIngredient(spirit.herb) == 0)
-                {
-                    m_SpiritRequiredIngredients.text = m_SpiritRequiredIngredients.text.Replace("({}/1)", "<color=red>(0/1)</color>");
-                }
-                else { m_SpiritRequiredIngredients.text = m_SpiritRequiredIngredients.text.Replace("{}", string.Concat("<b>", PlayerDataManager.playerData.GetIngredient(spirit.herb).ToString(), "</b>")); }
-                //(string.IsNullOrEmpty(m_SpiritRequiredIngredients.text) ? "" : ", ") + LocalizeLookUp.GetCollectableName(spirit.herb);
-            }
-            if (!string.IsNullOrEmpty(spirit.tool))
-            {
-                if (m_SpiritRequiredIngredients.text != "")
-                {
-                    m_SpiritRequiredIngredients.text += "\n";
-                }
-                m_SpiritRequiredIngredients.text += string.Concat(LocalizeLookUp.GetCollectableName(spirit.tool), " ({}/1)");
-                if (PlayerDataManager.playerData.GetIngredient(spirit.tool) == 0)
-                {
-                    m_SpiritRequiredIngredients.text = m_SpiritRequiredIngredients.text.Replace("({}/1)", "<color=red>(0/1)</color>");
-                }
-                else { m_SpiritRequiredIngredients.text = m_SpiritRequiredIngredients.text.Replace("{}", string.Concat("<b>", PlayerDataManager.playerData.GetIngredient(spirit.tool).ToString(), "</b>")); }
-            }*/
-            //m_SpiritRequiredIngredients.text += (string.IsNullOrEmpty(m_SpiritRequiredIngredients.text) ? "" : ", ") + LocalizeLookUp.GetCollectableName(spirit.tool);
         }
 
 

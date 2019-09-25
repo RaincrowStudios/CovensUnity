@@ -100,4 +100,10 @@ public class UIConditionItem : MonoBehaviour
             yield return new WaitForSeconds(1f);
         }
     }
+
+    private void OnDestroy()
+    {
+        if (condition != null)
+            condition.CancelExpiration();
+    }
 }

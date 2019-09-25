@@ -155,6 +155,11 @@ public class DownloadedAssets : MonoBehaviour
         if (type == "spell")
         {
             SpellData spell = GetSpell(id);
+            if (spell == null)
+            {
+                callback?.Invoke(null);
+                yield break;
+            }
             id = spell.glyph.ToString();
         }
 
@@ -283,7 +288,7 @@ public class DownloadedAssets : MonoBehaviour
             Debug.LogError($"Condition \"{id}\" not found.");
             return new ConditionData
             {
-                spellID = "?"
+                spellID = id
             };
         }
     }
