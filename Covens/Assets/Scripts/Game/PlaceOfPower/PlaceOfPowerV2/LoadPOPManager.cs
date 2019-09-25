@@ -103,7 +103,8 @@ public class LoadPOPManager : MonoBehaviour
         {
             sceneLoaded = false;
             var t = LocationExitInfo.Instance;
-            UIQuickCast.Close();
+            if (UIQuickCast.IsOpen)
+                UIQuickCast.Close();
             t.ShowUI();
             LoginAPIManager.GetCharacter((s, r) =>
           {

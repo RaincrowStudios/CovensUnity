@@ -55,7 +55,6 @@ public class LocationPlayerAction : MonoBehaviour
 
     public static void RemoveSummonedSpirit(string instance)
     {
-
         if (summonedSpirit != null && instance == summonedSpirit.instance)
         {
             summonedSpirit = null;

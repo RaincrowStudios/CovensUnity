@@ -319,20 +319,16 @@ public class LocationUnitSpawner : MonoBehaviour
               else if (marker.Type == MarkerType.SPIRIT) m_SpiritPool.Despawn(marker.GameObject.transform);
               else throw new NotImplementedException("Unhandled Marker Type: " + marker.Type);
           });
-
-
             // await Task.Delay(1000);
-
         }
     }
 
-    public static void RemoveMarker(SpellCastEventData data)
+    public static void ShowDeathNotification(SpellCastEventData data)
     {
-        Instance.RemoveMarker(data.target.id);
-        Instance.ShowDeathNotification(data);
+        Instance.ShowDeathNotificationHelper(data);
     }
 
-    private void ShowDeathNotification(SpellCastEventData data)
+    private void ShowDeathNotificationHelper(SpellCastEventData data)
     {
         StartCoroutine(ShowDeathMsg(data));
     }

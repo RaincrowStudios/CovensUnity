@@ -113,6 +113,16 @@ public class LocationIslandController : MonoBehaviour
         }
     }
 
+    private static void HandleEnergyZero(string id, int energy)
+    {
+        if (LocationUnitSpawner.Markers.ContainsKey(id))
+        {
+            LocationUnitSpawner.Markers[id].UpdateEnergy();
+        }
+        if (energy == 0)
+            instance.locationUnitSpawner.RemoveMarker(id);
+    }
+
     public static void BattleStopPOP()
     {
         OnExitLocation?.Invoke();
@@ -123,6 +133,7 @@ public class LocationIslandController : MonoBehaviour
         LocationBattleEnd.OnLocationBattleEnd -= BattleStopPOP;
         ExpireAstralHandler.OnExpireAstral -= LocationUnitSpawner.DisableCloaking;
         RespawnSpiritPOP.OnSpiritRewspawn -= instance.AddGuardianSpirit;
+        OnMapEnergyChange.OnEnergyChange -= HandleEnergyZero;
         isInBattle = false;
         PlayerDataManager.playerData.insidePlaceOfPower = false;
     }
@@ -198,8 +209,7 @@ public class LocationIslandController : MonoBehaviour
                       RespawnSpiritPOP.OnSpiritRewspawn += instance.AddGuardianSpirit;
                       RewardHandlerPOP.LocationReward += OnReward;
                       instance.BattleBeginPOP(m_LocationData.spirit);
-
-
+                      OnMapEnergyChange.OnEnergyChange += HandleEnergyZero;
 
                       if (m_LocationData.spirit != null && m_LocationData.spirit.islands != null)
                       {
@@ -265,6 +275,8 @@ public class LocationIslandController : MonoBehaviour
                       OnMapEnergyChange.OnMarkerEnergyChange += LocationUnitSpawner.OnEnergyChange;
                       LocationBattleEnd.OnLocationBattleEnd += BattleStopPOP;
                       RewardHandlerPOP.LocationReward += OnReward;
+                      OnMapEnergyChange.OnEnergyChange += HandleEnergyZero;
+
                       if (preInitializedSpirit != null)
                       {
                           Debug.Log("PRE INTIALIZED");

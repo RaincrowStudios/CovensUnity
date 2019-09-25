@@ -97,7 +97,7 @@ namespace Raincrow.GameEventResponses
                 }
                 if (data.target.energy == 0)
                 {
-                    LocationUnitSpawner.RemoveMarker(data);
+                    LocationUnitSpawner.ShowDeathNotification(data);
                 }
             }
 
