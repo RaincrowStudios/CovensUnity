@@ -47,7 +47,7 @@ public static class OnMapEnergyChange
                 return;
 
             marker.Token.lastEnergyUpdate = timestamp;
-            energy = player.energy = Mathf.Clamp(newEnergy, 0, player.maxEnergy);
+            energy = (marker.Token as CharacterToken).energy = player.energy = Mathf.Clamp(newEnergy, 0, player.maxEnergy);
             string previousState = player.state;
             player.state = newState;
 

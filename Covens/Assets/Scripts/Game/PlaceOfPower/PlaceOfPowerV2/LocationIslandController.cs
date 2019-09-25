@@ -115,12 +115,17 @@ public class LocationIslandController : MonoBehaviour
 
     private static void HandleEnergyZero(string id, int energy)
     {
-        if (LocationUnitSpawner.Markers.ContainsKey(id))
+        if (id == PlayerDataManager.playerData.instance) //update the players energy
+        {
+            LocationPlayerAction.playerMarker.UpdateEnergy();
+        }
+        else if (LocationUnitSpawner.Markers.ContainsKey(id))
         {
             LocationUnitSpawner.Markers[id].UpdateEnergy();
+
+            if (energy == 0)
+                instance.locationUnitSpawner.RemoveMarker(id);
         }
-        if (energy == 0)
-            instance.locationUnitSpawner.RemoveMarker(id);
     }
 
     public static void BattleStopPOP()
