@@ -155,6 +155,11 @@ public class DownloadedAssets : MonoBehaviour
         if (type == "spell")
         {
             SpellData spell = GetSpell(id);
+            if (spell == null)
+            {
+                callback?.Invoke(null);
+                yield break;
+            }
             id = spell.glyph.ToString();
         }
 
