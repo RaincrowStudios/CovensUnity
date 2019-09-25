@@ -57,7 +57,7 @@ public struct DailyRewards
     public int silver;
     public int energy;
     public int gold;
-
+    public StatusEffect effect;
 }
 
 public class Condition

@@ -191,6 +191,9 @@ public static class QuestsController
                     PlayerDataManager.playerData.gold += rewards.gold;
                     PlayerDataManager.playerData.AddEnergy(rewards.energy);
 
+                    if (rewards.effect != null)
+                        ConditionManager.AddCondition(rewards.effect, PlayerManager.marker);
+
                     if (PlayerDataManager.Instance != null)
                     {
                         PlayerManagerUI.Instance.UpdateDrachs();

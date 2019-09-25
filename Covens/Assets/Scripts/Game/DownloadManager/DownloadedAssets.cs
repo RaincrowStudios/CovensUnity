@@ -283,7 +283,7 @@ public class DownloadedAssets : MonoBehaviour
             Debug.LogError($"Condition \"{id}\" not found.");
             return new ConditionData
             {
-                spellID = "?"
+                spellID = id
             };
         }
     }
