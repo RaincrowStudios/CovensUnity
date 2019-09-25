@@ -143,6 +143,7 @@ public class GetGPS : MonoBehaviour
 
                     errorText.GetComponent<LocalizeLookUp>().id = "location_error";
                     GPSicon.SetActive(true);
+                    locationError.SetActive(true);
                     WifiIccon.SetActive(false);
                     errorText.text = "Please turn on your location and try again.";
 
@@ -154,7 +155,7 @@ public class GetGPS : MonoBehaviour
                     //try again
                     Debug.Log("6. Starting location server.");
                     Input.location.Start();
-                    yield return 0;
+                    yield return new WaitForSeconds(1);
                 }
             }
             locationError.SetActive(false);
