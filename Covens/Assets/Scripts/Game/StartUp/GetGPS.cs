@@ -100,6 +100,8 @@ public class GetGPS : MonoBehaviour
 
         if (Application.isEditor == false)
         {
+            Debug.Log("1. Location enabled by user: " + Input.location.isEnabledByUser);
+
             //if not enabled, wait for the user to enable it
             while (Input.location.isEnabledByUser == false)
             {
@@ -113,6 +115,7 @@ public class GetGPS : MonoBehaviour
             locationError.SetActive(false);
 
             // Start service before querying location
+            Debug.Log("2. Starting location service");
             Input.location.Start();
             yield return 0;
 
@@ -120,11 +123,14 @@ public class GetGPS : MonoBehaviour
             bool fail = Input.location.status != LocationServiceStatus.Running;
             while (fail)
             {
-                int maxWait = 20;
+                Debug.Log("3. Location status: " + Input.location.status.ToString());
+
+                int maxWait = 5;
                 while (Input.location.status == LocationServiceStatus.Initializing && maxWait > 0)
                 {
                     yield return new WaitForSeconds(1);
                     maxWait--;
+                    Debug.Log("4. Waiting for location service: " + Input.location.status.ToString() + "(" + maxWait + ")");
                 }
 
                 // Service didn't initialize in 20 seconds
@@ -137,16 +143,19 @@ public class GetGPS : MonoBehaviour
 
                     errorText.GetComponent<LocalizeLookUp>().id = "location_error";
                     GPSicon.SetActive(true);
+                    locationError.SetActive(true);
                     WifiIccon.SetActive(false);
                     errorText.text = "Please turn on your location and try again.";
 
                     //in case location was disabled
+                    Debug.Log("5. Location enabled by user: " + Input.location.isEnabledByUser);
                     while (Input.location.isEnabledByUser == false)
                         yield return new WaitForSeconds(1f);
 
                     //try again
+                    Debug.Log("6. Starting location server.");
                     Input.location.Start();
-                    yield return 0;
+                    yield return new WaitForSeconds(1);
                 }
             }
             locationError.SetActive(false);
@@ -159,6 +168,8 @@ public class GetGPS : MonoBehaviour
             Debug.Log("[EDITOR] Skipping location check");
             yield return new WaitForSeconds(1f);
         }
+
+        Debug.Log("7. Location status: " + Input.location.status.ToString());
 
         OnInitialized?.Invoke();
         StartCoroutine(CheckStatus());
