@@ -11,6 +11,8 @@ public class RespawnSpiritPOP : IGameEventHandler
     public void HandleResponse(string eventData)
     {
         SpiritToken data = JsonConvert.DeserializeObject<SpiritToken>(eventData);
+        data.island = -1;
+        data.position = -1;
         OnSpiritRewspawn?.Invoke(data);
     }
 }
