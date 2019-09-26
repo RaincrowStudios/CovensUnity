@@ -18,6 +18,7 @@ public class FTFManager : MonoBehaviour
     [SerializeField] private FTFMessageBox m_TopMessage;
     [SerializeField] private FTFPointerHand m_Pointer;
     [SerializeField] private FTFSpawn m_FXSpawner;
+    [SerializeField] private Image m_InputBlocker;
 
     [Header("Savannah")]
     [SerializeField] private Animator m_Savannah;
@@ -733,39 +734,35 @@ public class FTFManager : MonoBehaviour
         yield return 0;
     }
 
-    private IEnumerator OpenFakePoP()
+    private IEnumerator OpenFTFPoP()
     {
-        string sceneName = "PlaceOfPowerFTF";
-        bool done = false;
+        string sceneName = "PlaceOfPowerFTF2";
 
         LoadingOverlay.Show();
         AsyncOperation op = UnityEngine.SceneManagement.SceneManager.LoadSceneAsync(sceneName, UnityEngine.SceneManagement.LoadSceneMode.Additive);
+        bool done = false;
         op.completed += (a) => done = true;
         op.allowSceneActivation = true;
+        
+        while (!done)
+            yield return 0;
 
+        m_InputBlocker.enabled = false;
         MapsAPI.Instance.HideMap(true);
-        //MapsAPI.Instance.ScaleBuildings(0);
+        LoadingOverlay.Hide();
+
+        done = false;
+        FTFLocationController.OnVideoCompleted += () => done = true;
 
         while (!done)
             yield return 0;
-        
-        LoadingOverlay.Hide();
-    }
 
-    private IEnumerator CloseFakePoP()
-    {
-        string sceneName = "PlaceOfPowerFTF";
-        bool done = false;
-
-        AsyncOperation op = UnityEngine.SceneManagement.SceneManager.UnloadSceneAsync(sceneName);
+        op = UnityEngine.SceneManagement.SceneManager.UnloadSceneAsync(sceneName);
         op.completed += (a) => done = true;
         op.allowSceneActivation = true;
 
         MapsAPI.Instance.HideMap(false);
-        //MapsAPI.Instance.ScaleBuildings(1);
-
-        while (!done)
-            yield return 0;
+        m_InputBlocker.enabled = true;
     }
 
     private IEnumerator FlyToNearbyPoP()

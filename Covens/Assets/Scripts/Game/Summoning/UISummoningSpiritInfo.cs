@@ -76,7 +76,7 @@ public class UISummoningSpiritInfo : MonoBehaviour
         DownloadedAssets.GetSprite(spirit.id, spr =>
         {
             if (m_SpiritArt != null)
-                m_SpiritArt.sprite = spr;
+                m_SpiritArt.overrideSprite = spr;
         });
     }
 

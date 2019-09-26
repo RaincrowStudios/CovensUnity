@@ -29,6 +29,9 @@ public class FTFLocationController : MonoBehaviour
     public TextMeshProUGUI dialogueTxt;
     public GameObject videoFX;
     bool shouldRotate = true;
+
+    public static event System.Action OnVideoCompleted;
+
     // Start is called before the first frame update
     void Start()
     {
@@ -78,6 +81,7 @@ public class FTFLocationController : MonoBehaviour
                 LeanTween.cancel(id);
                 Time.timeScale = 1;
                 shouldRotate = false;
+                id = LeanTween.value(0, 0, 8).setOnComplete(() => OnVideoCompleted?.Invoke()).uniqueId;
             });
 
         });

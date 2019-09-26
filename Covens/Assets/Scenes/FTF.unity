@@ -16469,6 +16469,7 @@ MonoBehaviour:
   m_TopMessage: {fileID: 427785839}
   m_Pointer: {fileID: 8342175198585656154}
   m_FXSpawner: {fileID: 45321931}
+  m_InputBlocker: {fileID: 1496331526}
   m_Savannah: {fileID: 3187979945570501265}
   m_SavannahCanvasGroup: {fileID: 3335922224563657905}
   m_Fortuna: {fileID: 1610592917}
@@ -32778,3 +32779,4 @@ MonoBehaviour:
   m_Canvas: {fileID: 1796062644109268796}
   m_RectTransform: {fileID: 224500816155013762}
   m_CanvasGroup: {fileID: 4335546328929414664}
+  m_Animate: 1
