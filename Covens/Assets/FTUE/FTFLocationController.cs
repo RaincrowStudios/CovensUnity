@@ -16,6 +16,7 @@ public class FTFLocationController : MonoBehaviour
     public Transform[] trail;
     public Transform[] hits;
     public Transform[] charge;
+    public GameObject[] highlights;
     public TextMeshPro textPopUp;
     public Camera camera;
     public Transform cameraRotation;
@@ -57,6 +58,8 @@ public class FTFLocationController : MonoBehaviour
     {
         yield return new WaitForSeconds(1);
         spiritFX.gameObject.SetActive(true);
+        HighlightShift();
+
         LeanTween.value(0, 1, .8f).setOnUpdate((float v) =>
         {
             spiritFX.localScale = Vector3.one * v;
@@ -127,7 +130,18 @@ public class FTFLocationController : MonoBehaviour
         if (otherAttack)
             StartCoroutine(HandleAttack());
     }
-
+    void HighlightShift()
+    {
+        foreach (var item in highlights)
+        {
+            var highlight0 = item.transform.GetChild(0).gameObject;
+            var highlight1 = item.transform.GetChild(1).gameObject;
+            var highlight2 = item.transform.GetChild(2).gameObject;
+            LeanTween.color(highlight0, Color.red, 1f);
+            LeanTween.color(highlight1, Color.red, 1f);
+            LeanTween.color(highlight2, Color.red, 1f);
+        }
+    }
     void Attack(bool isCenterSpirit = false)
     {
         markers.Shuffle();
@@ -159,7 +173,6 @@ public class FTFLocationController : MonoBehaviour
         startPos.y += 40;
         Vector3 endPos = markers[1].position;
         endPos.y += 40;
-
         LTBezierPath ltPath = new LTBezierPath(new Vector3[] { startPos, endControl, startControl, endPos });
 
         LeanTween.value(0, 1, 1f).setOnUpdate((float v) =>
