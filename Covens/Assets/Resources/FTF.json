@@ -57,11 +57,11 @@
 //lets spectate this 
 {"button":{"show":true,"anchorMin":[0.5,0.0],"anchorMax":[0.5,0.0],"position":[0.0,109.700012],"size":[952.3,219.4]},"highlight":{"show":true,"anchorMin":[0.5,0.0],"anchorMax":[0.5,0.0],"position":[26.0,95.0],"size":[1873.5,563.0]},"pointer":{"show":true,"anchorMin":[0.5,0.0],"anchorMax":[0.5,0.0],"position":[29.0,107.999969],"scale":1.2},"onEnter":[{"method":"ShowMessage","parameters":["ftf_11","true"]}],"onExit":[{"method":"ClosePoPSelectedUI"}]},
 //open pop scene
-{"onEnter":[{"method":"ShowMessage","parameters":["TODO: OPEN FTF POP SCENE"]}]},
+{"timer":1,"onEnter":[{"method":"OpenFakePoP"}]},
 {"onEnter":[{"method":"ShowMessage","parameters":["ftf_12"]}]},
 {"onEnter":[{"method":"ShowMessage","parameters":["ftf_13"]}]},
 //close pop scene
-{"onEnter":[{"method":"ShowMessage","parameters":["TODO: CLOSE FTF POP SCENE"]}]},
+{"timer":0.5,"onExit":[{"method":"CloseFakePoP"}]},
 
 
 // //ACT 3.c POP VIDEO

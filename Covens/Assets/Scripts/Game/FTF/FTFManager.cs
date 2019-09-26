@@ -733,24 +733,39 @@ public class FTFManager : MonoBehaviour
         yield return 0;
     }
 
-    private IEnumerator LoadScene(string[] parameters)
+    private IEnumerator OpenFakePoP()
     {
-        string sceneName = parameters[0];
+        string sceneName = "PlaceOfPowerFTF";
+        bool done = false;
+
         LoadingOverlay.Show();
-        AsyncOperation op = UnityEngine.SceneManagement.SceneManager.LoadSceneAsync(sceneName);
+        AsyncOperation op = UnityEngine.SceneManagement.SceneManager.LoadSceneAsync(sceneName, UnityEngine.SceneManagement.LoadSceneMode.Additive);
+        op.completed += (a) => done = true;
         op.allowSceneActivation = true;
 
-        yield return op;
+        MapsAPI.Instance.HideMap(true);
+        //MapsAPI.Instance.ScaleBuildings(0);
+
+        while (!done)
+            yield return 0;
+        
         LoadingOverlay.Hide();
     }
 
-    private IEnumerator UnloadScene(string[] parameters)
+    private IEnumerator CloseFakePoP()
     {
-        string sceneName = parameters[0];
+        string sceneName = "PlaceOfPowerFTF";
+        bool done = false;
+
         AsyncOperation op = UnityEngine.SceneManagement.SceneManager.UnloadSceneAsync(sceneName);
+        op.completed += (a) => done = true;
         op.allowSceneActivation = true;
 
-        yield return op;
+        MapsAPI.Instance.HideMap(false);
+        //MapsAPI.Instance.ScaleBuildings(1);
+
+        while (!done)
+            yield return 0;
     }
 
     private IEnumerator FlyToNearbyPoP()

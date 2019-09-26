@@ -66,6 +66,9 @@ EditorBuildSettings:
     path: Assets/Scenes/FTF.unity
     guid: b0ac3020553f9a840a659eb19a5c68ec
   - enabled: 1
+    path: Assets/Scenes/PlaceOfPowerFTF.unity
+    guid: 82079a43f2a821640b84fd0ceea78e99
+  - enabled: 1
     path: Assets/Scenes/Summoning.unity
     guid: 66d72adc60c408743be7e51af0c5cd3d
   - enabled: 1
