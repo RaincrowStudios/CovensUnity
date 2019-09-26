@@ -463,7 +463,7 @@ public class LoginUIManager : MonoBehaviour
     }
     private void AgeGateStart()
     {
-        Debug.Log("ageGateStart");
+        //Debug.Log("ageGateStart");
         AgeGate.SetActive(true);
         LeanTween.alphaCanvas(AgeGateCG, 1f, 0.7f).setEase(LeanTweenType.easeInCubic);
     }
@@ -476,16 +476,16 @@ public class LoginUIManager : MonoBehaviour
         var dob = (dYear * 10000) + (dMonth * 100) + dDay;
         var todayInt = (today.Year * 10000) + (today.Month * 100) + today.Day;
         var Age = (todayInt - dob) / 10000;
-        Debug.Log(Age);
+        //Debug.Log(Age);
 
         if (Age < 13)
         {
-            Debug.Log("too young");
+            //Debug.Log("too young");
             AgeError.SetActive(true);
         }
         else
         {
-            Debug.Log("old enough");
+            //Debug.Log("old enough");
             CheckAge.interactable = false;
             LeanTween.alphaCanvas(AgeGateCG, 0f, 0.5f).setEase(LeanTweenType.easeInCubic).setOnComplete(() =>
             {
