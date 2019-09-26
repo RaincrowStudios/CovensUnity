@@ -27,6 +27,7 @@ public class LocationPlayerAction : MonoBehaviour
     [SerializeField] private TextMeshProUGUI m_EnergyText;
     [SerializeField] private Slider m_EnergySlider;
     [SerializeField] private CanvasGroup m_CloakUI;
+    [SerializeField] private Button m_helpButton;
 
     private const int MOVE_TIMER = 5;
     private const int SUMMON_TIMER = 30;
@@ -125,6 +126,10 @@ public class LocationPlayerAction : MonoBehaviour
                 isCloaked = false;
             }
         };
+        m_helpButton.onClick.AddListener(() =>
+        {
+            LocationTutorial.Instance.Open();
+        });
 
     }
 

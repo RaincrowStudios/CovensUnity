@@ -31,6 +31,7 @@ public class LocationPOPInfo : UIInfoPanel
     [SerializeField] private TextMeshProUGUI m_PlayerJoinedSubtitle;
     [SerializeField] private Image m_PlayerJoinedColor;
     [SerializeField] private GameObject m_FTFEnter;
+    [SerializeField] private Button m_HelpBtn;
 
     private Dictionary<string, Sprite> m_LocationImagesCache = new Dictionary<string, Sprite>();
 
@@ -63,6 +64,10 @@ public class LocationPOPInfo : UIInfoPanel
     {
         m_Instance = this;
         m_CloseBtn.onClick.AddListener(Close);
+        m_HelpBtn.onClick.AddListener(() =>
+        {
+            LocationTutorial.Instance.Open();
+        });
         base.Awake();
     }
 

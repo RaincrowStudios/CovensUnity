@@ -36,16 +36,19 @@ public class FTFLocationController : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
+        nextBtn.transform.parent.gameObject.SetActive(false);
         LeanTween.value(0, 1, 3f).setOnUpdate((float v) =>
         {
             cameraZoom.localPosition = new Vector3(0, 0, Mathf.Lerp(-250, -850, v));
             cameraTilt.localRotation = Quaternion.Euler(Mathf.Lerp(17, 30, v), 0, 0);
         }).setEaseOutQuad().setOnComplete(() =>
         {
+            nextBtn.transform.parent.gameObject.SetActive(true);
             StartCoroutine(HandleAttack());
             nextBtn.onClick.AddListener(() =>
             {
                 dialogueTxt.text = "Savannah Grey: \"This Place of Power is a Last Witch Standing battle, they must defeat the Guardian and each other to be victorious.\"";
+                nextBtn.transform.parent.gameObject.SetActive(false);
                 StartCoroutine(ActivateSpirit());
             });
         });
@@ -68,6 +71,7 @@ public class FTFLocationController : MonoBehaviour
             StartCoroutine(SpiritAttack());
             nextBtn.onClick.RemoveAllListeners();
 
+            nextBtn.transform.parent.gameObject.SetActive(true);
 
             var id = LeanTween.value(1, 0, 4.5f).setOnUpdate((float v) =>
             {
