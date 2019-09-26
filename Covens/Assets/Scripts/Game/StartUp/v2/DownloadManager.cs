@@ -22,6 +22,7 @@ public class DownloadManager : MonoBehaviour
     }
 
     private const string downloadUrl = "https://storage.googleapis.com/raincrow-covens/";
+
     /// <summary>
     /// name
     /// index

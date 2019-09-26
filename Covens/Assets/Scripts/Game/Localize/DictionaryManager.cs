@@ -30,11 +30,35 @@ public class DictionaryManager
     public static readonly string[] Languages = new string[] { "English", "Portuguese", "Spanish", "Japanese", "German", "Russian" };
     public static readonly string[] Cultures = new string[] { "en", "pt", "es", "jp", "de", "ru" };
 
-    private const string baseURL = "https://storage.googleapis.com/raincrow-covens/dictionary_v3/";
+    private static string baseURL {
+        get
+        {
+            string url = "https://storage.googleapis.com/raincrow-covens/dictionary/";
 
-    private const string LOCALISATION_DICT_KEY = "LocalisationDict";
-    private const string GAME_DICT_KEY = "GameDict";
-    private const string STORE_DICT_KEY = "StoreDict";
+#if UNITY_EDITOR
+            switch (UnityEditor.EditorPrefs.GetString("game"))
+            {
+                case "Local":   url +=  "dev/";     break;
+                case "Release": url +=  "release/"; break;
+                case "Gustavo": url +=  "dev/";     break;
+                default:        url +=  "staging/"; break;
+            }
+#elif PRODUCTION
+            url += "release/";
+#else
+            url +=  "staging/";
+#endif
+
+            return url;
+        }
+    }
+    private static string LOCALIZATION_URL => baseURL + "localization/";
+    private static string STORE_URL => baseURL + "store/";
+    private static string GAME_URL => baseURL + "game/";
+
+    private static string LOCALISATION_DICT_KEY = LOCALIZATION_URL;
+    private static string GAME_DICT_KEY = GAME_URL;
+    private static string STORE_DICT_KEY = STORE_URL;
 
     public const string GAME_DICT_FILENAME = "game.text";
     public const string STORE_DICT_FILENAME = "store.text";
@@ -89,7 +113,7 @@ public class DictionaryManager
                 Debug.Log($"Localization dictionary outdated.");
         }
 
-        DownloadFile(baseURL + "localization/" + version + "/" + language + ".json", language, version, (resultCode, response) =>
+        DownloadFile(LOCALIZATION_URL + version + "/" + language + ".json", language, version, (resultCode, response) =>
          {
              if (resultCode == 200)
              {
@@ -159,7 +183,7 @@ public class DictionaryManager
                 Debug.Log($"gamedict outdated.");
         }
 
-        DownloadFile(baseURL + version + "/game.json", "game", version, (resultCode, response) =>
+        DownloadFile(GAME_URL + version + ".json", "game", version, (resultCode, response) =>
         {
             if (resultCode == 200)
             {
@@ -225,7 +249,7 @@ public class DictionaryManager
                 Debug.Log($"store outdated.");
         }
 
-        DownloadFile(baseURL + version + "/store.json", "store", version, (resultCode, response) =>
+        DownloadFile(STORE_URL + version + ".json", "store", version, (resultCode, response) =>
         {
             if (resultCode == 200)
             {
