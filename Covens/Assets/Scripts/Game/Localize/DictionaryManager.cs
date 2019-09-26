@@ -324,7 +324,7 @@ public class DictionaryManager
             }
             catch (System.Net.WebException e)
             {
-                Debug.LogError("Error in getting dictionary: " + e.Message + "\nStacktrace: " + e.StackTrace);
+                Debug.LogError("Error in " + name + " dictionary:\n" + e.Message + "\nStacktrace: " + e.StackTrace);
                 tryCount++;
                 if (tryCount <= maxRetries)
                 {
