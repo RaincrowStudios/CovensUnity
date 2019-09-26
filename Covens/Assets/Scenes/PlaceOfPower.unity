@@ -11277,7 +11277,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 1, y: 0.5}
   m_AnchorMax: {x: 1, y: 0.5}
-  m_AnchoredPosition: {x: -283.80005, y: 34.8}
+  m_AnchoredPosition: {x: -283.80078, y: 34.8}
   m_SizeDelta: {x: 567.61, y: 1729.7}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &612754553
@@ -44118,7 +44118,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0.5}
   m_AnchorMax: {x: 0, y: 0.5}
-  m_AnchoredPosition: {x: 46.09961, y: 0}
+  m_AnchoredPosition: {x: 46.097656, y: 0}
   m_SizeDelta: {x: 100, y: 100}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!224 &1193932975535834709
@@ -44282,7 +44282,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 1, y: 0}
-  m_AnchoredPosition: {x: 68.59961, y: 105.6}
+  m_AnchoredPosition: {x: 68.59766, y: 105.6}
   m_SizeDelta: {x: -654.7, y: 95}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!224 &1194041323832615605
@@ -44603,7 +44603,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 1, y: 0}
-  m_AnchoredPosition: {x: 0.28710938, y: 14.400391}
+  m_AnchoredPosition: {x: 0.28515625, y: 14.400391}
   m_SizeDelta: {x: -0.57349, y: 28.8}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!224 &1194547976957019569
@@ -46995,18 +46995,6 @@ MonoBehaviour:
         m_CallState: 2
     m_TypeName: UnityEngine.UI.Button+ButtonClickedEvent, UnityEngine.UI, Version=1.0.0.0,
       Culture=neutral, PublicKeyToken=null
---- !u!114 &1304705817474909949
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1408194596133321763}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 855a77b302bcc2c438f774b8cc95d7af, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!114 &1304760985628522555
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -47447,7 +47435,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0.5}
   m_AnchorMax: {x: 0, y: 0.5}
-  m_AnchoredPosition: {x: 283.80005, y: 34.8}
+  m_AnchoredPosition: {x: 283.80078, y: 34.8}
   m_SizeDelta: {x: 567.61, y: 1729.7}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &1400872608218032693
@@ -48258,7 +48246,6 @@ GameObject:
   - component: {fileID: 1196425645936754025}
   - component: {fileID: 1304877592319543141}
   - component: {fileID: 1202058926441070183}
-  - component: {fileID: 1304705817474909949}
   m_Layer: 5
   m_Name: EnergyCollectedGlow
   m_TagString: Untagged
@@ -48802,7 +48789,6 @@ GameObject:
   - component: {fileID: 8139372418856697714}
   - component: {fileID: 726952983290109802}
   - component: {fileID: 6528702468220810947}
-  - component: {fileID: 6098101726339825351}
   m_Layer: 5
   m_Name: EnergyChanneledGlow
   m_TagString: Untagged
@@ -49353,18 +49339,6 @@ RectTransform:
   m_AnchoredPosition: {x: 0, y: -49}
   m_SizeDelta: {x: 836.4, y: 207.4}
   m_Pivot: {x: 0.5, y: 0.5}
---- !u!114 &6098101726339825351
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 3017689265708178902}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 855a77b302bcc2c438f774b8cc95d7af, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!222 &6142819116297734618
 CanvasRenderer:
   m_ObjectHideFlags: 0

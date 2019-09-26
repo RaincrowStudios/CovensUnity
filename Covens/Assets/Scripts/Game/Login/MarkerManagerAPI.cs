@@ -24,6 +24,8 @@ public class MarkerManagerAPI : MonoBehaviour
         public List<EnergyToken> energies;
         public List<PopToken> placesOfPower;
         public Location location;
+        public double longitude;
+        public double latitude;
     }
 
     public static event System.Action<string> OnChangeDominion;
@@ -150,11 +152,18 @@ public class MarkerManagerAPI : MonoBehaviour
 
     private static void GetMarkersCallback(float longitude, float latitude, string result, int response)
     {
-        PlayerManager.marker.Coords = new Vector2(longitude, latitude);
-        PlayerDataManager.playerData.longitude = longitude;
-        PlayerDataManager.playerData.latitude = latitude;
-
         MapMoveResponse moveResponse = JsonConvert.DeserializeObject<MapMoveResponse>(result);
+
+        float rndLng = (float)moveResponse.longitude;
+        float rndLat = (float)moveResponse.latitude;
+
+        PlayerManager.marker.Coords = new Vector2(rndLng, rndLat);
+        PlayerDataManager.playerData.longitude = rndLat;
+        PlayerDataManager.playerData.latitude = rndLat;
+
+        Vector3 worldPos = MapsAPI.Instance.GetWorldPosition(rndLng, rndLat);
+        PlayerManager.marker.SetWorldPosition(worldPos, 2f);
+        MapCameraUtils.FocusOnPosition(worldPos, true, 3f);
 
         UpdateDominion(moveResponse.location);
 

@@ -782,6 +782,13 @@ public class FTFManager : MonoBehaviour
         yield return 0;
     }
 
+    private IEnumerator ClosePoPSelectedUI()
+    {
+        if (LocationPOPInfo.isShowing)
+            LocationPOPInfo.Instance.Close();
+        yield return 0;
+    }
+
     #endregion
 
 } 
