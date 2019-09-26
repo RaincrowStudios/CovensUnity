@@ -207,7 +207,7 @@ namespace Raincrow.GameEventResponses
                     }
 
                     //add the immunity if the server said so
-                    if (data.immunity && !playerIsTarget)
+                    if (playerIsCaster && data.immunity && !playerIsTarget)
                     {
                         MarkerSpawner.AddImmunity(data.caster.id, data.target.id);
                         if (target != null && target is WitchMarker)
