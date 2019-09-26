@@ -46,7 +46,7 @@ public class HandleServerDown : MonoBehaviour
     {
         serverDownContainer.SetActive(true);
 
-        text.text = "Error in parsing language dictionary, please email help@raincrowgames.com and we will get you sorted out!";
+        text.text = "Error in parsing dictionary, please email help@raincrowgames.com and we will get you sorted out!";
         loading.SetActive(true);
     }
 
@@ -54,7 +54,7 @@ public class HandleServerDown : MonoBehaviour
     {
         serverDownContainer.SetActive(true);
 
-        text.text = "Error in downloading language dictionary, please email help@raincrowgames.com and we will get you sorted out!";
+        text.text = "Error in downloading dictionary, please email help@raincrowgames.com and we will get you sorted out!";
         loading.SetActive(true);
     }
 
