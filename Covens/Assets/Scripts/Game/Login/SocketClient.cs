@@ -15,6 +15,7 @@ public class SocketClient : MonoBehaviour
     public static event System.Action<CommandResponse> OnResponseParsedEvent;
 
     private SocketManager _socketManager;
+    private Socket _gameSocket;
     private bool _isRefreshingConnection = false;
 
     public Queue<CommandResponse> responsesQueue = new Queue<CommandResponse>();
@@ -89,7 +90,7 @@ public class SocketClient : MonoBehaviour
         _socketManager.Socket.On(SocketIOEventTypes.Connect, OnConnect);
         _socketManager.Socket.On(SocketIOEventTypes.Disconnect, OnDisconnect);
         _socketManager.Socket.On(SocketIOEventTypes.Error, OnError);
-        _socketManager.Socket.On("game.event", OnGameEvent);
+        //_socketManager.Socket.On("game.event", OnGameEvent);
 
 #if LOCAL_API
         
@@ -99,9 +100,11 @@ public class SocketClient : MonoBehaviour
     }
 
     #region Socket 
-
+    
     private void OnConnect(Socket socket, Packet packet, object[] args)
     {
+        _gameSocket = _socketManager["/client"];
+        _gameSocket.On("game.event", OnGameEvent);
         Log($"Connected to Socket: { CovenConstants.wssAddress} - Token: {LoginAPIManager.wssToken}");
 
         if (!_isRefreshingConnection)
@@ -169,7 +172,8 @@ public class SocketClient : MonoBehaviour
             _socketManager.Socket.Off(SocketIOEventTypes.Connect, OnConnect);
             _socketManager.Socket.Off(SocketIOEventTypes.Disconnect, OnDisconnect);
             _socketManager.Socket.Off(SocketIOEventTypes.Error, OnError);
-            _socketManager.Socket.Off("game.event", OnGameEvent);
+            //_socketManager.Socket.Off("game.event", OnGameEvent);
+            _gameSocket.Off("game.event", OnGameEvent);
 
             _socketManager.Socket.Disconnect();
             _socketManager = null;
