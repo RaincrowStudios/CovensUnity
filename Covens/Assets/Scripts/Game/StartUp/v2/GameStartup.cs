@@ -312,6 +312,8 @@ public class GameStartup : MonoBehaviour
         //show the tribunal screen and load the gamescene
         SplashManager.Instance.ShowTribunal(() =>
         {
+            UINearbyLocations.GetLocations(null, false);
+
             Debug.Log("Initializing the map at lat" + PlayerDataManager.playerData.latitude + " lon" + PlayerDataManager.playerData.longitude);
             MapsAPI.Instance.InitMap(PlayerDataManager.playerData.longitude, PlayerDataManager.playerData.latitude, 1, null, false);
 
@@ -337,10 +339,24 @@ public class GameStartup : MonoBehaviour
         {
             SocketClient.Instance.InitiateSocketConnection();
             ChatManager.InitChat();
-            UIDominionSplash.Instance.Show(() => BlessingManager.CheckDailyBlessing());
+            
             if (PlayerDataManager.playerData.insidePlaceOfPower && PlayerDataManager.playerData.placeOfPower != "")
             {
                 LocationIslandController.ResumeBattle(PlayerDataManager.playerData.placeOfPower);
+            }
+            else
+            {
+                UIDominionSplash.Instance.Show(() =>
+                {
+                    if (Raincrow.FTF.FirstTapManager.IsFirstTime("nextpoplaunch"))
+                    {
+                        Raincrow.FTF.FirstTapManager.Show("nextpoplaunch", BlessingManager.CheckDailyBlessing);
+                    }
+                    else
+                    {
+                        BlessingManager.CheckDailyBlessing();
+                    }
+                });
             }
         }
     }

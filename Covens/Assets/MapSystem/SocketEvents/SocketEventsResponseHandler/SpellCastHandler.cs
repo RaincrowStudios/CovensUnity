@@ -37,7 +37,7 @@ namespace Raincrow.GameEventResponses
             public bool isSuccess;
 
             [JsonProperty("appliedEffect")]
-            public StatusEffect statusEffect;
+            public StatusEffect effect;
 
             [JsonProperty("moveCharacter")]
             public MoveData moveCharacter;
@@ -196,12 +196,19 @@ namespace Raincrow.GameEventResponses
                     });
 
                     //add status effects to PlayerDataManager.playerData
-                    if (data.result.statusEffect != null && string.IsNullOrEmpty(data.result.statusEffect.spell) == false)
+                    if (data.result.effect != null && string.IsNullOrEmpty(data.result.effect.spell) == false)
                     {
-                        OnApplyStatusEffect?.Invoke(data.target.id, data.result.statusEffect);
+                        OnApplyStatusEffect?.Invoke(data.target.id, data.result.effect);
 
                         if (playerIsTarget)
-                            ConditionManager.AddCondition(data.result.statusEffect, caster);
+                        {
+                            ConditionManager.AddCondition(data.result.effect, caster);
+                        }
+                        else
+                        {
+                            if (data.spell == "spell_channeling")
+                                SpellChanneling.SpawnFX(target, data.result.effect);
+                        }
 
                         //target?.ApplyStatusEffect(data.result.statusEffect);
                     }
@@ -227,7 +234,6 @@ namespace Raincrow.GameEventResponses
                             //SpellcastingFX.SpawnGlyph(target, spell, data.spell);
                             SpellcastingFX.SpawnEnergyChange(target, energyChange, data.result.isCritical ? 1.4f : 1f);
                         }
-
                         else
                         {
                             SpellcastingFX.SpawnFail(target);

@@ -231,6 +231,13 @@ public class DownloadedAssets : MonoBehaviour
 
     }
 
+    //public static void LoadStyleApparel(string id, System.Action<Sprite> callback)
+    //{
+    //    string path = System.IO.Path.Combine(Application.persistentDataPath, assetKey + ".unity3d");
+    //    string currentKey = "apparel";
+
+    //}
+
     public static void LoadAsset(string assetKey)
     {
         string path = System.IO.Path.Combine(Application.persistentDataPath, assetKey + ".unity3d");

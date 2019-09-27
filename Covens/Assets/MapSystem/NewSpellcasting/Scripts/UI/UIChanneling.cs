@@ -133,9 +133,9 @@ public class UIChanneling : UIInfoPanel
         if (string.IsNullOrEmpty(error))
         {
             m_ResultsContent.text =
-               "+" + result.statusEffect?.modifiers.power + " " + LocalizeLookUp.GetText("generic_power") +
-               "\n+" + result.statusEffect?.modifiers.resilience + " " + LocalizeLookUp.GetText("generic_resilience") +
-               "\n+" + result.statusEffect?.modifiers.toCrit + "% " + LocalizeLookUp.GetText("generic_critical_cast_rate");
+               "+" + result.effect?.modifiers.power + " " + LocalizeLookUp.GetText("generic_power") +
+               "\n+" + result.effect?.modifiers.resilience + " " + LocalizeLookUp.GetText("generic_resilience") +
+               "\n+" + result.effect?.modifiers.toCrit + "% " + LocalizeLookUp.GetText("generic_critical_cast_rate");
         }
         else
         {
@@ -191,7 +191,7 @@ public class UIChanneling : UIInfoPanel
 
     public void OnTickChanneling(SpellCastHandler.SpellCastEventData data)
     {
-        if (data.result.statusEffect == null)
+        if (data.result.effect == null)
         {
             //energy only tick
             return;
@@ -201,8 +201,8 @@ public class UIChanneling : UIInfoPanel
         m_ChannelingTextTweenId = LeanTween.scale(m_ChannelingContent.gameObject, Vector3.one, 1f).setEaseOutCubic().uniqueId;
 
         m_ChannelingContent.text =
-            "+" + data.result.statusEffect?.modifiers.power + " " + LocalizeLookUp.GetText("generic_power") +
-            "\n+" + data.result.statusEffect?.modifiers.resilience + " " + LocalizeLookUp.GetText("generic_resilience") +
-            "\n+" + data.result.statusEffect?.modifiers.toCrit + "% " + LocalizeLookUp.GetText("generic_critical_cast_rate");
+            "+" + data.result.effect?.modifiers.power + " " + LocalizeLookUp.GetText("generic_power") +
+            "\n+" + data.result.effect?.modifiers.resilience + " " + LocalizeLookUp.GetText("generic_resilience") +
+            "\n+" + data.result.effect?.modifiers.toCrit + "% " + LocalizeLookUp.GetText("generic_critical_cast_rate");
     }
 }

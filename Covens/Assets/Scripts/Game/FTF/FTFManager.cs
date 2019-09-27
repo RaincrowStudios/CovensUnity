@@ -134,9 +134,6 @@ public class FTFManager : MonoBehaviour
                 PlayerDataManager.StoreData.bundles[i].silver = originalPrices[i];
             }
         };
-
-        //retrieve nearby locations for FTF
-        UINearbyLocations.GetLocations(null);
     }
     
     [ContextMenu("Start FTF")]
@@ -307,7 +304,10 @@ public class FTFManager : MonoBehaviour
     private void OnWitchSchool()
     {
         WitchSchoolManager.Open();
-        ShowWitchSchool(false, () => SceneManager.UnloadScene(SceneManager.Scene.FTF, null, null));
+        ShowWitchSchool(false, () =>
+        {
+            SceneManager.UnloadScene(SceneManager.Scene.FTF, null, null);
+        });
     }
 
     private void OnSkipWitchSchool()
@@ -698,9 +698,21 @@ public class FTFManager : MonoBehaviour
         //show dominion and witch school prompt
         UIDominionSplash.Instance.Show(() =>
         {
-            //show whitch school screen
-            m_WitchSchool.gameObject.SetActive(true);
-            ShowWitchSchool(true, null);
+            if (Raincrow.FTF.FirstTapManager.IsFirstTime("greyhand"))
+            {
+                Raincrow.FTF.FirstTapManager.Show("greyhand", () =>
+                {
+                    if (Raincrow.FTF.FirstTapManager.IsFirstTime("nextpopftf"))
+                    {
+                        Raincrow.FTF.FirstTapManager.Show("nextpopftf", () =>
+                        {
+                            //show whitch school screen
+                            m_WitchSchool.gameObject.SetActive(true);
+                            ShowWitchSchool(true, null);
+                        });
+                    }
+                });
+            }
         });
 
         //remove all spawned markers

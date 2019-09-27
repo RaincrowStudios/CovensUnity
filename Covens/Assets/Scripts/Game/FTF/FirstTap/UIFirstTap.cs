@@ -5,6 +5,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using TMPro;
 using UnityEngine.UI;
+using System.Text.RegularExpressions;
 
 namespace Raincrow.FTF
 {
@@ -27,7 +28,8 @@ namespace Raincrow.FTF
         private System.Action m_OnClose;
         private int m_AnimTweenId;
         private int m_ButtonTweenId;
-        
+        private delegate string ReplaceStringDelegate();
+
         public static void Show(string id, FirstTapEntry entry, System.Action onComplete)
         {
             if (m_Instance != null)
@@ -64,8 +66,30 @@ namespace Raincrow.FTF
             m_OnClose = onComplete;
 
             //setup screen
+
             m_Title.text = LocalizeLookUp.GetText("first_tap_info_" + id + "_title");
-            m_Message.text = LocalizeLookUp.GetText("first_tap_info_" + id + "_desc");
+
+            string message = LocalizeLookUp.GetText("first_tap_info_" + id + "_desc");
+            MatchCollection matches = Regex.Matches(message, @"{[^}]*}", RegexOptions.IgnoreCase);
+            List<string> dynamicKeys = new List<string>();
+            foreach (Match m in matches)
+                dynamicKeys.Add(m.Value);
+
+            if (dynamicKeys.Count > 0)
+            {
+                var replacers = new Dictionary<string, ReplaceStringDelegate>()
+                {
+                    { "{nextPoPName}", GetNearbyPoPName },
+                    { "{nextPoPTime}", GetNearbyPoPTime }
+                };
+                foreach(string key in dynamicKeys)
+                {
+                    if (replacers.ContainsKey(key))
+                        message = message.Replace(key, replacers[key].Invoke());
+                }
+            }
+
+            m_Message.text = message;
             m_Highlight.Show(entry.highlight);
 
             for (int i = 0; i < m_InstantiatedGlow.Count; i++)
@@ -121,6 +145,36 @@ namespace Raincrow.FTF
                 .uniqueId;
 
             m_OnClose?.Invoke();
+        }
+
+        private string GetNearbyPoPName()
+        {
+            if (UINearbyLocations.CachedLocations != null)
+            {
+                foreach(var pop in UINearbyLocations.CachedLocations)
+                {
+                    if (pop.isOpen || pop.isActive)
+                        continue;
+                    return "<color=#4FD5FF>" + pop.name + "</color>";
+                }
+            }
+
+            return "<color=#FF3939></color>";
+        }
+
+        private string GetNearbyPoPTime()
+        {
+            if (UINearbyLocations.CachedLocations != null)
+            {
+                foreach (var pop in UINearbyLocations.CachedLocations)
+                {
+                    if (pop.isOpen || pop.isActive)
+                        continue;
+                    return "<color=#4FD5FF>" + Utilities.GetSummonTime(pop.openOn) + "</color>";
+                }
+            }
+
+            return "<color=#FF3939></color>";
         }
     }
 }

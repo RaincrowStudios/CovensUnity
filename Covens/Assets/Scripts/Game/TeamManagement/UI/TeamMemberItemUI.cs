@@ -104,9 +104,9 @@ public class TeamMemberItemUI : MonoBehaviour
         m_PromoteButton.gameObject.SetActive(isFounder || (Coven.IsMember && TeamManager.MyRole > MemberData.Role));
         m_DemoteButton.gameObject.SetActive(isFounder || (Coven.IsMember && TeamManager.MyRole > MemberData.Role));
 
-        m_PromoteButton.interactable = isMe == false && MemberData.Role < CovenRole.ADMIN;
-        m_DemoteButton.interactable = isMe == false && MemberData.Role > CovenRole.MEMBER;
-        m_KickButton.interactable = isMe == false;
+        m_PromoteButton.interactable = Coven.IsMember && isMe == false && MemberData.Role < CovenRole.ADMIN;
+        m_DemoteButton.interactable = Coven.IsMember && isMe == false && MemberData.Role > CovenRole.MEMBER;
+        m_KickButton.interactable = Coven.IsMember && isMe == false;
 
         m_Background.SetActive(transform.GetSiblingIndex() % 2 == 0);
     }

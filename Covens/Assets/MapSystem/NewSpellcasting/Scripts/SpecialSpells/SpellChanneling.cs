@@ -46,8 +46,8 @@ public static class SpellChanneling
 
                     OnMapEnergyChange.ForceEvent(target, data.target.energy, data.timestamp);
 
-                    if (data.result.statusEffect != null && string.IsNullOrEmpty(data.result.statusEffect.spell) == false)
-                        ConditionManager.AddCondition(data.result.statusEffect, Target);
+                    if (data.result.effect != null && string.IsNullOrEmpty(data.result.effect.spell) == false)
+                        ConditionManager.AddCondition(data.result.effect, Target);
 
                     UIChanneling.Instance.SetInteractable(true);
                 }
@@ -91,7 +91,7 @@ public static class SpellChanneling
 
                         //add the new status effect
                         ConditionManager.ExpireStatusEffect("spell_channeling");
-                        ConditionManager.AddCondition(data.result.statusEffect, Target);
+                        ConditionManager.AddCondition(data.result.effect, Target);
                         
                         UIChanneling.Instance.ShowResults(data.result, null);
                     }
@@ -112,22 +112,20 @@ public static class SpellChanneling
             UIChanneling.Instance.OnTickChanneling(data);
             if (IsChanneled)
             {
-                DespawnFX(data.result.statusEffect);
+                DespawnPlayerFX(data.result.effect);
                 StopChanneling(null);
                 UIChanneling.Instance.ShowResults(data.result, null);
             }
         }
     }
 
-    public static void SpawnFX(StatusEffect effect, IMarker caster)
+    public static void SpawnFX(IMarker marker, StatusEffect effect)
     {
         if (effect.modifiers.status == null)
             return;
 
-        IMarker marker = PlayerManager.marker;
-
-        if (m_SpawnedFX.ContainsKey(marker))
-            return;
+        //if (m_SpawnedFX.ContainsKey(marker))
+        //    return;
 
         bool channeling = false;
         bool channeled = false;
@@ -140,7 +138,7 @@ public static class SpellChanneling
                 channeled = true;
         }
 
-        if (channeling)
+        if (channeling && !m_SpawnedFX.ContainsKey(marker))
         {
             Transform instance;// = marker.SpawnItem(m_GreyFx);
             int degree = (marker.Token as WitchToken).degree;
@@ -159,14 +157,12 @@ public static class SpellChanneling
 
         if (channeled)
         {
-            DespawnFX(effect);
+            DespawnFX(marker, effect);
         }
     }
 
-    public static void DespawnFX(StatusEffect effect)
+    public static void DespawnFX(IMarker marker, StatusEffect effect)
     {
-        IMarker marker = PlayerManager.marker;
-
         if (m_SpawnedFX.ContainsKey(marker) == false)
             return;
 
@@ -183,5 +179,19 @@ public static class SpellChanneling
             if (instance != null)
                 GameObject.Destroy(instance.gameObject);
         });
+    }
+
+
+    public static void SpawnPlayerFX(StatusEffect effect, IMarker caster)
+    {
+        if (effect.modifiers.status == null)
+            return;
+        
+        SpawnFX(PlayerManager.marker, effect);       
+    }
+
+    public static void DespawnPlayerFX(StatusEffect effect)
+    {
+        DespawnFX(PlayerManager.marker, effect);
     }
 }
