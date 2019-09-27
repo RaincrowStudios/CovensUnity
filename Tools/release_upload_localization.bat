@@ -10,7 +10,7 @@ if [%1]==[] goto usage
 SET PROJ_PATH=%CD%\..\
 SET SRC_PATH=%PROJ_PATH%Dictionaries
 
-SET DEST_FOLDER=dictionary_v3/localization
+SET DEST_FOLDER=dictionary/release/localization
 SET DEST_PATH=gs://raincrow-covens/%DEST_FOLDER%/
 
 ::del %1 /q
@@ -32,7 +32,7 @@ xcopy %SRC_PATH% %CD%\%1 /s /q /i /y /EXCLUDE:exclude
 ::cd ..
 
 ::call gsutil -m rm -r %DEST_PATH%
-call gsutil -m -h "Content-Type:application/json; charset=utf-8" -h "Cache-Control:private" cp -a public-read -r %1 %DEST_PATH% 
+call gsutil -m -h "Content-Type:application/json; charset=utf-8" -h "Cache-Control:private" cp -Z public-read -r %1 %DEST_PATH% 
 rmdir /s /q %1
 
 pause
