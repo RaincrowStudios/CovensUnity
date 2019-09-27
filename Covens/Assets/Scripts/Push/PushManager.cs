@@ -5,8 +5,14 @@ using UnityEngine;
 public class PushManager : MonoBehaviour
 {
 
+    void Awake()
+    {
+        LoginAPIManager.OnCharacterReceived += InitPush;
+    }
+
     public static void InitPush()
     {
+        Debug.Log("INIT PUSH");
         // Enable line below to enable logging if you are having issues setting up OneSignal. (logLevel, visualLogLevel)
         // OneSignal.SetLogLevel(OneSignal.LOG_LEVEL.INFO, OneSignal.LOG_LEVEL.INFO);
         try
