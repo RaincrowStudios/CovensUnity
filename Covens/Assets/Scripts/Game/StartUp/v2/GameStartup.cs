@@ -339,18 +339,24 @@ public class GameStartup : MonoBehaviour
         {
             SocketClient.Instance.InitiateSocketConnection();
             ChatManager.InitChat();
-            UIDominionSplash.Instance.Show(() => BlessingManager.CheckDailyBlessing());
-
+            
             if (PlayerDataManager.playerData.insidePlaceOfPower && PlayerDataManager.playerData.placeOfPower != "")
             {
                 LocationIslandController.ResumeBattle(PlayerDataManager.playerData.placeOfPower);
             }
             else
             {
-                if (Raincrow.FTF.FirstTapManager.IsFirstTime("nextpoplaunch"))
+                UIDominionSplash.Instance.Show(() =>
                 {
-                    Raincrow.FTF.FirstTapManager.Show("nextpoplaunch", null);
-                }
+                    if (Raincrow.FTF.FirstTapManager.IsFirstTime("nextpoplaunch"))
+                    {
+                        Raincrow.FTF.FirstTapManager.Show("nextpoplaunch", BlessingManager.CheckDailyBlessing);
+                    }
+                    else
+                    {
+                        BlessingManager.CheckDailyBlessing();
+                    }
+                });
             }
         }
     }
@@ -361,14 +367,5 @@ public class GameStartup : MonoBehaviour
 
         SocketClient.Instance.InitiateSocketConnection();
         ChatManager.InitChat();
-
-        if (Raincrow.FTF.FirstTapManager.IsFirstTime("greyhand"))
-        {
-            Raincrow.FTF.FirstTapManager.Show("greyhand", () =>
-            {
-                if (Raincrow.FTF.FirstTapManager.IsFirstTime("nextpopftf"))
-                    Raincrow.FTF.FirstTapManager.Show("nextpopftf", null);
-            });
-        }
     }
 }
