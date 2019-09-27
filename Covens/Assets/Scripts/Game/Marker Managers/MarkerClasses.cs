@@ -251,9 +251,9 @@ public class WitchMarkerData : CharacterMarkerData
     {
         get
         {
-            if (level < PlayerDataManager.baseEnergyPerLevel.Length)
-                return PlayerDataManager.baseEnergyPerLevel[level];
-            return energy;
+            if (level - 1 < PlayerDataManager.baseEnergyPerLevel.Length)
+                return PlayerDataManager.baseEnergyPerLevel[level - 1];
+            return PlayerDataManager.baseEnergyPerLevel[PlayerDataManager.baseEnergyPerLevel.Length - 1];
         }
         set { }
     }

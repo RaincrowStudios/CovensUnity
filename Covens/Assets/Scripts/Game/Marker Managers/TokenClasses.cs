@@ -104,8 +104,8 @@ public class WitchToken : CharacterToken
     {
         get
         {
-            if (level < PlayerDataManager.baseEnergyPerLevel.Length)
-                return PlayerDataManager.baseEnergyPerLevel[level];
+            if (level-1 < PlayerDataManager.baseEnergyPerLevel.Length)
+                return PlayerDataManager.baseEnergyPerLevel[level-1];
             return PlayerDataManager.baseEnergyPerLevel[PlayerDataManager.baseEnergyPerLevel.Length - 1];
         }
     }
