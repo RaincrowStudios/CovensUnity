@@ -3388,7 +3388,7 @@ GameObject:
   - component: {fileID: 5117715777374244998}
   - component: {fileID: 4196524115326567802}
   m_Layer: 5
-  m_Name: BundleInterstitial
+  m_Name: Bundle_SeasonalPack
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
