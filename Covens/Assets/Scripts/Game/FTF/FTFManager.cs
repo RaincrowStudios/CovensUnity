@@ -134,9 +134,6 @@ public class FTFManager : MonoBehaviour
                 PlayerDataManager.StoreData.bundles[i].silver = originalPrices[i];
             }
         };
-
-        //retrieve nearby locations for FTF
-        UINearbyLocations.GetLocations(null);
     }
     
     [ContextMenu("Start FTF")]
