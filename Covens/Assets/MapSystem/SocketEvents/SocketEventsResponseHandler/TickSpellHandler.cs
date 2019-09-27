@@ -44,12 +44,12 @@ namespace Raincrow.GameEventResponses
             if (target != null)
                 OnMapEnergyChange.ForceEvent(target, data.target.energy, data.timestamp);
             
-            if (data.result.statusEffect != null && string.IsNullOrEmpty(data.result.statusEffect.spell) == false)
+            if (data.result.effect != null && string.IsNullOrEmpty(data.result.effect.spell) == false)
             {
-                SpellCastHandler.OnApplyStatusEffect?.Invoke(data.target.id, data.result.statusEffect);
+                SpellCastHandler.OnApplyStatusEffect?.Invoke(data.target.id, data.result.effect);
 
                 if (isTarget)
-                    ConditionManager.AddCondition(data.result.statusEffect, caster);
+                    ConditionManager.AddCondition(data.result.effect, caster);
 
                 //target?.ApplyStatusEffect(response.result.statusEffect);
             }

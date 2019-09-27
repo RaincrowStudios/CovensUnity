@@ -13,7 +13,7 @@ public static class ConditionManager
     {
         { "bound",      BanishManager.Bind },
         { "silenced",   BanishManager.Silence },
-        { "channeling", SpellChanneling.SpawnFX },
+        { "channeling", SpellChanneling.SpawnPlayerFX },
         //{ "channeled",  SpellChanneling.SpawnFX }
     };
 
@@ -21,7 +21,7 @@ public static class ConditionManager
     {
         { "bound",          BanishManager.Unbind },
         { "silenced",       BanishManager.Unsilence },
-        { "channeling",     SpellChanneling.DespawnFX }
+        { "channeling",     SpellChanneling.DespawnPlayerFX }
     };
 
     private static Dictionary<string, double> m_StatusDict = new Dictionary<string, double>();
