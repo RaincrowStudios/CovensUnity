@@ -50,6 +50,11 @@ namespace Raincrow.GameEventResponses
 
                 if (isTarget)
                     ConditionManager.AddCondition(data.result.effect, caster);
+                else
+                {
+                    if (data.spell == "spell_channeling")
+                        SpellChanneling.SpawnFX(target, data.result.effect);
+                }
 
                 //target?.ApplyStatusEffect(response.result.statusEffect);
             }
