@@ -72,12 +72,12 @@ public class CovenConstants : MonoBehaviour
             }
             else
             {
-                return "http://34.73.145.51:8084/socket.io/";
+                return "https://staging-comms-server.raincrow.pw/socket.io/";
             }
 #elif PRODUCTION
                 return "http://34.73.54.25:8084/socket.io/";
 #else
-                return "http://34.73.145.51:8084/socket.io/";
+                return "https://staging-comms-server.raincrow.pw/socket.io/";
 #endif
         }
     }
@@ -151,12 +151,12 @@ public class CovenConstants : MonoBehaviour
             }
             else
             {
-                return "http://34.73.145.51:8081/";
+                return "https://staging-map-server.raincrow.pw/";
             }
 #elif PRODUCTION
             return "https://map-server.raincrow.pw/";
 #else
-            return "http://34.73.145.51:8081/";
+            return "https://staging-map-server.raincrow.pw/";
 #endif
         }
     }
