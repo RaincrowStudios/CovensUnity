@@ -11,6 +11,7 @@ public class CovensPreBuild : MonoBehaviour
             int iBuildNumber = 0;
             int.TryParse(manifest.GetValue<string>("buildNumber"), out iBuildNumber);
             iBuildNumber += 1000;
+            Debug.Log("[CovensPreBuild] buildNumber: " + iBuildNumber);
 #if UNITY_ANDROID
             PlayerSettings.Android.bundleVersionCode = iBuildNumber;
 #elif UNITY_IOS

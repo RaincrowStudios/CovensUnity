@@ -14,7 +14,7 @@ public class IAPSilver : MonoBehaviour, IStoreListener
     private class OngoingPurchase
     {
         public string id;
-        public SilverBundleData data;
+        public CurrencyBundleData data;
         public System.Action<string> callback;
     }
 
@@ -176,7 +176,7 @@ public class IAPSilver : MonoBehaviour, IStoreListener
         }
 
         string id = m_ProductMap[args.purchasedProduct.definition.id];
-        SilverBundleData data = StoreManagerAPI.GetSilverBundle(id);
+        CurrencyBundleData data = StoreManagerAPI.GetSilverBundle(id);
 
         Log("id: " + id + "\nreceipt: " + args.purchasedProduct.receipt);
 
@@ -194,7 +194,7 @@ public class IAPSilver : MonoBehaviour, IStoreListener
                     int bonus = 0;
                     int.TryParse(data.extra, out bonus);
 
-                    PlayerDataManager.playerData.silver += (data.amount + bonus);
+                    PlayerDataManager.playerData.silver += (data.silver + bonus);
                     if (PlayerManagerUI.Instance != null)
                         PlayerManagerUI.Instance.UpdateDrachs();
 

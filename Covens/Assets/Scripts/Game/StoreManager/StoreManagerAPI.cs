@@ -12,12 +12,13 @@ namespace Raincrow.Store
         public float duration;
     }
 
-    public struct SilverBundleData
+    public struct CurrencyBundleData
     {
         [DefaultValue("")]
         public string product;
         public float cost;
-        public int amount;
+        public int silver;
+        public int gold;
         [DefaultValue("")]
         public string extra;
     }
@@ -120,7 +121,7 @@ namespace Raincrow.Store
 
         public static Dictionary<string, List<ItemData>> BundleDict { get; set; }
         public static Dictionary<string, ConsumableData> ConsumableDict { get; set; }
-        public static Dictionary<string, SilverBundleData> SilverBundleDict { get; set; }
+        public static Dictionary<string, CurrencyBundleData> SilverBundleDict { get; set; }
 
         //public static void PurchaseItem(string itemID, Action<string,int>data){
         //	var js = new {purchase = itemID}; 
@@ -270,7 +271,7 @@ namespace Raincrow.Store
             }
         }
 
-        public static SilverBundleData GetSilverBundle(string id)
+        public static CurrencyBundleData GetSilverBundle(string id)
         {
             if (SilverBundleDict.ContainsKey(id))
             {
@@ -279,7 +280,7 @@ namespace Raincrow.Store
             else
             {
                 LogError($"silver bundle not found (\"{id}\")");
-                return new SilverBundleData();
+                return new CurrencyBundleData();
             }
         }
 
@@ -335,12 +336,12 @@ namespace Raincrow.Store
             m_OldStore.silver = new List<StoreApiItem>();
             foreach (StoreItem item in data.Silver)
             {
-                SilverBundleData silver = GetSilverBundle(item.id);
+                CurrencyBundleData silver = GetSilverBundle(item.id);
 
                 StoreApiItem aux = new StoreApiItem();
                 aux.id = item.id;
                 aux.type = "silver";
-                aux.amount = silver.amount;
+                aux.amount = silver.silver;
                 aux.bonus = silver.extra;
                 aux.cost = silver.cost;
                 aux.productId = silver.product;
