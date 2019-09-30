@@ -31,12 +31,12 @@ public class CovenConstants : MonoBehaviour
             }
             else
             {
-                return "http://34.73.145.51:9000/api/";
+                return "https://staging-game-server.raincrow.pw/api/";
             }
 #elif PRODUCTION
            return "https://game-server.raincrow.pw/api/";
 #else
-            return "http://34.73.145.51:9000/api/";
+            return "https://staging-game-server.raincrow.pw/api/";
 #endif
         }
     }
