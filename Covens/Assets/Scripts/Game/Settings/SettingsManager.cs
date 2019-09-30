@@ -127,7 +127,7 @@ public class SettingsManager : MonoBehaviour
         LanguageSelect.SetActive(false);
         vectButtonNotSel.Set(1f, 1f, 1f);
         vectButtonSelected.Set(1.1f, 1.1f, 1.1f);
-        RID.text = LocalizeLookUp.GetText("raincrow_id") + " : ";
+        RID.text = LocalizeLookUp.GetText("raincrow_id") + " : " + LoginAPIManager.StoredUserName;
 
         //setting up listeners for buttons
         for (int i = 0; i < Languages.Length; i++)

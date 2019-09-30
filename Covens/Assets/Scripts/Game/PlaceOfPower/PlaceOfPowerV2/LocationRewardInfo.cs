@@ -37,8 +37,8 @@ public class LocationRewardInfo : UIInfoPanel
     public void Setup(string title, RewardPOPData data, System.Action onContinue)
     {
         this.title.text = title;
-        gold.text = gold.text.Replace("{amount}", data.gold.ToString());
-        xp.text = xp.text.Replace("{amount}", data.xp.ToString());
+        gold.text = data.gold.ToString() + " " + LocalizeLookUp.GetText("store_gold");
+        xp.text = LocalizeLookUp.GetText("spell_xp").Replace("{{Number}}", data.xp.ToString());// + " " + LocalizeLookUp.GetText("");
         continueBtn.onClick.RemoveAllListeners();
         continueBtn.onClick.AddListener(() => { onContinue(); base.Close(); });
         base.Show();
