@@ -87,6 +87,7 @@ public static class OnMapEnergyChange
 
     public static void ForceEvent(IMarker marker, int newEnergy)
     {
+        Debug.Log("Forcing Update Energy");
         ForceEvent(marker, newEnergy, marker.Token.lastEnergyUpdate + Time.deltaTime);
     }
 

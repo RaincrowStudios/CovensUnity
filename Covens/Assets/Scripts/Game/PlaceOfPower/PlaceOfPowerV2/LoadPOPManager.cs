@@ -103,6 +103,8 @@ public class LoadPOPManager : MonoBehaviour
         {
             sceneLoaded = false;
             var t = LocationExitInfo.Instance;
+            OnMapEnergyChange.ForceEvent(PlayerManager.marker, (int)(PlayerDataManager.playerData.baseEnergy * .25f));
+            PlayerManagerUI.Instance.UpdateEnergy();
             if (UIQuickCast.IsOpen)
                 UIQuickCast.Close();
             t.ShowUI();
