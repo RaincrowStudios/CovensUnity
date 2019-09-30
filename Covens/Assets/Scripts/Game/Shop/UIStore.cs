@@ -8,17 +8,21 @@ public class UIStore : MonoBehaviour
 {
     [SerializeField] private Canvas m_Canvas;
     [SerializeField] private GraphicRaycaster m_InputRaycaster;
+    [SerializeField] private CanvasGroup m_CanvasGroup;
+
+    [Space()]
     [SerializeField] private HorizontalLayoutGroup m_Header;
+    [SerializeField] private Button m_CloseButton;
 
     [Header("Home")]
     [SerializeField] private CanvasGroup m_HomeWindow;
-    //[SerializeField] private M
 
     [Header("Store")]
     [SerializeField] private CanvasGroup m_StoreWindow;
     [SerializeField] private Transform m_PageContainer;
     [SerializeField] private ScrollRect m_PageScrollView;
     [SerializeField] private UIStorePage m_PagePrefab;
+    [SerializeField] private UIStoreItem m_ItemPrefab;
 
     [Header("Styles")]
     [SerializeField] private CanvasGroup m_StylesWindow;
@@ -55,18 +59,30 @@ public class UIStore : MonoBehaviour
     private RectTransform m_ContainerRectTransform;
     private float m_PageSize;
 
+    private SimplePool<UIStorePage> m_PagePool;
+    private SimplePool<UIStoreItem> m_ItemPool;
+
     private void Awake()
     {
         if (UnityEngine.EventSystems.EventSystem.current == null)
             new GameObject("EventSystem", typeof(UnityEngine.EventSystems.EventSystem), typeof(UnityEngine.EventSystems.StandaloneInputModule));
 
-        m_StoreWindow.gameObject.SetActive(true);
+        m_Canvas.enabled = false;
+        m_InputRaycaster.enabled = false;
+
+        m_StoreWindow.gameObject.SetActive(false);
         m_StylesWindow.gameObject.SetActive(false);
         m_HomeWindow.gameObject.SetActive(false);
 
-        m_StoreWindow.alpha = 1;
+        m_CanvasGroup.alpha = 0;
+        m_StoreWindow.alpha = 0;
         m_StylesWindow.alpha = 0;
         m_HomeWindow.alpha = 0;
+
+        m_CloseButton.onClick.AddListener(OnClickClose);
+
+        m_PagePool = new SimplePool<UIStorePage>(m_PagePrefab, 3);
+        m_ItemPool = new SimplePool<UIStoreItem>(m_ItemPrefab, 20);
     }
 
     private void Start()
@@ -93,11 +109,18 @@ public class UIStore : MonoBehaviour
 
     }
 
+    private void OnClickClose()
+    {
+        Close();
+    }
+
+    [ContextMenu("Open")]
     public void Open()
     {
 
     }
 
+    [ContextMenu("Close")]
     public void Close()
     {
 

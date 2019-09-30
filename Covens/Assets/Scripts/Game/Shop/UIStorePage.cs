@@ -13,13 +13,18 @@ public class UIStorePage : MonoBehaviour
         rectTransform = this.GetComponent<RectTransform>();
     }
 
+    public void UpdateItems()
+    {
+
+    }
+
     public void LoadAssets()
     {
 
     }
 
-    public void UnloadAssets()
-    {
+    //public void UnloadAssets()
+    //{
 
-    }
+    //}
 }

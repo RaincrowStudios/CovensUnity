@@ -16,8 +16,8 @@ public class UIStoreItem : MonoBehaviour
     [SerializeField] private TextMeshProUGUI m_BuyText;
 
     [Space()]
-    [SerializeField] private Sprite m_GreenButton;
-    [SerializeField] private Sprite m_RedButton;
+    [SerializeField] private Sprite m_GreenSprite;
+    [SerializeField] private Sprite m_RedSprite;
     
     public void Setup(StoreItem item, CosmeticData cosmetic)
     {
@@ -35,7 +35,7 @@ public class UIStoreItem : MonoBehaviour
 
         if (locked)
         {
-            m_BuyButton.image.sprite = m_RedButton;
+            m_BuyButton.image.sprite = m_RedSprite;
             m_BuyText.text = LocalizeLookUp.GetText("store_gear_locked_upper");
             m_BuyButton.onClick.AddListener(() =>
             {
@@ -46,8 +46,9 @@ public class UIStoreItem : MonoBehaviour
         }
         else
         {
-            //m_BuyText.text = item.owned ? LocalizeLookUp.GetText("store_gear_owned_upper")/*"OWNED"*/ : LocalizeLookUp.GetText("store_buy_upper");//"BUY";
-            //button.sprite = item.owned ? green : red;
+            bool owned = PlayerDataManager.playerData.inventory.cosmetics.Exists(cos => cos.id == item.id);
+            m_BuyText.text = owned ? LocalizeLookUp.GetText("store_gear_owned_upper")/*"OWNED"*/ : LocalizeLookUp.GetText("store_buy_upper");//"BUY";
+            m_BuyButton.image.sprite = owned ? m_GreenSprite: m_RedSprite;
             //m_BuyButton.onClick.AddListener(() => { onClick(item, this); });
         }
     }
