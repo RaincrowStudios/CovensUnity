@@ -236,6 +236,7 @@ GameObject:
   - component: {fileID: 8381716755844771723}
   - component: {fileID: 2268296443328015532}
   - component: {fileID: 3601097268699506390}
+  - component: {fileID: 585089705312552896}
   m_Layer: 5
   m_Name: Title
   m_TagString: Untagged
@@ -383,6 +384,21 @@ MonoBehaviour:
   - {fileID: 0}
   m_baseMaterial: {fileID: 0}
   m_maskOffset: {x: 0, y: 0, z: 0, w: 0}
+--- !u!114 &585089705312552896
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1450913926981329132}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 64a59a015644a4f44b632497e81f3cc7, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  prefix: 
+  id: pop_you_were_defeated
+  suffix: 
 --- !u!1 &1477703332619938096
 GameObject:
   m_ObjectHideFlags: 0
@@ -691,6 +707,7 @@ GameObject:
   - component: {fileID: 1413713845079171525}
   - component: {fileID: 3552701454468941718}
   - component: {fileID: 967328854640302672}
+  - component: {fileID: 5450349816277640904}
   m_Layer: 5
   m_Name: Msg
   m_TagString: Untagged
@@ -838,6 +855,21 @@ MonoBehaviour:
   - {fileID: 0}
   m_baseMaterial: {fileID: 0}
   m_maskOffset: {x: 0, y: 0, z: 0, w: 0}
+--- !u!114 &5450349816277640904
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6927537000703547949}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 64a59a015644a4f44b632497e81f3cc7, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  prefix: 
+  id: pop_better_luck
+  suffix: 
 --- !u!1 &8138068710871007372
 GameObject:
   m_ObjectHideFlags: 0

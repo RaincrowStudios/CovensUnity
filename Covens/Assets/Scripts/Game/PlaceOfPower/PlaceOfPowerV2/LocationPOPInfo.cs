@@ -95,7 +95,7 @@ public class LocationPOPInfo : UIInfoPanel
         //m_Enter.gameObject.SetActive(false);
         m_Locked.SetActive(false);
         m_TimeCG.gameObject.SetActive(false);
-        m_Content.text = "There is a battle going on in this place of power, check back later";
+        m_Content.text = LocalizeLookUp.GetText("pop_ongoing");// + ", " + LocalizeLookUp.GetText("generic_please_wait");// "There is a battle going on in this place of power, check back later";
 
         m_Enter.color = m_EnoughSilver;
         m_EnterBtn.onClick.RemoveAllListeners();
@@ -119,16 +119,16 @@ public class LocationPOPInfo : UIInfoPanel
                     StartCoroutine(InitiateTimeUI());
                 StartCoroutine(UpdateEnterTimer());
                 m_Locked.SetActive(false);
-                m_Content.text = "Place of power is open and accepting players, pay 1 gold drach to go in";
+                m_Content.text = LocalizeLookUp.GetText("pop_open_pay").Replace("{amount}", "1 " + LocalizeLookUp.GetText("store_gold")); //1 gold drach entry             // "Place of power is open and accepting players, pay 1 gold drach to go in";
                 m_Enter.gameObject.SetActive(true);
             }
             else
             {
                 m_Locked.SetActive(true);
-                m_Content.text = "Place of power is unavailable";
+                m_Content.text = LocalizeLookUp.GetText("pop_unavailable");// "Place of power is unavailable";
                 m_TimeTitle.text = "--";
                 m_Enter.gameObject.SetActive(false);
-                m_TimeSubtitle.text = "seconds";
+                m_TimeSubtitle.text = LocalizeLookUp.GetText("lt_time_seconds");// "seconds";
                 Debug.LogError("Wrong battle begins on timer for pop " + m_LocationViewData._id);
             }
 
@@ -137,7 +137,7 @@ public class LocationPOPInfo : UIInfoPanel
             else
             {
                 m_Enter.color = m_NotEnoughSilver;
-                m_EnterBtn.onClick.AddListener(() => UIGlobalPopup.ShowPopUp(() => { }, "Not enough gold."));
+                m_EnterBtn.onClick.AddListener(() => UIGlobalPopup.ShowPopUp(() => { }, LocalizeLookUp.GetText("store_not_enough_gold")));// "Not enough gold."));
                 //handle taking to store
             }
 
@@ -149,12 +149,12 @@ public class LocationPOPInfo : UIInfoPanel
             if (m_LocationViewData.isActive)
             {
                 m_TimeCG.gameObject.SetActive(false);
-                m_Content.text = "There is a battle going on in this place of power, check back later";
+                m_Content.text = LocalizeLookUp.GetText("pop_ongoing");// "There is a battle going on in this place of power, check back later";
             }
             else
             {
                 StartCoroutine(InitiateTimeUI());
-                m_Content.text = "This place is under cooldown, check back later";
+                m_Content.text = LocalizeLookUp.GetText("pop_cooldown_desc");// "This place is under cooldown, check back later";
                 StartCoroutine(UpdateCooldownTimer());
             }
         }
@@ -202,7 +202,7 @@ public class LocationPOPInfo : UIInfoPanel
         var tSec = GetSeconds(cooldownEnd);
         if (tSec == 0)
         {
-            LoadingOverlay.Show("Updating Place of power status...");
+            LoadingOverlay.Show(LocalizeLookUp.GetText("loading"));// "Updating Place of power status...");
             yield return new WaitForSeconds(2);
             RefreshViewData();
         }
@@ -233,12 +233,12 @@ public class LocationPOPInfo : UIInfoPanel
 
         if (!m_HasEnteredPOP)
         {
-            m_TimeSubtitle.text = "seconds";
+            m_TimeSubtitle.text = LocalizeLookUp.GetText("lt_time_seconds");//"seconds";
         }
 
         if (tStamp == 0 && !m_HasEnteredPOP)
         {
-            LoadingOverlay.Show("Updating Place of power status...");
+            LoadingOverlay.Show(LocalizeLookUp.GetText("loading"));//"Updating Place of power status...");
             yield return new WaitForSeconds(2);
             RefreshViewData();
         }
@@ -282,7 +282,7 @@ public class LocationPOPInfo : UIInfoPanel
             m_EnterAnimation.SetActive(true);
             m_Enter.gameObject.SetActive(false);
             m_Locked.SetActive(true);
-            m_Content.text = $"Prepare to battle for {m_LocationViewData.name}. Defeat the Guardian. Last Witch Standing wins.";
+            m_Content.text = LocalizeLookUp.GetText("pop_prepare").Replace("{locationName}", m_LocationViewData.name); // $"Prepare to battle for {m_LocationViewData.name}. Defeat the Guardian. Last Witch Standing wins.";
             await Task.Delay(2200);
             m_EnterAnimation.SetActive(false);
         }
@@ -290,7 +290,7 @@ public class LocationPOPInfo : UIInfoPanel
 
     private void UpdateWitchCount()
     {
-        m_TimeSubtitle.text = $"{LocationIslandController.locationData.currentOccupants} Witches Joined";
+        m_TimeSubtitle.text = LocalizeLookUp.GetText("pop_joined").Replace("{amount}", LocationIslandController.locationData.currentOccupants.ToString()); // $"{LocationIslandController.locationData.currentOccupants} Witches Joined";
         SoundManagerOneShot.Instance.PlayWooshShort();
     }
 
@@ -303,8 +303,8 @@ public class LocationPOPInfo : UIInfoPanel
         }
         UpdateWitchCount();
         m_PlayerJoined.SetActive(true);
-        m_PlayerJoinedTitle.text = $"<color=white>{token.displayName}</color> {(Add ? "Joined" : "Left")}";
-        m_PlayerJoinedSubtitle.text = $"Level: <color=white>{token.level}</color> | <color=white> {Utilities.GetDegree(token.degree)}";
+        m_PlayerJoinedTitle.text = $"<color=white>{token.displayName}</color> {(Add ? LocalizeLookUp.GetText("generic_joined") : LocalizeLookUp.GetText("generic_left"))}";
+        m_PlayerJoinedSubtitle.text = $"{LocalizeLookUp.GetText("lt_level")} <color=white>{token.level}</color> | <color=white> {Utilities.GetDegree(token.degree)}";
         if (token.degree > 0)
             m_PlayerJoinedColor.color = Utilities.Orange;
         else if (token.degree < 0)
@@ -347,11 +347,11 @@ public class LocationPOPInfo : UIInfoPanel
         TimeSpan timeSpan = GetSpan(javaTimeStamp);
 
         if (timeSpan.Hours >= 1)
-            return (timeSpan.Hours.ToString(), timeSpan.Hours > 1 ? "hours" : "hour");
+            return (timeSpan.Hours.ToString(), timeSpan.Hours > 1 ? LocalizeLookUp.GetText("lt_time_hours") : LocalizeLookUp.GetText("lt_time_hour"));
         else if (timeSpan.Minutes >= 1)
-            return (timeSpan.Minutes.ToString(), timeSpan.Minutes > 1 ? "minutes" : "minute");
+            return (timeSpan.Minutes.ToString(), timeSpan.Minutes > 1 ? LocalizeLookUp.GetText("lt_time_minutes") : LocalizeLookUp.GetText("lt_time_minute"));
         else
-            return (timeSpan.Seconds.ToString(), timeSpan.Seconds > 1 ? "seconds" : "second");
+            return (timeSpan.Seconds.ToString(), timeSpan.Seconds > 1 ? LocalizeLookUp.GetText("lt_time_seconds") : LocalizeLookUp.GetText("lt_time_seconds"));
 
     }
 

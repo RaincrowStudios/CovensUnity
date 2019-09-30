@@ -57,7 +57,8 @@ public class LocationTutorial : UIInfoPanel
         tips.Add(DownloadedAssets.localizedText["first_pop_summon"]);
         tips.Add(DownloadedAssets.localizedText["first_pop_islands"]);
         tips.Add(DownloadedAssets.localizedText["first_pop_guardian"]);
-
+        var title = this.transform.GetChild(0).GetChild(1).GetComponentInChildren<TextMeshProUGUI>();
+        title.text = LocalizeLookUp.GetText("school_title") + ": " + LocalizeLookUp.GetText("pop_title");
         descCG = description.GetComponent<CanvasGroup>();
         rectTransform = description.GetComponent<RectTransform>();
         swipeDetector = GetComponent<SwipeDetector>();
