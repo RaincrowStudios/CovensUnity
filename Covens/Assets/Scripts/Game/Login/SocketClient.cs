@@ -78,7 +78,7 @@ public class SocketClient : MonoBehaviour
 
         SocketOptions socketOptions = new SocketOptions()
         {
-            ConnectWith = BestHTTP.SocketIO.Transports.TransportTypes.Polling,
+            ConnectWith = BestHTTP.SocketIO.Transports.TransportTypes.WebSocket,
             AdditionalQueryParams = new PlatformSupport.Collections.ObjectModel.ObservableDictionary<string, string>()
         };
         socketOptions.AdditionalQueryParams.Add("token", LoginAPIManager.wssToken);
