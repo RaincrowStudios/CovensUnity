@@ -9,17 +9,9 @@ public class UIStoreStylesWindow : MonoBehaviour
     private SwipeDetector m_SwipeDetector;
     int m_CurrentIndex;
 
-    public CanvasGroup canvasGroup
-    {
-        get;
-        private set;
-    }
+    public CanvasGroup canvasGroup => this.GetComponent<CanvasGroup>();
 
-    public RectTransform rectTransform
-    {
-        get;
-        private set;
-    }
+    public RectTransform rectTransform => this.GetComponent<RectTransform>();
 
     public float alpha
     {
@@ -29,11 +21,8 @@ public class UIStoreStylesWindow : MonoBehaviour
 
     private void Awake()
     {
-        canvasGroup = this.GetComponent<CanvasGroup>();
         m_SwipeDetector = this.GetComponent<SwipeDetector>();
-        rectTransform = this.GetComponent<RectTransform>();
 
-        gameObject.SetActive(false);
         alpha = 0;
 
         m_SwipeDetector.SwipeLeft = OnSwipeLeft;

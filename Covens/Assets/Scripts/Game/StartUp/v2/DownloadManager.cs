@@ -496,6 +496,14 @@ public class DownloadManager : MonoBehaviour
             {
                 DefaultValueHandling = DefaultValueHandling.Populate
             });
+
+            foreach (var item in DownloadedAssets.cosmeticDict.Values)
+            {
+                Utilities.SetCatagoryApparel(item);
+            }
+
+            StoreManagerAPI.Store.Cosmetics.Sort(new System.Comparison<StoreItem>((a, b) => LocalizeLookUp.GetStoreTitle(a.id).CompareTo(LocalizeLookUp.GetStoreTitle(b.id))));
+
             return true;
         }
         catch (System.Exception e)

@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
+using Raincrow.Store;
 
 public class UIStore : MonoBehaviour
 {
@@ -34,12 +35,7 @@ public class UIStore : MonoBehaviour
     [SerializeField] private Button m_IngredientsButton;
 
     [Header("Store")]
-    [SerializeField] private CanvasGroup m_StoreWindow;
-    [SerializeField] private Transform m_PageContainer;
-    [SerializeField] private ScrollRect m_PageScrollView;
-    [SerializeField] private UIStorePage m_PagePrefab;
-    [SerializeField] private UIStoreItem m_ItemPrefab;
-    [SerializeField] private RectTransform m_BottomBar;
+    [SerializeField] private UIStoreContainer m_StoreWindow;
 
     [Header("Styles")]
     [SerializeField] private UIStoreStylesWindow m_StylesWindow;
@@ -72,13 +68,6 @@ public class UIStore : MonoBehaviour
     }
 
     private Screen m_CurrentScreen = Screen.NONE;
-    private int m_CurrentPage = 0;
-    private float m_PageSize;
-    private RectTransform m_CanvasRectTransform;
-    private RectTransform m_ContainerRectTransform;
-
-    private SimplePool<UIStorePage> m_PagePool;
-    private SimplePool<UIStoreItem> m_ItemPool;
 
     private int m_MainTweenId;
     private int m_ScreenTweenId;
@@ -101,39 +90,13 @@ public class UIStore : MonoBehaviour
         m_HomeWindow.alpha = 0;
 
 
-        m_PagePool = new SimplePool<UIStorePage>(m_PagePrefab, 3);
-        m_ItemPool = new SimplePool<UIStoreItem>(m_ItemPrefab, 20);
-
         m_CloseButton.onClick.AddListener(OnClickClose);
         m_CosmeticsButton.onClick.AddListener(() => SetScreen(Screen.COSMETICS));
         m_CurrenciesButton.onClick.AddListener(() => SetScreen(Screen.CURRENCY));
         m_CharmsButton.onClick.AddListener(() => SetScreen(Screen.CHARMS));
         m_IngredientsButton.onClick.AddListener(() => SetScreen(Screen.INGREDIENTS));
-    }
 
-    private void Start()
-    {
-        m_CanvasRectTransform = m_Canvas.GetComponent<RectTransform>();
-        m_ContainerRectTransform = m_PageContainer.GetComponent<RectTransform>();
-        m_PageSize = m_CanvasRectTransform.sizeDelta.x;
         SetScreen(Screen.HOME);
-    }
-
-    private void Update()
-    {
-        float pos = Mathf.Abs(m_ContainerRectTransform.anchoredPosition.x - m_PageSize);
-        int page = Mathf.RoundToInt(pos / m_PageSize);
-
-        if (page != m_CurrentPage)
-        {
-            LoadPage(page);
-        }
-    }
-
-    private void LoadPage(int page)
-    {
-        m_CurrentPage = page;
-
     }
 
     private void OnClickClose()
@@ -187,26 +150,33 @@ public class UIStore : MonoBehaviour
         LeanTween.cancel(m_ScreenTweenId);
         CanvasGroup toShow = null;
         CanvasGroup toHide = null;
-        List<CanvasGroup> screens = new List<CanvasGroup>() { m_HomeWindow, m_StoreWindow, m_StylesWindow.canvasGroup };
+        List<CanvasGroup> screens = new List<CanvasGroup>() {
+            m_HomeWindow,
+            m_StoreWindow.canvasGroup,
+            m_StylesWindow.canvasGroup
+        };
 
+        //get the canvas group that will be shown
         switch (m_CurrentScreen)
         {
             case Screen.HOME:           toHide = m_HomeWindow;      break;
-            case Screen.COSMETICS:      toHide = m_StoreWindow;     break;
-            case Screen.CURRENCY:       toHide = m_StoreWindow;     break;
-            case Screen.INGREDIENTS:    toHide = m_StoreWindow;     break;
+            case Screen.COSMETICS:      toHide = m_StoreWindow.canvasGroup;     break;
+            case Screen.CURRENCY:       toHide = m_StoreWindow.canvasGroup;     break;
+            case Screen.INGREDIENTS:    toHide = m_StoreWindow.canvasGroup;     break;
             case Screen.STYLES:         toHide = m_StylesWindow.canvasGroup;    break;
-            case Screen.CHARMS:         toShow = m_StoreWindow;     break;
+            case Screen.CHARMS:         toShow = m_StoreWindow.canvasGroup;     break;
         }
+        //get the canvasgroup that wil lbe hidden
         switch (screen)
         {
             case Screen.HOME:       toShow = m_HomeWindow; break;
-            case Screen.COSMETICS:  toShow = m_StoreWindow; break;
-            case Screen.CURRENCY:   toShow = m_StoreWindow; break;
-            case Screen.INGREDIENTS:toShow = m_StoreWindow; break;
+            case Screen.COSMETICS:  toShow = m_StoreWindow.canvasGroup; break;
+            case Screen.CURRENCY:   toShow = m_StoreWindow.canvasGroup; break;
+            case Screen.INGREDIENTS:toShow = m_StoreWindow.canvasGroup; break;
             case Screen.STYLES:     toShow = m_StylesWindow.canvasGroup; break;
-            case Screen.CHARMS:     toShow = m_StoreWindow; break;
+            case Screen.CHARMS:     toShow = m_StoreWindow.canvasGroup; break;
         }
+        //prepare the setup screen method
         System.Action setupScreen = () =>
         {
             switch (screen)
@@ -221,8 +191,8 @@ public class UIStore : MonoBehaviour
         };
 
         m_CurrentScreen = screen;
+        StopAllCoroutines();
 
-        //show and hide at same time
         if (toShow != toHide)
         {
             if (toHide)
@@ -231,12 +201,14 @@ public class UIStore : MonoBehaviour
                 toShow.blocksRaycasts = toShow.interactable = true;
 
             float start = toShow ? toShow.alpha : 0;
+
+            //setup the screen and fade the canvas gorups
             m_ScreenTweenId = LeanTween.value(start, 1, 0.5f)
                 .setEaseOutCubic()
                 .setOnStart(() => 
                 {
-                    setupScreen();
                     toShow?.gameObject.SetActive(true);
+                    setupScreen();
                 })
                 .setOnUpdate((float v) =>
                 {
@@ -259,22 +231,23 @@ public class UIStore : MonoBehaviour
                 })
                 .uniqueId;
         }
-        //hide first then show
         else
         {
             if (toHide)
                 toHide.blocksRaycasts = toHide.interactable = false;
 
+            //first hide the canvasgroup
             m_ScreenTweenId = LeanTween.alphaCanvas(toHide, 0, 0.2f)
                 .setOnComplete(() =>
                 {
-                    setupScreen();
-
                     if (toShow)
                         toShow.blocksRaycasts = toShow.interactable = true;
 
                     toHide?.gameObject.SetActive(false);
                     toShow?.gameObject.SetActive(true);
+
+                    //setup the screen and show the canvasgroup
+                    setupScreen();
 
                     m_ScreenTweenId = LeanTween.alphaCanvas(toShow, 1f, 0.5f)
                         .setEaseOutCubic()
@@ -304,50 +277,34 @@ public class UIStore : MonoBehaviour
     {
         for (int i = 0; i < m_Header.childCount; i++)
         {
+            int auxI = i;
             if (i < onClick.Length)
             {
                 Button button = m_Header.GetChild(i).GetComponent<Button>();
                 button.onClick.RemoveAllListeners();
-                button.onClick.AddListener(onClick[i]);
+                button.onClick.AddListener(() =>
+                {
+                    for (int j = 0; j < m_Header.childCount; j++)
+                    {
+                        TextMeshProUGUI t = m_Header.GetChild(j).GetComponent<TextMeshProUGUI>();
+                        if (j == auxI)
+                        {
+                            t.fontStyle = FontStyles.Underline;
+                            t.color = Color.white;
+                        }
+                        else
+                        {
+                            t.fontStyle = FontStyles.Normal;
+                            t.color = Color.white * 0.64f;
+                        }
+                    }
+                    onClick[auxI]?.Invoke();
+                });
                 m_Header.GetChild(i).gameObject.SetActive(true);
             }
             else
             {
                 m_Header.GetChild(i).gameObject.SetActive(false);
-            }
-        }
-    }
-
-    public void SetBottomText(params string[] title)
-    {
-        for (int i = 0; i < m_BottomBar.childCount; i++)
-        {
-            if (i < title.Length)
-            {
-                m_BottomBar.GetChild(i).GetComponent<TextMeshProUGUI>().text = title[i];
-                m_BottomBar.GetChild(i).gameObject.SetActive(true);
-            }
-            else
-            {
-                m_BottomBar.transform.GetChild(i).gameObject.SetActive(false);
-            }
-        }
-    }
-
-    public void SetBottomButtons(params UnityEngine.Events.UnityAction[] onClick)
-    {
-        for (int i = 0; i < m_BottomBar.childCount; i++)
-        {
-            if (i < onClick.Length)
-            {
-                Button button = m_BottomBar.GetChild(i).GetComponent<Button>();
-                button.onClick.RemoveAllListeners();
-                button.onClick.AddListener(onClick[i]);
-                m_BottomBar.GetChild(i).gameObject.SetActive(true);
-            }
-            else
-            {
-                m_BottomBar.transform.GetChild(i).gameObject.SetActive(false);
             }
         }
     }
@@ -362,15 +319,12 @@ public class UIStore : MonoBehaviour
         SetHeaderText(
             LocalizeLookUp.GetText("store_cosmetics"), 
             LocalizeLookUp.GetText("store_styles"));
+
         SetHeaderButtons(
             () => SetScreen(Screen.COSMETICS),
             () => SetScreen(Screen.STYLES));
 
-        SetBottomText(
-            LocalizeLookUp.GetText("store_gear_clothing"),
-            LocalizeLookUp.GetText("store_gear_accessories"),
-            LocalizeLookUp.GetText("store_gear_skin_art"),
-            LocalizeLookUp.GetText("store_gear_hairstyle"));
+        m_StoreWindow.SetupCosmetics(StoreManagerAPI.Store.Cosmetics);
     }
 
     private void SetupStyles()
@@ -378,28 +332,27 @@ public class UIStore : MonoBehaviour
         SetHeaderText(
             LocalizeLookUp.GetText("store_cosmetics"),
             LocalizeLookUp.GetText("store_styles"));
+
         SetHeaderButtons(
             () => SetScreen(Screen.COSMETICS),
             () => SetScreen(Screen.STYLES));
-
-        SetBottomText();
     }
 
     private void SetupCurrency()
     {
-        SetHeaderText();
-        SetBottomText();
+        SetHeaderText(LocalizeLookUp.GetText("store_currency"));
+        m_StoreWindow.SetupCurrency(StoreManagerAPI.Store.Silver);
     }
 
     private void SetupCharms()
     {
-        SetHeaderText();
-        SetBottomText();
+        SetHeaderText(LocalizeLookUp.GetText("store_charms"));
+        m_StoreWindow.SetupCharms(StoreManagerAPI.Store.Consumables);
     }
 
     private void SetupIngredients()
     {
-        SetHeaderText();
-        SetBottomText();
+        SetHeaderText(LocalizeLookUp.GetText("store_ingredients"));
+        m_StoreWindow.SetupIngredients(StoreManagerAPI.Store.Bundles);
     }
 }
