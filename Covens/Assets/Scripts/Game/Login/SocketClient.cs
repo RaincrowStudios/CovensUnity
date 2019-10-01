@@ -78,7 +78,7 @@ public class SocketClient : MonoBehaviour
 
         SocketOptions socketOptions = new SocketOptions()
         {
-            ConnectWith = BestHTTP.SocketIO.Transports.TransportTypes.Polling,
+            ConnectWith = BestHTTP.SocketIO.Transports.TransportTypes.WebSocket,
             AdditionalQueryParams = new PlatformSupport.Collections.ObjectModel.ObservableDictionary<string, string>()
         };
         socketOptions.AdditionalQueryParams.Add("token", LoginAPIManager.wssToken);
@@ -90,7 +90,7 @@ public class SocketClient : MonoBehaviour
         _socketManager.Socket.On(SocketIOEventTypes.Connect, OnConnect);
         _socketManager.Socket.On(SocketIOEventTypes.Disconnect, OnDisconnect);
         _socketManager.Socket.On(SocketIOEventTypes.Error, OnError);
-        _socketManager.Socket.On("game.event", OnGameEvent);
+        //_socketManager.Socket.On("game.event", OnGameEvent);
 
 #if LOCAL_API
         
@@ -103,8 +103,8 @@ public class SocketClient : MonoBehaviour
     
     private void OnConnect(Socket socket, Packet packet, object[] args)
     {
-        //_gameSocket = _socketManager["/client"];
-        //_gameSocket.On("game.event", OnGameEvent);
+        _gameSocket = _socketManager["/client"];
+        _gameSocket.On("game.event", OnGameEvent);
         Log($"Connected to Socket: { CovenConstants.wssAddress} - Token: {LoginAPIManager.wssToken}");
 
         if (!_isRefreshingConnection)
