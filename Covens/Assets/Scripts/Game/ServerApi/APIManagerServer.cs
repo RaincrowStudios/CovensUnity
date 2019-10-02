@@ -40,6 +40,9 @@ public class APIManagerServer
             retry = www.isNetworkError || (www.isHttpError && www.responseCode > 500);
             retryCount += 1;
 
+            if (www.isHttpError && www.responseCode >= 500)
+                Debug.LogException(new System.Exception("server error: [" + www.responseCode + "] " + www.downloadHandler.text));
+
             if (retryCount > 0)
             {
                 LoadingOverlay.Hide();

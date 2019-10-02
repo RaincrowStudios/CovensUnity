@@ -115,7 +115,7 @@ public class APIManager : Patterns.SingletonComponent<APIManager>
 
     public static string ParseError(string response)
     {
-        return LocalizeLookUp.GetText("error_" + response);
+        return LocalizeLookUp.GetText("error_" + response.ToLower());
     }
 
     public static void ThrowRetryError(UnityWebRequest www, string url, string data)

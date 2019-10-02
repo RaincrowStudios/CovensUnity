@@ -136,18 +136,27 @@ public class SocketClient : MonoBehaviour
 #endif
         if (args != null && args.Length > 0)
         {
-            string errorMessage = args[0].ToString();
-            LogError("Socket Error: " + errorMessage);
+            Error error = args[0] as Error;
+            Debug.LogException(new System.Exception("Socket Error: [" + error.Code + "] " + error.Message));
+
+            switch (error.Code)
+            {
+                case SocketIOErrors.BadHandshakeMethod:
+                case SocketIOErrors.UnknownSid:
+                case SocketIOErrors.UnknownTransport:
+                    UnityMainThreadDispatcher.Instance().Enqueue(GameResyncHandler.ResyncGame);
+                    break;
+            }
         }
 
-        if (!LoginAPIManager.accountLoggedIn)
-        {
+        //if (!LoginAPIManager.accountLoggedIn)
+        //{
 
-        }
-        else
-        {
-            UnityMainThreadDispatcher.Instance().Enqueue(GameResyncHandler.ResyncGame);
-        }
+        //}
+        //else
+        //{
+        //    UnityMainThreadDispatcher.Instance().Enqueue(GameResyncHandler.ResyncGame);
+        //}
     }
 
     private void OnDisconnect(Socket socket, Packet packet, object[] args)

@@ -154,13 +154,13 @@ public class GameStartup : MonoBehaviour
     private void OnDictionaryError(string error)
     {
         HandleServerDown.Instance.ShowErrorDictionary();
-        throw new System.Exception(error);
+        Debug.LogException(new System.Exception(error));
     }
 
     private void OnDictionaryParseError(string error, string stackTrace)
     {
         HandleServerDown.Instance.ShowErrorParseDictionary();
-        throw new System.Exception(error + "\n" + stackTrace);
+        Debug.LogException(new System.Exception(error));
     }
 
     private void OnDictionaryDownloadProgress(string name, float size, float progress)
