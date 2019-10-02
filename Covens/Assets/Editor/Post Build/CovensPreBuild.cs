@@ -1,11 +1,11 @@
-﻿using UnityEditor;
+﻿#if UNITY_CLOUD_BUILD
+using UnityEditor;
 using UnityEditor.Callbacks;
 using UnityEditor.iOS.Xcode;
 using UnityEngine;
 
 public class CovensPreBuild : MonoBehaviour
 {
-#if UNITY_CLOUD_BUILD
 		public static void PreBuildUCB(UnityEngine.CloudBuild.BuildManifestObject manifest)
         {
             int iBuildNumber = 0;
@@ -18,5 +18,5 @@ public class CovensPreBuild : MonoBehaviour
             PlayerSettings.iOS.buildNumber = iBuildNumber.ToString();
 #endif
         }
-#endif
 }
+#endif
