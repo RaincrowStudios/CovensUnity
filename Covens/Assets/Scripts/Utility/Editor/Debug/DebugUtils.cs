@@ -312,6 +312,13 @@ namespace Raincrow.Test
                     EditorUtility.RevealInFinder(Application.persistentDataPath);
                 }
 
+                if (GUILayout.Button("?"))
+                {
+                    var names = AssetDatabase.GetAllAssetBundleNames();
+                    foreach (string name in names)
+                        Debug.Log("Asset Bundle: " + name);
+                }
+
                 GUILayout.Space(5);
                 GUILayout.Label("Dictionary");
                 UseLocalGameDictionary = EditorGUILayout.ToggleLeft("Use local game.json (\"Editor Default Resources/game.json\"", UseLocalGameDictionary);
