@@ -275,6 +275,8 @@ public class LocationPOPInfo : UIInfoPanel
     {
         if (locationData != null)
         {
+            PlayerDataManager.playerData.gold--;
+            PlayerManagerUI.Instance.UpdateDrachs();
             m_CloseBtn.gameObject.SetActive(false);
             SoundManagerOneShot.Instance.IngredientAdded();
             m_HasEnteredPOP = true;

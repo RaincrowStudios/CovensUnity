@@ -66,7 +66,17 @@ public class UIDetailedSpiritInfo : MonoBehaviour
 
         m_TierIcon.sprite = MarkerSpawner.GetSpiritTierSprite(spirit.type);
         m_Location.text = spirit.Location;
-        m_Behavior.text = spirit.Behavior;
+        //m_Behavior.text = spirit.Behavior;
+        var m_zone = "";
+        foreach (var item in spirit.zones)
+        {
+            m_zone = LocalizeLookUp.GetZoneName(item);
+            break;
+        }
+        m_Behavior.text = LocalizeLookUp.GetText("spirit_behavior")
+        .Replace("{{type}}", LocalizeLookUp.GetText("spirit_type_" + spirit.type))
+        .Replace("{{behavior}}", LocalizeLookUp.GetText("spirit_behavior_" + spirit.type))
+        .Replace("{{zone}}", m_zone);
         m_Lore.text = spirit.Description;
 
         m_SpiritArt.color = new Color(0, 0, 0, 0);
