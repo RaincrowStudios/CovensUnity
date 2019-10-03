@@ -12,6 +12,7 @@ public class LocationBattleStart : IGameEventHandler
 
     public void HandleResponse(string eventData)
     {
+        Debug.Log("STARTING POP");
         Debug.Log(eventData);
         Debug.Log("Location Battle has Started");
         SoundManagerOneShot.Instance.SetBGTrack(1);

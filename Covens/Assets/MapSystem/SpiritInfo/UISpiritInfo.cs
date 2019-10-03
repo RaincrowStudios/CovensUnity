@@ -26,6 +26,9 @@ public class UISpiritInfo : UIInfoPanel
 
     private static UISpiritInfo m_Instance;
 
+    // private int m_CurrentHexEffect;
+    // private bool m_DisplayHexNotification;
+
     public static bool IsShowing
     {
         get
@@ -150,6 +153,10 @@ public class UISpiritInfo : UIInfoPanel
             default: tier = "?"; break;
         };
         m_Tier.text = tier + " " + LocalizeLookUp.GetText("attacked_spirit");
+
+        if (PlayerDataManager.playerData.level < 4 && m_SpiritData.tier > 1)
+            PlayerNotificationManager.Instance.ShowNotification(("This is challenging spirit for your level, witch.").ToUpper());
+
 
         OnMapEnergyChange.OnPlayerDead += _OnCharacterDead;
         OnMapEnergyChange.OnEnergyChange += _OnMapEnergyChange;
@@ -333,7 +340,23 @@ public class UISpiritInfo : UIInfoPanel
     {
         if (instance == SpiritToken?.instance)
         {
-            m_Energy.text = LocalizeLookUp.GetText("card_witch_energy").ToUpper() + " <color=black>" + newEnergy.ToString() + "</color>";
+
+            Debug.Log(m_Energy.text);
+            Debug.Log(m_Energy.text.Split('>')[1]);
+            float currentEnergy = float.Parse(m_Energy.text.Split('>')[1]);
+            //spirit at half health
+            if (currentEnergy > SpiritToken.baseEnergy / 2 && newEnergy < SpiritToken.baseEnergy / 2)
+            {
+                PlayerNotificationManager.Instance.ShowNotification($"The <color=orange>{m_SpiritName.text}</color> is now at half health. Keep it up, witch!");
+            }
+            // spirit vulnerable
+            if (currentEnergy > SpiritToken.baseEnergy * .2f && newEnergy < SpiritToken.baseEnergy * .2f)
+            {
+                PlayerNotificationManager.Instance.ShowNotification($"The <color=orange>{m_SpiritName.text}</color> is now <color=red>vulnerable!</color>");
+            }
+
+            m_Energy.text = LocalizeLookUp.GetText("card_witch_energy").ToUpper() + " <color=black>" + newEnergy.ToString();
+
 
             if (newEnergy == 0)
             {
@@ -347,6 +370,9 @@ public class UISpiritInfo : UIInfoPanel
         if (character != SpiritToken?.instance)
             return;
 
+
+
+
         foreach (StatusEffect item in SpiritMarkerDetails.effects)
         {
             if (item.spell == statusEffect.spell)
@@ -355,8 +381,21 @@ public class UISpiritInfo : UIInfoPanel
                 break;
             }
         }
+
+
         SpiritMarkerDetails.effects.Add(statusEffect);
         m_ConditionList.AddCondition(statusEffect);
+
+
+        foreach (var item in SpiritMarkerDetails.effects)
+        {
+            Debug.Log(item.stack);
+            if (item.spell == "spell_hex" && item.stack == 3)
+            {
+                PlayerNotificationManager.Instance.ShowNotification($"The <color=orange>{m_SpiritName.text}</color> is fully Hexed and <color=red>vulnerable</color> to critical attacks.");
+
+            }
+        }
     }
 
     private void _OnMapTokenRemove(string instance)
