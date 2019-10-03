@@ -111,8 +111,6 @@ public abstract class CharacterMarkerData : MarkerData
     [JsonProperty("resilience")]
     public virtual int baseResilience { get; set; }
 
-    public List<StatusEffect> effects;
-
     public virtual string covenId { get; set; }
     public virtual string coven { get; set; }
 
@@ -140,92 +138,54 @@ public abstract class CharacterMarkerData : MarkerData
         }
     }
 
-    [JsonIgnore]
-    public int Aptitude
+    public int GetAptitude(List<StatusEffect> effects)
     {
-        get
+        int result = baseAptitude;
+        if (effects != null)
         {
-            int result = baseAptitude;
-            if (effects != null)
-            {
-                foreach (var condition in effects)
-                    result += condition.modifiers.aptitude;
-            }
-            return result;
+            foreach (var condition in effects)
+                result += condition.modifiers.aptitude;
         }
+        return result;
     }
 
-    [JsonIgnore]
-    public int Power
+    public int GetPower(List<StatusEffect> effects)
     {
-        get
+        int result = basePower;
+        if (effects != null)
         {
-            int result = basePower;
-            if (effects != null)
-            {
-                foreach (var condition in effects)
-                    result += condition.modifiers.power;
-            }
-            return result;
+            foreach (var condition in effects)
+                result += condition.modifiers.power;
         }
+        return result;
     }
 
-    [JsonIgnore]
-    public int Resilience
+    public int GetResilience(List<StatusEffect> effects)
     {
-        get
+        int result = baseResilience;
+        if (effects != null)
         {
-            int result = baseResilience;
-            if (effects != null)
-            {
-                foreach (var condition in effects)
-                    result += condition.modifiers.resilience;
-            }
-            return result;
+            foreach (var condition in effects)
+                result += condition.modifiers.resilience;
         }
+        return result;
     }
 
-
-    [JsonIgnore]
-    public int Wisdom
+    public int GetWisdom(List<StatusEffect> effects)
     {
-        get
+        int result = baseWisdom;
+        if (effects != null)
         {
-            int result = baseWisdom;
-            if (effects != null)
-            {
-                foreach (var condition in effects)
-                    result += condition.modifiers.wisdom;
-            }
-            return result;
+            foreach (var condition in effects)
+                result += condition.modifiers.wisdom;
         }
+        return result;
     }
 
 
     public virtual void AddEnergy(int amount)
     {
         energy = Mathf.Clamp(energy + amount, 0, maxEnergy);
-    }
-
-
-    public bool HasStatus(string status)
-    {
-        if (effects == null)
-            return false;
-
-        for(int i = 0; i < effects.Count; i++)
-        {
-            if (effects[i].modifiers.status == null)
-                return false;
-
-            for (int j = 0; j < effects[i].modifiers.status.Count; j++)
-            {
-                if (effects[i].modifiers.status[j] == status)
-                    return true;
-            }
-        }
-
-        return false;
     }
 }
 
@@ -349,6 +309,8 @@ public class PlayerData : WitchMarkerData
     public QuestStatus quest;
 
     public List<PlayerCooldown> cooldowns;
+
+    public List<StatusEffect> effects;
 
     [JsonProperty("tools")] private List<CollectableItem> m_Tools;
     [JsonProperty("herbs")] private List<CollectableItem> m_Herbs;
@@ -617,7 +579,7 @@ public class PlayerData : WitchMarkerData
     
     public long ApplyExpBuffs(long expAmount)
     {
-       return expAmount + (long)(expAmount * Aptitude * 0.01);
+       return expAmount + (long)(expAmount * GetAptitude(effects) * 0.01);
     }
 
     public void AddExp(long amount)

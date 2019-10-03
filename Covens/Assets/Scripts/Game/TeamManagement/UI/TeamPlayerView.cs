@@ -15,7 +15,6 @@ public class TeamPlayerView : MonoBehaviour
     [SerializeField] private TextMeshProUGUI _level;
     [SerializeField] private TextMeshProUGUI _degree;
     [SerializeField] private TextMeshProUGUI _coven;
-    //[SerializeField] private TextMeshProUGUI _state;
     [SerializeField] private TextMeshProUGUI _dominion;
     [SerializeField] private TextMeshProUGUI _dominionRank;
     [SerializeField] private TextMeshProUGUI _worldRank;
@@ -94,9 +93,8 @@ public class TeamPlayerView : MonoBehaviour
         _dominionRank.text = LocalizeLookUp.GetText("lt_dominion_rank") + " " + data.dominionRank;
         _worldRank.text = LocalizeLookUp.GetText("lt_world_rank") + " " + data.worldRank;
         _coven.text = (string.IsNullOrEmpty(data.coven) ? LocalizeLookUp.GetText("lt_coven_none") : LocalizeLookUp.GetText("lt_coven") + " " + data.coven);
-        //_state.text = (data.state == "" ? LocalizeLookUp.GetText("lt_state_normal") : LocalizeLookUp.GetText("lt_state") + " " + data.state);
-        _power.text = LocalizeLookUp.GetText("generic_power") + ": " + data.Power;
-        _resilience.text = LocalizeLookUp.GetText("generic_resilience") + ": " + data.Resilience;
+        _power.text = LocalizeLookUp.GetText("generic_power") + ": " + data.GetPower(null);
+        _resilience.text = LocalizeLookUp.GetText("generic_resilience") + ": " + data.GetResilience(null);
         _energy.text = LocalizeLookUp.GetText("lt_energy") + " " + data.energy.ToString() + "/" + data.baseEnergy.ToString();
 
         m_OnFly = onFly;
@@ -117,9 +115,6 @@ public class TeamPlayerView : MonoBehaviour
                 m_CanvasGroup.transform.localScale = Vector3.Lerp(Vector3.one * 0.5f, Vector3.one, v);
             })
             .uniqueId;
-
-        //LTDescr descrAlpha = LeanTween.alphaCanvas(m_CanvasGroup, 1, .28f).setEase(LeanTweenType.easeInOutSine);
-        //LTDescr descrScale = LeanTween.scale(m_CanvasGroup.gameObject.GetComponent<RectTransform>(), Vector3.one, .4f).setEase(LeanTweenType.easeInOutSine);
     }
 
     public void Close()

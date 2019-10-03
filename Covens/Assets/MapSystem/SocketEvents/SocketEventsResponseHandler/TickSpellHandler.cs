@@ -46,17 +46,7 @@ namespace Raincrow.GameEventResponses
             
             if (data.result.effect != null && string.IsNullOrEmpty(data.result.effect.spell) == false)
             {
-                SpellCastHandler.OnApplyStatusEffect?.Invoke(data.target.id, data.result.effect);
-
-                if (isTarget)
-                    ConditionManager.AddCondition(data.result.effect, caster);
-                else
-                {
-                    if (data.spell == "spell_channeling")
-                        SpellChanneling.SpawnFX(target, data.result.effect);
-                }
-
-                //target?.ApplyStatusEffect(response.result.statusEffect);
+                MarkerSpawner.ApplyStatusEffect(data.target.id, data.caster.id, data.result.effect);
             }
 
             if (isTarget)

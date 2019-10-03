@@ -37,8 +37,8 @@ public class BOSCharacter : BOSBase
         dominionRank.text = LocalizeLookUp.GetText("generic_rank") + " " + pData.dominionRank.ToString() + " " + LocalizeLookUp.GetText("dominion_location_short") + " " + pData.dominion;
         //dominionRank.text = LocalizeLookUp.GetText("lt_dominion") + " " + pData.dominion; ;
         worldRank.text = LocalizeLookUp.GetText("generic_rank") + " " + pData.worldRank.ToString() + " " + LocalizeLookUp.GetText("dominion_world");
-        power.text = LocalizeLookUp.GetText("generic_power") + ": " + PlayerDataManager.playerData.Power;
-        resilience.text = LocalizeLookUp.GetText("generic_resilience") + ": " + PlayerDataManager.playerData.Resilience;
+        power.text = LocalizeLookUp.GetText("generic_power") + ": " + PlayerDataManager.playerData.GetPower(PlayerDataManager.playerData.effects);
+        resilience.text = LocalizeLookUp.GetText("generic_resilience") + ": " + PlayerDataManager.playerData.GetResilience(PlayerDataManager.playerData.effects);
         favoriteSpell.text = LocalizeLookUp.GetText("spell_favorite") + " " + (string.IsNullOrEmpty(pData.favoriteSpell) ? LocalizeLookUp.GetText("lt_none") : LocalizeLookUp.GetSpellName(pData.favoriteSpell));
 
         nemesis.text = LocalizeLookUp.GetText("generic_nemesis") + ": " + (string.IsNullOrEmpty(pData.nemesis) ? LocalizeLookUp.GetText("lt_none") : pData.nemesis);

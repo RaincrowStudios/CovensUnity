@@ -132,9 +132,14 @@ public class UISpiritInfo : UIInfoPanel
         m_OwnerButton.onClick.RemoveAllListeners();
 
         m_SpiritName.text = m_SpiritData.Name;
-        //m_Level.text = "";
         m_Energy.text = LocalizeLookUp.GetText("cast_energy").ToUpper() + " <color=black>" + SpiritToken.energy.ToString();
         m_Desc.text = LocalizeLookUp.GetText("location_owned").Replace("{{Controller}}", "[" + LocalizeLookUp.GetText("loading") + "]");//"Belongs to [Loading...]";
+
+        if (SpiritToken.effects == null)
+        {
+            SpiritToken.effects = new List<StatusEffect>();
+        }
+        m_ConditionList.Setup(SpiritToken.effects);
 
         m_SpiritArt.overrideSprite = null;
         DownloadedAssets.GetSprite(SpiritToken.spiritId, spr =>
@@ -161,6 +166,7 @@ public class UISpiritInfo : UIInfoPanel
         OnMapEnergyChange.OnPlayerDead += _OnCharacterDead;
         OnMapEnergyChange.OnEnergyChange += _OnMapEnergyChange;
         SpellCastHandler.OnApplyStatusEffect += _OnStatusEffectApplied;
+        ExpireStatusEffectHandler.OnEffectExpire += _OnExpireEffect;
         RemoveTokenHandler.OnTokenRemove += _OnMapTokenRemove;
         ExpireSpiritHandler.OnSpiritExpire += _OnMapTokenRemove;
         BanishManager.OnBanished += Abort;
@@ -225,6 +231,7 @@ public class UISpiritInfo : UIInfoPanel
         OnMapEnergyChange.OnPlayerDead -= _OnCharacterDead;
         OnMapEnergyChange.OnEnergyChange -= _OnMapEnergyChange;
         SpellCastHandler.OnApplyStatusEffect -= _OnStatusEffectApplied;
+        ExpireStatusEffectHandler.OnEffectExpire -= _OnExpireEffect;
         RemoveTokenHandler.OnTokenRemove -= _OnMapTokenRemove;
         ExpireSpiritHandler.OnSpiritExpire -= _OnMapTokenRemove;
 
@@ -291,11 +298,6 @@ public class UISpiritInfo : UIInfoPanel
                 m_OwnerButton.onClick.AddListener(OnClickCoven);
             }
         }
-        if (SpiritMarkerDetails.effects == null)
-        {
-            SpiritMarkerDetails.effects = new List<StatusEffect>();
-        }
-        m_ConditionList.Setup(SpiritMarkerDetails.effects);
     }
 
     private void OnClickClose()
@@ -365,37 +367,29 @@ public class UISpiritInfo : UIInfoPanel
         }
     }
 
-    private void _OnStatusEffectApplied(string character, StatusEffect statusEffect)
+    private void _OnStatusEffectApplied(string character, string caster, StatusEffect statusEffect)
     {
         if (character != SpiritToken?.instance)
             return;
 
-
-
-
-        foreach (StatusEffect item in SpiritMarkerDetails.effects)
-        {
-            if (item.spell == statusEffect.spell)
-            {
-                SpiritMarkerDetails.effects.Remove(item);
-                break;
-            }
-        }
-
-
-        SpiritMarkerDetails.effects.Add(statusEffect);
         m_ConditionList.AddCondition(statusEffect);
-
-
-        foreach (var item in SpiritMarkerDetails.effects)
+        
+        foreach (var item in SpiritToken.effects)
         {
-            Debug.Log(item.stack);
             if (item.spell == "spell_hex" && item.stack == 3)
             {
                 PlayerNotificationManager.Instance.ShowNotification($"The <color=orange>{m_SpiritName.text}</color> is fully Hexed and <color=red>vulnerable</color> to critical attacks.");
 
             }
         }
+    }
+
+    private void _OnExpireEffect(string character, StatusEffect effect)
+    {
+        if (character != SpiritToken?.instance)
+            return;
+
+        m_ConditionList.RemoveCondition(effect);
     }
 
     private void _OnMapTokenRemove(string instance)

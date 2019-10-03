@@ -133,8 +133,9 @@ public class UIPlayerInfo : UIInfoPanel
             Close();
             return;
         }
-
         
+        m_ConditionsList.Setup(data.effects);
+
         // //setup the ui
         m_DisplayNameText.text = WitchToken.displayName;
         m_DegreeSchoolText.text = Utilities.WitchTypeControlSmallCaps(WitchToken.degree);
@@ -166,6 +167,7 @@ public class UIPlayerInfo : UIInfoPanel
 
         RemoveTokenHandler.OnTokenRemove += _OnMapTokenRemove;
         SpellCastHandler.OnApplyStatusEffect += _OnStatusEffectApplied;
+        ExpireStatusEffectHandler.OnEffectExpire += _OnExpireEffect;
         BanishManager.OnBanished += Abort;
         OnMapEnergyChange.OnEnergyChange += _OnEnergyChange;
         OnMapEnergyChange.OnPlayerDead += _OnCharacterDead;
@@ -219,6 +221,7 @@ public class UIPlayerInfo : UIInfoPanel
         MoveTokenHandler.OnTokenMove -= _OnMapTokenMove;
         RemoveTokenHandler.OnTokenRemove -= _OnMapTokenRemove;
         SpellCastHandler.OnApplyStatusEffect -= _OnStatusEffectApplied;
+        ExpireStatusEffectHandler.OnEffectExpire -= _OnExpireEffect;
         BanishManager.OnBanished -= Abort;
         OnMapEnergyChange.OnEnergyChange -= _OnEnergyChange;
         OnMapEnergyChange.OnPlayerDead -= _OnCharacterDead;
@@ -243,8 +246,6 @@ public class UIPlayerInfo : UIInfoPanel
             m_CovenText.text = LocalizeLookUp.GetText("chat_coven").ToUpper() + " <color=black>" + details.coven + "</color>";
         else
             m_CovenText.text = LocalizeLookUp.GetText("chat_screen_no_coven");
-
-        m_ConditionsList.Setup(WitchMarkerDetails.effects);
     }
 
     private void OnClickClose()
@@ -297,22 +298,20 @@ public class UIPlayerInfo : UIInfoPanel
         Abort();
     }
 
-    private void _OnStatusEffectApplied(string character, StatusEffect statusEffect)
+    private void _OnStatusEffectApplied(string character, string caster, StatusEffect statusEffect)
     {
         if (character != WitchToken.instance)
             return;
 
-        foreach (StatusEffect item in WitchMarkerDetails.effects)
-        {
-            if (item.spell == statusEffect.spell)
-            {
-                WitchMarkerDetails.effects.Remove(item);
-                item.CancelExpiration();
-                break;
-            }
-        }
-        WitchMarkerDetails.effects.Add(statusEffect);
         m_ConditionsList.AddCondition(statusEffect);
+    }
+
+    private void _OnExpireEffect(string character, StatusEffect effect)
+    {
+        if (character != WitchToken.instance)
+            return;
+
+        m_ConditionsList.RemoveCondition(effect);
     }
 
     private void Abort()

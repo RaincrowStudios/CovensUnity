@@ -60,7 +60,7 @@ namespace Raincrow.GameEventResponses
         public static event System.Action<SpellCastEventData> OnWillProcessSpell;
 
         public static event System.Action<string, string, SpellData, Result> OnSpellCast;
-        public static System.Action<string, StatusEffect> OnApplyStatusEffect;
+        public static System.Action<string, string, StatusEffect> OnApplyStatusEffect;
 
         public static System.Action<string> OnSpiritBanished;
 
@@ -198,19 +198,7 @@ namespace Raincrow.GameEventResponses
                     //add status effects to PlayerDataManager.playerData
                     if (data.result.effect != null && string.IsNullOrEmpty(data.result.effect.spell) == false)
                     {
-                        OnApplyStatusEffect?.Invoke(data.target.id, data.result.effect);
-
-                        if (playerIsTarget)
-                        {
-                            ConditionManager.AddCondition(data.result.effect, caster);
-                        }
-                        else
-                        {
-                            if (data.spell == "spell_channeling")
-                                SpellChanneling.SpawnFX(target, data.result.effect);
-                        }
-
-                        //target?.ApplyStatusEffect(data.result.statusEffect);
+                        MarkerSpawner.ApplyStatusEffect(data.target.id, data.caster.id, data.result.effect);
                     }
 
                     //add the immunity if the server said so

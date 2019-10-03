@@ -79,8 +79,45 @@ public class CharacterToken : Token
 
     public virtual int baseEnergy { get; set; }
 
+    public virtual List<StatusEffect> effects { get; set; }
+
     [JsonIgnore]
     public virtual int maxEnergy => (2 * baseEnergy);
+
+       
+    public bool HasStatus(string status)
+    {
+        if (effects == null)
+            return false;
+
+        for (int i = 0; i < effects.Count; i++)
+        {
+            if (effects[i].modifiers.status == null)
+                return false;
+
+            for (int j = 0; j < effects[i].modifiers.status.Count; j++)
+            {
+                if (effects[i].modifiers.status[j] == status)
+                    return true;
+            }
+        }
+
+        return false;
+    }
+
+    public bool HasEffect(string spell)
+    {
+        if (effects == null)
+            return false;
+
+        for (int i = 0; i < effects.Count; i++)
+        {
+            if (effects[i].spell == spell)
+                return true;
+        }
+
+        return false;
+    }
 }
 
 public class SpiritToken : CharacterToken
@@ -190,5 +227,11 @@ public class PlayerToken : WitchToken
     {
         get => PlayerDataManager.playerData.latitude;
         set => PlayerDataManager.playerData.latitude = value;
+    }
+
+    public override List<StatusEffect> effects
+    {
+        get => PlayerDataManager.playerData.effects;
+        set => PlayerDataManager.playerData.effects = value;
     }
 }

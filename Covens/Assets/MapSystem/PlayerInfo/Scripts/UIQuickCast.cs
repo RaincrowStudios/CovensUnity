@@ -349,7 +349,7 @@ public class UIQuickCast : MonoBehaviour
         UpdateCanCast(m_Target, m_TargetData);
     }
 
-    private void _OnStatusEffectApplied(string instance, StatusEffect statusEffect)
+    private void _OnStatusEffectApplied(string instance, string caster, StatusEffect statusEffect)
     {
         if (m_Target == null || m_TargetData == null)
             return;

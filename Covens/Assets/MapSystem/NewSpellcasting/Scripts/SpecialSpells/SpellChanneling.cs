@@ -17,8 +17,8 @@ public static class SpellChanneling
 
     public static IMarker Target { get; private set; }
 
-    public static bool IsChanneling => PlayerDataManager.playerData.HasStatus("channeling");
-    public static bool IsChanneled => PlayerDataManager.playerData.HasStatus("channeled");
+    public static bool IsChanneling => PlayerManager.witchMarker.witchToken.HasStatus("channeling");
+    public static bool IsChanneled => PlayerManager.witchMarker.witchToken.HasStatus("channeled");
 
     public static void CastSpell(SpellData spell, IMarker target, List<spellIngredientsData> ingredients, System.Action<Raincrow.GameEventResponses.SpellCastHandler.Result> onFinishFlow, System.Action onCancelFlow)
     {

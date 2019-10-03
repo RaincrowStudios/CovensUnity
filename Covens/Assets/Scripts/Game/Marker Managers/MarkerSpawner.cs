@@ -63,6 +63,17 @@ public class MarkerSpawner : MarkerManager
     private static SimplePool<Transform> m_EnergyPool;
     private static SimplePool<Transform> m_PopPool;
 
+
+    private float m_Distance;
+    public static float m_MarkerScale { get; private set; }
+    public static bool m_PortaitMode { get; private set; }
+    private static bool m_StreetLevel;
+    private const float MARKER_SCALE_MIN = 1;
+    private const float MARKER_SCALE_MAX = 2;
+
+    private static bool m_Highlighting = false;
+    private static List<IMarker> m_HighlightedMarkers = new List<IMarker>();
+
     void Awake()
     {
         Instance = this;
@@ -89,9 +100,9 @@ public class MarkerSpawner : MarkerManager
         m_PopPool = new SimplePool<Transform>(unclaimedLoc.transform, 10);
 
         //init the map/markers variables
-        UpdateProperties();
-        MapsAPI.Instance.OnCameraUpdate += (a, b, c) => UpdateProperties();
-        PlayerManager.onStartFlight += UpdateProperties;
+        UpdateMarkerProperties();
+        MapsAPI.Instance.OnCameraUpdate += (a, b, c) => UpdateMarkerProperties();
+        PlayerManager.onStartFlight += UpdateMarkerProperties;
     }
 
     private IEnumerator DespawnCoroutine()
@@ -178,7 +189,7 @@ public class MarkerSpawner : MarkerManager
         IMarker marker = MapsAPI.Instance.AddMarker(pos, go);
         marker.GameObject.SetActive(false);
         marker.Setup(Data);
-        marker.OnClick += onClickMarker;
+        marker.OnClick += OnClickMarker;
 
         UpdateMarker(marker);
 
@@ -227,19 +238,8 @@ public class MarkerSpawner : MarkerManager
             }
         }
     }
-
-    private void SetupWitch(WitchMarker marker, Token data)
-    {
-        if (!PlayerDataManager.IsFTF)
-        {
-            marker.Setup(data);
-
-            //todo: setup stance (friend/enemy/coven)
-            SetupStance(marker.GameObject.transform, data);
-        }
-    }
-
-    public void onClickMarker(IMarker m)
+    
+    private void OnClickMarker(IMarker m)
     {
         if (!UIStateManager.isMain)
             return;
@@ -255,7 +255,7 @@ public class MarkerSpawner : MarkerManager
         {
             if (FirstTapManager.IsFirstTime("ingredients"))
             {
-                FirstTapManager.Show("ingredients", () => onClickMarker(m));
+                FirstTapManager.Show("ingredients", () => OnClickMarker(m));
                 return;
             }
             PickUpCollectibleAPI.PickUpCollectable(m as CollectableMarker);
@@ -266,7 +266,7 @@ public class MarkerSpawner : MarkerManager
         {
             if (FirstTapManager.IsFirstTime("energy"))
             {
-                FirstTapManager.Show("energy", () => onClickMarker(m));
+                FirstTapManager.Show("energy", () => OnClickMarker(m));
                 return;
             }
             PickUpCollectibleAPI.CollectEnergy(m);
@@ -383,12 +383,7 @@ public class MarkerSpawner : MarkerManager
                 break;
         }
     }
-
-
-    public void SetupStance(Transform witchMarker, Token data)
-    {
-    }
-
+    
     /// <summary>
     /// Returns true if the target is immune to the player.
     /// </summary>
@@ -430,8 +425,7 @@ public class MarkerSpawner : MarkerManager
     {
         PlayerDataManager.playerData.immunities.Clear();
     }
-
-
+    
     public static Sprite GetSpiritTierSprite(string spiritType)
     {
         if (Instance == null)
@@ -442,16 +436,8 @@ public class MarkerSpawner : MarkerManager
         else
             return Instance.m_SpiritIcons[""];
     }
-
-    private float m_Distance;
-    public static float m_MarkerScale { get; private set; }
-    public static bool m_PortaitMode { get; private set; }
-    private static bool m_StreetLevel;
-    private const float MARKER_SCALE_MIN = 1;
-    private const float MARKER_SCALE_MAX = 2;
-
-
-    public static void UpdateProperties()
+    
+    private static void UpdateMarkerProperties()
     {
         m_PortaitMode = MapsAPI.Instance.streetLevelNormalizedZoom > 0.6f;
         m_StreetLevel = MapsAPI.Instance.streetLevel;
@@ -522,10 +508,7 @@ public class MarkerSpawner : MarkerManager
         marker.GameObject.transform.localScale = new Vector3(scale, scale, scale);
         marker.AvatarTransform.rotation = MapsAPI.Instance.camera.transform.rotation;
     }
-
-    private static bool m_Highlighting = false;
-    private static List<IMarker> m_HighlightedMarkers = new List<IMarker>();
-
+    
     public static void HighlightMarker(List<IMarker> targets)
     {
         m_Highlighting = targets.Count > 0;
@@ -550,6 +533,45 @@ public class MarkerSpawner : MarkerManager
             _marker?.SetAlpha(1, 1f);
         }
     }
+
+
+    public static void ApplyStatusEffect(string targetId, string casterId, StatusEffect effect)
+    {
+        IMarker caster = GetMarker(casterId);
+
+        if (PlayerDataManager.playerData.instance == targetId)
+        {
+            ConditionManager.AddCondition(effect, caster);
+        }
+        else
+        {
+            IMarker target = GetMarker(targetId);
+
+            if (target != null && target.Token is CharacterToken)
+            {
+                CharacterToken characterToken = target.Token as CharacterToken;
+
+
+                foreach (StatusEffect item in characterToken.effects)
+                {
+                    if (item.spell == effect.spell)
+                    {
+                        characterToken.effects.Remove(item);
+                        item.CancelExpiration();
+                        break;
+                    }
+                }
+                characterToken.effects.Add(effect);
+                effect.ScheduleExpiration(() => ExpireStatusEffectHandler.ExpireEffect(targetId, effect));
+
+                if (effect.spell == "spell_channeling")
+                    SpellChanneling.SpawnFX(target, effect);
+            }
+        }
+
+        SpellCastHandler.OnApplyStatusEffect?.Invoke(targetId, casterId, effect);
+    }
+
 
     //click controller
 
