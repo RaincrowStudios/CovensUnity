@@ -10,10 +10,13 @@ public class DownloadManager : MonoBehaviour
 {
     public struct AssetResponse
     {
+        //[JsonIgnore]
         public string game;
+        //[JsonIgnore]
         public string store;
         public string localization;
 
+        //[JsonIgnore]
         public List<string> assets;
         public string version;
         public int android;
@@ -474,7 +477,7 @@ public class DownloadManager : MonoBehaviour
             DownloadedAssets.cosmeticDict = data.Cosmetics;
             StoreManagerAPI.BundleDict = data.Bundles;
             StoreManagerAPI.ConsumableDict = data.Consumables;
-            StoreManagerAPI.SilverBundleDict = data.Silver;
+            StoreManagerAPI.CurrencyBundleDict = data.Currencies;
 
             DownloadedAssets.PlaceOfPowerSettings = data.PlaceOfPower;
 

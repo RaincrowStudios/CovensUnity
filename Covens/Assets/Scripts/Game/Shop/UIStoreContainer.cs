@@ -25,6 +25,7 @@ public class UIStoreContainer : MonoBehaviour
     private SimplePool<UIStoreItemGroup> m_ItemPool;
     private Filter m_CurrentFilter;
     private UIStore.Screen m_Category;
+    private delegate bool StoreItemValidDelegate(object item);
 
     public CanvasGroup canvasGroup => this.GetComponent<CanvasGroup>();
 
@@ -108,7 +109,7 @@ public class UIStoreContainer : MonoBehaviour
             LocalizeLookUp.GetText("store_gear_skin_art"),
             LocalizeLookUp.GetText("store_gear_hairstyle"));
 
-        List<CosmeticData> cosmetics = new List<CosmeticData>();
+        List<object> cosmetics = new List<object>();
         foreach (StoreItem item in items)
             cosmetics.Add(DownloadedAssets.GetCosmetic(item.id));
 
@@ -124,21 +125,21 @@ public class UIStoreContainer : MonoBehaviour
             SetFilter(m_CurrentFilter, items, cosmetics);
     }
 
-    private void OnClickFilter(Filter filter, List<StoreItem> items, List<CosmeticData> cosmetics)
+    private void OnClickFilter(Filter filter, List<StoreItem> items, List<object> cosmetics)
     {
         if (m_CurrentFilter == filter)
             return;
         SetFilter(filter, items, cosmetics);
     }
 
-    private void SetFilter(Filter filter, List<StoreItem> items, List<CosmeticData> cosmetics)
+    private void SetFilter(Filter filter, List<StoreItem> items, List<object> cosmetics)
     {
         m_CurrentFilter = filter;
         StopAllCoroutines();
-        StartCoroutine(SpawnCosmeticsCoroutine(filter, items, cosmetics));
+        StartCoroutine(SpawnItemsCoroutine(filter, items, cosmetics));
     }
 
-    private IEnumerator SpawnCosmeticsCoroutine(Filter filter, List<StoreItem> items, List<CosmeticData> cosmetics)
+    private IEnumerator SpawnItemsCoroutine(Filter filter, List<StoreItem> items, List<object> data)
     {
         //despawn items previously on ui
         m_ItemPool.DespawnAll();
@@ -150,15 +151,31 @@ public class UIStoreContainer : MonoBehaviour
         UIStoreItemGroup group = m_ItemPool.Spawn(m_Container);
         group.OnSpawn();
 
-        char gender = PlayerDataManager.playerData.male ? 'm' : 'f';
+        StoreItemValidDelegate isItemValid = (item) => true;
+
+        //cosmetic store item validator
+        if (data[0] is CosmeticData)
+        {
+            isItemValid = (item) =>
+            {
+                char gender = PlayerDataManager.playerData.male ? 'm' : 'f';
+                CosmeticData cosmetic = item as CosmeticData;
+
+                if (cosmetic.type[0] != gender)
+                    return false;
+
+                if (cosmetic.storeCatagory != filter.ToString())
+                    return false;
+
+                return true;
+            };
+        }
+
         
         //spawn and setup the items
         for (int i = 0; i < items.Count; i++)
         {
-            if (cosmetics[i].type[0] != gender)
-                continue;
-
-            if (cosmetics[i].storeCatagory != filter.ToString())
+            if (!isItemValid(data[i]))
                 continue;
 
             UIStoreItem item = group.GetItem();
@@ -169,8 +186,8 @@ public class UIStoreContainer : MonoBehaviour
                 item = group.GetItem();
             }
 
-            item.Setup(items[i], cosmetics[i]);
-            iconList.Add((item, cosmetics[i].iconId));
+            item.Setup(items[i], data[i]);
+            //iconList.Add((item, data[i].iconId));
 
             count++;
             if (count >= 5)
@@ -180,12 +197,12 @@ public class UIStoreContainer : MonoBehaviour
             }
         }
 
-        //load the art assets
-        for (int i = 0; i < iconList.Count; i++)
-        {
-            iconList[i].Item1.LoadIcon(iconList[i].Item2);
-            yield return new WaitForSeconds(0.1f);
-        }
+        ////load the art assets
+        //for (int i = 0; i < iconList.Count; i++)
+        //{
+        //    iconList[i].Item1.LoadIcon(iconList[i].Item2);
+        //    yield return new WaitForSeconds(0.1f);
+        //}
     }
 
     public void SetupCurrency(List<StoreItem> items)
@@ -194,45 +211,13 @@ public class UIStoreContainer : MonoBehaviour
             return;
         m_Category = UIStore.Screen.CURRENCY;
 
-        List<CurrencyBundleData> bundles = new List<CurrencyBundleData>();
+        List<object> bundles = new List<object>();
         foreach (StoreItem item in items)
-            bundles.Add(StoreManagerAPI.GetSilverBundle(item.id));
+            bundles.Add(StoreManagerAPI.GetCurrencyBundle(item.id));
 
         SetBottomButtons();
         StopAllCoroutines();
-        StartCoroutine(SpawnCurrenciesCoroutine(items, bundles));
-    }
-
-    private IEnumerator SpawnCurrenciesCoroutine(List<StoreItem> items, List<CurrencyBundleData> bundles)
-    {
-        m_ItemPool.DespawnAll();
-        yield return 0;
-
-        int count = 0;
-        List<(UIStoreItem, string)> iconList = new List<(UIStoreItem, string)>();
-        UIStoreItemGroup group = m_ItemPool.Spawn(m_Container);
-        group.OnSpawn();
-
-        for (int i = 0; i < items.Count; i++)
-        {
-            UIStoreItem item = group.GetItem();
-            if (item == null)
-            {
-                group = m_ItemPool.Spawn(m_Container);
-                group.OnSpawn();
-                item = group.GetItem();
-            }
-
-            item.Setup(items[i], bundles[i]);
-            //iconList.Add((item, bundles[i].iconId));
-
-            count++;
-            if (count >= 5)
-            {
-                count = 0;
-                yield return 0;
-            }
-        }
+        StartCoroutine(SpawnItemsCoroutine(Filter.NONE, items, bundles));
     }
 
     public void SetupIngredients(List<StoreItem> items)
@@ -241,15 +226,13 @@ public class UIStoreContainer : MonoBehaviour
             return;
         m_Category = UIStore.Screen.INGREDIENTS;
 
+        List<object> ingredientBundles = new List<object>();
+        foreach (StoreItem item in items)
+            ingredientBundles.Add(StoreManagerAPI.GetIngredientBundle(item.id));
+
         SetBottomButtons();
         StopAllCoroutines();
-        StartCoroutine(SpawnIngredientsCoroutine(items));
-    }
-
-    private IEnumerator SpawnIngredientsCoroutine(List<StoreItem> items)
-    {
-        m_ItemPool.DespawnAll();
-        yield return 0;
+        StartCoroutine(SpawnItemsCoroutine(Filter.NONE, items, ingredientBundles));
     }
 
     public void SetupCharms(List<StoreItem> items)
@@ -258,14 +241,12 @@ public class UIStoreContainer : MonoBehaviour
             return;
         m_Category = UIStore.Screen.CHARMS;
 
+        List<object> elixirs = new List<object>();
+        foreach (StoreItem item in items)
+            elixirs.Add(StoreManagerAPI.GetConsumable(item.id));
+
         SetBottomButtons();
         StopAllCoroutines();
-        StartCoroutine(SpawnCharmsCoroutine(items));
-    }
-
-    private IEnumerator SpawnCharmsCoroutine(List<StoreItem> items)
-    {
-        m_ItemPool.DespawnAll();
-        yield return 0;
+        StartCoroutine(SpawnItemsCoroutine(Filter.NONE, items, elixirs));
     }
 }

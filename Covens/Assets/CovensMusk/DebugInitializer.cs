@@ -8,6 +8,7 @@ public class DebugInitializer : MonoBehaviour
     [SerializeField] private float m_Longitude = -122.3224f;
     [SerializeField] private float m_Latitude = 47.70168f;
     [SerializeField] private bool m_Login = false;
+    [SerializeField] private bool m_IAP = false;
 
     private void Awake()
     {
@@ -26,10 +27,26 @@ public class DebugInitializer : MonoBehaviour
             MapsAPI.Instance.InstantiateMap();
         }
 
-        if (m_Login && !LoginAPIManager.characterLoggedIn)
+        if (m_Login)
         {
-            DownloadManager.OnDownloadsComplete += () => LoginAPIManager.Login((result, response) => LoginAPIManager.GetCharacter(null));
-            DownloadManager.DownloadAssets(null);
+            if (!LoginAPIManager.characterLoggedIn)
+            {
+                DownloadManager.OnDownloadsComplete += () => LoginAPIManager.Login((result, response) => LoginAPIManager.GetCharacter(null));
+                DownloadManager.DownloadAssets(() =>
+                {
+                    if (m_IAP && IAPSilver.instance == null)
+                    {
+                        new GameObject("IAPManager", typeof(IAPSilver));
+                    }
+                });
+            }
+            else
+            {
+                if (m_IAP && IAPSilver.instance == null)
+                {
+                    new GameObject("IAPManager", typeof(IAPSilver));
+                }
+            }
         }
     }
 

@@ -43,7 +43,7 @@ public class IAPSilver : MonoBehaviour, IStoreListener
         m_ProductMap = new Dictionary<string, string>();
 
         string log = "Initializing IAP\nProducts:";
-        foreach (var prod in StoreManagerAPI.SilverBundleDict)
+        foreach (var prod in StoreManagerAPI.CurrencyBundleDict)
         {
             builder.AddProduct(prod.Value.product, ProductType.Consumable);
             m_ProductMap.Add(prod.Value.product, prod.Key);
@@ -85,7 +85,7 @@ public class IAPSilver : MonoBehaviour, IStoreListener
                 m_OngoingPurchase = new OngoingPurchase
                 {
                     id = storeProduct.id,
-                    data = StoreManagerAPI.GetSilverBundle(storeProduct.id),
+                    data = StoreManagerAPI.GetCurrencyBundle(storeProduct.id),
                     callback = callback
                 };
 
@@ -176,25 +176,24 @@ public class IAPSilver : MonoBehaviour, IStoreListener
         }
 
         string id = m_ProductMap[args.purchasedProduct.definition.id];
-        CurrencyBundleData data = StoreManagerAPI.GetSilverBundle(id);
+        CurrencyBundleData data = StoreManagerAPI.GetCurrencyBundle(id);
 
         Log("id: " + id + "\nreceipt: " + args.purchasedProduct.receipt);
 
         StoreManagerAPI.Purchase(
             id,
-            "silver",
+            StoreManagerAPI.TYPE_CURRENCY,
             null,
             args.purchasedProduct.receipt,
             (error) =>
             {                
                 if (string.IsNullOrEmpty(error))
                 {
-                    LogError("Processing success");
+                    Log("Processing success");                    
 
-                    int bonus = 0;
-                    int.TryParse(data.extra, out bonus);
+                    PlayerDataManager.playerData.silver += (data.silver + data.silverBonus);
+                    PlayerDataManager.playerData.gold += (data.gold + data.goldBonus);
 
-                    PlayerDataManager.playerData.silver += (data.silver + bonus);
                     if (PlayerManagerUI.Instance != null)
                         PlayerManagerUI.Instance.UpdateDrachs();
 

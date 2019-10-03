@@ -103,8 +103,8 @@ public class GameSettingsData
     [JsonProperty("consumables")]
     public Dictionary<string, ConsumableData> Consumables;
 
-    [JsonProperty("silver")]
-    public Dictionary<string, CurrencyBundleData> Silver;
+    [JsonProperty("currencies")]
+    public Dictionary<string, CurrencyBundleData> Currencies;
 }
 
 public struct IngredientData

@@ -341,7 +341,7 @@ public class UIStore : MonoBehaviour
     private void SetupCurrency()
     {
         SetHeaderText(LocalizeLookUp.GetText("store_currency"));
-        m_StoreWindow.SetupCurrency(StoreManagerAPI.Store.Silver);
+        m_StoreWindow.SetupCurrency(StoreManagerAPI.Store.Currencies);
     }
 
     private void SetupCharms()
