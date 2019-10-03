@@ -341,7 +341,9 @@ public class UISpiritInfo : UIInfoPanel
         if (instance == SpiritToken?.instance)
         {
 
-            float currentEnergy = float.Parse(m_Energy.text.Split(' ')[0]);
+            Debug.Log(m_Energy.text);
+            Debug.Log(m_Energy.text.Split('>')[1]);
+            float currentEnergy = float.Parse(m_Energy.text.Split('>')[1]);
             //spirit at half health
             if (currentEnergy > SpiritToken.baseEnergy / 2 && newEnergy < SpiritToken.baseEnergy / 2)
             {
@@ -353,7 +355,7 @@ public class UISpiritInfo : UIInfoPanel
                 PlayerNotificationManager.Instance.ShowNotification($"The <color=orange>{m_SpiritName.text}</color> is now <color=red>vulnerable!</color>");
             }
 
-            m_Energy.text = LocalizeLookUp.GetText("card_witch_energy").ToUpper() + " <color=black>" + newEnergy.ToString() + "</color>";
+            m_Energy.text = LocalizeLookUp.GetText("card_witch_energy").ToUpper() + " <color=black>" + newEnergy.ToString();
 
 
             if (newEnergy == 0)
@@ -365,33 +367,35 @@ public class UISpiritInfo : UIInfoPanel
 
     private void _OnStatusEffectApplied(string character, StatusEffect statusEffect)
     {
-        int m_CurrentHexEffect = 0;
         if (character != SpiritToken?.instance)
             return;
+
+
+
 
         foreach (StatusEffect item in SpiritMarkerDetails.effects)
         {
             if (item.spell == statusEffect.spell)
             {
                 SpiritMarkerDetails.effects.Remove(item);
-                // break;
-            }
-
-            if (item.spell == "spell_hex")
-            {
-                m_CurrentHexEffect++;
+                break;
             }
         }
+
 
         SpiritMarkerDetails.effects.Add(statusEffect);
         m_ConditionList.AddCondition(statusEffect);
 
-        if (m_CurrentHexEffect == 2 && statusEffect.spell == "spell_hex")
-        {
-            Debug.Log("HEX MESSAGE");
-            PlayerNotificationManager.Instance.ShowNotification($"The <color=orange>{m_SpiritName.text}</color> is fully Hexed and <color=red>vulnerable</color> to critical attacks.");
-        }
 
+        foreach (var item in SpiritMarkerDetails.effects)
+        {
+            Debug.Log(item.stack);
+            if (item.spell == "spell_hex" && item.stack == 3)
+            {
+                PlayerNotificationManager.Instance.ShowNotification($"The <color=orange>{m_SpiritName.text}</color> is fully Hexed and <color=red>vulnerable</color> to critical attacks.");
+
+            }
+        }
     }
 
     private void _OnMapTokenRemove(string instance)
