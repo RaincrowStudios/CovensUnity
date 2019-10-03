@@ -39,10 +39,26 @@ public class UIStoreItem : MonoBehaviour
     [SerializeField] private GameObject m_Tag;
     [SerializeField] private TextMeshProUGUI m_TagText;
 
-
-    public void LoadIcon(string id)
+    private string m_IconId = null;
+    public bool IconLoaded { get; private set; }
+    public static bool IsLoadingIcon { get; private set; }
+    
+    public void LoadIcon()
     {
-        DownloadedAssets.GetSprite(id, m_ItemIcon, true);
+        if (IsLoadingIcon)
+            return;
+
+        IconLoaded = true;
+        IsLoadingIcon = true;
+
+        DownloadedAssets.GetSprite(
+            m_IconId, 
+            spr =>
+            {
+                IsLoadingIcon = false;
+                m_ItemIcon.overrideSprite = spr;
+            }, 
+            true);
     }
     
     private void SetCost(int amount, int idx, bool? isGold = null)
@@ -82,24 +98,36 @@ public class UIStoreItem : MonoBehaviour
         }
     }
 
-    private void SetIconLayoutA()
+    private void SetIconLayout_Cosmetic()
     {
         RectTransform rectTransform = m_ItemIcon.rectTransform;
         rectTransform.pivot = new Vector2(1, 0.5f);
-        rectTransform.anchoredPosition = new Vector2(182.9999f, 2.600006f);
+        rectTransform.anchoredPosition = new Vector2(182.9999f, 219f);
         rectTransform.sizeDelta = new Vector2(251f, 364.5f);
     }
 
-    private void SetIconLayoutB()
+    private void SetIconLayout_IngredientBundle()
     {
         RectTransform rectTransform = m_ItemIcon.rectTransform;
-        rectTransform.pivot = new Vector2(0.5f, 0.5f);
-        rectTransform.anchoredPosition = new Vector2(135.0002f, -1f);
-        rectTransform.sizeDelta = new Vector2(390f, 376f);
+        rectTransform.pivot = new Vector2(1, 0f);
+        rectTransform.anchoredPosition = new Vector2(229.3f, 38);
+        rectTransform.sizeDelta = new Vector2(346.8f, 338.4f);
+    }
+
+    private void SetIconLayout_CurrencyBundle()
+    {
+        RectTransform rectTransform = m_ItemIcon.rectTransform;
+        rectTransform.pivot = new Vector2(0.5f, 0f);
+        rectTransform.sizeDelta = new Vector2(385f, 372.5f);
+        rectTransform.anchoredPosition = new Vector2(143.3996f, 28f);
     }
 
     public void Setup(StoreItem item, object data)
     {
+        m_IconId = item.id;
+        m_ItemIcon.overrideSprite = null;
+        IconLoaded = false;
+
         if (data is CosmeticData)
             Setup(item, data as CosmeticData);
         else if (data is CurrencyBundleData)
@@ -113,7 +141,8 @@ public class UIStoreItem : MonoBehaviour
     public void Setup(StoreItem item, CosmeticData cosmetic)
     {
         Setup(item);
-        SetIconLayoutA();
+        SetIconLayout_Cosmetic();
+        m_IconId = cosmetic.iconId;
 
         bool locked = false;
         //check unlocks
@@ -145,8 +174,8 @@ public class UIStoreItem : MonoBehaviour
     public void Setup(StoreItem item, CurrencyBundleData currency)
     {
         Setup(item);
-        m_BuyButton.gameObject.SetActive(false);
-        SetIconLayoutB();
+        m_BuyIcon.gameObject.SetActive(false);
+        SetIconLayout_CurrencyBundle();
 
         if (currency.silver > 0)
         {
@@ -192,12 +221,13 @@ public class UIStoreItem : MonoBehaviour
     public void Setup(StoreItem item, ConsumableData consumable)
     {
         Setup(item);
-        SetIconLayoutA();
+        SetIconLayout_Cosmetic();
     }
 
     public void Setup(StoreItem item, ItemData[] ingredients)
     {
         Setup(item);
+        SetIconLayout_IngredientBundle();
     }
 
     private void Setup(StoreItem item)

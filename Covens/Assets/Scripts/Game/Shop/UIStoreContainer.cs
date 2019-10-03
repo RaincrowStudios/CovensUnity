@@ -17,7 +17,7 @@ public class UIStoreContainer : MonoBehaviour
         hairstyles,
     }
 
-    //[SerializeField] private ScrollRect m_ScrollView;
+    [SerializeField] private RectTransform m_Canvas;
     [SerializeField] private RectTransform m_Container;
     [SerializeField] private UIStoreItemGroup m_ItemPrefab;
     [SerializeField] private RectTransform m_BottomBar;
@@ -37,10 +37,13 @@ public class UIStoreContainer : MonoBehaviour
         set => canvasGroup.alpha = value;
     }
 
+    public static float Width { get; private set; }
+
     private void Awake()
     {
         alpha = 0;
         m_ItemPool = new SimplePool<UIStoreItemGroup>(m_ItemPrefab, 50);
+        Width = m_Canvas.sizeDelta.x;
     }
 
     private void SetBottomText(params string[] title)
@@ -169,11 +172,15 @@ public class UIStoreContainer : MonoBehaviour
         }
 
         bool singleRow = items.Count < 6;
-        m_Container.pivot = new Vector2(items.Count <= 6 ? 0.5f : 0f, 0.5f);
         int count = 0;
+        m_Container.pivot = new Vector2(items.Count <= 6 ? 0.5f : 0f, 0.5f);
+
+        List<UIStoreItemGroup> spawnedGroups = new List<UIStoreItemGroup>();
         UIStoreItemGroup group = m_ItemPool.Spawn(m_Container);
+        group.enabled = false;
         group.OnSpawn();
         group.SetSingleRowLayout(singleRow);
+        spawnedGroups.Add(group);
 
         //spawn and setup the items
         for (int i = 0; i < items.Count; i++)
@@ -185,8 +192,10 @@ public class UIStoreContainer : MonoBehaviour
             if (item == null)
             {
                 group = m_ItemPool.Spawn(m_Container);
+                group.enabled = false;
                 group.OnSpawn();
                 group.SetSingleRowLayout(singleRow);
+                spawnedGroups.Add(group);
                 item = group.GetItem();
             }
 
@@ -201,12 +210,11 @@ public class UIStoreContainer : MonoBehaviour
             }
         }
 
-        ////load the art assets
-        //for (int i = 0; i < iconList.Count; i++)
-        //{
-        //    iconList[i].Item1.LoadIcon(iconList[i].Item2);
-        //    yield return new WaitForSeconds(0.1f);
-        //}
+        foreach (var item in spawnedGroups)
+        {
+            item.enabled = true;
+            yield return new WaitForSeconds(0.1f);
+        }
     }
 
     public void SetupCurrency(List<StoreItem> items)

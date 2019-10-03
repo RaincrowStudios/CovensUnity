@@ -9,10 +9,25 @@ public class UIStoreItemGroup : MonoBehaviour
     private int m_Count = 0;
     private RectTransform m_RectTransform;
     private bool m_SingleRow = false;
+    
+    public bool IsVisible => m_RectTransform.position.x > 0 && m_RectTransform.position.x < Screen.width;
+    public UIStoreItem[] Items => m_Items;
 
     private void Awake()
     {
         m_RectTransform = this.GetComponent<RectTransform>();
+    }
+
+    public void LateUpdate()
+    {
+        if (IsVisible)
+        {
+            foreach (var item in m_Items)
+            {
+                if (item.gameObject.activeSelf && !item.IconLoaded)
+                    item.LoadIcon();
+            }
+        }
     }
 
     public void OnSpawn()
