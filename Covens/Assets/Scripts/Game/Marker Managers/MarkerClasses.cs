@@ -391,11 +391,20 @@ public class PlayerData : WitchMarkerData
         m_GemsDict = new Dictionary<string, int>();
 
         foreach (var item in m_Herbs)
-            m_HerbsDict[item.id] = item.count;
+        {
+            if (DownloadedAssets.ingredientDict.ContainsKey(item.id))
+                m_HerbsDict[item.id] = item.count;
+        }
         foreach (var item in m_Tools)
-            m_ToolsDict[item.id] = item.count;
+        {
+            if (DownloadedAssets.ingredientDict.ContainsKey(item.id))
+                m_ToolsDict[item.id] = item.count;
+        }
         foreach (var item in m_Gems)
-            m_GemsDict[item.id] = item.count;
+        {
+            if (DownloadedAssets.ingredientDict.ContainsKey(item.id))
+                m_GemsDict[item.id] = item.count;
+        }
 
         foreach (var cooldown in cooldowns)
         {
