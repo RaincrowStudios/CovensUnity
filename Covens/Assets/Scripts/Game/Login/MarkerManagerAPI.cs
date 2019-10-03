@@ -65,12 +65,20 @@ public class MarkerManagerAPI : MonoBehaviour
             IsSpiritForm = !physical;
         }
 
+        if (physical)
+        {
+            Vector2 randCircle = Random.insideUnitCircle.normalized;
+            longitude += randCircle.x * 0.0006f;
+            latitude += randCircle.y * 0.0006f;
+        }
+
         var data = new
         {
             physical,
             longitude,
             latitude,
         };
+
         string dataJson = JsonConvert.SerializeObject(data);
 
         if (showLoading)
