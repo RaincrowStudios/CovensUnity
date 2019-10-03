@@ -18,7 +18,7 @@ public class UIStoreContainer : MonoBehaviour
     }
 
     //[SerializeField] private ScrollRect m_ScrollView;
-    [SerializeField] private Transform m_Container;
+    [SerializeField] private RectTransform m_Container;
     [SerializeField] private UIStoreItemGroup m_ItemPrefab;
     [SerializeField] private RectTransform m_BottomBar;
 
@@ -146,10 +146,7 @@ public class UIStoreContainer : MonoBehaviour
 
         yield return 0;
 
-        int count = 0;
-        List<(UIStoreItem, string)> iconList = new List<(UIStoreItem, string)>();
-        UIStoreItemGroup group = m_ItemPool.Spawn(m_Container);
-        group.OnSpawn();
+        //List<(UIStoreItem, string)> iconList = new List<(UIStoreItem, string)>();
 
         StoreItemValidDelegate isItemValid = (item) => true;
 
@@ -171,7 +168,13 @@ public class UIStoreContainer : MonoBehaviour
             };
         }
 
-        
+        bool singleRow = items.Count < 6;
+        m_Container.pivot = new Vector2(items.Count <= 6 ? 0.5f : 0f, 0.5f);
+        int count = 0;
+        UIStoreItemGroup group = m_ItemPool.Spawn(m_Container);
+        group.OnSpawn();
+        group.SetSingleRowLayout(singleRow);
+
         //spawn and setup the items
         for (int i = 0; i < items.Count; i++)
         {
@@ -183,6 +186,7 @@ public class UIStoreContainer : MonoBehaviour
             {
                 group = m_ItemPool.Spawn(m_Container);
                 group.OnSpawn();
+                group.SetSingleRowLayout(singleRow);
                 item = group.GetItem();
             }
 
