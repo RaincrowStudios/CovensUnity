@@ -48,11 +48,11 @@ public class MapCenterPointerUI : MonoBehaviour
         if (m_Enabled == false)
             return;
 
-        if (!MapsAPI.Instance.streetLevel)
-        {
-            HidePointer();
-            return;
-        }
+        //if (!MapsAPI.Instance.streetLevel)
+        //{
+        //    HidePointer();
+        //    return;
+        //}
 
         //if (MapsAPI.Instance.IsPointInsideView(Vector3.zero, -100))
         //{

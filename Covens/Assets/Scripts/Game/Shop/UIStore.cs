@@ -26,6 +26,8 @@ public class UIStore : MonoBehaviour
     [Space()]
     [SerializeField] private RectTransform m_Header;
     [SerializeField] private Button m_CloseButton;
+    [SerializeField] private TextMeshProUGUI m_GoldDrachs;
+    [SerializeField] private TextMeshProUGUI m_SilverDrachs;
 
     [Header("Home")]
     [SerializeField] private CanvasGroup m_HomeWindow;
@@ -39,9 +41,14 @@ public class UIStore : MonoBehaviour
 
     [Header("Styles")]
     [SerializeField] private UIStoreStylesWindow m_StylesWindow;
+        
+    private Screen m_CurrentScreen = Screen.NONE;
+    private int m_MainTweenId;
+    private int m_ScreenTweenId;
+    private int m_DrachsTweenId;
 
     private static UIStore m_Instance;
-    
+
     public static void OpenStore(System.Action onLoad = null, bool showFortuna = true)
     {
         if (m_Instance != null)
@@ -67,10 +74,13 @@ public class UIStore : MonoBehaviour
         }
     }
 
-    private Screen m_CurrentScreen = Screen.NONE;
+    public static void UpdateDrachs()
+    {
+        if (m_Instance == null)
+            return;
 
-    private int m_MainTweenId;
-    private int m_ScreenTweenId;
+        m_Instance._UpdateDrachs();
+    }
 
     private void Awake()
     {
@@ -88,8 +98,7 @@ public class UIStore : MonoBehaviour
         m_StoreWindow.alpha = 0;
         m_StylesWindow.alpha = 0;
         m_HomeWindow.alpha = 0;
-
-
+        
         m_CloseButton.onClick.AddListener(OnClickClose);
         m_CosmeticsButton.onClick.AddListener(() => SetScreen(Screen.COSMETICS));
         m_CurrenciesButton.onClick.AddListener(() => SetScreen(Screen.CURRENCY));
@@ -113,6 +122,9 @@ public class UIStore : MonoBehaviour
         LeanTween.cancel(m_MainTweenId);
         m_Canvas.enabled = true;
         m_InputRaycaster.enabled = true;
+
+        m_SilverDrachs.text = PlayerDataManager.playerData.silver.ToString();
+        m_GoldDrachs.text = PlayerDataManager.playerData.gold.ToString();
 
         m_MainTweenId = LeanTween.value(m_CanvasGroup.alpha, 1, 0.25f)
             .setOnUpdate((float v) =>
@@ -354,5 +366,24 @@ public class UIStore : MonoBehaviour
     {
         SetHeaderText(LocalizeLookUp.GetText("store_ingredients"));
         m_StoreWindow.SetupIngredients(StoreManagerAPI.Store.Bundles);
+    }
+
+    private void _UpdateDrachs(float time = 2)
+    {
+        LeanTween.cancel(m_DrachsTweenId);
+        int startGold = PlayerDataManager.playerData.gold;
+        int startSilver = PlayerDataManager.playerData.silver;
+
+        int.TryParse(m_GoldDrachs.text, out startGold);
+        int.TryParse(m_SilverDrachs.text, out startSilver);
+
+        m_DrachsTweenId = LeanTween.value(0, 1, 2)
+            .setEaseOutCubic()
+            .setOnUpdate((float t) =>
+            {
+                m_GoldDrachs.text = ((int)Mathf.Lerp(startGold, PlayerDataManager.playerData.gold, t)).ToString();
+                m_SilverDrachs.text = ((int)Mathf.Lerp(startSilver, PlayerDataManager.playerData.silver, t)).ToString();
+            })
+            .uniqueId;
     }
 }

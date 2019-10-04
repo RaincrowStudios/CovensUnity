@@ -8,24 +8,18 @@ using EnhancedUI.EnhancedScroller;
 
 public class UIStoreItem : MonoBehaviour
 {
-    [System.Serializable]
-    public struct UIStoreItemCost
-    {
-        public TextMeshProUGUI text;
-        public Image icon;
-    }
-
     [SerializeField] private TextMeshProUGUI m_ItemTitle;
     [SerializeField] private Image m_ItemIcon;
     [SerializeField] private TextMeshProUGUI m_ItemSubtitle;
     [SerializeField] private TextMeshProUGUI m_ItemAmount;
 
     [Header("Cost")]
-    [SerializeField] private UIStoreItemCost m_CostA;
-    [SerializeField] private UIStoreItemCost m_CostB;
-    [SerializeField] private TextMeshProUGUI m_CostOr;
-    [SerializeField] private Sprite m_SilverIcon;
-    [SerializeField] private Sprite m_GoldIcon;
+    [SerializeField] private LayoutGroup m_CostLayout;
+    [SerializeField] private TextMeshProUGUI m_SilverCost;
+    [SerializeField] private Image m_SilverIcon;
+    [SerializeField] private TextMeshProUGUI m_GoldCost;
+    [SerializeField] private Image m_GoldIcon;
+    [SerializeField] private GameObject m_CostOr;
 
     [Header("Buy")]
     [SerializeField] private Button m_BuyButton;
@@ -34,6 +28,7 @@ public class UIStoreItem : MonoBehaviour
     [Space()]
     [SerializeField] private Sprite m_GreenSprite;
     [SerializeField] private Sprite m_RedSprite;
+    [SerializeField] private Sprite m_GreySprite;
 
     [Header("Tag")]
     [SerializeField] private GameObject m_Tag;
@@ -59,43 +54,6 @@ public class UIStoreItem : MonoBehaviour
                 m_ItemIcon.overrideSprite = spr;
             }, 
             true);
-    }
-    
-    private void SetCost(int amount, int idx, bool? isGold = null)
-    {
-        TextMeshProUGUI text;
-        Image icon;
-
-        if (idx == 0)
-        {
-            text = m_CostA.text;
-            icon = m_CostA.icon;
-        }
-        else
-        {
-            text = m_CostB.text;
-            icon = m_CostB.icon;
-        }
-
-        if (amount > 0)
-        {
-            text.text = amount.ToString();
-            if (isGold.HasValue)
-                icon.overrideSprite = isGold.Value ? m_GoldIcon : m_SilverIcon;
-            else
-                icon.overrideSprite = null;
-
-            if (idx > 0)
-                m_CostOr.gameObject.SetActive(true);
-        }
-        else
-        {
-            text.text = "";
-            icon.overrideSprite = null;
-
-            if (idx > 0)
-                m_CostOr.gameObject.SetActive(false);
-        }
     }
 
     private void SetIconLayout_Cosmetic()
@@ -142,9 +100,12 @@ public class UIStoreItem : MonoBehaviour
     {
         Setup(item);
         SetIconLayout_Cosmetic();
+        SetupButton(item, cosmetic, StoreManagerAPI.TYPE_COSMETIC);
+
         m_IconId = cosmetic.iconId;
 
         bool locked = false;
+        string locked_tooltip = null;
         //check unlocks
         //spirit unlock
         //school mastery unlock
@@ -153,22 +114,46 @@ public class UIStoreItem : MonoBehaviour
 
         if (locked)
         {
-            m_BuyIcon.sprite = m_RedSprite;
+            m_BuyIcon.sprite = m_GreySprite;
             m_BuyText.text = LocalizeLookUp.GetText("store_gear_locked_upper");
-            m_BuyButton.onClick.AddListener(() =>
-            {
-                UIGlobalPopup.ShowPopUp(
-                    null,
-                    LocalizeLookUp.GetText("shop_condition_locked") + "\n" + LocalizeLookUp.GetText(item.tooltip));
-            });
+            locked_tooltip = LocalizeLookUp.GetText("item.tooltip");
         }
         else
         {
             bool owned = PlayerDataManager.playerData.inventory.cosmetics.Exists(cos => cos.id == item.id);
-            m_BuyText.text = owned ? LocalizeLookUp.GetText("store_gear_owned_upper")/*"OWNED"*/ : LocalizeLookUp.GetText("store_buy_upper");//"BUY";
-            m_BuyIcon.sprite = owned ? m_GreenSprite : m_RedSprite;
+            if (owned)
+            {
+                m_BuyIcon.sprite = m_GreenSprite;
+                m_BuyText.text = LocalizeLookUp.GetText("store_gear_owned_upper");
+            }
             //m_BuyButton.onClick.AddListener(() => { onClick(item, this); });
         }
+
+        m_BuyButton.onClick.RemoveAllListeners();
+        m_BuyButton.onClick.AddListener(() =>
+        {
+            LoadingOverlay.Show();
+            UIStorePurchaseCosmetic.Show(
+                item,
+                cosmetic,
+                m_ItemIcon,
+                locked_tooltip,
+                (error) =>
+                {
+                    LoadingOverlay.Hide();
+                    UIStorePurchase.Close();
+
+                    if (string.IsNullOrEmpty(error))
+                    {
+                        Setup(item, cosmetic);
+                        Debug.LogError("TODO: SHOW PURCHASE SUCCESS");
+                    }
+                    else
+                    {
+                        UIGlobalPopup.ShowError(null, APIManager.ParseError(error));
+                    }
+                });
+        });
     }
     
     public void Setup(StoreItem item, CurrencyBundleData currency)
@@ -176,6 +161,7 @@ public class UIStoreItem : MonoBehaviour
         Setup(item);
         m_BuyIcon.gameObject.SetActive(false);
         SetIconLayout_CurrencyBundle();
+        SetupButton(item, currency, StoreManagerAPI.TYPE_CURRENCY);
 
         if (currency.silver > 0)
         {
@@ -210,24 +196,30 @@ public class UIStoreItem : MonoBehaviour
         if (iap == null)
         {
             Debug.LogException(new System.Exception("product not found for \"" + item.id + "\""));
-            m_CostA.text.text = "U$ " + currency.cost.ToString();
+            m_SilverCost.text = "$ " + currency.cost.ToString();
         }
         else
         {
-            m_CostA.text.text = iap.metadata.localizedPriceString;
+            m_SilverCost.text = iap.metadata.localizedPriceString;
         }
+        m_SilverCost.gameObject.SetActive(true);
+        m_SilverIcon.enabled = false;
+
+
     }
 
     public void Setup(StoreItem item, ConsumableData consumable)
     {
         Setup(item);
         SetIconLayout_Cosmetic();
+        SetupButton(item, consumable, StoreManagerAPI.TYPE_ELIXIRS);
     }
 
     public void Setup(StoreItem item, ItemData[] ingredients)
     {
         Setup(item);
         SetIconLayout_IngredientBundle();
+        SetupButton(item, ingredients, StoreManagerAPI.TYPE_INGREDIENT_BUNDLE);
     }
 
     private void Setup(StoreItem item)
@@ -238,18 +230,54 @@ public class UIStoreItem : MonoBehaviour
         m_ItemSubtitle.text = LocalizeLookUp.GetStoreSubtitle(item.id);
         m_ItemAmount.text = "";
         m_ItemIcon.overrideSprite = null;
-        m_BuyButton.onClick.RemoveAllListeners();
         m_Tag.SetActive(false);
 
-        if (item.silver > 0)
+        m_SilverCost.text = item.silver.ToString();
+        m_GoldCost.text = item.gold.ToString();
+
+        m_SilverCost.gameObject.SetActive(item.silver > 0);
+        m_SilverIcon.enabled = m_SilverCost.gameObject.activeSelf;
+
+        m_GoldCost.gameObject.SetActive(item.gold > 0);
+        m_GoldIcon.enabled = m_SilverCost.gameObject.activeSelf;
+
+        m_CostOr.gameObject.SetActive(item.silver > 0 && item.gold > 0);
+        m_BuyText.text = item.silver == 0 && item.gold == 0 ? LocalizeLookUp.GetText("store_claim").ToUpperInvariant() : LocalizeLookUp.GetText("store_buy_upper");
+
+        m_CostLayout.enabled = true;
+        LayoutRebuilder.ForceRebuildLayoutImmediate(m_CostLayout.GetComponent<RectTransform>());
+        m_CostLayout.enabled = false;
+    }
+
+    private void SetupButton(StoreItem item, object data, string type)
+    {
+        m_BuyIcon.sprite = m_RedSprite;
+        m_BuyButton.onClick.RemoveAllListeners();
+        m_BuyButton.onClick.AddListener(() =>
         {
-            SetCost(item.silver, 0, false);
-            SetCost(item.gold, 1, true);
-        }
-        else
-        {
-            SetCost(item.gold, 0, true);
-            SetCost(item.silver, 1, false);
-        }
+            LoadingOverlay.Show();
+            UIStorePurchase.Show(
+                item,
+                type,
+                LocalizeLookUp.GetStoreTitle(item.id),
+                LocalizeLookUp.GetStoreDesc(item.id),
+                m_ItemIcon,
+                null,
+                (error) =>
+                {
+                    LoadingOverlay.Hide();
+                    UIStorePurchase.Close();
+
+                    if (string.IsNullOrEmpty(error))
+                    {
+                        Setup(item, data);
+                        Debug.LogError("TODO: SHOW PURCHASE SUCCESS");
+                    }
+                    else
+                    {
+                        UIGlobalPopup.ShowError(null, APIManager.ParseError(error));
+                    }
+                });
+        });
     }
 }

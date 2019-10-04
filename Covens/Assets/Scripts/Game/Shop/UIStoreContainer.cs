@@ -17,6 +17,7 @@ public class UIStoreContainer : MonoBehaviour
         hairstyles,
     }
 
+    [SerializeField] private ScrollRect m_Scroll;
     [SerializeField] private RectTransform m_Canvas;
     [SerializeField] private RectTransform m_Container;
     [SerializeField] private UIStoreItemGroup m_ItemPrefab;
@@ -146,6 +147,7 @@ public class UIStoreContainer : MonoBehaviour
     {
         //despawn items previously on ui
         m_ItemPool.DespawnAll();
+        m_Scroll.horizontalNormalizedPosition = 0;
 
         yield return 0;
 
@@ -187,7 +189,7 @@ public class UIStoreContainer : MonoBehaviour
         {
             if (!isItemValid(data[i]))
                 continue;
-
+            
             UIStoreItem item = group.GetItem();
             if (item == null)
             {

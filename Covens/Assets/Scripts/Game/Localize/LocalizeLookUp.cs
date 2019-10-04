@@ -9,11 +9,13 @@ public class LocalizeLookUp : MonoBehaviour
     public string prefix = "";
     public string id = "";
     public string suffix = "";
+    public bool toUpper = false;
 
     void Start()
     {
         if (DownloadAssetBundle.isDictLoaded)
             RefreshText();
+
         LocalizationManager.OnChangeLanguage += RefreshText;
 
         this.enabled = false;
@@ -26,16 +28,20 @@ public class LocalizeLookUp : MonoBehaviour
 
     void RefreshText()
     {
+        TMPro.TextMeshProUGUI textPro = GetComponent<TMPro.TextMeshProUGUI>();
+        if (textPro != null)
+        {
+            if (toUpper)
+                textPro.text = prefix + GetText(id).ToUpperInvariant() + suffix;
+            else
+                textPro.text = prefix + GetText(id) + suffix;
+            return;
+        }
+
         Text text = GetComponent<Text>();
         if (text != null)
         {
             text.text = prefix + GetText(id) + suffix;
-        }
-        else
-        {
-            TMPro.TextMeshProUGUI textPro = GetComponent<TMPro.TextMeshProUGUI>();
-            if (textPro != null)
-                textPro.text = prefix + GetText(id) + suffix;
         }
     }
 
@@ -89,7 +95,7 @@ public class LocalizeLookUp : MonoBehaviour
     //Store
     public static string GetStoreTitle(string id) => GetText(id + "_title");
     public static string GetStoreSubtitle(string id) => (HasKey(id + "_subtitle") ? GetText(id + "_subtitle") : "");
-    public static string GetStoreDesc(string id) => GetText(id + "_desc");
+    public static string GetStoreDesc(string id) => HasKey(id + "_desc") ? GetText(id + "_desc") : "";
     public static string GetStorePurchaseTitle(string id) => GetText(id + "_purchase");
     public static string GetStorePurchaseSuccess(string id) => GetText(id + "_consume");
 
