@@ -275,8 +275,9 @@ public class UIPlayerInfo : UIInfoPanel
     {
         if (instance == WitchToken.instance)
         {
-
-            float currentEnergy = float.Parse(m_EnergyText.text.Split('>')[1]);
+            Debug.Log(m_EnergyText.text);
+            Debug.Log(m_EnergyText.text.Split('>')[1].Split(' ')[0]);
+            float currentEnergy = float.Parse(m_EnergyText.text.Split('>')[1].Split(' ')[0]);
             //spirit at half health
             if (currentEnergy > WitchToken.baseEnergy / 2 && newEnergy < WitchToken.baseEnergy / 2)
             {
@@ -288,7 +289,7 @@ public class UIPlayerInfo : UIInfoPanel
                 PlayerNotificationManager.Instance.ShowNotification($"The witch <color=orange>{WitchToken.displayName}</color> is now <color=red>vulnerable!</color>");
             }
 
-            m_EnergyText.text = LocalizeLookUp.GetText("card_witch_energy").ToUpper() + " <color=black>" + WitchToken.energy + " / " + WitchToken.baseEnergy;
+            m_EnergyText.text = LocalizeLookUp.GetText("card_witch_energy").ToUpper() + " <color=black>" + WitchToken.energy + " / " + WitchToken.baseEnergy + "</color>";
         }
     }
 

@@ -342,8 +342,6 @@ public class UISpiritInfo : UIInfoPanel
     {
         if (instance == SpiritToken?.instance)
         {
-
-
             float currentEnergy = float.Parse(m_Energy.text.Split('>')[1]);
             //spirit at half health
             if (currentEnergy > SpiritToken.baseEnergy / 2 && newEnergy < SpiritToken.baseEnergy / 2)
