@@ -343,8 +343,7 @@ public class UISpiritInfo : UIInfoPanel
         if (instance == SpiritToken?.instance)
         {
 
-            Debug.Log(m_Energy.text);
-            Debug.Log(m_Energy.text.Split('>')[1]);
+
             float currentEnergy = float.Parse(m_Energy.text.Split('>')[1]);
             //spirit at half health
             if (currentEnergy > SpiritToken.baseEnergy / 2 && newEnergy < SpiritToken.baseEnergy / 2)
@@ -373,7 +372,7 @@ public class UISpiritInfo : UIInfoPanel
             return;
 
         m_ConditionList.AddCondition(statusEffect);
-        
+
         foreach (var item in SpiritToken.effects)
         {
             if (item.spell == "spell_hex" && item.stack == 3)
