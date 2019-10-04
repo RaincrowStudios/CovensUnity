@@ -452,6 +452,7 @@ public class DownloadManager : MonoBehaviour
             PlayerDataManager.xpToLevelup = data.exp;
             PlayerDataManager.baseEnergyPerLevel = data.baseEnergy;
             MoonManager.LunarEffeciency = data.lunarEfficiency;
+            PlayerDataManager.spiritBanishExp = data.spiritTierXp;
 
             DownloadedAssets.spellDictData = data.Spells;
             DownloadedAssets.spellDictData["attack"] = new SpellData

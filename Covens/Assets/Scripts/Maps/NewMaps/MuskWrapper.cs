@@ -285,6 +285,13 @@ namespace Raincrow.Maps
         {
             Vector2 physPosition = GetGPS.coordinates;
 
+            //dont udpate if the player is inside PoP
+            if (LocationIslandController.isInBattle)
+            {
+                m_LastGPS = physPosition;
+                return;
+            }
+
             //dont update if the player is flying
             if (!streetLevel)
             {

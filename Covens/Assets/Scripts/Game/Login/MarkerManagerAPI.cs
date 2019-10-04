@@ -65,6 +65,13 @@ public class MarkerManagerAPI : MonoBehaviour
             IsSpiritForm = !physical;
         }
 
+        if (physical)
+        {
+            Vector2 randCircle = Random.insideUnitCircle.normalized;
+            longitude += randCircle.x * 0.0006f;
+            latitude += randCircle.y * 0.0006f;
+        }
+
         var data = new
         {
             physical,
@@ -153,15 +160,12 @@ public class MarkerManagerAPI : MonoBehaviour
     private static void GetMarkersCallback(float longitude, float latitude, string result, int response)
     {
         MapMoveResponse moveResponse = JsonConvert.DeserializeObject<MapMoveResponse>(result);
+        
+        PlayerManager.marker.Coords = new Vector2(longitude, latitude);
+        PlayerDataManager.playerData.longitude = longitude;
+        PlayerDataManager.playerData.latitude = latitude;
 
-        float rndLng = (float)moveResponse.longitude;
-        float rndLat = (float)moveResponse.latitude;
-
-        PlayerManager.marker.Coords = new Vector2(rndLng, rndLat);
-        PlayerDataManager.playerData.longitude = rndLat;
-        PlayerDataManager.playerData.latitude = rndLat;
-
-        Vector3 worldPos = MapsAPI.Instance.GetWorldPosition(rndLng, rndLat);
+        Vector3 worldPos = MapsAPI.Instance.GetWorldPosition(longitude, latitude);
         PlayerManager.marker.SetWorldPosition(worldPos, 2f);
         MapCameraUtils.FocusOnPosition(worldPos, true, 3f);
 
