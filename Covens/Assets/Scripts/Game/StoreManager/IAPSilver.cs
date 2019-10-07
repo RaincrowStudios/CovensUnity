@@ -207,8 +207,11 @@ public class IAPSilver : MonoBehaviour, IStoreListener
                     LogError("Processing error: " + error);
 
                     //remove from pending so its not processed again
-                    if (error == "6006" || error == "6005" || error == "6004")
+                    if (error == "6005" || error == "6004")
+                    {
+                        Debug.LogException(new System.Exception("IAP Validation error:\n" + args.purchasedProduct.receipt));
                         m_StoreController.ConfirmPendingPurchase(args.purchasedProduct);
+                    }
                 }
 
                 FinishPurchase(id, error);
