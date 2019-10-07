@@ -119,6 +119,11 @@ public class UIStore : MonoBehaviour
     [ContextMenu("Open")]
     public void Open()
     {
+        if (m_Canvas.enabled)
+            return;
+
+        StoreManagerAPI.OnPurchaseComplete += OnPurchaseComplete;
+
         LeanTween.cancel(m_MainTweenId);
         m_Canvas.enabled = true;
         m_InputRaycaster.enabled = true;
@@ -138,6 +143,11 @@ public class UIStore : MonoBehaviour
     [ContextMenu("Close")]
     public void Close()
     {
+        if (!m_InputRaycaster.enabled)
+            return;
+
+        StoreManagerAPI.OnPurchaseComplete -= OnPurchaseComplete;
+
         LeanTween.cancel(m_MainTweenId);
         m_InputRaycaster.enabled = false;
 
@@ -285,38 +295,51 @@ public class UIStore : MonoBehaviour
         }
     }
 
-    public void SetHeaderButtons(params UnityEngine.Events.UnityAction[] onClick)
+    public void SetHeaderButtons(int start, params UnityEngine.Events.UnityAction[] onClick)
     {
-        for (int i = 0; i < m_Header.childCount; i++)
+        System.Action<int, bool> toggleHeader = (index, toggle) =>
         {
-            int auxI = i;
-            if (i < onClick.Length)
+            TextMeshProUGUI t = m_Header.GetChild(index).GetComponent<TextMeshProUGUI>();
+            if (toggle)
             {
-                Button button = m_Header.GetChild(i).GetComponent<Button>();
-                button.onClick.RemoveAllListeners();
-                button.onClick.AddListener(() =>
-                {
-                    for (int j = 0; j < m_Header.childCount; j++)
-                    {
-                        TextMeshProUGUI t = m_Header.GetChild(j).GetComponent<TextMeshProUGUI>();
-                        if (j == auxI)
-                        {
-                            t.fontStyle = FontStyles.Underline;
-                            t.color = Color.white;
-                        }
-                        else
-                        {
-                            t.fontStyle = FontStyles.Normal;
-                            t.color = Color.white * 0.64f;
-                        }
-                    }
-                    onClick[auxI]?.Invoke();
-                });
-                m_Header.GetChild(i).gameObject.SetActive(true);
+                t.fontStyle = FontStyles.Underline;
+                t.color = Color.white;
             }
             else
             {
-                m_Header.GetChild(i).gameObject.SetActive(false);
+                t.fontStyle = FontStyles.Normal;
+                t.color = Color.white * 0.64f;
+            }
+        };
+
+        for (int i = 0; i < m_Header.childCount; i++)
+        {
+            if (i == start)
+                toggleHeader.Invoke(i, true);
+            else
+                toggleHeader.Invoke(i, false);
+        }
+
+        for (int i = 0; i < m_Header.childCount; i++)
+        {
+            Button button = m_Header.GetChild(i).GetComponent<Button>();
+            button.onClick.RemoveAllListeners();
+
+            int aux = i;
+            if (i < onClick?.Length)
+            {
+                button.gameObject.SetActive(true);
+                button.onClick.AddListener(() =>
+                {
+                    for (int j = 0; j < m_Header.childCount; j++)
+                        toggleHeader.Invoke(j, j == aux);
+
+                    onClick[aux]?.Invoke();
+                });
+            }
+            else
+            {
+                button.gameObject.SetActive(false);
             }
         }
     }
@@ -333,6 +356,7 @@ public class UIStore : MonoBehaviour
             LocalizeLookUp.GetText("store_styles"));
 
         SetHeaderButtons(
+            0,
             () => SetScreen(Screen.COSMETICS),
             () => SetScreen(Screen.STYLES));
 
@@ -346,24 +370,28 @@ public class UIStore : MonoBehaviour
             LocalizeLookUp.GetText("store_styles"));
 
         SetHeaderButtons(
+            1,
             () => SetScreen(Screen.COSMETICS),
             () => SetScreen(Screen.STYLES));
     }
 
     private void SetupCurrency()
     {
+        SetHeaderButtons(0);
         SetHeaderText(LocalizeLookUp.GetText("store_currency"));
         m_StoreWindow.SetupCurrency(StoreManagerAPI.Store.Currencies);
     }
 
     private void SetupCharms()
     {
+        SetHeaderButtons(0);
         SetHeaderText(LocalizeLookUp.GetText("store_charms"));
         m_StoreWindow.SetupCharms(StoreManagerAPI.Store.Consumables);
     }
 
     private void SetupIngredients()
     {
+        SetHeaderButtons(0);
         SetHeaderText(LocalizeLookUp.GetText("store_ingredients"));
         m_StoreWindow.SetupIngredients(StoreManagerAPI.Store.Bundles);
     }
@@ -385,5 +413,10 @@ public class UIStore : MonoBehaviour
                 m_SilverDrachs.text = ((int)Mathf.Lerp(startSilver, PlayerDataManager.playerData.silver, t)).ToString();
             })
             .uniqueId;
+    }
+
+    private void OnPurchaseComplete(string id, string type)
+    {
+        _UpdateDrachs();
     }
 }

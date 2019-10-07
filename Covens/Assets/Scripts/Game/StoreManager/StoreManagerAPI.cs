@@ -130,6 +130,7 @@ namespace Raincrow.Store
         public static Dictionary<string, List<ItemData>> BundleDict { get; set; }
         public static Dictionary<string, ConsumableData> ConsumableDict { get; set; }
         public static Dictionary<string, CurrencyBundleData> CurrencyBundleDict { get; set; }
+        public static System.Action<string, string> OnPurchaseComplete;
         
         public static void Purchase(string id, string type, string currency, System.Action<string> callback)
         {
@@ -155,6 +156,7 @@ namespace Raincrow.Store
                     string debug = "purchase complete:\n";
                     debug += $"[{type}] {id}";
 
+                    StoreItem item;
                     int silver = 0;
                     int gold = 0;
 
@@ -166,13 +168,14 @@ namespace Raincrow.Store
 
                         case TYPE_COSMETIC:
 
+                            //item = Store.Cosmetics.Find(cos => cos.id == id);
                             CosmeticData cosmetic = DownloadedAssets.GetCosmetic(id);
 
                             //get the price
                             if (currency == "silver")
-                                silver = cosmetic.silver;
+                                silver = Store.GetPrice(type, id, true);
                             if (currency == "gold")
-                                gold = cosmetic.gold;
+                                gold = Store.GetPrice(type, id, false);
 
                             //add the item to inventory
                             PlayerDataManager.playerData.inventory.cosmetics.Add(cosmetic);
@@ -198,7 +201,7 @@ namespace Raincrow.Store
 
                         case TYPE_ELIXIRS:
 
-                            Item item = PlayerDataManager.playerData.inventory.consumables.Find(it => it.id == id);
+                            Item elixir = PlayerDataManager.playerData.inventory.consumables.Find(it => it.id == id);
                             ConsumableData consumable = StoreManagerAPI.GetConsumable(id); ;
 
                             //get the price
@@ -208,7 +211,7 @@ namespace Raincrow.Store
                                 gold = Store.GetPrice(type, id, false);
 
                             //add to the inventory
-                            if (item == null || string.IsNullOrEmpty(item.id))
+                            if (elixir == null || string.IsNullOrEmpty(elixir.id))
                             {
                                 PlayerDataManager.playerData.inventory.consumables.Add(new Item
                                 {
@@ -218,7 +221,7 @@ namespace Raincrow.Store
                             }
                             else
                             {
-                                item.count += 1;
+                                elixir.count += 1;
                             }
                             break;
                     }
@@ -240,6 +243,7 @@ namespace Raincrow.Store
                     Log(debug);
 
                     callback(null);
+                    OnPurchaseComplete?.Invoke(id, type);
                 }
                 else
                 {

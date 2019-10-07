@@ -13,23 +13,15 @@ public class UIStorePurchaseCosmetic : UIStorePurchase
     [SerializeField] private ApparelView m_FemaleView;
     [SerializeField] private Button m_PreviewButton;
     [SerializeField] private TextMeshProUGUI m_PreviewText;
+    [SerializeField] private RectTransform m_PreviewIcons;
 
-    private CosmeticData m_Cosmetic;
+    protected CosmeticData m_Cosmetic;
     private int m_PreviewIndex;
-    private static UIStorePurchaseCosmetic m_Instance;
-
-    public static void Show(StoreItem item, CosmeticData data, Image icon, string locked, System.Action<string> onPurchase)
-    {
-        if (m_Instance == null)
-            return;
-               
-        m_Instance.m_Cosmetic = data;
-        m_Instance._Show(item, StoreManagerAPI.TYPE_COSMETIC, LocalizeLookUp.GetStoreTitle(item.id), "", icon, locked, onPurchase);
-    }
 
     private void Awake()
     {
-        m_Instance = this;
+        m_InstanceCosmetic = this;
+
         m_Canvas.enabled = false;
         m_InputRaycaster.enabled = false;
         m_CanvasGroup.alpha = 0;
@@ -40,15 +32,16 @@ public class UIStorePurchaseCosmetic : UIStorePurchase
         m_ClaimButton.onClick.AddListener(OnClickBuySilver);
         m_CloseButton.onClick.AddListener(_Close);
 
-        m_Instance = this;
         m_MaleView.gameObject.SetActive(false);
         m_FemaleView.gameObject.SetActive(false);
 
         m_PreviewButton.onClick.AddListener(TogglePreview);
     }
 
-    protected override void _Show(StoreItem item, string type, string title, string description, Image icon, string locked, Action<string> onPurchase)
+    public void _Show(StoreItem item, CosmeticData cosmetic, string type, string title, string description, Image icon, string locked, Action<string> onPurchase)
     {
+        m_Cosmetic = cosmetic;
+
         m_MaleView.gameObject.SetActive(false);
         m_FemaleView.gameObject.SetActive(false);
 
@@ -69,18 +62,34 @@ public class UIStorePurchaseCosmetic : UIStorePurchase
         List<ApparelType> available = new List<ApparelType>();
         if (m_Cosmetic.assets.baseAsset.Count > 0)
             available.Add(ApparelType.Base);
-        if (m_Cosmetic.assets.white.Count > 0)
-            available.Add(ApparelType.White);
         if (m_Cosmetic.assets.shadow.Count > 0)
             available.Add(ApparelType.Shadow);
         if (m_Cosmetic.assets.grey.Count > 0)
             available.Add(ApparelType.Grey);
-        
+        if (m_Cosmetic.assets.white.Count > 0)
+            available.Add(ApparelType.White);
+
         bool toggle = m_PreviewIndex >= 0 && m_PreviewIndex < available.Count;
+
+        //setup text
         m_PreviewText.text = LocalizeLookUp.GetText(toggle ? "store_preview_on" : "store_preview_off");
 
-        ApparelView apparel = PlayerDataManager.playerData.male ? m_MaleView : m_FemaleView;
+        //toggle icon
+        m_PreviewIcons.GetChild(0).gameObject.SetActive(true);
+        m_PreviewIcons.GetChild(1).gameObject.SetActive(m_Cosmetic.assets.baseAsset.Count > 0);
+        m_PreviewIcons.GetChild(2).gameObject.SetActive(m_Cosmetic.assets.shadow.Count > 0);
+        m_PreviewIcons.GetChild(3).gameObject.SetActive(m_Cosmetic.assets.grey.Count > 0);
+        m_PreviewIcons.GetChild(4).gameObject.SetActive(m_Cosmetic.assets.white.Count > 0);
 
+        //toggle selected icon
+        m_PreviewIcons.GetChild(0).GetChild(0).gameObject.SetActive(!toggle);
+        m_PreviewIcons.GetChild(1).GetChild(0).gameObject.SetActive(toggle && available[m_PreviewIndex] == ApparelType.Base);
+        m_PreviewIcons.GetChild(2).GetChild(0).gameObject.SetActive(toggle && available[m_PreviewIndex] == ApparelType.Shadow);
+        m_PreviewIcons.GetChild(3).GetChild(0).gameObject.SetActive(toggle && available[m_PreviewIndex] == ApparelType.Grey);
+        m_PreviewIcons.GetChild(4).GetChild(0).gameObject.SetActive(toggle && available[m_PreviewIndex] == ApparelType.White);
+
+        //update apparel view
+        ApparelView apparel = PlayerDataManager.playerData.male ? m_MaleView : m_FemaleView;
         if (toggle)
         {
             m_Cosmetic.apparelType = available[m_PreviewIndex];

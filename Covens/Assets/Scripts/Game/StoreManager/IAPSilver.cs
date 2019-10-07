@@ -61,7 +61,7 @@ public class IAPSilver : MonoBehaviour, IStoreListener
         return m_StoreController != null && m_StoreExtensionProvider != null;
     }
 
-    public void BuyProductID(StoreApiItem storeProduct, System.Action<string> callback)
+    public void BuyProductID(string id, System.Action<string> callback)
     {
         if (m_OngoingPurchase != null)
         {
@@ -70,13 +70,15 @@ public class IAPSilver : MonoBehaviour, IStoreListener
             return;
         }
 
-        Log("Initializing purchase: " + storeProduct.productId);
+        var data = StoreManagerAPI.GetCurrencyBundle(id);
+
+        Log("Initializing purchase: " + data.product);
 
         if (IsInitialized())
         {
-            Raincrow.Analytics.Events.PurchaseAnalytics.StartIAP(storeProduct.productId);
+            Raincrow.Analytics.Events.PurchaseAnalytics.StartIAP(data.product);
             
-            Product product = m_StoreController.products.WithID(storeProduct.productId);
+            Product product = m_StoreController.products.WithID(data.product);
             
             if (product != null && product.availableToPurchase)
             {
@@ -84,8 +86,8 @@ public class IAPSilver : MonoBehaviour, IStoreListener
 
                 m_OngoingPurchase = new OngoingPurchase
                 {
-                    id = storeProduct.id,
-                    data = StoreManagerAPI.GetCurrencyBundle(storeProduct.id),
+                    id = id,
+                    data = data,
                     callback = callback
                 };
 

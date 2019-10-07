@@ -101,7 +101,7 @@ public class ShopItem : MonoBehaviour
         buyButton.onClick.AddListener(() =>
         {
             LoadingOverlay.Show();
-            IAPSilver.instance.BuyProductID(item, (error) =>
+            IAPSilver.instance.BuyProductID(item.id, (error) =>
             {
                 LoadingOverlay.Hide();
                 if (string.IsNullOrEmpty(error))

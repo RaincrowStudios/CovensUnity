@@ -39,6 +39,7 @@ public class UIStorePurchase : MonoBehaviour
     private int m_ScaleTweenId;
 
     private static UIStorePurchase m_Instance;
+    protected static UIStorePurchaseCosmetic m_InstanceCosmetic;
 
     public static void Show(StoreItem item, string type, string title, string description, Image icon, string locked, System.Action<string> onPurchase)
     {
@@ -48,12 +49,20 @@ public class UIStorePurchase : MonoBehaviour
         m_Instance._Show(item, type, title, description, icon, locked, onPurchase);
     }
 
-    public static void Close()
+    public static void Show(StoreItem item, CosmeticData data, Image icon, string locked, System.Action<string> onPurchase)
     {
-        if (m_Instance == null)
+        if (m_InstanceCosmetic == null)
             return;
 
-        m_Instance._Close();
+        m_InstanceCosmetic._Show(item, data, StoreManagerAPI.TYPE_COSMETIC, LocalizeLookUp.GetStoreTitle(item.id), "", icon, locked, onPurchase);
+    }
+
+    public static void Close()
+    {
+        if (m_Instance != null)
+            m_Instance._Close();
+        if (m_InstanceCosmetic != null)
+            m_InstanceCosmetic._Close();
     }
 
     private void Awake()
