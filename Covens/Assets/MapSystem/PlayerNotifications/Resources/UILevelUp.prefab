@@ -140,7 +140,7 @@ Animator:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1134948073390442}
-  m_Enabled: 1
+  m_Enabled: 0
   m_Avatar: {fileID: 0}
   m_Controller: {fileID: 9100000, guid: 8070e7d035ff64b44aa8a06996256d89, type: 2}
   m_CullingMode: 0
@@ -1033,6 +1033,7 @@ MonoBehaviour:
   prefix: 
   id: continue_generic
   suffix: 
+  toUpper: 0
 --- !u!1 &6346763161775088577
 GameObject:
   m_ObjectHideFlags: 0
@@ -1107,6 +1108,7 @@ MonoBehaviour:
   prefix: 
   id: pop_notif_claimed
   suffix: 
+  toUpper: 0
 --- !u!114 &2369894469405812552
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2594,7 +2596,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.05, y: 0.02}
   m_AnchorMax: {x: 0.95, y: 0.23}
-  m_AnchoredPosition: {x: 0.019989967, y: -1.1000061}
+  m_AnchoredPosition: {x: 0.019989014, y: -1.1000061}
   m_SizeDelta: {x: 94.239975, y: -4.199997}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &4853288394563081253

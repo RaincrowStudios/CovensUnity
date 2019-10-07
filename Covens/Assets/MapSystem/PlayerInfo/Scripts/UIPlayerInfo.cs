@@ -93,7 +93,7 @@ public class UIPlayerInfo : UIInfoPanel
 
         DownloadedAssets.OnWillUnloadAssets += OnWillUnloadAssets;
     }
-    
+
     private void OnWillUnloadAssets()
     {
         if (IsShowing)
@@ -133,8 +133,11 @@ public class UIPlayerInfo : UIInfoPanel
             Close();
             return;
         }
-        
+
         m_ConditionsList.Setup(data.effects);
+
+        if (PlayerDataManager.playerData.level < 4 && WitchToken.level > 4)
+            PlayerNotificationManager.Instance.ShowNotification(($"{WitchToken.displayName} is challenging target for your level, witch.").ToUpper());
 
         // //setup the ui
         m_DisplayNameText.text = WitchToken.displayName;
@@ -272,6 +275,20 @@ public class UIPlayerInfo : UIInfoPanel
     {
         if (instance == WitchToken.instance)
         {
+            Debug.Log(m_EnergyText.text);
+            Debug.Log(m_EnergyText.text.Split('>')[1].Split(' ')[0]);
+            float currentEnergy = float.Parse(m_EnergyText.text.Split('>')[1].Split(' ')[0]);
+            //spirit at half health
+            if (currentEnergy > WitchToken.baseEnergy / 2 && newEnergy < WitchToken.baseEnergy / 2)
+            {
+                PlayerNotificationManager.Instance.ShowNotification($"The witch <color=orange>{WitchToken.displayName}</color> is now at half health. Keep it up!");
+            }
+            // spirit vulnerable
+            if (currentEnergy > WitchToken.baseEnergy * .2f && newEnergy < WitchToken.baseEnergy * .2f)
+            {
+                PlayerNotificationManager.Instance.ShowNotification($"The witch <color=orange>{WitchToken.displayName}</color> is now <color=red>vulnerable!</color>");
+            }
+
             m_EnergyText.text = LocalizeLookUp.GetText("card_witch_energy").ToUpper() + " <color=black>" + WitchToken.energy + " / " + WitchToken.baseEnergy + "</color>";
         }
     }
@@ -304,6 +321,14 @@ public class UIPlayerInfo : UIInfoPanel
             return;
 
         m_ConditionsList.AddCondition(statusEffect);
+
+        foreach (var item in WitchToken.effects)
+        {
+            if (item.spell == "spell_hex" && item.stack == 3)
+            {
+                PlayerNotificationManager.Instance.ShowNotification($"The <color=orange>{WitchToken.displayName}</color> is fully Hexed and <color=red>vulnerable</color> to critical attacks.");
+            }
+        }
     }
 
     private void _OnExpireEffect(string character, StatusEffect effect)
