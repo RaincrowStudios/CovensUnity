@@ -48,7 +48,9 @@ public class BOSSpiritDeck : BOSBase
 
         Dictionary<string, KnownSpirits> knownSpiritsDict = new Dictionary<string, KnownSpirits>();
         foreach (KnownSpirits entry in pData.knownSpirits)
-            knownSpiritsDict.Add(entry.spirit, entry);
+        {
+            knownSpiritsDict[entry.spirit] = entry;
+        }
 
         foreach (Transform item in transform.GetChild(0))
         {
