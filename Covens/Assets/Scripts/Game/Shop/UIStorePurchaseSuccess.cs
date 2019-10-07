@@ -43,6 +43,11 @@ public class UIStorePurchaseSuccess : MonoBehaviour
         m_Animator.gameObject.SetActive(false);
     }
 
+    private void OnDestroy()
+    {
+        LeanTween.cancel(m_AlphaTweenId);
+    }
+
     private void _Show(string title, string subtitle, Sprite icon, System.Action onClose)
     {
         m_Title.text = title;

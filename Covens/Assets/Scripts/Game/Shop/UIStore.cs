@@ -49,6 +49,8 @@ public class UIStore : MonoBehaviour
 
     private static UIStore m_Instance;
 
+    public static bool IsOpen => m_Instance != null && m_Instance.m_InputRaycaster.enabled;
+
     public static void OpenStore(System.Action onLoad = null, bool showFortuna = true)
     {
         if (m_Instance != null)
@@ -107,6 +109,18 @@ public class UIStore : MonoBehaviour
         m_IngredientsButton.onClick.AddListener(() => SetScreen(Screen.INGREDIENTS));
 
         SetScreen(Screen.HOME);
+
+        DownloadedAssets.OnWillUnloadAssets += OnWillUnloadAssets;
+    }
+
+    private void OnWillUnloadAssets()
+    {
+        DownloadedAssets.OnWillUnloadAssets -= OnWillUnloadAssets;
+
+        LeanTween.cancel(m_MainTweenId);
+        LeanTween.cancel(m_ScreenTweenId);
+        LeanTween.cancel(m_DrachsTweenId);
+        SceneManager.UnloadScene(SceneManager.Scene.STORE, null, null);
     }
 
     private void OnClickClose()
@@ -216,7 +230,6 @@ public class UIStore : MonoBehaviour
         };
 
         m_CurrentScreen = screen;
-        StopAllCoroutines();
 
         if (toShow != toHide)
         {

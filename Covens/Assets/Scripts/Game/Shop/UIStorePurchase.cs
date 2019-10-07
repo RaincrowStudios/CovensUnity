@@ -83,6 +83,12 @@ public class UIStorePurchase : MonoBehaviour
         m_CloseButton.onClick.AddListener(_Close);
     }
 
+    private void OnDestroy()
+    {
+        LeanTween.cancel(m_AlphaTweenId);
+        LeanTween.cancel(m_ScaleTweenId);
+    }
+
     protected virtual void _Show(StoreItem item, string type, string title, string description, Image icon, string locked, System.Action<string> onPurchase)
     {
         m_Item = item;

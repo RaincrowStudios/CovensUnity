@@ -24,7 +24,7 @@ public class UIStoreContainer : MonoBehaviour
     [SerializeField] private RectTransform m_BottomBar;
 
     private SimplePool<UIStoreItemGroup> m_ItemPool;
-    private Filter m_CurrentFilter;
+    public Filter m_CurrentFilter;
     private UIStore.Screen m_Category;
     private delegate bool StoreItemValidDelegate(object item);
 
@@ -47,63 +47,22 @@ public class UIStoreContainer : MonoBehaviour
         Width = m_Canvas.sizeDelta.x;
     }
 
-    private void SetBottomText(params string[] title)
+    private void OnDestroy()
     {
-        for (int i = 0; i < m_BottomBar.childCount; i++)
-        {
-            if (i < title.Length)
-            {
-                m_BottomBar.GetChild(i).GetComponent<TextMeshProUGUI>().text = title[i];
-                m_BottomBar.GetChild(i).gameObject.SetActive(true);
-            }
-            else
-            {
-                m_BottomBar.transform.GetChild(i).gameObject.SetActive(false);
-            }
-        }
-    }
-
-    public void SetBottomButtons(params UnityEngine.Events.UnityAction[] onClick)
-    {
-        for (int i = 0; i < m_BottomBar.childCount; i++)
-        {
-            int auxI = i;
-
-            if (i < onClick.Length)
-            {
-                Button button = m_BottomBar.GetChild(i).GetComponent<Button>();
-                button.onClick.RemoveAllListeners();
-                button.onClick.AddListener(() =>
-                {
-                    for (int j = 0; j < m_BottomBar.childCount; j++)
-                    {
-                        TextMeshProUGUI t = m_BottomBar.GetChild(j).GetComponent<TextMeshProUGUI>();
-                        if (j == auxI)
-                        {
-                            t.fontStyle = FontStyles.Underline;
-                            t.color = Color.white;
-                        }
-                        else
-                        {
-                            t.fontStyle = FontStyles.Normal;
-                            t.color = Color.white * 0.64f;
-                        }
-                    }
-                    onClick[auxI]?.Invoke();
-                });
-                m_BottomBar.GetChild(i).gameObject.SetActive(true);
-            }
-            else
-            {
-                m_BottomBar.transform.GetChild(i).gameObject.SetActive(false);
-            }
-        }
+        StopAllCoroutines();
+        m_ItemPool.DestroyAll();
     }
 
     public void SetupCosmetics(List<StoreItem> items)
     {
         if (m_Category == UIStore.Screen.COSMETICS)
+        {
+            //make sure all the icons load in case the spawn coroutine was interrupted
+            UIStoreItemGroup[] groups = GetComponentsInChildren<UIStoreItemGroup>();
+            foreach (var group in groups)
+                group.enabled = true;
             return;
+        }
 
         m_Category = UIStore.Screen.COSMETICS;
 
@@ -127,96 +86,6 @@ public class UIStoreContainer : MonoBehaviour
             SetFilter(Filter.clothing, items, cosmetics);
         else
             SetFilter(m_CurrentFilter, items, cosmetics);
-    }
-
-    private void OnClickFilter(Filter filter, List<StoreItem> items, List<object> cosmetics)
-    {
-        if (m_CurrentFilter == filter)
-            return;
-        SetFilter(filter, items, cosmetics);
-    }
-
-    private void SetFilter(Filter filter, List<StoreItem> items, List<object> cosmetics)
-    {
-        m_CurrentFilter = filter;
-        StopAllCoroutines();
-        StartCoroutine(SpawnItemsCoroutine(filter, items, cosmetics));
-    }
-
-    private IEnumerator SpawnItemsCoroutine(Filter filter, List<StoreItem> items, List<object> data)
-    {
-        //despawn items previously on ui
-        m_ItemPool.DespawnAll();
-        m_Scroll.horizontalNormalizedPosition = 0;
-
-        yield return 0;
-
-        //List<(UIStoreItem, string)> iconList = new List<(UIStoreItem, string)>();
-
-        StoreItemValidDelegate isItemValid = (item) => true;
-
-        //cosmetic store item validator
-        if (data[0] is CosmeticData)
-        {
-            isItemValid = (item) =>
-            {
-                char gender = PlayerDataManager.playerData.male ? 'm' : 'f';
-                CosmeticData cosmetic = item as CosmeticData;
-
-                if (cosmetic.type[0] != gender)
-                    return false;
-
-                if (cosmetic.storeCatagory != filter.ToString())
-                    return false;
-
-                return true;
-            };
-        }
-
-        bool singleRow = items.Count < 6;
-        int count = 0;
-        m_Container.pivot = new Vector2(items.Count <= 6 ? 0.5f : 0f, 0.5f);
-
-        List<UIStoreItemGroup> spawnedGroups = new List<UIStoreItemGroup>();
-        UIStoreItemGroup group = m_ItemPool.Spawn(m_Container);
-        group.enabled = false;
-        group.OnSpawn();
-        group.SetSingleRowLayout(singleRow);
-        spawnedGroups.Add(group);
-
-        //spawn and setup the items
-        for (int i = 0; i < items.Count; i++)
-        {
-            if (!isItemValid(data[i]))
-                continue;
-            
-            UIStoreItem item = group.GetItem();
-            if (item == null)
-            {
-                group = m_ItemPool.Spawn(m_Container);
-                group.enabled = false;
-                group.OnSpawn();
-                group.SetSingleRowLayout(singleRow);
-                spawnedGroups.Add(group);
-                item = group.GetItem();
-            }
-
-            item.Setup(items[i], data[i]);
-            //iconList.Add((item, data[i].iconId));
-
-            count++;
-            if (count >= 5)
-            {
-                count = 0;
-                yield return 0;
-            }
-        }
-
-        foreach (var item in spawnedGroups)
-        {
-            item.enabled = true;
-            yield return new WaitForSeconds(0.1f);
-        }
     }
 
     public void SetupCurrency(List<StoreItem> items)
@@ -262,5 +131,150 @@ public class UIStoreContainer : MonoBehaviour
         SetBottomButtons();
         StopAllCoroutines();
         StartCoroutine(SpawnItemsCoroutine(Filter.NONE, items, elixirs));
+    }
+
+    private void SetBottomText(params string[] title)
+    {
+        for (int i = 0; i < m_BottomBar.childCount; i++)
+        {
+            if (i < title.Length)
+            {
+                m_BottomBar.GetChild(i).GetComponent<TextMeshProUGUI>().text = title[i];
+                m_BottomBar.GetChild(i).gameObject.SetActive(true);
+            }
+            else
+            {
+                m_BottomBar.transform.GetChild(i).gameObject.SetActive(false);
+            }
+        }
+    }
+
+    private void SetBottomButtons(params UnityEngine.Events.UnityAction[] onClick)
+    {
+        for (int i = 0; i < m_BottomBar.childCount; i++)
+        {
+            int auxI = i;
+
+            if (i < onClick.Length)
+            {
+                Button button = m_BottomBar.GetChild(i).GetComponent<Button>();
+                button.onClick.RemoveAllListeners();
+                button.onClick.AddListener(() =>
+                {
+                    for (int j = 0; j < m_BottomBar.childCount; j++)
+                    {
+                        TextMeshProUGUI t = m_BottomBar.GetChild(j).GetComponent<TextMeshProUGUI>();
+                        if (j == auxI)
+                        {
+                            t.fontStyle = FontStyles.Underline;
+                            t.color = Color.white;
+                        }
+                        else
+                        {
+                            t.fontStyle = FontStyles.Normal;
+                            t.color = Color.white * 0.64f;
+                        }
+                    }
+                    onClick[auxI]?.Invoke();
+                });
+                m_BottomBar.GetChild(i).gameObject.SetActive(true);
+            }
+            else
+            {
+                m_BottomBar.transform.GetChild(i).gameObject.SetActive(false);
+            }
+        }
+    }
+
+    private void OnClickFilter(Filter filter, List<StoreItem> items, List<object> cosmetics)
+    {
+        if (m_CurrentFilter == filter)
+            return;
+        SetFilter(filter, items, cosmetics);
+    }
+
+    public void SetFilter(Filter filter, List<StoreItem> items, List<object> cosmetics)
+    {
+        m_CurrentFilter = filter;
+        StopAllCoroutines();
+        StartCoroutine(SpawnItemsCoroutine(filter, items, cosmetics));
+    }
+
+    private IEnumerator SpawnItemsCoroutine(Filter filter, List<StoreItem> items, List<object> data)
+    {
+        LoadingOverlay.Show();
+
+        //despawn items previously on ui
+        m_ItemPool.DespawnAll();
+        m_Scroll.horizontalNormalizedPosition = 0;
+
+        yield return 0;
+        
+        StoreItemValidDelegate isItemValid = (item) => true;
+
+        //cosmetic store item validator
+        if (data[0] is CosmeticData)
+        {
+            isItemValid = (item) =>
+            {
+                char gender = PlayerDataManager.playerData.male ? 'm' : 'f';
+                CosmeticData cosmetic = item as CosmeticData;
+
+                if (cosmetic.type[0] != gender)
+                    return false;
+
+                if (cosmetic.storeCatagory != filter.ToString())
+                    return false;
+
+                return true;
+            };
+        }
+
+        bool singleRow = items.Count < 6;
+        int count = 0;
+        m_Container.pivot = new Vector2(items.Count <= 6 ? 0.5f : 0f, 0.5f);
+
+        List<UIStoreItemGroup> spawnedGroups = new List<UIStoreItemGroup>();
+        UIStoreItemGroup group = m_ItemPool.Spawn(m_Container);
+        group.enabled = false;
+        group.OnSpawn();
+        group.SetSingleRowLayout(singleRow);
+        spawnedGroups.Add(group);
+
+        //spawn and setup the items
+        for (int i = 0; i < items.Count; i++)
+        {
+            if (!isItemValid(data[i]))
+                continue;
+
+            UIStoreItem item = group.GetItem();
+            if (item == null)
+            {
+                group = m_ItemPool.Spawn(m_Container);
+                group.enabled = false;
+                group.OnSpawn();
+                group.SetSingleRowLayout(singleRow);
+                spawnedGroups.Add(group);
+                item = group.GetItem();
+            }
+
+            item.Setup(items[i], data[i]);
+            //iconList.Add((item, data[i].iconId));
+
+            count++;
+            if (count >= 5)
+            {
+                count = 0;
+                yield return 0;
+            }
+        }
+
+        LoadingOverlay.Hide();
+
+        foreach (var item in spawnedGroups)
+        {
+            item.enabled = true;
+            yield return new WaitForSeconds(0.1f);
+        }
     }
 }
