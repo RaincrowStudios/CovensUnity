@@ -230,7 +230,7 @@ public class ApparelView : MonoBehaviour
         
         EquippedApparel equip = new EquippedApparel();
         equip.id = data.id;
-        List<Sprite> apparelSprite = new List<Sprite>();
+
         if (data.apparelType == ApparelType.Base)
             equip.assets = data.assets.baseAsset;
         else if (data.apparelType == ApparelType.Grey)

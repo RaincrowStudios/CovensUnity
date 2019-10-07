@@ -156,7 +156,6 @@ namespace Raincrow.Store
                     string debug = "purchase complete:\n";
                     debug += $"[{type}] {id}";
 
-                    StoreItem item;
                     int silver = 0;
                     int gold = 0;
 
@@ -242,12 +241,12 @@ namespace Raincrow.Store
 
                     Log(debug);
 
-                    callback(null);
+                    callback?.Invoke(null);
                     OnPurchaseComplete?.Invoke(id, type);
                 }
                 else
                 {
-                    callback(response);
+                    callback?.Invoke(response);
                 }
             });
         }

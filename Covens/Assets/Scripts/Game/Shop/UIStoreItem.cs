@@ -285,6 +285,9 @@ public class UIStoreItem : MonoBehaviour
         m_SilverCost.text = item.silver.ToString();
         m_GoldCost.text = item.gold.ToString();
 
+        m_SilverCost.color = PlayerDataManager.playerData.silver >= item.silver ? Color.white : Color.red;
+        m_GoldCost.color = PlayerDataManager.playerData.gold >= item.gold ? Color.white : Color.red;
+
         m_SilverCost.gameObject.SetActive(item.silver > 0);
         m_SilverIcon.enabled = m_SilverCost.gameObject.activeSelf;
 

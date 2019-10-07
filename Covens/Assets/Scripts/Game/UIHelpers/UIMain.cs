@@ -142,7 +142,7 @@ public class UIMain : MonoBehaviour
 
     private void OnClickStore()
     {
-        ShopManager.OpenStore();
+        UIStore.OpenStore();
     }
 
     private void OnClickChat()

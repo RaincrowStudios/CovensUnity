@@ -177,10 +177,13 @@ public class DownloadedAssets : MonoBehaviour
                 else
                     AllSprites[tempSp.texture.name] = tempSp;
 
+                yield return Timing.WaitForOneFrame;
+                yield break;
             }
         }
 
         yield return Timing.WaitForOneFrame;
+        callback?.Invoke(null);
     }
 
     static IEnumerator<float> getSpiritHelper(string id, Image spr, bool isIcon)

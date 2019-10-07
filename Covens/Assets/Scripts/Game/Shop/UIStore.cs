@@ -87,6 +87,7 @@ public class UIStore : MonoBehaviour
         if (UnityEngine.EventSystems.EventSystem.current == null)
             new GameObject("EventSystem", typeof(UnityEngine.EventSystems.EventSystem), typeof(UnityEngine.EventSystems.StandaloneInputModule));
 
+        m_Instance = this;
         m_Canvas.enabled = false;
         m_InputRaycaster.enabled = false;
 
@@ -112,6 +113,8 @@ public class UIStore : MonoBehaviour
     {
         if (m_CurrentScreen == Screen.HOME)
             Close();
+        else if (m_CurrentScreen == Screen.STYLES)
+            SetScreen(Screen.COSMETICS);
         else
             SetScreen(Screen.HOME);
     }

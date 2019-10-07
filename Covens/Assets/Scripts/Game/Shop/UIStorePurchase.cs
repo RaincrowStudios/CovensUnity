@@ -46,7 +46,9 @@ public class UIStorePurchase : MonoBehaviour
         if (m_Instance == null)
             return;
 
+        LoadingOverlay.Show();
         m_Instance._Show(item, type, title, description, icon, locked, onPurchase);
+        LoadingOverlay.Hide();
     }
 
     public static void Show(StoreItem item, CosmeticData data, Image icon, string locked, System.Action<string> onPurchase)
@@ -54,7 +56,9 @@ public class UIStorePurchase : MonoBehaviour
         if (m_InstanceCosmetic == null)
             return;
 
+        LoadingOverlay.Show();
         m_InstanceCosmetic._Show(item, data, StoreManagerAPI.TYPE_COSMETIC, LocalizeLookUp.GetStoreTitle(item.id), "", icon, locked, onPurchase);
+        LoadingOverlay.Hide();
     }
 
     public static void Close()
@@ -86,12 +90,18 @@ public class UIStorePurchase : MonoBehaviour
         m_Title.text = title;
         m_Description.text = description;
         m_Icon.overrideSprite = icon.overrideSprite;
-        
+
+        bool hasSilver = PlayerDataManager.playerData.silver >= item.silver;
+        bool hasGold = PlayerDataManager.playerData.gold >= item.gold;
+
         if (string.IsNullOrEmpty(locked))
         {
             m_LockedTooltip.text = "";
             m_SilverAmount.text = item.silver.ToString();
             m_GoldAmount.text = item.gold.ToString();
+
+            m_SilverAmount.color = m_SilverButton.GetComponent<TextMeshProUGUI>().color = hasSilver ? Color.white : Color.red;
+            m_GoldAmount.color = m_GoldButton.GetComponent<TextMeshProUGUI>().color = hasGold ? Color.white : Color.red;
 
             m_ClaimButton.gameObject.SetActive(item.gold == 0 && item.silver == 0);
             m_OrGameObject.SetActive(item.gold > 0 && item.silver > 0);
@@ -131,21 +141,39 @@ public class UIStorePurchase : MonoBehaviour
 
     protected void OnClickBuySilver()
     {
+        bool hasSilver = PlayerDataManager.playerData.silver >= m_Item.silver;
+        if (hasSilver == false)
+            return;
+
+        LoadingOverlay.Show();
         StoreManagerAPI.Purchase(
             m_Item.id,
             m_ItemType,
             "silver",
-            m_OnPurchase
+            (error) =>
+            {
+                m_OnPurchase?.Invoke(error);
+                LoadingOverlay.Hide();
+            }
         );
     }
 
     protected void OnClickBuyGold()
     {
+        bool hasGold = PlayerDataManager.playerData.gold >= m_Item.gold;
+        if (hasGold == false)
+            return;
+
+        LoadingOverlay.Show();
         StoreManagerAPI.Purchase(
             m_Item.id,
             m_ItemType,
             "gold",
-            m_OnPurchase
+            (error) =>
+            {
+                m_OnPurchase?.Invoke(error);
+                LoadingOverlay.Hide();
+            }
         );
     }
 }
