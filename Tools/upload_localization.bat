@@ -6,17 +6,18 @@
 @echo.
 
 if [%1]==[] goto usage
+if [%2]==[] goto usage
 
 SET PROJ_PATH=%CD%\..\
 SET SRC_PATH=%PROJ_PATH%Dictionaries
 
-SET DEST_FOLDER=dictionary/staging/localization
+SET DEST_FOLDER=dictionary/%1/localization
 SET DEST_PATH=gs://raincrow-covens/%DEST_FOLDER%/
 
 ::del %1 /q
 ::rd %1 /q
 
-xcopy %SRC_PATH% %CD%\%1 /s /q /i /y /EXCLUDE:exclude
+xcopy %SRC_PATH% %CD%\%2 /s /q /i /y /EXCLUDE:exclude
 
 :: SET FCIV=%CD%\External\fciv.exe
 :: SET MD5=%CD%\External\md5.bat
@@ -32,14 +33,14 @@ xcopy %SRC_PATH% %CD%\%1 /s /q /i /y /EXCLUDE:exclude
 ::cd ..
 
 ::call gsutil -m rm -r %DEST_PATH%
-call gsutil -m -h "Content-Type:application/json; charset=utf-8" -h "Cache-Control:no-cache" cp -a public-read -r %1 %DEST_PATH% 
-rmdir /s /q %1
+call gsutil -m -h "Content-Type:application/json; charset=utf-8" -h "Cache-Control:no-cache" cp -a public-read -r %2 %DEST_PATH% 
+rmdir /s /q %2
 
 pause
 goto end
 
 :usage
-@echo Usage: %0 ^<version^>
+@echo Usage: %0 ^<environment^> ^<version^>
 @echo.
 pause
 
