@@ -135,7 +135,10 @@ namespace Raincrow.GameEventResponses
 
                 if (data.result.isSuccess)
                 {
-                    PlayerDataManager.playerData.AddExp(PlayerDataManager.playerData.ApplyExpBuffs(spell.xp));
+                    PlayerDataManager.playerData.AddExp(
+                        PlayerDataManager.playerData.ApplyExpBuffs(
+                            (long)(spell.xp * (Mathf.Pow(PlayerDataManager.playerData.level,2)/2)))
+                    );
                 }
             }
 

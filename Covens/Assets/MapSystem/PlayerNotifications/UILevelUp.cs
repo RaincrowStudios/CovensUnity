@@ -13,9 +13,11 @@ public class UILevelUp : MonoBehaviour
     [Space(10)]
     [SerializeField] private LayoutGroup m_RewardContainer;
     [SerializeField] private UILevelUpReward m_RewardPrefab;
-
-
+    
     private static UILevelUp m_Instance;
+
+    private bool IsOpen = false;
+
     public static UILevelUp Instance
     {
         get
@@ -36,6 +38,7 @@ public class UILevelUp : MonoBehaviour
 
     public void Show(LevelUpEventData data)
     {
+        IsOpen = true;
         m_LevelText.text = LocalizeLookUp.GetText("leveled_number") + ": " + PlayerDataManager.playerData.level;
 
         StartCoroutine(SpawnRewards(data));
@@ -104,6 +107,7 @@ public class UILevelUp : MonoBehaviour
 
     private void Close()
     {
+        IsOpen = false;
         m_Instance = null;
         m_CloseButton.interactable = false;
 
