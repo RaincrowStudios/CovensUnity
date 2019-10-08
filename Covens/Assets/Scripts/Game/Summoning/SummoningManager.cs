@@ -39,7 +39,7 @@ public static class SummoningManager
                 
                 SpiritData spiritData = DownloadedAssets.GetSpirit(spirit);
                 int tier = spiritData.tier;
-                int summonCost = PlayerDataManager.SummoningCosts[tier - 1];
+                int summonCost = PlayerDataManager.summoningCosts[tier - 1];
                 int xpGained = tier * 25;
 
                 if (summonCost > PlayerDataManager.playerData.energy)
@@ -75,7 +75,7 @@ public static class SummoningManager
                 
                 SpiritData spiritData = DownloadedAssets.GetSpirit(spirit);
                 int tier = spiritData.tier;
-                int summonCost = PlayerDataManager.SummoningCosts[tier - 1] * 3;
+                int summonCost = PlayerDataManager.summoningCosts[tier - 1] * 3;
 
                 OnMapEnergyChange.ForceEvent(PlayerManager.marker, PlayerDataManager.playerData.energy - summonCost);
 

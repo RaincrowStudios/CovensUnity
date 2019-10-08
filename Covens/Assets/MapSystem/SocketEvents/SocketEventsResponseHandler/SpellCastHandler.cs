@@ -62,7 +62,7 @@ namespace Raincrow.GameEventResponses
         public static event System.Action<string, string, SpellData, Result> OnSpellCast;
         public static System.Action<string, string, StatusEffect> OnApplyStatusEffect;
 
-        public static System.Action<string> OnSpiritBanished;
+        public static event System.Action<string> OnSpiritBanished;
 
         public static HashSet<string> m_NonDamagingSpells = new HashSet<string> { "spell_bind", "spell_silence", "spell_seal", "spell_invisibility", "spell_dispel", "spell_clarity", "spell_sealBalance", "spell_sealLight", "spell_sealShadow", "spell_reflectiveWard", "spell_rageWard", "spell_greaterSeal", "spell_greaterDispel", "spell_banish", "spell_mirrors", "spell_trueSight", "spell_crowsEye", "spell_shadowMark", "spell_channeling", "spell_transquility", "spell_addledMind", "spell_whiteRain" };
 
@@ -251,12 +251,9 @@ namespace Raincrow.GameEventResponses
                         }
                     }
 
-                    //check if player banished a spirit
-                    if (playerIsCaster && data.target.energy == 0 && target is SpiritMarker)
-                    {
-                        SpiritData spiritData = (target as SpiritMarker).spiritData;
-                        OnSpiritBanished?.Invoke(spiritData.id);
-                    }
+                    //spirit was banished
+                    if (data.target.energy == 0 && data.target.Type == MarkerManager.MarkerType.SPIRIT)
+                        SpiritBanished(data.caster.id, data.caster.type, data.target.id);
 
                     //show notification
                     if (playerIsTarget && !playerIsCaster)
@@ -294,6 +291,22 @@ namespace Raincrow.GameEventResponses
                         }
                     }
                 });
+        }
+
+        public static void SpiritBanished(string casterId, string casterType, string spirit)
+        {
+            if (casterId == PlayerDataManager.playerData.instance || PlayerDataManager.playerData.activeSpirits.Contains(casterId))
+            {
+                SpiritData data = DownloadedAssets.GetSpirit(spirit);
+
+                long expGained = PlayerDataManager.spiritRewardExp[data.tier - 1];
+                int silverGained = PlayerDataManager.spiritRewardSilver[data.tier - 1];
+
+                PlayerDataManager.playerData.AddExp(expGained);
+                PlayerDataManager.playerData.AddCurrency(silverGained, 0);
+
+                OnSpiritBanished?.Invoke(spirit);
+            }
         }
     }
 }

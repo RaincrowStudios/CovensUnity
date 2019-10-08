@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using TMPro;
 
 public class UISpiritBanished : MonoBehaviour
 {
@@ -11,6 +12,11 @@ public class UISpiritBanished : MonoBehaviour
     [SerializeField] private RectTransform m_Content;
     [SerializeField] private Image m_SpiritArt;
     [SerializeField] private Button m_CloseButton;
+
+    [Space()]
+    [SerializeField] private RectTransform m_RewardLayout;
+    [SerializeField] private TextMeshProUGUI m_SilverReward;
+    [SerializeField] private TextMeshProUGUI m_ExpReward;
 
     private static UISpiritBanished m_Instance;
     public static UISpiritBanished Instance
@@ -74,8 +80,14 @@ public class UISpiritBanished : MonoBehaviour
 
             LeanTween.value(0, 0, 0).setDelay(0.2f).setOnComplete(() => { m_CloseButton.interactable = true; });
 
+            SpiritData data = DownloadedAssets.GetSpirit(spiritId);
+            long exp = PlayerDataManager.spiritRewardExp[data.tier - 1];
+            int silver = PlayerDataManager.spiritRewardSilver[data.tier - 1];
+
             m_SpiritArt.overrideSprite = sprite;
             m_SpiritArt.color = new Color(1, 1, 1, 0.9f);
+            m_ExpReward.text = $"+{exp} XP";
+            m_SilverReward.text = $"+{silver} {LocalizeLookUp.GetText("store_silver")}";
 
             LeanTween.cancel(m_TweenId);
             m_TweenId = LeanTween.value(0, CanvasAlpha, 0.7f).setDelay(0.5f)

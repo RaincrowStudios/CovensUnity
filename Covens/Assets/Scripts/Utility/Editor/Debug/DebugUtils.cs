@@ -250,9 +250,8 @@ namespace Raincrow.Test
             using (new BoxScope())
             {
                 CentralizedLabel("GPS");
-                bool interactable = Application.isPlaying && GetGPS.instance != null;
+                bool interactable = Application.isPlaying;
                 EditorGUI.BeginDisabledGroup(!interactable);
-
                 using (new GUILayout.HorizontalScope())
                 {
                     if (interactable)
@@ -271,6 +270,7 @@ namespace Raincrow.Test
                         m_Latitude = EditorGUILayout.FloatField("LAT", 0);
                     }
                 }
+
                 if (GUILayout.Button("flyto phys"))
                 {
                     MarkerManagerAPI.GetMarkers(m_Longitude, m_Latitude, null, true, true, true);
@@ -291,6 +291,10 @@ namespace Raincrow.Test
                 {
                     UISpiritDiscovered.Instance.Show("spirit_barghest");
                 }
+                if (GUILayout.Button("spirit banished"))
+                {
+                    UISpiritBanished.Instance.Show("spirit_barghest");
+                }
                 if(GUILayout.Button("summon success"))
                 {
                     UISummonSuccess.Instance.Show("spirit_barghest");
@@ -299,7 +303,6 @@ namespace Raincrow.Test
                 {
                     DownloadedAssets.Instance.OnApplicationLowMemory();
                 }
-
                 EditorGUI.EndDisabledGroup();
             }
 

@@ -21,6 +21,9 @@ namespace Raincrow.GameEventResponses
         public void HandleResponse(string eventData)
         {
             ExpireEventData data = JsonConvert.DeserializeObject<ExpireEventData>(eventData);
+
+            PlayerDataManager.playerData.activeSpirits.Remove(data.instance);
+
             OnSpiritExpire?.Invoke(data.instance);
 
             IMarker marker = MarkerSpawner.GetMarker(data.instance);

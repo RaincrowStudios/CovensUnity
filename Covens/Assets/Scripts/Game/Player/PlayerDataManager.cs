@@ -15,7 +15,7 @@ public class PlayerDataManager : MonoBehaviour
 
     //game settings
     public static float DisplayRadius = .5f;
-    public static int[] SummoningCosts;
+    public static int[] summoningCosts;
     public static long[] alignmentPerDegree;
     public static int[] baseEnergyPerLevel;
     public static ulong[] xpToLevelup;
@@ -23,6 +23,9 @@ public class PlayerDataManager : MonoBehaviour
     public static Sun sunData;
     public static int tribunal;
     public static double tribunalDaysRemaining;
+
+    public static long[] spiritRewardExp;
+    public static int[] spiritRewardSilver;
 
     public static int idleTimeOut;
     public static string currentDominion;

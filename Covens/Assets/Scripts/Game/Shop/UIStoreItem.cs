@@ -201,7 +201,7 @@ public class UIStoreItem : MonoBehaviour
 
         if (iap == null)
         {
-            Debug.LogException(new System.Exception("product not found for \"" + item.id + "\""));
+            Debug.LogException(new System.Exception("product not found for \"" + currency.product + "\""));
             m_SilverCost.text = "$ " + currency.cost.ToString();
             gameObject.SetActive(false);
             return;

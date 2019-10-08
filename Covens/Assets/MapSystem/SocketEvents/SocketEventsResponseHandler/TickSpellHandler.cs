@@ -69,10 +69,10 @@ namespace Raincrow.GameEventResponses
                 }
             }
 
-            if (isCaster && data.target.energy == 0 && target is SpiritMarker)
+            //spirit was banished
+            if (isCaster && data.target.energy == 0 && data.target.Type == MarkerManager.MarkerType.SPIRIT)
             {
-                SpiritData spiritData = (target as SpiritMarker).spiritData;
-                SpellCastHandler.OnSpiritBanished?.Invoke(spiritData.id);
+                SpellCastHandler.SpiritBanished(data.caster.id, data.caster.type, data.target.id);
             }
         }
 

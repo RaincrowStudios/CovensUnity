@@ -13,6 +13,10 @@ public class UISpiritDiscovered : MonoBehaviour
     [SerializeField] protected TextMeshProUGUI m_Description;
     [SerializeField] private Animator m_Animator;
     [SerializeField] protected Image m_SpiritArt;
+    [Space()]
+    [SerializeField] private RectTransform m_RewardLayout;
+    [SerializeField] private TextMeshProUGUI m_SilverReward;
+    [SerializeField] private TextMeshProUGUI m_ExpReward;
 
     private static UISpiritDiscovered m_Instance;
     public static UISpiritDiscovered Instance
@@ -83,11 +87,14 @@ public class UISpiritDiscovered : MonoBehaviour
 
     protected virtual void Setup(string id, Sprite sprite)
     {
-        string spiritName = LocalizeLookUp.GetSpiritName(id);
+        SpiritData data = DownloadedAssets.GetSpirit(id);
+        long exp = PlayerDataManager.spiritRewardExp[data.tier - 1];
+        int silver = PlayerDataManager.spiritRewardSilver[data.tier - 1];
 
-        m_Title.text = spiritName + " Discovered!";
-        m_Description.text = "You now have the knowledge to summon " + spiritName;
-        
+        m_Title.text = data.Name + " Discovered!";
+        m_Description.text = "You now have the knowledge to summon " + data.Name;
+        m_ExpReward.text = $"+{exp} XP";
+        m_SilverReward.text = $"+{silver} {LocalizeLookUp.GetText("store_silver")}";
         m_SpiritArt.overrideSprite = sprite;
     }
 }

@@ -68,16 +68,22 @@ public struct PlaceOfPowerSettings
 
 public class GameSettingsData
 {
-    public int[] summoningCosts;
-    public float idleTimeLimit;
-    //public float interactionRadius;
     [JsonProperty("witchVideos")]
     public string[] witchSchool;
+
+    public int[] summoningCosts;
+    public float idleTimeLimit;
     public long[] alignment;
     [JsonProperty("xp")]
-    public ulong[] exp;
+    public ulong[] experience;
     public int[] baseEnergy;
     public float[] lunarEfficiency;
+
+    [JsonProperty("spiritTierXp")]
+    public long[] spiritRewardExp;
+
+    [JsonProperty("spiritTierSilver")]
+    public int[] spiritRewardSilver;
 
     [JsonProperty("placeOfPower")]
     public PlaceOfPowerSettings PlaceOfPower;

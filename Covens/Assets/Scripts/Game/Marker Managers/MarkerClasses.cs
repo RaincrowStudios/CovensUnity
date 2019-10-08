@@ -327,7 +327,8 @@ public class PlayerData : WitchMarkerData
     [JsonIgnore] private List<SpellData> m_AllSpells;
     [JsonIgnore] private List<SpellData> m_UnlockedSpells;
 
-    //public List<string> spirits;
+    [JsonProperty("spirits")]
+    public List<string> activeSpirits;
     public List<KnownSpirits> knownSpirits;
     public List<CovenInvite> covenInvites;
     public List<CovenRequest> covenRequests;
@@ -585,14 +586,26 @@ public class PlayerData : WitchMarkerData
     public void AddExp(long amount)
     {
         xp += (ulong)amount;
-        PlayerManagerUI.Instance.setupXP();
+
+        if (PlayerManagerUI.Instance)
+            PlayerManagerUI.Instance.setupXP();
     }
 
     public override void AddEnergy(int amount)
     {
         base.AddEnergy(amount);
+
         if (PlayerManagerUI.Instance)
             PlayerManagerUI.Instance.UpdateEnergy();
+    }
+
+    public void AddCurrency(int silver, int gold)
+    {
+        this.silver += silver;
+        this.gold += gold;
+
+        if (PlayerManagerUI.Instance)
+            PlayerManagerUI.Instance.UpdateDrachs();
     }
 }
 

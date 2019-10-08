@@ -447,10 +447,12 @@ public class DownloadManager : MonoBehaviour
                 DefaultValueHandling = DefaultValueHandling.Populate
             });
             
-            PlayerDataManager.SummoningCosts = data.summoningCosts;
+            PlayerDataManager.summoningCosts = data.summoningCosts;
             PlayerDataManager.alignmentPerDegree = data.alignment;
-            PlayerDataManager.xpToLevelup = data.exp;
+            PlayerDataManager.xpToLevelup = data.experience;
             PlayerDataManager.baseEnergyPerLevel = data.baseEnergy;
+            PlayerDataManager.spiritRewardExp = data.spiritRewardExp;
+            PlayerDataManager.spiritRewardSilver = data.spiritRewardSilver;
             MoonManager.LunarEffeciency = data.lunarEfficiency;
 
             DownloadedAssets.spellDictData = data.Spells;
