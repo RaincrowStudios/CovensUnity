@@ -9,7 +9,7 @@ if [%1]==[] goto usage
 if [%2]==[] goto usage
 
 SET PROJ_PATH=%CD%\..\
-SET SRC_PATH=%PROJ_PATH%Dictionaries
+SET SRC_PATH=%PROJ_PATH%Localization
 
 SET DEST_FOLDER=dictionary/%1/localization
 SET DEST_PATH=gs://raincrow-covens/%DEST_FOLDER%/
