@@ -50,6 +50,7 @@ public class SplashManager : MonoBehaviour
     [SerializeField] private GameObject OutdatedBuild;
     [SerializeField] private GameObject playstoreIcon;
     [SerializeField] private GameObject appleIcon;
+    [SerializeField] private Button m_AppStoreButton;
     
     private int[] tribunals = new int[] { 1, 2, 3, 4, 1, 2 };
 
@@ -84,11 +85,14 @@ public class SplashManager : MonoBehaviour
         VideoPlayback.gameObject.SetActive(false);
         LoadingImage.gameObject.SetActive(false);
         m_TribualScreen.gameObject.SetActive(false);
+        OutdatedBuild.gameObject.SetActive(false);
 
         if (Application.isEditor)
             m_LogoSpeed = 5f;
         else
             m_LogoSpeed = 1f;
+
+        m_AppStoreButton.onClick.AddListener(OnClickAppStore);
     }
 
     private void OnDestroy()
@@ -408,8 +412,11 @@ public class SplashManager : MonoBehaviour
         onShow?.Invoke();
     }
 
-    private void SetTribunal(int tribunal)
+    public void OnClickAppStore()
     {
-
+        if (Application.platform == RuntimePlatform.IPhonePlayer)
+            Application.OpenURL("https://apps.apple.com/us/app/covens/id1456181456");
+        else
+            Application.OpenURL("http://play.google.com/store/apps/details?id=com.raincrow.covens");
     }
 }
