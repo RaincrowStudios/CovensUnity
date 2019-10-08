@@ -36,7 +36,7 @@ public class CovenConstants : MonoBehaviour
 #elif PRODUCTION
            return "https://game-server.raincrow.pw/api/";
 #else
-                return "https://staging-game-server.raincrow.pw/api/";
+            return "https://staging-game-server.raincrow.pw/api/";
 #endif
         }
     }
@@ -64,20 +64,20 @@ public class CovenConstants : MonoBehaviour
             }
             else if (UnityEditor.EditorPrefs.GetString("ws") == "Release")
             {
-                return "http://34.73.54.25:8084/socket.io/";
+                return "https://comms-server.raincrow.pw/socket.io/";
             }
             else if (UnityEditor.EditorPrefs.GetString("ws") == "Gustavo")
             {
-                return "http://192.168.0.94:8084/socket.io/?";
+                return "https://comms-server.raincrow.pw/socket.io/?";
             }
             else
             {
-                return "https://comms-server.raincrow.pw/socket.io/";
+                return "https://staging-comms-server.raincrow.pw/socket.io/";
             }
 #elif PRODUCTION
-                return "http://34.73.54.25:8084/socket.io/";
-#else
                 return "https://comms-server.raincrow.pw/socket.io/";
+#else
+                return "https://staging-comms-server.raincrow.pw/socket.io/";
 #endif
         }
     }
@@ -114,7 +114,7 @@ public class CovenConstants : MonoBehaviour
             }
             else if (UnityEditor.EditorPrefs.GetString("chat") == "Release")
             {
-                return "http://34.73.54.25:8083/socket.io/";
+                return "https://chat-server.raincrow.pw/socket.io/";
             }
             else if (UnityEditor.EditorPrefs.GetString("chat") == "Gustavo")
             {
@@ -125,9 +125,9 @@ public class CovenConstants : MonoBehaviour
                 return "https://staging-chat-server.raincrow.pw/socket.io/";
             }
 #elif PRODUCTION
-            return "http://34.73.54.25:8083/socket.io/";
+            return "https://chat-server.raincrow.pw/socket.io/";
 #else
-                return "https://staging-chat-server.raincrow.pw/socket.io/";
+            return "https://staging-chat-server.raincrow.pw/socket.io/";
 #endif
         }
     }

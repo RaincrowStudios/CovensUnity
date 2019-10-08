@@ -76,6 +76,7 @@ public class GameSettingsData
     public long[] alignment;
     [JsonProperty("xp")]
     public ulong[] exp;
+    public int[] spiritTierXp;
     public int[] baseEnergy;
     public float[] lunarEfficiency;
 

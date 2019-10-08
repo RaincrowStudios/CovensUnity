@@ -16,6 +16,7 @@ public class PlayerDataManager : MonoBehaviour
     //game settings
     public static float DisplayRadius = .5f;
     public static int[] SummoningCosts;
+    public static int[] spiritBanishExp;
     public static long[] alignmentPerDegree;
     public static int[] baseEnergyPerLevel;
     public static ulong[] xpToLevelup;

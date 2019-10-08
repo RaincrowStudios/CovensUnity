@@ -138,6 +138,9 @@ public class MapView : MonoBehaviour
             return;
 
         Debug.Log(spirit + " BANISHED");
+
+        SpiritData data = DownloadedAssets.GetSpirit(spirit);
+        PlayerDataManager.playerData.AddExp(PlayerDataManager.spiritBanishExp[data.tier - 1]);
         
         //discover.spirit was triggered before the banish
         if (m_DiscoveredSpirits.Contains(spirit))
