@@ -197,12 +197,14 @@ public class UIStoreItem : MonoBehaviour
             }
         }
 
-        UnityEngine.Purchasing.Product iap = IAPSilver.instance.GetProduct(item.id);
+        UnityEngine.Purchasing.Product iap = IAPSilver.instance.GetProduct(currency.product);
 
         if (iap == null)
         {
             Debug.LogException(new System.Exception("product not found for \"" + item.id + "\""));
             m_SilverCost.text = "$ " + currency.cost.ToString();
+            gameObject.SetActive(false);
+            return;
         }
         else
         {
