@@ -183,6 +183,7 @@ public class DownloadedAssets : MonoBehaviour
         }
 
         yield return Timing.WaitForOneFrame;
+        Debug.LogException(new System.Exception("sprite not found for " + id + " in bundle " + type));
         callback?.Invoke(null);
     }
 

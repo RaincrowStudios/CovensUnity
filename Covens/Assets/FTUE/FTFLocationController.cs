@@ -55,6 +55,7 @@ public class FTFLocationController : MonoBehaviour
         centerSpirit = markers[0];
         moveMarkers(0);
 
+        LoadFakeMarkers();
     }
 
     IEnumerator ActivateSpirit()
@@ -256,4 +257,59 @@ public class FTFLocationController : MonoBehaviour
     }
 
 
+    [Space()]
+    [SerializeField] private SpriteRenderer[] m_Spirits;
+    [SerializeField] private SpriteRenderer[] m_Witches;
+
+    [ContextMenu("LoadAssets")]
+    private void LoadFakeMarkers()
+    {
+        string[] styles = new string[]
+        {
+            "f_S_HHO",
+            "f_S_HKO",
+            "f_S_HLO",
+            "f_S_SNOWQUEEN",
+            "f_S_LILYOV",
+            "f_S_MIDSUMMER",
+            "f_S_CALYPSO",
+            "m_S_HKO",
+            "m_S_HHO",
+            "m_S_HLO",
+            "m_S_JACKFROST",
+            "m_S_MIDSUMMER",
+            "m_S_CALYPSO",
+            "m_S_FIREDANCER"
+        };
+
+        string[] races = new string[] { "A_", "O_", "E_" };
+
+        string[] spirits = new string[]
+        {
+            "spirit_barghest","spirit_maximon","spirit_alakshmi","spirit_banshee","spirit_ayizan","spirit_quetzalcoatl"
+        };
+
+        foreach(var renderer in m_Witches)
+        {
+            if (renderer == null)
+                continue;
+
+            string id = styles[Random.Range(0, styles.Length)].Replace("_S_", "_S_" + races[Random.Range(0, races.Length)]) + "_Relaxed";
+            DownloadedAssets.GetSprite(id, spr =>
+            {
+                renderer.sprite = spr;
+            });
+        }
+
+        foreach (var renderer in m_Spirits)
+        {
+            if (renderer == null)
+                continue;
+
+            DownloadedAssets.GetSprite(spirits[Random.Range(0, spirits.Length)], spr =>
+            {
+                renderer.sprite = spr;
+            });
+        }
+    }
 }

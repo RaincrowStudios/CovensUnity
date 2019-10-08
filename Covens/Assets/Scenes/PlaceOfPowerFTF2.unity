@@ -11639,7 +11639,7 @@ SpriteRenderer:
   m_Size: {x: 4, y: 8}
   m_AdaptiveModeThreshold: 0.5
   m_SpriteTileMode: 0
-  m_WasSpriteAssigned: 1
+  m_WasSpriteAssigned: 0
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
 --- !u!1 &530808527
@@ -18041,7 +18041,7 @@ SpriteRenderer:
   m_Size: {x: 4, y: 8}
   m_AdaptiveModeThreshold: 0.5
   m_SpriteTileMode: 0
-  m_WasSpriteAssigned: 1
+  m_WasSpriteAssigned: 0
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
 --- !u!1 &836356985
@@ -20284,7 +20284,7 @@ SpriteRenderer:
   m_Size: {x: 4, y: 8}
   m_AdaptiveModeThreshold: 0.5
   m_SpriteTileMode: 0
-  m_WasSpriteAssigned: 1
+  m_WasSpriteAssigned: 0
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
 --- !u!1001 &1288617729
@@ -20846,7 +20846,7 @@ SpriteRenderer:
   m_Size: {x: 4, y: 8}
   m_AdaptiveModeThreshold: 0.5
   m_SpriteTileMode: 0
-  m_WasSpriteAssigned: 1
+  m_WasSpriteAssigned: 0
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
 --- !u!1 &1339127552
@@ -31249,7 +31249,7 @@ SpriteRenderer:
   m_Size: {x: 4, y: 8}
   m_AdaptiveModeThreshold: 0.5
   m_SpriteTileMode: 0
-  m_WasSpriteAssigned: 1
+  m_WasSpriteAssigned: 0
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
 --- !u!1 &1565049086
@@ -37106,7 +37106,7 @@ SpriteRenderer:
   m_Size: {x: 4, y: 8}
   m_AdaptiveModeThreshold: 0.5
   m_SpriteTileMode: 0
-  m_WasSpriteAssigned: 1
+  m_WasSpriteAssigned: 0
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
 --- !u!1 &1778153006
@@ -37560,7 +37560,7 @@ SpriteRenderer:
   m_Size: {x: 4, y: 8}
   m_AdaptiveModeThreshold: 0.5
   m_SpriteTileMode: 0
-  m_WasSpriteAssigned: 1
+  m_WasSpriteAssigned: 0
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
 --- !u!1 &1916446104
@@ -53719,7 +53719,7 @@ SpriteRenderer:
   m_Size: {x: 4, y: 8}
   m_AdaptiveModeThreshold: 0.5
   m_SpriteTileMode: 0
-  m_WasSpriteAssigned: 1
+  m_WasSpriteAssigned: 0
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
 --- !u!4 &1094229161363280408
@@ -93462,6 +93462,24 @@ MonoBehaviour:
   nextBtn: {fileID: 8445421831403263231}
   dialogueTxt: {fileID: 8445812873819692615}
   videoFX: {fileID: 1223904035}
+  m_Spirits:
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 1900148162}
+  - {fileID: 9051383229946187639}
+  m_Witches:
+  - {fileID: 1767082789}
+  - {fileID: 1334269871}
+  - {fileID: 833378294}
+  - {fileID: 1562038437}
+  - {fileID: 1087546464494639204}
+  - {fileID: 515174795}
+  - {fileID: 1276747205}
 --- !u!4 &6322450327385610384
 Transform:
   m_ObjectHideFlags: 0
@@ -111040,7 +111058,7 @@ SpriteRenderer:
   m_Size: {x: 4.64, y: 6.64}
   m_AdaptiveModeThreshold: 0.5
   m_SpriteTileMode: 0
-  m_WasSpriteAssigned: 1
+  m_WasSpriteAssigned: 0
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
 --- !u!4 &9123259655864331601
