@@ -3202,9 +3202,9 @@ MonoBehaviour:
   m_Padding:
     m_Left: 0
     m_Right: 0
-    m_Top: 0
+    m_Top: 10
     m_Bottom: 0
-  m_ChildAlignment: 3
+  m_ChildAlignment: 0
   m_Spacing: -15
   m_ChildForceExpandWidth: 1
   m_ChildForceExpandHeight: 1
@@ -7753,6 +7753,7 @@ MonoBehaviour:
   m_Container: {fileID: 1381342186}
   m_ItemPrefab: {fileID: 1319853276}
   m_BottomBar: {fileID: 1103457939}
+  m_CurrentFilter: 0
 --- !u!1 &743127304
 GameObject:
   m_ObjectHideFlags: 0
@@ -9853,9 +9854,9 @@ MonoBehaviour:
   m_Padding:
     m_Left: 0
     m_Right: 0
-    m_Top: 0
+    m_Top: 10
     m_Bottom: 0
-  m_ChildAlignment: 3
+  m_ChildAlignment: 0
   m_Spacing: -15
   m_ChildForceExpandWidth: 1
   m_ChildForceExpandHeight: 1
