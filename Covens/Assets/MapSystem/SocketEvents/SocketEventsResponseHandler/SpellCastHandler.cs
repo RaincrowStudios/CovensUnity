@@ -253,7 +253,7 @@ namespace Raincrow.GameEventResponses
 
                     //spirit was banished
                     if (data.target.energy == 0 && data.target.Type == MarkerManager.MarkerType.SPIRIT)
-                        SpiritBanished(data.caster.id, data.caster.type, data.target.id);
+                        SpiritBanished(data.caster.id, data.caster.type, data.target.name);
 
                     //show notification
                     if (playerIsTarget && !playerIsCaster)
