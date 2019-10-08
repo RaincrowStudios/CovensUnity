@@ -463,6 +463,7 @@ public class LoginUIManager : MonoBehaviour
     }
     private void AgeGateStart()
     {
+        return;
         //Debug.Log("ageGateStart");
         AgeGate.SetActive(true);
         LeanTween.alphaCanvas(AgeGateCG, 1f, 0.7f).setEase(LeanTweenType.easeInCubic);

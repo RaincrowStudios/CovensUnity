@@ -31,12 +31,12 @@ public class CovenConstants : MonoBehaviour
             }
             else
             {
-                return "http://34.73.145.51:9000/api/";
+                return "https://staging-game-server.raincrow.pw/api/";
             }
 #elif PRODUCTION
            return "https://game-server.raincrow.pw/api/";
 #else
-            return "http://34.73.145.51:9000/api/";
+                return "https://staging-game-server.raincrow.pw/api/";
 #endif
         }
     }
@@ -72,12 +72,12 @@ public class CovenConstants : MonoBehaviour
             }
             else
             {
-                return "http://34.73.145.51:8084/socket.io/";
+                return "https://comms-server.raincrow.pw/socket.io/";
             }
 #elif PRODUCTION
                 return "http://34.73.54.25:8084/socket.io/";
 #else
-                return "http://34.73.145.51:8084/socket.io/";
+                return "https://comms-server.raincrow.pw/socket.io/";
 #endif
         }
     }
@@ -122,12 +122,12 @@ public class CovenConstants : MonoBehaviour
             }
             else
             {
-                return "http://34.73.145.51:8083/socket.io/";
+                return "https://staging-chat-server.raincrow.pw/socket.io/";
             }
 #elif PRODUCTION
             return "http://34.73.54.25:8083/socket.io/";
 #else
-            return "http://34.73.145.51:8083/socket.io/";
+                return "https://staging-chat-server.raincrow.pw/socket.io/";
 #endif
         }
     }
@@ -151,12 +151,12 @@ public class CovenConstants : MonoBehaviour
             }
             else
             {
-                return "http://34.73.145.51:8081/";
+                return "https://staging-map-server.raincrow.pw/";
             }
 #elif PRODUCTION
             return "https://map-server.raincrow.pw/";
 #else
-            return "http://34.73.145.51:8081/";
+            return "https://staging-map-server.raincrow.pw/";
 #endif
         }
     }
