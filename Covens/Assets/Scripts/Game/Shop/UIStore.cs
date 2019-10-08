@@ -115,6 +115,9 @@ public class UIStore : MonoBehaviour
 
     private void OnWillUnloadAssets()
     {
+        if (IsOpen)
+            return;
+
         DownloadedAssets.OnWillUnloadAssets -= OnWillUnloadAssets;
 
         LeanTween.cancel(m_MainTweenId);
