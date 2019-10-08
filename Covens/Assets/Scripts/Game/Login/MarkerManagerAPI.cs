@@ -166,9 +166,9 @@ public class MarkerManagerAPI : MonoBehaviour
         PlayerDataManager.playerData.longitude = longitude;
         PlayerDataManager.playerData.latitude = latitude;
 
-        Vector3 worldPos = MapsAPI.Instance.GetWorldPosition(longitude, latitude);
-        PlayerManager.marker.SetWorldPosition(worldPos, 2f);
-        MapCameraUtils.FocusOnPosition(worldPos, true, 3f);
+        //Vector3 worldPos = MapsAPI.Instance.GetWorldPosition(longitude, latitude);
+        //PlayerManager.marker.SetWorldPosition(worldPos, 2f);
+        //MapCameraUtils.FocusOnPosition(worldPos, true, 3f);
 
         UpdateDominion(moveResponse.location);
 

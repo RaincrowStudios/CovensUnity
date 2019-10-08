@@ -302,6 +302,7 @@ public class Spellcasting
                     //retry
                     if (response == "2016")
                     {
+                        Debug.LogError("[2016] retrying spell cast");
                         APIManager.Instance.Post(
                             "character/cast/" + targetId,
                             JsonConvert.SerializeObject(data),
