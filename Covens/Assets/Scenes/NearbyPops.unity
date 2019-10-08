@@ -231,7 +231,7 @@ RectTransform:
   m_Father: {fileID: 546544749}
   m_RootOrder: 2
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0.428, y: 0}
+  m_AnchorMin: {x: 0.41, y: 0}
   m_AnchorMax: {x: 0.625, y: 1}
   m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 0, y: 0}
@@ -392,6 +392,7 @@ MonoBehaviour:
   prefix: 
   id: generic_status
   suffix: 
+  toUpper: 0
 --- !u!1 &92580943
 GameObject:
   m_ObjectHideFlags: 0
@@ -566,6 +567,7 @@ MonoBehaviour:
   prefix: 
   id: header_pop
   suffix: 
+  toUpper: 0
 --- !u!1 &112992748
 GameObject:
   m_ObjectHideFlags: 0
@@ -708,7 +710,7 @@ RectTransform:
   m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
-  m_AnchorMax: {x: 0.425, y: 1}
+  m_AnchorMax: {x: 0.405, y: 1}
   m_AnchoredPosition: {x: 97.5, y: 0}
   m_SizeDelta: {x: -195, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
@@ -1048,6 +1050,7 @@ MonoBehaviour:
   prefix: 
   id: spell_cost
   suffix: 
+  toUpper: 0
 --- !u!1 &251003757
 GameObject:
   m_ObjectHideFlags: 0
@@ -1257,7 +1260,7 @@ RectTransform:
   m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
-  m_AnchorMax: {x: 0.425, y: 1}
+  m_AnchorMax: {x: 0.41, y: 1}
   m_AnchoredPosition: {x: 109.5, y: 0}
   m_SizeDelta: {x: -219, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
@@ -1419,6 +1422,7 @@ MonoBehaviour:
   prefix: 
   id: name
   suffix: 
+  toUpper: 0
 --- !u!1 &339521653
 GameObject:
   m_ObjectHideFlags: 0
@@ -1594,6 +1598,7 @@ MonoBehaviour:
   prefix: 
   id: pop_lms_desc
   suffix: 
+  toUpper: 0
 --- !u!1 &433708589
 GameObject:
   m_ObjectHideFlags: 0
@@ -2203,6 +2208,7 @@ MonoBehaviour:
   prefix: 
   id: pop_lms_title
   suffix: 
+  toUpper: 0
 --- !u!1 &1014764479
 GameObject:
   m_ObjectHideFlags: 0
@@ -3085,6 +3091,7 @@ MonoBehaviour:
   prefix: 
   id: pop_fly_to
   suffix: 
+  toUpper: 0
 --- !u!1 &1875241826
 GameObject:
   m_ObjectHideFlags: 0
@@ -3117,7 +3124,7 @@ RectTransform:
   m_Father: {fileID: 1299259094}
   m_RootOrder: 2
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0.428, y: 0}
+  m_AnchorMin: {x: 0.41, y: 0}
   m_AnchorMax: {x: 0.625, y: 1}
   m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 0, y: 0}
@@ -3646,6 +3653,7 @@ MonoBehaviour:
   prefix: 
   id: pop_claimed_by
   suffix: 
+  toUpper: 0
 --- !u!1 &2111063957
 GameObject:
   m_ObjectHideFlags: 0

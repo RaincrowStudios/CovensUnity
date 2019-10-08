@@ -81,19 +81,19 @@ public class UINearbyLocationItem : MonoBehaviour
         {
             StartCoroutine(TimerCoroutine(
                 true,
-                (float)(Utilities.FromJavaTime(data.battleBeginsOn) - System.DateTime.UtcNow).TotalSeconds
+                data.battleBeginsOn //(float)(Utilities.FromJavaTime(data.battleBeginsOn) - System.DateTime.UtcNow).TotalSeconds
             ));
         }
         else
         {
             StartCoroutine(TimerCoroutine(
                 false,
-                (float)(Utilities.FromJavaTime(data.openOn) - System.DateTime.UtcNow).TotalSeconds
+                data.openOn //(float)(Utilities.FromJavaTime(data.openOn) - System.DateTime.UtcNow).TotalSeconds
             ));
         }
     }
 
-    private IEnumerator TimerCoroutine(bool isOpen, float seconds)
+    private IEnumerator TimerCoroutine(bool isOpen, double timestamp)
     {
         string text;
         if (isOpen)
@@ -101,9 +101,11 @@ public class UINearbyLocationItem : MonoBehaviour
         else
             text = LocalizeLookUp.GetText("pop_cooldown").Replace("{{time}}", "{0}");// "Cooldown: {0}";
 
+        float seconds = (float)(Utilities.FromJavaTime(timestamp) - System.DateTime.UtcNow).TotalSeconds;
+
         while (seconds > 0)
         {
-            m_Status.text = string.Format(text, (int)seconds);
+            m_Status.text = string.Format(text, Utilities.GetSummonTime(timestamp));
             yield return new WaitForSeconds(1);
             seconds -= 1;
         }
