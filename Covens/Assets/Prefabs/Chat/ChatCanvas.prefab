@@ -784,6 +784,7 @@ MonoBehaviour:
   prefix: 
   id: chat_screenshot
   suffix: 
+  toUpper: 0
 --- !u!1 &1167455160349052
 GameObject:
   m_ObjectHideFlags: 0
@@ -1524,6 +1525,7 @@ MonoBehaviour:
   prefix: 
   id: chat_coven
   suffix: 
+  toUpper: 0
 --- !u!114 &114517677418733112
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1971,6 +1973,7 @@ MonoBehaviour:
   prefix: 
   id: chat_dominion
   suffix: 
+  toUpper: 0
 --- !u!114 &114582239394253286
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2643,6 +2646,7 @@ MonoBehaviour:
   prefix: 
   id: chat_world
   suffix: 
+  toUpper: 0
 --- !u!114 &114170097907317102
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -3263,6 +3267,7 @@ MonoBehaviour:
   prefix: 
   id: coven_invite_enter_text
   suffix: 
+  toUpper: 0
 --- !u!1 &1745937346149840
 GameObject:
   m_ObjectHideFlags: 0
@@ -3383,6 +3388,7 @@ MonoBehaviour:
   prefix: 
   id: chat_news
   suffix: 
+  toUpper: 0
 --- !u!114 &114843966019971314
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -4532,9 +4538,9 @@ RectTransform:
   m_Father: {fileID: 224263216700253450}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0.5, y: 0.5}
-  m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 990, y: -324}
+  m_AnchorMin: {x: 1, y: 0}
+  m_AnchorMax: {x: 1, y: 0}
+  m_AnchoredPosition: {x: -289, y: 396}
   m_SizeDelta: {x: 558, y: 663}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &7404010933197747982
@@ -6046,9 +6052,9 @@ RectTransform:
   m_Father: {fileID: 224263216700253450}
   m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: -182.92, z: 102.448006}
-  m_AnchorMin: {x: 0.5, y: 0.5}
-  m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: -1064, y: 288}
+  m_AnchorMin: {x: 0, y: 1}
+  m_AnchorMax: {x: 0, y: 1}
+  m_AnchoredPosition: {x: 215, y: -432}
   m_SizeDelta: {x: 558, y: 663}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &1281984219072428953
@@ -8388,6 +8394,7 @@ MonoBehaviour:
   prefix: 
   id: chat_go_to_location
   suffix: 
+  toUpper: 0
 --- !u!1 &6780402516743249437
 GameObject:
   m_ObjectHideFlags: 0
@@ -12515,6 +12522,7 @@ MonoBehaviour:
   prefix: 
   id: loading
   suffix: 
+  toUpper: 0
 --- !u!1 &8449759603554314318
 GameObject:
   m_ObjectHideFlags: 0
