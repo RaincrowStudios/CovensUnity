@@ -256,7 +256,7 @@ namespace Raincrow.GameEventResponses
 
                     //spirit was banished
                     if (data.target.energy == 0 && data.target.Type == MarkerManager.MarkerType.SPIRIT)
-                        SpiritBanished(data.caster.id, data.caster.type, data.target.name);
+                        SpiritBanished(data.caster.id, data.caster.type, data.target.id, data.target.name);
 
                     //show notification
                     if (playerIsTarget && !playerIsCaster)
@@ -296,10 +296,18 @@ namespace Raincrow.GameEventResponses
                 });
         }
 
-        public static void SpiritBanished(string casterId, string casterType, string spirit)
+        //fail safe to make sure banished aint triggered twice
+        private static HashSet<string> m_BanishedSpirits = new HashSet<string>();
+
+        public static void SpiritBanished(string casterId, string casterType, string targetId, string spirit)
         {
             if (casterId == PlayerDataManager.playerData.instance || PlayerDataManager.playerData.activeSpirits.Contains(casterId))
             {
+                if (m_BanishedSpirits.Contains(targetId))
+                    return;
+
+                m_BanishedSpirits.Add(spirit);
+
                 SpiritData data = DownloadedAssets.GetSpirit(spirit);
 
                 long expGained = PlayerDataManager.spiritRewardExp[data.tier - 1];
