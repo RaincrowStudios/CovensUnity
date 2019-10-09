@@ -306,7 +306,7 @@ namespace Raincrow.GameEventResponses
                 if (m_BanishedSpirits.Contains(targetId))
                     return;
 
-                m_BanishedSpirits.Add(spirit);
+                m_BanishedSpirits.Add(targetId);
 
                 SpiritData data = DownloadedAssets.GetSpirit(spirit);
 
