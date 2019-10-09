@@ -271,7 +271,7 @@ public class UIStoreItem : MonoBehaviour
     {
         Setup(item);
         SetIconLayout_IngredientBundle();
-        SetupButton(item, ingredients, LocalizeLookUp.GetText(item.id), StoreManagerAPI.TYPE_INGREDIENT_BUNDLE);
+        SetupButton(item, ingredients, LocalizeLookUp.GetStoreTitle(item.id), StoreManagerAPI.TYPE_INGREDIENT_BUNDLE);
     }
 
     private void Setup(StoreItem item)
