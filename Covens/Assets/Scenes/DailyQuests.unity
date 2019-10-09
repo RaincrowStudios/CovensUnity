@@ -1937,6 +1937,7 @@ GameObject:
   - component: {fileID: 222612742285789716}
   - component: {fileID: 95172667220554122}
   - component: {fileID: 225183288014015650}
+  - component: {fileID: 1852447343000979}
   m_Layer: 11
   m_Name: Container
   m_TagString: Untagged
@@ -1944,6 +1945,20 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
+--- !u!114 &1852447343000979
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1852447343000978}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c97afc556caea1c44969477eb7ddec74, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  ConformX: 1
+  ConformY: 1
 --- !u!1 &1852528039784814
 GameObject:
   m_ObjectHideFlags: 0
@@ -2823,6 +2838,7 @@ MonoBehaviour:
   prefix: 
   id: daily_spell_title
   suffix: 
+  toUpper: 0
 --- !u!114 &114032640961409862
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2896,6 +2912,7 @@ MonoBehaviour:
   prefix: 
   id: daily_gather
   suffix: 
+  toUpper: 0
 --- !u!114 &114079223056558466
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -3353,6 +3370,7 @@ MonoBehaviour:
   prefix: 
   id: daily_tap_chest
   suffix: 
+  toUpper: 0
 --- !u!114 &114220656130577654
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -3440,6 +3458,7 @@ MonoBehaviour:
   prefix: 
   id: daily_spell
   suffix: 
+  toUpper: 0
 --- !u!114 &114256096806996278
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -3566,6 +3585,7 @@ MonoBehaviour:
   prefix: 
   id: daily_event_log
   suffix: 
+  toUpper: 0
 --- !u!114 &114300760280226578
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -3581,6 +3601,7 @@ MonoBehaviour:
   prefix: 
   id: daily_hide
   suffix: 
+  toUpper: 0
 --- !u!114 &114306418840332350
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -4019,6 +4040,7 @@ MonoBehaviour:
   prefix: 
   id: daily_spell_completion
   suffix: ':'
+  toUpper: 0
 --- !u!114 &114489446443862180
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -4153,6 +4175,7 @@ MonoBehaviour:
   prefix: 
   id: daily_explore
   suffix: 
+  toUpper: 0
 --- !u!114 &114525938264510574
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -4785,6 +4808,7 @@ MonoBehaviour:
   prefix: 
   id: daily_title
   suffix: 
+  toUpper: 0
 --- !u!114 &114704708411463580
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -43897,7 +43921,7 @@ ParticleSystem:
 --- !u!199 &199015850124429986
 ParticleSystemRenderer:
   serializedVersion: 6
-  m_ObjectHideFlags: 0
+  m_ObjectHideFlags: 2
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
@@ -43959,7 +43983,7 @@ ParticleSystemRenderer:
 --- !u!199 &199049482955461098
 ParticleSystemRenderer:
   serializedVersion: 6
-  m_ObjectHideFlags: 0
+  m_ObjectHideFlags: 2
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
@@ -44021,7 +44045,7 @@ ParticleSystemRenderer:
 --- !u!199 &199174766165404304
 ParticleSystemRenderer:
   serializedVersion: 6
-  m_ObjectHideFlags: 0
+  m_ObjectHideFlags: 2
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
@@ -44083,7 +44107,7 @@ ParticleSystemRenderer:
 --- !u!199 &199216303314637560
 ParticleSystemRenderer:
   serializedVersion: 6
-  m_ObjectHideFlags: 0
+  m_ObjectHideFlags: 2
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
@@ -44145,7 +44169,7 @@ ParticleSystemRenderer:
 --- !u!199 &199537101289174592
 ParticleSystemRenderer:
   serializedVersion: 6
-  m_ObjectHideFlags: 0
+  m_ObjectHideFlags: 2
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
@@ -44207,7 +44231,7 @@ ParticleSystemRenderer:
 --- !u!199 &199682818384205490
 ParticleSystemRenderer:
   serializedVersion: 6
-  m_ObjectHideFlags: 0
+  m_ObjectHideFlags: 2
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
@@ -44269,7 +44293,7 @@ ParticleSystemRenderer:
 --- !u!199 &199835233655482338
 ParticleSystemRenderer:
   serializedVersion: 6
-  m_ObjectHideFlags: 0
+  m_ObjectHideFlags: 2
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
@@ -44331,7 +44355,7 @@ ParticleSystemRenderer:
 --- !u!199 &199903925239415420
 ParticleSystemRenderer:
   serializedVersion: 6
-  m_ObjectHideFlags: 0
+  m_ObjectHideFlags: 2
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
@@ -46927,7 +46951,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: 0, y: -19.4}
+  m_AnchoredPosition: {x: 0, y: -19.399963}
   m_SizeDelta: {x: 0, y: -228.1}
   m_Pivot: {x: 0.50000006, y: 0.50000006}
 --- !u!224 &3257113447190491254

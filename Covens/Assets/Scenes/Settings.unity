@@ -173,6 +173,7 @@ MonoBehaviour:
   prefix: 
   id: reset
   suffix: 
+  toUpper: 0
 --- !u!114 &1014029732
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -347,6 +348,7 @@ MonoBehaviour:
   prefix: 
   id: first_tap_tutorials
   suffix: 
+  toUpper: 0
 --- !u!114 &1032303269
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1125,6 +1127,7 @@ GameObject:
   m_Component:
   - component: {fileID: 224310568136273548}
   - component: {fileID: 225474986530565416}
+  - component: {fileID: 1440411499681765}
   m_Layer: 15
   m_Name: container
   m_TagString: Untagged
@@ -1132,6 +1135,20 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
+--- !u!114 &1440411499681765
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1440411499681764}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c97afc556caea1c44969477eb7ddec74, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  ConformX: 1
+  ConformY: 1
 --- !u!1 &1452892279847912
 GameObject:
   m_ObjectHideFlags: 0
@@ -1750,6 +1767,7 @@ MonoBehaviour:
   prefix: 
   id: settings_tos
   suffix: 
+  toUpper: 0
 --- !u!114 &114031836650930282
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1765,6 +1783,7 @@ MonoBehaviour:
   prefix: 
   id: generic_off
   suffix: 
+  toUpper: 0
 --- !u!114 &114083088139020104
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2326,6 +2345,7 @@ MonoBehaviour:
   prefix: 
   id: generic_on
   suffix: 
+  toUpper: 0
 --- !u!114 &114250265387812276
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2341,6 +2361,7 @@ MonoBehaviour:
   prefix: 
   id: settings_sound
   suffix: 
+  toUpper: 0
 --- !u!114 &114273266815839222
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -3348,6 +3369,7 @@ MonoBehaviour:
   prefix: 
   id: school_title
   suffix: 
+  toUpper: 0
 --- !u!114 &114619120292308782
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -3494,6 +3516,7 @@ MonoBehaviour:
   prefix: 
   id: generic_off
   suffix: 
+  toUpper: 0
 --- !u!114 &114708471884344806
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -3698,6 +3721,7 @@ MonoBehaviour:
   prefix: 
   id: generic_on
   suffix: 
+  toUpper: 0
 --- !u!114 &114753537064840326
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -4044,6 +4068,7 @@ MonoBehaviour:
   prefix: 
   id: settings_pp
   suffix: 
+  toUpper: 0
 --- !u!114 &114845699733447486
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -4076,6 +4101,7 @@ MonoBehaviour:
   prefix: 
   id: settings_credits
   suffix: 
+  toUpper: 0
 --- !u!114 &114875569783864032
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -4091,6 +4117,7 @@ MonoBehaviour:
   prefix: 
   id: chat_settings
   suffix: 
+  toUpper: 0
 --- !u!114 &114906786025236256
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -4106,6 +4133,7 @@ MonoBehaviour:
   prefix: 
   id: settings_buildings
   suffix: 
+  toUpper: 0
 --- !u!114 &114924763422377244
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -5699,6 +5727,7 @@ MonoBehaviour:
   prefix: 
   id: language_portuguese
   suffix: 
+  toUpper: 0
 --- !u!224 &318747927750639357
 RectTransform:
   m_ObjectHideFlags: 0
@@ -6028,6 +6057,7 @@ MonoBehaviour:
   prefix: 
   id: language
   suffix: 
+  toUpper: 0
 --- !u!222 &1591313374570357172
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -6471,6 +6501,7 @@ MonoBehaviour:
   prefix: 
   id: language_german
   suffix: 
+  toUpper: 0
 --- !u!224 &2796306656637894005
 RectTransform:
   m_ObjectHideFlags: 0
@@ -6507,6 +6538,7 @@ MonoBehaviour:
   prefix: 
   id: language_russian
   suffix: 
+  toUpper: 0
 --- !u!114 &3185328289260839165
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -6939,6 +6971,7 @@ MonoBehaviour:
   prefix: 
   id: language_japanese
   suffix: 
+  toUpper: 0
 --- !u!224 &4335065754309089639
 RectTransform:
   m_ObjectHideFlags: 0
@@ -7108,6 +7141,7 @@ MonoBehaviour:
   prefix: 
   id: language_english
   suffix: 
+  toUpper: 0
 --- !u!222 &4764454815307479001
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -7666,6 +7700,7 @@ MonoBehaviour:
   prefix: 
   id: language_spanish
   suffix: 
+  toUpper: 0
 --- !u!222 &5521876523957766514
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -8406,6 +8441,7 @@ MonoBehaviour:
   prefix: 
   id: open_source
   suffix: 
+  toUpper: 0
 --- !u!114 &7385395232660469411
 MonoBehaviour:
   m_ObjectHideFlags: 0

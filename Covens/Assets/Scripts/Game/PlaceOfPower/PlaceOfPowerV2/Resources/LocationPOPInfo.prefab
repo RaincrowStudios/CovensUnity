@@ -514,6 +514,7 @@ MonoBehaviour:
   prefix: 
   id: summoning_more_info
   suffix: 
+  toUpper: 0
 --- !u!1 &1370619934761063764
 GameObject:
   m_ObjectHideFlags: 0
@@ -1672,6 +1673,7 @@ GameObject:
   - component: {fileID: 3411208396311904216}
   - component: {fileID: 1187147270495108482}
   - component: {fileID: 7437751412565225594}
+  - component: {fileID: 4370633275940868464}
   m_Layer: 5
   m_Name: Container
   m_TagString: Untagged
@@ -1761,6 +1763,20 @@ MonoBehaviour:
   m_FillClockwise: 1
   m_FillOrigin: 0
   m_UseSpriteMesh: 0
+--- !u!114 &4370633275940868464
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3380380071994210778}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c97afc556caea1c44969477eb7ddec74, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  ConformX: 1
+  ConformY: 1
 --- !u!1 &3546396844066298319
 GameObject:
   m_ObjectHideFlags: 0
@@ -3033,6 +3049,7 @@ MonoBehaviour:
   prefix: 
   id: generic_enter
   suffix: 
+  toUpper: 0
 --- !u!1 &5570123996757184959
 GameObject:
   m_ObjectHideFlags: 0
@@ -3355,6 +3372,7 @@ MonoBehaviour:
   prefix: 
   id: pop_enter
   suffix: 
+  toUpper: 0
 --- !u!1 &6927537000703547949
 GameObject:
   m_ObjectHideFlags: 0
@@ -3496,7 +3514,7 @@ MonoBehaviour:
     spaceCount: 11
     wordCount: 12
     linkCount: 0
-    lineCount: 2
+    lineCount: 1
     pageCount: 1
     materialCount: 1
   m_isUsingLegacyAnimationComponent: 0
@@ -3899,6 +3917,7 @@ MonoBehaviour:
   prefix: 
   id: generic_joined
   suffix: 
+  toUpper: 0
 --- !u!1 &8531795043373497790
 GameObject:
   m_ObjectHideFlags: 0

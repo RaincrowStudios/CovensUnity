@@ -12564,6 +12564,7 @@ GameObject:
   - component: {fileID: 1106574380}
   - component: {fileID: 1106574382}
   - component: {fileID: 1106574381}
+  - component: {fileID: 1106574383}
   m_Layer: 5
   m_Name: Content
   m_TagString: Untagged
@@ -12625,6 +12626,20 @@ Animator:
   m_HasTransformHierarchy: 1
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorControllerStateOnDisable: 0
+--- !u!114 &1106574383
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1106574379}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c97afc556caea1c44969477eb7ddec74, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  ConformX: 1
+  ConformY: 1
 --- !u!1001 &1116019678
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -13364,6 +13379,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1189552042}
   - component: {fileID: 1189552043}
+  - component: {fileID: 1189552044}
   m_Layer: 5
   m_Name: Content
   m_TagString: Untagged
@@ -13412,6 +13428,20 @@ CanvasGroup:
   m_Interactable: 1
   m_BlocksRaycasts: 1
   m_IgnoreParentGroups: 0
+--- !u!114 &1189552044
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1189552041}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c97afc556caea1c44969477eb7ddec74, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  ConformX: 1
+  ConformY: 1
 --- !u!1 &1195179105
 GameObject:
   m_ObjectHideFlags: 0
@@ -13422,6 +13452,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1195179106}
   - component: {fileID: 1195179108}
+  - component: {fileID: 1195179107}
   m_Layer: 5
   m_Name: Content
   m_TagString: Untagged
@@ -13457,6 +13488,20 @@ RectTransform:
   m_AnchoredPosition: {x: -0.0078125, y: -0.001953125}
   m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
+--- !u!114 &1195179107
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1195179105}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c97afc556caea1c44969477eb7ddec74, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  ConformX: 1
+  ConformY: 1
 --- !u!225 &1195179108
 CanvasGroup:
   m_ObjectHideFlags: 0
@@ -15984,6 +16029,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1462306524}
   - component: {fileID: 1462306525}
+  - component: {fileID: 1462306526}
   m_Layer: 5
   m_Name: Container
   m_TagString: Untagged
@@ -16030,6 +16076,20 @@ CanvasGroup:
   m_Interactable: 1
   m_BlocksRaycasts: 1
   m_IgnoreParentGroups: 0
+--- !u!114 &1462306526
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1462306523}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c97afc556caea1c44969477eb7ddec74, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  ConformX: 1
+  ConformY: 1
 --- !u!1 &1465800587
 GameObject:
   m_ObjectHideFlags: 0
@@ -18931,6 +18991,7 @@ GameObject:
   - component: {fileID: 1736051093}
   - component: {fileID: 1736051096}
   - component: {fileID: 1736051094}
+  - component: {fileID: 1736051095}
   m_Layer: 5
   m_Name: CosmeticPurchasePopup
   m_TagString: Untagged
@@ -18999,6 +19060,20 @@ MonoBehaviour:
   m_PreviewButton: {fileID: 0}
   m_PreviewText: {fileID: 0}
   m_PreviewIcons: {fileID: 0}
+--- !u!114 &1736051095
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1736051092}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c97afc556caea1c44969477eb7ddec74, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  ConformX: 1
+  ConformY: 1
 --- !u!225 &1736051096
 CanvasGroup:
   m_ObjectHideFlags: 0

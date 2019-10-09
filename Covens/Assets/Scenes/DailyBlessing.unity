@@ -149,8 +149,8 @@ RectTransform:
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1.0000305, y: 1.0000305, z: 1.0000305}
   m_Children: []
-  m_Father: {fileID: 638887219}
-  m_RootOrder: 4
+  m_Father: {fileID: 712187396}
+  m_RootOrder: 3
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
@@ -308,8 +308,8 @@ RectTransform:
   m_LocalPosition: {x: 0, y: 0, z: 0.000029732619}
   m_LocalScale: {x: 1.0000305, y: 1.0000305, z: 1.0000305}
   m_Children: []
-  m_Father: {fileID: 638887219}
-  m_RootOrder: 5
+  m_Father: {fileID: 712187396}
+  m_RootOrder: 4
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
@@ -331,6 +331,7 @@ MonoBehaviour:
   prefix: 
   id: blessing_honor
   suffix: 
+  toUpper: 0
 --- !u!114 &340907007
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -479,12 +480,12 @@ RectTransform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 398640997}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
-  m_Father: {fileID: 638887219}
-  m_RootOrder: 7
+  m_Father: {fileID: 712187396}
+  m_RootOrder: 6
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0}
   m_AnchorMax: {x: 0.5, y: 0}
@@ -506,6 +507,7 @@ MonoBehaviour:
   prefix: 
   id: blessing_continue
   suffix: 
+  toUpper: 0
 --- !u!114 &398641000
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -709,12 +711,12 @@ RectTransform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 462913276}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
-  m_Father: {fileID: 638887219}
-  m_RootOrder: 1
+  m_Father: {fileID: 712187396}
+  m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0.5}
   m_AnchorMax: {x: 0, y: 0.5}
@@ -997,13 +999,6 @@ RectTransform:
   m_LocalScale: {x: 0, y: 0, z: 0}
   m_Children:
   - {fileID: 712187396}
-  - {fileID: 462913277}
-  - {fileID: 665660320}
-  - {fileID: 1349058421}
-  - {fileID: 285283713}
-  - {fileID: 340907005}
-  - {fileID: 1248355194}
-  - {fileID: 398640998}
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -1038,13 +1033,13 @@ RectTransform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 665660319}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0.000017839571}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 1870627642}
-  m_Father: {fileID: 638887219}
-  m_RootOrder: 2
+  m_Father: {fileID: 712187396}
+  m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
@@ -1066,6 +1061,7 @@ MonoBehaviour:
   prefix: 
   id: blessing_message
   suffix: 
+  toUpper: 0
 --- !u!114 &665660322
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1200,6 +1196,7 @@ GameObject:
   - component: {fileID: 712187399}
   - component: {fileID: 712187398}
   - component: {fileID: 712187397}
+  - component: {fileID: 712187401}
   m_Layer: 5
   m_Name: BG
   m_TagString: Untagged
@@ -1217,7 +1214,14 @@ RectTransform:
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
-  m_Children: []
+  m_Children:
+  - {fileID: 462913277}
+  - {fileID: 665660320}
+  - {fileID: 1349058421}
+  - {fileID: 285283713}
+  - {fileID: 340907005}
+  - {fileID: 1248355194}
+  - {fileID: 398640998}
   m_Father: {fileID: 638887219}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -1371,6 +1375,20 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 712187395}
   m_CullTransparentMesh: 0
+--- !u!114 &712187401
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 712187395}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c97afc556caea1c44969477eb7ddec74, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  ConformX: 1
+  ConformY: 1
 --- !u!1 &1248355191
 GameObject:
   m_ObjectHideFlags: 0
@@ -1521,8 +1539,8 @@ RectTransform:
   m_LocalPosition: {x: 0, y: 0, z: 0.000029732619}
   m_LocalScale: {x: 1.0000305, y: 1.0000305, z: 1.0000305}
   m_Children: []
-  m_Father: {fileID: 638887219}
-  m_RootOrder: 6
+  m_Father: {fileID: 712187396}
+  m_RootOrder: 5
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
@@ -1559,8 +1577,8 @@ RectTransform:
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
-  m_Father: {fileID: 638887219}
-  m_RootOrder: 3
+  m_Father: {fileID: 712187396}
+  m_RootOrder: 2
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
@@ -1582,6 +1600,7 @@ MonoBehaviour:
   prefix: 
   id: blessing_offices
   suffix: 
+  toUpper: 0
 --- !u!114 &1349058423
 MonoBehaviour:
   m_ObjectHideFlags: 0

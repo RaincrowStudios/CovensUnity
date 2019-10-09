@@ -174,6 +174,7 @@ MonoBehaviour:
   prefix: 
   id: school_title
   suffix: 
+  toUpper: 0
 --- !u!114 &12646339
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -770,6 +771,7 @@ GameObject:
   - component: {fileID: 828910516}
   - component: {fileID: 828910515}
   - component: {fileID: 828910514}
+  - component: {fileID: 828910512}
   m_Layer: 5
   m_Name: Container
   m_TagString: Untagged
@@ -802,6 +804,20 @@ RectTransform:
   m_AnchoredPosition: {x: 0.10546875, y: -0.01953125}
   m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: 0.95, y: 0.13}
+--- !u!114 &828910512
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 828910510}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c97afc556caea1c44969477eb7ddec74, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  ConformX: 1
+  ConformY: 1
 --- !u!225 &828910514
 CanvasGroup:
   m_ObjectHideFlags: 0
