@@ -2124,6 +2124,7 @@ MonoBehaviour:
   m_CloseButton: {fileID: 780305207}
   m_GoldDrachs: {fileID: 1094359508}
   m_SilverDrachs: {fileID: 2030413519}
+  m_Fortuna: {fileID: 332352049}
   m_HomeWindow: {fileID: 989102435}
   m_CosmeticsButton: {fileID: 837821624}
   m_CurrenciesButton: {fileID: 611012694}

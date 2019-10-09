@@ -41,7 +41,7 @@ public class UIStorePurchase : MonoBehaviour
     private static UIStorePurchase m_Instance;
     protected static UIStorePurchaseCosmetic m_InstanceCosmetic;
 
-    public static void Show(StoreItem item, string type, string title, string description, Image icon, string locked, System.Action<string> onPurchase)
+    public static void Show(StoreItem item, string type, string title, string description, Sprite icon, string locked, System.Action<string> onPurchase)
     {
         if (m_Instance == null)
             return;
@@ -51,7 +51,7 @@ public class UIStorePurchase : MonoBehaviour
         LoadingOverlay.Hide();
     }
 
-    public static void Show(StoreItem item, CosmeticData data, Image icon, string locked, System.Action<string> onPurchase)
+    public static void Show(StoreItem item, CosmeticData data, Sprite icon, string locked, System.Action<string> onPurchase)
     {
         if (m_InstanceCosmetic == null)
             return;
@@ -89,13 +89,13 @@ public class UIStorePurchase : MonoBehaviour
         LeanTween.cancel(m_ScaleTweenId);
     }
 
-    protected virtual void _Show(StoreItem item, string type, string title, string description, Image icon, string locked, System.Action<string> onPurchase)
+    protected virtual void _Show(StoreItem item, string type, string title, string description, Sprite icon, string locked, System.Action<string> onPurchase)
     {
         m_Item = item;
         m_ItemType = type;
         m_Title.text = title;
         m_Description.text = description;
-        m_Icon.overrideSprite = icon.overrideSprite;
+        m_Icon.overrideSprite = icon;
 
         bool hasSilver = PlayerDataManager.playerData.silver >= item.silver;
         bool hasGold = PlayerDataManager.playerData.gold >= item.gold;

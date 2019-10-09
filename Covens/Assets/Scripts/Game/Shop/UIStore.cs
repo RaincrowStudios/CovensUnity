@@ -28,6 +28,7 @@ public class UIStore : MonoBehaviour
     [SerializeField] private Button m_CloseButton;
     [SerializeField] private TextMeshProUGUI m_GoldDrachs;
     [SerializeField] private TextMeshProUGUI m_SilverDrachs;
+    [SerializeField] private GameObject m_Fortuna;
 
     [Header("Home")]
     [SerializeField] private CanvasGroup m_HomeWindow;
@@ -55,7 +56,7 @@ public class UIStore : MonoBehaviour
     {
         if (m_Instance != null)
         {
-            //m_Instance.fortuna.gameObject.SetActive(showFortuna);
+            m_Instance.m_Fortuna.SetActive(showFortuna);
             m_Instance.Open();
             onLoad?.Invoke();
         }
@@ -69,13 +70,30 @@ public class UIStore : MonoBehaviour
                 () =>
                 {
                     LoadingOverlay.Hide();
-                    //m_Instance.fortuna.gameObject.SetActive(showFortuna);
+                    m_Instance.m_Fortuna.SetActive(showFortuna);
                     m_Instance.Open();
                     onLoad?.Invoke();
                 });
         }
     }
 
+    public static void CloseStore()
+    {
+        if (m_Instance == null)
+            return;
+
+        m_Instance.SetScreen(Screen.HOME);
+        m_Instance.Close();
+    }
+
+    public static void ShowIngredients()
+    {
+        if (m_Instance == null)
+            return;
+
+        m_Instance.SetScreen(Screen.INGREDIENTS);
+    }
+    
     public static void UpdateDrachs()
     {
         if (m_Instance == null)
@@ -123,6 +141,7 @@ public class UIStore : MonoBehaviour
         LeanTween.cancel(m_MainTweenId);
         LeanTween.cancel(m_ScreenTweenId);
         LeanTween.cancel(m_DrachsTweenId);
+
         SceneManager.UnloadScene(SceneManager.Scene.STORE, null, null);
     }
 

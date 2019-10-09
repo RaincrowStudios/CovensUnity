@@ -8,6 +8,7 @@ using UnityEngine.UI;
 using Raincrow.GameEventResponses;
 using Raincrow.Maps;
 using System.Text.RegularExpressions;
+using Raincrow.Store;
 
 public class FTFManager : MonoBehaviour
 {
@@ -121,17 +122,21 @@ public class FTFManager : MonoBehaviour
         //override store prices for FTF
         
         List<int> originalPrices = new List<int>();
-        foreach (var item in PlayerDataManager.StoreData.bundles)
+        for (int i = 0; i < StoreManagerAPI.Store.Bundles.Count; i++)
         {
+            StoreItem item = StoreManagerAPI.Store.Bundles[i];
             originalPrices.Add(item.silver);
             item.silver = 0;
+            StoreManagerAPI.Store.Bundles[i] = item;
         }
 
         OnFinishFTF += () =>
         {
             for (int i = 0; i < originalPrices.Count; i++)
             {
-                PlayerDataManager.StoreData.bundles[i].silver = originalPrices[i];
+                StoreItem item = StoreManagerAPI.Store.Bundles[i];
+                item.silver = originalPrices[i];
+                StoreManagerAPI.Store.Bundles[i] = item;
             }
         };
     }
@@ -655,7 +660,7 @@ public class FTFManager : MonoBehaviour
     private IEnumerator OpenStore()
     {
         bool loaded = false;
-        ShopManager.OpenStore(() => loaded = true, false);
+        UIStore.OpenStore(() => loaded = true, false);
 
         while (loaded == false)
             yield return 0;
@@ -663,33 +668,81 @@ public class FTFManager : MonoBehaviour
 
     private IEnumerator CloseStore()
     {
-        ShopManager.CloseStore();
+        UIStore.CloseStore();
         yield return 0;
     }
 
     private IEnumerator OpenIngredientStore()
     {
-        ShopManager.ShowIngredients();
+        UIStore.ShowIngredients();
         yield return 0;
     }
 
     private IEnumerator StoreSelectIngredient(string[] parameters)
     {
         string id = parameters[0];
-        ShopManager.SelectIngredient(id);
-        yield return 0;
+
+        StoreItem item = new StoreItem();
+        foreach (var _item in StoreManagerAPI.Store.Bundles)
+        {
+            if (_item.id == id)
+            {
+                item = _item;
+                break;
+            }
+        }
+
+        bool wait = true;
+        LoadingOverlay.Show();
+        DownloadedAssets.GetSprite(
+            id,
+            spr =>
+            {
+                wait = false;
+                UIStorePurchase.Show(
+                    item,
+                    StoreManagerAPI.TYPE_INGREDIENT_BUNDLE,
+                    LocalizeLookUp.GetStoreTitle(id),
+                    LocalizeLookUp.GetStoreDesc(id),
+                    spr,
+                    null,
+                    null
+                );
+            },
+            true
+        );
+
+        while (wait)
+            yield return 0;
     }
 
     private IEnumerator ShowPurchaseSuccess(string[] parameters)
     {
         string id = parameters[0];
-        ShopManager.ShowPurchaseSuccess(id);
-        yield return 0;
+
+        bool wait = true;
+        DownloadedAssets.GetSprite(
+            id,
+            spr =>
+            {
+                wait = false;
+                UIStorePurchaseSuccess.Show(
+                    LocalizeLookUp.GetStoreTitle(id),
+                    LocalizeLookUp.GetStoreSubtitle(id),
+                    spr,
+                    UIStorePurchase.Close
+                );
+            },
+            true
+        );
+
+        while (wait)
+            yield return 0;
     }
 
     private IEnumerator ClosePurchaseSuccess()
     {
-        ShopManager.ClosePurchaseSuccess();
+        UIStorePurchaseSuccess.Close();
         yield return 0;
     }
        

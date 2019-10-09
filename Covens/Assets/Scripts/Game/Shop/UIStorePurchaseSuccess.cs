@@ -32,6 +32,14 @@ public class UIStorePurchaseSuccess : MonoBehaviour
         m_Instance._Show(title, subtitle, icon, onClose);
     }
 
+    public static void Close()
+    {
+        if (m_Instance == null)
+            return;
+
+        m_Instance._Close();
+    }
+
     private void Awake()
     {
         m_Instance = this;

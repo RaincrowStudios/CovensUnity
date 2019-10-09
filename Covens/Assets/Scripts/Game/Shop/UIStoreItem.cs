@@ -135,7 +135,7 @@ public class UIStoreItem : MonoBehaviour
             UIStorePurchaseCosmetic.Show(
                 item,
                 cosmetic,
-                m_ItemIcon,
+                m_ItemIcon.overrideSprite,
                 locked_tooltip,
                 (error) =>
                 {
@@ -316,7 +316,7 @@ public class UIStoreItem : MonoBehaviour
                 type,
                 title,
                 LocalizeLookUp.GetStoreDesc(item.id),
-                m_ItemIcon,
+                m_ItemIcon.overrideSprite,
                 null,
                 (error) =>
                 {

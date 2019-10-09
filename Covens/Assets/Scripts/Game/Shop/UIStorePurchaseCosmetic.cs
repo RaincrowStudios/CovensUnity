@@ -38,7 +38,7 @@ public class UIStorePurchaseCosmetic : UIStorePurchase
         m_PreviewButton.onClick.AddListener(TogglePreview);
     }
 
-    public void _Show(StoreItem item, CosmeticData cosmetic, string type, string title, string description, Image icon, string locked, Action<string> onPurchase)
+    public void _Show(StoreItem item, CosmeticData cosmetic, string type, string title, string description, Sprite icon, string locked, Action<string> onPurchase)
     {
         m_Cosmetic = cosmetic;
 
