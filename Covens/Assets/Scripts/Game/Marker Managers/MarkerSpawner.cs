@@ -551,6 +551,8 @@ public class MarkerSpawner : MarkerManager
             {
                 CharacterToken characterToken = target.Token as CharacterToken;
 
+                if (characterToken.effects == null)
+                    characterToken.effects = new List<StatusEffect>();
 
                 foreach (StatusEffect item in characterToken.effects)
                 {
@@ -561,6 +563,7 @@ public class MarkerSpawner : MarkerManager
                         break;
                     }
                 }
+
                 characterToken.effects.Add(effect);
                 effect.ScheduleExpiration(() => ExpireStatusEffectHandler.ExpireEffect(targetId, effect));
 
