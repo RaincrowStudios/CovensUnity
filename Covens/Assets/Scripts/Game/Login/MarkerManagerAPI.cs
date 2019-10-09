@@ -36,6 +36,8 @@ public class MarkerManagerAPI : MonoBehaviour
     private static int m_MoveTweenId;
     private static Coroutine m_SpawnCoroutine;
 
+    private static string m_LastRequestTime;
+
     private void Awake()
     {
         if (m_Instance != null)
@@ -48,6 +50,7 @@ public class MarkerManagerAPI : MonoBehaviour
 
     public static void GetMarkers(float longitude, float latitude, System.Action callback = null, bool animateMap = true, bool showLoading = false, bool loadMap = false)
     {
+
         double dist = MapsAPI.Instance.DistanceBetweenPointsD(new Vector2(longitude, latitude), GetGPS.coordinates);
         bool physical = dist < PlayerDataManager.DisplayRadius;
         IsSpiritForm = !physical;
@@ -88,6 +91,7 @@ public class MarkerManagerAPI : MonoBehaviour
 
         System.Action requestMarkers = () => { };
         IsSpawningTokens = true;
+        string timestamp = m_LastRequestTime = Time.time.ToString();
         requestMarkers = () => APIManager.Instance.Post("character/move", dataJson,
             (s, r) =>
             {
@@ -95,7 +99,7 @@ public class MarkerManagerAPI : MonoBehaviour
                 IsSpawningTokens = false;
 
                 if (r == 200)
-                    GetMarkersCallback(longitude, latitude, s, r);
+                    GetMarkersCallback(timestamp, longitude, latitude, s, r);
                 else
                     GetMarkersFailed(longitude, latitude, animateMap, loadMap, s, r);
 
@@ -158,8 +162,14 @@ public class MarkerManagerAPI : MonoBehaviour
         }
     }
 
-    private static void GetMarkersCallback(float longitude, float latitude, string result, int response)
+    private static void GetMarkersCallback(string timestamp, float longitude, float latitude, string result, int response)
     {
+        if (timestamp != m_LastRequestTime)
+        {
+            Debug.LogError("outdated move response");
+            return;
+        }
+
         MapMoveResponse moveResponse = JsonConvert.DeserializeObject<MapMoveResponse>(result);
         
         PlayerManager.marker.Coords = new Vector2(longitude, latitude);
