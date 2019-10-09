@@ -44,9 +44,9 @@ public class MainUITransition : MonoBehaviour
         LeanTween.cancel(m_TweenId);
 
         float leftBar_Start = leftBar.anchoredPosition.x;
-        float leftBar_Halloween_Start = leftBar_halloween.anchoredPosition.x; //Halloween
+        //float leftBar_Halloween_Start = leftBar_halloween.anchoredPosition.x; //Halloween
         float leftBar_End = -150;
-        float leftBar_Halloween_End = -150; //Halloween
+        //float leftBar_Halloween_End = -150; //Halloween
 
 
         float bottomBarAnchor_Start = bottomBar.anchoredPosition.y;
@@ -65,7 +65,7 @@ public class MainUITransition : MonoBehaviour
             .setOnUpdate((float t) =>
             {
                 leftBar.anchoredPosition = new Vector2(Mathf.Lerp(leftBar_Start, leftBar_End, t), leftBar.anchoredPosition.y);
-                leftBar_halloween.anchoredPosition = new Vector2(Mathf.Lerp(leftBar_Halloween_Start, leftBar_Halloween_End, t), leftBar_halloween.anchoredPosition.y); //Halloween
+                //leftBar_halloween.anchoredPosition = new Vector2(Mathf.Lerp(leftBar_Halloween_Start, leftBar_Halloween_End, t), leftBar_halloween.anchoredPosition.y); //Halloween
                 bottomBar.anchoredPosition = new Vector2(bottomBar.anchoredPosition.x, Mathf.Lerp(bottomBarAnchor_Start, bottomBarAnchor_End, t));
 
                 energy.offsetMin = new Vector2(Mathf.Lerp(energyBarOffset_Start, energyBarOffset_End, t), bottomBar.offsetMin.y);
@@ -89,9 +89,9 @@ public class MainUITransition : MonoBehaviour
         LeanTween.cancel(m_TweenId);
 
         float leftBar_Start = leftBar.anchoredPosition.x;
-        float leftBar_Halloween_Start = leftBar_halloween.anchoredPosition.x; //Halloween
+        //float leftBar_Halloween_Start = leftBar_halloween.anchoredPosition.x; //Halloween
         float leftBar_End = 130;
-        float leftBar_Halloween_End = 130; //Halloween
+        //float leftBar_Halloween_End = 130; //Halloween
 
         float bottomBarAnchor_Start = bottomBar.anchoredPosition.y;
         float bottomBarAnchor_End = 50;
@@ -109,7 +109,7 @@ public class MainUITransition : MonoBehaviour
             .setOnUpdate((float t) =>
             {
                 leftBar.anchoredPosition = new Vector2(Mathf.Lerp(leftBar_Start, leftBar_End, t), leftBar.anchoredPosition.y);
-                leftBar_halloween.anchoredPosition = new Vector2(Mathf.Lerp(leftBar_Halloween_Start, leftBar_Halloween_End, t), leftBar_halloween.anchoredPosition.y); //Halloween
+                //leftBar_halloween.anchoredPosition = new Vector2(Mathf.Lerp(leftBar_Halloween_Start, leftBar_Halloween_End, t), leftBar_halloween.anchoredPosition.y); //Halloween
                 bottomBar.anchoredPosition = new Vector2(bottomBar.anchoredPosition.x, Mathf.Lerp(bottomBarAnchor_Start, bottomBarAnchor_End, t));
 
                 energy.offsetMin = new Vector2(Mathf.Lerp(energyBarOffset_Start, energyBarOffset_End, t), bottomBar.offsetMin.y);
