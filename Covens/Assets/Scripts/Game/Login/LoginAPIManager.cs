@@ -207,8 +207,10 @@ public static class LoginAPIManager
 
         //data.Add("game", "covens");
         data.Add("language", PlayerManager.SystemLanguage);
-        data.Add("latitude", GetGPS.latitude);
-        data.Add("longitude", GetGPS.longitude);
+
+        Vector2 randCircle = Random.insideUnitCircle.normalized;
+        data.Add("longitude", GetGPS.longitude += randCircle.x * 0.0007f);
+        data.Add("latitude", GetGPS.latitude += randCircle.y * 0.0007f);
         //data.Add("UID", SystemInfo.deviceUniqueIdentifier);
 
         APIManager.Instance.PostRaincrow("account", JsonConvert.SerializeObject(data),
@@ -233,8 +235,10 @@ public static class LoginAPIManager
         data.Add("name", name);
         data.Add("bodyType", bodyType);
         data.Add("male", male);
-        data.Add("longitude", GetGPS.longitude);
-        data.Add("latitude", GetGPS.latitude);
+
+        Vector2 randCircle = Random.insideUnitCircle.normalized;
+        data.Add("longitude", GetGPS.longitude += randCircle.x * 0.0007f);
+        data.Add("latitude", GetGPS.latitude += randCircle.y * 0.0007f);
 
         APIManager.Instance.Post("character", JsonConvert.SerializeObject(data),
             (response, result) =>

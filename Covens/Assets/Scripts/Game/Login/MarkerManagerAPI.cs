@@ -68,8 +68,8 @@ public class MarkerManagerAPI : MonoBehaviour
         if (physical)
         {
             Vector2 randCircle = Random.insideUnitCircle.normalized;
-            longitude += randCircle.x * 0.0006f;
-            latitude += randCircle.y * 0.0006f;
+            longitude += randCircle.x * 0.0007f;
+            latitude += randCircle.y * 0.0007f;
         }
 
         var data = new
