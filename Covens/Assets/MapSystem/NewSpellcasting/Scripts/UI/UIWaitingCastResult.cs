@@ -226,7 +226,7 @@ public class UIWaitingCastResult : UIInfoPanel
         {
             m_XPGained.text = LocalizeLookUp.GetText("spirit_deck_xp_gained")// $"XP gained: {result.xpGain}";
                 .Replace(
-                    "{{Number}}", 
+                    "{{Number}}",
                     PlayerDataManager.playerData.ApplyExpBuffs(spell.xp).ToString());
             m_ResultText.text = "";
         }
@@ -292,6 +292,10 @@ public class UIWaitingCastResult : UIInfoPanel
     }
     public void DegreeSetup()
     {
+        if (LocationIslandController.isInBattle)
+        {
+            return;
+        }
         var initialFill = BarFillSlider.value;
         if (CurrentDegree == null || NextDegree == null)
         {
@@ -343,10 +347,10 @@ public class UIWaitingCastResult : UIInfoPanel
         }
 
         var finalFill = Utilities.InverseLerp(
-            PlayerDataManager.playerData.minAlignment, 
-            PlayerDataManager.playerData.maxAlignment, 
+            PlayerDataManager.playerData.minAlignment,
+            PlayerDataManager.playerData.maxAlignment,
             PlayerDataManager.playerData.alignment);
-        
+
         if (PlayerDataManager.playerData.degree < 0)
             finalFill = 1 - finalFill;
 
