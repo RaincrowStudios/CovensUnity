@@ -17,10 +17,15 @@ public class UINearbyLocations : MonoBehaviour
     [SerializeField] private Button m_CloseButton;
 
     private static UINearbyLocations m_Instance;
-
-    public static List<UINearbyLocationItem.LocationData> CachedLocations { get; private set; }
     private static float m_LastRequestTime = 0;
     private static float m_RequestCooldown = 60;
+    private static bool m_IsRetrieving = false;
+
+    public static List<UINearbyLocationItem.LocationData> CachedLocations { get; private set; }
+    public static bool IsOpen => m_Instance != null && m_Instance.m_InputRaycaster.enabled;
+
+    private int m_AnimTweenId;
+    private SimplePool<UINearbyLocationItem> m_ItemPool;
 
     public static void Open(System.Action onLoad = null)
     {
@@ -51,11 +56,7 @@ public class UINearbyLocations : MonoBehaviour
 
         m_Instance.Hide();
     }
-
-    private int m_AnimTweenId;
-    private SimplePool<UINearbyLocationItem> m_ItemPool;
-    private static bool m_IsRetrieving = false;
-
+    
     public static void GetLocations(System.Action<List<UINearbyLocationItem.LocationData>> onComplete, bool showLoading = true)
     {
         //if (CachedLocations == null || Time.unscaledTime - m_LastRequestTime > m_RequestCooldown)
@@ -132,8 +133,7 @@ public class UINearbyLocations : MonoBehaviour
         }, 
         false);
     }
-
-
+    
     private void Awake()
     {
         m_Instance = this;
@@ -142,16 +142,29 @@ public class UINearbyLocations : MonoBehaviour
         m_CanvasGroup.alpha = 0;
         m_CloseButton.onClick.AddListener(Hide);
         m_ItemPool = new SimplePool<UINearbyLocationItem>(m_Prefab, 50);
+
+        DownloadedAssets.OnWillUnloadAssets += DownloadedAssets_OnWillUnloadAssets;
     }
 
-    private void OnDestroy()
+    private void DownloadedAssets_OnWillUnloadAssets()
     {
-        if (m_ItemPool != null)
-        {
-            m_ItemPool.DestroyAll();
-            m_ItemPool = null;
-        }
+        if (IsOpen)
+            return;
+
+        LeanTween.cancel(m_AnimTweenId);
+        m_ItemPool?.DestroyAll();
+
+        SceneManager.UnloadScene(SceneManager.Scene.NEARBY_POPS, null, null);
     }
+
+    //private void OnDestroy()
+    //{
+    //    if (m_ItemPool != null)
+    //    {
+    //        m_ItemPool.DestroyAll();
+    //        m_ItemPool = null;
+    //    }
+    //}
 
     private void Show()
     {
