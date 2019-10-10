@@ -93,6 +93,17 @@ public class UIStore : MonoBehaviour
 
         m_Instance.SetScreen(Screen.INGREDIENTS);
     }
+
+    public static void OpenSilverStore()
+    {
+        if (m_Instance == null)
+            return;
+
+        if (IsOpen)
+            m_Instance.SetScreen(Screen.CURRENCY);
+        else
+            OpenStore(() => m_Instance.SetScreen(Screen.CURRENCY));
+    }
     
     public static void UpdateDrachs()
     {
@@ -398,7 +409,7 @@ public class UIStore : MonoBehaviour
             () => SetScreen(Screen.COSMETICS),
             () => SetScreen(Screen.STYLES));
 
-        m_StoreWindow.SetupCosmetics(StoreManagerAPI.Store.Cosmetics);
+        m_StoreWindow.SetupCosmetics(StoreManagerAPI.StoreData.Cosmetics);
     }
 
     private void SetupStyles()
@@ -417,21 +428,21 @@ public class UIStore : MonoBehaviour
     {
         SetHeaderButtons(0);
         SetHeaderText(LocalizeLookUp.GetText("store_currency"));
-        m_StoreWindow.SetupCurrency(StoreManagerAPI.Store.Currencies);
+        m_StoreWindow.SetupCurrency(StoreManagerAPI.StoreData.Currencies);
     }
 
     private void SetupCharms()
     {
         SetHeaderButtons(0);
         SetHeaderText(LocalizeLookUp.GetText("store_charms"));
-        m_StoreWindow.SetupCharms(StoreManagerAPI.Store.Consumables);
+        m_StoreWindow.SetupCharms(StoreManagerAPI.StoreData.Consumables);
     }
 
     private void SetupIngredients()
     {
         SetHeaderButtons(0);
         SetHeaderText(LocalizeLookUp.GetText("store_ingredients"));
-        m_StoreWindow.SetupIngredients(StoreManagerAPI.Store.Bundles);
+        m_StoreWindow.SetupIngredients(StoreManagerAPI.StoreData.Bundles);
     }
 
     private void _UpdateDrachs(float time = 2)

@@ -77,4 +77,7 @@ EditorBuildSettings:
   - enabled: 1
     path: Assets/Scenes/Wardrobe.unity
     guid: 25224febbb4b9b34b8eb2424d4f7a3f7
+  - enabled: 1
+    path: Assets/Scenes/StoreBundle.unity
+    guid: d20e53f8812944b43ba8dd65503fe121
   m_configObjects: {}

@@ -34,7 +34,7 @@ public class LowEnergyPopup : MonoBehaviour
             m_buttonText.text = string.Concat("<color=red>", LocalizeLookUp.GetText("energy_restore_missing"), "</color>");
             m_continue.onClick.AddListener(() =>
             {
-                ShopManager.OpenSilverStore();
+                UIStore.OpenSilverStore();
             });
         }
         else

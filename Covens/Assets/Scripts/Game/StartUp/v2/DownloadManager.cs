@@ -494,7 +494,7 @@ public class DownloadManager : MonoBehaviour
     {
         try
         {
-            StoreManagerAPI.Store = JsonConvert.DeserializeObject<StoreData>(json, new JsonSerializerSettings
+            StoreManagerAPI.StoreData = JsonConvert.DeserializeObject<StoreData>(json, new JsonSerializerSettings
             {
                 DefaultValueHandling = DefaultValueHandling.Populate
             });
@@ -504,7 +504,7 @@ public class DownloadManager : MonoBehaviour
                 Utilities.SetCatagoryApparel(item);
             }
 
-            StoreManagerAPI.Store.Cosmetics.Sort(new System.Comparison<StoreItem>((a, b) => LocalizeLookUp.GetStoreTitle(a.id).CompareTo(LocalizeLookUp.GetStoreTitle(b.id))));
+            StoreManagerAPI.StoreData.Cosmetics.Sort(new System.Comparison<StoreItem>((a, b) => LocalizeLookUp.GetStoreTitle(a.id).CompareTo(LocalizeLookUp.GetStoreTitle(b.id))));
 
             return true;
         }

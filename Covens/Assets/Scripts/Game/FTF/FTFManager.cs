@@ -122,21 +122,21 @@ public class FTFManager : MonoBehaviour
         //override store prices for FTF
         
         List<int> originalPrices = new List<int>();
-        for (int i = 0; i < StoreManagerAPI.Store.Bundles.Count; i++)
+        for (int i = 0; i < StoreManagerAPI.StoreData.Bundles.Count; i++)
         {
-            StoreItem item = StoreManagerAPI.Store.Bundles[i];
+            StoreItem item = StoreManagerAPI.StoreData.Bundles[i];
             originalPrices.Add(item.silver);
             item.silver = 0;
-            StoreManagerAPI.Store.Bundles[i] = item;
+            StoreManagerAPI.StoreData.Bundles[i] = item;
         }
 
         OnFinishFTF += () =>
         {
             for (int i = 0; i < originalPrices.Count; i++)
             {
-                StoreItem item = StoreManagerAPI.Store.Bundles[i];
+                StoreItem item = StoreManagerAPI.StoreData.Bundles[i];
                 item.silver = originalPrices[i];
-                StoreManagerAPI.Store.Bundles[i] = item;
+                StoreManagerAPI.StoreData.Bundles[i] = item;
             }
         };
     }
@@ -683,7 +683,7 @@ public class FTFManager : MonoBehaviour
         string id = parameters[0];
 
         StoreItem item = new StoreItem();
-        foreach (var _item in StoreManagerAPI.Store.Bundles)
+        foreach (var _item in StoreManagerAPI.StoreData.Bundles)
         {
             if (_item.id == id)
             {

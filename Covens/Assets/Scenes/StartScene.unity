@@ -13860,8 +13860,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: aae65af3e49dbfe40ad1c76d3462032b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  lat: 47.701683
-  lng: -122.322426
+  lat: 44.64533
+  lng: -63.57183
   locationError: {fileID: 26670881}
   WifiIccon: {fileID: 961722002}
   GPSicon: {fileID: 119170428}

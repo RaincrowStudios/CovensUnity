@@ -56,7 +56,7 @@ public class UIStoreStylesWindow : MonoBehaviour
 
         m_Styles = new List<StoreItem>();
         char gender = PlayerDataManager.playerData.male ? 'm' : 'f';
-        foreach (var style in StoreManagerAPI.Store.Styles)
+        foreach (var style in StoreManagerAPI.StoreData.Styles)
         {
             CosmeticData cosmetic = DownloadedAssets.GetCosmetic(style.id);
             if (cosmetic.type[0] == gender)

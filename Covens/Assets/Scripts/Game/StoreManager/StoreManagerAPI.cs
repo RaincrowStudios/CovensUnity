@@ -114,24 +114,54 @@ namespace Raincrow.Store
         public const string TYPE_INGREDIENT_BUNDLE = "bundles";
         public const string TYPE_ELIXIRS = "consumables";
 
-        public static StoreData Store { get; set; }
-
-        private static StoreApiObject m_OldStore = null;
-        public static StoreApiObject OldStore
-        {
-            get
-            {
-                if (m_OldStore == null)
-                    SetupOldStore(Store);
-                return m_OldStore;
-            }
-        }
-
+        public static StoreData StoreData { get; set; }
+        
         public static Dictionary<string, List<ItemData>> BundleDict { get; set; }
         public static Dictionary<string, ConsumableData> ConsumableDict { get; set; }
         public static Dictionary<string, CurrencyBundleData> CurrencyBundleDict { get; set; }
+
         public static System.Action<string, string> OnPurchaseComplete;
-        
+
+
+        public static ItemData[] GetIngredientBundle(string id)
+        {
+            if (BundleDict.ContainsKey(id))
+            {
+                return BundleDict[id].ToArray();
+            }
+            else
+            {
+                LogError($"ingredient bundle not found (\"{id}\")");
+                return new ItemData[0];
+            }
+        }
+
+        public static ConsumableData GetConsumable(string id)
+        {
+            if (ConsumableDict.ContainsKey(id))
+            {
+                return ConsumableDict[id];
+            }
+            else
+            {
+                LogError($"consumable not found (\"{id}\")");
+                return new ConsumableData();
+            }
+        }
+
+        public static CurrencyBundleData GetCurrencyBundle(string id)
+        {
+            if (CurrencyBundleDict.ContainsKey(id))
+            {
+                return CurrencyBundleDict[id];
+            }
+            else
+            {
+                LogError($"currency bundle not found (\"{id}\")");
+                return new CurrencyBundleData();
+            }
+        }
+
         public static void Purchase(string id, string type, string currency, System.Action<string> callback)
         {
             Purchase(id, type, currency, null, callback);
@@ -172,9 +202,9 @@ namespace Raincrow.Store
 
                             //get the price
                             if (currency == "silver")
-                                silver = Store.GetPrice(type, id, true);
+                                silver = StoreData.GetPrice(type, id, true);
                             if (currency == "gold")
-                                gold = Store.GetPrice(type, id, false);
+                                gold = StoreData.GetPrice(type, id, false);
 
                             //add the item to inventory
                             PlayerDataManager.playerData.inventory.cosmetics.Add(cosmetic);
@@ -186,9 +216,9 @@ namespace Raincrow.Store
 
                             //get the price
                             if (currency == "silver")
-                                silver = Store.GetPrice(type, id, true);
+                                silver = StoreData.GetPrice(type, id, true);
                             if (currency == "gold")
-                                gold = Store.GetPrice(type, id, false);
+                                gold = StoreData.GetPrice(type, id, false);
 
                             //add the ingredients to the inventory
                             for (int i = 0; i < bundle.Length; i++)
@@ -205,9 +235,9 @@ namespace Raincrow.Store
 
                             //get the price
                             if (currency == "silver")
-                                silver = Store.GetPrice(type, id, true);
+                                silver = StoreData.GetPrice(type, id, true);
                             if (currency == "gold")
-                                gold = Store.GetPrice(type, id, false);
+                                gold = StoreData.GetPrice(type, id, false);
 
                             //add to the inventory
                             if (elixir == null || string.IsNullOrEmpty(elixir.id))
@@ -251,148 +281,6 @@ namespace Raincrow.Store
             });
         }
 
-        public static ItemData[] GetIngredientBundle(string id)
-        {
-            if (BundleDict.ContainsKey(id))
-            {
-                return BundleDict[id].ToArray();
-            }
-            else
-            {
-                LogError($"ingredient bundle not found (\"{id}\")");
-                return new ItemData[0];
-            }
-        }
-
-        public static ConsumableData GetConsumable(string id)
-        {
-            if (ConsumableDict.ContainsKey(id))
-            {
-                return ConsumableDict[id];
-            }
-            else
-            {
-                LogError($"consumable not found (\"{id}\")");
-                return new ConsumableData();
-            }
-        }
-
-        public static CurrencyBundleData GetCurrencyBundle(string id)
-        {
-            if (CurrencyBundleDict.ContainsKey(id))
-            {
-                return CurrencyBundleDict[id];
-            }
-            else
-            {
-                LogError($"currency bundle not found (\"{id}\")");
-                return new CurrencyBundleData();
-            }
-        }
-
-        public static void SetupOldStore(StoreData data)
-        {
-            //m_OldStore = new StoreApiObject();
-            //char gender = PlayerDataManager.playerData.male ? 'm' : 'f';
-
-            ////setup bundles
-            //m_OldStore.bundles = new List<StoreApiItem>();
-            //foreach (StoreItem item in data.Bundles)
-            //{
-            //    ItemData[] bundle = GetIngredientBundle(item.id);
-
-            //    StoreApiItem aux = new StoreApiItem();
-            //    aux.id = item.id;
-            //    aux.type = TYPE_INGREDIENT_BUNDLE;
-            //    aux.silver = item.silver;
-            //    aux.gold = item.gold;
-
-            //    if (bundle != null)
-            //    {
-            //        aux.contents = new List<StoreItemContent>();
-            //        for (int i = 0; i < bundle.Length; i++)
-            //        {
-            //            aux.contents.Add(new StoreItemContent()
-            //            {
-            //                id = bundle[i].id,
-            //                count = bundle[i].count
-            //            });
-            //        }
-            //    }
-
-            //    m_OldStore.bundles.Add(aux);
-            //}
-
-            ////setup consumables
-            //m_OldStore.consumables = new List<StoreApiItem>();
-            //foreach (StoreItem item in data.Consumables)
-            //{
-            //    ConsumableData consumable = GetConsumable(item.id);
-
-            //    StoreApiItem aux = new StoreApiItem();
-            //    aux.id = item.id;
-            //    aux.type = TYPE_ELIXIRS;
-            //    aux.silver = item.silver;
-            //    aux.gold = item.gold;
-
-            //    OldStore.consumables.Add(aux);
-            //}
-
-            ////setup silver
-            //m_OldStore.silver = new List<StoreApiItem>();
-            //foreach (StoreItem item in data.Currencies)
-            //{
-            //    CurrencyBundleData silver = GetCurrencyBundle(item.id);
-
-            //    StoreApiItem aux = new StoreApiItem();
-            //    aux.id = item.id;
-            //    aux.type = TYPE_CURRENCY;
-            //    aux.amount = silver.silver;
-            //    aux.bonus = silver.extra;
-            //    aux.cost = silver.cost;
-            //    aux.productId = silver.product;
-
-            //    m_OldStore.silver.Add(aux);
-            //}
-
-            ////setup cosmetics
-            //m_OldStore.cosmetics = new List<CosmeticData>();
-            //foreach(StoreItem item in data.Cosmetics)
-            //{
-            //    CosmeticData aux = DownloadedAssets.GetCosmetic(item.id);
-
-            //    if (aux == null)
-            //        continue;
-
-            //    if (aux.type[0] != gender)
-            //        continue;
-
-            //    aux.unlockOn = item.unlockOn;
-            //    aux.tooltip = item.tooltip;
-            //    aux.silver = item.silver;
-            //    aux.gold = item.gold;
-            //    m_OldStore.cosmetics.Add(aux);
-            //}
-
-            ////setup styles
-            //m_OldStore.styles = new List<CosmeticData>();
-            //foreach (StoreItem item in data.Styles)
-            //{
-            //    CosmeticData aux = DownloadedAssets.GetCosmetic(item.id);
-
-            //    if (aux == null)
-            //        continue;
-
-            //    if (aux.type[0] != gender)
-            //        continue;
-
-            //    aux.unlockOn = item.unlockOn;
-            //    aux.tooltip = item.tooltip;
-            //    aux.silver = item.silver;
-            //    aux.gold = item.gold;
-            //    m_OldStore.styles.Add(aux);
-            //}
-        }
 
         private static void Log(string msg)
         {

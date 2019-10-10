@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class BundleManager : MonoBehaviour
+public class UIBundlePopupAnim : MonoBehaviour
 {
     public CanvasGroup BundleInterCG;
     public GameObject container;
@@ -16,7 +16,7 @@ public class BundleManager : MonoBehaviour
     public Button close;
     int p = 0;
 
-    public static BundleManager Instance { get; set; }
+    public static UIBundlePopupAnim Instance { get; set; }
 
 
     // Start is called before the first frame update
