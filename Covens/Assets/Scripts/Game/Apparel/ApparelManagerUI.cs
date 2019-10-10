@@ -155,8 +155,12 @@ public class ApparelManagerUI : MonoBehaviour
             Destroy(item.gameObject);
         }
         buttonDict.Clear();
+        char gender = PlayerDataManager.playerData.male ? 'm' : 'f';
         foreach (var item in PlayerDataManager.playerData.inventory.cosmetics)
         {
+            if (item.type[0] != gender)
+                continue;
+
             if (item.hidden)
                 continue;
 

@@ -36,6 +36,9 @@ public class UIStore : MonoBehaviour
     [SerializeField] private Button m_CurrenciesButton;
     [SerializeField] private Button m_CharmsButton;
     [SerializeField] private Button m_IngredientsButton;
+    [Space]
+    [SerializeField] private Button m_SpecialBundleButton;
+    [SerializeField] private Image m_SpecialBundleIcon;
 
     [Header("Store")]
     [SerializeField] private UIStoreContainer m_StoreWindow;
@@ -154,16 +157,6 @@ public class UIStore : MonoBehaviour
         LeanTween.cancel(m_DrachsTweenId);
 
         SceneManager.UnloadScene(SceneManager.Scene.STORE, null, null);
-    }
-
-    private void OnClickClose()
-    {
-        if (m_CurrentScreen == Screen.HOME)
-            Close();
-        else if (m_CurrentScreen == Screen.STYLES)
-            SetScreen(Screen.COSMETICS);
-        else
-            SetScreen(Screen.HOME);
     }
 
     [ContextMenu("Open")]
@@ -467,5 +460,24 @@ public class UIStore : MonoBehaviour
     private void OnPurchaseComplete(string id, string type)
     {
         _UpdateDrachs();
+    }
+
+
+    private void OnClickClose()
+    {
+        if (m_CurrentScreen == Screen.HOME)
+            Close();
+        else if (m_CurrentScreen == Screen.STYLES)
+            SetScreen(Screen.COSMETICS);
+        else
+            SetScreen(Screen.HOME);
+    }
+
+    private void OnClickSpecialBundle()
+    {
+        if (StoreManagerAPI.StoreData.Packs == null || StoreManagerAPI.StoreData.Packs.Count == 0)
+            return;
+
+        UIBundlePopup.Open(StoreManagerAPI.StoreData.Packs[0].id);
     }
 }

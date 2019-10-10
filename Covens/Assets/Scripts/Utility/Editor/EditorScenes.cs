@@ -76,6 +76,9 @@ public class EditorScenes : MonoBehaviour
     [MenuItem("Scenes/Screens/Wardrobe")]
     static void WardrobeScene() => OpenScene("Wardrobe");
 
+    [MenuItem("Scenes/Screens/StoreBundle")]
+    static void StoreBundleScene() => OpenScene("StoreBundle");
+
 
     private static void OpenScene(string name)
     {

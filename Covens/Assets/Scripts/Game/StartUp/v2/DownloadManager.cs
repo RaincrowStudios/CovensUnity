@@ -474,9 +474,10 @@ public class DownloadManager : MonoBehaviour
             WitchSchoolManager.witchVideos = data.witchSchool;
 
             DownloadedAssets.cosmeticDict = data.Cosmetics;
-            StoreManagerAPI.BundleDict = data.Bundles;
+            StoreManagerAPI.IngredientBundleDict = data.Bundles;
             StoreManagerAPI.ConsumableDict = data.Consumables;
             StoreManagerAPI.CurrencyBundleDict = data.Currencies;
+            StoreManagerAPI.PackDict = data.Packs;
 
             DownloadedAssets.PlaceOfPowerSettings = data.PlaceOfPower;
 

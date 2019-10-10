@@ -7,6 +7,50 @@ using System.ComponentModel;
 
 namespace Raincrow.Store
 {
+    public class StoreData
+    {
+        public List<StoreItem> Packs;
+        public List<StoreItem> Bundles;
+        public List<StoreItem> Consumables;
+        public List<StoreItem> Currencies;
+        public List<StoreItem> Cosmetics;
+        public List<StoreItem> Styles;
+
+        public int GetPrice(string type, string id, bool IsSilver)
+        {
+            List<StoreItem> items = null;
+            switch (type)
+            {
+                case StoreManagerAPI.TYPE_CURRENCY: items = new List<StoreItem>(Currencies); break;
+                case StoreManagerAPI.TYPE_COSMETIC: items = new List<StoreItem>(Cosmetics); items.AddRange(Styles); break;
+                case StoreManagerAPI.TYPE_INGREDIENT_BUNDLE: items = new List<StoreItem>(Bundles); break;
+                case StoreManagerAPI.TYPE_ELIXIRS: items = new List<StoreItem>(Consumables); break;
+            }
+
+            if (items == null)
+                return 0;
+
+            foreach (var item in items)
+            {
+                if (item.id == id)
+                    return IsSilver ? item.silver : item.gold;
+            }
+
+            return 0;
+        }
+    }
+
+    public struct StoreItem
+    {
+        [DefaultValue("")]
+        public string id;
+        public double unlockOn;
+        [DefaultValue("")]
+        public string tooltip;
+        public int silver;
+        public int gold;
+    }
+    
     public struct ConsumableData
     {
         public float duration;
@@ -27,84 +71,21 @@ namespace Raincrow.Store
         public int goldBonus;
     }
 
-    public struct StoreItem
+    public struct PackData
     {
-        [DefaultValue("")]
+        public string product;
+        public float fullPrice;
+        public List<PackItemData> content;
+    }
+
+    public struct PackItemData
+    {
+        public const string INGREDIENT_BUNDLE = "bundles";
+
+        [JsonProperty("item")]
         public string id;
-        public double unlockOn;
-        [DefaultValue("")]
-        public string tooltip;
-        public int silver;
-        public int gold;
-    }
-
-    public class StoreData
-    {
-        public List<StoreItem> Bundles;
-        public List<StoreItem> Consumables;
-        public List<StoreItem> Currencies;
-        public List<StoreItem> Cosmetics;
-        public List<StoreItem> Styles;
-
-        public int GetPrice(string type, string id, bool IsSilver)
-        {
-            List<StoreItem> items = null;
-            switch (type)
-            {
-                case StoreManagerAPI.TYPE_CURRENCY :            items = new List<StoreItem>(Currencies); break;
-                case StoreManagerAPI.TYPE_COSMETIC :            items = new List<StoreItem>(Cosmetics); items.AddRange(Styles); break;
-                case StoreManagerAPI.TYPE_INGREDIENT_BUNDLE :   items = new List<StoreItem>(Bundles); break;
-                case StoreManagerAPI.TYPE_ELIXIRS :             items = new List<StoreItem>(Consumables); break;
-            }
-
-            if (items == null)
-                return 0;
-
-            foreach (var item in items)
-            {
-                if (item.id == id)
-                    return IsSilver ? item.silver : item.gold;
-            }
-
-            return 0;
-        }
-    }
-    
-    public class StoreItemContent
-    {
-        public string id { get; set; }
-        public int count { get; set; }
-    }
-
-    public class StoreApiObject
-    {
-        public List<StoreApiItem> bundles { get; set; }
-        public List<CosmeticData> cosmetics { get; set; }
-        public List<CosmeticData> styles { get; set; }
-        public List<StoreApiItem> consumables { get; set; }
-        public List<StoreApiItem> silver { get; set; }
-    }
-
-    public class StoreApiItem
-    {
-        public string id { get; set; }
-        public string productId { get; set; }
-        public string title { get; set; }
-        public string type { get; set; }
-        public int amount { get; set; }
-        public string bonus { get; set; }
-        public float cost { get; set; }
-        public int silver { get; set; }
-        public int gold { get; set; }
-        public List<StoreItemContent> contents { get; set; }
-
-        [JsonIgnore]
-        public bool owned => PlayerDataManager.playerData.inventory.cosmetics.Exists(item => item.id == id);
-
-        [JsonIgnore]
-        public Sprite pic;
-        [JsonIgnore]
-        public int count;
+        [JsonProperty("itemType")]
+        public string type;
     }
        
     public static class StoreManagerAPI
@@ -113,21 +94,24 @@ namespace Raincrow.Store
         public const string TYPE_COSMETIC = "cosmetics";
         public const string TYPE_INGREDIENT_BUNDLE = "bundles";
         public const string TYPE_ELIXIRS = "consumables";
+        public const string TYPE_PACK = "packs";
 
         public static StoreData StoreData { get; set; }
         
-        public static Dictionary<string, List<ItemData>> BundleDict { get; set; }
+        public static Dictionary<string, List<ItemData>> IngredientBundleDict { get; set; }
         public static Dictionary<string, ConsumableData> ConsumableDict { get; set; }
         public static Dictionary<string, CurrencyBundleData> CurrencyBundleDict { get; set; }
+        public static Dictionary<string, PackData> PackDict { get; set; }
 
-        public static System.Action<string, string> OnPurchaseComplete;
+        public static event System.Action<string, string> OnPurchaseComplete;
+
 
 
         public static ItemData[] GetIngredientBundle(string id)
         {
-            if (BundleDict.ContainsKey(id))
+            if (IngredientBundleDict.ContainsKey(id))
             {
-                return BundleDict[id].ToArray();
+                return IngredientBundleDict[id].ToArray();
             }
             else
             {
@@ -162,6 +146,20 @@ namespace Raincrow.Store
             }
         }
 
+        public static PackData GetPack(string id)
+        {
+            if (PackDict.ContainsKey(id))
+            {
+                return PackDict[id];
+            }
+            else
+            {
+                LogError($"special pack not found (\"{id}\")");
+                return new PackData();
+            }
+        }
+
+
         public static void Purchase(string id, string type, string currency, System.Action<string> callback)
         {
             Purchase(id, type, currency, null, callback);
@@ -186,74 +184,15 @@ namespace Raincrow.Store
                     string debug = "purchase complete:\n";
                     debug += $"[{type}] {id}";
 
+                    AddItem(id, type);
+
                     int silver = 0;
                     int gold = 0;
 
-                    switch (type)
-                    {
-                        case TYPE_CURRENCY:
-                            //currency is processed on IAPSilver
-                            break;
-
-                        case TYPE_COSMETIC:
-
-                            //item = Store.Cosmetics.Find(cos => cos.id == id);
-                            CosmeticData cosmetic = DownloadedAssets.GetCosmetic(id);
-
-                            //get the price
-                            if (currency == "silver")
-                                silver = StoreData.GetPrice(type, id, true);
-                            if (currency == "gold")
-                                gold = StoreData.GetPrice(type, id, false);
-
-                            //add the item to inventory
-                            PlayerDataManager.playerData.inventory.cosmetics.Add(cosmetic);
-                            break;
-
-                        case TYPE_INGREDIENT_BUNDLE:
-
-                            ItemData[] bundle = StoreManagerAPI.GetIngredientBundle(id);
-
-                            //get the price
-                            if (currency == "silver")
-                                silver = StoreData.GetPrice(type, id, true);
-                            if (currency == "gold")
-                                gold = StoreData.GetPrice(type, id, false);
-
-                            //add the ingredients to the inventory
-                            for (int i = 0; i < bundle.Length; i++)
-                            {
-                                debug += "\n\t" + bundle[i].id+ " +" + bundle[i].count;
-                                PlayerDataManager.playerData.AddIngredient(bundle[i].id, bundle[i].count);
-                            }
-                            break;
-
-                        case TYPE_ELIXIRS:
-
-                            Item elixir = PlayerDataManager.playerData.inventory.consumables.Find(it => it.id == id);
-                            ConsumableData consumable = StoreManagerAPI.GetConsumable(id); ;
-
-                            //get the price
-                            if (currency == "silver")
-                                silver = StoreData.GetPrice(type, id, true);
-                            if (currency == "gold")
-                                gold = StoreData.GetPrice(type, id, false);
-
-                            //add to the inventory
-                            if (elixir == null || string.IsNullOrEmpty(elixir.id))
-                            {
-                                PlayerDataManager.playerData.inventory.consumables.Add(new Item
-                                {
-                                    id = id,
-                                    count = 1
-                                });
-                            }
-                            else
-                            {
-                                elixir.count += 1;
-                            }
-                            break;
-                    }
+                    if (currency == "silver")
+                        silver = StoreData.GetPrice(type, id, true);
+                    if (currency == "gold")
+                        gold = StoreData.GetPrice(type, id, false);
 
                     if (silver != 0)
                     {
@@ -279,6 +218,72 @@ namespace Raincrow.Store
                     callback?.Invoke(response);
                 }
             });
+        }
+
+        public static void AddItem(string id, string type)
+        {
+            Log("Adding items for purchase of " + type + ": " + id);
+
+            switch (type)
+            {
+                case TYPE_CURRENCY:
+                {
+                    CurrencyBundleData data = StoreManagerAPI.GetCurrencyBundle(id);
+                    PlayerDataManager.playerData.silver += (data.silver + data.silverBonus);
+                    PlayerDataManager.playerData.gold += (data.gold + data.goldBonus);
+                    PlayerManagerUI.Instance?.UpdateDrachs();
+                    break;
+                }
+                case TYPE_COSMETIC:
+                {
+                    //add the item to inventory
+                    CosmeticData cosmetic = DownloadedAssets.GetCosmetic(id);
+                    PlayerDataManager.playerData.inventory.cosmetics.Add(cosmetic);
+                    break;
+                }
+                case TYPE_INGREDIENT_BUNDLE:
+                {
+                    //add the ingredients to the inventory
+                    ItemData[] bundle = StoreManagerAPI.GetIngredientBundle(id);
+                    for (int i = 0; i < bundle.Length; i++)
+                        PlayerDataManager.playerData.AddIngredient(bundle[i].id, bundle[i].count);
+                    break;
+                }
+                case TYPE_ELIXIRS:
+                {
+                    Item elixir = PlayerDataManager.playerData.inventory.consumables.Find(it => it.id == id);
+                    ConsumableData consumable = StoreManagerAPI.GetConsumable(id); ;
+                    if (elixir == null || string.IsNullOrEmpty(elixir.id))
+                    {
+                        //add one if none is found on the players inventory
+                        PlayerDataManager.playerData.inventory.consumables.Add(new Item
+                        {
+                            id = id,
+                            count = 1
+                        });
+                    }
+                    else
+                    {   
+                        //increment if it already exists on the player's inventory
+                        elixir.count += 1;
+                    }
+                    break;
+                }
+                case TYPE_PACK:
+                {
+                    PackData data = StoreManagerAPI.GetPack(id);
+                    foreach (var item in data.content)
+                    {
+                        AddItem(item.id, item.type);
+                    }
+                    break;
+                }
+                default:
+                {
+                    Debug.LogException(new Exception("store item type " + type + " (" + id + ") not implemetend"));
+                    break;
+                }
+            }
         }
 
 

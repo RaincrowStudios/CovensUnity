@@ -18,7 +18,8 @@ public class IAPSilver : MonoBehaviour, IStoreListener
         public System.Action<string> callback;
     }
 
-    private static Dictionary<string, string> m_ProductMap;
+    private static Dictionary<string, string> m_CurrencyMap;
+    private static Dictionary<string, string> m_PackMap;
     private static OngoingPurchase m_OngoingPurchase;
 
     void Awake()
@@ -40,16 +41,27 @@ public class IAPSilver : MonoBehaviour, IStoreListener
         }
         
         var builder = ConfigurationBuilder.Instance(StandardPurchasingModule.Instance());
-        m_ProductMap = new Dictionary<string, string>();
+        m_CurrencyMap = new Dictionary<string, string>();
 
-        string log = "Initializing IAP\nProducts:";
+        string log = "Initializing IAP";
+
+        log += "\nCurrency bundles:";
         foreach (var prod in StoreManagerAPI.CurrencyBundleDict)
         {
             builder.AddProduct(prod.Value.product, ProductType.Consumable);
-            m_ProductMap.Add(prod.Value.product, prod.Key);
+            m_CurrencyMap.Add(prod.Value.product, prod.Key);
 
             log += "\n\t" + prod.Value.product;
         }
+
+        log += "\nPacks:\n";
+        foreach (var prod in StoreManagerAPI.PackDict)
+        {
+            builder.AddProduct(prod.Value.product, ProductType.Consumable);
+            m_CurrencyMap.Add(prod.Value.product, prod.Key);
+            log += "\n\t" + prod.Value.product;
+        }
+
         Log(log);
 
         UnityPurchasing.Initialize(this, builder);
@@ -177,27 +189,36 @@ public class IAPSilver : MonoBehaviour, IStoreListener
             return PurchaseProcessingResult.Pending;
         }
 
-        string id = m_ProductMap[args.purchasedProduct.definition.id];
-        CurrencyBundleData data = StoreManagerAPI.GetCurrencyBundle(id);
+        string product = args.purchasedProduct.definition.id;
+        string id;
+        string type;
+
+        if (m_PackMap.ContainsKey(product))
+        {
+            id = m_PackMap[product];
+            type = StoreManagerAPI.TYPE_PACK;
+        }
+        else
+        {
+            id = m_CurrencyMap[product];
+            type = StoreManagerAPI.TYPE_CURRENCY;
+        }
 
         Log("id: " + id + "\nreceipt: " + args.purchasedProduct.receipt);
 
         StoreManagerAPI.Purchase(
             id,
-            StoreManagerAPI.TYPE_CURRENCY,
+            type,
             null,
             args.purchasedProduct.receipt,
             (error) =>
             {                
                 if (string.IsNullOrEmpty(error))
                 {
-                    Log("Processing success");                    
+                    Log("Processing successful: " + id);
 
-                    PlayerDataManager.playerData.silver += (data.silver + data.silverBonus);
-                    PlayerDataManager.playerData.gold += (data.gold + data.goldBonus);
-
-                    if (PlayerManagerUI.Instance != null)
-                        PlayerManagerUI.Instance.UpdateDrachs();
+                    //add the item to the player localy
+                    StoreManagerAPI.AddItem(id, type);
 
                     //remove from pending
                     m_StoreController.ConfirmPendingPurchase(args.purchasedProduct);
@@ -225,7 +246,7 @@ public class IAPSilver : MonoBehaviour, IStoreListener
     {
         Log($"OnPurchaseFailed: FAIL. Product: '{product.definition.storeSpecificId}', PurchaseFailureReason: {failureReason}");
 
-        string id = m_ProductMap[product.definition.id];
+        string id = m_CurrencyMap.ContainsKey(product.definition.id) ? m_CurrencyMap[product.definition.id] : m_PackMap[product.definition.id];
         string error = "PurchaseFailureReason" + ((int)failureReason).ToString();
         FinishPurchase(id, error);
     }
