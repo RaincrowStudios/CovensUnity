@@ -9,7 +9,7 @@ public class DebugInitializer : MonoBehaviour
     [SerializeField] private float m_Latitude = 47.70168f;
     [SerializeField] private bool m_Login = false;
     [SerializeField] private bool m_IAP = false;
-
+    
     private void Awake()
     {
 #if PRODUCTION

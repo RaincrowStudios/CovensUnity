@@ -299,6 +299,10 @@ namespace Raincrow.Test
                 {
                     UISummonSuccess.Instance.Show("spirit_barghest");
                 }
+                if (GUILayout.Button("bundle popup"))
+                {
+                    UIBundlePopup.Open("bundle_seasonalPack");
+                }
                 if (GUILayout.Button("Trigger low memory"))
                 {
                     DownloadedAssets.Instance.OnApplicationLowMemory();

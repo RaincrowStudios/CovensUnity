@@ -73,8 +73,11 @@ namespace Raincrow.Store
 
     public struct PackData
     {
+        [JsonProperty("productId")]
         public string product;
         public float fullPrice;
+        public bool isFree;
+        public double expiresOn;
         public List<PackItemData> content;
     }
 
@@ -86,6 +89,8 @@ namespace Raincrow.Store
         public string id;
         [JsonProperty("itemType")]
         public string type;
+        [JsonProperty("amount")]
+        public int amount;
     }
        
     public static class StoreManagerAPI
@@ -146,7 +151,7 @@ namespace Raincrow.Store
             }
         }
 
-        public static PackData GetPack(string id)
+        public static PackData GetPackData(string id)
         {
             if (PackDict.ContainsKey(id))
             {
@@ -271,10 +276,26 @@ namespace Raincrow.Store
                 }
                 case TYPE_PACK:
                 {
-                    PackData data = StoreManagerAPI.GetPack(id);
+                    PackData data = StoreManagerAPI.GetPackData(id);
                     foreach (var item in data.content)
                     {
-                        AddItem(item.id, item.type);
+                        if (item.type == "effect")
+                        {
+
+                        }
+                        else if (item.type == StoreManagerAPI.TYPE_CURRENCY)
+                        {
+                            if (item.id == "gold")
+                                PlayerDataManager.playerData.gold += item.amount;
+                            else if (item.id == "silver")
+                                PlayerDataManager.playerData.silver += item.amount;
+
+                            PlayerManagerUI.Instance?.UpdateDrachs();
+                        }
+                        else
+                        {
+                            AddItem(item.id, item.type);
+                        }
                     }
                     break;
                 }
@@ -302,7 +323,7 @@ namespace Raincrow.Store
             Debug.LogError("[<color=cyan>StoreAPI</color>] " + msg);
             return;
 #endif
-            Debug.LogError("[StoreAPI] " + msg);
+            Debug.LogException(new Exception("[StoreAPI] " + msg));
         }
     }
 }

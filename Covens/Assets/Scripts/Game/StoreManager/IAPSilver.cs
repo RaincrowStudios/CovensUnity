@@ -14,7 +14,6 @@ public class IAPSilver : MonoBehaviour, IStoreListener
     private class OngoingPurchase
     {
         public string id;
-        public CurrencyBundleData data;
         public System.Action<string> callback;
     }
 
@@ -42,6 +41,7 @@ public class IAPSilver : MonoBehaviour, IStoreListener
         
         var builder = ConfigurationBuilder.Instance(StandardPurchasingModule.Instance());
         m_CurrencyMap = new Dictionary<string, string>();
+        m_PackMap = new Dictionary<string, string>();
 
         string log = "Initializing IAP";
 
@@ -55,11 +55,14 @@ public class IAPSilver : MonoBehaviour, IStoreListener
         }
 
         log += "\nPacks:\n";
-        foreach (var prod in StoreManagerAPI.PackDict)
+        if (StoreManagerAPI.PackDict != null)
         {
-            builder.AddProduct(prod.Value.product, ProductType.Consumable);
-            m_CurrencyMap.Add(prod.Value.product, prod.Key);
-            log += "\n\t" + prod.Value.product;
+            foreach (var prod in StoreManagerAPI.PackDict)
+            {
+                builder.AddProduct(prod.Value.product, ProductType.Consumable);
+                m_PackMap.Add(prod.Value.product, prod.Key);
+                log += "\n\t" + prod.Value.product;
+            }
         }
 
         Log(log);
@@ -82,15 +85,19 @@ public class IAPSilver : MonoBehaviour, IStoreListener
             return;
         }
 
-        var data = StoreManagerAPI.GetCurrencyBundle(id);
+        string productId;
+        if (StoreManagerAPI.PackDict.ContainsKey(id))
+            productId = StoreManagerAPI.PackDict[id].product;
+        else
+            productId = StoreManagerAPI.GetCurrencyBundle(id).product;
 
-        Log("Initializing purchase: " + data.product);
+        Log("Initializing purchase: " + productId);
 
         if (IsInitialized())
         {
-            Raincrow.Analytics.Events.PurchaseAnalytics.StartIAP(data.product);
+            Raincrow.Analytics.Events.PurchaseAnalytics.StartIAP(productId);
             
-            Product product = m_StoreController.products.WithID(data.product);
+            Product product = m_StoreController.products.WithID(productId);
             
             if (product != null && product.availableToPurchase)
             {
@@ -99,7 +106,6 @@ public class IAPSilver : MonoBehaviour, IStoreListener
                 m_OngoingPurchase = new OngoingPurchase
                 {
                     id = id,
-                    data = data,
                     callback = callback
                 };
 
@@ -262,6 +268,19 @@ public class IAPSilver : MonoBehaviour, IStoreListener
         }
 
         return null;
+    }
+
+    public static string GetLocalizedPrice(string productId)
+    {
+        foreach (var product in m_StoreController.products.all)
+        {
+            if (product.definition.id.Equals(productId))
+            {
+                return product.metadata.localizedPriceString;
+            }
+        }
+
+        return "0.00";
     }
 
     private static void Log(string msg)

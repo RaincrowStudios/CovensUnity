@@ -37,8 +37,8 @@ public class UIStore : MonoBehaviour
     [SerializeField] private Button m_CharmsButton;
     [SerializeField] private Button m_IngredientsButton;
     [Space]
-    [SerializeField] private Button m_SpecialBundleButton;
-    [SerializeField] private Image m_SpecialBundleIcon;
+    [SerializeField] private UIBundleButton m_SpecialPack;
+    [SerializeField] private UIBundleButton m_FreeSpecialPack;
 
     [Header("Store")]
     [SerializeField] private UIStoreContainer m_StoreWindow;
@@ -129,6 +129,9 @@ public class UIStore : MonoBehaviour
         m_StylesWindow.gameObject.SetActive(false);
         m_HomeWindow.gameObject.SetActive(false);
 
+        m_FreeSpecialPack.gameObject.SetActive(false);
+        m_SpecialPack.gameObject.SetActive(false);
+
         m_CanvasGroup.alpha = 0;
         m_StoreWindow.alpha = 0;
         m_StylesWindow.alpha = 0;
@@ -139,10 +142,15 @@ public class UIStore : MonoBehaviour
         m_CurrenciesButton.onClick.AddListener(() => SetScreen(Screen.CURRENCY));
         m_CharmsButton.onClick.AddListener(() => SetScreen(Screen.CHARMS));
         m_IngredientsButton.onClick.AddListener(() => SetScreen(Screen.INGREDIENTS));
-
+        
         SetScreen(Screen.HOME);
 
         DownloadedAssets.OnWillUnloadAssets += OnWillUnloadAssets;
+    }
+
+    private void Start()
+    {
+        SetupHomePacks();
     }
 
     private void OnWillUnloadAssets()
@@ -390,6 +398,22 @@ public class UIStore : MonoBehaviour
     {
         SetHeaderText();
     }
+    
+    [ContextMenu("Setup Packs")]
+    private void SetupHomePacks()
+    {
+        if (StoreManagerAPI.StoreData.Packs != null)
+        {
+            foreach(var pack in StoreManagerAPI.StoreData.Packs)
+            {
+                PackData data = StoreManagerAPI.GetPackData(pack.id);
+                if (data.isFree)
+                    m_FreeSpecialPack.Setup(pack.id);
+                else
+                    m_SpecialPack.Setup(pack.id);
+            }
+        }
+    }
 
     private void SetupCosmetics()
     {
@@ -471,13 +495,5 @@ public class UIStore : MonoBehaviour
             SetScreen(Screen.COSMETICS);
         else
             SetScreen(Screen.HOME);
-    }
-
-    private void OnClickSpecialBundle()
-    {
-        if (StoreManagerAPI.StoreData.Packs == null || StoreManagerAPI.StoreData.Packs.Count == 0)
-            return;
-
-        UIBundlePopup.Open(StoreManagerAPI.StoreData.Packs[0].id);
     }
 }

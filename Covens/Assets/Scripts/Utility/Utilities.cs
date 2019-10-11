@@ -263,6 +263,11 @@ public class Utilities : MonoBehaviour
         return stamp;
     }
 
+    //public static string GetTimeLeft(double timestamp)
+    //{
+
+    //}
+
     public static string GetTimeStamp(double javaTimeStamp)
     {
         if (javaTimeStamp < 159348924)

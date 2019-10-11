@@ -318,6 +318,7 @@ public class PlayerData : WitchMarkerData
 
     [JsonProperty("cosmetics")] private List<string> m_Cosmetics;
     [JsonProperty("consumables")] private List<ConsumableItem> m_Consumables;
+    [JsonProperty("packs")] private List<string> m_Packs;
 
     [JsonIgnore] private Dictionary<string, int> m_HerbsDict = null;
     [JsonIgnore] private Dictionary<string, int> m_ToolsDict = null;
@@ -334,6 +335,16 @@ public class PlayerData : WitchMarkerData
     public List<CovenRequest> covenRequests;
     public HashSet<string> immunities;
     public HashSet<string> firsts;
+
+    public List<string> OwnedPacks
+    {
+        get
+        {
+            if (m_Packs == null)
+                m_Packs = new List<string>();
+            return m_Packs;
+        }
+    }
 
     [JsonIgnore]
     public ulong xpToLevelUp
