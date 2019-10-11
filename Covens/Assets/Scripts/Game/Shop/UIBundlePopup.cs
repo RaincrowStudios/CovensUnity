@@ -146,7 +146,7 @@ public class UIBundlePopup : MonoBehaviour
                     string priceString = Regex.Match(localizedPriceString, @"\d+.+\d").Value;
                     float priceFloat = float.Parse(priceString);
                     priceFloat *= data.fullPrice;
-                    string oldPriceString = localizedPriceString.Replace(priceString, priceFloat.ToString("n2"));
+                    string oldPriceString = localizedPriceString.Replace(priceString, priceFloat.ToString("{0:0.00}"));
 
                     m_OldPriceText.text = oldPriceString;
                     m_OldPriceText.gameObject.SetActive(true);
