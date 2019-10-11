@@ -187,6 +187,7 @@ public class UIStore : MonoBehaviour
             {
                 m_CanvasGroup.alpha = v;
             })
+            .setOnComplete(() => MapsAPI.Instance.HideMap(true))
             .setEaseOutCubic()
             .uniqueId;
     }
@@ -196,11 +197,11 @@ public class UIStore : MonoBehaviour
     {
         if (!m_InputRaycaster.enabled)
             return;
-
-        StoreManagerAPI.OnPurchaseComplete -= OnPurchaseComplete;
-
+        
         LeanTween.cancel(m_MainTweenId);
+        StoreManagerAPI.OnPurchaseComplete -= OnPurchaseComplete;
         m_InputRaycaster.enabled = false;
+        MapsAPI.Instance.HideMap(false);
 
         m_MainTweenId = LeanTween.value(m_CanvasGroup.alpha, 0, 0.5f)
             .setOnUpdate((float v) =>
