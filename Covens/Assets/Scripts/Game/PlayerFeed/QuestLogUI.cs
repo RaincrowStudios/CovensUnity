@@ -53,7 +53,7 @@ public class QuestLogUI : UIAnimationManager
 
     private bool isOpen = false;
     private bool questInfoVisible = false;
-    
+
     private static QuestLogUI m_Instance;
     private int m_TweenId;
 
@@ -105,7 +105,7 @@ public class QuestLogUI : UIAnimationManager
         isOpen = true;
 
         StopAllCoroutines();
-        gameObject.SetActive(true);        
+        gameObject.SetActive(true);
         QuestLogContainer.SetActive(true);
 
         anim.Play("in");
@@ -260,7 +260,7 @@ public class QuestLogUI : UIAnimationManager
                 openChest.SetActive(false);
                 closedChest.SetActive(true);
                 claimFX.SetActive(true);
-				bottomInfo.text = LocalizeLookUp.GetText ("daily_tap_chest");//"Tap the chest to claim rewards";
+                bottomInfo.text = LocalizeLookUp.GetText("daily_tap_chest");//"Tap the chest to claim rewards";
                 buttonTapChest.gameObject.SetActive(true);
             }
             else
@@ -288,23 +288,23 @@ public class QuestLogUI : UIAnimationManager
         if (reward.silver != 0)
         {
             rewardSilver.gameObject.SetActive(true);
-			rewardSilver.text = "+" + reward.silver.ToString () + " " + LocalizeLookUp.GetText ("store_silver");//" Silver!";
+            rewardSilver.text = "+" + reward.silver.ToString() + " " + LocalizeLookUp.GetText("store_silver");//" Silver!";
         }
 
-        yield return new WaitForSeconds(1.8f);
+        yield return new WaitForSeconds(1f);
         if (reward.gold != 0)
         {
             rewardGold.gameObject.SetActive(true);
-			rewardGold.text = "+" + reward.gold.ToString () + " " + LocalizeLookUp.GetText ("store_gold");//Gold!";
+            rewardGold.text = "+" + reward.gold.ToString() + " " + LocalizeLookUp.GetText("store_gold");//Gold!";
         }
 
         yield return new WaitForSeconds(1.8f);
         if (reward.energy != 0)
         {
             rewardEnergy.gameObject.SetActive(true);
-			rewardEnergy.text = "+" + reward.energy.ToString () + " " + LocalizeLookUp.GetText ("card_witch_energy");//Energy!";
+            rewardEnergy.text = "+" + reward.energy.ToString() + " " + LocalizeLookUp.GetText("card_witch_energy");//Energy!";
         }
-        
+
         openChest.SetActive(true);
         closedChest.SetActive(false);
         claimFX.SetActive(false);
@@ -315,7 +315,7 @@ public class QuestLogUI : UIAnimationManager
     {
         while (true)
         {
-			bottomInfo.text = LocalizeLookUp.GetText("daily_new_quest") + " " + "<color=white>" + Utilities.GetTimeRemaining(QuestsController.Quests.endDate) + "</color>";
+            bottomInfo.text = LocalizeLookUp.GetText("daily_new_quest") + " " + "<color=white>" + Utilities.GetTimeRemaining(QuestsController.Quests.endDate) + "</color>";
             yield return new WaitForSeconds(1);
         }
     }
@@ -353,7 +353,7 @@ public class QuestLogUI : UIAnimationManager
         subTitle.gameObject.SetActive(true);
         subTitle.text = LocalizeLookUp.GetExploreTitle(QuestsController.Quests.explore.type);
         Desc.text = LocalizeLookUp.GetExploreDesc(QuestsController.Quests.explore.type);
-		title.text = LocalizeLookUp.GetText ("daily_explore");//"Explore";
+        title.text = LocalizeLookUp.GetText("daily_explore");//"Explore";
 
         if (PlayerDataManager.playerData.quest.explore.completed)
         {
@@ -374,16 +374,16 @@ public class QuestLogUI : UIAnimationManager
 
         var gather = QuestsController.Quests.gather;
         var progress = PlayerDataManager.playerData.quest.gather;
-        
-        Desc.text = 
-            LocalizeLookUp.GetText("collect") + " " +
-            gather.amount + " " + 
-            (gather.type == LocalizeLookUp.GetText("daily_herb") ? LocalizeLookUp.GetText("ingredient_botanicals") : gather.type);
-       
-        if (string.IsNullOrEmpty(gather.country) == false)
-			Desc.text += " " + LocalizeLookUp.GetText("daily_in_location").Replace("{{location}}", LocalizeLookUp.GetCountryName(gather.country));
 
-		title.text = LocalizeLookUp.GetText ("daily_gather");//"Gather";
+        Desc.text =
+            LocalizeLookUp.GetText("collect") + " " +
+            gather.amount + " " +
+            (gather.type == LocalizeLookUp.GetText("daily_herb") ? LocalizeLookUp.GetText("ingredient_botanicals") : gather.type);
+
+        if (string.IsNullOrEmpty(gather.country) == false)
+            Desc.text += " " + LocalizeLookUp.GetText("daily_in_location").Replace("{{location}}", LocalizeLookUp.GetCountryName(gather.country));
+
+        title.text = LocalizeLookUp.GetText("daily_gather");//"Gather";
         completeText.text = "( " + progress.count + "/" + gather.amount.ToString() + " )";
 
         descAnim.Play("up");
