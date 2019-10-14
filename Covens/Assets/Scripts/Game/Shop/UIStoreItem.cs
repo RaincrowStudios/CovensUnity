@@ -109,8 +109,50 @@ public class UIStoreItem : MonoBehaviour
         //check unlocks
         //spirit unlock
         //school mastery unlock
-        if (string.IsNullOrEmpty(item.tooltip) == false)
+        //if (string.IsNullOrEmpty(item.tooltip) == false)
+        //    locked = true;
+
+        if (Utilities.TimespanFromJavaTime(item.unlockOn).TotalMinutes > 0)
+        {
             locked = true;
+        }
+        else if (cosmetic.position == "carryOnRight" || cosmetic.position == "carryOnLeft")
+        {
+            if (item.id == "cosmetic_f_CR_SHADOW" && PlayerDataManager.playerData.degree != -14)
+                locked = true;
+            else if (item.id == "cosmetic_f_CR_GRAY")
+                locked = true;
+            else if (item.id == "cosmetic_f_CR_WHITE" && PlayerDataManager.playerData.degree != 14)
+                locked = true;
+            else if (string.IsNullOrEmpty(item.tooltip) == false)
+                locked = true;
+            else if (string.IsNullOrEmpty(item.tooltip) == false)
+                locked = true;
+        }
+        else if (cosmetic.position == "petFeet")
+        {
+            string spirit = null;
+            switch (item.id)
+            {
+                case "cosmetic_f_PF_SENTINALOWL": spirit = "spirit_sentinelOwl"; break;
+                case "cosmetic_m_PF_SENTINALOWL": spirit = "spirit_sentinelOwl"; break;
+                case "cosmetic_f_PF_WENDIGO": spirit = "spirit_wendigo"; break;
+                case "cosmetic_m_PF_WENDIGO": spirit = "spirit_wendigo"; break;
+                case "cosmetic_f_PF_BARGHEST": spirit = "spirit_barghest"; break;
+                case "cosmetic_m_PF_BARGHEST": spirit = "spirit_barghest"; break;
+                case "cosmetic_f_PF_GRINDYLOW": spirit = "spirit_grindylow"; break;
+                case "cosmetic_m_PF_GRINDYLOW": spirit = "spirit_grindylow"; break;
+                case "cosmetic_f_PF_CATSIDHE": spirit = "spirit_catSidhe"; break;
+                case "cosmetic_m_PF_CATSIDHE": spirit = "spirit_catSidhe"; break;
+            }
+
+            if (string.IsNullOrEmpty(spirit) == false && PlayerDataManager.playerData.knownSpirits.Exists(spr => spr.spirit == spirit) == false)
+                locked = true;
+        }
+        else if (string.IsNullOrEmpty(item.tooltip) == false)
+        {
+            locked = true;
+        }
 
         if (locked)
         {
