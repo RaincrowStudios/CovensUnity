@@ -43278,7 +43278,6 @@ GameObject:
   m_Component:
   - component: {fileID: 2123791990}
   - component: {fileID: 2123791991}
-  - component: {fileID: 2123791992}
   m_Layer: 0
   m_Name: CameraController
   m_TagString: Untagged
@@ -43333,19 +43332,6 @@ MonoBehaviour:
   m_DragSensivity: 0.5
   m_ZoomSensivity: 1.5
   m_RotateSensivity: 2.5
---- !u!114 &2123791992
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2123791989}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: bb19638879c8ff1438357c0c22f1ca95, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  m_Color: {r: 1, g: 1, b: 1, a: 1}
 --- !u!1 &177271583924350325
 GameObject:
   m_ObjectHideFlags: 0
@@ -46501,6 +46487,7 @@ MonoBehaviour:
   prefix: 
   id: chat_shoutMessage
   suffix: 
+  toUpper: 0
 --- !u!114 &1304458277153507007
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -46974,6 +46961,7 @@ MonoBehaviour:
   prefix: 
   id: chat_shout
   suffix: '!'
+  toUpper: 0
 --- !u!114 &1304632379428914869
 MonoBehaviour:
   m_ObjectHideFlags: 0
