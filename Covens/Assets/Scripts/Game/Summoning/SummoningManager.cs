@@ -75,7 +75,7 @@ public static class SummoningManager
                 
                 SpiritData spiritData = DownloadedAssets.GetSpirit(spirit);
                 int tier = spiritData.tier;
-                int summonCost = PlayerDataManager.summoningCosts[tier - 1] * 3;
+                int summonCost = PlayerDataManager.summoningCosts[tier - 1];
 
                 OnMapEnergyChange.ForceEvent(PlayerManager.marker, PlayerDataManager.playerData.energy - summonCost);
 
