@@ -120,6 +120,9 @@ public class SocketClient : MonoBehaviour
         string data = args[1].ToString();
 
         //Log(command + "\n" + data);
+#if !PRODUCTION
+        Debug.Log("game.event \"" + command + "\":\n" + data);
+#endif
 
         CommandResponse response = new CommandResponse()
         {
