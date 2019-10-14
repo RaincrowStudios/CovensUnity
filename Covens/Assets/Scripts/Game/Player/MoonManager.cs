@@ -4,6 +4,7 @@ using UnityEngine;
 using UnityEngine.UI;
 using System;
 using TMPro;
+using Raincrow.FTF;
 
 
 public class MoonManager : UIAnimationManager
@@ -75,6 +76,8 @@ public class MoonManager : UIAnimationManager
         anim.Play("in");
         SetupMoon();
         DegreeSetup();
+        if (FirstTapManager.IsFirstTime("moonphase"))
+            FirstTapManager.Show("moonphase", null);
         StartCoroutine(CountDown());
     }
 
@@ -164,7 +167,7 @@ public class MoonManager : UIAnimationManager
 
         float lunarEffect = GetLunarEfficiency(PlayerDataManager.playerData.degree, (float)data.luminosity);
         if (lunarEffect == 0)
-            spellEfficiency.text = "";
+            spellEfficiency.text = LocalizeLookUp.GetText("spell_efficiency_bonus").Replace("{{value}}", "+0");
         else
             spellEfficiency.text = LocalizeLookUp.GetText("spell_efficiency_bonus").Replace("{{value}}", (lunarEffect * 100).ToString(" +#;-#"));// + "% Spell efficiency";
     }
@@ -309,7 +312,7 @@ public class MoonManager : UIAnimationManager
 
         }
         else
-        {  
+        {
             //setting up the Degree Bar UI if the witch is not grey
             BlackBar.SetActive(false);
             WhiteIcon.SetActive(false);
@@ -320,14 +323,14 @@ public class MoonManager : UIAnimationManager
             NextDegree.text = (Mathf.Abs(PlayerDataManager.playerData.degree) + 1).ToString();
 
             if (PlayerDataManager.playerData.degree > 0)
-            { 
+            {
                 //white witch
                 BarFill.sprite = whitebase;
                 BarFill.color = new Color(1f, 1f, 1f, 1f);
                 BarFill.fillAmount = MapUtils.scale(0f, 1f, PlayerDataManager.playerData.minAlignment, PlayerDataManager.playerData.maxAlignment, PlayerDataManager.playerData.alignment);
             }
             else if (PlayerDataManager.playerData.degree < 0)
-            { 
+            {
                 //shadow witch
                 BarFill.sprite = blackbase;
                 BarFill.fillAmount = MapUtils.scale(0f, 1f, Mathf.Abs(PlayerDataManager.playerData.maxAlignment), Mathf.Abs(PlayerDataManager.playerData.minAlignment), Mathf.Abs(PlayerDataManager.playerData.alignment));

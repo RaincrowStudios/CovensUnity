@@ -209,6 +209,7 @@
 	"coven": {},
 	"bos": {},
 	"daily": {},
+	"moonphase": {},
 	"recall": {
 		"highlight": {
 			"show": true,
