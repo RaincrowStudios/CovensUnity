@@ -141,21 +141,16 @@ public class UIBundlePopup : MonoBehaviour
                 string localizedPriceString = IAPSilver.GetLocalizedPrice(data.product);
                 m_PriceText.text = localizedPriceString;
 
-                try
-                {
-                    string priceString = Regex.Match(localizedPriceString, @"\d+.+\d").Value;
-                    float priceFloat = float.Parse(priceString);
-                    priceFloat *= data.fullPrice;
-                    string oldPriceString = localizedPriceString.Replace(priceString, priceFloat.ToString("{0:0.00}"));
-
-                    m_OldPriceText.text = oldPriceString;
-                    m_OldPriceText.gameObject.SetActive(true);
-                }
-                catch(System.Exception e)
-                {
-                    Debug.LogException(new System.Exception("Failed to parse localized price " + localizedPriceString));
+                //try
+                //{
+                //    m_OldPriceText.text = GetMultipliedPrice(localizedPriceString, data.fullPrice);
+                //    m_OldPriceText.gameObject.SetActive(true);
+                //}
+                //catch(System.Exception e)
+                //{
+                //    Debug.LogException(new System.Exception("Failed to parse localized price " + localizedPriceString));
                     m_OldPriceText.gameObject.SetActive(false);
-                }
+                //}
             }
 
             m_Anim.Show();
@@ -241,4 +236,12 @@ public class UIBundlePopup : MonoBehaviour
             }
         });
     }
+
+    //public static string GetMultipliedPrice(string localizedPrice, float multiplier)
+    //{
+    //    string currentPriceString = Regex.Match(localizedPrice, @"\d+[.,]+\d+").Value;
+    //    float currentPriceFloat = float.Parse(currentPriceString.Replace(',','.'), NumberStyles.Any, CultureInfo.InstalledUICulture);
+    //    float oldPriceFloat = currentPriceFloat * multiplier;
+    //    return localizedPrice.Replace(currentPriceString, string.Format("{0:0.##}", oldPriceFloat));
+    //}
 }
