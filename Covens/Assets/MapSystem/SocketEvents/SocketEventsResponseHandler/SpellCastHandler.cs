@@ -41,16 +41,26 @@ namespace Raincrow.GameEventResponses
 
             [JsonProperty("moveCharacter")]
             public MoveData moveCharacter;
+
+            [JsonProperty("xp")]
+            public long xp;
         }
 
         public struct SpellCastEventData
         {
+            [JsonProperty("spell")]
             public string spell;
+            [JsonProperty("caster")]
             public SpellCastCharacter caster;
+            [JsonProperty("target")]
             public SpellCastCharacter target;
+            [JsonProperty("result")]
             public Result result;
+            [JsonProperty("timestamp")]
             public double timestamp;
+            [JsonProperty("immunity")]
             public bool immunity;
+            [JsonProperty("cooldown")]
             public double cooldown;
         }
 
@@ -132,14 +142,6 @@ namespace Raincrow.GameEventResponses
                 }
 
                 PlayerDataManager.playerData.alignment += alignmentChange;
-
-                if (data.result.isSuccess)
-                {
-                    PlayerDataManager.playerData.AddExp(
-                        PlayerDataManager.playerData.ApplyExpBuffs(
-                            (long)(spell.xp * (Mathf.Pow(PlayerDataManager.playerData.level,2)/2)))
-                    );
-                }
             }
 
             SpellcastingTrailFX.SpawnTrail(spell.school, caster, target,
@@ -310,10 +312,8 @@ namespace Raincrow.GameEventResponses
 
                 SpiritData data = DownloadedAssets.GetSpirit(spirit);
 
-                long expGained = PlayerDataManager.spiritRewardExp[data.tier - 1];
                 int silverGained = PlayerDataManager.spiritRewardSilver[data.tier - 1];
 
-                PlayerDataManager.playerData.AddExp(expGained);
                 PlayerDataManager.playerData.AddCurrency(silverGained, 0);
 
                 OnSpiritBanished?.Invoke(spirit);

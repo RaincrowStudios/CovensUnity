@@ -282,7 +282,7 @@ public class PlayerData : WitchMarkerData
 {
     [JsonProperty("_id")] public string instance;
     public string account;
-    //public string physicalDominion;
+    private double lastExpUpdate;
     public ulong xp;
     public long alignment;
     public bool whiteMastery;
@@ -594,9 +594,13 @@ public class PlayerData : WitchMarkerData
        return expAmount + (long)(expAmount * GetAptitude(effects) * 0.01);
     }
 
-    public void AddExp(long amount)
+    public void UpdateExp(ulong exp, double timestamp)
     {
-        xp += (ulong)amount;
+        if (timestamp < lastExpUpdate)
+            return;
+
+        xp = exp;
+        lastExpUpdate = timestamp;
 
         if (PlayerManagerUI.Instance)
             PlayerManagerUI.Instance.setupXP();

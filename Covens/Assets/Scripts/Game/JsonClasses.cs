@@ -252,7 +252,7 @@ public class SpellData
     public string baseSpell;
     public bool common;
     public int cost;
-    public int xp;
+    //public int xp;
     public int level;
 
     public List<string> ingredients;

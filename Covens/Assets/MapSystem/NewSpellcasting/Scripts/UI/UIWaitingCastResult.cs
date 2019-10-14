@@ -227,7 +227,7 @@ public class UIWaitingCastResult : UIInfoPanel
             m_XPGained.text = LocalizeLookUp.GetText("spirit_deck_xp_gained")// $"XP gained: {result.xpGain}";
                 .Replace(
                     "{{Number}}",
-                    PlayerDataManager.playerData.ApplyExpBuffs(spell.xp).ToString());
+                    result.xp.ToString());
             m_ResultText.text = "";
         }
 

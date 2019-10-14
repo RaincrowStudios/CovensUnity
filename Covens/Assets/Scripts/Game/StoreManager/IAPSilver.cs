@@ -231,7 +231,7 @@ public class IAPSilver : MonoBehaviour, IStoreListener
                 }
                 else
                 {
-                    LogError("Processing error: " + error);
+                    Debug.LogException(new System.Exception($"IAP processing error \"{id}\":\n{error}"));
 
                     //remove from pending so its not processed again
                     if (error == "6005" || error == "6004")
