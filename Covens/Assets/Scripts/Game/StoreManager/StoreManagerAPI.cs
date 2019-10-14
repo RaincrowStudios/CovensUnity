@@ -243,7 +243,8 @@ namespace Raincrow.Store
                 {
                     //add the item to inventory
                     CosmeticData cosmetic = DownloadedAssets.GetCosmetic(id);
-                    PlayerDataManager.playerData.inventory.cosmetics.Add(cosmetic);
+                    if (PlayerDataManager.playerData.inventory.cosmetics.Exists(c => c.id == id) == false)
+                        PlayerDataManager.playerData.inventory.cosmetics.Add(cosmetic);
                     break;
                 }
                 case TYPE_INGREDIENT_BUNDLE:
