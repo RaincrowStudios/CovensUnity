@@ -24,6 +24,8 @@ public class MoonManager : UIAnimationManager
     public TextMeshProUGUI spellEfficiency;
     public TextMeshProUGUI playerRelation;
     public TextMeshProUGUI timer;
+    public TextMeshProUGUI dailytext;
+    public bool isopen;
     public GameObject moonState;
     MoonData data;
     public Animator anim;
@@ -52,7 +54,7 @@ public class MoonManager : UIAnimationManager
         moonAge = MoonAge(DateTime.Today.Day, DateTime.Today.Month, DateTime.Today.Year);
         moonAge = Mathf.Clamp(moonAge, 0, 28);
         alignmentButton = PlayerManagerUI.Instance.LunarPhaseHolder.transform.GetChild(0).GetComponent<Button>();
-
+        dailytext = container.transform.GetChild(11).GetChild(2).GetComponent<TextMeshProUGUI>();
         alignmentButton.onClick.AddListener(() =>
         {
             alignmentButton.enabled = false;
@@ -72,10 +74,12 @@ public class MoonManager : UIAnimationManager
         //Invoke("disableMap", 1f);
         SoundManagerOneShot.Instance.MenuSound();
         data = PlayerDataManager.moonData;
+
         container.SetActive(true);
         anim.Play("in");
         SetupMoon();
         DegreeSetup();
+        SetupDailyBlessing();
         if (FirstTapManager.IsFirstTime("moonphase"))
             FirstTapManager.Show("moonphase", null);
         StartCoroutine(CountDown());
@@ -130,7 +134,35 @@ public class MoonManager : UIAnimationManager
         yield return new WaitForSeconds(1f);
         alignmentButton.enabled = true;
     }
+    public void SetupDailyBlessing()
+    {
+        //Debug.Log("bless me");
+        var bless = BlessingManager.TimeUntilNextBlessing();
+        var seconds = bless.Seconds.ToString("D2");
+        var minutes = bless.Minutes.ToString("D2");
+        var hours = bless.Hours.ToString("D2");
+        /*if (bless.Seconds.ToString().Length == 1)
+        {
+            seconds = "0" + bless.Seconds;
+        }
+        if (bless.Minutes.ToString().Length == 1)
+        {
+            minutes = "0" + bless.Minutes;
+        }
+        if (bless.Hours.ToString().Length == 1)
+        {
+            hours = "0" + bless.Hours;
+        }*/
+        dailytext.text = string.Concat(hours, ":", minutes, ":", seconds);
 
+        if (container.gameObject.activeSelf)
+        {
+            LeanTween.value(0f, 1f, 1f).setOnComplete(() =>
+            {
+                SetupDailyBlessing();
+            });
+        }
+    }
     public void SetupMoon()
     {
         data.phase = Math.Round(data.phase, 2);
