@@ -64,6 +64,7 @@ public class UIApothecary : MonoBehaviour
             return;
 
         DownloadedAssets.OnWillUnloadAssets -= OnWillUnloadAssets;
+        LeanTween.cancel(m_iTextTweenId);
         Destroy(this.gameObject);
     }
 
