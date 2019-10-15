@@ -143,7 +143,7 @@ public class SpiritMarker : MuskMarker
             m_AvatarRenderer.color = new Color(1, 1, 1, 0);
             DownloadedAssets.GetSprite(spiritToken.spiritId, (sprite) =>
             {
-                if (m_AvatarRenderer != null)
+                if (m_AvatarRenderer != null && sprite != null)
                 {
                     float spriteHeight = sprite.rect.height / sprite.pixelsPerUnit;
                     m_AvatarRenderer.transform.localPosition = new Vector3(0, spriteHeight * 0.4f * m_AvatarRenderer.transform.localScale.x, 0);
