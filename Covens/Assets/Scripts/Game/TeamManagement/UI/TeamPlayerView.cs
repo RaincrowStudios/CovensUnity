@@ -68,7 +68,7 @@ public class TeamPlayerView : MonoBehaviour
         }
 
         flyToPlayerBtn.interactable = true;
-        flyToPlayerBtn.gameObject.SetActive(data.covenId == PlayerDataManager.playerData.covenId);
+        flyToPlayerBtn.gameObject.SetActive(string.IsNullOrEmpty(data.covenId) == false && data.covenId == PlayerDataManager.playerData.covenId);
 
         playerPos.x = data.longitude;
         playerPos.y = data.latitude;
