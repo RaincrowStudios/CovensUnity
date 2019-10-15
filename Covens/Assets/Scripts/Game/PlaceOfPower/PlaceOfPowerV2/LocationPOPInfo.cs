@@ -34,7 +34,7 @@ public class LocationPOPInfo : UIInfoPanel
     [SerializeField] private Button m_HelpBtn;
 
     private Dictionary<string, Sprite> m_LocationImagesCache = new Dictionary<string, Sprite>();
-
+    public static Sprite selectedPopSprite = null;
     [SerializeField] private Button m_EnterBtn;
     private LocationViewData m_LocationViewData;
     private static LocationPOPInfo m_Instance;
@@ -385,6 +385,8 @@ public class LocationPOPInfo : UIInfoPanel
         if (m_LocationImagesCache.ContainsKey(id))
         {
             m_locationImage.sprite = m_LocationImagesCache[id];
+            selectedPopSprite = m_LocationImagesCache[id];
+
         }
         else
         {
@@ -412,6 +414,7 @@ public class LocationPOPInfo : UIInfoPanel
                         m_LocationImagesCache[id] = Sprite.Create(texture, new Rect(0, 0, texture.width, texture.height), new Vector2(0, 0));
                         m_locationImage.color = Color.white;
                         m_locationImage.sprite = m_LocationImagesCache[id];
+                        selectedPopSprite = m_LocationImagesCache[id];
                     }
                 }
             }

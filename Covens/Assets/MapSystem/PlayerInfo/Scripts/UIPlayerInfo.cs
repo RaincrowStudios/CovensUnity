@@ -278,8 +278,6 @@ public class UIPlayerInfo : UIInfoPanel
     {
         if (instance == WitchToken.instance)
         {
-            Debug.Log(m_EnergyText.text);
-            Debug.Log(m_EnergyText.text.Split('>')[1].Split(' ')[0]);
             float currentEnergy = float.Parse(m_EnergyText.text.Split('>')[1].Split(' ')[0]);
             //spirit at half health
             if (currentEnergy > WitchToken.baseEnergy / 2 && newEnergy < WitchToken.baseEnergy / 2)

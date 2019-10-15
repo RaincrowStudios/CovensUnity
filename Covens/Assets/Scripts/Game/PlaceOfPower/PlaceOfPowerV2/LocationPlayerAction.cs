@@ -213,6 +213,7 @@ public class LocationPlayerAction : MonoBehaviour
 
     private void CloakingFX(float v)
     {
+        Debug.Log("cloaking FX");
         foreach (var item in m_CloakUIDisable)
         {
             if (item != null)
@@ -242,7 +243,7 @@ public class LocationPlayerAction : MonoBehaviour
                {
                    //    if (r == 200)
                    //    {
-                   m_BtnArr[0].Setup(180);
+
                    DisableCloaking();
                    //    }
                    m_DisableCloakBtn.interactable = true;
@@ -251,6 +252,8 @@ public class LocationPlayerAction : MonoBehaviour
 
     public static void DisableCloaking()
     {
+        Debug.Log("Disable Cloaking!!!");
+        m_BtnArr[0].Setup(180);
         foreach (var item in LocationUnitSpawner.Markers)
         {
             item.Value.ScaleNamePlate(true, .5f);
@@ -267,7 +270,12 @@ public class LocationPlayerAction : MonoBehaviour
 
         RenderSettings.fogMode = FogMode.Linear;
         RenderSettings.fogColor = new Color(0.14f, 0.14f, 0.14f);
-        LeanTween.value(0, 1, .5f).setOnUpdate((float v) => Instance.CloakingFX(v)).setOnComplete(() =>
+        Debug.Log("Disable Cloaking!!!2");
+        LeanTween.value(0, 1, .5f).setOnUpdate((float v) =>
+        {
+            Debug.Log("running fx");
+            Instance.CloakingFX(v);
+        }).setOnComplete(() =>
         {
             isCloaked = false;
             SoundManagerOneShot.Instance.FadeInBGTrack();
@@ -276,8 +284,11 @@ public class LocationPlayerAction : MonoBehaviour
             RenderSettings.fog = false;
             Instance.m_CloakUI.gameObject.SetActive(false);
             Instance.m_CloakUIGreyScale.gameObject.SetActive(false);
+            Debug.Log("Disable Cloaking!!!3");
 
         });
+        Debug.Log("Disable Cloaking!!!4");
+
     }
 
     private static void CenterOnPlayer()

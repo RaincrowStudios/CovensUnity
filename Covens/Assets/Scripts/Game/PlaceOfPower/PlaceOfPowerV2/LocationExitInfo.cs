@@ -5,6 +5,7 @@ public class LocationExitInfo : UIInfoPanel
 {
     private static LocationExitInfo m_Instance;
     [SerializeField] private Button m_CloseBtn;
+    [SerializeField] private Image m_LocationIcon;
 
     public static LocationExitInfo Instance
     {
@@ -36,6 +37,8 @@ public class LocationExitInfo : UIInfoPanel
     public void ShowUI()
     {
         base.Show();
+        m_LocationIcon.sprite = LocationPOPInfo.selectedPopSprite;
+        m_LocationIcon.color = Color.white;
     }
 
 }
