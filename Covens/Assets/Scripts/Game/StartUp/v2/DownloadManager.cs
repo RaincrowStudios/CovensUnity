@@ -432,7 +432,8 @@ public class DownloadManager : MonoBehaviour
         }
         catch (System.Exception e)
         {
-            Debug.LogError("Failed to parse localization dictionary:\n" + json);// + e.Message + "\n" + e.StackTrace);
+            Debug.LogError("Failed to parse localization dictionary");
+            Debug.LogException(e);
             OnDictionaryParserError?.Invoke(e.Message, e.StackTrace);
             return false;
         }
@@ -485,7 +486,8 @@ public class DownloadManager : MonoBehaviour
         }
         catch (System.Exception e)
         {
-            Debug.LogError("Failed to parse game dictionary\n" + json);//: " + e.Message + "\n" + e.StackTrace);
+            Debug.LogError("Failed to parse game dictionary");
+            Debug.LogException(e);
             OnDictionaryParserError?.Invoke(e.Message, e.StackTrace);
             return false;
         }
@@ -511,7 +513,8 @@ public class DownloadManager : MonoBehaviour
         }
         catch (System.Exception e)
         {
-            Debug.LogError("Failed to parse store dictionary\n" + json);// + e.Message + "\n" + e.StackTrace);
+            Debug.LogError("Failed to parse store dictionary");
+            Debug.LogException(e);
             OnDictionaryParserError?.Invoke(e.Message, e.StackTrace);
             return false;
         }
