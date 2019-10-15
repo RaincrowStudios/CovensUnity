@@ -69,6 +69,12 @@ public class UISpellcard : MonoBehaviour// : EnhancedScrollerCellView
         transform.localScale = Vector3.one;
     }
 
+    private void OnDestroy()
+    {
+        LeanTween.cancel(m_TweenId);
+        LeanTween.cancel(m_CooldownTweenId);
+    }
+
     public void SetData(
         SpellData spell,
         System.Action<int> onClickSchool,
