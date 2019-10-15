@@ -43,10 +43,10 @@ public static class CooldownManager
         id = id.ToLower();
         Cooldown cd = new Cooldown(id, endDate, total);
 
-        if (m_CooldownDictionary.ContainsKey(id))
-            Debug.Log("[<color=magenta>Cooldown</color>] Update " + cd.id + "[" + cd.Remaining + "/" + cd.total + "]");
-        else
-            Debug.Log("[<color=magenta>Cooldown</color>] Add " + cd.id + "[" + cd.Remaining + "/" + cd.total + "]");
+        //if (m_CooldownDictionary.ContainsKey(id))
+        //    Debug.Log("[<color=magenta>Cooldown</color>] Update " + cd.id + "[" + cd.Remaining + "/" + cd.total + "]");
+        //else
+        //    Debug.Log("[<color=magenta>Cooldown</color>] Add " + cd.id + "[" + cd.Remaining + "/" + cd.total + "]");
 
         m_CooldownDictionary[id] = cd;
     }
@@ -56,10 +56,10 @@ public static class CooldownManager
         id = id.ToLower();
         Cooldown cd = new Cooldown(id, start, end);
 
-        if (m_CooldownDictionary.ContainsKey(id))
-            Debug.Log("[<color=magenta>Cooldown</color>] Update " + cd.id + "(" + cd.Remaining + "/" + cd.total + ")");
-        else
-            Debug.Log("[<color=magenta>Cooldown</color>] Add " + cd.id + "(" + cd.Remaining + "/" + cd.total + ")");
+        //if (m_CooldownDictionary.ContainsKey(id))
+        //    Debug.Log("[<color=magenta>Cooldown</color>] Update " + cd.id + "(" + cd.Remaining + "/" + cd.total + ")");
+        //else
+        //    Debug.Log("[<color=magenta>Cooldown</color>] Add " + cd.id + "(" + cd.Remaining + "/" + cd.total + ")");
 
         m_CooldownDictionary[id] = cd;
     }

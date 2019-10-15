@@ -70,6 +70,9 @@ public class UIConditionList : MonoBehaviour
 
     public void AddCondition(StatusEffect condition)
     {
+        if (condition == null)
+            return;
+
         List<UIConditionItem> active = m_ItemPool.GetInstances();
 
         //check if already on list
