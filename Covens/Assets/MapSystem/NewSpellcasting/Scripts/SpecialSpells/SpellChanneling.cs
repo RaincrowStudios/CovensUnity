@@ -47,7 +47,7 @@ public static class SpellChanneling
                     OnMapEnergyChange.ForceEvent(target, data.target.energy, data.timestamp);
 
                     if (data.result.effect != null && string.IsNullOrEmpty(data.result.effect.spell) == false)
-                        ConditionManager.AddCondition(data.result.effect, Target);
+                        MarkerSpawner.ApplyStatusEffect(target.Token.Id, PlayerDataManager.playerData.instance, data.result.effect);
 
                     UIChanneling.Instance.SetInteractable(true);
                 }
@@ -90,8 +90,8 @@ public static class SpellChanneling
                         CooldownManager.AddCooldown("spell_channeling", data.timestamp, data.cooldown);
 
                         //add the new status effect
-                        ConditionManager.ExpireStatusEffect("spell_channeling");
-                        ConditionManager.AddCondition(data.result.effect, Target);
+                        PlayerConditionManager.ExpireEffect("spell_channeling");
+                        MarkerSpawner.ApplyStatusEffect(Target.Token.Id, PlayerDataManager.playerData.instance, data.result.effect);
                         
                         UIChanneling.Instance.ShowResults(data.result, null);
                     }

@@ -192,7 +192,7 @@ public static class QuestsController
                     PlayerDataManager.playerData.AddEnergy(rewards.energy);
 
                     if (rewards.effect != null)
-                        ConditionManager.AddCondition(rewards.effect, PlayerManager.marker);
+                        MarkerSpawner.ApplyStatusEffect(PlayerDataManager.playerData.instance, PlayerDataManager.playerData.instance, rewards.effect);
 
                     if (PlayerDataManager.Instance != null)
                     {

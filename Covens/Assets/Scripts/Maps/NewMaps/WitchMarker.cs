@@ -326,16 +326,18 @@ public class WitchMarker : MuskMarker
             SetCharacterAlpha(AvatarAlpha, 1f);
     }
 
-    public override void ApplyStatusEffect(StatusEffect effect)
+    public override void OnApplyStatusEffect(StatusEffect effect)
     {
+        Debug.LogError(effect.spell + " applied to " + name);
         //if (effect.modifiers.status == null)
         //    return;
 
         //StatusEffectFX.SpawnFX(this, effect);
     }
 
-    public override void ExpireStatusEffect(StatusEffect effect)
+    public override void OnExpireStatusEffect(StatusEffect effect)
     {
+        Debug.LogError(effect.spell + " expired to " + name);
         //if (effect.modifiers.status == null)
         //    return;
 

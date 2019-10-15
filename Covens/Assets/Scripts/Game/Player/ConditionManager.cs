@@ -4,7 +4,7 @@ using System.Collections.Generic;
 using Raincrow.GameEventResponses;
 using Raincrow.Maps;
 
-public static class ConditionManager
+public static class PlayerConditionManager
 {
     public static System.Action<StatusEffect> OnPlayerApplyStatusEffect;
     public static System.Action<StatusEffect> OnPlayerExpireStatusEffect;
@@ -26,21 +26,8 @@ public static class ConditionManager
 
     private static Dictionary<string, double> m_StatusDict = new Dictionary<string, double>();
 
-    public static void AddCondition(StatusEffect statusEffect, IMarker caster)
+    public static void OnApplyEffect(StatusEffect statusEffect, IMarker caster)
     {
-        //remove old condition matching the same spell
-        foreach (StatusEffect item in PlayerDataManager.playerData.effects)
-        {
-            if (item.spell == statusEffect.spell)
-            {
-                PlayerDataManager.playerData.effects.Remove(item);
-                item.CancelExpiration();
-                break;
-            }
-        }
-        PlayerDataManager.playerData.effects.Add(statusEffect);
-        OnPlayerApplyStatusEffect?.Invoke(statusEffect);
-
         string debug = statusEffect.spell + " added";
 
         if (statusEffect.modifiers.status != null)
@@ -64,41 +51,29 @@ public static class ConditionManager
         }
 
         Log(debug);
-
-        //schedule expiration
-        statusEffect.ScheduleExpiration(() => ExpireStatusEffect(statusEffect));
-
-        //StatusEffectFX.SpawnFX(PlayerManager.marker, statusEffect);
+        
+        OnPlayerApplyStatusEffect?.Invoke(statusEffect);
     }
 
-    public static void TriggerStatusEffect(StatusEffect effect, IMarker caster)
+    public static void TriggerEffect(StatusEffect effect, IMarker caster)
     {
         
     }
 
-    public static void ExpireStatusEffect(string spell)
+    public static void ExpireEffect(string spell)
     {
         foreach (StatusEffect item in PlayerDataManager.playerData.effects)
         {
             if (item.spell == spell)
             {
-                ExpireStatusEffect(item);
+                ExpireStatusEffectHandler.ExpireEffect(PlayerDataManager.playerData.instance, item);
                 return;
             }
         }
     }
 
-    public static void ExpireStatusEffect(StatusEffect statusEffect)
+    public static void OnExpireEffect(StatusEffect statusEffect)
     {
-        foreach (StatusEffect item in PlayerDataManager.playerData.effects)
-        {
-            if (item.spell == statusEffect.spell)
-            {
-                PlayerDataManager.playerData.effects.Remove(item);
-                break;
-            }
-        }
-
         string debug = statusEffect.spell + " expired:\n";
         if (statusEffect.modifiers.status != null)
         {
@@ -113,8 +88,6 @@ public static class ConditionManager
         Log(debug);
         
         OnPlayerExpireStatusEffect?.Invoke(statusEffect);
-
-        //StatusEffectFX.DespawnFX(PlayerManager.marker, statusEffect);
     }
 
     private static void Log(string msg)

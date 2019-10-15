@@ -29,9 +29,12 @@ public class UIMain : MonoBehaviour
     
     [Header("Screens")]
     [SerializeField] private GameObject m_BookOfShadows;
-    [SerializeField] private Transform m_bosTransform;
     [SerializeField] private GameObject m_leaderBoards;
-    [SerializeField] private Transform m_leaderboardTransform;
+
+    [Header("FX")]
+    [SerializeField] private GameObject m_ChannelingGlow;
+
+    private bool m_IsChanneled;
 
     
     private void Awake()
@@ -56,7 +59,7 @@ public class UIMain : MonoBehaviour
 
     private void OnClickLeaderboards()
     {
-        Utilities.InstantiateUI(m_leaderBoards, m_leaderboardTransform);
+        Utilities.InstantiateUI(m_leaderBoards, null);
     }
 
     private void OnClickWardrobe()
@@ -120,7 +123,7 @@ public class UIMain : MonoBehaviour
 
     private void OnClickBookOfShadows()
     {
-        Utilities.InstantiateUI(m_BookOfShadows, m_bosTransform);
+        Utilities.InstantiateUI(m_BookOfShadows, null);
     }
 
     private void OnClickSettings()
@@ -153,5 +156,14 @@ public class UIMain : MonoBehaviour
     private void OnClickNearbyPops()
     {
         UINearbyLocations.Open();
+    }
+
+    private void OnApplyStatusEffect(string target, string caster, StatusEffect effect)
+    {
+        if (target != PlayerDataManager.playerData.instance)
+            return;
+
+        //if (PlayerManager.witchMarker.witchToken.)
+        //if (PlayerManager.witchMarker.has)
     }
 }

@@ -406,12 +406,12 @@ namespace Raincrow.Maps
             return instance;
         }
 
-        public virtual void ApplyStatusEffect(StatusEffect effect)
+        public virtual void OnApplyStatusEffect(StatusEffect effect)
         {
 
         }
 
-        public virtual void ExpireStatusEffect(StatusEffect effect)
+        public virtual void OnExpireStatusEffect(StatusEffect effect)
         {
 
         }

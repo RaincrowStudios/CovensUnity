@@ -40,6 +40,9 @@ public class MarkerManager : MonoBehaviour
         }
         else
         {
+            if (PlayerDataManager.playerData.instance == instance)
+                return PlayerManager.witchMarker;
+
             if (LocationUnitSpawner.Markers.ContainsKey(instance))
                 return LocationUnitSpawner.Markers[instance];
         }

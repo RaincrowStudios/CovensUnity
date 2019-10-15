@@ -181,8 +181,7 @@ public abstract class CharacterMarkerData : MarkerData
         }
         return result;
     }
-
-
+    
     public virtual void AddEnergy(int amount)
     {
         energy = Mathf.Clamp(energy + amount, 0, maxEnergy);

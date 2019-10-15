@@ -165,8 +165,8 @@ public class UISpiritInfo : UIInfoPanel
 
         OnMapEnergyChange.OnPlayerDead += _OnCharacterDead;
         OnMapEnergyChange.OnEnergyChange += _OnMapEnergyChange;
-        SpellCastHandler.OnApplyStatusEffect += _OnStatusEffectApplied;
-        ExpireStatusEffectHandler.OnEffectExpire += _OnExpireEffect;
+        SpellCastHandler.OnApplyEffect += _OnStatusEffectApplied;
+        SpellCastHandler.OnExpireEffect += _OnExpireEffect;
         RemoveTokenHandler.OnTokenRemove += _OnMapTokenRemove;
         ExpireSpiritHandler.OnSpiritExpire += _OnMapTokenRemove;
         BanishManager.OnBanished += Abort;
@@ -230,8 +230,8 @@ public class UISpiritInfo : UIInfoPanel
 
         OnMapEnergyChange.OnPlayerDead -= _OnCharacterDead;
         OnMapEnergyChange.OnEnergyChange -= _OnMapEnergyChange;
-        SpellCastHandler.OnApplyStatusEffect -= _OnStatusEffectApplied;
-        ExpireStatusEffectHandler.OnEffectExpire -= _OnExpireEffect;
+        SpellCastHandler.OnApplyEffect -= _OnStatusEffectApplied;
+        SpellCastHandler.OnExpireEffect -= _OnExpireEffect;
         RemoveTokenHandler.OnTokenRemove -= _OnMapTokenRemove;
         ExpireSpiritHandler.OnSpiritExpire -= _OnMapTokenRemove;
         
