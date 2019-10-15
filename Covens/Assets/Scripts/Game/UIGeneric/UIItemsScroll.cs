@@ -88,7 +88,12 @@ public class UIItemsScroll : MonoBehaviour, IBeginDragHandler, IDragHandler, IEn
     {
         m_pItemPrefab.gameObject.SetActive(false);
     }
-    
+
+    private void OnDestroy()
+    {
+        LeanTween.cancel(m_iFocusTweenId);
+    }
+
     public void SetSelected(int index, bool instant = false)
     {
         SelectedIndex = index;

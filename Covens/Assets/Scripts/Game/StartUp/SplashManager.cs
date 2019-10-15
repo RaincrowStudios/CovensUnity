@@ -57,6 +57,7 @@ public class SplashManager : MonoBehaviour
     private float m_LogoSpeed = 1;
     private int m_SliderTweenId;
     private int m_HintTweenId;
+    private int m_TribunalTweenId;
     private Coroutine m_HintsCoroutine;
     private Coroutine m_TribunalCoroutine;
     public bool IsShowingHints { get; private set; }
@@ -99,12 +100,9 @@ public class SplashManager : MonoBehaviour
     {
         LeanTween.cancel(m_HintTweenId);
         LeanTween.cancel(m_SliderTweenId);
+        LeanTween.cancel(m_TribunalTweenId);
 
-        if (m_HintsCoroutine != null)
-            StopCoroutine(m_HintsCoroutine);
-
-        if (m_TribunalCoroutine != null)
-            StopCoroutine(m_TribunalCoroutine);
+        StopAllCoroutines();
     }
 
     public void ShowLoading(float progress)
@@ -367,7 +365,8 @@ public class SplashManager : MonoBehaviour
 
     public void HideTribunal(System.Action onComplete)
     {
-        LeanTween.alphaCanvas(m_TribualScreen, 0f, 1f).setEaseOutCubic().setOnComplete(onComplete);
+        LeanTween.cancel(m_TribunalTweenId);
+        m_TribunalTweenId = LeanTween.alphaCanvas(m_TribualScreen, 0f, 1f).setEaseOutCubic().setOnComplete(onComplete).uniqueId;
     }
 
     private IEnumerator TribunalCoroutine(System.Action onShow)
@@ -405,8 +404,9 @@ public class SplashManager : MonoBehaviour
         dtDateTime = dtDateTime.AddSeconds(PlayerDataManager.tribunalStamps[PlayerDataManager.tribunal]).ToUniversalTime();
         var timeSpan = dtDateTime.Subtract(System.DateTime.UtcNow);
         tribunalTimer.text = timeSpan.TotalDays.ToString("N0");
-        
-        LeanTween.alphaCanvas(m_TribualScreen, 1f, 1f).setEaseOutCubic();
+
+        LeanTween.cancel(m_TribunalTweenId);
+        m_TribunalTweenId = LeanTween.alphaCanvas(m_TribualScreen, 1f, 1f).setEaseOutCubic().uniqueId;
         yield return new WaitForSeconds(1f);
 
         onShow?.Invoke();
