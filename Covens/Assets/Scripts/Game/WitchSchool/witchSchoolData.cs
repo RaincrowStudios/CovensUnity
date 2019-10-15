@@ -14,12 +14,18 @@ public class witchSchoolData : MonoBehaviour
 
     private string m_VideoId;
     private System.Action m_OnClick;
+    private int m_TweenId;
 
     private void Awake()
     {
         m_ThumbButton.onClick.AddListener(OnClickPlayVideo);
         m_Thumbnail.color = Color.black;
         //m_CanvasGroup.alpha = 0;
+    }
+
+    private void OnDestroy()
+    {
+        LeanTween.cancel(m_TweenId);
     }
 
     public void Setup(string id, System.Action onClick)
@@ -60,12 +66,13 @@ public class witchSchoolData : MonoBehaviour
                 if (texture != null)
                 {
                     m_Thumbnail.sprite = Sprite.Create(texture, new Rect(0, 0, texture.width, texture.height), new Vector2(0, 0));
-                    LeanTween.value(0, 1, 1f)
+                    m_TweenId = LeanTween.value(0, 1, 1f)
                         .setEaseOutCubic()
                         .setOnUpdate((float t) =>
                         {
                             m_Thumbnail.color = Color.Lerp(Color.black, Color.white, t);
-                        });
+                        })
+                        .uniqueId;
                 }
             }
         }
