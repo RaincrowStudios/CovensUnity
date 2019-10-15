@@ -43,8 +43,9 @@ public class DeathState : MonoBehaviour
     public void ShowDeath()
     {
         IsDead = true;
-                
-        foreach (var se in PlayerDataManager.playerData.effects)
+
+        StatusEffect[] effects = PlayerDataManager.playerData.effects.ToArray();
+        foreach (var se in effects)
             se.Expire();
         PlayerDataManager.playerData.effects.Clear();
 
