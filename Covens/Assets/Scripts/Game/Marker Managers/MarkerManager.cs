@@ -33,16 +33,19 @@ public class MarkerManager : MonoBehaviour
 
     public static IMarker GetMarker(string instance)
     {
+        if (string.IsNullOrEmpty(instance))
+            return null;
+
         if (!LocationIslandController.isInBattle)
         {
+            if (PlayerDataManager.playerData.instance == instance)
+                return PlayerManager.witchMarker;
+
             if (Markers.ContainsKey(instance))
                 return Markers[instance][0];
         }
         else
         {
-            if (PlayerDataManager.playerData.instance == instance)
-                return PlayerManager.witchMarker;
-
             if (LocationUnitSpawner.Markers.ContainsKey(instance))
                 return LocationUnitSpawner.Markers[instance];
         }
