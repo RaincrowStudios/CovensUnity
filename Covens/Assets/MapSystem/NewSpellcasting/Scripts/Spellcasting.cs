@@ -299,6 +299,18 @@ public class Spellcasting
                 }
                 else
                 {
+                    //simulate the marker escaping
+                    if (response == "2014")
+                    {
+                        Vector2 coords = new Vector2(PlayerDataManager.playerData.longitude, PlayerDataManager.playerData.latitude);
+                        Vector2 dir = Random.onUnitSphere.normalized * 20;
+                        coords.x = Mathf.Repeat(coords.x + dir.x, 170);
+                        coords.y = Mathf.Repeat(coords.y + dir.y, 70);
+                        MoveTokenHandler.HandleEvent(targetId, coords.x, coords.y); 
+                        UIWaitingCastResult.Instance.Close();
+                        return;
+                    }
+
                     //retry
                     if (response == "2016")
                     {
