@@ -234,7 +234,7 @@ public class UISpiritInfo : UIInfoPanel
         ExpireStatusEffectHandler.OnEffectExpire -= _OnExpireEffect;
         RemoveTokenHandler.OnTokenRemove -= _OnMapTokenRemove;
         ExpireSpiritHandler.OnSpiritExpire -= _OnMapTokenRemove;
-
+        
         if (!LocationIslandController.isInBattle)
         {
             MoveTokenHandler.OnTokenMove -= _OnMapTokenMove;
@@ -250,6 +250,9 @@ public class UISpiritInfo : UIInfoPanel
         {
             LocationUnitSpawner.EnableMarkers();
         }
+        
+        if (UISpellcastBook.IsOpen)
+            UISpellcastBook.Close();
     }
 
     private void _SetupDetails(SelectSpiritData_Map details)

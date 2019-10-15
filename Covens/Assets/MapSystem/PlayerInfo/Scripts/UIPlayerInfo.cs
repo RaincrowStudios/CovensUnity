@@ -241,6 +241,9 @@ public class UIPlayerInfo : UIInfoPanel
         {
             LocationUnitSpawner.EnableMarkers();
         }
+        
+        if (UISpellcastBook.IsOpen)
+            UISpellcastBook.Close();
     }
 
     private void _SetupDetails(SelectWitchData_Map details)
