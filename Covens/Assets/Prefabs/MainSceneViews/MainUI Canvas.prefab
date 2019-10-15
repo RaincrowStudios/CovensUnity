@@ -21026,10 +21026,9 @@ MonoBehaviour:
   m_NearbyPopsButton: {fileID: 7249245852711767966}
   m_BookOfShadows: {fileID: 1757248755078680, guid: 661d936853d67a144b65320dd37208bd,
     type: 3}
-  m_bosTransform: {fileID: 0}
   m_leaderBoards: {fileID: 1138396009300500, guid: 5b8d866ff3bfb7f47bd6b10d56a3f217,
     type: 3}
-  m_leaderboardTransform: {fileID: 0}
+  m_ChannelingGlow: {fileID: 0}
 --- !u!114 &114796654857181126
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -112118,7 +112117,7 @@ RectTransform:
   m_AnchorMin: {x: 0.5, y: 0.37}
   m_AnchorMax: {x: 0.5, y: 0.37}
   m_AnchoredPosition: {x: -0.5, y: -0.6000366}
-  m_SizeDelta: {x: 891.4, y: 0}
+  m_SizeDelta: {x: 891.4, y: 45.01}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &8390696298352288017
 CanvasRenderer:
@@ -115993,7 +115992,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &8947811874769251048
 RectTransform:
   m_ObjectHideFlags: 0

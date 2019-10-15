@@ -54,6 +54,10 @@ public class SpiritMarker : MuskMarker
         m_AvatarRenderer.sprite = null;
 
         m_IconRenderer.sprite = null;
+        
+        //setup effects
+        foreach (var effect in spiritToken.effects)
+            OnApplyStatusEffect(effect);
     }
 
     public override void SetStats()
@@ -171,6 +175,16 @@ public class SpiritMarker : MuskMarker
     {
         base.OnDespawn();
         LeanTween.cancel(m_TweenId);
+    }
+
+    public override void OnApplyStatusEffect(StatusEffect effect)
+    {
+
+    }
+
+    public override void OnExpireStatusEffect(StatusEffect effect)
+    {
+
     }
 
 

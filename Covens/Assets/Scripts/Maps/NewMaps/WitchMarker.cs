@@ -74,6 +74,10 @@ public class WitchMarker : MuskMarker
             AddDeathFX();
         else
             RemoveDeathFX();
+
+        //setup effects
+        foreach (var effect in witchToken.effects)
+            OnApplyStatusEffect(effect);
     }
 
     public override void EnablePopSorting()
@@ -341,6 +345,7 @@ public class WitchMarker : MuskMarker
         {
             m_ChannelingFX = SpellChanneling.SpawnFX(this, witchToken);
             m_ChannelingFX.SetParent(AvatarTransform);
+            m_ChannelingFX.localPosition = Vector3.zero;
             m_ChannelingFX.localScale = Vector3.one;
 
             ParticleSystem[] particles = m_ChannelingFX.GetComponentsInChildren<ParticleSystem>();
@@ -354,6 +359,7 @@ public class WitchMarker : MuskMarker
             {
                 m_ChannelingFX = SpellChanneling.SpawnFX(this, witchToken);
                 m_ChannelingFX.SetParent(AvatarTransform);
+                m_ChannelingFX.localPosition = Vector3.zero;
                 m_ChannelingFX.localScale = Vector3.one;
             }
 
