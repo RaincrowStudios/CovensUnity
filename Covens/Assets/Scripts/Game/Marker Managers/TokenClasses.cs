@@ -96,7 +96,7 @@ public class CharacterToken : Token
         for (int i = 0; i < effects.Count; i++)
         {
             if (effects[i].modifiers.status == null)
-                return false;
+                continue;
 
             for (int j = 0; j < effects[i].modifiers.status.Count; j++)
             {

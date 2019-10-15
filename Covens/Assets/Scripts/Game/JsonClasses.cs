@@ -242,7 +242,12 @@ public class SpellData
         ANY = 0,
         WITCH = 1,
         SPIRIT = 2,
-    }      
+    }
+
+    public const string SILENCED_STATUS = "silenced";
+    public const string BOUND_STATUS = "bound";
+    public const string CHANNELING_STATUS = "channeling";
+    public const string CHANNELED_STATUS = "channeled";
 
     [DefaultValue("")]
     public string id;

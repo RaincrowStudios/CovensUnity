@@ -45,9 +45,7 @@ namespace Raincrow.GameEventResponses
                 OnMapEnergyChange.ForceEvent(target, data.target.energy, data.timestamp);
             
             if (data.result.effect != null && string.IsNullOrEmpty(data.result.effect.spell) == false)
-            {
                 MarkerSpawner.ApplyStatusEffect(data.target.id, data.caster.id, data.result.effect);
-            }
 
             if (isTarget)
             {

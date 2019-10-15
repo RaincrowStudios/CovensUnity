@@ -396,16 +396,6 @@ namespace Raincrow.Maps
                 .uniqueId;
         }
 
-        public Transform SpawnItem(string resourcePath)
-        {
-            Transform instance = Instantiate(Resources.Load<Transform>(resourcePath));
-            instance.SetParent(AvatarTransform);
-            instance.localPosition = Vector3.zero;
-            instance.localScale = Vector3.one;
-            m_SpawnedItems.Add(instance);
-            return instance;
-        }
-
         public virtual void OnApplyStatusEffect(StatusEffect effect)
         {
 

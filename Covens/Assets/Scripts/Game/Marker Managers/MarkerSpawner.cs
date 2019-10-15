@@ -565,8 +565,8 @@ public class MarkerSpawner : MarkerManager
             //schedule the local expiration
             effect.ScheduleExpiration(() => ExpireStatusEffectHandler.ExpireEffect(targetId, effect));
 
-            if (effect.spell == "spell_channeling")
-                SpellChanneling.SpawnFX(target, effect);
+            //if (effect.spell == "spell_channeling")
+            //    SpellChanneling.SpawnFX(target, effect);
 
             target.OnApplyStatusEffect(effect);
         }

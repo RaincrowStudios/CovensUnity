@@ -7,18 +7,19 @@ using UnityEngine;
 
 public static class SpellChanneling
 {
-    //private static SimplePool<Transform> m_ShadowFx = new SimplePool<Transform>("SpellFX/Channeling/ChannelingShadow");
-    //private static SimplePool<Transform> m_GreyFx = new SimplePool<Transform>("SpellFX/Channeling/ChannelingGrey");
-    //private static SimplePool<Transform> m_WhiteFx = new SimplePool<Transform>("SpellFX/Channeling/ChannelingWhite");
-    private const string m_ShadowFxPath = "SpellFX/Channeling/ChannelingShadow";
-    private const string m_GreyFxPath = "SpellFX/Channeling/ChannelingGrey";
-    private const string m_WhiteFxPath = "SpellFX/Channeling/ChannelingWhite";
+    private static SimplePool<Transform> m_ShadowFx = new SimplePool<Transform>("SpellFX/Channeling/ChannelingShadow");
+    private static SimplePool<Transform> m_GreyFx = new SimplePool<Transform>("SpellFX/Channeling/ChannelingGrey");
+    private static SimplePool<Transform> m_WhiteFx = new SimplePool<Transform>("SpellFX/Channeling/ChannelingWhite");
+    //private const string m_ShadowFxPath = "SpellFX/Channeling/ChannelingShadow";
+    //private const string m_GreyFxPath = "SpellFX/Channeling/ChannelingGrey";
+    //private const string m_WhiteFxPath = "SpellFX/Channeling/ChannelingWhite";
+
     private static Dictionary<IMarker, Transform> m_SpawnedFX = new Dictionary<IMarker, Transform>();
 
     public static IMarker Target { get; private set; }
 
-    public static bool IsChanneling => PlayerManager.witchMarker.witchToken.HasStatus("channeling");
-    public static bool IsChanneled => PlayerManager.witchMarker.witchToken.HasStatus("channeled");
+    public static bool IsChanneling => PlayerManager.witchMarker.witchToken.HasStatus(SpellData.CHANNELING_STATUS);
+    public static bool IsChanneled => PlayerManager.witchMarker.witchToken.HasStatus(SpellData.CHANNELED_STATUS);
 
     public static void CastSpell(SpellData spell, IMarker target, List<spellIngredientsData> ingredients, System.Action<Raincrow.GameEventResponses.SpellCastHandler.Result> onFinishFlow, System.Action onCancelFlow)
     {
@@ -64,6 +65,7 @@ public static class SpellChanneling
     {
         if (IsChanneling == false)
         {
+            UIChanneling.Instance.Close();
             TickSpellHandler.OnPlayerSpellTick -= OnSpellTick;
             return;
         }
@@ -112,86 +114,105 @@ public static class SpellChanneling
             UIChanneling.Instance.OnTickChanneling(data);
             if (IsChanneled)
             {
-                DespawnPlayerFX(data.result.effect);
+                //DespawnPlayerFX(data.result.effect);
                 StopChanneling(null);
                 UIChanneling.Instance.ShowResults(data.result, null);
             }
         }
     }
 
-    public static void SpawnFX(IMarker marker, StatusEffect effect)
+    //public static void SpawnFX(IMarker marker, StatusEffect effect)
+    //{
+    //    if (effect.modifiers.status == null)
+    //        return;
+
+    //    //if (m_SpawnedFX.ContainsKey(marker))
+    //    //    return;
+
+    //    bool channeling = false;
+    //    bool channeled = false;
+
+    //    foreach (var status in effect.modifiers.status)
+    //    {
+    //        if (status == "channeling")
+    //            channeling = true;
+    //        if (status == "channeled")
+    //            channeled = true;
+    //    }
+
+    //    if (channeling && !m_SpawnedFX.ContainsKey(marker))
+    //    {
+    //        Transform instance;// = marker.SpawnItem(m_GreyFx);
+    //        int degree = (marker.Token as WitchToken).degree;
+
+    //        if (degree > 0)
+    //            instance = marker.SpawnItem(m_WhiteFxPath);
+    //        else if (degree < 0)
+    //            instance = marker.SpawnItem(m_ShadowFxPath);
+    //        else
+    //            instance = marker.SpawnItem(m_GreyFxPath);
+
+    //        instance.localScale = Vector3.one;
+    //        instance.GetComponentInChildren<ParticleSystem>().Play();
+    //        m_SpawnedFX.Add(marker, instance);
+    //    }
+
+    //    if (channeled)
+    //    {
+    //        DespawnFX(marker, effect);
+    //    }
+    //}
+
+    //public static void DespawnFX(IMarker marker, StatusEffect effect)
+    //{
+    //    if (m_SpawnedFX.ContainsKey(marker) == false)
+    //        return;
+
+    //    Transform instance = m_SpawnedFX[marker];
+
+    //    if (instance == null)
+    //        return;
+
+    //    instance.GetComponentInChildren<ParticleSystem>().Stop();
+    //    m_SpawnedFX.Remove(marker);
+
+    //    LeanTween.value(0, 0, 5f).setOnComplete(() =>
+    //    {
+    //        if (instance != null)
+    //            GameObject.Destroy(instance.gameObject);
+    //    });
+    //}
+
+
+    //public static void SpawnPlayerFX(StatusEffect effect, IMarker caster)
+    //{
+    //    if (effect.modifiers.status == null)
+    //        return;
+
+    //    SpawnFX(PlayerManager.marker, effect);       
+    //}
+
+    //public static void DespawnPlayerFX(StatusEffect effect)
+    //{
+    //    DespawnFX(PlayerManager.marker, effect);
+    //}
+
+    public static Transform SpawnFX(IMarker marker, CharacterToken token)
     {
-        if (effect.modifiers.status == null)
-            return;
+        int degree = token.degree;
 
-        //if (m_SpawnedFX.ContainsKey(marker))
-        //    return;
-
-        bool channeling = false;
-        bool channeled = false;
-
-        foreach (var status in effect.modifiers.status)
-        {
-            if (status == "channeling")
-                channeling = true;
-            if (status == "channeled")
-                channeled = true;
-        }
-
-        if (channeling && !m_SpawnedFX.ContainsKey(marker))
-        {
-            Transform instance;// = marker.SpawnItem(m_GreyFx);
-            int degree = (marker.Token as WitchToken).degree;
-
-            if (degree > 0)
-                instance = marker.SpawnItem(m_WhiteFxPath);
-            else if (degree < 0)
-                instance = marker.SpawnItem(m_ShadowFxPath);
-            else
-                instance = marker.SpawnItem(m_GreyFxPath);
-
-            instance.localScale = Vector3.one;
-            instance.GetComponentInChildren<ParticleSystem>().Play();
-            m_SpawnedFX.Add(marker, instance);
-        }
-
-        if (channeled)
-        {
-            DespawnFX(marker, effect);
-        }
+        if (degree > 0)
+            return m_WhiteFx.Spawn();
+        else if (degree < 0)
+            return m_ShadowFx.Spawn();
+        else
+            return m_GreyFx.Spawn();
     }
 
-    public static void DespawnFX(IMarker marker, StatusEffect effect)
+    public static void DespawnFX(Transform fx)
     {
-        if (m_SpawnedFX.ContainsKey(marker) == false)
-            return;
-
-        Transform instance = m_SpawnedFX[marker];
-
-        if (instance == null)
-            return;
-
-        instance.GetComponentInChildren<ParticleSystem>().Stop();
-        m_SpawnedFX.Remove(marker);
-
-        LeanTween.value(0, 0, 5f).setOnComplete(() =>
-        {
-            if (instance != null)
-                GameObject.Destroy(instance.gameObject);
-        });
-    }
-
-
-    public static void SpawnPlayerFX(StatusEffect effect, IMarker caster)
-    {
-        if (effect.modifiers.status == null)
-            return;
-        
-        SpawnFX(PlayerManager.marker, effect);       
-    }
-
-    public static void DespawnPlayerFX(StatusEffect effect)
-    {
-        DespawnFX(PlayerManager.marker, effect);
+        m_WhiteFx.Despawn(fx);
+        m_ShadowFx.Despawn(fx);
+        m_GreyFx.Despawn(fx);
     }
 }

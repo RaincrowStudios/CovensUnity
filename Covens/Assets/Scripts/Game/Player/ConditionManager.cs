@@ -11,17 +11,17 @@ public static class PlayerConditionManager
 
     private static Dictionary<string, System.Action<StatusEffect, IMarker>> m_StatusBehavior = new Dictionary<string, System.Action<StatusEffect, IMarker>>()
     {
-        { "bound",      BanishManager.Bind },
-        { "silenced",   BanishManager.Silence },
-        { "channeling", SpellChanneling.SpawnPlayerFX },
+        { SpellData.BOUND_STATUS,      BanishManager.Bind },
+        { SpellData.SILENCED_STATUS,   BanishManager.Silence },
+        //{ "channeling", SpellChanneling.SpawnPlayerFX },
         //{ "channeled",  SpellChanneling.SpawnFX }
     };
 
     private static Dictionary<string, System.Action<StatusEffect>> m_StatusExpireBehavior = new Dictionary<string, System.Action<StatusEffect>>()
     {
-        { "bound",          BanishManager.Unbind },
-        { "silenced",       BanishManager.Unsilence },
-        { "channeling",     SpellChanneling.DespawnPlayerFX }
+        { SpellData.BOUND_STATUS,          BanishManager.Unbind },
+        { SpellData.SILENCED_STATUS,       BanishManager.Unsilence },
+        //{ "channeling",     SpellChanneling.DespawnPlayerFX }
     };
 
     private static Dictionary<string, double> m_StatusDict = new Dictionary<string, double>();
