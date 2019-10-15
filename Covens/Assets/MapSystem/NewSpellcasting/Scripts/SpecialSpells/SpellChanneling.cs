@@ -115,7 +115,7 @@ public static class SpellChanneling
             if (IsChanneled)
             {
                 //DespawnPlayerFX(data.result.effect);
-                StopChanneling(null);
+                //StopChanneling(null);
                 UIChanneling.Instance.ShowResults(data.result, null);
             }
         }
