@@ -76,8 +76,11 @@ public class WitchMarker : MuskMarker
             RemoveDeathFX();
 
         //setup effects
-        foreach (var effect in witchToken.effects)
-            OnApplyStatusEffect(effect);
+        if (witchToken.effects != null)
+        {
+            foreach (var effect in witchToken.effects)
+                OnApplyStatusEffect(effect);
+        }
     }
 
     public override void EnablePopSorting()
@@ -366,6 +369,15 @@ public class WitchMarker : MuskMarker
             ParticleSystem[] particles = m_ChannelingFX.GetComponentsInChildren<ParticleSystem>();
             particles[0].Stop();
             particles[1].Stop();
+        }
+
+        if (effect.spell == "spell_hex")
+        {
+
+        }
+        else if (effect.spell == "spell_seal")
+        {
+
         }
     }
 

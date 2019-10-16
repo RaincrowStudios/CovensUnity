@@ -54,10 +54,13 @@ public class SpiritMarker : MuskMarker
         m_AvatarRenderer.sprite = null;
 
         m_IconRenderer.sprite = null;
-        
+
         //setup effects
-        foreach (var effect in spiritToken.effects)
-            OnApplyStatusEffect(effect);
+        if (spiritToken.effects != null)
+        {
+            foreach (var effect in spiritToken.effects)
+                OnApplyStatusEffect(effect);
+        }
     }
 
     public override void SetStats()
