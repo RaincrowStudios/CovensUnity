@@ -16,10 +16,7 @@ namespace Raincrow.GameEventResponses
         }
 
         public string EventName => "expire.effect";
-
-        public static event System.Action<string,StatusEffect> OnEffectExpire;
-        public static event System.Action<StatusEffect> OnPlayerStatusEffectExpire;
-
+        
         public void HandleResponse(string eventData)
         {
             ExpireEventData data = JsonConvert.DeserializeObject<ExpireEventData>(eventData);
@@ -27,30 +24,29 @@ namespace Raincrow.GameEventResponses
         }
 
         public static void ExpireEffect(string character, StatusEffect effect)
-        {
-            if (character == PlayerDataManager.playerData.instance)
+        {            
+            IMarker marker = MarkerSpawner.GetMarker(character);
+
+            if (marker != null)
             {
-                ConditionManager.ExpireStatusEffect(effect);
-                OnPlayerStatusEffectExpire?.Invoke(effect);
-            }
-            else
-            {
-                IMarker marker = MarkerSpawner.GetMarker(character);
-                if (marker != null)
+                CharacterToken token = marker.Token as CharacterToken;
+                foreach (StatusEffect item in token.effects)
                 {
-                    CharacterToken token = marker.Token as CharacterToken;
-                    foreach (StatusEffect item in token.effects)
+                    if (item.spell == effect.spell)
                     {
-                        if (item.spell == effect.spell)
-                        {
-                            token.effects.Remove(item);
-                            item.CancelExpiration();
-                            break;
-                        }
+                        token.effects.Remove(item);
+                        item.CancelExpiration();
+                        break;
                     }
                 }
-                OnEffectExpire?.Invoke(character, effect);
+
+                marker.OnExpireStatusEffect(effect);
             }
+
+            SpellCastHandler.OnExpireEffect?.Invoke(character, effect);
+
+            if (character == PlayerDataManager.playerData.instance)
+                PlayerConditionManager.OnExpireEffect(effect);
         }
     }
 }

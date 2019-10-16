@@ -84,6 +84,7 @@ public class UIChanneling : UIInfoPanel
         {
             if (eff.modifiers.status == null)
                 continue;
+
             foreach (string status in eff.modifiers.status)
             {
                 if (status == "channeling")

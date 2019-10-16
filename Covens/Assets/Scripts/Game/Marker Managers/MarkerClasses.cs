@@ -55,6 +55,20 @@ public class StatusEffect
         LeanTween.cancel(m_ExpireTimerId);        
         m_OnExpire?.Invoke();
     }
+
+    public bool HasStatus(string status)
+    {
+        if (modifiers.status == null)
+            return false;
+
+        foreach (var st in modifiers.status)
+        {
+            if (st == status)
+                return true;
+        }
+
+        return false;
+    }
 }
 
 public abstract class MarkerData
@@ -181,8 +195,7 @@ public abstract class CharacterMarkerData : MarkerData
         }
         return result;
     }
-
-
+    
     public virtual void AddEnergy(int amount)
     {
         energy = Mathf.Clamp(energy + amount, 0, maxEnergy);

@@ -307,6 +307,12 @@ namespace Raincrow.Test
                 {
                     DownloadedAssets.Instance.OnApplicationLowMemory();
                 }
+                using (new BoxScope())
+                {
+                    m_StatusId = EditorGUILayout.TextField(m_StatusId);
+                    if (GUILayout.Button("has status?"))
+                        Debug.Log(PlayerManager.witchMarker.witchToken.HasStatus(m_StatusId));
+                }
                 EditorGUI.EndDisabledGroup();
             }
 
@@ -580,6 +586,8 @@ namespace Raincrow.Test
         [SerializeField] private string m_DebugResponse;
         [SerializeField] private string m_RequestType = "GET";
         [SerializeField] private bool m_RequireAuth = true;
+        [SerializeField] private string m_StatusId;
+
         private static List<string> m_RequestTypeOptions = new List<string>
         {
             "GET",

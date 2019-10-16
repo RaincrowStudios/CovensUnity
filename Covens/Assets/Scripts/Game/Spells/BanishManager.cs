@@ -31,7 +31,7 @@ public class BanishManager : MonoBehaviour
 
                 foreach (string status in effect.modifiers.status)
                 {
-                    if (status == "silenced")
+                    if (status == SpellData.SILENCED_STATUS)
                         return true;
                 }
             }
@@ -54,7 +54,7 @@ public class BanishManager : MonoBehaviour
 
                 foreach (string status in effect.modifiers.status)
                 {
-                    if (status == "bound")
+                    if (status == SpellData.BOUND_STATUS)
                         return true;
                 }
             }

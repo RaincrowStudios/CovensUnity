@@ -538,41 +538,43 @@ public class MarkerSpawner : MarkerManager
     public static void ApplyStatusEffect(string targetId, string casterId, StatusEffect effect)
     {
         IMarker caster = GetMarker(casterId);
+        IMarker target = GetMarker(targetId);
 
-        if (PlayerDataManager.playerData.instance == targetId)
+        if (target != null && target.Token is CharacterToken)
         {
-            ConditionManager.AddCondition(effect, caster);
-        }
-        else
-        {
-            IMarker target = GetMarker(targetId);
+            CharacterToken characterToken = target.Token as CharacterToken;
 
-            if (target != null && target.Token is CharacterToken)
+            //init if empety
+            if (characterToken.effects == null)
+                characterToken.effects = new List<StatusEffect>();
+
+            //remove the old effect if it already exists
+            foreach (StatusEffect item in characterToken.effects)
             {
-                CharacterToken characterToken = target.Token as CharacterToken;
-
-                if (characterToken.effects == null)
-                    characterToken.effects = new List<StatusEffect>();
-
-                foreach (StatusEffect item in characterToken.effects)
+                if (item.spell == effect.spell)
                 {
-                    if (item.spell == effect.spell)
-                    {
-                        characterToken.effects.Remove(item);
-                        item.CancelExpiration();
-                        break;
-                    }
+                    characterToken.effects.Remove(item);
+                    item.CancelExpiration();
+                    break;
                 }
-
-                characterToken.effects.Add(effect);
-                effect.ScheduleExpiration(() => ExpireStatusEffectHandler.ExpireEffect(targetId, effect));
-
-                if (effect.spell == "spell_channeling")
-                    SpellChanneling.SpawnFX(target, effect);
             }
-        }
 
-        SpellCastHandler.OnApplyStatusEffect?.Invoke(targetId, casterId, effect);
+            //add the new effect
+            characterToken.effects.Add(effect);
+
+            //schedule the local expiration
+            effect.ScheduleExpiration(() => ExpireStatusEffectHandler.ExpireEffect(targetId, effect));
+
+            //if (effect.spell == "spell_channeling")
+            //    SpellChanneling.SpawnFX(target, effect);
+
+            target.OnApplyStatusEffect(effect);
+        }
+        
+        SpellCastHandler.OnApplyEffect?.Invoke(targetId, casterId, effect);
+
+        if (targetId == PlayerDataManager.playerData.instance)
+            PlayerConditionManager.OnApplyEffect(effect, caster);
     }
 
 

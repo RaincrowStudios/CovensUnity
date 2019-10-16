@@ -108,7 +108,7 @@ public class PlayerManager : MonoBehaviour
             conditions = new List<StatusEffect>(PlayerDataManager.playerData.effects);
 
         foreach (var condition in conditions)
-            ConditionManager.AddCondition(condition, null);
+            MarkerSpawner.ApplyStatusEffect(PlayerDataManager.playerData.instance, null, condition);
     }
     
     void onMapChangePos()

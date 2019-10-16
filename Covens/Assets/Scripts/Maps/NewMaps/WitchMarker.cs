@@ -23,8 +23,10 @@ public class WitchMarker : MuskMarker
     public override string Name => witchToken.displayName;
 
     private int m_TweenId;
+
     private Transform m_DeathIcon;
     private Transform m_ImmunityIcon;
+    private Transform m_ChannelingFX;
 
     public override Transform AvatarTransform
     {
@@ -72,6 +74,10 @@ public class WitchMarker : MuskMarker
             AddDeathFX();
         else
             RemoveDeathFX();
+
+        //setup effects
+        foreach (var effect in witchToken.effects)
+            OnApplyStatusEffect(effect);
     }
 
     public override void EnablePopSorting()
@@ -248,6 +254,12 @@ public class WitchMarker : MuskMarker
             m_ImmunityIcon = null;
         }
 
+        if (m_ChannelingFX != null)
+        {
+            SpellChanneling.DespawnFX(m_ChannelingFX);
+            m_ChannelingFX = null;
+        }
+
         base.OnDespawn();
     }
 
@@ -262,6 +274,7 @@ public class WitchMarker : MuskMarker
             m_ImmunityIcon.localRotation = Quaternion.identity;
             UpdateRenderers();
         }
+
         UpdateCharacterAlphaMul();
     }
 
@@ -326,20 +339,46 @@ public class WitchMarker : MuskMarker
             SetCharacterAlpha(AvatarAlpha, 1f);
     }
 
-    public override void ApplyStatusEffect(StatusEffect effect)
+    public override void OnApplyStatusEffect(StatusEffect effect)
     {
-        //if (effect.modifiers.status == null)
-        //    return;
+        if (effect.HasStatus(SpellData.CHANNELING_STATUS) && m_ChannelingFX == null)
+        {
+            m_ChannelingFX = SpellChanneling.SpawnFX(this, witchToken);
+            m_ChannelingFX.SetParent(AvatarTransform);
+            m_ChannelingFX.localPosition = Vector3.zero;
+            m_ChannelingFX.localScale = Vector3.one;
 
-        //StatusEffectFX.SpawnFX(this, effect);
+            ParticleSystem[] particles = m_ChannelingFX.GetComponentsInChildren<ParticleSystem>();
+            particles[0].Play();
+            particles[1].Play();
+        }
+
+        if (effect.HasStatus(SpellData.CHANNELED_STATUS))
+        {
+            if (m_ChannelingFX == null)
+            {
+                m_ChannelingFX = SpellChanneling.SpawnFX(this, witchToken);
+                m_ChannelingFX.SetParent(AvatarTransform);
+                m_ChannelingFX.localPosition = Vector3.zero;
+                m_ChannelingFX.localScale = Vector3.one;
+            }
+
+            ParticleSystem[] particles = m_ChannelingFX.GetComponentsInChildren<ParticleSystem>();
+            particles[0].Stop();
+            particles[1].Stop();
+        }
     }
 
-    public override void ExpireStatusEffect(StatusEffect effect)
+    public override void OnExpireStatusEffect(StatusEffect effect)
     {
-        //if (effect.modifiers.status == null)
-        //    return;
-
-        //StatusEffectFX.DespawnFX(this, effect);
+        if (effect.HasStatus(SpellData.CHANNELING_STATUS) || effect.HasStatus(SpellData.CHANNELED_STATUS))
+        {
+            if (m_ChannelingFX != null)
+            {
+                SpellChanneling.DespawnFX(m_ChannelingFX);
+                m_ChannelingFX = null;
+            }
+        }
     }
 
 #if UNITY_EDITOR

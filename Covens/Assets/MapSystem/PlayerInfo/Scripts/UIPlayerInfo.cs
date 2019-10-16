@@ -169,8 +169,8 @@ public class UIPlayerInfo : UIInfoPanel
         }
 
         RemoveTokenHandler.OnTokenRemove += _OnMapTokenRemove;
-        SpellCastHandler.OnApplyStatusEffect += _OnStatusEffectApplied;
-        ExpireStatusEffectHandler.OnEffectExpire += _OnExpireEffect;
+        SpellCastHandler.OnApplyEffect += _OnStatusEffectApplied;
+        SpellCastHandler.OnExpireEffect += _OnExpireEffect;
         BanishManager.OnBanished += Abort;
         OnMapEnergyChange.OnEnergyChange += _OnEnergyChange;
         OnMapEnergyChange.OnPlayerDead += _OnCharacterDead;
@@ -223,8 +223,8 @@ public class UIPlayerInfo : UIInfoPanel
         //unsubscribe events
         MoveTokenHandler.OnTokenMove -= _OnMapTokenMove;
         RemoveTokenHandler.OnTokenRemove -= _OnMapTokenRemove;
-        SpellCastHandler.OnApplyStatusEffect -= _OnStatusEffectApplied;
-        ExpireStatusEffectHandler.OnEffectExpire -= _OnExpireEffect;
+        SpellCastHandler.OnApplyEffect -= _OnStatusEffectApplied;
+        SpellCastHandler.OnExpireEffect -= _OnExpireEffect;
         BanishManager.OnBanished -= Abort;
         OnMapEnergyChange.OnEnergyChange -= _OnEnergyChange;
         OnMapEnergyChange.OnPlayerDead -= _OnCharacterDead;

@@ -314,7 +314,7 @@ public class MarkerManagerAPI : MonoBehaviour
 
         foreach (string id in toRemove)
             MarkerSpawner.DeleteMarker(id);
-
+        
         m_SpawnCoroutine = null;
         IsSpawningTokens = false;
     }
