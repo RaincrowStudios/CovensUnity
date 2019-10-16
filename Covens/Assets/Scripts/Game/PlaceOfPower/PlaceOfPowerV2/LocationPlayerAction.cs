@@ -296,7 +296,10 @@ public class LocationPlayerAction : MonoBehaviour
         SoundManagerOneShot.Instance.PlayButtonTap();
         if (!UIPlayerInfo.IsShowing && !UISpellcastBook.IsOpen)
         {
-            LocationIslandController.moveCamera(playerMarker.AvatarTransform.position);
+            if (playerMarker != null)
+            {
+                LocationIslandController.moveCamera(playerMarker.AvatarTransform.position);
+            }
         }
     }
 

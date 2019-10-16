@@ -118,7 +118,8 @@ public class LocationIslandController : MonoBehaviour
     {
         if (id == PlayerDataManager.playerData.instance) //update the players energy
         {
-            LocationPlayerAction.playerMarker.UpdateEnergy();
+            if (LocationPlayerAction.playerMarker != null)
+                LocationPlayerAction.playerMarker.UpdateEnergy();
         }
         else if (LocationUnitSpawner.Markers.ContainsKey(id))
         {
