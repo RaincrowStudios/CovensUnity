@@ -25,7 +25,8 @@ public abstract class CharacterMarker : MuskMarker
     }
 
     private int m_TweenId;
-
+    private Transform m_HexFX;
+    private Transform m_SealFX;
 
     protected abstract void SetupIcon();
     protected abstract void SetupAvatar();
@@ -128,13 +129,27 @@ public abstract class CharacterMarker : MuskMarker
     {
         base.OnApplyStatusEffect(effect);
 
-        if (effect.spell == "spell_hex")
-        {
+        Transform fx = null;
 
+        if (effect.stack == effect.stackable)
+        {
+            if (effect.spell == "spell_hex")
+            {
+                if (m_HexFX == null)
+                    m_HexFX = fx = StatusEffectFX.SpawnHexFX();
+            }
+            else if (effect.spell == "spell_seal")
+            {
+                if (m_SealFX == null)
+                    m_SealFX = fx = StatusEffectFX.SpawnSealFX();
+            }
         }
-        else if (effect.spell == "spell_seal")
-        {
 
+        if (fx)
+        {
+            fx.SetParent(AvatarTransform);
+            fx.localPosition = Vector3.zero;
+            fx.localScale = Vector3.one;
         }
     }
 
@@ -144,11 +159,19 @@ public abstract class CharacterMarker : MuskMarker
 
         if (effect.spell == "spell_hex")
         {
-
+            if (m_HexFX)
+            {
+                StatusEffectFX.DespawnHexFX(m_HexFX);
+                m_HexFX = null;
+            }
         }
         else if (effect.spell == "spell_seal")
         {
-
+            if (m_SealFX)
+            {
+                StatusEffectFX.DespawnHexFX(m_SealFX);
+                m_SealFX = null;
+            }
         }
     }
 }
