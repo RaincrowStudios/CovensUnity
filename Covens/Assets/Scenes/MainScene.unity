@@ -1973,6 +1973,30 @@ PrefabInstance:
       propertyPath: m_IsActive
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 114393482725143612, guid: b5f5d5f7d994a6f45b256603c855027a,
+        type: 3}
+      propertyPath: m_FontData.m_Font
+      value: 
+      objectReference: {fileID: 12800000, guid: 33fb44b1f717ebb44a6ecd2e81cd4d58,
+        type: 3}
+    - target: {fileID: 114619561106698134, guid: b5f5d5f7d994a6f45b256603c855027a,
+        type: 3}
+      propertyPath: m_FontData.m_Font
+      value: 
+      objectReference: {fileID: 12800000, guid: 33fb44b1f717ebb44a6ecd2e81cd4d58,
+        type: 3}
+    - target: {fileID: 114847787381551048, guid: b5f5d5f7d994a6f45b256603c855027a,
+        type: 3}
+      propertyPath: m_FontData.m_Font
+      value: 
+      objectReference: {fileID: 12800000, guid: 33fb44b1f717ebb44a6ecd2e81cd4d58,
+        type: 3}
+    - target: {fileID: 114505931926309000, guid: b5f5d5f7d994a6f45b256603c855027a,
+        type: 3}
+      propertyPath: m_FontData.m_Font
+      value: 
+      objectReference: {fileID: 12800000, guid: 33fb44b1f717ebb44a6ecd2e81cd4d58,
+        type: 3}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: b5f5d5f7d994a6f45b256603c855027a, type: 3}
 --- !u!1 &399864099
@@ -4130,6 +4154,11 @@ PrefabInstance:
       propertyPath: m_SizeDelta.x
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 223971715984497166, guid: 5413aaf865d33104f8f1a0d39ea07b25,
+        type: 3}
+      propertyPath: m_Camera
+      value: 
+      objectReference: {fileID: 1096809570}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 5413aaf865d33104f8f1a0d39ea07b25, type: 3}
 --- !u!1 &1215259085 stripped
