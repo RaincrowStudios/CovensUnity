@@ -40,7 +40,8 @@ public static class SummoningManager
                 SpiritData spiritData = DownloadedAssets.GetSpirit(spirit);
                 int tier = spiritData.tier;
                 int summonCost = PlayerDataManager.summoningCosts[tier - 1];
-                //int xpGained = tier * 25;
+
+                PlayerDataManager.playerData.activeSpirits.Add(token.instance);
 
                 if (summonCost > PlayerDataManager.playerData.energy)
                     OnCharacterDeath.OnSummonDeath?.Invoke(spirit);
