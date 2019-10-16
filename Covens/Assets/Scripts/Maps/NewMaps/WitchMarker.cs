@@ -5,39 +5,16 @@ using TMPro;
 using System.Collections.Generic;
 using UnityEngine.UI;
 
-public class WitchMarker : MuskMarker
-{
-    [Header("Witch Marker")]
-    [SerializeField] private Transform m_AvatarGroup;
-    [SerializeField] private Transform m_IconGroup;
-    [SerializeField] private Transform m_Character;
-
-
-    [SerializeField] private TextMeshPro m_DisplayName;
-    [SerializeField] private TextMeshPro m_Level;
-
-    [SerializeField] private SpriteRenderer m_IconRenderer;
-    
+public class WitchMarker : CharacterMarker
+{    
     public WitchToken witchToken { get => Token as WitchToken; }
 
     public override string Name => witchToken.displayName;
-
-    private int m_TweenId;
-
+    
     private Transform m_DeathIcon;
     private Transform m_ImmunityIcon;
     private Transform m_ChannelingFX;
-
-    public override Transform AvatarTransform
-    {
-        get
-        {
-            if (IsShowingIcon)
-                return m_IconRenderer.transform;
-            return m_Character;
-        }
-    }
-
+    
     public void GetAvatar(System.Action<Sprite> callback)
     {
         if (m_AvatarRenderer.sprite != null)
@@ -57,8 +34,8 @@ public class WitchMarker : MuskMarker
     public override void Setup(Token data)
     {
         base.Setup(data);
+
         m_DisplayName.text = witchToken.displayName;
-        SetStats();
         UpdateNameplate(m_DisplayName.preferredWidth);
         SetRingColor();
         UpdateEnergy();
@@ -68,19 +45,12 @@ public class WitchMarker : MuskMarker
             AddImmunityFX();
         else
             RemoveImmunityFX();
-
+        
         //set death icon
         if (witchToken.state == "dead" || witchToken.energy <= 0)
             AddDeathFX();
         else
             RemoveDeathFX();
-
-        //setup effects
-        if (witchToken.effects != null)
-        {
-            foreach (var effect in witchToken.effects)
-                OnApplyStatusEffect(effect);
-        }
     }
 
     public override void EnablePopSorting()
@@ -88,68 +58,7 @@ public class WitchMarker : MuskMarker
         base.EnablePopSorting();
         //m_AvatarRenderer.sortingOrder = 10;
     }
-
-    public override void EnablePortait()
-    {
-        if (IsShowingIcon)
-            return;
-
-        if (m_IconRenderer.sprite == null)
-            SetupPortrait(witchToken.male, witchToken.equipped);
-
-        IsShowingIcon = true;
-        IsShowingAvatar = false;
-
-        LeanTween.cancel(m_TweenId);
-
-        m_TweenId = LeanTween.value(m_IconGroup.localScale.x, 1, 0.5f)
-            .setEaseOutCubic()
-            .setOnStart(() =>
-            {
-                m_IconGroup.gameObject.SetActive(true);
-            })
-            .setOnUpdate((float t) =>
-            {
-                m_IconGroup.localScale = new Vector3(t, t, t);
-                m_AvatarGroup.localScale = new Vector3(1 - t, 1 - t, 1 - t);
-            })
-            .setOnComplete(() =>
-            {
-                m_AvatarGroup.gameObject.SetActive(false);
-            })
-            .uniqueId;
-    }
-
-    public override void EnableAvatar()
-    {
-        if (IsShowingAvatar)
-            return;
-
-        if (m_AvatarRenderer.sprite == null)
-            SetupAvatar(witchToken.male, witchToken.equipped);
-
-        IsShowingAvatar = true;
-        IsShowingIcon = false;
-
-        LeanTween.cancel(m_TweenId);
-
-        m_TweenId = LeanTween.value(m_AvatarGroup.localScale.x, 1, 0.5f)
-            .setEaseOutCubic()
-            .setOnStart(() =>
-            {
-                m_AvatarGroup.gameObject.SetActive(true);
-            })
-            .setOnUpdate((float t) =>
-            {
-                m_AvatarGroup.localScale = new Vector3(t, t, t);
-                m_IconGroup.localScale = new Vector3(1 - t, 1 - t, 1 - t);
-            })
-            .setOnComplete(() =>
-            {
-                m_IconGroup.gameObject.SetActive(false);
-            })
-            .uniqueId;
-    }
+      
 
     public override void SetStats()
     {
@@ -178,6 +87,16 @@ public class WitchMarker : MuskMarker
             else if (m_IconRenderer.sprite != null && m_IconRenderer.sprite.texture != null)
                 Destroy(m_IconRenderer.sprite.texture);
         }
+    }
+
+    protected override void SetupAvatar()
+    {
+        SetupAvatar(witchToken.male, witchToken.equipped);
+    }
+
+    protected override void SetupIcon()
+    {
+        SetupPortrait(witchToken.male, witchToken.equipped);
     }
 
     public void SetupAvatar(bool male, List<EquippedApparel> equips, System.Action<Sprite> callback = null)
@@ -228,22 +147,11 @@ public class WitchMarker : MuskMarker
 
     public override void OnDespawn()
     {
-        LeanTween.cancel(m_TweenId);
-
-        IsShowingAvatar = false;
-        IsShowingIcon = false;
-
         if (m_AvatarRenderer.sprite != null)
-        {
             Destroy(m_AvatarRenderer.sprite.texture);
-            m_AvatarRenderer.sprite = null;
-        }
 
         if (m_IconRenderer.sprite != null)
-        {
             Destroy(m_IconRenderer.sprite.texture);
-            m_IconRenderer.sprite = null;
-        }
 
         if (m_DeathIcon != null)
         {
@@ -344,6 +252,8 @@ public class WitchMarker : MuskMarker
 
     public override void OnApplyStatusEffect(StatusEffect effect)
     {
+        base.OnApplyStatusEffect(effect);
+
         if (effect.HasStatus(SpellData.CHANNELING_STATUS) && m_ChannelingFX == null)
         {
             m_ChannelingFX = SpellChanneling.SpawnFX(this, witchToken);
@@ -370,19 +280,12 @@ public class WitchMarker : MuskMarker
             particles[0].Stop();
             particles[1].Stop();
         }
-
-        if (effect.spell == "spell_hex")
-        {
-
-        }
-        else if (effect.spell == "spell_seal")
-        {
-
-        }
     }
 
     public override void OnExpireStatusEffect(StatusEffect effect)
     {
+        base.OnExpireStatusEffect(effect);
+
         if (effect.HasStatus(SpellData.CHANNELING_STATUS) || effect.HasStatus(SpellData.CHANNELED_STATUS))
         {
             if (m_ChannelingFX != null)

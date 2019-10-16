@@ -4,147 +4,46 @@ using Raincrow.Maps;
 using TMPro;
 using System.Collections.Generic;
 
-public class SpiritMarker : MuskMarker
+public class SpiritMarker : CharacterMarker
 {
-    [Header("Spirit Marker")]
-    [SerializeField] private Transform m_AvatarGroup;
-    [SerializeField] private Transform m_IconGroup;
-    [SerializeField] private Transform m_NamePlate;
-
-    [SerializeField] private TextMeshPro m_DisplayName;
-    [SerializeField] private TextMeshPro m_Tier;
-
-    [SerializeField] private SpriteRenderer m_IconRenderer;
-
     public SpiritData spiritData { get; private set; }
     public SpiritToken spiritToken { get => Token as SpiritToken; }
-    private int m_TweenId;
-
+    
     public override string Name => spiritData.Name;
 
-    public override Transform AvatarTransform
-    {
-        get
-        {
-            if (IsShowingIcon)
-                return m_IconRenderer.transform;
-            return m_AvatarRenderer.transform.parent;
-        }
-    }
     public Sprite tierIcon { get { return m_IconRenderer.sprite; } }
-
+    
     public override void Setup(Token data)
     {
+        spiritData = DownloadedAssets.GetSpirit((data as SpiritToken).spiritId);
+
         base.Setup(data);
 
-        spiritData = DownloadedAssets.GetSpirit(spiritToken.spiritId);
-
-        m_DisplayName.text = LocalizeLookUp.GetSpiritName(spiritToken.spiritId);
-        SetStats();
-
-        //UpdateNameplate(m_DisplayName.preferredWidth);
-        UpdateEnergy();
-
-        //todo: load icon and spirit avatar (currently implemented on marker spawner
-
-        IsShowingAvatar = false;
-        IsShowingIcon = false;
-
-        m_IconRenderer.sprite = null;
-        m_AvatarRenderer.sprite = null;
-
-        m_IconRenderer.sprite = null;
-
-        //setup effects
-        if (spiritToken.effects != null)
-        {
-            foreach (var effect in spiritToken.effects)
-                OnApplyStatusEffect(effect);
-        }
+        m_DisplayName.text = LocalizeLookUp.GetSpiritName(spiritData.id);
     }
 
     public override void SetStats()
     {
-        if (m_Tier == null)
+        if (m_Level == null)
             return;
 
-        m_Tier.text = spiritData.tier.ToString();
-    }
-
-    public override void EnablePortait()
-    {
-        if (IsShowingIcon)
-            return;
-
-        if (m_IconRenderer.sprite == null)
-            SetupIcon();
-
-        IsShowingIcon = true;
-        IsShowingAvatar = false;
-
-        LeanTween.cancel(m_TweenId);
-
-        m_TweenId = LeanTween.value(m_IconGroup.localScale.x, 1, 0.5f)
-            .setEaseOutCubic()
-            .setOnStart(() =>
-            {
-                m_IconGroup.gameObject.SetActive(true);
-            })
-            .setOnUpdate((float t) =>
-            {
-                m_IconGroup.localScale = new Vector3(t, t, t);
-                m_AvatarGroup.localScale = new Vector3(1 - t, 1 - t, 1 - t);
-            })
-            .setOnComplete(() =>
-            {
-                m_AvatarGroup.gameObject.SetActive(false);
-            })
-            .uniqueId;
-    }
-
-    public override void EnableAvatar()
-    {
-        if (IsShowingAvatar)
-            return;
-
-        if (m_AvatarRenderer.sprite == null)
-            SetupAvatar();
-
-        IsShowingAvatar = true;
-        IsShowingIcon = false;
-
-        LeanTween.cancel(m_TweenId);
-
-        m_TweenId = LeanTween.value(m_AvatarGroup.localScale.x, 1, 0.5f)
-            .setEaseOutCubic()
-            .setOnStart(() =>
-            {
-                m_AvatarGroup.gameObject.SetActive(true);
-            })
-            .setOnUpdate((float t) =>
-            {
-                m_AvatarGroup.localScale = new Vector3(t, t, t);
-                m_IconGroup.localScale = new Vector3(1 - t, 1 - t, 1 - t);
-            })
-            .setOnComplete(() =>
-            {
-                m_IconGroup.gameObject.SetActive(false);
-            })
-            .uniqueId;
+        m_Level.text = spiritData.tier.ToString();
     }
 
     public override void EnablePopSorting()
     {
         base.EnablePopSorting();
-        m_NamePlate.transform.localPosition = new Vector3(0, 23, 0);
-        m_NamePlate.transform.localScale = Vector3.one * 2;
+        m_NameBanner.transform.localPosition = new Vector3(0, 23, 0);
+        m_NameBanner.transform.localScale = Vector3.one * 2;
     }
 
-    public void SetupAvatar()
+    protected override void SetupAvatar()
     {
         //setup spirit sprite
         if (string.IsNullOrEmpty(spiritToken.spiritId))
+        {
             Debug.LogError("spritid not sent [" + Token.instance + "]");
+        }
         else
         {
             m_AvatarRenderer.color = new Color(1, 1, 1, 0);
@@ -161,7 +60,7 @@ public class SpiritMarker : MuskMarker
         }
     }
 
-    public void SetupIcon()
+    protected override void SetupIcon()
     {
         if (string.IsNullOrEmpty(spiritToken.spiritId))
         {
@@ -172,22 +71,6 @@ public class SpiritMarker : MuskMarker
             SpiritData spirit = DownloadedAssets.GetSpirit(spiritToken.spiritId);
             m_IconRenderer.sprite = MarkerSpawner.GetSpiritTierSprite(spirit.type);
         }
-    }
-
-    public override void OnDespawn()
-    {
-        base.OnDespawn();
-        LeanTween.cancel(m_TweenId);
-    }
-
-    public override void OnApplyStatusEffect(StatusEffect effect)
-    {
-
-    }
-
-    public override void OnExpireStatusEffect(StatusEffect effect)
-    {
-
     }
 
 

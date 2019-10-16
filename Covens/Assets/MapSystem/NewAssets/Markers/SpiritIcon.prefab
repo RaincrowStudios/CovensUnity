@@ -135,10 +135,10 @@ MonoBehaviour:
   m_DebugFloat: 0
   m_AvatarGroup: {fileID: 4915499845343902}
   m_IconGroup: {fileID: 4527749467080838}
-  m_NamePlate: {fileID: 4338905907238940}
-  m_DisplayName: {fileID: 114468071247984912}
-  m_Tier: {fileID: 8382105340551566257}
+  m_Character: {fileID: 4080475960509876}
   m_IconRenderer: {fileID: 212061742380053784}
+  m_DisplayName: {fileID: 114468071247984912}
+  m_Level: {fileID: 8382105340551566257}
 --- !u!1 &1380211745843976
 GameObject:
   m_ObjectHideFlags: 0
