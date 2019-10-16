@@ -21,10 +21,11 @@ public class BanishManager : MonoBehaviour
     {
         get
         {
-            if (PlayerDataManager.playerData.effects == null)
+            if (PlayerManager.witchMarker.witchToken.effects == null)
                 return false;
 
-            foreach(var effect in PlayerDataManager.playerData.effects)
+            var effects = PlayerManager.witchMarker?.witchToken.effects;
+            foreach (var effect in effects)
             {
                 if (effect.modifiers.status == null)
                     continue;
@@ -44,10 +45,11 @@ public class BanishManager : MonoBehaviour
     {
         get
         {
-            if (PlayerDataManager.playerData.effects == null)
+            if (PlayerManager.witchMarker?.witchToken.effects == null)
                 return false;
 
-            foreach (var effect in PlayerDataManager.playerData.effects)
+            var effects = PlayerManager.witchMarker.witchToken.effects;
+            foreach (var effect in effects)
             {
                 if (effect.modifiers.status == null)
                     continue;

@@ -55,14 +55,10 @@ public static class PlayerConditionManager
         OnPlayerApplyStatusEffect?.Invoke(statusEffect);
     }
 
-    public static void TriggerEffect(StatusEffect effect, IMarker caster)
-    {
-        
-    }
-
     public static void ExpireEffect(string spell)
     {
-        foreach (StatusEffect item in PlayerDataManager.playerData.effects)
+        var effects = PlayerManager.witchMarker.witchToken.effects;
+        foreach (StatusEffect item in effects)
         {
             if (item.spell == spell)
             {

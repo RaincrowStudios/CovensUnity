@@ -31,29 +31,8 @@ public class PlayerManager : MonoBehaviour
 
     private static IMarker m_Marker;
 
-    public static IMarker marker
-    {
-        get
-        {
-            if (!LocationIslandController.isInBattle)
-                return m_Marker;
-            else
-                return LocationPlayerAction.playerMarker;
-
-        }
-    }                //actual marker
-    public static IMarker physicalMarker { get; set; }       // gyro marker
-    public static WitchMarker witchMarker
-    {
-        get
-        {
-            if (!LocationIslandController.isInBattle)
-                return marker as WitchMarker;
-            else
-                return LocationPlayerAction.playerMarker as WitchMarker;
-
-        }
-    }
+    public static IMarker marker => LocationIslandController.isInBattle ? LocationPlayerAction.playerMarker : m_Marker;
+    public static WitchMarker witchMarker => marker as WitchMarker;
 
     [SerializeField] private GameObject selectionRing;
 

@@ -80,7 +80,8 @@ public class UIChanneling : UIInfoPanel
             "\n+0 " + LocalizeLookUp.GetText("generic_resilience") +
             "\n+0% " + LocalizeLookUp.GetText("generic_critical_cast_rate");
 
-        foreach (StatusEffect eff in PlayerDataManager.playerData.effects)
+        var effects = PlayerManager.witchMarker.witchToken.effects;
+        foreach (StatusEffect eff in effects)
         {
             if (eff.modifiers.status == null)
                 continue;

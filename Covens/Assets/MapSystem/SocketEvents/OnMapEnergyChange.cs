@@ -34,14 +34,7 @@ public static class OnMapEnergyChange
 
         if (instance == player.instance) //update the players energy
         {
-            if (LocationIslandController.isInBattle)
-            {
-                marker = LocationPlayerAction.playerMarker;
-            }
-            else
-            {
-                marker = PlayerManager.marker;
-            }
+            marker = PlayerManager.marker;
 
             if (marker.Token.lastEnergyUpdate > timestamp)
                 return;

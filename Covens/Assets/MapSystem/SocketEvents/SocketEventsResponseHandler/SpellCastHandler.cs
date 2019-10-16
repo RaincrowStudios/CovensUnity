@@ -117,8 +117,8 @@ namespace Raincrow.GameEventResponses
             bool playerIsCaster = data.caster.id == player.instance;
             bool playerIsTarget = data.target.id == player.instance;
 
-            IMarker caster = playerIsCaster ? PlayerManager.marker : MarkerManager.GetMarker(data.caster.id);
-            IMarker target = playerIsTarget ? PlayerManager.marker : MarkerManager.GetMarker(data.target.id);
+            IMarker caster = MarkerManager.GetMarker(data.caster.id);
+            IMarker target = MarkerManager.GetMarker(data.target.id);
             int energyChange = (int)data.result.amount;
             int casterNewEnergy = data.caster.energy;
             int targetNewEnergy = data.target.energy;

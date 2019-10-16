@@ -46,6 +46,9 @@ public class MarkerManager : MonoBehaviour
         }
         else
         {
+            if (PlayerDataManager.playerData.instance == instance)
+                return LocationPlayerAction.playerMarker;
+
             if (LocationUnitSpawner.Markers.ContainsKey(instance))
                 return LocationUnitSpawner.Markers[instance];
         }

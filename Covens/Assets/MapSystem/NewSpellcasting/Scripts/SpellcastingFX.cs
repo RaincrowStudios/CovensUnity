@@ -18,7 +18,7 @@ public static class SpellcastingFX
     //banish
     private static SimplePool<Transform> m_BanishGlyph = new SimplePool<Transform>("SpellFX/SpellGlyph_Banish");
     private static SimplePool<Transform> m_BanishAura = new SimplePool<Transform>("SpellFX/HitFX_Aura_White");
-    
+        
     public static void SpawnBanish(IMarker target)
     {
         Transform glyph = m_BanishGlyph.Spawn();
