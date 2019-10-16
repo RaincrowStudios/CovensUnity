@@ -6,9 +6,6 @@ using UnityEngine.UI;
 
 public class DownloadedAssets : MonoBehaviour
 {
-    [Header("Low memory UI")]
-    [SerializeField] private Canvas m_Canvas;
-
     public static DownloadedAssets Instance { get; set; }
 
     private static Dictionary<string, List<AssetBundle>> loadedBundles = new Dictionary<string, List<AssetBundle>>();
@@ -37,10 +34,7 @@ public class DownloadedAssets : MonoBehaviour
     {
         Instance = this;
         DontDestroyOnLoad(this.gameObject);
-
-        m_Canvas.enabled = false;
-        m_Canvas.gameObject.SetActive(false);
-
+        
         Application.lowMemory += OnApplicationLowMemory;
     }
 
@@ -57,11 +51,7 @@ public class DownloadedAssets : MonoBehaviour
         Debug.LogError("Memory is low. Unloading assets.");
         UnloadingMemory = true;
         OnWillUnloadAssets?.Invoke();
-
-        //show the UI
-        m_Canvas.gameObject.SetActive(true);
-        m_Canvas.enabled = true;
-
+        
         //unload assetbundles
         foreach (var bundleList in loadedBundles.Values)
         {
@@ -79,8 +69,6 @@ public class DownloadedAssets : MonoBehaviour
         yield return unloadAssets;
 
         //hide the UI
-        m_Canvas.enabled = false;
-        m_Canvas.gameObject.SetActive(false);
         UnloadingMemory = false;
     }
 
