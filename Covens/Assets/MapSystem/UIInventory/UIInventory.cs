@@ -83,14 +83,15 @@ public class UIInventory : MonoBehaviour
         m_HerbsWheel.LockIngredient(null, 0);
         m_ToolsWheel.LockIngredient(null, 0);
         m_GemsWheel.LockIngredient(null, 0);
-        
+        BackButtonListener.AddCloseAction(Close);
+
         m_ApothecaryButton.gameObject.SetActive(showApothecary && PlayerDataManager.playerData.energy != 0);
 
         if (m_ApothecaryButton.gameObject.activeSelf)
         {
             bool hasPotions = false;
 
-            for(int i = 0; i < PlayerDataManager.playerData.inventory.consumables.Count; i++)
+            for (int i = 0; i < PlayerDataManager.playerData.inventory.consumables.Count; i++)
             {
                 if (PlayerDataManager.playerData.inventory.consumables[i].count > 0)
                 {
@@ -114,6 +115,7 @@ public class UIInventory : MonoBehaviour
     public void Close()
     {
         AnimateOut();
+        BackButtonListener.RemoveCloseAction();
 
         //if (resetIngrPicker)
         ResetIngredientPicker();
@@ -170,7 +172,7 @@ public class UIInventory : MonoBehaviour
     private void OnClickApothecary()
     {
         this.Close();
-		UICollectableInfo.Instance.Close ();
+        UICollectableInfo.Instance.Close();
         UIApothecary.Instance.Show(
             null,
             () => //on returning from apothecary
@@ -222,7 +224,7 @@ public class UIInventory : MonoBehaviour
             {
                 case IngredientType.herb: m_HerbsWheel.SetPicker(_item.id, _item.count); break;
                 case IngredientType.tool: m_ToolsWheel.SetPicker(_item.id, _item.count); break;
-                case IngredientType.gem:  m_GemsWheel.SetPicker(_item.id, _item.count); break;
+                case IngredientType.gem: m_GemsWheel.SetPicker(_item.id, _item.count); break;
             }
         }
     }
