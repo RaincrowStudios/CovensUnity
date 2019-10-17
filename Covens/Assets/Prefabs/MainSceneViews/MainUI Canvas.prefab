@@ -20667,6 +20667,7 @@ GameObject:
   - component: {fileID: 95581364222537700}
   - component: {fileID: 2100236815223383734}
   - component: {fileID: 114796654857181126}
+  - component: {fileID: 622344720682588659}
   m_Layer: 5
   m_Name: MainUI Canvas
   m_TagString: Untagged
@@ -21032,6 +21033,18 @@ MonoBehaviour:
   mapPointer: {fileID: 114796637872850108}
   m_SummonButton: {fileID: 114990376330951518}
   m_ShoutButton: {fileID: 114316703701802602}
+--- !u!114 &622344720682588659
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1332108981819544}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: cced00340bcc8aa4099a5c55ec81397d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &1335183268195658
 GameObject:
   m_ObjectHideFlags: 0

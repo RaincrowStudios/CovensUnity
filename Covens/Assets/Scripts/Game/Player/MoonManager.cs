@@ -59,6 +59,7 @@ public class MoonManager : UIAnimationManager
         {
             alignmentButton.enabled = false;
         });
+
     }
     //
     //    public void DelayOpen()
@@ -68,10 +69,13 @@ public class MoonManager : UIAnimationManager
 
     public void Open()
     {
-        BackButtonListener.AddCloseAction(Close);
 
+        //BackButtonListener.AddCloseAction(Close);
         UIStateManager.Instance.CallWindowChanged(false);
-
+        container.transform.GetChild(9).GetComponent<Button>().onClick.AddListener(() =>
+        {
+            Close();
+        });
         MapsAPI.Instance.HideMap(true);
         //Invoke("disableMap", 1f);
         SoundManagerOneShot.Instance.MenuSound();
@@ -121,7 +125,6 @@ public class MoonManager : UIAnimationManager
 
     public void Close()
     {
-        BackButtonListener.RemoveCloseAction();
         StartCoroutine(EnableAlignmentButtonInteractability());
         SoundManagerOneShot.Instance.MenuSound();
         anim.Play("out");
@@ -129,6 +132,7 @@ public class MoonManager : UIAnimationManager
         MapsAPI.Instance.HideMap(false);
         StopCoroutine("CountDown");
         Disable(container, 1);
+
     }
 
     IEnumerator EnableAlignmentButtonInteractability()
@@ -138,24 +142,9 @@ public class MoonManager : UIAnimationManager
     }
     public void SetupDailyBlessing()
     {
-        //Debug.Log("bless me");
-        var bless = BlessingManager.TimeUntilNextBlessing();
-        var seconds = bless.Seconds.ToString("D2");
-        var minutes = bless.Minutes.ToString("D2");
-        var hours = bless.Hours.ToString("D2");
-        /*if (bless.Seconds.ToString().Length == 1)
-        {
-            seconds = "0" + bless.Seconds;
-        }
-        if (bless.Minutes.ToString().Length == 1)
-        {
-            minutes = "0" + bless.Minutes;
-        }
-        if (bless.Hours.ToString().Length == 1)
-        {
-            hours = "0" + bless.Hours;
-        }*/
-        dailytext.text = string.Concat(hours, ":", minutes, ":", seconds);
+        dailytext.text = string.Concat(BlessingManager.TimeUntilNextBlessing().Hours.ToString("D2"),
+        ":", BlessingManager.TimeUntilNextBlessing().Minutes.ToString("D2"),
+        ":", BlessingManager.TimeUntilNextBlessing().Seconds.ToString("D2"));
 
         if (container.gameObject.activeSelf)
         {
