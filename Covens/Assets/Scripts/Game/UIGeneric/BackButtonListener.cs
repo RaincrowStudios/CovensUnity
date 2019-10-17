@@ -4,55 +4,70 @@ using UnityEngine;
 
 public class BackButtonListener : MonoBehaviour
 {
-    // public static event System.Action onPressBackBtn;
-
     private static Stack<System.Action> m_CloseStack = new Stack<System.Action>();
+    public static BackButtonListener Instance { get; private set; }
+    //private bool m_IsExitPrompt = false;
 
-    private bool m_IsExitPrompt = false;
-
+    public static event System.Action<int> onPressBackBtn;
+        
     public static void AddCloseAction(System.Action close)
     {
         m_CloseStack.Push(close);
-        Debug.Log(m_CloseStack.Count + " add ");
-
+        //Debug.Log(m_CloseStack.Count + " add ");
     }
-
-
-
+        
     public static void RemoveCloseAction()
     {
-        m_CloseStack.Pop();
-        Debug.Log(m_CloseStack.Count + " remove ");
+        if (m_CloseStack.Count > 0)
+            m_CloseStack.Pop();
+        //Debug.Log(m_CloseStack.Count + " remove ");
+    }
+    
+    private void Awake()
+    {
+        if (Instance != null)
+        {
+            Destroy(this.gameObject);
+            return;
+        }
+
+        Instance = this;
+        DontDestroyOnLoad(this.gameObject);
     }
 
     void Update()
     {
         if (Input.GetKeyDown(KeyCode.Escape))
         {
-            Debug.Log(m_CloseStack.Count + " back btn before");
+            //Debug.Log(m_CloseStack.Count + " back btn before");
 
-            if (m_CloseStack.Count > 0)
+            int stackCount = m_CloseStack.Count;
+
+            if (stackCount > 0)
             {
-                m_CloseStack.Peek()?.Invoke();
-                m_CloseStack?.Pop();
+                //m_CloseStack.Peek()?.Invoke();
+                m_CloseStack.Pop()?.Invoke();
             }
-            else
-            {
-                if (!m_IsExitPrompt)
-                {
-                    UIGlobalPopup.ShowPopUp(() =>
-                    {
-                        Application.Quit();
-                    }, () => { m_IsExitPrompt = false; }, "Are you sure you want to exit the game?");
-                    m_IsExitPrompt = true;
-                }
-                else
-                {
-                    Debug.Log("application quit");
-                    Application.Quit();
-                }
-            }
-            Debug.Log(m_CloseStack.Count + " back btn after");
+
+            onPressBackBtn?.Invoke(stackCount);
+
+            //else
+            //{
+            //    if (!m_IsExitPrompt)
+            //    {
+            //        UIGlobalPopup.ShowPopUp(() =>
+            //        {
+            //            Application.Quit();
+            //        }, () => { m_IsExitPrompt = false; }, "Are you sure you want to exit the game?");
+            //        m_IsExitPrompt = true;
+            //    }
+            //    else
+            //    {
+            //        Debug.Log("application quit");
+            //        Application.Quit();
+            //    }
+            //}
+            //Debug.Log(m_CloseStack.Count + " back btn after");
         }
     }
 }

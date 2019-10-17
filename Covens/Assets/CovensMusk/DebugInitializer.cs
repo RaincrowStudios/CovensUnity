@@ -59,5 +59,8 @@ public class DebugInitializer : MonoBehaviour
         {
             new GameObject("EventSystem", typeof(UnityEngine.EventSystems.EventSystem), typeof(UnityEngine.EventSystems.StandaloneInputModule));
         }
+
+        if (BackButtonListener.Instance == null)
+            new GameObject("BackButtonListener", typeof(BackButtonListener));
     }
 }

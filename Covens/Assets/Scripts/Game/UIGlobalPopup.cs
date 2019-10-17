@@ -49,7 +49,7 @@ public class UIGlobalPopup : MonoBehaviour
         }
     }
 
-    public static void LoadScene()
+    private static void LoadScene()
     {
         if (m_Instance != null)
             return;
@@ -150,10 +150,17 @@ public class UIGlobalPopup : MonoBehaviour
         m_ScaleTweenId = LeanTween.scale(m_Panel, Vector3.one, 0.25f)
             .setEaseOutCubic()
             .uniqueId;
+
+        if (m_OnCancel != null)
+            BackButtonListener.AddCloseAction(OnClickCancel);
+        else
+            BackButtonListener.AddCloseAction(OnClickConfirm);
     }
 
     private void Hide()
     {
+        BackButtonListener.RemoveCloseAction();
+
         if (m_Queue.Count > 0)
         {
             m_Queue[0]?.Invoke();

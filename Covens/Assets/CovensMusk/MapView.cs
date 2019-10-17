@@ -26,19 +26,31 @@ public class MapView : MonoBehaviour
         SpellCastHandler.OnSpiritBanished += _OnSpiritBanished;
 
         PlayerManager.Instance.CreatePlayerStart();
-
-        //get the markers at the current position
-        MarkerManagerAPI.GetMarkers(
-            PlayerDataManager.playerData.longitude,
-            PlayerDataManager.playerData.latitude,
-            null,
-            true,
-            false,
-            true
-        );
-
+        
         LineRendererBasedDome.Instance.Setup(PlayerDataManager.DisplayRadius * MapsAPI.Instance.OneKmInWorldspace);
 
+        WaitSocketConnection();
+    }
+
+    private void WaitSocketConnection()
+    {
+        if (SocketClient.Instance.IsConnected())
+        {
+            //get the markers at the current position
+            MarkerManagerAPI.GetMarkers(
+                PlayerDataManager.playerData.longitude,
+                PlayerDataManager.playerData.latitude,
+                null,
+                true,
+                false,
+                true
+            );
+        }
+        else
+        {
+            Debug.LogError("Waiting for socket connection");
+            LeanTween.value(0, 0, 0.5f).setOnComplete(WaitSocketConnection);
+        }
     }
 
     private void _OnPlayerEnergyUpdated(int energy)
@@ -209,6 +221,12 @@ public class MapView : MonoBehaviour
         MarkerSpawner.Instance.UpdateMarkers();
     }
 
+    private void OnPressBackBtn(int stackedActions)
+    {
+        if (stackedActions == 0)
+            UIGlobalPopup.ShowPopUp(Application.Quit, () => { }, LocalizeLookUp.GetText("close_app_prompt"));
+    }
+
     private void OnEnterPoP()
     {
         OnMapEnergyChange.OnPlayerEnergyChange -= _OnPlayerEnergyUpdated;
@@ -229,6 +247,8 @@ public class MapView : MonoBehaviour
         OnCharacterDeath.OnSpiritDeath -= _OnSpiritDeath;
         OnCharacterDeath.OnWitchDeath -= _OnWitchDeath;
         OnCharacterDeath.OnSummonDeath -= _OnSummonDeath;
+
+        BackButtonListener.onPressBackBtn -= OnPressBackBtn;
     }
 
     private void OnLeavePoP()
@@ -254,5 +274,7 @@ public class MapView : MonoBehaviour
         OnCharacterDeath.OnSpiritDeath += _OnSpiritDeath;
         OnCharacterDeath.OnWitchDeath += _OnWitchDeath;
         OnCharacterDeath.OnSummonDeath += _OnSummonDeath;
+
+        BackButtonListener.onPressBackBtn += OnPressBackBtn;
     }
 }

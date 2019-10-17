@@ -141,8 +141,8 @@ public class TeamManagerUI : MonoBehaviour
         LoadScene(() =>
         {
             m_Instance.SetScreen(Screen.NONE);
-            m_Instance.Show();
             m_Instance.m_OnClose = onClose;
+            m_Instance.Show();
 
             if (TeamManager.MyCovenData != null && covenName == TeamManager.MyCovenData.Name) //show the player's coven
             {
@@ -150,12 +150,14 @@ public class TeamManagerUI : MonoBehaviour
             }
             else //get the coven from server
             {
+                BackButtonListener.AddCloseAction(m_Instance.OnPressReturn);
+
                 LoadingOverlay.Show();
                 TeamManager.GetCoven(covenName, true, (covenData, error) =>
                 {
                     LoadingOverlay.Hide();
                     if (string.IsNullOrEmpty(error))
-                        m_Instance.Show(covenData);
+                        m_Instance._Open(covenData);
                     else
                         UIGlobalPopup.ShowError(m_Instance.OnClickClose, error);
                 });
@@ -169,14 +171,16 @@ public class TeamManagerUI : MonoBehaviour
         {
             //open empty screen
             m_Instance.SetScreen(Screen.NONE);
-            m_Instance.Show();
             m_Instance.m_OnClose = onClose;
+            BackButtonListener.AddCloseAction(m_Instance.OnPressReturn);
+            m_Instance.Show();
+            //m_Instance.onp
 
             if (string.IsNullOrEmpty(covenId) || covenId == TeamManager.MyCovenId) //show the player's coven
             {
                 if (string.IsNullOrEmpty(TeamManager.MyCovenId)) //player has no coven
                 {
-                    m_Instance.Show(null);
+                    m_Instance._Open(null);
                 }
                 else
                 {
@@ -187,14 +191,14 @@ public class TeamManagerUI : MonoBehaviour
                         {
                             LoadingOverlay.Hide();
                             if (string.IsNullOrEmpty(error))
-                                m_Instance.Show(covenData);
+                                m_Instance._Open(covenData);
                             else
                                 UIGlobalPopup.ShowError(m_Instance.OnClickClose, error);
                         });
                     }
                     else //show the cached coven
                     {
-                        m_Instance.Show(TeamManager.MyCovenData);
+                        m_Instance._Open(TeamManager.MyCovenData);
                     }
                 }
             }
@@ -205,7 +209,7 @@ public class TeamManagerUI : MonoBehaviour
                 {
                     LoadingOverlay.Hide();
                     if (string.IsNullOrEmpty(error))
-                        m_Instance.Show(covenData);
+                        m_Instance._Open(covenData);
                     else
                         UIGlobalPopup.ShowError(m_Instance.OnClickClose, error);
                 });
@@ -321,18 +325,7 @@ public class TeamManagerUI : MonoBehaviour
         SceneManager.UnloadScene(SceneManager.Scene.COVEN_MANAGEMENT, null, null);
     }
 
-    private void Show()
-    {
-        m_Canvas.enabled = true;
-        m_InputRaycaster.enabled = true;
-        LeanTween.cancel(m_TweenId);
-        m_TweenId = LeanTween.alphaCanvas(m_MainCanvasGroup, 1f, 1f)
-            .setEaseOutCubic()
-            .setOnComplete(() => MapsAPI.Instance.HideMap(true))
-            .uniqueId;
-    }
-
-    private void Show(TeamData coven)
+    private void _Open(TeamData coven)
     {
         m_CovenData = coven;
         if (coven == null || coven == TeamManager.MyCovenData)
@@ -340,9 +333,7 @@ public class TeamManagerUI : MonoBehaviour
             EnableEventListeners(false);
             EnableEventListeners(true);
         }
-
-        Show();
-
+        
         if (coven == null)
             SetScreen(Screen.INVITES);
         else
@@ -353,6 +344,17 @@ public class TeamManagerUI : MonoBehaviour
             FirstTapManager.Show("coven", null);
             return;
         }
+    }
+
+    private void Show()
+    {
+        m_Canvas.enabled = true;
+        m_InputRaycaster.enabled = true;
+        LeanTween.cancel(m_TweenId);
+        m_TweenId = LeanTween.alphaCanvas(m_MainCanvasGroup, 1f, 1f)
+            .setEaseOutCubic()
+            .setOnComplete(() => MapsAPI.Instance.HideMap(true))
+            .uniqueId;
     }
 
     private void Hide()
@@ -668,6 +670,7 @@ public class TeamManagerUI : MonoBehaviour
 
     private void OnClickClose()
     {
+        BackButtonListener.RemoveCloseAction();
         m_OnClose?.Invoke();
         m_OnClose = null;
         Hide();
@@ -738,7 +741,7 @@ public class TeamManagerUI : MonoBehaviour
                    LoadingOverlay.Hide();
                    if (string.IsNullOrEmpty(error))
                    {
-                       UIGlobalPopup.ShowPopUp(() => Show(null), LocalizeLookUp.GetText("coven_leave_success"));
+                       UIGlobalPopup.ShowPopUp(() => _Open(null), LocalizeLookUp.GetText("coven_leave_success"));
                    }
                    else
                    {
@@ -762,7 +765,7 @@ public class TeamManagerUI : MonoBehaviour
                 {
                     if (result == 200)
                     {
-                        UIGlobalPopup.ShowPopUp(() => Show(null), LocalizeLookUp.GetText("coven_disband_success"));
+                        UIGlobalPopup.ShowPopUp(() => _Open(null), LocalizeLookUp.GetText("coven_disband_success"));
                     }
                     else
                     {
@@ -1137,4 +1140,16 @@ public class TeamManagerUI : MonoBehaviour
     }
 
     #endregion
+
+
+    [ContextMenu("Open")]
+    private void DebugOpen() => Open(null);
+
+    private void OnPressReturn()
+    {
+        if (m_CurrentScreen == Screen.HOME)
+            OnClickClose();
+        else
+            SetScreen(Screen.HOME);
+    }
 }
