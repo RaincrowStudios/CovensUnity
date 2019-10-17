@@ -664,7 +664,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e7c215b573bf6a642a14c270e5fd7c52, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_Canvas: {fileID: 0}
 --- !u!4 &154742753
 Transform:
   m_ObjectHideFlags: 0
@@ -2600,6 +2599,7 @@ GameObject:
   - component: {fileID: 694478453}
   - component: {fileID: 694478452}
   - component: {fileID: 694478454}
+  - component: {fileID: 694478455}
   m_Layer: 0
   m_Name: GameStartup
   m_TagString: Untagged
@@ -2643,6 +2643,18 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 2828a32d5e69fe841932477f2aa9aeee, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &694478455
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 694478451}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0400522ad605eb6448d4f2ef797b56a2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
 --- !u!1 &732824744
