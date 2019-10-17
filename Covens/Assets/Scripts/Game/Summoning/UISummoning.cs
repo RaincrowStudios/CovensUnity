@@ -35,7 +35,6 @@ public class UISummoning : MonoBehaviour
         m_PoPPosition = -1;
         m_PoPIsland = -1;
         m_OnSummonPoP = null;
-        BackButtonListener.AddCloseAction(Close);
         if (m_Instance != null)
         {
             m_Instance._Open();
@@ -144,6 +143,9 @@ public class UISummoning : MonoBehaviour
     [ContextMenu("Open")]
     private void _Open()
     {
+
+        BackButtonListener.AddCloseAction(OnClickClose);
+
         IsOpen = true;
 
         if (FirstTapManager.IsFirstTime("summoning"))

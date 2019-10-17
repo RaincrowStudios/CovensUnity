@@ -69,6 +69,7 @@ public class WitchSchoolManager : MonoBehaviour
     [ContextMenu("Open")]
     private void Show()
     {
+        BackButtonListener.AddCloseAction(Close);
         m_Canvas.enabled = true;
         m_InputRaycaster.enabled = true;
 
@@ -88,6 +89,8 @@ public class WitchSchoolManager : MonoBehaviour
 
     public void Close()
     {
+        BackButtonListener.RemoveCloseAction();
+
         m_InputRaycaster.enabled = false;
         MapsAPI.Instance.HideMap(false);
 
@@ -97,7 +100,7 @@ public class WitchSchoolManager : MonoBehaviour
         m_TweenId = LeanTween.value(start, 0, .6f)
             .setOnUpdate((float t) =>
             {
-                float t2 = LeanTween.easeInQuad(start, 0, 1-t);
+                float t2 = LeanTween.easeInQuad(start, 0, 1 - t);
                 m_CanvasGroup.alpha = t;
                 m_Window.localScale = Vector3.one * t2;
             })
