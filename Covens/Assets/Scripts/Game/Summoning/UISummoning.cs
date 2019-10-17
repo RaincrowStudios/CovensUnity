@@ -63,7 +63,6 @@ public class UISummoning : MonoBehaviour
     {
         if (m_Instance == null)
             return;
-        BackButtonListener.RemoveCloseAction();
         m_Instance._Close();
     }
 
@@ -378,6 +377,7 @@ public class UISummoning : MonoBehaviour
 
     private void OnClickClose()
     {
+        BackButtonListener.RemoveCloseAction();
         _Close();
     }
 

@@ -13,26 +13,28 @@ public class BackButtonListener : MonoBehaviour
     public static void AddCloseAction(System.Action close)
     {
         m_CloseStack.Push(close);
+        Debug.Log(m_CloseStack.Count + " add ");
+
     }
 
 
 
     public static void RemoveCloseAction()
     {
-        if (m_CloseStack.Count > 0)
-        {
-            m_CloseStack.Pop();
-        }
+        m_CloseStack.Pop();
+        Debug.Log(m_CloseStack.Count + " remove ");
     }
 
     void Update()
     {
         if (Input.GetKeyDown(KeyCode.Escape))
         {
+            Debug.Log(m_CloseStack.Count + " back btn before");
+
             if (m_CloseStack.Count > 0)
             {
-                m_CloseStack.Peek().Invoke();
-                m_CloseStack.Pop();
+                m_CloseStack.Peek()?.Invoke();
+                m_CloseStack?.Pop();
             }
             else
             {
@@ -50,6 +52,7 @@ public class BackButtonListener : MonoBehaviour
                     Application.Quit();
                 }
             }
+            Debug.Log(m_CloseStack.Count + " back btn after");
         }
     }
 }

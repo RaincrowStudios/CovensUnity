@@ -127,6 +127,7 @@ public class QuestLogUI : UIAnimationManager
     [ContextMenu("Hide")]
     public void Hide()
     {
+        BackButtonListener.RemoveCloseAction();
         if (isOpen == false)
             return;
 
@@ -141,7 +142,6 @@ public class QuestLogUI : UIAnimationManager
         {
             CloseP2();
         }
-        BackButtonListener.RemoveCloseAction();
 
     }
 

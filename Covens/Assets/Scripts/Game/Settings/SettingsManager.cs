@@ -111,10 +111,11 @@ public class SettingsManager : MonoBehaviour
 
     public static void CloseUI()
     {
+        BackButtonListener.RemoveCloseAction();
+
         if (m_Instance == null)
             return;
         m_Instance.Hide();
-        BackButtonListener.RemoveCloseAction();
 
     }
 
@@ -250,6 +251,7 @@ public class SettingsManager : MonoBehaviour
 
     public void ShowCredits()
     {
+        BackButtonListener.AddCloseAction(DestroyCredits);
         SoundManagerOneShot.Instance.PlayButtonTap();
         creditsClone = Utilities.InstantiateObject(Credits, transform.GetChild(0));
         var rect = creditsClone.GetComponent<RectTransform>();
@@ -258,6 +260,8 @@ public class SettingsManager : MonoBehaviour
 
     public void DestroyCredits()
     {
+        BackButtonListener.RemoveCloseAction();
+
         if (this.transform.GetChild(0).GetChild(6) != null)
         {
             Destroy(creditsClone);
@@ -346,6 +350,8 @@ public class SettingsManager : MonoBehaviour
 
     public void showLanguages()
     {
+
+        BackButtonListener.AddCloseAction(hideLanguages);
         LanguageCG.interactable = true;
         LanguageSelect.SetActive(true);
         LeanTween.scale(LanguageSelect, Vector3.one, 0.5f);
@@ -354,6 +360,7 @@ public class SettingsManager : MonoBehaviour
 
     public void hideLanguages()
     {
+        BackButtonListener.RemoveCloseAction();
         LanguageCG.interactable = false;
         LeanTween.scale(LanguageSelect, Vector3.zero, 0.5f).setOnComplete(() =>
         {

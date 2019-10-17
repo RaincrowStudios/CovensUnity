@@ -114,8 +114,8 @@ public class UIInventory : MonoBehaviour
 
     public void Close()
     {
-        AnimateOut();
         BackButtonListener.RemoveCloseAction();
+        AnimateOut();
 
         //if (resetIngrPicker)
         ResetIngredientPicker();

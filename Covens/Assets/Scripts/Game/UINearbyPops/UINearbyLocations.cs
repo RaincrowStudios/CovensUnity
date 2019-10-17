@@ -54,7 +54,6 @@ public class UINearbyLocations : MonoBehaviour
     {
         if (m_Instance == null)
             return;
-        BackButtonListener.RemoveCloseAction();
 
         m_Instance.Hide();
     }
@@ -179,6 +178,7 @@ public class UINearbyLocations : MonoBehaviour
     [ContextMenu("Close")]
     private void Hide()
     {
+        BackButtonListener.RemoveCloseAction();
         m_InputRaycaster.enabled = false;
         AnimHide(() =>
         {

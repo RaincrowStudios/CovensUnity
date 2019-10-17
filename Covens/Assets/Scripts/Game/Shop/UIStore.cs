@@ -84,12 +84,12 @@ public class UIStore : MonoBehaviour
 
     public static void CloseStore()
     {
+        BackButtonListener.RemoveCloseAction();
         if (m_Instance == null)
             return;
 
         m_Instance.SetScreen(Screen.HOME);
         m_Instance.Close();
-        BackButtonListener.RemoveCloseAction();
 
     }
 

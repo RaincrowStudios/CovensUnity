@@ -126,6 +126,7 @@ public class Leaderboards : UIAnimationManager
 
     void Hide()
     {
+        BackButtonListener.RemoveCloseAction();
         UIStateManager.Instance.CallWindowChanged(true);
         MapsAPI.Instance.HideMap(false);
         LeanTween.alphaCanvas(GetComponent<CanvasGroup>(), 0, .45f).setEase(LeanTweenType.easeOutSine);
@@ -133,7 +134,6 @@ public class Leaderboards : UIAnimationManager
         {
             Destroy(gameObject);
         });
-        BackButtonListener.RemoveCloseAction();
 
     }
 

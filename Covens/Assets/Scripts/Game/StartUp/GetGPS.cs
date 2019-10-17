@@ -15,7 +15,11 @@ public class GetGPS : MonoBehaviour
     public GameObject WifiIccon;
     public GameObject GPSicon;
     public TextMeshProUGUI errorText;
+    public GameObject askUserGPSPermission;
+    public GameObject permissionDeniedAndroid;
+    public Button goToAppSettingsBtn;
 
+    public Button continueToPermission;
     private LocationServiceStatus m_LastStatus = LocationServiceStatus.Stopped;
 
     public static event System.Action<LocationServiceStatus> statusChanged;
@@ -63,7 +67,19 @@ public class GetGPS : MonoBehaviour
 
 #if UNITY_ANDROID
         if (UnityEngine.Android.Permission.HasUserAuthorizedPermission(UnityEngine.Android.Permission.FineLocation) == false)
-            UnityEngine.Android.Permission.RequestUserPermission(UnityEngine.Android.Permission.FineLocation);
+        {
+            askUserGPSPermission.SetActive(true);
+            continueToPermission.onClick.AddListener(() =>
+            {
+                askUserGPSPermission.SetActive(false);
+                UnityEngine.Android.Permission.RequestUserPermission(UnityEngine.Android.Permission.FineLocation);
+            });
+
+            goToAppSettingsBtn.onClick.AddListener(() =>
+            {
+                RedirectToSettings();
+            });
+        }
 #endif
 
         GPSicon.SetActive(false);
@@ -107,11 +123,25 @@ public class GetGPS : MonoBehaviour
             {
                 errorText.GetComponent<LocalizeLookUp>().id = "location_error";
                 locationError.SetActive(true);
+
+
+
                 GPSicon.SetActive(true);
                 WifiIccon.SetActive(false);
+#if UNITY_ANDROID
+                locationError.SetActive(false);
+                GPSicon.SetActive(false);
+                permissionDeniedAndroid.SetActive(true);
+
+#endif
                 errorText.text = "Please turn on your location and try again.";
                 yield return new WaitForSeconds(1f);
             }
+
+#if UNITY_ANDROID
+            permissionDeniedAndroid.SetActive(false);
+
+#endif
             locationError.SetActive(false);
 
             // Start service before querying location
@@ -173,6 +203,34 @@ public class GetGPS : MonoBehaviour
 
         OnInitialized?.Invoke();
         StartCoroutine(CheckStatus());
+    }
+
+
+    private void RedirectToSettings()
+    {
+        try
+        {
+#if UNITY_ANDROID
+            using (var unityClass = new AndroidJavaClass("com.unity3d.player.UnityPlayer"))
+            using (AndroidJavaObject currentActivityObject = unityClass.GetStatic<AndroidJavaObject>("currentActivity"))
+            {
+                string packageName = currentActivityObject.Call<string>("getPackageName");
+
+                using (var uriClass = new AndroidJavaClass("android.net.Uri"))
+                using (AndroidJavaObject uriObject = uriClass.CallStatic<AndroidJavaObject>("fromParts", "package", packageName, null))
+                using (var intentObject = new AndroidJavaObject("android.content.Intent", "android.settings.APPLICATION_DETAILS_SETTINGS", uriObject))
+                {
+                    intentObject.Call<AndroidJavaObject>("addCategory", "android.intent.category.DEFAULT");
+                    intentObject.Call<AndroidJavaObject>("setFlags", 0x10000000);
+                    currentActivityObject.Call("startActivity", intentObject);
+                }
+            }
+#endif
+        }
+        catch (System.Exception ex)
+        {
+            Debug.LogException(ex);
+        }
     }
 
     private IEnumerator CheckStatus()
