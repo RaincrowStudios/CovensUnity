@@ -531,6 +531,7 @@ GameObject:
   - component: {fileID: 765356484}
   - component: {fileID: 765356486}
   - component: {fileID: 765356485}
+  - component: {fileID: 765356487}
   m_Layer: 5
   m_Name: Text (TMP)
   m_TagString: Untagged
@@ -680,6 +681,22 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 765356483}
   m_CullTransparentMesh: 0
+--- !u!114 &765356487
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 765356483}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 64a59a015644a4f44b632497e81f3cc7, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  prefix: 
+  id: blessing_continue
+  suffix: 
+  toUpper: 0
 --- !u!1 &800208838
 GameObject:
   m_ObjectHideFlags: 0

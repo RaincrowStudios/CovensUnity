@@ -70,7 +70,7 @@ public class UIGlobalPopup : MonoBehaviour
     {
         System.Action show = () =>
         {
-            m_Instance.SetButtons("Yes", "No", confirmAction, cancelAction);
+            m_Instance.SetButtons(LocalizeLookUp.GetText("generic_yes"), LocalizeLookUp.GetText("generic_no"), confirmAction, cancelAction);
             m_Instance.SetMessage(txt, false);
             m_Instance.Show();
         };
