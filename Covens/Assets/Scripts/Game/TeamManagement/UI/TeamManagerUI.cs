@@ -715,15 +715,16 @@ public class TeamManagerUI : MonoBehaviour
             m_Home.m_CovenSigil.overrideSprite = m_Home.whiteSchool;
         else
             m_Home.m_CovenSigil.overrideSprite = m_Home.greySchool;
-
-        m_Home.m_CovenSigil.color = Utilities.GetSchoolColor(m_CovenData.School);
-
+        
         if (m_CovenData.Founder.School < 0)
             m_Home.m_CreatorSigil.overrideSprite = m_Home.shadowSchool;
         else if (m_CovenData.Founder.School > 0)
             m_Home.m_CreatorSigil.overrideSprite = m_Home.whiteSchool;
         else
             m_Home.m_CreatorSigil.overrideSprite = m_Home.greySchool;
+
+        m_Home.m_CovenSigil.color = Utilities.GetSchoolColor(m_CovenData.School);
+        m_Home.m_CreatorSigil.color = Utilities.GetSchoolColor(m_CovenData.Founder.School);
     }
     
     private void OnClickLeave()
