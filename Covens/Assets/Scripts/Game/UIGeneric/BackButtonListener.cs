@@ -4,14 +4,36 @@ using UnityEngine;
 
 public class BackButtonListener : MonoBehaviour
 {
-    public static event System.Action onPressBackBtn;
+    // public static event System.Action onPressBackBtn;
+
+    private static Stack<System.Action> m_CloseStack = new Stack<System.Action>();
+
+    public static void AddCloseAction(System.Action close)
+    {
+        Debug.Log("adding " + close.ToString());
+        m_CloseStack.Push(close);
+    }
+
+    public static void RemoveCloseAction()
+    {
+        PopStack();
+    }
+
+    private static void PopStack()
+    {
+        if (m_CloseStack.Count > 0)
+        {
+            Debug.Log("removing " + m_CloseStack.Peek().ToString());
+            m_CloseStack.Pop();
+        }
+    }
 
     void Update()
     {
         if (Input.GetKeyDown(KeyCode.Escape))
         {
-            Debug.Log("escape pressed");
-            onPressBackBtn?.Invoke();
+            m_CloseStack.Peek().Invoke();
+            PopStack();
         }
     }
 }
