@@ -117,6 +117,7 @@ public class UISpiritInfo : UIInfoPanel
 
     private void _Show(IMarker spirit, Token token, System.Action onClose)
     {
+        BackButtonListener.AddCloseAction(OnClickClose);
         m_OnClose = onClose;
         previousMapPosition = MapsAPI.Instance.GetWorldPosition();
         m_PreviousMapZoom = Mathf.Min(0.99f, MapsAPI.Instance.normalizedZoom);
@@ -234,7 +235,7 @@ public class UISpiritInfo : UIInfoPanel
         SpellCastHandler.OnExpireEffect -= _OnExpireEffect;
         RemoveTokenHandler.OnTokenRemove -= _OnMapTokenRemove;
         ExpireSpiritHandler.OnSpiritExpire -= _OnMapTokenRemove;
-        
+
         if (!LocationIslandController.isInBattle)
         {
             MoveTokenHandler.OnTokenMove -= _OnMapTokenMove;
@@ -250,7 +251,7 @@ public class UISpiritInfo : UIInfoPanel
         {
             LocationUnitSpawner.EnableMarkers();
         }
-        
+
         if (UISpellcastBook.IsOpen)
             UISpellcastBook.Close();
     }
@@ -305,6 +306,7 @@ public class UISpiritInfo : UIInfoPanel
 
     private void OnClickClose()
     {
+        BackButtonListener.RemoveCloseAction();
         Close();
     }
 

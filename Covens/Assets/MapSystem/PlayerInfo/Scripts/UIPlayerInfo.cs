@@ -61,6 +61,7 @@ public class UIPlayerInfo : UIInfoPanel
                     LoadingOverlay.Hide();
                 });
         }
+
     }
 
     public static void SetupDetails(SelectWitchData_Map data)
@@ -117,6 +118,7 @@ public class UIPlayerInfo : UIInfoPanel
 
     private void _Show(WitchMarker witch, WitchToken data, System.Action onClose)
     {
+        BackButtonListener.AddCloseAction(OnClickClose);
         if (witch == null)
         {
             Debug.LogError("null witch");
@@ -241,7 +243,7 @@ public class UIPlayerInfo : UIInfoPanel
         {
             LocationUnitSpawner.EnableMarkers();
         }
-        
+
         if (UISpellcastBook.IsOpen)
             UISpellcastBook.Close();
     }
@@ -256,6 +258,7 @@ public class UIPlayerInfo : UIInfoPanel
 
     private void OnClickClose()
     {
+        BackButtonListener.RemoveCloseAction();
         Close();
     }
 

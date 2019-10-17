@@ -45,7 +45,7 @@ public class UIStore : MonoBehaviour
 
     [Header("Styles")]
     [SerializeField] private UIStoreStylesWindow m_StylesWindow;
-        
+
     private Screen m_CurrentScreen = Screen.NONE;
     private int m_MainTweenId;
     private int m_ScreenTweenId;
@@ -78,15 +78,19 @@ public class UIStore : MonoBehaviour
                     onLoad?.Invoke();
                 });
         }
+        BackButtonListener.AddCloseAction(CloseStore);
+
     }
 
     public static void CloseStore()
     {
+        BackButtonListener.RemoveCloseAction();
         if (m_Instance == null)
             return;
 
         m_Instance.SetScreen(Screen.HOME);
         m_Instance.Close();
+
     }
 
     public static void ShowIngredients()
@@ -107,7 +111,7 @@ public class UIStore : MonoBehaviour
         else
             OpenStore(() => m_Instance.SetScreen(Screen.CURRENCY));
     }
-    
+
     public static void UpdateDrachs()
     {
         if (m_Instance == null)
@@ -136,13 +140,13 @@ public class UIStore : MonoBehaviour
         m_StoreWindow.alpha = 0;
         m_StylesWindow.alpha = 0;
         m_HomeWindow.alpha = 0;
-        
+
         m_CloseButton.onClick.AddListener(OnClickClose);
         m_CosmeticsButton.onClick.AddListener(() => SetScreen(Screen.COSMETICS));
         m_CurrenciesButton.onClick.AddListener(() => SetScreen(Screen.CURRENCY));
         m_CharmsButton.onClick.AddListener(() => SetScreen(Screen.CHARMS));
         m_IngredientsButton.onClick.AddListener(() => SetScreen(Screen.INGREDIENTS));
-        
+
         SetScreen(Screen.HOME);
 
         DownloadedAssets.OnWillUnloadAssets += OnWillUnloadAssets;
@@ -197,7 +201,7 @@ public class UIStore : MonoBehaviour
     {
         if (!m_InputRaycaster.enabled)
             return;
-        
+
         LeanTween.cancel(m_MainTweenId);
         StoreManagerAPI.OnPurchaseComplete -= OnPurchaseComplete;
         m_InputRaycaster.enabled = false;
@@ -233,34 +237,34 @@ public class UIStore : MonoBehaviour
         //get the canvas group that will be shown
         switch (m_CurrentScreen)
         {
-            case Screen.HOME:           toHide = m_HomeWindow;      break;
-            case Screen.COSMETICS:      toHide = m_StoreWindow.canvasGroup;     break;
-            case Screen.CURRENCY:       toHide = m_StoreWindow.canvasGroup;     break;
-            case Screen.INGREDIENTS:    toHide = m_StoreWindow.canvasGroup;     break;
-            case Screen.STYLES:         toHide = m_StylesWindow.canvasGroup;    break;
-            case Screen.CHARMS:         toShow = m_StoreWindow.canvasGroup;     break;
+            case Screen.HOME: toHide = m_HomeWindow; break;
+            case Screen.COSMETICS: toHide = m_StoreWindow.canvasGroup; break;
+            case Screen.CURRENCY: toHide = m_StoreWindow.canvasGroup; break;
+            case Screen.INGREDIENTS: toHide = m_StoreWindow.canvasGroup; break;
+            case Screen.STYLES: toHide = m_StylesWindow.canvasGroup; break;
+            case Screen.CHARMS: toShow = m_StoreWindow.canvasGroup; break;
         }
         //get the canvasgroup that wil lbe hidden
         switch (screen)
         {
-            case Screen.HOME:       toShow = m_HomeWindow; break;
-            case Screen.COSMETICS:  toShow = m_StoreWindow.canvasGroup; break;
-            case Screen.CURRENCY:   toShow = m_StoreWindow.canvasGroup; break;
-            case Screen.INGREDIENTS:toShow = m_StoreWindow.canvasGroup; break;
-            case Screen.STYLES:     toShow = m_StylesWindow.canvasGroup; break;
-            case Screen.CHARMS:     toShow = m_StoreWindow.canvasGroup; break;
+            case Screen.HOME: toShow = m_HomeWindow; break;
+            case Screen.COSMETICS: toShow = m_StoreWindow.canvasGroup; break;
+            case Screen.CURRENCY: toShow = m_StoreWindow.canvasGroup; break;
+            case Screen.INGREDIENTS: toShow = m_StoreWindow.canvasGroup; break;
+            case Screen.STYLES: toShow = m_StylesWindow.canvasGroup; break;
+            case Screen.CHARMS: toShow = m_StoreWindow.canvasGroup; break;
         }
         //prepare the setup screen method
         System.Action setupScreen = () =>
         {
             switch (screen)
             {
-                case Screen.HOME:       SetupHome(); break;
-                case Screen.COSMETICS:  SetupCosmetics(); break;
-                case Screen.CURRENCY:   SetupCurrency(); break;
-                case Screen.INGREDIENTS:SetupIngredients(); break;
-                case Screen.STYLES:     SetupStyles(); break;
-                case Screen.CHARMS:     SetupCharms(); break;
+                case Screen.HOME: SetupHome(); break;
+                case Screen.COSMETICS: SetupCosmetics(); break;
+                case Screen.CURRENCY: SetupCurrency(); break;
+                case Screen.INGREDIENTS: SetupIngredients(); break;
+                case Screen.STYLES: SetupStyles(); break;
+                case Screen.CHARMS: SetupCharms(); break;
             }
         };
 
@@ -278,14 +282,14 @@ public class UIStore : MonoBehaviour
             //setup the screen and fade the canvas gorups
             m_ScreenTweenId = LeanTween.value(start, 1, 0.5f)
                 .setEaseOutCubic()
-                .setOnStart(() => 
+                .setOnStart(() =>
                 {
                     toShow?.gameObject.SetActive(true);
                     setupScreen();
                 })
                 .setOnUpdate((float v) =>
                 {
-                    foreach(var item in screens)
+                    foreach (var item in screens)
                     {
                         if (item != toShow)
                             item.alpha = 1 - v;
@@ -399,13 +403,13 @@ public class UIStore : MonoBehaviour
     {
         SetHeaderText();
     }
-    
+
     [ContextMenu("Setup Packs")]
     private void SetupHomePacks()
     {
         if (StoreManagerAPI.StoreData.Packs != null)
         {
-            foreach(var pack in StoreManagerAPI.StoreData.Packs)
+            foreach (var pack in StoreManagerAPI.StoreData.Packs)
             {
                 PackData data = StoreManagerAPI.GetPackData(pack.id);
                 if (data.isFree)
@@ -419,7 +423,7 @@ public class UIStore : MonoBehaviour
     private void SetupCosmetics()
     {
         SetHeaderText(
-            LocalizeLookUp.GetText("store_cosmetics"), 
+            LocalizeLookUp.GetText("store_cosmetics"),
             LocalizeLookUp.GetText("store_styles"));
 
         SetHeaderButtons(

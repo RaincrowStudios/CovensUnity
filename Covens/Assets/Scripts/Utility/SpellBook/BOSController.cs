@@ -39,6 +39,7 @@ public class BOSController : BOSBase
     }
     public void Close()
     {
+        BackButtonListener.RemoveCloseAction();
         if (!LocationIslandController.isInBattle)
             MapsAPI.Instance.HideMap(false);
         UIStateManager.Instance.CallWindowChanged(true);
@@ -56,6 +57,8 @@ public class BOSController : BOSBase
                 MapsAPI.Instance.HideMap(true);
         });
         OnClickRibbon(0);
+        BackButtonListener.AddCloseAction(Close);
+
     }
     void ShowCharacter()
     {

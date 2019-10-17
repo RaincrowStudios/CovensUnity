@@ -73,6 +73,7 @@ public class LocationPOPInfo : UIInfoPanel
 
     public void Show(LocationViewData data)
     {
+        BackButtonListener.AddCloseAction(Close);
         m_FTFEnter.SetActive(false);
         StartCoroutine(DownloadThumb(data.name));
         m_LocationViewData = data;
@@ -333,6 +334,7 @@ public class LocationPOPInfo : UIInfoPanel
 
     public override void Close()
     {
+        BackButtonListener.RemoveCloseAction();
         UnsubscribeWitchEvents();
         StopAllCoroutines();
         base.Close();

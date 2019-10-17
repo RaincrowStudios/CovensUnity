@@ -82,6 +82,8 @@ public class QuestLogUI : UIAnimationManager
                     m_Instance.Show();
                 });
         }
+
+
     }
 
     void Awake()
@@ -117,11 +119,15 @@ public class QuestLogUI : UIAnimationManager
 
         if (FirstTapManager.IsFirstTime("daily"))
             FirstTapManager.Show("daily", null);
+
+        BackButtonListener.AddCloseAction(Hide);
+
     }
 
     [ContextMenu("Hide")]
     public void Hide()
     {
+        BackButtonListener.RemoveCloseAction();
         if (isOpen == false)
             return;
 
@@ -136,6 +142,7 @@ public class QuestLogUI : UIAnimationManager
         {
             CloseP2();
         }
+
     }
 
     private void DailyProgressHandler_OnDailyProgress(DailyProgressHandler.DailyProgressEventData data)

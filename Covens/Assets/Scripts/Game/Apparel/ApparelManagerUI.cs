@@ -23,7 +23,7 @@ public class ApparelManagerUI : MonoBehaviour
     [SerializeField] private GraphicRaycaster m_InputRaycaster;
 
     public bool IsOpen { get; private set; }
-    
+
     public static void Show()
     {
         if (Instance != null)
@@ -42,7 +42,7 @@ public class ApparelManagerUI : MonoBehaviour
                 });
         }
     }
-    
+
     void Awake()
     {
         Instance = this;
@@ -75,10 +75,13 @@ public class ApparelManagerUI : MonoBehaviour
         wardrobeAnim.Play("in");
         ShowItems();
         ShowAll();
+        BackButtonListener.AddCloseAction(Hide);
+
     }
 
     public void Hide()
     {
+        BackButtonListener.RemoveCloseAction();
         UIStateManager.Instance.CallWindowChanged(true);
         SoundManagerOneShot.Instance.MenuSound();
         wardrobeAnim.Play("out");
@@ -257,43 +260,43 @@ public class ApparelManagerUI : MonoBehaviour
     {
         if (id == "head")
         {
-			return LocalizeLookUp.GetText ("apparel_head");// "Head";
+            return LocalizeLookUp.GetText("apparel_head");// "Head";
         }
         else if (id == "hair")
         {
-			return LocalizeLookUp.GetText ("apparel_hair");// "Hair";
+            return LocalizeLookUp.GetText("apparel_hair");// "Hair";
         }
         else if (id == "neck")
         {
-			return LocalizeLookUp.GetText ("apparel_neck");// "Neck";
+            return LocalizeLookUp.GetText("apparel_neck");// "Neck";
         }
         else if (id == "chest")
         {
-			return LocalizeLookUp.GetText ("apparel_chest");// "Chest";
+            return LocalizeLookUp.GetText("apparel_chest");// "Chest";
         }
         else if (id == "wrist")
         {
-			return LocalizeLookUp.GetText ("apparel_wrist");// "Wrist";
+            return LocalizeLookUp.GetText("apparel_wrist");// "Wrist";
         }
         else if (id == "hands")
         {
-			return LocalizeLookUp.GetText ("apparel_hands");// "Hands";
+            return LocalizeLookUp.GetText("apparel_hands");// "Hands";
         }
         else if (id == "legs")
         {
-			return LocalizeLookUp.GetText ("apparel_legs");// "Legs";
+            return LocalizeLookUp.GetText("apparel_legs");// "Legs";
         }
         else if (id == "feet")
         {
-			return LocalizeLookUp.GetText ("apparel_feet");// "Feet";
+            return LocalizeLookUp.GetText("apparel_feet");// "Feet";
         }
         else if (id == "carryOn")
         {
-			return LocalizeLookUp.GetText ("apparel_carry");// "Carry On";
+            return LocalizeLookUp.GetText("apparel_carry");// "Carry On";
         }
         else if (id == "tattoo")
         {
-			return LocalizeLookUp.GetText ("apparel_tattoo");// "Tattoo";
+            return LocalizeLookUp.GetText("apparel_tattoo");// "Tattoo";
         }
         else
             return "";

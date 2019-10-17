@@ -101,10 +101,13 @@ public class UISpellcastBook : MonoBehaviour//, IEnhancedScrollerDelegate
             m_Instance.Show(target, marker, spells, onConfirm, onClickBack, onClickClose);
             onLoad?.Invoke();
         }
+
+        BackButtonListener.AddCloseAction(Close);
     }
 
     public static void Close()
     {
+        BackButtonListener.RemoveCloseAction();
         if (m_Instance == null)
             return;
 

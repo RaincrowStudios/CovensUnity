@@ -47,6 +47,7 @@ public class UINearbyLocations : MonoBehaviour
                     LoadingOverlay.Hide();
                 });
         }
+        BackButtonListener.AddCloseAction(Close);
     }
 
     public static void Close()
@@ -56,32 +57,32 @@ public class UINearbyLocations : MonoBehaviour
 
         m_Instance.Hide();
     }
-    
+
     public static void GetLocations(System.Action<List<UINearbyLocationItem.LocationData>> onComplete, bool showLoading = true)
     {
         //if (CachedLocations == null || Time.unscaledTime - m_LastRequestTime > m_RequestCooldown)
         //{
-            m_LastRequestTime = Time.unscaledTime;
-            m_IsRetrieving = true;
+        m_LastRequestTime = Time.unscaledTime;
+        m_IsRetrieving = true;
+        if (showLoading)
+            LoadingOverlay.Show();
+        APIManager.Instance.Get("place-of-power/near", (response, result) =>
+        {
             if (showLoading)
-                LoadingOverlay.Show();
-            APIManager.Instance.Get("place-of-power/near", (response, result) =>
-            {
-                if (showLoading)
-                    LoadingOverlay.Hide();
+                LoadingOverlay.Hide();
 
-                if (result == 200)
-                {
-                    CachedLocations = JsonConvert.DeserializeObject<List<UINearbyLocationItem.LocationData>>(response);
-                    onComplete?.Invoke(CachedLocations);
-                }
-                else
-                {
-                    UIGlobalPopup.ShowError(null, APIManager.ParseError(response));
-                    onComplete?.Invoke(null);
-                }
-                m_IsRetrieving = false;
-            });
+            if (result == 200)
+            {
+                CachedLocations = JsonConvert.DeserializeObject<List<UINearbyLocationItem.LocationData>>(response);
+                onComplete?.Invoke(CachedLocations);
+            }
+            else
+            {
+                UIGlobalPopup.ShowError(null, APIManager.ParseError(response));
+                onComplete?.Invoke(null);
+            }
+            m_IsRetrieving = false;
+        });
         //}
         //else
         //{
@@ -130,10 +131,10 @@ public class UINearbyLocations : MonoBehaviour
                     m_Instance.Hide();
                 });
             }
-        }, 
+        },
         false);
     }
-    
+
     private void Awake()
     {
         m_Instance = this;
@@ -177,6 +178,7 @@ public class UINearbyLocations : MonoBehaviour
     [ContextMenu("Close")]
     private void Hide()
     {
+        BackButtonListener.RemoveCloseAction();
         m_InputRaycaster.enabled = false;
         AnimHide(() =>
         {
@@ -214,7 +216,7 @@ public class UINearbyLocations : MonoBehaviour
     {
         m_ItemPool.DespawnAll();
         CachedLocations = locations;
-        foreach(var location in locations)
+        foreach (var location in locations)
         {
             UINearbyLocationItem item = m_ItemPool.Spawn(m_Container.transform);
             item.Setup(location, () =>
