@@ -65,8 +65,31 @@ public class DictionaryManager
 
     public static int languageIndex
     {
-        get { return PlayerPrefs.GetInt(LanguageIndexPlayerPrefsKey, 0); }
-        set { PlayerPrefs.SetInt(LanguageIndexPlayerPrefsKey, value); }
+        get
+        {
+            if (PlayerPrefs.HasKey(LanguageIndexPlayerPrefsKey))
+            {
+                return PlayerPrefs.GetInt(LanguageIndexPlayerPrefsKey, 0);
+            }
+            else
+            {
+                var t = Application.systemLanguage.ToString();
+                for (int i = 0; i < Languages.Length; i++)
+                {
+                    if (Languages[i] == t)
+                    {
+                        PlayerPrefs.SetInt(LanguageIndexPlayerPrefsKey, i);
+                        return i;
+                    }
+                }
+
+                return 0;
+            }
+        }
+        set
+        {
+            PlayerPrefs.SetInt(LanguageIndexPlayerPrefsKey, value);
+        }
     }
 
     public static string GetCurrentCultureName()

@@ -63,18 +63,7 @@ public class GameStartup : MonoBehaviour
 
     void Awake()
     {
-        var t = PlayerManager.SystemLanguage;
-
-        for (int i = 0; i < DictionaryManager.Languages.Length; i++)
-        {
-            if (DictionaryManager.Languages[i] == t)
-            {
-                DictionaryManager.languageIndex = i;
-                return;
-            }
-        }
-
-        LeanTween.init(0);
+        LeanTween.init(1000);
     }
 
     private void Start()
