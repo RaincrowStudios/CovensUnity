@@ -21,7 +21,7 @@ namespace Raincrow.FTF
         [SerializeField] private TextMeshProUGUI m_Title;
         [SerializeField] private TextMeshProUGUI m_Message;
         [SerializeField] private Button m_ContinueButton;
-               
+
         private static UIFirstTap m_Instance;
 
         private List<FTFPointerHand> m_InstantiatedGlow = new List<FTFPointerHand>();
@@ -63,7 +63,6 @@ namespace Raincrow.FTF
 
         private void _Show(string id, FirstTapEntry entry, System.Action onComplete)
         {
-            BackButtonListener.AddCloseAction(null);
 
             m_OnClose = onComplete;
 
@@ -84,7 +83,7 @@ namespace Raincrow.FTF
                     { "{nextPoPName}", GetNearbyPoPName },
                     { "{nextPoPTime}", GetNearbyPoPTime }
                 };
-                foreach(string key in dynamicKeys)
+                foreach (string key in dynamicKeys)
                 {
                     if (replacers.ContainsKey(key))
                         message = message.Replace(key, replacers[key].Invoke());
@@ -116,7 +115,7 @@ namespace Raincrow.FTF
 
             if (entry.glow == null)
                 m_Glow.gameObject.SetActive(false);
-                
+
             LeanTween.cancel(m_AnimTweenId);
             LeanTween.cancel(m_ButtonTweenId);
 
@@ -126,7 +125,12 @@ namespace Raincrow.FTF
             m_ContinueButton.interactable = false;
 
             m_AnimTweenId = LeanTween.alphaCanvas(m_CanvasGroup, 1f, 1f).setEaseOutCubic().uniqueId;
-            m_ButtonTweenId = LeanTween.value(0, 0, 0.5f).setOnComplete(() => m_ContinueButton.interactable = true).uniqueId;
+
+            m_ButtonTweenId = LeanTween.value(0, 0, 0.5f).setOnComplete(() =>
+            {
+                m_ContinueButton.interactable = true;
+                BackButtonListener.AddCloseAction(_Close);
+            }).uniqueId;
         }
 
         private void _Close()
@@ -141,7 +145,7 @@ namespace Raincrow.FTF
                 .setOnComplete(() =>
                 {
                     m_Canvas.enabled = false;
-                    
+
                     if (FirstTapManager.CompletedAll())
                         Unload();
                 })
@@ -155,7 +159,7 @@ namespace Raincrow.FTF
         {
             if (UINearbyLocations.CachedLocations != null)
             {
-                foreach(var pop in UINearbyLocations.CachedLocations)
+                foreach (var pop in UINearbyLocations.CachedLocations)
                 {
                     if (pop.isOpen || pop.isActive)
                         continue;

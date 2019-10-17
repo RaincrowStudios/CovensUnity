@@ -69,7 +69,6 @@ public class WitchSchoolManager : MonoBehaviour
     [ContextMenu("Open")]
     private void Show()
     {
-        BackButtonListener.AddCloseAction(Close);
         m_Canvas.enabled = true;
         m_InputRaycaster.enabled = true;
 
@@ -83,7 +82,12 @@ public class WitchSchoolManager : MonoBehaviour
                 m_CanvasGroup.alpha = t;
                 m_Window.localScale = Vector3.one * t2;
             })
-            .setOnComplete(() => MapsAPI.Instance.HideMap(true))
+            .setOnComplete(() =>
+            {
+                MapsAPI.Instance.HideMap(true);
+
+                BackButtonListener.AddCloseAction(Close);
+            })
             .uniqueId;
     }
 

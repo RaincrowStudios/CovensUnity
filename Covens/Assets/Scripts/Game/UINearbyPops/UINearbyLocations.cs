@@ -47,7 +47,6 @@ public class UINearbyLocations : MonoBehaviour
                     LoadingOverlay.Hide();
                 });
         }
-        BackButtonListener.AddCloseAction(Close);
     }
 
     public static void Close()
@@ -194,7 +193,11 @@ public class UINearbyLocations : MonoBehaviour
             {
                 m_CanvasGroup.alpha = t;
             })
-            .setOnComplete(onComplete)
+            .setOnComplete(() =>
+            {
+                BackButtonListener.AddCloseAction(Close);
+                onComplete?.Invoke();
+            })
             .setEaseOutCubic()
             .uniqueId;
     }

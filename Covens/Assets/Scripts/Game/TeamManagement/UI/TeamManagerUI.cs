@@ -137,7 +137,7 @@ public class TeamManagerUI : MonoBehaviour
             Debug.LogError("NULL NAME");
             return;
         }
-        
+
         LoadScene(() =>
         {
             m_Instance.SetScreen(Screen.NONE);
@@ -162,7 +162,7 @@ public class TeamManagerUI : MonoBehaviour
             }
         });
     }
-    
+
     public static void Open(string covenId, System.Action onClose = null)
     {
         LoadScene(() =>
@@ -213,7 +213,7 @@ public class TeamManagerUI : MonoBehaviour
             }
         });
     }
-    
+
     private static void LoadScene(System.Action onComplete)
     {
         if (m_Instance != null)
@@ -330,12 +330,12 @@ public class TeamManagerUI : MonoBehaviour
             EnableEventListeners(false);
             EnableEventListeners(true);
         }
-        
+
         if (coven == null)
             SetScreen(Screen.INVITES);
         else
             SetScreen(Screen.HOME);
-        
+
         if (FirstTapManager.IsFirstTime("coven"))
         {
             FirstTapManager.Show("coven", null);
@@ -345,14 +345,17 @@ public class TeamManagerUI : MonoBehaviour
 
     private void Show()
     {
-        BackButtonListener.AddCloseAction(OnPressReturn);
 
         m_Canvas.enabled = true;
         m_InputRaycaster.enabled = true;
         LeanTween.cancel(m_TweenId);
         m_TweenId = LeanTween.alphaCanvas(m_MainCanvasGroup, 1f, 1f)
             .setEaseOutCubic()
-            .setOnComplete(() => MapsAPI.Instance.HideMap(true))
+            .setOnComplete(() =>
+            {
+                MapsAPI.Instance.HideMap(true);
+                BackButtonListener.AddCloseAction(Hide);
+            })
             .uniqueId;
     }
 
@@ -380,7 +383,7 @@ public class TeamManagerUI : MonoBehaviour
     {
         Screen previousScreen = m_CurrentScreen;
         m_CurrentScreen = screen;
-        
+
         LeanTween.cancel(m_ScreenTweenId, true);
         int idx = (int)screen;
         float start = m_Screens[idx].alpha;
@@ -406,10 +409,10 @@ public class TeamManagerUI : MonoBehaviour
 
                 switch (screen)
                 {
-                    case Screen.HOME:       SetupHome(); break;
-                    case Screen.MEMBERS:    SetupMembers(); break;
-                    case Screen.INVITES:    SetupInvites(); break;
-                    case Screen.REQUESTS:   SetupRequests(); break;
+                    case Screen.HOME: SetupHome(); break;
+                    case Screen.MEMBERS: SetupMembers(); break;
+                    case Screen.INVITES: SetupInvites(); break;
+                    case Screen.REQUESTS: SetupRequests(); break;
                 }
             })
             .setOnUpdate((float t) =>
@@ -506,7 +509,7 @@ public class TeamManagerUI : MonoBehaviour
             CovenRoleHandler.OnRoleChange -= OnMemberRefresh;
         }
     }
-       
+
     private void OnJoinCoven(string covenName)
     {
         //reopen the UI
@@ -693,7 +696,7 @@ public class TeamManagerUI : MonoBehaviour
         m_DisbandCovenButton.gameObject.SetActive(m_CovenData.IsMember && TeamManager.MyRole >= CovenRole.ADMIN);
         m_ViewRequestsButton.gameObject.SetActive(m_CovenData.IsMember);
         m_ViewInvitesButton.gameObject.SetActive(m_CovenData.IsMember);
-        
+
         //setup content
         m_CovenName.text = m_CovenData.Name;
         m_SubTitle.text = "";
@@ -718,7 +721,7 @@ public class TeamManagerUI : MonoBehaviour
             m_Home.m_CovenSigil.overrideSprite = m_Home.whiteSchool;
         else
             m_Home.m_CovenSigil.overrideSprite = m_Home.greySchool;
-        
+
         if (m_CovenData.Founder.School < 0)
             m_Home.m_CreatorSigil.overrideSprite = m_Home.shadowSchool;
         else if (m_CovenData.Founder.School > 0)
@@ -729,7 +732,7 @@ public class TeamManagerUI : MonoBehaviour
         m_Home.m_CovenSigil.color = Utilities.GetSchoolColor(m_CovenData.School);
         m_Home.m_CreatorSigil.color = Utilities.GetSchoolColor(m_CovenData.Founder.School);
     }
-    
+
     private void OnClickLeave()
     {
         UIGlobalPopup.ShowPopUp(
@@ -831,7 +834,7 @@ public class TeamManagerUI : MonoBehaviour
                             {
                                 if (m_CurrentScreen == Screen.HOME)
                                     SetupHome();
-                            }, 
+                            },
                             LocalizeLookUp.GetText("coven_motto_set"));
                     }
                     else
@@ -996,7 +999,7 @@ public class TeamManagerUI : MonoBehaviour
         else //shoe the coven's sent invitation
         {
             m_BackButton.gameObject.SetActive(true);
-            m_SendInviteButton.gameObject.SetActive(true);    
+            m_SendInviteButton.gameObject.SetActive(true);
 
             m_CovenName.text = LocalizeLookUp.GetText("header_invites_players");
             m_SubTitle.text = m_CovenData.Name;
@@ -1041,7 +1044,7 @@ public class TeamManagerUI : MonoBehaviour
            {
                m_InputPopup.Error("");
                string nameError = LoginUtilities.ValidateCharacterName(characterName);
-               
+
                if (string.IsNullOrEmpty(nameError))
                {
                    //send the invite
@@ -1147,6 +1150,7 @@ public class TeamManagerUI : MonoBehaviour
 
     private void OnPressReturn()
     {
+        Debug.Log("pressing return");
         if (m_CurrentScreen == Screen.HOME)
             OnClickClose();
         else

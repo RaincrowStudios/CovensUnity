@@ -103,6 +103,10 @@ public class UISpiritBanished : MonoBehaviour
                     {
                         m_Content.transform.localScale = new Vector3(t * 0.8f, t * 0.8f, t * 0.8f);
                     }
+                }).setOnComplete(() =>
+                {
+                    BackButtonListener.AddCloseAction(Close);
+
                 })
                 .uniqueId;
 
@@ -113,6 +117,7 @@ public class UISpiritBanished : MonoBehaviour
 
     public void Close()
     {
+        BackButtonListener.RemoveCloseAction();
         m_SpiritId = null;
         m_InputRaycaster.enabled = false;
 

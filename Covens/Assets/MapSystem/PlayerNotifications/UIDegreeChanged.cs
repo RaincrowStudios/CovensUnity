@@ -41,6 +41,8 @@ public class UIDegreeChanged : MonoBehaviour
         m_Content.SetActive(true);
 
         m_CloseButton.interactable = false;
+        BackButtonListener.AddCloseAction(Close);
+
         LeanTween.value(0, 0, 0).setDelay(0.1f).setOnStart(() => { m_CloseButton.interactable = true; });
 
         if (oldDegree < newDegree)
@@ -51,6 +53,7 @@ public class UIDegreeChanged : MonoBehaviour
 
     private void Close()
     {
+        BackButtonListener.RemoveCloseAction();
         m_Animator.enabled = false;
         m_CloseButton.interactable = false;
 

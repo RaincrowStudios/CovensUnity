@@ -173,7 +173,6 @@ public class UIStore : MonoBehaviour
         if (m_Canvas.enabled)
             return;
 
-        BackButtonListener.AddCloseAction(OnClickClose);
 
         StoreManagerAPI.OnPurchaseComplete += OnPurchaseComplete;
 
@@ -189,7 +188,13 @@ public class UIStore : MonoBehaviour
             {
                 m_CanvasGroup.alpha = v;
             })
-            .setOnComplete(() => MapsAPI.Instance.HideMap(true))
+            .setOnComplete(() =>
+            {
+                MapsAPI.Instance.HideMap(true);
+                Debug.Log("store");
+                BackButtonListener.AddCloseAction(OnClickClose);
+
+            })
             .setEaseOutCubic()
             .uniqueId;
     }
@@ -494,6 +499,7 @@ public class UIStore : MonoBehaviour
 
     private void OnClickClose()
     {
+        Debug.Log(m_CurrentScreen);
         if (m_CurrentScreen == Screen.HOME)
             Close();
         else if (m_CurrentScreen == Screen.STYLES)

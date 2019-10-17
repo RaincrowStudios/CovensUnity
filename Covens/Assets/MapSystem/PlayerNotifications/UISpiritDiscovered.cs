@@ -53,6 +53,7 @@ public class UISpiritDiscovered : MonoBehaviour
 
     private void Close()
     {
+        BackButtonListener.RemoveCloseAction();
         m_Animator.enabled = false;
         m_CloseButton.interactable = false;
         m_OnClose?.Invoke();
@@ -66,7 +67,7 @@ public class UISpiritDiscovered : MonoBehaviour
                 m_Content.transform.localScale = new Vector3(t, t, t);
                 m_CanvasGroup.alpha = t;
             })
-            .setOnComplete(() => 
+            .setOnComplete(() =>
             {
                 Destroy(this.gameObject);
             })
@@ -76,12 +77,13 @@ public class UISpiritDiscovered : MonoBehaviour
     private IEnumerator ShowCoroutine(string id, Sprite sprite)
     {
         Setup(id, sprite);
-        
+
         m_Animator.enabled = true;
         m_Content.SetActive(true);
 
         m_CloseButton.interactable = false;
         yield return new WaitForSeconds(0.2f);
+        BackButtonListener.AddCloseAction(Close);
         m_CloseButton.interactable = true;
     }
 

@@ -93,7 +93,6 @@ public class Leaderboards : UIAnimationManager
         transform.localScale = Vector3.zero;
         Show();
 
-        BackButtonListener.AddCloseAction(Hide);
     }
 
     public void ShowCovens()
@@ -120,6 +119,7 @@ public class Leaderboards : UIAnimationManager
                 {
                     UIStateManager.Instance.CallWindowChanged(false);
                     MapsAPI.Instance.HideMap(true);
+                    BackButtonListener.AddCloseAction(Hide);
                 })
                 .uniqueId;
         }
