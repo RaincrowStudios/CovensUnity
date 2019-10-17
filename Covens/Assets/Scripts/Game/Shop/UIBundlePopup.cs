@@ -121,7 +121,7 @@ public class UIBundlePopup : MonoBehaviour
                         break;
 
                     case "effect":
-                        instance.text = LocalizeLookUp.GetSpellName(item.id);
+                        instance.text = LocalizeLookUp.GetStoreTitle(item.id);
                         break;
 
                     default:
