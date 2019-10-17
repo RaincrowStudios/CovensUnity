@@ -78,19 +78,15 @@ public class UIStore : MonoBehaviour
                     onLoad?.Invoke();
                 });
         }
-        BackButtonListener.AddCloseAction(CloseStore);
-
     }
 
     public static void CloseStore()
     {
-        BackButtonListener.RemoveCloseAction();
         if (m_Instance == null)
             return;
 
         m_Instance.SetScreen(Screen.HOME);
         m_Instance.Close();
-
     }
 
     public static void ShowIngredients()
@@ -177,6 +173,8 @@ public class UIStore : MonoBehaviour
         if (m_Canvas.enabled)
             return;
 
+        BackButtonListener.AddCloseAction(OnClickClose);
+
         StoreManagerAPI.OnPurchaseComplete += OnPurchaseComplete;
 
         LeanTween.cancel(m_MainTweenId);
@@ -201,6 +199,8 @@ public class UIStore : MonoBehaviour
     {
         if (!m_InputRaycaster.enabled)
             return;
+
+        BackButtonListener.RemoveCloseAction();
 
         LeanTween.cancel(m_MainTweenId);
         StoreManagerAPI.OnPurchaseComplete -= OnPurchaseComplete;

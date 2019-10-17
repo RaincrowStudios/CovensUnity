@@ -45,8 +45,7 @@ public class BackButtonListener : MonoBehaviour
 
             if (stackCount > 0)
             {
-                //m_CloseStack.Peek()?.Invoke();
-                m_CloseStack.Pop()?.Invoke();
+                m_CloseStack.Peek()?.Invoke();
             }
 
             onPressBackBtn?.Invoke(stackCount);

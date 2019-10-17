@@ -150,8 +150,6 @@ public class TeamManagerUI : MonoBehaviour
             }
             else //get the coven from server
             {
-                BackButtonListener.AddCloseAction(m_Instance.OnPressReturn);
-
                 LoadingOverlay.Show();
                 TeamManager.GetCoven(covenName, true, (covenData, error) =>
                 {
@@ -172,7 +170,6 @@ public class TeamManagerUI : MonoBehaviour
             //open empty screen
             m_Instance.SetScreen(Screen.NONE);
             m_Instance.m_OnClose = onClose;
-            BackButtonListener.AddCloseAction(m_Instance.OnPressReturn);
             m_Instance.Show();
             //m_Instance.onp
 
@@ -348,6 +345,8 @@ public class TeamManagerUI : MonoBehaviour
 
     private void Show()
     {
+        BackButtonListener.AddCloseAction(OnPressReturn);
+
         m_Canvas.enabled = true;
         m_InputRaycaster.enabled = true;
         LeanTween.cancel(m_TweenId);
@@ -359,6 +358,8 @@ public class TeamManagerUI : MonoBehaviour
 
     private void Hide()
     {
+        BackButtonListener.RemoveCloseAction();
+
         EnableEventListeners(false);
         SetScreen(Screen.NONE);
 
@@ -670,7 +671,6 @@ public class TeamManagerUI : MonoBehaviour
 
     private void OnClickClose()
     {
-        BackButtonListener.RemoveCloseAction();
         m_OnClose?.Invoke();
         m_OnClose = null;
         Hide();

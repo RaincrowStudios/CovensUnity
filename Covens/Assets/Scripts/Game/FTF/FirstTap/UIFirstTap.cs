@@ -63,6 +63,8 @@ namespace Raincrow.FTF
 
         private void _Show(string id, FirstTapEntry entry, System.Action onComplete)
         {
+            BackButtonListener.AddCloseAction(null);
+
             m_OnClose = onComplete;
 
             //setup screen
@@ -129,6 +131,8 @@ namespace Raincrow.FTF
 
         private void _Close()
         {
+            BackButtonListener.RemoveCloseAction();
+
             m_InputRaycaster.enabled = false;
 
             LeanTween.cancel(m_AnimTweenId);

@@ -83,7 +83,6 @@ public class UIInventory : MonoBehaviour
         m_HerbsWheel.LockIngredient(null, 0);
         m_ToolsWheel.LockIngredient(null, 0);
         m_GemsWheel.LockIngredient(null, 0);
-        BackButtonListener.AddCloseAction(Close);
 
         m_ApothecaryButton.gameObject.SetActive(showApothecary && PlayerDataManager.playerData.energy != 0);
 
@@ -114,7 +113,6 @@ public class UIInventory : MonoBehaviour
 
     public void Close()
     {
-        BackButtonListener.RemoveCloseAction();
         AnimateOut();
 
         //if (resetIngrPicker)

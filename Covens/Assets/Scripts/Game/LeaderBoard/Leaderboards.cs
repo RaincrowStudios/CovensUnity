@@ -31,6 +31,8 @@ public class Leaderboards : UIAnimationManager
     //5 minutes cooldown to request the leaderboard from the server again
     private const float m_RequestCooldown = 60 * 5;
 
+    private int m_TweenId;
+
     void Awake()
     {
         Instance = this;
@@ -90,26 +92,38 @@ public class Leaderboards : UIAnimationManager
         GetComponent<CanvasGroup>().alpha = 0;
         transform.localScale = Vector3.zero;
         Show();
+
+        BackButtonListener.AddCloseAction(Hide);
     }
+
     public void ShowCovens()
     {
         isPlayer = false;
         Show();
     }
+
     public void Show()
     {
-
-        BackButtonListener.AddCloseAction(Hide);
+        LeanTween.cancel(m_TweenId);
 
         if (transform.localScale.x != 1)
         {
-            LeanTween.alphaCanvas(GetComponent<CanvasGroup>(), 1, .45f).setEase(LeanTweenType.easeOutSine).setOnComplete(() =>
-            {
-                UIStateManager.Instance.CallWindowChanged(false);
-                MapsAPI.Instance.HideMap(true);
-            });
-            LeanTween.scale(gameObject, Vector3.one, .45f).setEase(LeanTweenType.easeOutSine);
+            CanvasGroup cg = this.GetComponent<CanvasGroup>();
+            m_TweenId = LeanTween.value(cg.alpha, 1, 0.45f)
+                .setEaseOutSine()
+                .setOnUpdate((float t) =>
+                {
+                    cg.alpha = t;
+                    transform.localScale = Vector3.one * t;
+                })
+                .setOnComplete(() =>
+                {
+                    UIStateManager.Instance.CallWindowChanged(false);
+                    MapsAPI.Instance.HideMap(true);
+                })
+                .uniqueId;
         }
+
         GetLeaderboards(
             onSuccess: (players, covens) =>
             {
@@ -126,21 +140,33 @@ public class Leaderboards : UIAnimationManager
 
     void Hide()
     {
+        LeanTween.cancel(m_TweenId);
+
         BackButtonListener.RemoveCloseAction();
+
         UIStateManager.Instance.CallWindowChanged(true);
         MapsAPI.Instance.HideMap(false);
-        LeanTween.alphaCanvas(GetComponent<CanvasGroup>(), 0, .45f).setEase(LeanTweenType.easeOutSine);
-        LeanTween.scale(gameObject, Vector3.zero, .45f).setEase(LeanTweenType.easeOutSine).setOnComplete(() =>
-        {
-            Destroy(gameObject);
-        });
 
+        CanvasGroup cg = this.GetComponent<CanvasGroup>();
+
+        m_TweenId = LeanTween.value(cg.alpha, 0, 0.45f)
+            .setEaseOutSine()
+            .setOnUpdate((float t) =>
+            {
+                cg.alpha = t;
+                transform.localScale = Vector3.one * t;
+            })
+            .setOnComplete(() => Destroy(this.gameObject))
+            .uniqueId;
     }
 
 
 
     public void SetupUI()
     {
+        if (this == null)
+            return;
+
         foreach (Transform item in container)
         {
             Destroy(item.gameObject);

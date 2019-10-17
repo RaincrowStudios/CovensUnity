@@ -154,7 +154,7 @@ public class UIGlobalPopup : MonoBehaviour
         if (m_OnCancel != null)
             BackButtonListener.AddCloseAction(OnClickCancel);
         else
-            BackButtonListener.AddCloseAction(OnClickConfirm);
+            BackButtonListener.AddCloseAction(null);
     }
 
     private void Hide()
