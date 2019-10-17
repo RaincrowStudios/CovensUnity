@@ -27,6 +27,7 @@ public abstract class CharacterMarker : MuskMarker
     private int m_TweenId;
     private Transform m_HexFX;
     private Transform m_SealFX;
+    private Transform m_CovenBuffFX;
 
     protected abstract void SetupIcon();
     protected abstract void SetupAvatar();
@@ -145,6 +146,13 @@ public abstract class CharacterMarker : MuskMarker
             }
         }
 
+        if (effect.spell == "spell_covenBuff")
+        {
+            if (m_CovenBuffFX != null)
+                StatusEffectFX.DespawnCovenBuff(m_CovenBuffFX);
+            m_CovenBuffFX = fx = StatusEffectFX.SpawnCovenBuff(effect);
+        }
+
         if (fx)
         {
             fx.SetParent(AvatarTransform);
@@ -172,6 +180,11 @@ public abstract class CharacterMarker : MuskMarker
                 StatusEffectFX.DespawnHexFX(m_SealFX);
                 m_SealFX = null;
             }
+        }
+        else if (effect.spell == "spell_covenBuff")
+        {
+            if (m_CovenBuffFX)
+                StatusEffectFX.DespawnCovenBuff(m_CovenBuffFX);
         }
     }
 }

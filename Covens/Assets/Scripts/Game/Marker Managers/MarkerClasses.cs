@@ -19,6 +19,8 @@ public class StatusEffect
         public int wisdom;
         public int beCrit;
         public int toCrit;
+        [JsonProperty("covenDegree")]
+        public int covenSchool;
     }
 
     public string spell;

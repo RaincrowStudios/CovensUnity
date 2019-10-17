@@ -253,7 +253,7 @@ public class WitchMarker : CharacterMarker
     public override void OnApplyStatusEffect(StatusEffect effect)
     {
         base.OnApplyStatusEffect(effect);
-
+        
         if (effect.HasStatus(SpellData.CHANNELING_STATUS) && m_ChannelingFX == null)
         {
             m_ChannelingFX = SpellChanneling.SpawnFX(this, witchToken);
