@@ -35,7 +35,7 @@ public class UISummoning : MonoBehaviour
         m_PoPPosition = -1;
         m_PoPIsland = -1;
         m_OnSummonPoP = null;
-
+        BackButtonListener.onPressBackBtn += Close;
         if (m_Instance != null)
         {
             m_Instance._Open();
@@ -63,7 +63,7 @@ public class UISummoning : MonoBehaviour
     {
         if (m_Instance == null)
             return;
-
+        BackButtonListener.onPressBackBtn -= Close;
         m_Instance._Close();
     }
 
