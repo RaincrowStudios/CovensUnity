@@ -8,17 +8,16 @@ public class BackButtonListener : MonoBehaviour
 
     private static Stack<System.Action> m_CloseStack = new Stack<System.Action>();
 
+    private bool m_IsExitPrompt = false;
+
     public static void AddCloseAction(System.Action close)
     {
         m_CloseStack.Push(close);
     }
 
-    public static void RemoveCloseAction()
-    {
-        PopStack();
-    }
 
-    private static void PopStack()
+
+    public static void RemoveCloseAction()
     {
         if (m_CloseStack.Count > 0)
         {
@@ -30,8 +29,27 @@ public class BackButtonListener : MonoBehaviour
     {
         if (Input.GetKeyDown(KeyCode.Escape))
         {
-            m_CloseStack.Peek().Invoke();
-            PopStack();
+            if (m_CloseStack.Count > 0)
+            {
+                m_CloseStack.Peek().Invoke();
+                m_CloseStack.Pop();
+            }
+            else
+            {
+                if (!m_IsExitPrompt)
+                {
+                    UIGlobalPopup.ShowPopUp(() =>
+                    {
+                        Application.Quit();
+                    }, () => { m_IsExitPrompt = false; }, "Are you sure you want to exit the game?");
+                    m_IsExitPrompt = true;
+                }
+                else
+                {
+                    Debug.Log("application quit");
+                    Application.Quit();
+                }
+            }
         }
     }
 }
