@@ -32,11 +32,11 @@ public static class SummoningManager
             {
                 //remove the ingredients
                 RemoveIngredients(spirit);
-                
+
                 //spawn the marker
                 SpiritToken token = JsonConvert.DeserializeObject<SpiritToken>(s);
                 SpiritMarker marker = MarkerSpawner.Instance.AddMarker(token) as SpiritMarker;
-                
+
                 SpiritData spiritData = DownloadedAssets.GetSpirit(spirit);
                 int tier = spiritData.tier;
                 int summonCost = PlayerDataManager.summoningCosts[tier - 1];
@@ -73,13 +73,16 @@ public static class SummoningManager
             {
                 //remove the ingredients
                 RemoveIngredients(spirit);
-                
+
                 SpiritData spiritData = DownloadedAssets.GetSpirit(spirit);
                 int tier = spiritData.tier;
                 int summonCost = PlayerDataManager.summoningCosts[tier - 1];
 
                 OnMapEnergyChange.ForceEvent(PlayerManager.marker, PlayerDataManager.playerData.energy - summonCost);
-
+                var spiritToken = JsonConvert.DeserializeObject<SpiritToken>(s);
+                spiritToken.position = position;
+                spiritToken.island = island;
+                AddSpiritHandlerPOP.RaiseEvent(spiritToken);
                 callback(null);
             }
             else
