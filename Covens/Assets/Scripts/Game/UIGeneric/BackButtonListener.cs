@@ -10,7 +10,6 @@ public class BackButtonListener : MonoBehaviour
 
     public static void AddCloseAction(System.Action close)
     {
-        Debug.Log("adding " + close.ToString());
         m_CloseStack.Push(close);
     }
 
@@ -23,7 +22,6 @@ public class BackButtonListener : MonoBehaviour
     {
         if (m_CloseStack.Count > 0)
         {
-            Debug.Log("removing " + m_CloseStack.Peek().ToString());
             m_CloseStack.Pop();
         }
     }

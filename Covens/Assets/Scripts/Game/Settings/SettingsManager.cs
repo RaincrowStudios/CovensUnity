@@ -105,6 +105,8 @@ public class SettingsManager : MonoBehaviour
                     m_Instance.Show();
                 });
         }
+        BackButtonListener.AddCloseAction(CloseUI);
+
     }
 
     public static void CloseUI()
@@ -112,6 +114,8 @@ public class SettingsManager : MonoBehaviour
         if (m_Instance == null)
             return;
         m_Instance.Hide();
+        BackButtonListener.RemoveCloseAction();
+
     }
 
     void Awake()

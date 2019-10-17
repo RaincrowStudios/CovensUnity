@@ -68,6 +68,8 @@ public class MoonManager : UIAnimationManager
 
     public void Open()
     {
+        BackButtonListener.AddCloseAction(Close);
+
         UIStateManager.Instance.CallWindowChanged(false);
 
         MapsAPI.Instance.HideMap(true);
@@ -119,6 +121,7 @@ public class MoonManager : UIAnimationManager
 
     public void Close()
     {
+        BackButtonListener.RemoveCloseAction();
         StartCoroutine(EnableAlignmentButtonInteractability());
         SoundManagerOneShot.Instance.MenuSound();
         anim.Play("out");
@@ -126,7 +129,6 @@ public class MoonManager : UIAnimationManager
         MapsAPI.Instance.HideMap(false);
         StopCoroutine("CountDown");
         Disable(container, 1);
-
     }
 
     IEnumerator EnableAlignmentButtonInteractability()

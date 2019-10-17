@@ -86,7 +86,6 @@ public class UISummoningSpiritInfo : MonoBehaviour
         LeanTween.cancel(m_TweenId);
         LeanTween.cancel(m_ScaleTweenId);
         BackButtonListener.RemoveCloseAction();
-
         m_CanvasGroup.blocksRaycasts = false;
         m_TweenId = LeanTween.alphaCanvas(m_CanvasGroup, 0, 0.5f).setEaseOutCubic().setOnComplete(() => gameObject.SetActive(false)).uniqueId;
         m_ScaleTweenId = LeanTween.scale(gameObject, Vector3.zero, 1f).setEaseOutCubic().uniqueId;

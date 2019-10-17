@@ -84,6 +84,7 @@ namespace Raincrow.Chat.UI
 
         public static void Open(ChatCategory category = ChatCategory.WORLD)
         {
+            BackButtonListener.AddCloseAction(Close);
             if (m_Instance != null)
             {
                 m_Instance.Show(category);
@@ -108,7 +109,7 @@ namespace Raincrow.Chat.UI
         {
             if (m_Instance == null)
                 return;
-
+            BackButtonListener.RemoveCloseAction();
             m_Instance.AnimateHide();
         }
 
@@ -499,7 +500,7 @@ namespace Raincrow.Chat.UI
             }
 
             HighlightHeader(category);
-            
+
             _enableInputUI.gameObject.SetActive(false);
             _covenName.gameObject.SetActive(false);
             _sendScreenshotButton.SetActive(false);
