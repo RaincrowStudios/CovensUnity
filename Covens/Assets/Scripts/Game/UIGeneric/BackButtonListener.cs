@@ -21,8 +21,11 @@ public class BackButtonListener : MonoBehaviour
 
     public static void RemoveCloseAction()
     {
-        m_CloseStack.Pop();
-        Debug.Log(m_CloseStack.Count + " remove ");
+        if (m_CloseStack.Count > 0)
+        {
+            m_CloseStack.Pop();
+            Debug.Log(m_CloseStack.Count + " remove ");
+        }
     }
 
     void Update()
@@ -34,7 +37,10 @@ public class BackButtonListener : MonoBehaviour
             if (m_CloseStack.Count > 0)
             {
                 m_CloseStack.Peek()?.Invoke();
-                m_CloseStack?.Pop();
+                // if (m_CloseStack.Count > 0)
+                // {
+                //     m_CloseStack.Pop();
+                // }
             }
             else
             {

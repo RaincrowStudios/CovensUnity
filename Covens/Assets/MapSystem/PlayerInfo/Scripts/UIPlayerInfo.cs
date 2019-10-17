@@ -283,12 +283,12 @@ public class UIPlayerInfo : UIInfoPanel
         {
             float currentEnergy = float.Parse(m_EnergyText.text.Split('>')[1].Split(' ')[0]);
             //spirit at half health
-            if (currentEnergy > WitchToken.baseEnergy / 2 && newEnergy < WitchToken.baseEnergy / 2)
+            if (currentEnergy > WitchToken.baseEnergy / 2 && newEnergy < WitchToken.baseEnergy / 2 && WitchToken.state != "dead")
             {
                 PlayerNotificationManager.Instance.ShowNotification($"The witch <color=orange>{WitchToken.displayName}</color> is now at half health. Keep it up!");
             }
             // spirit vulnerable
-            if (currentEnergy > WitchToken.baseEnergy * .2f && newEnergy < WitchToken.baseEnergy * .2f)
+            if (currentEnergy > WitchToken.baseEnergy * .2f && newEnergy < WitchToken.baseEnergy * .2f && WitchToken.state != "dead")
             {
                 PlayerNotificationManager.Instance.ShowNotification($"The witch <color=orange>{WitchToken.displayName}</color> is now <color=red>vulnerable!</color>");
             }
