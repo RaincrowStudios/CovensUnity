@@ -389,7 +389,7 @@ public class UISpellcastBook : MonoBehaviour//, IEnhancedScrollerDelegate
 
         LeanTween.value(0, 1, 1f).setOnUpdate((float t) =>
         {
-            m_NamePanel.sizeDelta = m_TargetName.rectTransform.sizeDelta;
+            m_NamePanel.sizeDelta = m_TargetName.rectTransform.sizeDelta + new Vector2(13f, 0f);
         });
     }
 
