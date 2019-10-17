@@ -4134,6 +4134,36 @@ PrefabInstance:
       propertyPath: m_Camera
       value: 
       objectReference: {fileID: 1096809570}
+    - target: {fileID: 224856137646453450, guid: 5413aaf865d33104f8f1a0d39ea07b25,
+        type: 3}
+      propertyPath: m_SizeDelta.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 224193216858312890, guid: 5413aaf865d33104f8f1a0d39ea07b25,
+        type: 3}
+      propertyPath: m_AnchorMin.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 224193216858312890, guid: 5413aaf865d33104f8f1a0d39ea07b25,
+        type: 3}
+      propertyPath: m_AnchorMax.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 224193216858312890, guid: 5413aaf865d33104f8f1a0d39ea07b25,
+        type: 3}
+      propertyPath: m_AnchoredPosition.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 224193216858312890, guid: 5413aaf865d33104f8f1a0d39ea07b25,
+        type: 3}
+      propertyPath: m_AnchoredPosition.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2439224873746585298, guid: 5413aaf865d33104f8f1a0d39ea07b25,
+        type: 3}
+      propertyPath: m_SizeDelta.y
+      value: 0
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 5413aaf865d33104f8f1a0d39ea07b25, type: 3}
 --- !u!1 &1215259085 stripped

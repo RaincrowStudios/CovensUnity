@@ -12,14 +12,14 @@ public class BackButtonListener : MonoBehaviour
         
     public static void AddCloseAction(System.Action close)
     {
-        m_CloseStack.Push(close);
+        //m_CloseStack.Push(close);
         //Debug.Log(m_CloseStack.Count + " add ");
     }
         
     public static void RemoveCloseAction()
     {
-        if (m_CloseStack.Count > 0)
-            m_CloseStack.Pop();
+        //if (m_CloseStack.Count > 0)
+        //    m_CloseStack.Pop();
         //Debug.Log(m_CloseStack.Count + " remove ");
     }
     
@@ -43,29 +43,13 @@ public class BackButtonListener : MonoBehaviour
 
             int stackCount = m_CloseStack.Count;
 
-            if (stackCount > 0)
-            {
-                m_CloseStack.Peek()?.Invoke();
-            }
+            //if (stackCount > 0)
+            //{
+            //    m_CloseStack.Peek()?.Invoke();
+            //}
 
             onPressBackBtn?.Invoke(stackCount);
 
-            //else
-            //{
-            //    if (!m_IsExitPrompt)
-            //    {
-            //        UIGlobalPopup.ShowPopUp(() =>
-            //        {
-            //            Application.Quit();
-            //        }, () => { m_IsExitPrompt = false; }, "Are you sure you want to exit the game?");
-            //        m_IsExitPrompt = true;
-            //    }
-            //    else
-            //    {
-            //        Debug.Log("application quit");
-            //        Application.Quit();
-            //    }
-            //}
             //Debug.Log(m_CloseStack.Count + " back btn after");
         }
     }
