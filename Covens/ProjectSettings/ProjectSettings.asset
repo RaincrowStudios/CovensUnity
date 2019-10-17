@@ -267,7 +267,7 @@ PlayerSettings:
   AndroidIsGame: 1
   AndroidEnableTango: 0
   androidEnableBanner: 1
-  androidUseLowAccuracyLocation: 1
+  androidUseLowAccuracyLocation: 0
   androidUseCustomKeystore: 1
   m_AndroidBanners:
   - width: 320
