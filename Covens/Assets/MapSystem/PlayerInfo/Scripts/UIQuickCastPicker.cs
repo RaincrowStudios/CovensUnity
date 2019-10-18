@@ -51,10 +51,14 @@ public class UIQuickCastPicker : MonoBehaviour
         {
             m_InputRaycaster.enabled = true;
         });
+
+        BackButtonListener.AddCloseAction(Hide);
     }
 
     private void Hide()
     {
+        BackButtonListener.RemoveCloseAction();
+
         IsOpen = false;
         m_OnClose?.Invoke();
         m_OnClose = null;
