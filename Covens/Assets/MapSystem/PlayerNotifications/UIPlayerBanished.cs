@@ -1,12 +1,14 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 using TMPro;
 
 public class UIPlayerBanished : MonoBehaviour
 {
     [SerializeField] private TextMeshProUGUI m_Title;
     [SerializeField] private TextMeshProUGUI m_Subtitle;
+    [SerializeField] private Image m_Glyph;
 
     public static void Show(string caster)
     {
@@ -17,6 +19,11 @@ public class UIPlayerBanished : MonoBehaviour
             instance.m_Subtitle.text = "You have been banished from this place of power";
         else
             instance.m_Subtitle.text = "You have been banished by " + caster;
+
+        DownloadedAssets.GetSprite("spell_banish", spr =>
+        {
+            instance.m_Glyph.overrideSprite = spr;
+        });
 
         instance.gameObject.SetActive(true);
         Destroy(instance.gameObject, 5f);

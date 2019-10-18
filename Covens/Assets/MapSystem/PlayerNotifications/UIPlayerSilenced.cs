@@ -1,12 +1,14 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
-using TMPro;
 using UnityEngine;
+using UnityEngine.UI;
+using TMPro;
 
 public class UIPlayerSilenced : MonoBehaviour
 {
     [SerializeField] private TextMeshProUGUI m_Title;
     [SerializeField] private TextMeshProUGUI m_Subtitle;
+    [SerializeField] private Image m_Glyph;
 
     public static void Show(string caster, double expire)
     {
@@ -15,6 +17,12 @@ public class UIPlayerSilenced : MonoBehaviour
         instance.m_Subtitle.text = LocalizeLookUp.GetText("spell_silenced_witch")
             .Replace("{{Caster}}", caster)
             .Replace("{{Time}}", Utilities.GetSummonTime(expire));
+
+        DownloadedAssets.GetSprite("spell_silence", spr =>
+        {
+            instance.m_Glyph.overrideSprite = spr;
+        });
+
         instance.gameObject.SetActive(true);
         Destroy(instance.gameObject, 5f);
     }
