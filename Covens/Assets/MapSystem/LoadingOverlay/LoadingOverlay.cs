@@ -13,6 +13,8 @@ public class LoadingOverlay : MonoBehaviour
 
     private int m_Stack = 0;
 
+    public static bool IsOpen => Instance != null && Instance.m_InputRaycaster.enabled;
+
     private void Awake()
     {
         m_Canvas = GetComponent<Canvas>();
@@ -23,11 +25,17 @@ public class LoadingOverlay : MonoBehaviour
         DontDestroyOnLoad(this.gameObject);
     }
 
+    [ContextMenu("Show")]
+    private void DebugShow()
+    {
+        _Show(null);
+    }
+
     private void _Show(string msg = null)
     {
         m_Stack += 1;
 
-        if (m_Canvas.enabled && m_InputRaycaster.enabled)
+        if (m_InputRaycaster.enabled)
             return;
 
         //Debug.Log("Show overlay load");
@@ -52,6 +60,7 @@ public class LoadingOverlay : MonoBehaviour
             .uniqueId;
     }
 
+    [ContextMenu("Hide")]
     private void _Hide()
     {
         m_Stack -= 1;
@@ -62,9 +71,9 @@ public class LoadingOverlay : MonoBehaviour
         //if (m_Stack > 0)
         //    return;
 
-        if (m_Canvas.enabled == false && m_InputRaycaster.enabled == false)
+        if (m_InputRaycaster.enabled == false)
             return;
-        
+
         m_InputRaycaster.enabled = false;
 
         LeanTween.cancel(m_TweenId);

@@ -36,6 +36,9 @@ public class BackButtonListener : MonoBehaviour
     {
         if (Input.GetKeyDown(KeyCode.Escape))
         {
+            if (LoadingOverlay.IsOpen)
+                return;
+
             int stackCount = m_CloseStack.Count;
 
             if (!FTFManager.InFTF && stackCount > 0)
