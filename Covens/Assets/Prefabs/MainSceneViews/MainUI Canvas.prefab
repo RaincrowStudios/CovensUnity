@@ -20667,7 +20667,6 @@ GameObject:
   - component: {fileID: 95581364222537700}
   - component: {fileID: 2100236815223383734}
   - component: {fileID: 114796654857181126}
-  - component: {fileID: 622344720682588659}
   m_Layer: 5
   m_Name: MainUI Canvas
   m_TagString: Untagged
@@ -21033,18 +21032,6 @@ MonoBehaviour:
   mapPointer: {fileID: 114796637872850108}
   m_SummonButton: {fileID: 114990376330951518}
   m_ShoutButton: {fileID: 114316703701802602}
---- !u!114 &622344720682588659
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1332108981819544}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: cced00340bcc8aa4099a5c55ec81397d, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!1 &1335183268195658
 GameObject:
   m_ObjectHideFlags: 0
@@ -59001,6 +58988,7 @@ GameObject:
   - component: {fileID: 224713574480808004}
   - component: {fileID: 222764995073798762}
   - component: {fileID: 114627827153529418}
+  - component: {fileID: 3934304488793481408}
   m_Layer: 5
   m_Name: untilMoonrise
   m_TagString: Untagged
@@ -59148,6 +59136,22 @@ MonoBehaviour:
   - {fileID: 0}
   m_baseMaterial: {fileID: 0}
   m_maskOffset: {x: 0, y: 0, z: 0, w: 0}
+--- !u!114 &3934304488793481408
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1586528645564030}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 64a59a015644a4f44b632497e81f3cc7, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  prefix: 
+  id: moon_rise_time
+  suffix: 
+  toUpper: 0
 --- !u!1 &1588100896835248
 GameObject:
   m_ObjectHideFlags: 0
@@ -119799,6 +119803,7 @@ GameObject:
   - component: {fileID: 5520786184303563905}
   - component: {fileID: 1001479406379502779}
   - component: {fileID: 7606478157335562873}
+  - component: {fileID: 7201835394138316179}
   m_Layer: 5
   m_Name: UntilText
   m_TagString: Untagged
@@ -119946,6 +119951,22 @@ MonoBehaviour:
   - {fileID: 0}
   m_baseMaterial: {fileID: 0}
   m_maskOffset: {x: 0, y: 0, z: 0, w: 0}
+--- !u!114 &7201835394138316179
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8450869367184195705}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 64a59a015644a4f44b632497e81f3cc7, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  prefix: 
+  id: daily_blessing_time
+  suffix: 
+  toUpper: 0
 --- !u!1 &8478213332991869556
 GameObject:
   m_ObjectHideFlags: 0
