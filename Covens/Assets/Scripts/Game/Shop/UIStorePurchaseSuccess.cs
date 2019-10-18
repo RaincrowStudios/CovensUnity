@@ -68,19 +68,13 @@ public class UIStorePurchaseSuccess : MonoBehaviour
 
         LeanTween.cancel(m_AlphaTweenId);
         m_Animator.gameObject.SetActive(true);
-        m_AlphaTweenId = LeanTween.alphaCanvas(m_CanvasGroup, 1, 0.2f).setEaseOutCubic().setOnComplete(() =>
-        {
-            Debug.Log(name);
-
-            BackButtonListener.AddCloseAction(_Close);
-
-        }).uniqueId;
+        m_AlphaTweenId = LeanTween.alphaCanvas(m_CanvasGroup, 1, 0.2f).setEaseOutCubic().uniqueId;
     }
 
     private void _Close()
     {
         m_InputRaycaster.enabled = false;
-        BackButtonListener.RemoveCloseAction();
+
         LeanTween.cancel(m_AlphaTweenId);
         Debug.Log("a. " + Time.time);
         m_AlphaTweenId = LeanTween.alphaCanvas(m_CanvasGroup, 0, 0.5f).setEaseOutCubic().setOnComplete(() =>

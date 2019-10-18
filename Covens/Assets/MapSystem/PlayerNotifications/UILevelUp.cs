@@ -13,7 +13,7 @@ public class UILevelUp : MonoBehaviour
     [Space(10)]
     [SerializeField] private LayoutGroup m_RewardContainer;
     [SerializeField] private UILevelUpReward m_RewardPrefab;
-
+    
     private static UILevelUp m_Instance;
 
     private bool IsOpen = false;
@@ -49,11 +49,7 @@ public class UILevelUp : MonoBehaviour
         m_CloseButton.interactable = false;
         LeanTween.value(0, 0, 0).setDelay(0.25f).setOnStart(() => { m_CloseButton.interactable = true; });
 
-        LeanTween.alphaCanvas(m_CanvasGroup, 1, 0.7f).setOnComplete(() =>
-        {
-            BackButtonListener.AddCloseAction(Close);
-
-        })
+        LeanTween.alphaCanvas(m_CanvasGroup, 1, 0.7f)
             .setEaseOutCubic();
     }
 
@@ -111,7 +107,6 @@ public class UILevelUp : MonoBehaviour
 
     private void Close()
     {
-        BackButtonListener.RemoveCloseAction();
         IsOpen = false;
         m_Instance = null;
         m_CloseButton.interactable = false;

@@ -33,15 +33,13 @@ public class UISummoningSpiritInfo : MonoBehaviour
 
         LeanTween.cancel(m_TweenId);
         LeanTween.cancel(m_ScaleTweenId);
+        BackButtonListener.AddCloseAction(Close);
 
         m_CanvasGroup.alpha = 0;
         transform.localScale = Vector3.zero;
 
         m_TweenId = LeanTween.alphaCanvas(m_CanvasGroup, 1, 0.5f).setEaseOutCubic().uniqueId;
-        m_ScaleTweenId = LeanTween.scale(gameObject, Vector3.one, 0.5f).setEaseOutCubic().setOnComplete(() =>
-        {
-            BackButtonListener.AddCloseAction(Close);
-        }).uniqueId;
+        m_ScaleTweenId = LeanTween.scale(gameObject, Vector3.one, 0.5f).setEaseOutCubic().uniqueId;
 
         m_Title.text = spirit.Name;
         m_Lore.text = spirit.Description;

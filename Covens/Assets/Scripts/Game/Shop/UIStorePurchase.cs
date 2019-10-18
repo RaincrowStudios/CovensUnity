@@ -130,11 +130,7 @@ public class UIStorePurchase : MonoBehaviour
         LeanTween.cancel(m_AlphaTweenId);
         LeanTween.cancel(m_ScaleTweenId);
 
-        m_AlphaTweenId = LeanTween.alphaCanvas(m_CanvasGroup, 1f, 1f).setEaseOutCubic().setOnComplete(() =>
-        {
-            Debug.Log(name);
-            BackButtonListener.AddCloseAction(_Close);
-        }).uniqueId;
+        m_AlphaTweenId = LeanTween.alphaCanvas(m_CanvasGroup, 1f, 1f).setEaseOutCubic().uniqueId;
         m_ScaleTweenId = LeanTween.scale(m_CanvasGroup.gameObject, Vector3.one, 0.5f).setEaseOutCubic().uniqueId;
     }
 
@@ -145,11 +141,7 @@ public class UIStorePurchase : MonoBehaviour
         LeanTween.cancel(m_AlphaTweenId);
         LeanTween.cancel(m_ScaleTweenId);
 
-        m_AlphaTweenId = LeanTween.alphaCanvas(m_CanvasGroup, 0f, 0.5f).setOnComplete(() =>
-        {
-            m_Canvas.enabled = false;
-            BackButtonListener.RemoveCloseAction();
-        }).setEaseOutCubic().uniqueId;
+        m_AlphaTweenId = LeanTween.alphaCanvas(m_CanvasGroup, 0f, 0.5f).setOnComplete(() => m_Canvas.enabled = false).setEaseOutCubic().uniqueId;
         m_ScaleTweenId = LeanTween.scale(m_CanvasGroup.gameObject, Vector3.zero, 1f).setEaseOutCubic().uniqueId;
     }
 

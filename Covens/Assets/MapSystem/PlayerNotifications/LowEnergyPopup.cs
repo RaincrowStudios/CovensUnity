@@ -27,7 +27,6 @@ public class LowEnergyPopup : MonoBehaviour
     {
         m_offerText.text = LocalizeLookUp.GetText("energy_restore_message");
         m_close.onClick.AddListener(() => { Close(); });
-        BackButtonListener.AddCloseAction(Close);
 
         //this will need localization
         if (PlayerDataManager.playerData.gold < 1)
@@ -85,7 +84,6 @@ public class LowEnergyPopup : MonoBehaviour
 
     void Close()
     {
-        BackButtonListener.RemoveCloseAction();
         LeanTween.alphaCanvas(thisCG, 0f, 0.4f).setOnComplete(() =>
         {
             Destroy(gameObject);
