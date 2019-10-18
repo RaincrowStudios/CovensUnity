@@ -101,16 +101,13 @@ public class UISpellcastBook : MonoBehaviour//, IEnhancedScrollerDelegate
             m_Instance.Show(target, marker, spells, onConfirm, onClickBack, onClickClose);
             onLoad?.Invoke();
         }
-
-        BackButtonListener.AddCloseAction(Close);
     }
 
     public static void Close()
     {
-        BackButtonListener.RemoveCloseAction();
         if (m_Instance == null)
             return;
-
+        
         m_Instance.Hide();
     }
 
@@ -162,6 +159,8 @@ public class UISpellcastBook : MonoBehaviour//, IEnhancedScrollerDelegate
         System.Action onBack = null,
         System.Action onClose = null)
     {
+        BackButtonListener.AddCloseAction(OnClickPortrait);
+
         m_TargetMarker = marker;
         m_TargetData = target;
 
@@ -271,8 +270,11 @@ public class UISpellcastBook : MonoBehaviour//, IEnhancedScrollerDelegate
             .setOnComplete(() => m_Canvas.enabled = false)
             .uniqueId;
     }
+
     private void Hide()
     {
+        BackButtonListener.RemoveCloseAction();
+
         SpellCastHandler.OnPlayerTargeted -= SpellCastHandler_OnPlayerTargeted;
         OnMapEnergyChange.OnEnergyChange -= OnMapEnergyChange_OnEnergyChange;
         RemoveTokenHandler.OnTokenRemove -= OnMapTokenRemove;

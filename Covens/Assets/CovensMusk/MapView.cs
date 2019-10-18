@@ -226,25 +226,7 @@ public class MapView : MonoBehaviour
         if (stackedActions > 0)
             return;
 
-        var eventSystem = UnityEngine.EventSystems.EventSystem.current;
-        var canvas = UIMain.Instance.GetComponent<Canvas>().GetComponent<RectTransform>();
-        var results = new List<UnityEngine.EventSystems.RaycastResult>();
-        var pointer = new UnityEngine.EventSystems.PointerEventData(eventSystem);
-        pointer.position = canvas.sizeDelta / 2f;
-
-        eventSystem.RaycastAll(pointer, results);
-
-        string debug = "raycaster: " + results.Count;
-        for (int i = 0; i < results.Count; i++)
-        {
-            debug += "\n\t" + results[i].gameObject.name;
-        }
-        Debug.LogError(debug);
-
-        if (results.Count == 0)
-        {
-            UIGlobalPopup.ShowPopUp(Application.Quit, () => { }, LocalizeLookUp.GetText("close_app_prompt"));
-        }
+        UIGlobalPopup.ShowPopUp(Application.Quit, () => { }, LocalizeLookUp.GetText("close_app_prompt"));
     }
 
     private void OnEnterPoP()

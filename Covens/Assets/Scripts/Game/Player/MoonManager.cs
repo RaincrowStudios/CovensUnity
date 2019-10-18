@@ -69,8 +69,8 @@ public class MoonManager : UIAnimationManager
 
     public void Open()
     {
+        BackButtonListener.AddCloseAction(Close);
 
-        //BackButtonListener.AddCloseAction(Close);
         UIStateManager.Instance.CallWindowChanged(false);
         container.transform.GetChild(9).GetComponent<Button>().onClick.AddListener(() =>
         {
@@ -125,6 +125,8 @@ public class MoonManager : UIAnimationManager
 
     public void Close()
     {
+        BackButtonListener.RemoveCloseAction();
+
         StartCoroutine(EnableAlignmentButtonInteractability());
         SoundManagerOneShot.Instance.MenuSound();
         anim.Play("out");

@@ -345,6 +345,9 @@ public class TeamManagerUI : MonoBehaviour
 
     private void Show()
     {
+        if (m_Canvas.enabled)
+            return;
+
         BackButtonListener.AddCloseAction(OnPressReturn);
 
         m_Canvas.enabled = true;
@@ -358,6 +361,9 @@ public class TeamManagerUI : MonoBehaviour
 
     private void Hide()
     {
+        if (m_InputRaycaster.enabled == false)
+            return;
+
         BackButtonListener.RemoveCloseAction();
 
         EnableEventListeners(false);
@@ -1147,7 +1153,9 @@ public class TeamManagerUI : MonoBehaviour
 
     private void OnPressReturn()
     {
-        if (m_CurrentScreen == Screen.HOME)
+        if (m_CovenData == null)
+            OnClickClose();
+        else if (m_CurrentScreen == Screen.HOME)
             OnClickClose();
         else
             SetScreen(Screen.HOME);

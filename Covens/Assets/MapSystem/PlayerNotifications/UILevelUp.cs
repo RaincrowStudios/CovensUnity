@@ -51,6 +51,8 @@ public class UILevelUp : MonoBehaviour
 
         LeanTween.alphaCanvas(m_CanvasGroup, 1, 0.7f)
             .setEaseOutCubic();
+
+        BackButtonListener.AddCloseAction(Close);
     }
 
     private IEnumerator SpawnRewards(LevelUpEventData data)
@@ -107,6 +109,8 @@ public class UILevelUp : MonoBehaviour
 
     private void Close()
     {
+        BackButtonListener.RemoveCloseAction();
+
         IsOpen = false;
         m_Instance = null;
         m_CloseButton.interactable = false;

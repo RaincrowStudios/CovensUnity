@@ -71,6 +71,8 @@ public class UIApothecary : MonoBehaviour
 
     public void Show(System.Action onOpen, System.Action onReturn, System.Action onClose)
     {
+        BackButtonListener.AddCloseAction(OnClickReturn);
+
         m_OnOpen = onOpen;
         m_OnReturn = onReturn;
         m_OnClose = onClose;
@@ -277,6 +279,8 @@ public class UIApothecary : MonoBehaviour
 
     private void OnClickReturn()
     {
+        BackButtonListener.RemoveCloseAction();
+
         m_OnReturn?.Invoke();
         StopAllCoroutines();
         StartCoroutine(AnimateOutCoroutine(0.4f, LeanTweenType.linear, 0.1f));
@@ -284,6 +288,8 @@ public class UIApothecary : MonoBehaviour
 
     private void OnClickClose()
     {
+        BackButtonListener.RemoveCloseAction();
+
         m_OnClose?.Invoke();
         StopAllCoroutines();
         StartCoroutine(AnimateOutCoroutine(0.3f, LeanTweenType.easeOutSine));

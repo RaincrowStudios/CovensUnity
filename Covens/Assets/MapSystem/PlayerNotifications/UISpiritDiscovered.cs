@@ -45,6 +45,7 @@ public class UISpiritDiscovered : MonoBehaviour
     {
         m_OnClose = onClose;
 
+        BackButtonListener.AddCloseAction(null);
         DownloadedAssets.GetSprite(spiritId, (sprite) =>
         {
             StartCoroutine(ShowCoroutine(spiritId, sprite));
@@ -53,6 +54,8 @@ public class UISpiritDiscovered : MonoBehaviour
 
     private void Close()
     {
+        BackButtonListener.RemoveCloseAction();
+
         m_Animator.enabled = false;
         m_CloseButton.interactable = false;
         m_OnClose?.Invoke();
@@ -81,8 +84,13 @@ public class UISpiritDiscovered : MonoBehaviour
         m_Content.SetActive(true);
 
         m_CloseButton.interactable = false;
+
         yield return new WaitForSeconds(0.2f);
+
         m_CloseButton.interactable = true;
+
+        BackButtonListener.RemoveCloseAction();
+        BackButtonListener.AddCloseAction(Close);
     }
 
     protected virtual void Setup(string id, Sprite sprite)

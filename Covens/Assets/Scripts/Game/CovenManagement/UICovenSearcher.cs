@@ -112,12 +112,7 @@ public class UICovenSearcher : MonoBehaviour
             m_HighlightObj.transform.localPosition = m_TopCovensButton.transform.localPosition;
         });
 
-        m_CloseButton.onClick.AddListener(() =>
-        {
-            Close();
-            m_OnClose?.Invoke();
-            m_OnClose = null;
-        });
+        m_CloseButton.onClick.AddListener(OnClickClose);
 
         m_SearchField.onValueChanged.AddListener(OnSearchStringChange);
     }
@@ -128,9 +123,18 @@ public class UICovenSearcher : MonoBehaviour
         m_OnClose = onClose;
     }
 
+    private void OnClickClose()
+    {
+        Close();
+        m_OnClose?.Invoke();
+        m_OnClose = null;
+    }
+
     [ContextMenu("Show")]
     private void Show()
     {
+        BackButtonListener.AddCloseAction(OnClickClose);
+
         //update the list
         RequestAvailableCovens(m_SearchField.text, m_RecentTab);
         m_HighlightObj.transform.localPosition = m_RecentTab ? m_RecentCovensButton.transform.localPosition : m_TopCovensButton.transform.localPosition;
@@ -148,6 +152,8 @@ public class UICovenSearcher : MonoBehaviour
     [ContextMenu("Close")]
     public void Close()
     {
+        BackButtonListener.RemoveCloseAction();
+
         //animat ethe ui
         m_InputRaycaster.enabled = false;
         LeanTween.cancel(m_TweenId);

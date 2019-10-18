@@ -6,6 +6,7 @@ using TMPro;
 using Raincrow.Maps;
 using Raincrow.GameEventResponses;
 using Raincrow;
+using Raincrow.FTF;
 
 public class UIPlayerInfo : UIInfoPanel
 {
@@ -118,12 +119,13 @@ public class UIPlayerInfo : UIInfoPanel
 
     private void _Show(WitchMarker witch, WitchToken data, System.Action onClose)
     {
-        BackButtonListener.AddCloseAction(OnClickClose);
         if (witch == null)
         {
             Debug.LogError("null witch");
             return;
         }
+
+        BackButtonListener.AddCloseAction(OnClickClose);
 
         m_OnClose = onClose;
         previousMapPosition = MapsAPI.Instance.GetWorldPosition();
@@ -182,6 +184,14 @@ public class UIPlayerInfo : UIInfoPanel
 
         //animate the ui
         Show();
+        
+        if (FirstTapManager.IsFirstTime("spellcasting"))
+        {
+            FirstTapManager.Show("spellcasting", () =>
+            {
+                FirstTapManager.Show("quickcasting", null);
+            });
+        }
     }
 
     public override void ReOpen()
@@ -212,6 +222,8 @@ public class UIPlayerInfo : UIInfoPanel
 
     public override void Close()
     {
+        BackButtonListener.RemoveCloseAction();
+
         m_OnClose?.Invoke();
         m_OnClose = null;
 
@@ -258,7 +270,6 @@ public class UIPlayerInfo : UIInfoPanel
 
     private void OnClickClose()
     {
-        BackButtonListener.RemoveCloseAction();
         Close();
     }
 

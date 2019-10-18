@@ -18,6 +18,10 @@ public class BOSController : BOSBase
     private GameObject currentObject;
     private CanvasGroup CG;
     private Button closeBtn;
+
+    private static int m_TweenId;
+    private static int m_RibbonTweenId;
+
     void Awake()
     {
         Instance = this;
@@ -27,39 +31,73 @@ public class BOSController : BOSBase
         spiritRibbon.GetComponent<Button>().onClick.AddListener(() => { OnClickRibbon(2); });
         closeBtn.onClick.AddListener(Close);
     }
+
     public void CloseDefault()
     {
         closeBtn.onClick.RemoveAllListeners();
         closeBtn.onClick.AddListener(Close);
     }
+
     public void AssignCloseListner(Action closeAction)
     {
         closeBtn.onClick.RemoveAllListeners();
         closeBtn.onClick.AddListener(() => { closeAction(); });
     }
+
     public void Close()
     {
         BackButtonListener.RemoveCloseAction();
+
         if (!LocationIslandController.isInBattle)
             MapsAPI.Instance.HideMap(false);
         UIStateManager.Instance.CallWindowChanged(true);
-        LeanTween.alphaCanvas(CG, 0, .65f);
-        LeanTween.scale(gameObject, Vector3.zero, .65f).setEase(LeanTweenType.easeOutQuint).setOnComplete(() => { Destroy(gameObject); });
+
+        //LeanTween.alphaCanvas(CG, 0, .65f);
+        //LeanTween.scale(gameObject, Vector3.zero, .65f).setEase(LeanTweenType.easeOutQuint).setOnComplete(() => { Destroy(gameObject); });
+
+        LeanTween.cancel(m_TweenId);
+        LeanTween.cancel(m_RibbonTweenId);
+        LeanTween.cancel(m_CallbackTweenId);
+
+        m_TweenId = LeanTween.value(1, 0, 0.65f)
+            .setOnUpdate((float t) =>
+            {
+                CG.alpha = t;
+                transform.localScale = Vector3.one * LeanTween.easeOutQuint(0, 1, t);
+            })
+            .setOnComplete(() => Destroy(gameObject))
+            .uniqueId;
     }
+
     void Start()
     {
         CG = GetComponent<CanvasGroup>();
         CG.alpha = 0;
-        LeanTween.alphaCanvas(CG, 1, .8f).setOnComplete(() =>
-        {
-            UIStateManager.Instance.CallWindowChanged(false);
-            if (!LocationIslandController.isInBattle)
-                MapsAPI.Instance.HideMap(true);
-        });
+        //LeanTween.alphaCanvas(CG, 1, .8f).setOnComplete(() =>
+        //{
+        //    UIStateManager.Instance.CallWindowChanged(false);
+        //    if (!LocationIslandController.isInBattle)
+        //        MapsAPI.Instance.HideMap(true);
+        //});
         OnClickRibbon(0);
-        BackButtonListener.AddCloseAction(Close);
+        
+        LeanTween.cancel(m_TweenId);
+        m_TweenId = LeanTween.value(0, 1, 0.65f)
+            .setOnUpdate((float t) =>
+            {
+                CG.alpha = t;
+            })
+            .setOnComplete(() =>
+            {
+                UIStateManager.Instance.CallWindowChanged(false);
+                if (!LocationIslandController.isInBattle)
+                    MapsAPI.Instance.HideMap(true);
+            })
+            .uniqueId;
 
+        BackButtonListener.AddCloseAction(Close);
     }
+
     void ShowCharacter()
     {
         DestroyPrevious(currentObject);
@@ -73,6 +111,7 @@ public class BOSController : BOSBase
         currentObject = CreateScreen(spellScreen);
 
     }
+
     void ShowSpirits()
     {
         DestroyPrevious(currentObject);
@@ -108,6 +147,7 @@ public class BOSController : BOSBase
     void AnimateRibbon(RectTransform rt, int pos)
     {
         var k = LeanTween.descr(LeanTween.moveX(rt, pos, ribbonAnimTime).id).setEase(easeOutType);
+        m_RibbonTweenId = k.uniqueId;
     }
 
     void AnimateRibbon(RectTransform rt, int pos, Action callback)
@@ -116,6 +156,7 @@ public class BOSController : BOSBase
         m_CallbackTweenId = LeanTween.value(0, 0, ribbonAnimTime / 2f).setOnComplete(callback).uniqueId;
 
         var k = LeanTween.descr(LeanTween.moveX(rt, pos, ribbonAnimTime).id).setEase(easeOutType);
+        m_RibbonTweenId = k.uniqueId;
     }
 }
 

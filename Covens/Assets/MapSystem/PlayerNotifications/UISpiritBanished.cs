@@ -73,8 +73,12 @@ public class UISpiritBanished : MonoBehaviour
         if (isInPop)
             CanvasAlpha = 1f;
 
+        BackButtonListener.AddCloseAction(Close);
+
         DownloadedAssets.GetSprite(spiritId, (sprite) =>
         {
+            BackButtonListener.RemoveCloseAction();
+
             if (spiritId != m_SpiritId)
                 return;
 
@@ -108,11 +112,15 @@ public class UISpiritBanished : MonoBehaviour
 
             m_Canvas.enabled = true;
             m_InputRaycaster.enabled = true;
+
+            BackButtonListener.AddCloseAction(Close);
         });
     }
 
     public void Close()
     {
+        BackButtonListener.RemoveCloseAction();
+
         m_SpiritId = null;
         m_InputRaycaster.enabled = false;
 

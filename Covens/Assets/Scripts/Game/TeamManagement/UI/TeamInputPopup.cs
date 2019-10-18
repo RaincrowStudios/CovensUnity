@@ -13,8 +13,14 @@ public class TeamInputPopup : MonoBehaviour
 
     public bool isOpen { get; private set; }
 
+    private System.Action<string> m_ConfirmAction;
+    private System.Action m_CancelAction;
+
     public void ShowPopUp(Action<string> confirmAction, Action cancelAction, string txt, string initialInput = "")
     {
+        m_ConfirmAction = confirmAction;
+        m_CancelAction = cancelAction;
+        
         error.text = "";
         GetComponent<CanvasGroup>().alpha = 0;
         GetComponent<RectTransform>().localScale = Vector2.zero;
@@ -28,9 +34,17 @@ public class TeamInputPopup : MonoBehaviour
         cancel.onClick.RemoveAllListeners();
 
         confirm.onClick.AddListener(delegate { Confirm(confirmAction); });
-        cancel.onClick.AddListener(delegate { Cancel(cancelAction); });
+        cancel.onClick.AddListener(OnClickCancel);
+        
         input.text = initialInput;
         isOpen = true;
+
+        BackButtonListener.AddCloseAction(OnClickCancel);
+    }
+
+    private void OnClickCancel()
+    {
+        Cancel(m_CancelAction);
     }
 
     void Confirm(Action<string> confirmAction)
@@ -46,6 +60,8 @@ public class TeamInputPopup : MonoBehaviour
 
     public void Close()
     {
+        BackButtonListener.RemoveCloseAction();
+
         isOpen = false;
         LTDescr descrAlpha = LeanTween.alphaCanvas(GetComponent<CanvasGroup>(), 0, .28f).setEase(LeanTweenType.easeInOutSine);
         LTDescr descrScale = LeanTween.scale(GetComponent<RectTransform>(), Vector3.zero, .4f).setEase(LeanTweenType.easeInOutSine);

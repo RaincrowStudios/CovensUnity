@@ -47,7 +47,6 @@ public class UINearbyLocations : MonoBehaviour
                     LoadingOverlay.Hide();
                 });
         }
-        BackButtonListener.AddCloseAction(Close);
     }
 
     public static void Close()
@@ -169,6 +168,7 @@ public class UINearbyLocations : MonoBehaviour
 
     private void Show()
     {
+        BackButtonListener.AddCloseAction(Close);
         m_Canvas.enabled = true;
         m_InputRaycaster.enabled = true;
         AnimShow(null);

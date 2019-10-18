@@ -99,10 +99,14 @@ public class WitchSchoolPlayer : MonoBehaviour
 
         m_Slider.value = 0;
         OnVideoBuffering();
+
+        BackButtonListener.AddCloseAction(Close);
     }
 
     private void Close()
     {
+        BackButtonListener.RemoveCloseAction();
+
         StopCoroutine("LoadVideoCoroutine");
 
         m_OnClose?.Invoke();

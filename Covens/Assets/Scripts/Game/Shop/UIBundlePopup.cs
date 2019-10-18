@@ -78,6 +78,11 @@ public class UIBundlePopup : MonoBehaviour
 
     private void _Show(string bundleId)
     {
+        if (m_Canvas.enabled)
+            return;
+
+        BackButtonListener.AddCloseAction(OnClickClose);
+
         //destroy previous reward instances
         for(int i = 0; i < m_RewardContainer.childCount; i++)
             Destroy(m_RewardContainer.GetChild(i).gameObject);
@@ -163,6 +168,11 @@ public class UIBundlePopup : MonoBehaviour
 
     public void _Close()
     {
+        if (m_InputRaycaster.enabled == false)
+            return;
+
+        BackButtonListener.RemoveCloseAction();
+
         m_InputRaycaster.enabled = false;
         m_Anim.Hide(() =>
         {

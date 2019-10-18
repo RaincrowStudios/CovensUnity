@@ -115,10 +115,14 @@ public class TeamPlayerView : MonoBehaviour
                 m_CanvasGroup.transform.localScale = Vector3.Lerp(Vector3.one * 0.5f, Vector3.one, v);
             })
             .uniqueId;
+
+        BackButtonListener.AddCloseAction(Close);
     }
 
     public void Close()
     {
+        BackButtonListener.RemoveCloseAction();
+
         m_OnFly = null;
         m_OnCoven = null;
         m_OnClose = null;

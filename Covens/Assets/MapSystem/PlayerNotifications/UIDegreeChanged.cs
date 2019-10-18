@@ -47,10 +47,14 @@ public class UIDegreeChanged : MonoBehaviour
             SoundManagerOneShot.Instance.PlayWhite();
         else
             SoundManagerOneShot.Instance.PlayShadow();
+
+        BackButtonListener.AddCloseAction(Close);
     }
 
     private void Close()
     {
+        BackButtonListener.RemoveCloseAction();
+
         m_Animator.enabled = false;
         m_CloseButton.interactable = false;
 

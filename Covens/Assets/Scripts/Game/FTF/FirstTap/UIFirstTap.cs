@@ -63,7 +63,7 @@ namespace Raincrow.FTF
 
         private void _Show(string id, FirstTapEntry entry, System.Action onComplete)
         {
-            BackButtonListener.AddCloseAction(null);
+            BackButtonListener.AddCloseAction(_Close);
 
             m_OnClose = onComplete;
 

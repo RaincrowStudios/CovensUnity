@@ -91,6 +91,8 @@ public class UIStorePurchase : MonoBehaviour
 
     protected virtual void _Show(StoreItem item, string type, string title, string description, Sprite icon, string locked, System.Action<string> onPurchase)
     {
+        BackButtonListener.AddCloseAction(_Close);
+
         m_Item = item;
         m_ItemType = type;
         m_Title.text = title;
@@ -136,6 +138,7 @@ public class UIStorePurchase : MonoBehaviour
 
     protected void _Close()
     {
+        BackButtonListener.RemoveCloseAction();
         m_InputRaycaster.enabled = false;
 
         LeanTween.cancel(m_AlphaTweenId);

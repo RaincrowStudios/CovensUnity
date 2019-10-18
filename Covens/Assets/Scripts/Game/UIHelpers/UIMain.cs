@@ -163,11 +163,11 @@ public class UIMain : MonoBehaviour
 
         System.Action onClickClose = () => 
         {
-            BackButtonListener.RemoveCloseAction();
+            //BackButtonListener.RemoveCloseAction();
         };
 
         UIInventory.Instance.Show(onSelectItem, onClickClose, true, true);
-        BackButtonListener.AddCloseAction(UIInventory.Instance.Close);
+        //BackButtonListener.AddCloseAction(UIInventory.Instance.Close);
     }
 
     private void OnClickCoven()

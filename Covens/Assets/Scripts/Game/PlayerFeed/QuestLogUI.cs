@@ -103,6 +103,8 @@ public class QuestLogUI : UIAnimationManager
         if (isOpen)
             return;
 
+        BackButtonListener.AddCloseAction(Hide);
+
         LeanTween.cancel(m_TweenId);
         isOpen = true;
 
@@ -120,16 +122,16 @@ public class QuestLogUI : UIAnimationManager
         if (FirstTapManager.IsFirstTime("daily"))
             FirstTapManager.Show("daily", null);
 
-        BackButtonListener.AddCloseAction(Hide);
 
     }
 
     [ContextMenu("Hide")]
     public void Hide()
     {
-        BackButtonListener.RemoveCloseAction();
         if (isOpen == false)
             return;
+
+        BackButtonListener.RemoveCloseAction();
 
         isOpen = false;
 
@@ -142,7 +144,6 @@ public class QuestLogUI : UIAnimationManager
         {
             CloseP2();
         }
-
     }
 
     private void DailyProgressHandler_OnDailyProgress(DailyProgressHandler.DailyProgressEventData data)

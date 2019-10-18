@@ -64,6 +64,8 @@ public class UIChanneling : UIInfoPanel
 
     public void Show(System.Action<Raincrow.GameEventResponses.SpellCastHandler.Result> onClickContinue)
     {
+        BackButtonListener.AddCloseAction(null);
+
         //m_ChannelInstance = null;
         //m_Results = null;
         m_OnClickContinue = onClickContinue;
@@ -162,6 +164,8 @@ public class UIChanneling : UIInfoPanel
 
     public override void Close()
     {
+        BackButtonListener.RemoveCloseAction();
+
         //hide main panel
         base.Close();
 

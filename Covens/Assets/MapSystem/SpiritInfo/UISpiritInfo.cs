@@ -6,6 +6,7 @@ using TMPro;
 using Raincrow.Maps;
 using Raincrow.GameEventResponses;
 using Raincrow;
+using Raincrow.FTF;
 
 public class UISpiritInfo : UIInfoPanel
 {
@@ -118,6 +119,7 @@ public class UISpiritInfo : UIInfoPanel
     private void _Show(IMarker spirit, Token token, System.Action onClose)
     {
         BackButtonListener.AddCloseAction(OnClickClose);
+
         m_OnClose = onClose;
         previousMapPosition = MapsAPI.Instance.GetWorldPosition();
         m_PreviousMapZoom = Mathf.Min(0.99f, MapsAPI.Instance.normalizedZoom);
@@ -185,6 +187,24 @@ public class UISpiritInfo : UIInfoPanel
         Show();
         m_ConditionList.show = false;
         SoundManagerOneShot.Instance.PlaySpiritSelectedSpellbook();
+        
+        if (FirstTapManager.IsFirstTime("spellcasting"))
+        {
+            FirstTapManager.Show("spellcasting", () =>
+            {
+                FirstTapManager.Show("quickcasting", () =>
+                {
+                    FirstTapManager.Show("tier", null);
+                });
+            });
+        }
+        else
+        {
+            if (FirstTapManager.IsFirstTime("tier"))
+            {
+                FirstTapManager.Show("tier", null);
+            }
+        }
     }
 
     public override void ReOpen()
@@ -220,6 +240,8 @@ public class UISpiritInfo : UIInfoPanel
 
     public override void Close()
     {
+        BackButtonListener.RemoveCloseAction();
+
         m_OnClose?.Invoke();
         m_OnClose = null;
 
@@ -306,7 +328,6 @@ public class UISpiritInfo : UIInfoPanel
 
     private void OnClickClose()
     {
-        BackButtonListener.RemoveCloseAction();
         Close();
     }
 

@@ -74,6 +74,8 @@ public class UIInventory : MonoBehaviour
 
     public void Show(System.Action<UIInventoryWheelItem> onSelectItem, System.Action onClickClose, bool showApothecary, bool enableCloseButton)
     {
+        BackButtonListener.AddCloseAction(OnClickClose);
+
         m_OnClickClose = onClickClose;
 
         m_HerbsWheel.Setup("herb", PlayerDataManager.playerData.GetAllIngredients(IngredientType.herb), onSelectItem);
@@ -113,6 +115,8 @@ public class UIInventory : MonoBehaviour
 
     public void Close()
     {
+        BackButtonListener.RemoveCloseAction();
+
         AnimateOut();
 
         //if (resetIngrPicker)
@@ -169,7 +173,8 @@ public class UIInventory : MonoBehaviour
 
     private void OnClickApothecary()
     {
-        this.Close();
+        AnimateOut();
+
         UICollectableInfo.Instance.Close();
         UIApothecary.Instance.Show(
             null,

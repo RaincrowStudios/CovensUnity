@@ -19,7 +19,7 @@ public class LowEnergyPopup : MonoBehaviour
         Instance = this;
         thisCG = this.GetComponent<CanvasGroup>();
         LeanTween.alphaCanvas(thisCG, 1f, 0.5f).setEaseInCubic();
-
+        BackButtonListener.AddCloseAction(Close);
     }
 
     // Start is called before the first frame update
@@ -84,6 +84,7 @@ public class LowEnergyPopup : MonoBehaviour
 
     void Close()
     {
+        BackButtonListener.RemoveCloseAction();
         LeanTween.alphaCanvas(thisCG, 0f, 0.4f).setOnComplete(() =>
         {
             Destroy(gameObject);

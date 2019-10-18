@@ -275,38 +275,12 @@ public class MarkerSpawner : MarkerManager
             UIQuickCast.Open();
             UIQuickCast.UpdateCanCast(m, null);
             UIPlayerInfo.Show(m as WitchMarker, Data as WitchToken, UIQuickCast.Close);
-
-            if (FirstTapManager.IsFirstTime("spellcasting"))
-            {
-                FirstTapManager.Show("spellcasting", () =>
-                {
-                    FirstTapManager.Show("quickcasting", null);
-                });
-            }
         }
         else if (Data.Type == MarkerType.SPIRIT)
         {
             UIQuickCast.Open();
             UIQuickCast.UpdateCanCast(m, null);
             UISpiritInfo.Show(m as SpiritMarker, Data as SpiritToken, UIQuickCast.Close);
-
-            if (FirstTapManager.IsFirstTime("spellcasting"))
-            {
-                FirstTapManager.Show("spellcasting", () =>
-                {
-                    FirstTapManager.Show("quickcasting", () =>
-                    {
-                        FirstTapManager.Show("tier", null);
-                    });
-                });
-            }
-            else
-            {
-                if (FirstTapManager.IsFirstTime("tier"))
-                {
-                    FirstTapManager.Show("tier", null);
-                }
-            }
         }
 
         SoundManagerOneShot.Instance.PlayWhisperFX();
