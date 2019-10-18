@@ -52,6 +52,8 @@ public class UIDailyBlessing : MonoBehaviour
 
     private void Open(int energyGained)
     {
+        BackButtonListener.AddCloseAction(Close);
+
         m_BlessingText.text = LocalizeLookUp.GetText("blessing_grant").Replace("{{amount}}", "<color=#FF9900>" + energyGained.ToString() + "</color>");
         m_PopBonusText.text = "";
         
@@ -68,6 +70,8 @@ public class UIDailyBlessing : MonoBehaviour
 
     private void Close()
     {
+        BackButtonListener.RemoveCloseAction();
+
         m_InputRaycaster.enabled = false;
         LeanTween.cancel(m_TweenId);
         m_TweenId = LeanTween.value(1, 0, 1f)
