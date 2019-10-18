@@ -89,6 +89,11 @@ public class UICollectableInfo : MonoBehaviour
 
     private void AnimateIn()
     {
+        if (m_Canvas.enabled)
+            return;
+
+        BackButtonListener.AddCloseAction(Close);
+
         m_CanvasGroup.alpha = 0;
         LeanTween.cancel(m_TweenId);
         m_TweenId = LeanTween.value(0, 1, 0.75f)
@@ -105,6 +110,11 @@ public class UICollectableInfo : MonoBehaviour
     
     public void Close()
     {
+        if (!m_InputRaycaster.enabled)
+            return;
+
+        BackButtonListener.RemoveCloseAction();
+
         CollectableId = null;
 
         m_InputRaycaster.enabled = false;
@@ -115,6 +125,7 @@ public class UICollectableInfo : MonoBehaviour
             {
                 m_CanvasGroup.alpha = t;
             })
+            .setOnComplete(() => m_Canvas.enabled=false)
             .uniqueId;
     }   
 

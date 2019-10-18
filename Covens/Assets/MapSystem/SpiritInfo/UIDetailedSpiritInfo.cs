@@ -52,6 +52,8 @@ public class UIDetailedSpiritInfo : MonoBehaviour
 
     public void Show(SpiritData spirit, Token token = null)
     {
+        BackButtonListener.AddCloseAction(Close);
+
         m_DisplayName.text = spirit.Name;
 
         if (spirit.tier == 1)
@@ -98,6 +100,8 @@ public class UIDetailedSpiritInfo : MonoBehaviour
 
     public void Close()
     {
+        BackButtonListener.RemoveCloseAction();
+
         m_InputRaycaster.enabled = false;
         LeanTween.cancel(m_TweenId);
         m_TweenId = LeanTween.alphaCanvas(m_CanvasGroup, 0, 0.5f)
