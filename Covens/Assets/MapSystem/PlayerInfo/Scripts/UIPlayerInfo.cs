@@ -184,13 +184,16 @@ public class UIPlayerInfo : UIInfoPanel
 
         //animate the ui
         Show();
-        
-        if (FirstTapManager.IsFirstTime("spellcasting"))
+
+        if (FTFManager.InFTF)
         {
-            FirstTapManager.Show("spellcasting", () =>
+            if (FirstTapManager.IsFirstTime("spellcasting"))
             {
-                FirstTapManager.Show("quickcasting", null);
-            });
+                FirstTapManager.Show("spellcasting", () =>
+                {
+                    FirstTapManager.Show("quickcasting", null);
+                });
+            }
         }
     }
 

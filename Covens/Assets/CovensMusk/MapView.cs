@@ -48,7 +48,7 @@ public class MapView : MonoBehaviour
         }
         else
         {
-            Debug.LogError("Waiting for socket connection");
+            //Debug.LogError("Waiting for socket connection");
             LeanTween.value(0, 0, 0.5f).setOnComplete(WaitSocketConnection);
         }
     }
@@ -223,10 +223,11 @@ public class MapView : MonoBehaviour
 
     private void OnPressBackBtn(int stackedActions)
     {
-        if (stackedActions > 0)
+        if (!FTFManager.InFTF && stackedActions > 0)
             return;
 
-        UIGlobalPopup.ShowPopUp(Application.Quit, () => { }, LocalizeLookUp.GetText("close_app_prompt"));
+        if (!UIGlobalPopup.IsOpen)
+            UIGlobalPopup.ShowPopUp(Application.Quit, () => { }, LocalizeLookUp.GetText("close_app_prompt"));
     }
 
     private void OnEnterPoP()

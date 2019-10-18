@@ -32,13 +32,13 @@ public class BackButtonListener : MonoBehaviour
         DontDestroyOnLoad(this.gameObject);
     }
 
-    void Update()
+    void LateUpdate()
     {
         if (Input.GetKeyDown(KeyCode.Escape))
         {
             int stackCount = m_CloseStack.Count;
 
-            if (stackCount > 0)
+            if (!FTFManager.InFTF && stackCount > 0)
                 m_CloseStack.Peek()?.Invoke();
 
             onPressBackBtn?.Invoke(stackCount);

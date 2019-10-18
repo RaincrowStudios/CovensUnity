@@ -187,22 +187,25 @@ public class UISpiritInfo : UIInfoPanel
         Show();
         m_ConditionList.show = false;
         SoundManagerOneShot.Instance.PlaySpiritSelectedSpellbook();
-        
-        if (FirstTapManager.IsFirstTime("spellcasting"))
+
+        if (FTFManager.InFTF == false)
         {
-            FirstTapManager.Show("spellcasting", () =>
+            if (FirstTapManager.IsFirstTime("spellcasting"))
             {
-                FirstTapManager.Show("quickcasting", () =>
+                FirstTapManager.Show("spellcasting", () =>
+                {
+                    FirstTapManager.Show("quickcasting", () =>
+                    {
+                        FirstTapManager.Show("tier", null);
+                    });
+                });
+            }
+            else
+            {
+                if (FirstTapManager.IsFirstTime("tier"))
                 {
                     FirstTapManager.Show("tier", null);
-                });
-            });
-        }
-        else
-        {
-            if (FirstTapManager.IsFirstTime("tier"))
-            {
-                FirstTapManager.Show("tier", null);
+                }
             }
         }
     }

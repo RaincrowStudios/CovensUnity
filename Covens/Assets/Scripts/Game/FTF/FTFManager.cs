@@ -88,6 +88,11 @@ public class FTFManager : MonoBehaviour
             });
     }
 
+    private void CloseFTF()
+    {
+        SceneManager.UnloadScene(SceneManager.Scene.FTF, null, null);
+    }
+
     public static void SkipFTF()
     {
         Debug.LogError("TODO: SKIP FTF");
@@ -308,16 +313,13 @@ public class FTFManager : MonoBehaviour
 
     private void OnWitchSchool()
     {
+        ShowWitchSchool(false, CloseFTF);
         WitchSchoolManager.Open();
-        ShowWitchSchool(false, () =>
-        {
-            SceneManager.UnloadScene(SceneManager.Scene.FTF, null, null);
-        });
     }
 
     private void OnSkipWitchSchool()
     {
-        ShowWitchSchool(false, () => SceneManager.UnloadScene(SceneManager.Scene.FTF, null, null));
+        ShowWitchSchool(false, CloseFTF);
     }
 
     private void ShowWitchSchool(bool show, System.Action onComplete)

@@ -127,17 +127,17 @@ public static class LoginAPIManager
         //    APIManager.Instance.Put("place-of-power/leave", "{}", (s, r) => { Debug.Log(s); Debug.Log("TODO: Move pop leave logic"); });
 
         //check for saved tokens
-        if (accountLoggedIn)
-        {
-            Debug.Log("Login skiped (Token already set)");
-            callback?.Invoke(200, new LoginResponse()
-            {
-                game = loginToken,
-                socket = wssToken,
-                error = null
-            });
-            return;
-        }
+        //if (accountLoggedIn)
+        //{
+        //    Debug.Log("Login skiped (Token already set)");
+        //    callback?.Invoke(200, new LoginResponse()
+        //    {
+        //        game = loginToken,
+        //        socket = wssToken,
+        //        error = null
+        //    });
+        //    return;
+        //}
 
         //try autologin with stored user
         if (string.IsNullOrEmpty(StoredUserName) == false && string.IsNullOrEmpty(StoredUserPassword) == false)

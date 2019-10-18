@@ -321,7 +321,11 @@ public class LoginUIManager : MonoBehaviour
             SceneManager.Scene.LOGIN,
             UnityEngine.SceneManagement.LoadSceneMode.Additive,
             (progress) => SplashManager.Instance.ShowLoading(progress),
-            () => m_Instance.SetScreen(startScreen));
+            () =>
+            {
+                m_Instance.SetScreen(startScreen);
+                BackButtonListener.AddCloseAction(m_Instance.OnPressReturn);
+            });
     }
 
     public static void Close()
@@ -333,6 +337,8 @@ public class LoginUIManager : MonoBehaviour
             Debug.LogError("Login UI not open");
             return;
         }
+
+        BackButtonListener.RemoveCloseAction();
 
         m_Instance.ShowLoading(false);
         m_Instance.mainCanvasGroup.interactable = false;
@@ -461,12 +467,41 @@ public class LoginUIManager : MonoBehaviour
             }
         });
     }
+
+    private int m_AgeGateTweenId;
+    private bool m_AgeChecked = false;
+
     private void AgeGateStart()
     {
+        if (m_AgeChecked)
+            return;
+
         //Debug.Log("ageGateStart");
         AgeGate.SetActive(true);
-        LeanTween.alphaCanvas(AgeGateCG, 1f, 0.7f).setEase(LeanTweenType.easeInCubic);
+
+        LeanTween.cancel(m_AgeGateTweenId);
+        m_AgeGateTweenId = LeanTween.alphaCanvas(AgeGateCG, 1f, 0.7f).setEase(LeanTweenType.easeInCubic).uniqueId;
+
+        BackButtonListener.AddCloseAction(() =>
+        {
+            CloseAgeGate();
+            SetScreen(Screen.WELCOME);
+        });
     }
+
+    private void CloseAgeGate()
+    {
+        LeanTween.cancel(m_AgeGateTweenId);
+        CheckAge.interactable = false;
+        m_AgeGateTweenId = LeanTween.alphaCanvas(AgeGateCG, 0f, 0.5f).setEase(LeanTweenType.easeInCubic).setOnComplete(() =>
+        {
+            AgeGate.SetActive(false);
+            CheckAge.interactable = true;
+            AgeError.SetActive(false);
+        }).uniqueId;
+        BackButtonListener.RemoveCloseAction();
+    }
+
     private void AgeGateCheck()
     {
         var dYear = int.Parse(dateYear.text);
@@ -485,16 +520,9 @@ public class LoginUIManager : MonoBehaviour
         }
         else
         {
-            //Debug.Log("old enough");
-            CheckAge.interactable = false;
-            LeanTween.alphaCanvas(AgeGateCG, 0f, 0.5f).setEase(LeanTweenType.easeInCubic).setOnComplete(() =>
-            {
-                AgeGate.SetActive(false);
-                CheckAge.interactable = true;
-                AgeError.SetActive(false);
-            });
+            m_AgeChecked = true;
+            CloseAgeGate();
         }
-
     }
     private void OnConfirmCharacterBody()
     {
@@ -576,5 +604,22 @@ public class LoginUIManager : MonoBehaviour
     public void OnClickGooglePP()
     {
         Application.OpenURL(CovenConstants.GOOGLE_PRIVACY_POLICY_URL);
+    }
+
+    private void OnPressReturn()
+    {
+        switch(m_CurrentScreen)
+        {
+            case Screen.WELCOME:
+                UIGlobalPopup.ShowPopUp(Application.Quit, () => { }, LocalizeLookUp.GetText("close_app_prompt"));
+                break;
+            case Screen.SIGN_IN:
+            case Screen.CREATE_ACCOUNT:
+                SetScreen(Screen.WELCOME);
+                break;
+            case Screen.CREATE_CHARACTER:
+                SetScreen(Screen.CHOOSE_CHARACTER);
+                break;
+        }
     }
 }
