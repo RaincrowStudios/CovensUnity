@@ -84,7 +84,6 @@ namespace Raincrow.Chat.UI
 
         public static void Open(ChatCategory category = ChatCategory.WORLD)
         {
-            BackButtonListener.AddCloseAction(Close);
             if (m_Instance != null)
             {
                 m_Instance.Show(category);
@@ -109,7 +108,6 @@ namespace Raincrow.Chat.UI
         {
             if (m_Instance == null)
                 return;
-            BackButtonListener.RemoveCloseAction();
             m_Instance.AnimateHide();
         }
 
@@ -459,6 +457,8 @@ namespace Raincrow.Chat.UI
 
         private void AnimateShow(System.Action onComplete)
         {
+            BackButtonListener.AddCloseAction(Close);
+
             //todo: properly animate
             gameObject.SetActive(true);
             _canvasGroup.alpha = 1;
@@ -472,6 +472,7 @@ namespace Raincrow.Chat.UI
 
         private void AnimateHide()
         {
+            BackButtonListener.RemoveCloseAction();
             MapsAPI.Instance.HideMap(false);
 
             _isOpen = false;
