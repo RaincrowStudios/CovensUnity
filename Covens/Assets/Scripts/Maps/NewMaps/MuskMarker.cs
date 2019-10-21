@@ -9,10 +9,6 @@ namespace Raincrow.Maps
     {
         [Header("Base Marker")]
         [SerializeField] protected SpriteRenderer m_AvatarRenderer;
-        [SerializeField] protected SpriteRenderer m_NameBanner;
-        [SerializeField] protected Transform m_StatsContainer;
-        [SerializeField] protected SpriteRenderer m_EnergyRing;
-        [SerializeField] protected SpriteRenderer m_EnergyRingEmpty;
         [SerializeField] protected SpriteRenderer[] m_Shadows;
 
         protected bool m_Interactable = true;
@@ -47,11 +43,8 @@ namespace Raincrow.Maps
         protected int m_MoveTweenId;
         protected int m_AlphaTweenId;
         protected int m_CharacterAlphaTweenId;
-        private int m_EnergyRingTweenId;
-        private int m_EnergyRingAlphaTweenId;
 
         protected Color m_SchoolColor = Color.white;
-        private float m_EnergyFill = 0;
 
         protected List<Transform> m_SpawnedItems = new List<Transform>();
 
@@ -124,9 +117,8 @@ namespace Raincrow.Maps
             Type = data.Type;
         }
 
-        public void ScaleNamePlate(bool scaleUp, float time = 1)
+        public virtual void ScaleNamePlate(bool scaleUp, float time = 1)
         {
-            LeanTween.scale(m_NameBanner.gameObject, scaleUp ? Vector3.one * 4.5f : Vector3.zero, time);
         }
 
         public virtual void EnablePortait() { }
@@ -137,43 +129,12 @@ namespace Raincrow.Maps
 
         public virtual void UpdateEnergy()
         {
-            if (m_EnergyRing == null)
-                return;
-
-            if (Token == null)
-                return;
-
-            m_EnergyFill = (float)(Token as CharacterToken).energy;
-            m_EnergyFill /= (Token as CharacterToken).baseEnergy;
-
-            LeanTween.cancel(m_EnergyRingTweenId);
-            m_EnergyRingTweenId = LeanTween.alpha(m_EnergyRing.gameObject, m_EnergyFill, 1f).uniqueId;
-        }
-
-        public virtual void EnablePopSorting()
-        {
-            //m_AvatarRenderer.sortingOrder = 10;
-            //m_EnergyRingEmpty.sortingOrder = 8;
-            //m_EnergyRing.sortingOrder = 9;
+            
         }
 
         public virtual void UpdateNameplate(float preferredWidth)
         {
-            if (m_NameBanner == null)
-                return;
-
-            Vector2 bannerSize = new Vector2(MapUtils.scale(2.2f, 9.5f, .86f, 8f, preferredWidth), m_NameBanner.size.y);
-            m_NameBanner.size = bannerSize;
-
-            if (m_StatsContainer == null)
-                return;
-
-            Vector3 statPos = new Vector3(
-                -MapUtils.scale(0f, 3.6f, 2.2f, 9.5f, m_NameBanner.size.x),
-                m_StatsContainer.localPosition.y,
-                m_StatsContainer.localPosition.z
-            );
-            m_StatsContainer.localPosition = statPos;
+            
         }
 
         public void SetTextAlpha(float a)
@@ -267,7 +228,7 @@ namespace Raincrow.Maps
                     m_TextMeshes[i].alpha = TextAlpha * Alpha;
                 }
 
-                SetEnergyRingAlpha(Alpha);
+                SetAlpha_OnUpdate(a);
 
                 onComplete?.Invoke();
             }
@@ -304,7 +265,7 @@ namespace Raincrow.Maps
                             m_CharacterRenderers[i].color = aux;
                         }
 
-                        SetEnergyRingAlpha(a);
+                        SetAlpha_OnUpdate(t);
                     })
                     .setOnComplete(onComplete)
                     .uniqueId;
@@ -329,26 +290,12 @@ namespace Raincrow.Maps
             }
         }
 
-        public void EnergyRingFade(float a, float time = 0)
+        protected virtual void SetAlpha_OnUpdate(float alpha)
         {
-            LeanTween.cancel(m_EnergyRingAlphaTweenId);
-            m_EnergyRingAlphaTweenId = LeanTween.value(0, 1, time).setOnUpdate((float v) =>
-            {
-                SetEnergyRingAlpha(v);
-            }).uniqueId;
+
         }
 
-        private void SetEnergyRingAlpha(float alpha)
-        {
-            if (m_EnergyRing)
-            {
-                Color aux = Color.Lerp(Color.black, m_SchoolColor, alpha);
-                aux.a = m_EnergyFill;
-                m_EnergyRing.color = aux;
-            }
-        }
-
-        public void UpdateRenderers()
+        public virtual void UpdateRenderers()
         {
             m_TextMeshes = GetComponentsInChildren<TextMeshPro>(true);
             m_Renderers = new List<SpriteRenderer>(GetComponentsInChildren<SpriteRenderer>(true));
@@ -357,9 +304,6 @@ namespace Raincrow.Maps
                 m_Renderers.Remove(sr);
             foreach (SpriteRenderer sr in m_Shadows)
                 m_Renderers.Remove(sr);
-
-            if (m_EnergyRing != null)
-                m_Renderers.Remove(m_EnergyRing);
         }
 
         public void InitializePositionPOP()
@@ -408,16 +352,6 @@ namespace Raincrow.Maps
 
 
 #if UNITY_EDITOR
-        [Header("Base Debug")]
-        [SerializeField, Range(0, 1)] private float m_DebugFloat;
-
-        [ContextMenu("Update energy")]
-        private void DebugEnergy()
-        {
-            UpdateEnergy();
-        }
-
-
         [ContextMenu("Print token")]
         private void PrintToken()
         {

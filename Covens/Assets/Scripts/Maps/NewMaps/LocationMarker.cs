@@ -7,21 +7,10 @@ public class LocationMarker : MuskMarker
 {
     [Header("PoP Marker")]
     [SerializeField] private Transform m_AvatarGroup;
-    [SerializeField] private Transform m_IconGroup;
     [SerializeField] private SpriteRenderer m_Ring;
     [SerializeField] private Transform m_CharacterTransform;
-    [SerializeField] private Transform m_IconTransform;
 
-    public override Transform AvatarTransform
-    {
-        get
-        {
-            if (IsShowingIcon)
-                return m_IconTransform;
-            else
-                return m_CharacterTransform;
-        }
-    }
+    public override Transform AvatarTransform => m_CharacterTransform;
 
     private int m_TweenId;
 
@@ -31,74 +20,8 @@ public class LocationMarker : MuskMarker
 
         m_CharacterRenderers = new List<SpriteRenderer> { m_AvatarRenderer, m_Ring };
 
-        IsShowingAvatar = false;
-        IsShowingIcon = false;
-    }
-
-    public override void EnablePortait()
-    {
-        if (IsShowingIcon)
-            return;
-
-        IsShowingIcon = true;
-        IsShowingAvatar = false;
-
-        LeanTween.cancel(m_TweenId);
-
-        m_TweenId = LeanTween.value(m_IconGroup.localScale.x, 1, 0.5f)
-            .setEaseOutCubic()
-            .setOnStart(() =>
-            {
-                m_IconGroup.gameObject.SetActive(true);
-            })
-            .setOnUpdate((float t) =>
-            {
-                m_IconGroup.localScale = new Vector3(t, t, t);
-                m_AvatarGroup.localScale = new Vector3(1 - t, 1 - t, 1 - t);
-            })
-            .setOnComplete(() =>
-            {
-                m_AvatarGroup.gameObject.SetActive(false);
-            })
-            .uniqueId;
-    }
-
-    public override void EnableAvatar()
-    {
-        if (IsShowingAvatar)
-            return;
-
         IsShowingAvatar = true;
-        IsShowingIcon = false;
-
-        LeanTween.cancel(m_TweenId);
-
-        m_TweenId = LeanTween.value(m_AvatarGroup.localScale.x, 1, 0.5f)
-            .setEaseOutCubic()
-            .setOnStart(() =>
-            {
-                m_AvatarGroup.gameObject.SetActive(true);
-            })
-            .setOnUpdate((float t) =>
-            {
-                m_AvatarGroup.localScale = new Vector3(t, t, t);
-                m_IconGroup.localScale = new Vector3(1 - t, 1 - t, 1 - t);
-            })
-            .setOnComplete(() =>
-            {
-                m_IconGroup.gameObject.SetActive(false);
-            })
-            .uniqueId;
     }
-
-    //public override void SetAlpha(float a, float time = 0, System.Action onComplete = null)
-    //{
-    //    base.SetAlpha(a, time, onComplete);
-    //    if (IsShowingAvatar)
-    //    {
-    //        m_particleSystem.gameObject.SetActive(a != 0);
-    //    }
-    //}
 
     public override void OnDespawn()
     {

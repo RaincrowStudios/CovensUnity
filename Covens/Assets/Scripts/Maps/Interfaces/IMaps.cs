@@ -8,6 +8,8 @@ namespace Raincrow.Maps
     {
         void InstantiateMap();
 
+        bool IsInitialized { get; }
+
         Camera camera { get; }
         Transform mapCenter { get; }
         Transform trackedContainer { get; }

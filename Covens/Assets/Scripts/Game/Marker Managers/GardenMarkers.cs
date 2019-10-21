@@ -74,7 +74,7 @@ public class GardenMarkers : MonoBehaviour
 
         SetLoreScale();
         updateGardenScale();
-        SetGreyHandMarkerScale();
+        //SetGreyHandMarkerScale();
     }
 
     public void SetupGardens()
@@ -99,22 +99,22 @@ public class GardenMarkers : MonoBehaviour
             gardens.Add(item.Value);
         }
 
-        for (int i = 0; i < greyHandOffices.Length; i++)
-        {
-            string officeName = greyHandOffices[i].officeLocation;
-            var greyHand = Utilities.InstantiateObject(greyHandMarker, map.trackedContainer);
-            greyHand.name = "[greyhand] " + greyHandOffices[i].officeLocation;
-            greyHand.transform.position = map.GetWorldPosition(greyHandOffices[i].officeLongitude, greyHandOffices[i].officeLatitude);
-            greyHand.transform.Rotate(90, 0, 0);
-            greyHandOfficesTrans[i] = greyHand.transform;
+        //for (int i = 0; i < greyHandOffices.Length; i++)
+        //{
+        //    string officeName = greyHandOffices[i].officeLocation;
+        //    var greyHand = Utilities.InstantiateObject(greyHandMarker, map.trackedContainer);
+        //    greyHand.name = "[greyhand] " + greyHandOffices[i].officeLocation;
+        //    greyHand.transform.position = map.GetWorldPosition(greyHandOffices[i].officeLongitude, greyHandOffices[i].officeLatitude);
+        //    greyHand.transform.Rotate(90, 0, 0);
+        //    greyHandOfficesTrans[i] = greyHand.transform;
 
-            MuskMarker marker = greyHandMarker.GetComponent<MuskMarker>();
-            if (marker == null)
-                marker = greyHand.AddComponent<MuskMarker>();
-            marker.OnClick = (m) => OnClickGreyOffice(officeName);
-            marker.Coords = new Vector2(greyHandOffices[i].officeLongitude, greyHandOffices[i].officeLatitude);
-        }
-        SetGreyHandMarkerScale();
+        //    MuskMarker marker = greyHandMarker.GetComponent<MuskMarker>();
+        //    if (marker == null)
+        //        marker = greyHand.AddComponent<MuskMarker>();
+        //    marker.OnClick = (m) => OnClickGreyOffice(officeName);
+        //    marker.Coords = new Vector2(greyHandOffices[i].officeLongitude, greyHandOffices[i].officeLatitude);
+        //}
+        //SetGreyHandMarkerScale();
 
         Debug.Log("setup explore quests");
         QuestsController.GetQuests(error =>
@@ -153,7 +153,7 @@ public class GardenMarkers : MonoBehaviour
     {
         SetLoreScale();
         updateGardenScale();
-        SetGreyHandMarkerScale();
+        //SetGreyHandMarkerScale();
     }
 
     void checkLoreOnLand()
@@ -170,22 +170,22 @@ public class GardenMarkers : MonoBehaviour
         }
     }
 
-    void SetGreyHandMarkerScale()
-    {
-        for (int i = 0; i < greyHandOffices.Length; i++)
-        {
-            if (map.normalizedZoom > minForbiddenZoom)
-            {
-                greyHandOfficesTrans[i].localScale = Vector3.one * forbiddenScale * MapLineraScale.linearMultiplier;
-                greyHandOfficesTrans[i].transform.position = map.GetWorldPosition(greyHandOffices[i].officeLongitude, greyHandOffices[i].officeLatitude);
-                greyHandOfficesTrans[i].gameObject.SetActive(!map.streetLevel);
-            }
-            else
-            {
-                greyHandOfficesTrans[i].gameObject.SetActive(false);
-            }
-        }
-    }
+    //void SetGreyHandMarkerScale()
+    //{
+    //    for (int i = 0; i < greyHandOffices.Length; i++)
+    //    {
+    //        if (map.normalizedZoom > minForbiddenZoom)
+    //        {
+    //            greyHandOfficesTrans[i].localScale = Vector3.one * forbiddenScale * MapLineraScale.linearMultiplier;
+    //            greyHandOfficesTrans[i].transform.position = map.GetWorldPosition(greyHandOffices[i].officeLongitude, greyHandOffices[i].officeLatitude);
+    //            greyHandOfficesTrans[i].gameObject.SetActive(!map.streetLevel);
+    //        }
+    //        else
+    //        {
+    //            greyHandOfficesTrans[i].gameObject.SetActive(false);
+    //        }
+    //    }
+    //}
 
 
     void updateGardenScale()

@@ -56,7 +56,8 @@ SpriteAtlas:
     - {fileID: 102900000, guid: da5c7db05569b83478c1e141091d6aae, type: 3}
     - {fileID: 102900000, guid: 19fa35c62a9a83e4d97fbd1c66bbce4d, type: 3}
     - {fileID: 102900000, guid: 48be170108e65e2449aa6ca148606929, type: 3}
-    totalSpriteSurfaceArea: 147456
+    - {fileID: 102900000, guid: 48a645cb931888342a472bfd9decbd28, type: 3}
+    totalSpriteSurfaceArea: 90112
     bindAsDefault: 1
   m_MasterAtlas: {fileID: 0}
   m_PackedSprites:
@@ -66,6 +67,7 @@ SpriteAtlas:
   - {fileID: 21300000, guid: eb03ce44514be2b499eb39cbc5542f01, type: 3}
   - {fileID: 21300000, guid: 021ddac40f178e24d8597f499b14f9a3, type: 3}
   - {fileID: 21300000, guid: 386f0db60a9538c479be658d464991a7, type: 3}
+  - {fileID: 21300000, guid: e67876d6b5dcce6409c6401ea731572b, type: 3}
   - {fileID: 21300000, guid: d182a1a745748ec43af5d8fe47a8111c, type: 3}
   - {fileID: 21300000, guid: 4184d8c76117f2145815a9eb20ec3d53, type: 3}
   - {fileID: 21300000, guid: 8db42c48a804f6742b6dbde2bfd369c6, type: 3}
@@ -85,6 +87,7 @@ SpriteAtlas:
   - Male_Oriental 216x216
   - Guardian
   - Male_European 216x216
+  - grey_hand-sigil
   - Male_African 216x216
   - Gem
   - Warrior

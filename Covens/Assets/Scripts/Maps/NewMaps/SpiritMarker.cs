@@ -29,14 +29,7 @@ public class SpiritMarker : CharacterMarker
 
         m_Level.text = spiritData.tier.ToString();
     }
-
-    public override void EnablePopSorting()
-    {
-        base.EnablePopSorting();
-        m_NameBanner.transform.localPosition = new Vector3(0, 23, 0);
-        m_NameBanner.transform.localScale = Vector3.one * 2;
-    }
-
+    
     protected override void SetupAvatar()
     {
         //setup spirit sprite

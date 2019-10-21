@@ -43142,19 +43142,19 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_AvatarRenderer: {fileID: 212245888486096532}
-  m_NameBanner: {fileID: 0}
-  m_StatsContainer: {fileID: 0}
-  m_EnergyRing: {fileID: 9036044662100057574}
-  m_EnergyRingEmpty: {fileID: 0}
   m_Shadows:
   - {fileID: 212629905954094644}
   m_DebugFloat: 0
   m_AvatarGroup: {fileID: 4677535255258382}
   m_IconGroup: {fileID: 4101043143867512}
   m_Character: {fileID: 4845498579167150}
+  m_IconRenderer: {fileID: 212133790418402770}
+  m_NameBanner: {fileID: 8764557568040904743}
+  m_StatsContainer: {fileID: 4747912392985360929}
+  m_EnergyRing: {fileID: 9036044662100057574}
+  m_EnergyRingEmpty: {fileID: 67073213877901717}
   m_DisplayName: {fileID: 114151181583334924}
   m_Level: {fileID: 114151181583334924}
-  m_IconRenderer: {fileID: 212133790418402770}
 --- !u!1 &1843160798453692
 GameObject:
   m_ObjectHideFlags: 0

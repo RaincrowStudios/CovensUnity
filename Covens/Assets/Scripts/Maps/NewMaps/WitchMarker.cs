@@ -52,12 +52,6 @@ public class WitchMarker : CharacterMarker
         else
             RemoveDeathFX();
     }
-
-    public override void EnablePopSorting()
-    {
-        base.EnablePopSorting();
-        //m_AvatarRenderer.sortingOrder = 10;
-    }
       
 
     public override void SetStats()

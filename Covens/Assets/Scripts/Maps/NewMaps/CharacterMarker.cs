@@ -10,7 +10,13 @@ public abstract class CharacterMarker : MuskMarker
     [SerializeField] protected Transform m_IconGroup;
     [SerializeField] protected Transform m_Character;
     [SerializeField] protected SpriteRenderer m_IconRenderer;
-
+    [Space]
+    [SerializeField] protected SpriteRenderer m_NameBanner;
+    [SerializeField] protected Transform m_StatsContainer;
+    [Space]
+    [SerializeField] protected SpriteRenderer m_EnergyRing;
+    [SerializeField] protected SpriteRenderer m_EnergyRingEmpty;
+    [Space]
     [SerializeField] protected TextMeshPro m_DisplayName;
     [SerializeField] protected TextMeshPro m_Level;
     
@@ -24,6 +30,8 @@ public abstract class CharacterMarker : MuskMarker
         }
     }
 
+    private float m_EnergyFill = 0;
+    private int m_EnergyRingTweenId;
     private int m_TweenId;
     private Transform m_HexFX;
     private Transform m_SealFX;
@@ -186,5 +194,51 @@ public abstract class CharacterMarker : MuskMarker
             if (m_CovenBuffFX)
                 StatusEffectFX.DespawnCovenBuff(m_CovenBuffFX);
         }
+    }
+
+    public override void UpdateRenderers()
+    {
+        base.UpdateRenderers();
+
+        m_Renderers.Remove(m_EnergyRing);
+    }
+
+    protected override void SetAlpha_OnUpdate(float alpha)
+    {
+        base.SetAlpha_OnUpdate(alpha);
+
+        Color aux = Color.Lerp(Color.black, m_SchoolColor, alpha);
+        aux.a = m_EnergyFill;
+        m_EnergyRing.color = aux;
+    }
+
+    public override void UpdateEnergy()
+    {
+        m_EnergyFill = (float)(Token as CharacterToken).energy;
+        m_EnergyFill /= (Token as CharacterToken).baseEnergy;
+
+        LeanTween.cancel(m_EnergyRingTweenId);
+        m_EnergyRingTweenId = LeanTween.alpha(m_EnergyRing.gameObject, m_EnergyFill, 1f).uniqueId;
+    }
+
+    public override void UpdateNameplate(float preferredWidth)
+    {
+        Vector2 bannerSize = new Vector2(MapUtils.scale(2.2f, 9.5f, .86f, 8f, preferredWidth), m_NameBanner.size.y);
+        m_NameBanner.size = bannerSize;
+
+        if (m_StatsContainer == null)
+            return;
+
+        Vector3 statPos = new Vector3(
+            -MapUtils.scale(0f, 3.6f, 2.2f, 9.5f, m_NameBanner.size.x),
+            m_StatsContainer.localPosition.y,
+            m_StatsContainer.localPosition.z
+        );
+        m_StatsContainer.localPosition = statPos;
+    }
+
+    public override void ScaleNamePlate(bool scaleUp, float time = 1)
+    {
+        LeanTween.scale(m_NameBanner.gameObject, scaleUp ? Vector3.one * 4.5f : Vector3.zero, time);
     }
 }
