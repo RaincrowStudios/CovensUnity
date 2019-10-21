@@ -447,7 +447,9 @@ public class DownloadManager : MonoBehaviour
             {
                 DefaultValueHandling = DefaultValueHandling.Populate
             });
-            
+
+            data.Spirits.Remove("spirit_greyShade");
+
             PlayerDataManager.summoningCosts = data.summoningCosts;
             PlayerDataManager.alignmentPerDegree = data.alignment;
             PlayerDataManager.xpToLevelup = data.experience;
