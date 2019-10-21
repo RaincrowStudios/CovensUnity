@@ -8,9 +8,9 @@ namespace Raincrow.Chat.UI
     public class UIChatAvatarItem : UIChatItem
     {
         [Header("Player Avatar")]
-        [SerializeField] private Sprite[] _avatars;        
+        [SerializeField] private Sprite[] _avatars;
         [SerializeField] private Image _playerAvatar;
-       // [SerializeField] private Image _playerAlignment;
+        // [SerializeField] private Image _playerAlignment;
         [SerializeField] private Button _showAvatarButton;
 
         [Header("Player Info")]
@@ -33,15 +33,15 @@ namespace Raincrow.Chat.UI
         }
 
         public override void SetupMessage(ChatMessage message,
-                                          UnityAction<bool> onRequestChatLoading = null, 
+                                          UnityAction<bool> onRequestChatLoading = null,
                                           UnityAction onRequestChatClose = null)
         {
             base.SetupMessage(message, onRequestChatLoading, onRequestChatClose);
 
             _chatPlayer = message.player;
-            _playerName.text = string.Concat(message.player.name, " (level ", _chatPlayer.level, ")");
+            _playerName.text = string.Concat(message.player.name, " (", LocalizeLookUp.GetText("cast_level"), " ", _chatPlayer.level, ")");
             _playerDegree.text = Utilities.WitchTypeControlSmallCaps(_chatPlayer.degree);
-           // _playerAlignment.color = Utilities.GetSchoolColor(_chatPlayer.degree);
+            // _playerAlignment.color = Utilities.GetSchoolColor(_chatPlayer.degree);
 
             _timestamp = message.timestamp;
             _timeAgo.text = Utilities.EpochToDateTimeChat(_timestamp);
@@ -87,5 +87,5 @@ namespace Raincrow.Chat.UI
         {
             _timeAgo.text = Utilities.EpochToDateTimeChat(_timestamp);
         }
-    }    
+    }
 }

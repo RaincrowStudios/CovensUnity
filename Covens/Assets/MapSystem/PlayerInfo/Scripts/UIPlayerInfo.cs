@@ -139,9 +139,9 @@ public class UIPlayerInfo : UIInfoPanel
         }
 
         m_ConditionsList.Setup(data.effects);
-
-        if (PlayerDataManager.playerData.level < 4 && WitchToken.level > 4)
-            PlayerNotificationManager.Instance.ShowNotification(($"{WitchToken.displayName} is challenging target for your level, witch.").ToUpper());
+        //no localization for this string, add back later
+        //if (PlayerDataManager.playerData.level < 4 && WitchToken.level > 4)
+        //    PlayerNotificationManager.Instance.ShowNotification(($"{WitchToken.displayName} is challenging target for your level, witch.").ToUpper());
 
         // //setup the ui
         m_DisplayNameText.text = WitchToken.displayName;
@@ -299,12 +299,12 @@ public class UIPlayerInfo : UIInfoPanel
             //spirit at half health
             if (currentEnergy > WitchToken.baseEnergy / 2 && newEnergy < WitchToken.baseEnergy / 2 && WitchToken.state != "dead")
             {
-                PlayerNotificationManager.Instance.ShowNotification($"The witch <color=orange>{WitchToken.displayName}</color> is now at half health. Keep it up!");
+                PlayerNotificationManager.Instance.ShowNotification(LocalizeLookUp.GetText("spell_ui_notif_half_health").Replace("{targetName}", string.Concat(LocalizeLookUp.GetText("generic_witch"), "<color=orange>", WitchToken.displayName, "</color>")));// $"The witch <color=orange>{WitchToken.displayName}</color> is now at half health. Keep it up!");
             }
             // spirit vulnerable
             if (currentEnergy > WitchToken.baseEnergy * .2f && newEnergy < WitchToken.baseEnergy * .2f && WitchToken.state != "dead")
             {
-                PlayerNotificationManager.Instance.ShowNotification($"The witch <color=orange>{WitchToken.displayName}</color> is now <color=red>vulnerable!</color>");
+                PlayerNotificationManager.Instance.ShowNotification(LocalizeLookUp.GetText("spell_ui_notif_vulnerable").Replace("{targetName}", string.Concat(LocalizeLookUp.GetText("generic_witch"), "<color=orange>", WitchToken.displayName, "</color>")));//$"The witch <color=orange>{WitchToken.displayName}</color> is now <color=red>vulnerable!</color>");
             }
 
             m_EnergyText.text = LocalizeLookUp.GetText("card_witch_energy").ToUpper() + " <color=black>" + WitchToken.energy + " / " + WitchToken.baseEnergy + "</color>";
@@ -344,7 +344,7 @@ public class UIPlayerInfo : UIInfoPanel
         {
             if (item.spell == "spell_hex" && item.stack == 3)
             {
-                PlayerNotificationManager.Instance.ShowNotification($"The <color=orange>{WitchToken.displayName}</color> is fully Hexed and <color=red>vulnerable</color> to critical attacks.");
+                PlayerNotificationManager.Instance.ShowNotification(LocalizeLookUp.GetText("spell_ui_notif_hexed").Replace("{targetName}", string.Concat(LocalizeLookUp.GetText("generic_witch"), "<color=orange>", WitchToken.displayName, "</color>")));//$"The <color=orange>{WitchToken.displayName}</color> is fully Hexed and <color=red>vulnerable</color> to critical attacks.");
             }
         }
     }

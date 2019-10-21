@@ -163,7 +163,7 @@ public class UISpiritInfo : UIInfoPanel
         m_Tier.text = tier + " " + LocalizeLookUp.GetText("attacked_spirit");
 
         if (PlayerDataManager.playerData.level < 4 && m_SpiritData.tier > 1)
-            PlayerNotificationManager.Instance.ShowNotification(("This is challenging spirit for your level, witch.").ToUpper());
+            PlayerNotificationManager.Instance.ShowNotification((LocalizeLookUp.GetText("spell_ui_notif_challenging")).ToUpper());//"This is challenging spirit for your level, witch.").ToUpper());
 
 
         OnMapEnergyChange.OnPlayerDead += _OnCharacterDead;
@@ -375,12 +375,12 @@ public class UISpiritInfo : UIInfoPanel
             //spirit at half health
             if (currentEnergy > SpiritToken.baseEnergy / 2 && newEnergy < SpiritToken.baseEnergy / 2)
             {
-                PlayerNotificationManager.Instance.ShowNotification($"The <color=orange>{m_SpiritName.text}</color> is now at half health. Keep it up, witch!");
+                PlayerNotificationManager.Instance.ShowNotification(LocalizeLookUp.GetText("spell_ui_notif_half_health").Replace("{targetName}", "<color=orange>" + m_SpiritName.text + "</color>"));// $"The <color=orange>{m_SpiritName.text}</color> is now at half health. Keep it up, witch!");
             }
             // spirit vulnerable
             if (currentEnergy > SpiritToken.baseEnergy * .2f && newEnergy < SpiritToken.baseEnergy * .2f)
             {
-                PlayerNotificationManager.Instance.ShowNotification($"The <color=orange>{m_SpiritName.text}</color> is now <color=red>vulnerable!</color>");
+                PlayerNotificationManager.Instance.ShowNotification(LocalizeLookUp.GetText("spell_ui_notif_vulnerable").Replace("{targetName}", "<color=orange>" + m_SpiritName.text + "</color>"));// $"The <color=orange>{m_SpiritName.text}</color> is now <color=red>vulnerable!</color>");
             }
 
             m_Energy.text = LocalizeLookUp.GetText("card_witch_energy").ToUpper() + " <color=black>" + newEnergy.ToString();
@@ -404,7 +404,7 @@ public class UISpiritInfo : UIInfoPanel
         {
             if (item.spell == "spell_hex" && item.stack == 3)
             {
-                PlayerNotificationManager.Instance.ShowNotification($"The <color=orange>{m_SpiritName.text}</color> is fully Hexed and <color=red>vulnerable</color> to critical attacks.");
+                PlayerNotificationManager.Instance.ShowNotification(LocalizeLookUp.GetText("spell_ui_notif_hexed").Replace("{targetName}", "<color=orange>" + m_SpiritName.text + "</color>"));// $"The <color=orange>{m_SpiritName.text}</color> is fully Hexed and <color=red>vulnerable</color> to critical attacks.");
 
             }
         }
