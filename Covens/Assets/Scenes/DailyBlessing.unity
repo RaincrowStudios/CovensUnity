@@ -152,10 +152,10 @@ RectTransform:
   m_Father: {fileID: 638887219}
   m_RootOrder: 4
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0.5, y: 0.5}
-  m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 269.99933, y: -25}
-  m_SizeDelta: {x: 2059.7, y: 91.6}
+  m_AnchorMin: {x: 0, y: 0.5}
+  m_AnchorMax: {x: 1, y: 0.5}
+  m_AnchoredPosition: {x: 222.37465, y: -25}
+  m_SizeDelta: {x: -593.54926, y: 91.6}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &285283714
 MonoBehaviour:
@@ -311,10 +311,10 @@ RectTransform:
   m_Father: {fileID: 638887219}
   m_RootOrder: 5
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0.5, y: 0.5}
-  m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 270.00012, y: -114.00009}
-  m_SizeDelta: {x: 2059.7, y: 91.6}
+  m_AnchorMin: {x: 0, y: 0.5}
+  m_AnchorMax: {x: 1, y: 0.5}
+  m_AnchoredPosition: {x: 222.37506, y: -114.00009}
+  m_SizeDelta: {x: -593.5501, y: 91.6}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &340907006
 MonoBehaviour:
@@ -331,6 +331,7 @@ MonoBehaviour:
   prefix: 
   id: blessing_honor
   suffix: 
+  toUpper: 0
 --- !u!114 &340907007
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -488,7 +489,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0}
   m_AnchorMax: {x: 0.5, y: 0}
-  m_AnchoredPosition: {x: 327, y: 154}
+  m_AnchoredPosition: {x: 194, y: 154}
   m_SizeDelta: {x: 987.9, y: 178}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &398640999
@@ -506,6 +507,7 @@ MonoBehaviour:
   prefix: 
   id: blessing_continue
   suffix: 
+  toUpper: 0
 --- !u!114 &398641000
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1046,10 +1048,10 @@ RectTransform:
   m_Father: {fileID: 638887219}
   m_RootOrder: 2
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0.5, y: 0.5}
-  m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 270, y: 411}
-  m_SizeDelta: {x: 2107.3, y: 132.6}
+  m_AnchorMin: {x: 0, y: 0.5}
+  m_AnchorMax: {x: 1, y: 0.5}
+  m_AnchoredPosition: {x: 210.47499, y: 411}
+  m_SizeDelta: {x: -569.74994, y: 132.6}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &665660321
 MonoBehaviour:
@@ -1066,6 +1068,7 @@ MonoBehaviour:
   prefix: 
   id: blessing_message
   suffix: 
+  toUpper: 0
 --- !u!114 &665660322
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1524,10 +1527,10 @@ RectTransform:
   m_Father: {fileID: 638887219}
   m_RootOrder: 6
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0.5, y: 0.5}
-  m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 270.00018, y: -323.00006}
-  m_SizeDelta: {x: 2059.7, y: 91.6}
+  m_AnchorMin: {x: 0, y: 0.5}
+  m_AnchorMax: {x: 1, y: 0.5}
+  m_AnchoredPosition: {x: 222.3751, y: -323.00006}
+  m_SizeDelta: {x: -593.5502, y: 91.6}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!1 &1349058420
 GameObject:
@@ -1562,10 +1565,10 @@ RectTransform:
   m_Father: {fileID: 638887219}
   m_RootOrder: 3
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0.5, y: 0.5}
-  m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 269.9994, y: 288}
-  m_SizeDelta: {x: 1678.4, y: 91.6}
+  m_AnchorMin: {x: 0, y: 0.5}
+  m_AnchorMax: {x: 1, y: 0.5}
+  m_AnchoredPosition: {x: 205, y: 288}
+  m_SizeDelta: {x: -784.19934, y: 91.6}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1349058422
 MonoBehaviour:
@@ -1582,6 +1585,7 @@ MonoBehaviour:
   prefix: 
   id: blessing_offices
   suffix: 
+  toUpper: 0
 --- !u!114 &1349058423
 MonoBehaviour:
   m_ObjectHideFlags: 0
