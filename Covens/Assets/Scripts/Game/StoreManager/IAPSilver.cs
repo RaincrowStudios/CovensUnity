@@ -223,9 +223,6 @@ public class IAPSilver : MonoBehaviour, IStoreListener
                 {
                     Log("Processing successful: " + id);
 
-                    //add the item to the player localy
-                    StoreManagerAPI.AddItem(id, type);
-
                     //remove from pending
                     m_StoreController.ConfirmPendingPurchase(args.purchasedProduct);
                 }
