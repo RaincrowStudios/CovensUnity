@@ -105,5 +105,6 @@ public class UIConditionItem : MonoBehaviour
     {
         if (condition != null)
             condition.CancelExpiration();
+        StopAllCoroutines();
     }
 }

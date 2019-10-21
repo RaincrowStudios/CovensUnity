@@ -117,5 +117,7 @@ public class UIConditionList : MonoBehaviour
     private void OnDestroy()
     {
         m_ItemPool.DestroyAll();
+        StopAllCoroutines();
+        LeanTween.cancel(m_TweenId);
     }
 }
