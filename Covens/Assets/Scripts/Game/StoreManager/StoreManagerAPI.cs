@@ -186,8 +186,7 @@ namespace Raincrow.Store
             {
                 if (result == 200)
                 {
-                    string debug = "purchase complete:\n";
-                    debug += $"[{type}] {id}";
+                    Log($"purchase complete: [{type}] {id}");
 
                     AddItem(id, type);
 
@@ -201,19 +200,17 @@ namespace Raincrow.Store
 
                     if (silver != 0)
                     {
-                        debug += "\nlost " + silver + " drachs";
+                        Log("paid " + silver + " drachs");
                         PlayerDataManager.playerData.silver -= silver;
                     }
                     if (gold != 0)
                     {
-                        debug += "\nlost " + gold + " gold";
+                        Log("paid " + gold + " gold");
                         PlayerDataManager.playerData.gold -= gold;
                     }
 
                     if (PlayerManagerUI.Instance != null)
                         PlayerManagerUI.Instance.UpdateDrachs();
-
-                    Log(debug);
 
                     callback?.Invoke(null);
                     OnPurchaseComplete?.Invoke(id, type);
@@ -278,6 +275,9 @@ namespace Raincrow.Store
                 case TYPE_PACK:
                 {
                     PackData data = StoreManagerAPI.GetPackData(id);
+
+                    PlayerDataManager.playerData.OwnedPacks.Add(id);
+
                     foreach (var item in data.content)
                     {
                         if (item.type == "effect")
@@ -287,9 +287,15 @@ namespace Raincrow.Store
                         else if (item.type == StoreManagerAPI.TYPE_CURRENCY)
                         {
                             if (item.id == "gold")
+                            {
                                 PlayerDataManager.playerData.gold += item.amount;
+                                Log("Adding gold x" + item.amount);
+                            }
                             else if (item.id == "silver")
+                            {
                                 PlayerDataManager.playerData.silver += item.amount;
+                                Log("Adding gold silver" + item.amount);
+                            }
 
                             PlayerManagerUI.Instance?.UpdateDrachs();
                         }

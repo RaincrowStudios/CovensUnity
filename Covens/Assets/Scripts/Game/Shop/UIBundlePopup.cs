@@ -32,12 +32,14 @@ public class UIBundlePopup : MonoBehaviour
 
     private static UIBundlePopup m_Instance;
     public static bool IsOpen => m_Instance != null && m_Instance.m_InputRaycaster.enabled;
+    private static System.Action m_OnPurchase;
 
     private int m_TweenId;
     private int m_TimerTweenId;
 
     public static void Open(string bundleId, System.Action onPurchase = null)
     {
+        m_OnPurchase = onPurchase;
 
         if (m_Instance != null)
         {
@@ -229,16 +231,21 @@ public class UIBundlePopup : MonoBehaviour
     {
         LoadingOverlay.Show();
 
+        string bundleId = m_BundleId;
+
         System.Action<string> onPurchase = (error) =>
         {
             LoadingOverlay.Hide();
             if (string.IsNullOrEmpty(error))
             {
                 UIStorePurchaseSuccess.Show(
-                    LocalizeLookUp.GetStoreTitle(m_BundleId),
+                    LocalizeLookUp.GetStoreTitle(bundleId),
                     "",
                     m_PackArt.overrideSprite,
-                    null);
+                    () => {
+                        this._Close();
+                        this._Show(bundleId);
+                    });
             }
             else if (string.IsNullOrEmpty(error) == false)
             {
@@ -253,6 +260,8 @@ public class UIBundlePopup : MonoBehaviour
                     UIGlobalPopup.ShowError(null, APIManager.ParseError(error));
                 }
             }
+
+            m_OnPurchase?.Invoke();
         };
 
         PackData data = StoreManagerAPI.GetPackData(m_BundleId);
