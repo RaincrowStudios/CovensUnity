@@ -50,7 +50,7 @@ public class UIConditionItem : MonoBehaviour
             {
                 m_ConditionIcon.overrideSprite = spr;
                 m_ConditionIcon.gameObject.SetActive(true);
-            });
+            }, true);
 
         m_CountObject.SetActive(condition.stack > 1);
         m_Count.text = condition.stack.ToString();

@@ -94,6 +94,7 @@ public class SimplePool<T> where T : Component
         if (!m_UnavailablePool.Contains(instance))
             return;
 
+        instance.name = m_Prefab.name;
         m_UnavailablePool.Remove(instance);
         m_AvailablePool.Add(instance);
     }

@@ -135,9 +135,6 @@ public class UISpellcastBook : MonoBehaviour//, IEnhancedScrollerDelegate
         m_InventoryButton.onClick.AddListener(OnClickInventory);
         m_PortraitButton.onClick.AddListener(OnClickPortrait);
         m_CloseButton.onClick.AddListener(OnClickClose);
-        SetupSortingButtons(SortWhiteButton, 1);
-        SetupSortingButtons(SortGreyButton, 0);
-        SetupSortingButtons(SortShadowButton, -1);
         DownloadedAssets.OnWillUnloadAssets += DownloadedAssets_OnWillUnloadAssets;
         Container.anchoredPosition = Vector3.right * Container.rect.width;
 
@@ -146,6 +143,10 @@ public class UISpellcastBook : MonoBehaviour//, IEnhancedScrollerDelegate
         int padding = (int)(m_Canvas.GetComponent<RectTransform>().sizeDelta.x / 2f) - (int)(m_CardPrefab.GetComponent<RectTransform>().sizeDelta.x / 2f);
         m_ScrollLayoutGroup.padding = new RectOffset(padding, padding, 73, 0);
         m_ScrollLayoutGroup.spacing = 0;
+
+        SortWhiteButton.onClick.AddListener(() => OnSelectSchool(1));
+        SortGreyButton.onClick.AddListener(() => OnSelectSchool(0));
+        SortShadowButton.onClick.AddListener(() => OnSelectSchool(-1));
     }
 
     private void DownloadedAssets_OnWillUnloadAssets()
@@ -161,48 +162,6 @@ public class UISpellcastBook : MonoBehaviour//, IEnhancedScrollerDelegate
         LeanTween.cancel(m_MoveTweenId);
         LeanTween.cancel(m_FocusTweenId);
         SceneManager.UnloadScene(SceneManager.Scene.SPELLCAST_BOOK, null, null);
-    }
-    private void SetupSortingButtons(Button button, int school)
-    {
-        //Debug.Log("sorted");
-        //if (Sorted == false)
-        //{
-        button.onClick.AddListener(() =>
-        {
-            button.onClick.RemoveAllListeners();
-            SetSchool(school);
-            button.onClick.AddListener(() =>
-            {
-                SetSchool(null);
-                SetupSortingButtons(button, school);
-            });
-        });    /*
-        SortWhiteButton.onClick.AddListener(() =>
-        {
-            SetSchool(1);
-            //Sorted = true;
-            SortWhiteButton.onClick.AddListener(() => ResetSortingButtons());
-        });
-        SortGreyButton.onClick.AddListener(() =>
-        {
-            SetSchool(0);
-            //Sorted = true;
-            SortGreyButton.onClick.AddListener(() => ResetSortingButtons());
-
-        });
-        SortShadowButton.onClick.AddListener(() =>
-        {
-            SetSchool(-1);
-            //Sorted = true;
-            SortShadowButton.onClick.AddListener(() => ResetSortingButtons());
-
-        });
-        // }
-    }
-    private void ResetSortingButtons()
-    {
-        SetSchool(null);
-        SetupSortingButtons();*/
     }
 
     private void Show(
@@ -233,11 +192,8 @@ public class UISpellcastBook : MonoBehaviour//, IEnhancedScrollerDelegate
 
         m_PlayerSpells = spells;
         SetupTarget(marker, target);
-        //if (m_SelectedSchool == null)
-        //{ SetSchool(1); }
 
-        //SetSchool(m_SelectedSchool);
-        SetSchool(null);
+        SetSchool(m_SelectedSchool);
         SpawnCards();
         SetupBottomText();
 
@@ -400,23 +356,11 @@ public class UISpellcastBook : MonoBehaviour//, IEnhancedScrollerDelegate
                     card.SetAlpha(0.15f, 1f);
             }
         };
-
-        int i = -1;//m_PlayerSpells.Count / 2;
-        int left = i;
-        int right = i + 1;
-
-        while (left >= 0 || right < m_PlayerSpells.Count)
+        
+        for (int i = 0; i < m_PlayerSpells.Count; i++)
         {
-            // if (left >= 0)
-            //    setupCard(m_PlayerSpells[left], m_Cards[left]);
-            // yield return new WaitForSeconds(0.1f);
-
-            if (right < m_PlayerSpells.Count)
-                setupCard(m_PlayerSpells[right], m_Cards[right]);
+            setupCard(m_PlayerSpells[i], m_Cards[i]);
             yield return new WaitForSeconds(0.05f); //was 0.1f
-
-            // left -= 1;
-            right += 1;
         }
     }
 
