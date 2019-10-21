@@ -11,7 +11,7 @@ public class PlayerDataManager : MonoBehaviour
 
     //player
     public static PlayerData playerData;
-    public static bool IsFTF => playerData?.tutorial == true;
+    public static bool IsFTF => playerData?.tutorial == false;
 
     //game settings
     public static float DisplayRadius = .5f;
