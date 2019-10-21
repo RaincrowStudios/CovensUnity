@@ -352,7 +352,8 @@ public class SplashManager : MonoBehaviour
             });
         }
 
-        m_HintTweenId = LeanTween.alphaCanvas(m_HintScreen, 1f, 1f).uniqueId;
+        if (m_HintScreen)
+            m_HintTweenId = LeanTween.alphaCanvas(m_HintScreen, 1f, 1f).uniqueId;
     }
 
     public void ShowTribunal(System.Action onStart)
@@ -418,5 +419,5 @@ public class SplashManager : MonoBehaviour
             Application.OpenURL("https://apps.apple.com/us/app/covens/id1456181456");
         else
             Application.OpenURL("http://play.google.com/store/apps/details?id=com.raincrow.covens");
-    }
+    }   
 }
