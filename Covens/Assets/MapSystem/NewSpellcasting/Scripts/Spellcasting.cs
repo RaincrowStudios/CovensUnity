@@ -299,13 +299,16 @@ public class Spellcasting
                 }
                 else
                 {
+                    //remove the local cooldown if there was an error
+                    CooldownManager.RemoveCooldown(spell.id);
+
+                    UIWaitingCastResult.Instance.Close();
+
                     //simulate the marker escaping
                     if (response == "2014")
                     {
-                        Vector2 coords = new Vector2(PlayerDataManager.playerData.longitude, PlayerDataManager.playerData.latitude);
-                        Vector2 dir = Random.onUnitSphere.normalized * 20;
-                        coords.x = Mathf.Repeat(coords.x + dir.x, 170);
-                        coords.y = Mathf.Repeat(coords.y + dir.y, 70);
+                        Vector2 coords = target.Coords;
+                        Vector2 dir = Random.onUnitSphere.normalized * 0.02f;
                         MoveTokenHandler.HandleEvent(targetId, coords.x, coords.y); 
                         UIWaitingCastResult.Instance.Close();
                         return;
@@ -322,11 +325,6 @@ public class Spellcasting
                         );
                         return;
                     }
-
-                    //remove the local cooldown if there was an error
-                    CooldownManager.RemoveCooldown(spell.id);
-
-                    UIWaitingCastResult.Instance.Close();
 
                     //force a remove token event just in case the marker stayed onthe game
                     if (response == "1002")
