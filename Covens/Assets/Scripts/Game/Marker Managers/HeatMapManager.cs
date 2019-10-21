@@ -56,7 +56,16 @@ public class HeatMapManager : MonoBehaviour
         if (timeSince.TotalHours < 12)
         {
             Debug.Log(timeSince.TotalHours + " hours since last heatmap update");
-            callback?.Invoke(JsonConvert.DeserializeObject<List<HeatPoint>>(CachedHeatmapsJson).ToArray());
+            try
+            {
+                callback?.Invoke(JsonConvert.DeserializeObject<List<HeatPoint>>(CachedHeatmapsJson).ToArray());
+            }
+            catch(System.Exception e)
+            {
+                Debug.LogException(new System.Exception("failed to parse heatmap\n" + e.Message + "\n" + CachedHeatmapsJson));
+                LastUpdate = 0;
+                RetrieveHeatmap(callback);
+            }
             return;
         }
 
