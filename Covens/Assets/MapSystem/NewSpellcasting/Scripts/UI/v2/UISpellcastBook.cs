@@ -62,6 +62,16 @@ public class UISpellcastBook : MonoBehaviour//, IEnhancedScrollerDelegate
     [SerializeField] private HorizontalLayoutGroup m_ScrollLayoutGroup;
     [SerializeField] private ContentSizeFitter m_ScrollSizeFitter;
 
+    [Header("New Sorting")]
+    [SerializeField] private GameObject SortingHolder;
+    [SerializeField] private CanvasGroup SortingHolderCanvasGroup;
+    [SerializeField] private Button SortWhiteButton;
+    [SerializeField] private Button SortGreyButton;
+    [SerializeField] private Button SortShadowButton;
+    [SerializeField] private GameObject[] Highlights;
+
+
+
     private SimplePool<UISpellcard> m_CardPool;
 
     public static bool IsOpen
@@ -107,7 +117,7 @@ public class UISpellcastBook : MonoBehaviour//, IEnhancedScrollerDelegate
     {
         if (m_Instance == null)
             return;
-        
+
         m_Instance.Hide();
     }
 
@@ -125,7 +135,9 @@ public class UISpellcastBook : MonoBehaviour//, IEnhancedScrollerDelegate
         m_InventoryButton.onClick.AddListener(OnClickInventory);
         m_PortraitButton.onClick.AddListener(OnClickPortrait);
         m_CloseButton.onClick.AddListener(OnClickClose);
-
+        SetupSortingButtons(SortWhiteButton, 1);
+        SetupSortingButtons(SortGreyButton, 0);
+        SetupSortingButtons(SortShadowButton, -1);
         DownloadedAssets.OnWillUnloadAssets += DownloadedAssets_OnWillUnloadAssets;
         Container.anchoredPosition = Vector3.right * Container.rect.width;
 
@@ -149,6 +161,48 @@ public class UISpellcastBook : MonoBehaviour//, IEnhancedScrollerDelegate
         LeanTween.cancel(m_MoveTweenId);
         LeanTween.cancel(m_FocusTweenId);
         SceneManager.UnloadScene(SceneManager.Scene.SPELLCAST_BOOK, null, null);
+    }
+    private void SetupSortingButtons(Button button, int school)
+    {
+        //Debug.Log("sorted");
+        //if (Sorted == false)
+        //{
+        button.onClick.AddListener(() =>
+        {
+            button.onClick.RemoveAllListeners();
+            SetSchool(school);
+            button.onClick.AddListener(() =>
+            {
+                SetSchool(null);
+                SetupSortingButtons(button, school);
+            });
+        });    /*
+        SortWhiteButton.onClick.AddListener(() =>
+        {
+            SetSchool(1);
+            //Sorted = true;
+            SortWhiteButton.onClick.AddListener(() => ResetSortingButtons());
+        });
+        SortGreyButton.onClick.AddListener(() =>
+        {
+            SetSchool(0);
+            //Sorted = true;
+            SortGreyButton.onClick.AddListener(() => ResetSortingButtons());
+
+        });
+        SortShadowButton.onClick.AddListener(() =>
+        {
+            SetSchool(-1);
+            //Sorted = true;
+            SortShadowButton.onClick.AddListener(() => ResetSortingButtons());
+
+        });
+        // }
+    }
+    private void ResetSortingButtons()
+    {
+        SetSchool(null);
+        SetupSortingButtons();*/
     }
 
     private void Show(
@@ -179,7 +233,11 @@ public class UISpellcastBook : MonoBehaviour//, IEnhancedScrollerDelegate
 
         m_PlayerSpells = spells;
         SetupTarget(marker, target);
-        SetSchool(m_SelectedSchool);
+        //if (m_SelectedSchool == null)
+        //{ SetSchool(1); }
+
+        //SetSchool(m_SelectedSchool);
+        SetSchool(null);
         SpawnCards();
         SetupBottomText();
 
@@ -240,6 +298,7 @@ public class UISpellcastBook : MonoBehaviour//, IEnhancedScrollerDelegate
 
     private void AnimOpen()
     {
+
         SoundManagerOneShot.Instance.PlayWhisperFX();
         SoundManagerOneShot.Instance.PlayWooshShort();
 
@@ -318,6 +377,7 @@ public class UISpellcastBook : MonoBehaviour//, IEnhancedScrollerDelegate
 
         //StopCoroutine("SetupCardsCoroutine");
         StartCoroutine(SetupCardsCoroutine());
+        //        m_ScrollContainer.
     }
 
     private IEnumerator SetupCardsCoroutine()
@@ -341,21 +401,21 @@ public class UISpellcastBook : MonoBehaviour//, IEnhancedScrollerDelegate
             }
         };
 
-        int i = m_PlayerSpells.Count / 2;
+        int i = -1;//m_PlayerSpells.Count / 2;
         int left = i;
         int right = i + 1;
 
         while (left >= 0 || right < m_PlayerSpells.Count)
         {
-            if (left >= 0)
-                setupCard(m_PlayerSpells[left], m_Cards[left]);
-            yield return new WaitForSeconds(0.1f);
+            // if (left >= 0)
+            //    setupCard(m_PlayerSpells[left], m_Cards[left]);
+            // yield return new WaitForSeconds(0.1f);
 
             if (right < m_PlayerSpells.Count)
                 setupCard(m_PlayerSpells[right], m_Cards[right]);
-            yield return new WaitForSeconds(0.1f);
+            yield return new WaitForSeconds(0.05f); //was 0.1f
 
-            left -= 1;
+            // left -= 1;
             right += 1;
         }
     }
@@ -414,7 +474,7 @@ public class UISpellcastBook : MonoBehaviour//, IEnhancedScrollerDelegate
         m_TargetEnergy.fillAmount = (float)energy / baseEnergy;
     }
 
-    private void SetSchool(int? school)
+    public void SetSchool(int? school)
     {
         SoundManagerOneShot.Instance.PlayAHSAWhisper();
         //block the filter change if a card is selected
@@ -425,10 +485,34 @@ public class UISpellcastBook : MonoBehaviour//, IEnhancedScrollerDelegate
             return;
 
         m_SelectedSchool = school;
-
+        foreach (GameObject highlight in Highlights)
+        {
+            if (school == null)
+            {
+                highlight.SetActive(false);
+            }
+            else
+            {
+                var h = (int)school + 1;
+                if (highlight == Highlights[h])
+                {
+                    highlight.SetActive(true);
+                }
+                else
+                {
+                    highlight.SetActive(false);
+                }
+            }
+        }
         foreach (UISpellcard card in m_Cards)
         {
+            //Debug.Log(card.name + " name");
+            //Debug.Log(card.Spell.id + " spell id");
+            //Debug.Log(card.Spell.Name + " spell name");
+            card.SetAlpha(0f);
             card.gameObject.SetActive(school == null || school == card.Spell.school);
+            card.SetAlpha(1f, 0.5f);
+            //LeanTween.value(0f, 1f, 0.5f);
         }
         //m_ScrollerSpells.Clear();
         //foreach (SpellData spell in m_PlayerSpells)
@@ -565,11 +649,18 @@ public class UISpellcastBook : MonoBehaviour//, IEnhancedScrollerDelegate
         m_InventoryGlow.gameObject.SetActive(m_Herb.id != null || m_Tool.id != null || m_Gem.id != null);
         if (enabled == true)
         {
+            LeanTween.alphaCanvas(SortingHolderCanvasGroup, 0.2f, 0.5f);
+
             LeanTween.alphaCanvas(m_InventoryButton.GetComponent<CanvasGroup>(), 1f, 0.5f);
         }
         else
         {
-            m_InventoryButton.GetComponent<CanvasGroup>().alpha = 0f;
+            //SortingHolderCanvasGroup.alpha = 1f;
+            LeanTween.alphaCanvas(SortingHolderCanvasGroup, 1f, 0.2f);
+
+            //m_InventoryButton.GetComponent<CanvasGroup>().alpha = 0f;
+            LeanTween.alphaCanvas(m_InventoryButton.GetComponent<CanvasGroup>(), 0f, 0.2f);
+
         }
 
     }
@@ -766,7 +857,6 @@ public class UISpellcastBook : MonoBehaviour//, IEnhancedScrollerDelegate
     public void FocusOn(int cardIndex, float offset = 0.5f, System.Action onComplete = null)
     {
         LeanTween.cancel(m_FocusTweenId);
-
         int cardCount = 0;
         foreach (UISpellcard card in m_Cards)
         {
