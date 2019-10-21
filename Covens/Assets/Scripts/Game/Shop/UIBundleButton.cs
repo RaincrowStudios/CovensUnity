@@ -44,18 +44,22 @@ public class UIBundleButton : MonoBehaviour
             true
         );
 
+        gameObject.SetActive(true);
+
         bool owned = PlayerDataManager.playerData.OwnedPacks.Contains(packId);
 
-        m_OwnedOverlay.SetActive(data.isFree && owned);
-        m_Glow.SetActive(!data.isFree && owned);
-        m_Button.interactable = !owned;
+        m_OwnedOverlay.SetActive(owned);
+        m_Glow.SetActive(!owned);
+        //m_Button.interactable = !owned;
+        m_Text.alpha = owned ? 0.7f : 1f;
 
+        //if (owned)
+        //    m_Text.text = LocalizeLookUp.GetText("store_gear_owned_upper");
+        //else
         if (data.isFree)
             m_Text.text = owned ? LocalizeLookUp.GetText("store_gear_owned_upper") : LocalizeLookUp.GetText("ftf_claim");
         else
             UpdateTimer(data.expiresOn);
-
-        gameObject.SetActive(true);
     }
 
     private void OnClick()
@@ -71,7 +75,7 @@ public class UIBundleButton : MonoBehaviour
             gameObject.SetActive(false);
             return;
         }
-        m_Text.text = Utilities.GetSummonTime(timestamp);
+        m_Text.text = Utilities.GetTimeLeftString(timestamp);
         m_TimerTweenId = LeanTween.value(0, 0, 0).setDelay(1).setOnStart(() => UpdateTimer(timestamp)).uniqueId;
     }
 }

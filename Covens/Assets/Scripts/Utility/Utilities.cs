@@ -263,6 +263,22 @@ public class Utilities : MonoBehaviour
         return stamp;
     }
 
+    public static string GetTimeLeftString(double timestamp)
+    {
+        System.TimeSpan expire = TimespanFromJavaTime(timestamp);
+
+        if (expire.Days > 0)
+            return expire.Days == 1 ? LocalizeLookUp.GetText("time_left_day") : LocalizeLookUp.GetText("time_left_days").Replace("{{days}}", expire.Days.ToString());
+        else if (expire.Hours > 0)
+            return expire.Hours == 1 ? LocalizeLookUp.GetText("time_left_hour") : LocalizeLookUp.GetText("time_left_hours").Replace("{{hours}}", expire.Days.ToString());
+        else if (expire.Minutes > 0)
+            return expire.Minutes == 1 ? LocalizeLookUp.GetText("time_left_min") : LocalizeLookUp.GetText("time_left_mins").Replace("{{minutes}}", expire.Days.ToString());
+        else if (expire.Seconds > 0)
+            return LocalizeLookUp.GetText("portal_time_second").Replace("{{Number}}", expire.Seconds.ToString());
+        else
+            return LocalizeLookUp.GetText("lt_unkown");
+    }
+
     //public static string GetTimeLeft(double timestamp)
     //{
 

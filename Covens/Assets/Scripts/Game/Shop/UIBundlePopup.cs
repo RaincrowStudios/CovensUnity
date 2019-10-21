@@ -81,6 +81,9 @@ public class UIBundlePopup : MonoBehaviour
         if (m_Canvas.enabled)
             return;
 
+        bool owned = PlayerDataManager.playerData.OwnedPacks.Contains(bundleId);
+        m_BuyButton.interactable = !owned;
+
         BackButtonListener.AddCloseAction(OnClickClose);
 
         //destroy previous reward instances
@@ -135,11 +138,16 @@ public class UIBundlePopup : MonoBehaviour
                 }
             }
 
+            m_OldPriceText.gameObject.SetActive(false);
+
             //cost
-            if (data.isFree)
+            if (owned)
+            {
+                m_PriceText.text = LocalizeLookUp.GetText("store_gear_owned_upper");
+            }
+            else if (data.isFree)
             {
                 m_PriceText.text = LocalizeLookUp.GetText("ftf_claim");
-                m_OldPriceText.gameObject.SetActive(false);
             }
             else
             {
@@ -154,7 +162,7 @@ public class UIBundlePopup : MonoBehaviour
                 //catch(System.Exception e)
                 //{
                 //    Debug.LogException(new System.Exception("Failed to parse localized price " + localizedPriceString));
-                    m_OldPriceText.gameObject.SetActive(false);
+                    //m_OldPriceText.gameObject.SetActive(false);
                 //}
             }
 
@@ -197,11 +205,11 @@ public class UIBundlePopup : MonoBehaviour
         }
 
         if (expire.Days > 0)
-            m_ExpireText.text = expire.Days + " " + LocalizeLookUp.GetText("lt_time_days") + " " + expire.Hours + ", " + LocalizeLookUp.GetText("lt_time_hours");
+            m_ExpireText.text = expire.Days + " " + LocalizeLookUp.GetText("lt_time_days") + ", " + expire.Hours + " " + LocalizeLookUp.GetText("lt_time_hours");
         else if (expire.Hours > 0)
-            m_ExpireText.text = expire.Hours + " " + LocalizeLookUp.GetText("lt_time_hours") + " " + expire.Minutes + ", " + LocalizeLookUp.GetText("lt_time_minutes");
+            m_ExpireText.text = expire.Hours + " " + LocalizeLookUp.GetText("lt_time_hours") + ", " + expire.Minutes + " " + LocalizeLookUp.GetText("lt_time_minutes");
         else if (expire.Minutes > 0)
-            m_ExpireText.text = expire.Minutes + " " + LocalizeLookUp.GetText("lt_time_minutes") + " " + expire.Seconds + ", " + LocalizeLookUp.GetText("lt_time_seconds");
+            m_ExpireText.text = expire.Minutes + " " + LocalizeLookUp.GetText("lt_time_minutes") + ", " + expire.Seconds + " " + LocalizeLookUp.GetText("lt_time_seconds");
         else if (expire.Seconds > 0)
             m_ExpireText.text = expire.Seconds + " " + LocalizeLookUp.GetText("lt_time_seconds");
         else
@@ -220,7 +228,8 @@ public class UIBundlePopup : MonoBehaviour
     private void OnClickBuy()
     {
         LoadingOverlay.Show();
-        IAPSilver.instance.BuyProductID(m_BundleId, (error) =>
+
+        System.Action<string> onPurchase = (error) =>
         {
             LoadingOverlay.Hide();
             if (string.IsNullOrEmpty(error))
@@ -244,7 +253,18 @@ public class UIBundlePopup : MonoBehaviour
                     UIGlobalPopup.ShowError(null, APIManager.ParseError(error));
                 }
             }
-        });
+        };
+
+        PackData data = StoreManagerAPI.GetPackData(m_BundleId);
+
+        if (data.isFree)
+        {
+            StoreManagerAPI.Purchase(m_BundleId, StoreManagerAPI.TYPE_PACK, null, onPurchase);
+        }
+        else
+        {
+            IAPSilver.instance.BuyProductID(m_BundleId, onPurchase);
+        }
     }
 
     //public static string GetMultipliedPrice(string localizedPrice, float multiplier)

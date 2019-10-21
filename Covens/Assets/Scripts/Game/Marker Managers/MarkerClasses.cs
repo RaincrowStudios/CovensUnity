@@ -409,6 +409,8 @@ public class PlayerData : WitchMarkerData
 
         if (effects == null)
             effects = new List<StatusEffect>();
+
+        //OwnedPacks.Add("bundle_seasonalPack");
     }
 
     public void UpdateSpells()
