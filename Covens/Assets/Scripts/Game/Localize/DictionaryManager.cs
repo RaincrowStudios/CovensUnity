@@ -30,7 +30,8 @@ public class DictionaryManager
     public static readonly string[] Languages = new string[] { "English", "Portuguese", "Spanish", "Japanese", "German", "Russian" };
     public static readonly string[] Cultures = new string[] { "en", "pt", "es", "ja", "de", "ru" };
 
-    private static string baseURL {
+    private static string baseURL
+    {
         get
         {
             string url = "https://storage.googleapis.com/raincrow-covens/dictionary/";
@@ -38,10 +39,10 @@ public class DictionaryManager
 #if UNITY_EDITOR
             switch (UnityEditor.EditorPrefs.GetString("game"))
             {
-                case "Local":   url +=  "dev/";     break;
-                case "Release": url +=  "release/"; break;
-                case "Gustavo": url +=  "dev/";     break;
-                default:        url +=  "staging/"; break;
+                case "Local": url += "dev/"; break;
+                case "Release": url += "release/"; break;
+                case "Gustavo": url += "dev/"; break;
+                default: url += "staging/"; break;
             }
 #elif PRODUCTION
             url += "release/";
@@ -101,7 +102,7 @@ public class DictionaryManager
         return Cultures[languageIndex];
     }
 
-    public static event System.Action<string,float,float> OnDownloadProgress;
+    public static event System.Action<string, float, float> OnDownloadProgress;
 
 
     public static void GetLocalisationDictionary(string version, System.Action onDicionaryReady, System.Action<int, string> onDownloadError, System.Action onParseError)
@@ -340,7 +341,7 @@ public class DictionaryManager
                 openReadTask.Close();
 
                 //get file
-                webClient.DownloadProgressChanged += (sender, args) => DownloadProgressChanged(name, size, args); 
+                webClient.DownloadProgressChanged += (sender, args) => DownloadProgressChanged(name, size, args);
                 string result = await webClient.DownloadStringTaskAsync(uri);
 
                 onComplete(200, result);
@@ -356,7 +357,7 @@ public class DictionaryManager
                 else
                 {
                     var response = e.Response as System.Net.HttpWebResponse;
-                    
+
                     if (response == null)
                         onComplete(0, "null response");
                     else
@@ -368,6 +369,6 @@ public class DictionaryManager
 
     private static void DownloadProgressChanged(string name, long size, System.Net.DownloadProgressChangedEventArgs e)
     {
-        OnDownloadProgress?.Invoke(name, size * 0.000001f, e.ProgressPercentage/100f);
+        OnDownloadProgress?.Invoke(name, size * 0.000001f, e.ProgressPercentage / 100f);
     }
 }
