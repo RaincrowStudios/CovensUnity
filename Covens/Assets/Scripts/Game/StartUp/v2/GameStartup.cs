@@ -52,7 +52,7 @@ public class GameStartup : MonoBehaviour
         DownloadManager.OnDictionaryError -= OnDictionaryError;
         DownloadManager.OnDictionaryParserError -= OnDictionaryParseError;
 
-        DictionaryManager.OnDownloadProgress += OnDictionaryDownloadProgress;
+        DictionaryManager.OnDownloadProgress -= OnDictionaryDownloadProgress;
 
         DownloadManager.OnDownloadStart -= OnAssetDownloadStart;
         DownloadManager.OnDownloadProgress -= OnAssetDownloadProgress;
