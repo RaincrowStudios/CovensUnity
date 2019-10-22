@@ -71,7 +71,7 @@ public class UISummoningSpiritInfo : MonoBehaviour
             if (string.IsNullOrEmpty(spirit.tool) == false)
                 m_Ingredients.text += (string.IsNullOrEmpty(m_Ingredients.text) ? "" : ", ") + LocalizeLookUp.GetCollectableName(spirit.tool);
         }
-        m_Required.text = LocalizeLookUp.GetText("pop_required_ingredients").Replace(" {{ingredient}}", ":");
+        m_Required.text = LocalizeLookUp.GetText("pop_required_ingredients").Replace("{{ingredient}}", "");
 
         m_SpiritArt.overrideSprite = null;
         DownloadedAssets.GetSprite(spirit.id, spr =>
