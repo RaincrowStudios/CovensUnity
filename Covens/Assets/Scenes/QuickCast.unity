@@ -2513,6 +2513,7 @@ MonoBehaviour:
   prefix: 
   id: spellbook_quick_cast
   suffix: 
+  toUpper: 0
 --- !u!1 &1802444360
 GameObject:
   m_ObjectHideFlags: 0
@@ -5410,6 +5411,7 @@ GameObject:
   - component: {fileID: 6786836741909272465}
   - component: {fileID: 6002613645242788436}
   - component: {fileID: 4024757329174781212}
+  - component: {fileID: 8803539942720173764}
   m_Layer: 5
   m_Name: Text (TMP)
   m_TagString: Untagged
@@ -5417,6 +5419,22 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
+--- !u!114 &8803539942720173764
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8803539942720173763}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 64a59a015644a4f44b632497e81f3cc7, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  prefix: 
+  id: quickcast_customize
+  suffix: 
+  toUpper: 0
 --- !u!224 &8961259298409933543
 RectTransform:
   m_ObjectHideFlags: 0

@@ -337,7 +337,7 @@ public class UISummoning : MonoBehaviour
         .Replace("{{behavior}}", LocalizeLookUp.GetText("spirit_behavior_" + spirit.type))
         .Replace("{{zone}}", m_zone);
 
-        m_Required.text = LocalizeLookUp.GetText("pop_required_ingredients").Replace(" {{ingredient}}", ":");
+        m_Required.text = LocalizeLookUp.GetText("pop_required_ingredients").Replace("{{ingredient}}", "");
         if (string.IsNullOrEmpty(spirit.herb) && string.IsNullOrEmpty(spirit.tool) && string.IsNullOrEmpty(spirit.gem))
         {
             m_SpiritRequiredIngredients.text = LocalizeLookUp.GetText("lt_none");
