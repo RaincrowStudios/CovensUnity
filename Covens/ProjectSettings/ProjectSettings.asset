@@ -167,7 +167,7 @@ PlayerSettings:
   buildNumber:
     Standalone: 681
     iPhone: 970
-  AndroidBundleVersionCode: 970
+  AndroidBundleVersionCode: 1030
   AndroidMinSdkVersion: 24
   AndroidTargetSdkVersion: 0
   AndroidPreferredInstallLocation: 1
@@ -734,7 +734,7 @@ PlayerSettings:
   scriptingDefineSymbols:
     1: 
     4: 
-    7: 
+    7: PRODUCTION
     13: CROSS_PLATFORM_INPUT
     14: CROSS_PLATFORM_INPUT;MOBILE_INPUT
     17: MOBILE_INPUT

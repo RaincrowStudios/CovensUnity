@@ -230,14 +230,14 @@ public class LocationIslandController : MonoBehaviour
             else
             {
                 Debug.Log(response);
-                APIManager.Instance.Put($"place-of-power/leave", "{}", (s, r) =>
-                {
-                    if (r == 200)
-                    {
-                        PlayerDataManager.playerData.insidePlaceOfPower = false;
-                    }
-                });
-                UIGlobalPopup.ShowError(() => { }, "Entering in pop failed.");
+                // APIManager.Instance.Put($"place-of-power/leave", "{}", (s, r) =>
+                // {
+                //     if (r == 200)
+                //     {
+                //         PlayerDataManager.playerData.insidePlaceOfPower = false;
+                //     }
+                // });
+                // UIGlobalPopup.ShowError(() => { }, "Entering in pop failed.");
             }
         });
     }
@@ -309,11 +309,11 @@ public class LocationIslandController : MonoBehaviour
     {
         AddWitchHandlerPOP.OnWitchAddPOP -= WitchJoined;
         RemoveTokenHandlerPOP.OnRemoveTokenPOP -= WitchRemoved;
-        APIManager.Instance.Put($"place-of-power/leave", "{}", (response, result) =>
-          {
-              isInBattle = false;
-              OnComplete();
-          });
+        // APIManager.Instance.Put($"place-of-power/leave", "{}", (response, result) =>
+        //   {
+        //       isInBattle = false;
+        //       OnComplete();
+        //   });
     }
 
     private void CreateIslands(LocationData locationData)
