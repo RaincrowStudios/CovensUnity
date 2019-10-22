@@ -37,8 +37,6 @@ public class UICovenSearcher : MonoBehaviour
     }
 
 
-    [SerializeField] private Canvas m_Canvas;
-    [SerializeField] private GraphicRaycaster m_InputRaycaster;
     [SerializeField] private CanvasGroup m_CanvasGroup;
     [SerializeField] private RectTransform m_Window;
 
@@ -57,8 +55,6 @@ public class UICovenSearcher : MonoBehaviour
     [Header("Search")]
     [SerializeField] private TMP_InputField m_SearchField;
 
-    public static UICovenSearcher Instance { get; private set; }
-
     private SimplePool<UIChatCoven> m_ItemPool;
     private List<ChatCovenData> m_RecentCovens = new List<ChatCovenData>();
     private List<ChatCovenData> m_TopCovens = new List<ChatCovenData>();
@@ -74,22 +70,22 @@ public class UICovenSearcher : MonoBehaviour
     private int m_ContainerTweenId;
 
     private System.Action m_OnClose;
+    private System.Action<string> m_OnSelectCoven;
 
     private void Awake()
     {
-        Instance = this;
-
         //setup initial state
-        m_Canvas.enabled = false;
-        m_InputRaycaster.enabled = false;
         m_CanvasGroup.alpha = 0;
-        m_Canvas.transform.localScale = Vector3.zero;
         m_ContainerCanvasGroup.alpha = 0;
         m_LoadingOverlay.SetActive(false);
         m_ItemPool = new SimplePool<UIChatCoven>(m_ItemPrefab, m_MaxCovensAvailable);
 
         TextMeshProUGUI placeholderText = m_SearchField.placeholder as TextMeshProUGUI;
         placeholderText.text = LocalizeLookUp.GetText("coven_search");
+
+        m_RecentTab = true;
+        m_HighlightObj.SetParent(m_RecentCovensButton.transform);
+        m_HighlightObj.localPosition = Vector3.zero;
 
         //setup button listeners
         m_RecentCovensButton.onClick.AddListener(() =>
@@ -99,7 +95,9 @@ public class UICovenSearcher : MonoBehaviour
 
             m_RecentTab = true;
             RequestAvailableCovens(m_SearchField.text, m_RecentTab);
-            m_HighlightObj.transform.localPosition = m_RecentCovensButton.transform.localPosition;
+            m_HighlightObj.SetParent(m_RecentCovensButton.transform);
+            m_HighlightObj.localPosition = Vector3.zero;
+            //m_HighlightObj.transform.localPosition = m_RecentCovensButton.transform.localPosition;
         });
 
         m_TopCovensButton.onClick.AddListener(() =>
@@ -109,25 +107,33 @@ public class UICovenSearcher : MonoBehaviour
 
             m_RecentTab = false;
             RequestAvailableCovens(m_SearchField.text, m_RecentTab);
-            m_HighlightObj.transform.localPosition = m_TopCovensButton.transform.localPosition;
+            m_HighlightObj.SetParent(m_TopCovensButton.transform);
+            m_HighlightObj.localPosition = Vector3.zero;
+            //m_HighlightObj.transform.localPosition = m_TopCovensButton.transform.localPosition;
         });
 
         m_CloseButton.onClick.AddListener(OnClickClose);
 
         m_SearchField.onValueChanged.AddListener(OnSearchStringChange);
+
+        m_Window.gameObject.SetActive(false);
     }
     
-    public void Show(System.Action onClose)
+    public void Show(System.Action<string> onSelect, System.Action onClose)
     {
         Show();
+
+        m_OnSelectCoven = onSelect;
         m_OnClose = onClose;
     }
 
     private void OnClickClose()
     {
         Close();
+        
         m_OnClose?.Invoke();
         m_OnClose = null;
+        m_OnSelectCoven = null;
     }
 
     [ContextMenu("Show")]
@@ -137,11 +143,10 @@ public class UICovenSearcher : MonoBehaviour
 
         //update the list
         RequestAvailableCovens(m_SearchField.text, m_RecentTab);
-        m_HighlightObj.transform.localPosition = m_RecentTab ? m_RecentCovensButton.transform.localPosition : m_TopCovensButton.transform.localPosition;
+        //m_HighlightObj.transform.localPosition = m_RecentTab ? m_RecentCovensButton.transform.localPosition : m_TopCovensButton.transform.localPosition;
 
-        m_Canvas.enabled = true;
-        m_InputRaycaster.enabled = true;
-        
+        m_Window.gameObject.SetActive(true);
+
         //animate the ui
         LeanTween.cancel(m_TweenId);
         m_TweenId = LeanTween.alphaCanvas(m_CanvasGroup, 1, 0.5f)
@@ -155,11 +160,10 @@ public class UICovenSearcher : MonoBehaviour
         BackButtonListener.RemoveCloseAction();
 
         //animat ethe ui
-        m_InputRaycaster.enabled = false;
         LeanTween.cancel(m_TweenId);
         m_TweenId = LeanTween.alphaCanvas(m_CanvasGroup, 0, .5f)
             .setEaseOutCubic()
-            .setOnComplete(() => m_Canvas.enabled = false)
+            .setOnComplete(() => m_Window.gameObject.SetActive(false))
             .uniqueId;
 
         LeanTween.cancel(m_ContainerTweenId);
@@ -265,8 +269,9 @@ public class UICovenSearcher : MonoBehaviour
                 data, 
                 () =>
                 {
-                    Close();
-                    TeamManagerUI.OpenName(data.name, () => Show(m_OnClose));
+                    //Close();
+                    //TeamManagerUI.OpenName(data.name, () => Show());
+                    m_OnSelectCoven?.Invoke(data.name);
                 }
             );
             items.Add(uiChatCoven);
@@ -280,5 +285,10 @@ public class UICovenSearcher : MonoBehaviour
             .uniqueId;
 
         m_ContainerCanvasGroup.interactable = true;
+    }
+
+    private void OnDestroy()
+    {
+        m_ItemPool.DestroyAll();
     }
 }

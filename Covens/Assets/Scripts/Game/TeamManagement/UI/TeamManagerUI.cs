@@ -84,6 +84,7 @@ public class TeamManagerUI : MonoBehaviour
     [SerializeField] private MembersProperties m_Members;
     [SerializeField] private InvitesProperties m_Invites;
     [SerializeField] private RequestsProperties m_Requests;
+    [SerializeField] private UICovenSearcher m_CovenSearcher;
 
     [Header("Buttons")]
     [SerializeField] private Button m_CloseButton;
@@ -345,7 +346,7 @@ public class TeamManagerUI : MonoBehaviour
 
     private void Show()
     {
-        if (m_Canvas.enabled)
+        if (m_InputRaycaster.enabled)
             return;
 
         BackButtonListener.AddCloseAction(OnPressReturn);
@@ -677,9 +678,10 @@ public class TeamManagerUI : MonoBehaviour
 
     private void OnClickClose()
     {
+        Hide();
+
         m_OnClose?.Invoke();
         m_OnClose = null;
-        Hide();
     }
 
     #region COVEN HOME
@@ -1142,7 +1144,40 @@ public class TeamManagerUI : MonoBehaviour
 
     private void OnClickSendRequest()
     {
-        UICovenSearcher.Instance.Show(() => Open(TeamManager.MyCovenId));
+        m_CovenSearcher.Show(Searcher_OnSelectCoven, Searcher_OnClose);
+    }
+
+    private void Searcher_OnSelectCoven(string name)
+    {
+        TeamManager.GetCoven(name, true, (data, error) =>
+        {
+            if (string.IsNullOrEmpty(error))
+            {
+                //hide the searcher and setup the screen withe the retrieved coven info
+                m_CovenSearcher.Close();
+                m_CovenData = data;
+                SetScreen(Screen.HOME);
+
+                //when clicking close, show the teammanager again and show the searcher
+                m_OnClose = () =>
+                {
+                    m_CovenData = TeamManager.MyCovenData;
+                    Show();
+                    SetScreen(m_CovenData == null ? Screen.INVITES : Screen.HOME);
+                    m_CovenSearcher.Show(Searcher_OnSelectCoven, Searcher_OnClose);
+                };
+            }
+            else
+            {
+                UIGlobalPopup.ShowError(null, error);
+            }
+        });
+    }
+
+    private void Searcher_OnClose()
+    {
+        //when closing the searcher, reopen the player's home
+        Open(TeamManager.MyCovenData?.Id);
     }
 
     #endregion

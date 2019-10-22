@@ -61,6 +61,9 @@ namespace Raincrow.Chat.UI
         [SerializeField] private float _sendMessageCooldown = 1f; // seconds
         [SerializeField] private int _maxCovensAvailable = 10;
 
+        [Header("Searcher")]
+        [SerializeField] private UICovenSearcher m_CovenSearcher;
+
         private SimplePool<UIChatItem> _chatMessagePool;
         private SimplePool<UIChatItem> _chatLocationPool;
         private SimplePool<UIChatItem> _chatHelpPlayerPool;
@@ -552,7 +555,10 @@ namespace Raincrow.Chat.UI
             {
                 if (category == ChatCategory.COVEN && string.IsNullOrEmpty(PlayerDataManager.playerData.covenInfo.coven))
                 {
-                    UICovenSearcher.Instance.Show(() => SetCategory(previousCategory));
+                    //UICovenSearcher.Instance.Show(() => SetCategory(previousCategory));
+                    m_CovenSearcher.Show(
+                        onSelect: name => TeamManagerUI.OpenName(name),
+                        onClose: () => SetCategory(previousCategory));
                 }
                 else
                 {
