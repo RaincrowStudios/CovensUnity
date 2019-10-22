@@ -5,7 +5,8 @@ using TMPro;
 using UnityEngine.UI;
 using Raincrow;
 
-public class GreyHandOffice : MonoBehaviour {
+public class GreyHandOffice : MonoBehaviour
+{
 
     [SerializeField] private Canvas m_Canvas;
     [SerializeField] private GraphicRaycaster m_InputRaycaster;
@@ -19,29 +20,30 @@ public class GreyHandOffice : MonoBehaviour {
     private static GreyHandOffice m_Instance;
 
     //
-	public GameObject NotToday;
-	
-	public TextMeshProUGUI greyHandOffice;
-	public TextMeshProUGUI toolNum;
-	public TextMeshProUGUI drachNum;
+    public GameObject NotToday;
+    public Image SilverDrachs;
 
-	public CanvasGroup SavCG;
-	public GameObject Sav;
+    public TextMeshProUGUI greyHandOffice;
+    public TextMeshProUGUI toolNum;
+    public TextMeshProUGUI drachNum;
 
-	public CanvasGroup BGCG;
+    public CanvasGroup SavCG;
+    public GameObject Sav;
 
-	public CanvasGroup ToolsCG;
+    public CanvasGroup BGCG;
 
-	public CanvasGroup DrachsCG;
+    public CanvasGroup ToolsCG;
 
-	public CanvasGroup TextContainer;
+    public CanvasGroup DrachsCG;
 
-	public CanvasGroup WarningTextCont;
-	public CanvasGroup WarningBG;
+    public CanvasGroup TextContainer;
 
-	public GameObject accept;
+    public CanvasGroup WarningTextCont;
+    public CanvasGroup WarningBG;
 
-	public Vector3 SavScale;
+    public GameObject accept;
+
+    public Vector3 SavScale;
 
     public GameObject close;
 
@@ -93,6 +95,11 @@ public class GreyHandOffice : MonoBehaviour {
         {
             ShowWarning();
         });
+        DownloadedAssets.GetSprite("silver3", spr =>
+        {
+            SilverDrachs.overrideSprite = spr;
+        }, true);
+
 
         m_WarningCloseButton.onClick.AddListener(() =>
         {
@@ -100,9 +107,9 @@ public class GreyHandOffice : MonoBehaviour {
             LeanTween.alphaCanvas(SavCG, 0f, 0.4f);
             LeanTween.alphaCanvas(TextContainer, 0f, 0.4f);
             LeanTween.alphaCanvas(NotToday.GetComponent<CanvasGroup>(), 0f, 0.4f);
-            LeanTween.alphaCanvas(BGCG, 0.01f, 0.5f).setOnComplete(() => 
+            LeanTween.alphaCanvas(BGCG, 0.01f, 0.5f).setOnComplete(() =>
             {
-                LeanTween.alphaCanvas(BGCG, 0f, 0.2f).setOnComplete(() => 
+                LeanTween.alphaCanvas(BGCG, 0f, 0.2f).setOnComplete(() =>
                 {
                     m_Canvas.enabled = false;
                 });
@@ -125,7 +132,7 @@ public class GreyHandOffice : MonoBehaviour {
             //    });
             //});
         });
-}
+    }
 
     private void Open(string officeName)
     {
@@ -135,59 +142,63 @@ public class GreyHandOffice : MonoBehaviour {
         m_Canvas.enabled = true;
         InitAnims();
     }
-    
-	void InitAnims()
+
+    void InitAnims()
     {
         close.SetActive(false);
-        NotToday.SetActive (false);
-		accept.SetActive (false);
-		WarningBG.alpha = 0;
-		SavScale = Vector3.one * 0.3f;
-		BGCG.alpha = 0;
-		WarningTextCont.alpha = 1;
+        NotToday.SetActive(false);
+        accept.SetActive(false);
+        WarningBG.alpha = 0;
+        SavScale = Vector3.one * 0.3f;
+        BGCG.alpha = 0;
+        WarningTextCont.alpha = 1;
         WarningTextCont.transform.GetChild(0).GetComponent<CanvasGroup>().alpha = 0;
         WarningTextCont.transform.GetChild(1).GetComponent<CanvasGroup>().alpha = 0;
         SavCG.alpha = 0;
-		ToolsCG.alpha = 0;
-		DrachsCG.alpha = 0;
-		TextContainer.alpha = 0;
-		LeanTween.alphaCanvas (BGCG, 1f, 0.5f).setEase (LeanTweenType.easeOutCubic);
-		LeanTween.alphaCanvas (TextContainer, 1f, 2f).setEase (LeanTweenType.easeOutCubic);
+        ToolsCG.alpha = 0;
+        DrachsCG.alpha = 0;
+        TextContainer.alpha = 0;
+        LeanTween.alphaCanvas(BGCG, 1f, 0.5f).setEase(LeanTweenType.easeOutCubic);
+        LeanTween.alphaCanvas(TextContainer, 1f, 2f).setEase(LeanTweenType.easeOutCubic);
         Anim();
         Anim2();
     }
 
-	// Update is called once per frame
-	void Anim () {
-		LeanTween.scale (Sav, Vector3.one*0.7f, 7f).setEase (LeanTweenType.easeOutCubic);
-		LeanTween.alphaCanvas (SavCG, 1f, 1f).setEase (LeanTweenType.easeOutCubic).setOnComplete (() => {
-			//Anim2();
-		});
-		//callOnCompletes(Anim2());
-		//Invoke ("Anim2", 1f);
-	}
+    // Update is called once per frame
+    void Anim()
+    {
+        LeanTween.scale(Sav, Vector3.one * 0.7f, 7f).setEase(LeanTweenType.easeOutCubic);
+        LeanTween.alphaCanvas(SavCG, 1f, 1f).setEase(LeanTweenType.easeOutCubic).setOnComplete(() =>
+        {
+            //Anim2();
+        });
+        //callOnCompletes(Anim2());
+        //Invoke ("Anim2", 1f);
+    }
 
-	void Anim2 () {
+    void Anim2()
+    {
         LeanTween.alphaCanvas(ToolsCG, 1f, 1f).setEase(LeanTweenType.easeOutCubic);
         LeanTween.alphaCanvas(DrachsCG, 1f, 1f).setEase(LeanTweenType.easeOutCubic);
         //	.setEase (LeanTweenType.easeOutCubic);
 
     }
 
-	public void ShowWarning ()
+    public void ShowWarning()
     {
         close.SetActive(true);
-        
-		LeanTween.alphaCanvas (TextContainer, 0f, .5f).setEase (LeanTweenType.easeOutCubic).setOnComplete (() => {
-			NotToday.SetActive (true);
+
+        LeanTween.alphaCanvas(TextContainer, 0f, .5f).setEase(LeanTweenType.easeOutCubic).setOnComplete(() =>
+        {
+            NotToday.SetActive(true);
             LeanTween.alphaCanvas(NotToday.GetComponent<CanvasGroup>(), 1f, 0.4f);
             LeanTween.alphaCanvas(WarningBG, 1f, 1f).setEase(LeanTweenType.easeOutCubic);
             LeanTween.alphaCanvas(WarningTextCont.transform.GetChild(0).GetComponent<CanvasGroup>(), 1f, 1f).setEase(LeanTweenType.easeInCubic).setOnComplete(() =>
             {
-            LeanTween.alphaCanvas(WarningTextCont.transform.GetChild(1).GetComponent<CanvasGroup>(), 1f, 0.5f).setEase(LeanTweenType.easeInCubic);
+                LeanTween.alphaCanvas(WarningTextCont.transform.GetChild(1).GetComponent<CanvasGroup>(), 1f, 0.5f).setEase(LeanTweenType.easeInCubic);
             });
-		});
-	}
+        });
+    }
 
     public void TextSetup(string officeName)
     {
@@ -235,7 +246,7 @@ public class GreyHandOffice : MonoBehaviour {
         greyHandOffice.text = officeName;
         toolNum.text = forbidTool.ToString();
         drachNum.text = forbidToolValue.ToString();
-		rewardText.text = forbidToolValue.ToString ();
+        rewardText.text = forbidToolValue.ToString();
     }
 
     void TurnInCallback(string result, int response)
