@@ -9,7 +9,7 @@ public class LocalizationManager : MonoBehaviour
     public static Dictionary<string, string> LocalizeDictionary = new Dictionary<string, string>();
     public static HashSet<string> localizeIDs = new HashSet<string>();
     public delegate void ChangeLanguage();
-    public static event ChangeLanguage OnChangeLanguage;
+    public static ChangeLanguage OnChangeLanguage;
 
     class LocalizationData
     {

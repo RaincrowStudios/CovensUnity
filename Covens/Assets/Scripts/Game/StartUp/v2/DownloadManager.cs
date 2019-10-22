@@ -91,6 +91,7 @@ public class DownloadManager : MonoBehaviour
 
     public static bool DictionaryReady { get; set; }
 
+    public static AssetResponse AssetVersion { get; private set; }
 
     public static void DownloadAssets(System.Action dictionaryDownloaded)
     {
@@ -137,6 +138,8 @@ public class DownloadManager : MonoBehaviour
             OnMaintenance?.Invoke();
             yield break;
         }
+
+        AssetVersion = assets;
 
         //setup the AppVersion
         int appVersion = 0;
