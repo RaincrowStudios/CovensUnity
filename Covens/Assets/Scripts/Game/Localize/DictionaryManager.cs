@@ -28,7 +28,7 @@ public class DictionaryManager
 
     public const string LanguageIndexPlayerPrefsKey = "LanguageIndex";
     public static readonly string[] Languages = new string[] { "English", "Portuguese", "Spanish", "Japanese", "German", "Russian" };
-    public static readonly string[] Cultures = new string[] { "en", "pt", "es", "jp", "de", "ru" };
+    public static readonly string[] Cultures = new string[] { "en", "pt", "es", "ja", "de", "ru" };
 
     private static string baseURL {
         get
