@@ -303,17 +303,7 @@ public class Spellcasting
                     CooldownManager.RemoveCooldown(spell.id);
 
                     UIWaitingCastResult.Instance.Close();
-
-                    //simulate the marker escaping
-                    if (response == "2014")
-                    {
-                        Vector2 coords = target.Coords;
-                        Vector2 dir = Random.onUnitSphere.normalized * 0.02f;
-                        MoveTokenHandler.HandleEvent(targetId, coords.x, coords.y); 
-                        UIWaitingCastResult.Instance.Close();
-                        return;
-                    }
-
+                    
                     //retry
                     if (response == "2016")
                     {
@@ -326,6 +316,17 @@ public class Spellcasting
                         return;
                     }
 
+                    onContinue?.Invoke(new SpellCastHandler.Result());
+
+                    //simulate the marker escaping
+                    if (response == "2014")
+                    {
+                        Vector2 coords = target.Coords + (Vector2)Random.onUnitSphere.normalized * 0.1f;
+                        MoveTokenHandler.HandleEvent(targetId, coords.x, coords.y); 
+                        UIWaitingCastResult.Instance.Close();
+                        return;
+                    }
+
                     //force a remove token event just in case the marker stayed onthe game
                     if (response == "1002")
                     {
@@ -333,7 +334,6 @@ public class Spellcasting
                         return;
                     }
 
-                    onContinue?.Invoke(new SpellCastHandler.Result());
                     UIGlobalPopup.ShowError(null, APIManager.ParseError(response));
                 }
             };
