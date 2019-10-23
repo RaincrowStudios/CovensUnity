@@ -67,7 +67,7 @@ public class UICollectableInfo : MonoBehaviour
         IngredientData data = DownloadedAssets.GetCollectable(id);
         m_Icon.sprite = m_IconDict[data.type];
         m_Title.text = LocalizeLookUp.GetCollectableName(id);
-        m_Rarity.text = "Rarity (" + data.rarity + ")";
+        m_Rarity.text = LocalizeLookUp.GetText("rarity_num").Replace("{{Rarity}}", data.rarity.ToString());// "Rarity (" + data.rarity + ")";
         m_Description.text = LocalizeLookUp.GetCollectableDesc(id);
 
 
@@ -79,7 +79,7 @@ public class UICollectableInfo : MonoBehaviour
         RectTransform closeRect = m_CloseButton.GetComponent<RectTransform>();
         closeRect.anchorMin = new Vector2(0.5f, 0);
         closeRect.anchoredPosition = Vector2.zero;
-		if (data.forbidden)
+        if (data.forbidden)
             m_Panel.GetChild(3).gameObject.SetActive(true);
         else
             m_Panel.GetChild(3).gameObject.SetActive(false);
@@ -107,7 +107,7 @@ public class UICollectableInfo : MonoBehaviour
         m_Canvas.enabled = true;
         m_InputRaycaster.enabled = true;
     }
-    
+
     public void Close()
     {
         if (!m_InputRaycaster.enabled)
@@ -125,9 +125,9 @@ public class UICollectableInfo : MonoBehaviour
             {
                 m_CanvasGroup.alpha = t;
             })
-            .setOnComplete(() => m_Canvas.enabled=false)
+            .setOnComplete(() => m_Canvas.enabled = false)
             .uniqueId;
-    }   
+    }
 
     private void OnClickClose()
     {
