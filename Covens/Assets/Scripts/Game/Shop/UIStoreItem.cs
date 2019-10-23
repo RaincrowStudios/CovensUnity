@@ -80,6 +80,14 @@ public class UIStoreItem : MonoBehaviour
         rectTransform.anchoredPosition = new Vector2(143.3996f, 28f);
     }
 
+    private void SetIconLayout_Full()
+    {
+        RectTransform rectTransform = m_ItemIcon.rectTransform;
+        rectTransform.pivot = new Vector2(0.5f, 0.5f);
+        rectTransform.sizeDelta = new Vector2(560, 420);
+        rectTransform.anchoredPosition = new Vector2(280, 210);
+    }
+
     public void Setup(StoreItem item, object data)
     {
         m_IconId = item.id;
@@ -204,6 +212,71 @@ public class UIStoreItem : MonoBehaviour
         });
     }
     
+    public void Setup(string id, PackData data)
+    {
+        name = "[UIStoreItem] " + id;
+        m_ItemTitle.text = LocalizeLookUp.GetStoreTitle(id);
+        m_ItemSubtitle.text = "";
+        m_ItemAmount.text = "";
+        m_SilverCost.text = "";
+        m_GoldCost.text = "";
+
+        m_Tag.SetActive(false);
+        m_SilverCost.gameObject.SetActive(false);
+        m_GoldCost.gameObject.SetActive(false);
+        m_CostOr.SetActive(false);
+
+        SetIconLayout_Full();
+
+        m_ItemIcon.overrideSprite = null;
+        //DownloadedAssets.GetSprite(
+        //    id + "_icon",
+        //    spr => m_ItemIcon.overrideSprite = spr,
+        //    true
+        //);
+        m_IconId = id + "_icon";
+
+        bool claimed = PlayerDataManager.playerData.OwnedPacks.Contains(id);
+        m_BuyText.text = claimed ? LocalizeLookUp.GetText("store_gear_owned_upper") : LocalizeLookUp.GetText("store_claim").ToUpper();
+        m_BuyButton.onClick.RemoveAllListeners();
+
+        if (!claimed)
+        {
+            m_BuyButton.onClick.AddListener(() =>
+            {
+                LoadingOverlay.Show();
+                StoreManagerAPI.Purchase(id, StoreManagerAPI.TYPE_PACK, null, 
+                    (error) => 
+                    {
+                        LoadingOverlay.Hide();
+                        if (string.IsNullOrEmpty(error))
+                        {
+                            Setup(id, data);
+                            UIStorePurchaseSuccess.Show(
+                                m_ItemTitle.text,
+                                "",
+                                m_ItemIcon.overrideSprite,
+                                null
+                            );
+                        }
+                        else if (string.IsNullOrEmpty(error) == false)
+                        {
+                            if (error.StartsWith("PurchaseFailureReason"))
+                            {
+                                UnityEngine.Purchasing.PurchaseFailureReason reason = (UnityEngine.Purchasing.PurchaseFailureReason)int.Parse(error.Replace("PurchaseFailureReason", ""));
+                                if (reason != UnityEngine.Purchasing.PurchaseFailureReason.UserCancelled)
+                                    UIGlobalPopup.ShowError(null, reason.ToString());
+                            }
+                            else
+                            {
+                                UIGlobalPopup.ShowError(null, APIManager.ParseError(error));
+                            }
+                        }
+                    });
+            });
+        }
+    }
+
     public void Setup(StoreItem item, CurrencyBundleData currency)
     {
         Setup(item);
@@ -339,7 +412,7 @@ public class UIStoreItem : MonoBehaviour
         m_GoldIcon.enabled = m_SilverCost.gameObject.activeSelf;
 
         m_CostOr.gameObject.SetActive(item.silver > 0 && item.gold > 0);
-        m_BuyText.text = item.silver == 0 && item.gold == 0 ? LocalizeLookUp.GetText("store_claim").ToUpperInvariant() : LocalizeLookUp.GetText("store_buy_upper");
+        m_BuyText.text = item.silver == 0 && item.gold == 0 ? LocalizeLookUp.GetText("store_claim").ToUpper() : LocalizeLookUp.GetText("store_buy_upper");
 
         m_CostLayout.enabled = true;
         LayoutRebuilder.ForceRebuildLayoutImmediate(m_CostLayout.GetComponent<RectTransform>());

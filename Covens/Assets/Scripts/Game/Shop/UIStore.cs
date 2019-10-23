@@ -428,7 +428,7 @@ public class UIStore : MonoBehaviour
             0,
             () => SetScreen(Screen.COSMETICS),
             () => SetScreen(Screen.STYLES));
-
+        
         m_StoreWindow.SetupCosmetics(StoreManagerAPI.StoreData.Cosmetics);
     }
 

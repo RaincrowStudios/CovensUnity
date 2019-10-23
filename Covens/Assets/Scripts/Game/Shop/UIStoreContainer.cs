@@ -241,6 +241,39 @@ public class UIStoreContainer : MonoBehaviour
         group.SetSingleRowLayout(singleRow);
         spawnedGroups.Add(group);
 
+        if (m_Category == UIStore.Screen.COSMETICS)
+        {
+            Debug.Log("Hard inserting free packs");
+            List<string> packs = new List<string>();
+            if (StoreManagerAPI.StoreData.Packs != null)
+            {
+                foreach (var pack in StoreManagerAPI.StoreData.Packs)
+                {
+                    if (pack.Value.isFree == false)
+                        continue;
+                    packs.Add(pack.Key);
+                }
+
+                //spawn packs if any was passed
+                for (int i = 0; i < packs?.Count; i++)
+                {
+                    UIStoreItem item = group.GetItem();
+                    if (item == null)
+                    {
+                        //spawn new group
+                        group = m_ItemPool.Spawn(m_Container);
+                        group.enabled = false;
+                        group.OnSpawn();
+                        group.SetSingleRowLayout(singleRow);
+                        spawnedGroups.Add(group);
+                        item = group.GetItem();
+                    }
+
+                    item.Setup(packs[i], StoreManagerAPI.GetPackData(packs[i]));
+                }
+            }
+        }
+
         //spawn and setup the items
         for (int i = 0; i < items.Count; i++)
         {
@@ -250,6 +283,7 @@ public class UIStoreContainer : MonoBehaviour
             UIStoreItem item = group.GetItem();
             if (item == null)
             {
+                //spawn new group
                 group = m_ItemPool.Spawn(m_Container);
                 group.enabled = false;
                 group.OnSpawn();
