@@ -182,7 +182,10 @@ public class SocketClient : MonoBehaviour
         if (_socketManager != null)
         {
             if (_gameSocket != null)
+            {
                 _gameSocket.Off("game.event", OnGameEvent);
+                _gameSocket.Disconnect();
+            }
 
             _socketManager.Socket.Off(SocketIOEventTypes.Connect, OnConnect);
             _socketManager.Socket.Off(SocketIOEventTypes.Disconnect, OnDisconnect);
