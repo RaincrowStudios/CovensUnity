@@ -111,9 +111,6 @@ public class GameSettingsData
 
     [JsonProperty("currencies")]
     public Dictionary<string, CurrencyBundleData> Currencies;
-
-    [JsonProperty("packs")]
-    public Dictionary<string, PackData> Packs;
 }
 
 public struct IngredientData

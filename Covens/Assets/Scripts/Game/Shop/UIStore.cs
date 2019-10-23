@@ -38,7 +38,6 @@ public class UIStore : MonoBehaviour
     [SerializeField] private Button m_IngredientsButton;
     [Space]
     [SerializeField] private UIBundleButton m_SpecialPack;
-    [SerializeField] private UIBundleButton m_FreeSpecialPack;
 
     [Header("Store")]
     [SerializeField] private UIStoreContainer m_StoreWindow;
@@ -129,7 +128,6 @@ public class UIStore : MonoBehaviour
         m_StylesWindow.gameObject.SetActive(false);
         m_HomeWindow.gameObject.SetActive(false);
 
-        m_FreeSpecialPack.gameObject.SetActive(false);
         m_SpecialPack.gameObject.SetActive(false);
 
         m_CanvasGroup.alpha = 0;
@@ -411,11 +409,11 @@ public class UIStore : MonoBehaviour
         {
             foreach (var pack in StoreManagerAPI.StoreData.Packs)
             {
-                PackData data = StoreManagerAPI.GetPackData(pack.id);
-                if (data.isFree)
-                    m_FreeSpecialPack.Setup(pack.id);
-                else
-                    m_SpecialPack.Setup(pack.id);
+                if (pack.Value.isFree)
+                    continue;
+
+                m_SpecialPack.Setup(pack.Key);
+                return;
             }
         }
     }

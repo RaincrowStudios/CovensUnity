@@ -483,7 +483,6 @@ public class DownloadManager : MonoBehaviour
             StoreManagerAPI.IngredientBundleDict = data.Bundles;
             StoreManagerAPI.ConsumableDict = data.Consumables;
             StoreManagerAPI.CurrencyBundleDict = data.Currencies;
-            StoreManagerAPI.PackDict = data.Packs;
 
             DownloadedAssets.PlaceOfPowerSettings = data.PlaceOfPower;
 

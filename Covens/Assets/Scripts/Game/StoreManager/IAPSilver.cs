@@ -55,9 +55,9 @@ public class IAPSilver : MonoBehaviour, IStoreListener
         }
 
         log += "\nPacks:\n";
-        if (StoreManagerAPI.PackDict != null)
+        if (StoreManagerAPI.StoreData.Packs != null)
         {
-            foreach (var prod in StoreManagerAPI.PackDict)
+            foreach (var prod in StoreManagerAPI.StoreData.Packs)
             {
                 builder.AddProduct(prod.Value.product, ProductType.Consumable);
                 m_PackMap.Add(prod.Value.product, prod.Key);
@@ -86,8 +86,8 @@ public class IAPSilver : MonoBehaviour, IStoreListener
         }
 
         string productId;
-        if (StoreManagerAPI.PackDict.ContainsKey(id))
-            productId = StoreManagerAPI.PackDict[id].product;
+        if (StoreManagerAPI.StoreData.Packs.ContainsKey(id))
+            productId = StoreManagerAPI.StoreData.Packs[id].product;
         else
             productId = StoreManagerAPI.GetCurrencyBundle(id).product;
 

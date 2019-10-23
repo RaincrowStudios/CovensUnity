@@ -9,7 +9,8 @@ namespace Raincrow.Store
 {
     public class StoreData
     {
-        public List<StoreItem> Packs;
+        [JsonProperty("Packs1")]
+        public Dictionary<string, PackData> Packs;
         public List<StoreItem> Bundles;
         public List<StoreItem> Consumables;
         public List<StoreItem> Currencies;
@@ -106,7 +107,6 @@ namespace Raincrow.Store
         public static Dictionary<string, List<ItemData>> IngredientBundleDict { get; set; }
         public static Dictionary<string, ConsumableData> ConsumableDict { get; set; }
         public static Dictionary<string, CurrencyBundleData> CurrencyBundleDict { get; set; }
-        public static Dictionary<string, PackData> PackDict { get; set; }
 
         public static event System.Action<string, string> OnPurchaseComplete;
 
@@ -153,9 +153,9 @@ namespace Raincrow.Store
 
         public static PackData GetPackData(string id)
         {
-            if (PackDict.ContainsKey(id))
+            if (StoreData.Packs != null && StoreData.Packs.ContainsKey(id))
             {
-                return PackDict[id];
+                return StoreData.Packs[id];
             }
             else
             {
