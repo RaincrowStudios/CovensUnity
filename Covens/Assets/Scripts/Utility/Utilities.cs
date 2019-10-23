@@ -552,6 +552,14 @@ public class Utilities : MonoBehaviour
     {
         return (float)((double)(v - min) / (double)(max - min));
     }
+
+    public static void OpenAppStore()
+    {
+        if (Application.platform == RuntimePlatform.IPhonePlayer)
+            Application.OpenURL("https://apps.apple.com/us/app/covens/id1456181456");
+        else
+            Application.OpenURL("http://play.google.com/store/apps/details?id=com.raincrow.covens");
+    }
 }
 
 public static class StringExtensions

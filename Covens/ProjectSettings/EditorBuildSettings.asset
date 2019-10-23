@@ -80,4 +80,7 @@ EditorBuildSettings:
   - enabled: 1
     path: Assets/Scenes/StoreBundle.unity
     guid: d20e53f8812944b43ba8dd65503fe121
+  - enabled: 1
+    path: Assets/Scenes/ReviewPopup.unity
+    guid: 259e2d099c4ad9440a3b9ab81df5e3a1
   m_configObjects: {}

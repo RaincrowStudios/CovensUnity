@@ -307,6 +307,10 @@ namespace Raincrow.Test
                 {
                     DownloadedAssets.Instance.OnApplicationLowMemory();
                 }
+                if (GUILayout.Button("mapView.InMapView?"))
+                {
+                    Debug.Log(MapView.InMapView);
+                }
                 using (new BoxScope())
                 {
                     m_StatusId = EditorGUILayout.TextField(m_StatusId);
@@ -324,12 +328,15 @@ namespace Raincrow.Test
                 {
                     EditorUtility.RevealInFinder(Application.persistentDataPath);
                 }
-
                 if (GUILayout.Button("?"))
                 {
                     var names = AssetDatabase.GetAllAssetBundleNames();
                     foreach (string name in names)
                         Debug.Log("Asset Bundle: " + name);
+                }
+                if (GUILayout.Button("Reset Review"))
+                {
+                    ReviewPopupController.Reset();
                 }
 
                 GUILayout.Space(5);

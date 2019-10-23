@@ -15,6 +15,8 @@ namespace Raincrow.GameEventResponses
             public double timestamp;
         }
 
+        public static event System.Action<int> OnPlayerLevelUp;
+
         public string EventName => "level.up";
         
         public void HandleResponse(string eventData)
@@ -26,7 +28,12 @@ namespace Raincrow.GameEventResponses
                 PlayerData player = PlayerDataManager.playerData;
 
                 if (data.level == 3)
+                {
                     AppsFlyerAPI.ReachedLevelThree();
+                    ReviewPopupController.Init();
+                }
+
+                OnPlayerLevelUp?.Invoke(data.level);
 
                 //update level
                 player.level = data.level;

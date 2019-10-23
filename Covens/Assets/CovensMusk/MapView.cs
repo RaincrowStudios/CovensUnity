@@ -10,6 +10,8 @@ public class MapView : MonoBehaviour
     private List<string> m_DiscoveredSpirits = new List<string>();
     private List<string> m_BanishedSpirits = new List<string>();
 
+    public static bool InMapView { get; private set; }
+
     private void Awake()
     {
         m_Instance = this;
@@ -252,6 +254,8 @@ public class MapView : MonoBehaviour
         OnCharacterDeath.OnSummonDeath -= _OnSummonDeath;
 
         BackButtonListener.onPressBackBtn -= OnPressBackBtn;
+
+        InMapView = false;
     }
 
     private void OnLeavePoP()
@@ -279,5 +283,7 @@ public class MapView : MonoBehaviour
         OnCharacterDeath.OnSummonDeath += _OnSummonDeath;
 
         BackButtonListener.onPressBackBtn += OnPressBackBtn;
+
+        InMapView = true;
     }
 }

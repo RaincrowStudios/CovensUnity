@@ -34,7 +34,8 @@ namespace Raincrow
             SUMMONING,
             FIRST_TAP,
             WARDROBE,
-            STORE_BUNDLE
+            STORE_BUNDLE,
+            REVIEW_POPUP,
         }
 
         private static Dictionary<Scene, string> m_SceneNames = new Dictionary<Scene, string>
@@ -63,6 +64,7 @@ namespace Raincrow
             {Scene.FIRST_TAP,           "FirstTap" },
             {Scene.WARDROBE,            "Wardrobe" },
             {Scene.STORE_BUNDLE,        "StoreBundle" },
+            {Scene.REVIEW_POPUP,        "ReviewPopup" },
         };
 
         private static SceneManager m_Instance;
@@ -129,7 +131,7 @@ namespace Raincrow
             }
 
             AsyncOperation asyncOp = UnitySceneManager.UnloadSceneAsync(unityScene);
-            asyncOp.allowSceneActivation = true;
+            //asyncOp.allowSceneActivation = true;
             asyncOp.completed += op => onComplete?.Invoke();
             Instance.StartCoroutine(AsyncOperationCoroutine(asyncOp, onProgress));
         }

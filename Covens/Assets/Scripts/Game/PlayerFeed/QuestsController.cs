@@ -51,80 +51,7 @@ public static class QuestsController
         public Explore explore;
     }
 
-    //public static CovenDaily Quests { get; private set; }
-
-
-    //public void ExploreQuestDone(string id)
-    //{
-    //    SoundManagerOneShot.Instance.MenuSound();
-    //    SoundManagerOneShot.Instance.PlayReward();
-    //    ExploreQuestObject.SetActive(true);
-    //    var g = Utilities.InstantiateUI(ExploreQuestObject, NotificationTransform);
-    //    g.GetComponentInChildren<Button>().onClick.AddListener(() => { Destroy(g); });
-    //    g.transform.GetChild(2).GetComponent<Text>().text = LocalizeLookUp.GetExploreTitle(id);
-    //    g.transform.GetChild(3).GetComponent<Text>().text = LocalizeLookUp.GetExploreDesc(id);
-    //}
-
-    //public void OnProgress(string quest, int count, int silver)
-    //{
-    //    StartCoroutine(OnProgressHelper(quest, count, silver));
-    //}
-
-    //IEnumerator OnProgressHelper(string quest, int count, int silver)
-    //{
-    //    yield return new WaitForSeconds(3.5f);
-    ////    var pQuest = PlayerDataManager.playerData.dailies;
-
-    ////    string message = null;
-
-    ////    if (silver == 0)
-    ////    {
-    ////        if (quest == "gather")
-    ////        {
-    ////message = LocalizeLookUp.GetText("daily_quest_progress") + " " + LocalizeLookUp.GetText("daily_gather") + "\n" + LocalizeLookUp.GetText("daily_completed") + " " + count.ToString() + "/" + pQuest.gather.amount.ToString();
-    ////            pQuest.gather.count = count;
-    ////        }
-    ////        else if (quest == "spellcraft")
-    ////        {
-    ////message = LocalizeLookUp.GetText("daily_quest_progress") + " " + LocalizeLookUp.GetText("daily_spell") + "\n" + LocalizeLookUp.GetText("daily_completed") + " " + count.ToString() + "/" + pQuest.gather.amount.ToString();
-    ////            pQuest.spellcraft.count = count;
-    ////        }
-    ////    }
-    ////    else
-    ////    {
-    ////        if (quest == "gather")
-    ////        {
-    ////message = LocalizeLookUp.GetText ("daily_completed_gather") + "\n" + "+ " + silver.ToString () +  " " + LocalizeLookUp.GetText ("store_silver");
-    ////            pQuest.gather.count = count;
-    ////            pQuest.explore.complete = true;
-
-    ////        }
-    ////        else if (quest == "spellcraft")
-    ////        {
-    ////message = LocalizeLookUp.GetText ("daily_completed_spellcraft") + "\n" + "+ " + silver.ToString () +  " " + LocalizeLookUp.GetText ("store_silver");
-    ////            pQuest.spellcraft.count = count;
-    ////            pQuest.spellcraft.complete = true;
-    ////        }
-    ////        else
-    ////        {
-    ////message = LocalizeLookUp.GetText ("daily_completed_explore") + "\n" + "+ " + silver.ToString () +  " " + LocalizeLookUp.GetText ("store_silver");
-    ////            pQuest.explore.count = 1;
-    ////            pQuest.explore.complete = true;
-    ////        }
-    ////    }
-
-    ////    if (message != null)
-    ////    {
-    ////        PlayerNotificationManager.Instance.ShowNotification(message, m_NotificationIcon);
-    ////    }
-    ////    else
-    ////    {
-    ////        Debug.LogError("null quest progress text");
-    ////    }
-
-    ////    //yield return new WaitForSeconds(5f);
-    ////    //Destroy(g);
-    //}
+    public static event System.Action OnCollectDailyRewards;
 
     public static CovenDaily Quests => PlayerDataManager.playerData.quest.daily;
 
@@ -200,22 +127,12 @@ public static class QuestsController
                     }
 
                     callback?.Invoke(rewards, null);
+                    OnCollectDailyRewards?.Invoke();
                 }
                 else
                 {
                     callback?.Invoke(new DailyRewards(), APIManager.ParseError(result));
                 }
-                //if (response == 200)
-                //{
-                //    var reward = JsonConvert.DeserializeObject<Rewards>(result);
-                //    StartCoroutine(ShowRewards(reward));
-                //    PlayerDataManager.playerData.quest.completed = true;
-                //}
-                //else
-                //{
-                //    Debug.Log(result + response);
-                //    bottomInfo.text = LocalizeLookUp.GetText("daily_could_not_claim");//"Couldn't Claim rewards . . .";
-                //}
             });
     }
 }

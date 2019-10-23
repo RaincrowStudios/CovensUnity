@@ -79,6 +79,9 @@ public class EditorScenes : MonoBehaviour
     [MenuItem("Scenes/Screens/StoreBundle")]
     static void StoreBundleScene() => OpenScene("StoreBundle");
 
+    [MenuItem("Scenes/Screens/ReviewPopup")]
+    static void ReviewPopupScene() => OpenScene("ReviewPopup");
+
 
     private static void OpenScene(string name)
     {

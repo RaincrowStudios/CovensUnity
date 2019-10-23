@@ -5,9 +5,12 @@ using UnityEngine;
 public class BackButtonListener : MonoBehaviour
 {
     private static Stack<System.Action> m_CloseStack = new Stack<System.Action>();
+
     public static BackButtonListener Instance { get; private set; }
 
     public static event System.Action<int> onPressBackBtn;
+
+    public static int ActionCount => m_CloseStack == null ? 0 : m_CloseStack.Count;
         
     public static void AddCloseAction(System.Action close)
     {

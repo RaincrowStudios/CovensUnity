@@ -93,7 +93,7 @@ public class SplashManager : MonoBehaviour
         else
             m_LogoSpeed = 1f;
 
-        m_AppStoreButton.onClick.AddListener(OnClickAppStore);
+        m_AppStoreButton.onClick.AddListener(Utilities.OpenAppStore);
     }
 
     private void OnDestroy()
@@ -411,13 +411,5 @@ public class SplashManager : MonoBehaviour
         yield return new WaitForSeconds(1f);
 
         onShow?.Invoke();
-    }
-
-    public void OnClickAppStore()
-    {
-        if (Application.platform == RuntimePlatform.IPhonePlayer)
-            Application.OpenURL("https://apps.apple.com/us/app/covens/id1456181456");
-        else
-            Application.OpenURL("http://play.google.com/store/apps/details?id=com.raincrow.covens");
-    }   
+    }  
 }

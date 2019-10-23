@@ -345,6 +345,8 @@ public class GameStartup : MonoBehaviour
                     {
                         BlessingManager.CheckDailyBlessing();
                     }
+
+                    ReviewPopupController.Init();
                 });
             }
         }

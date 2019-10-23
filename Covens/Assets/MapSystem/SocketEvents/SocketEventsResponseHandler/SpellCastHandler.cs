@@ -65,6 +65,9 @@ namespace Raincrow.GameEventResponses
         }
 
         public string EventName => "cast.spell";
+
+        public static float LastAttackTime { get; private set; }
+
         public static event System.Action<string, SpellData, Result> OnPlayerTargeted;
         public static event System.Action<SpellCastEventData> OnPlayerCast;
         public static event System.Action<SpellCastEventData> OnWillProcessSpell;
@@ -116,6 +119,9 @@ namespace Raincrow.GameEventResponses
             SpellData spell = DownloadedAssets.GetSpell(data.spell);
             bool playerIsCaster = data.caster.id == player.instance;
             bool playerIsTarget = data.target.id == player.instance;
+
+            if (playerIsCaster || playerIsTarget)
+                LastAttackTime = Time.time;
 
             IMarker caster = MarkerManager.GetMarker(data.caster.id);
             IMarker target = MarkerManager.GetMarker(data.target.id);
