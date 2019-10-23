@@ -57,9 +57,9 @@ public class DictionaryManager
     private static string STORE_URL => baseURL + "store/";
     private static string GAME_URL => baseURL + "game/";
 
-    private static string LOCALISATION_DICT_KEY = LOCALIZATION_URL;
-    private static string GAME_DICT_KEY = GAME_URL;
-    private static string STORE_DICT_KEY = STORE_URL;
+    private const string LOCALISATION_DICT_KEY = "covens.localization";
+    private const string GAME_DICT_KEY = "covens.game";
+    private const string STORE_DICT_KEY = "covens.store";
 
     public const string GAME_DICT_FILENAME = "game.text";
     public const string STORE_DICT_FILENAME = "store.text";
