@@ -118,6 +118,9 @@ public class UIMain : MonoBehaviour
 
         m_EnergyTextPanel.Show(false);
         m_ChannelingGlow.SetActive(false);
+        
+        m_EnergyTextPanel.m_Title.text = LocalizeLookUp.GetText("lt_none");
+        m_EnergyTextPanel.m_Content.text = " ";
     }
 
     private void OnClickLeaderboards()
