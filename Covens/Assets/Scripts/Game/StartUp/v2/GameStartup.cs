@@ -154,7 +154,7 @@ public class GameStartup : MonoBehaviour
 
     private void OnDictionaryDownloadProgress(string name, float size, float progress)
     {
-        name = (LocalizeLookUp.HasKey("chat_settings") ? LocalizeLookUp.GetText("chat_settings") : "settings") + " (" + name + ")";
+        name = LocalizeLookUp.GetText("download");
         SplashManager.Instance.SetDownloadProgress(name, 0, 0, size, progress);
     }
 

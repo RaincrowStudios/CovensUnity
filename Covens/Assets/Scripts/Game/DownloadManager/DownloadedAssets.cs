@@ -15,7 +15,27 @@ public class DownloadedAssets : MonoBehaviour
 
     public static Dictionary<string, Sprite> AllSprites = new Dictionary<string, Sprite>();
     public static Dictionary<string, Sprite> IconSprites = new Dictionary<string, Sprite>();
-    public static Dictionary<string, string> localizedText = new Dictionary<string, string>();
+
+    private static Dictionary<string, string> m_LocalizationDict = null;
+    public static Dictionary<string, string> LocalizationDictionary
+    {
+        get
+        {
+            if (m_LocalizationDict == null)
+            {
+                string path = "Localization/" + "Portuguese";// DictionaryManager.Languages[DictionaryManager.languageIndex];
+                TextAsset asset = Resources.Load<TextAsset>(path);
+                string json = asset ? asset.text : Resources.Load<TextAsset>("Localization/English").text;
+                Debug.Log("Initializing default localization \"" + path + ".json\"");
+                m_LocalizationDict = Newtonsoft.Json.JsonConvert.DeserializeObject<Dictionary<string, string>>(json);
+            }
+            return m_LocalizationDict;
+        }
+        set
+        {
+            m_LocalizationDict = value;
+        }
+    }
 
 
     public static Dictionary<string, SpellData> spellDictData = new Dictionary<string, SpellData>();

@@ -146,7 +146,7 @@ public class SplashManager : MonoBehaviour
         msg = "";
 
         if (totalFiles > 0)
-            msg = "Downloading: " + (fileIndex).ToString() + " out of " + totalFiles.ToString();
+            msg =  LocalizeLookUp.GetText("download") + ": " + (fileIndex).ToString() + "/" + totalFiles.ToString();
         else if (string.IsNullOrEmpty(fileName) == false)
             msg = fileName;
 
@@ -320,7 +320,7 @@ public class SplashManager : MonoBehaviour
         //get all available hints
         List<string> tips = new List<string>();
         int i = 0;
-        while (DownloadedAssets.localizedText.ContainsKey("tip_" + i))
+        while (DownloadedAssets.LocalizationDictionary.ContainsKey("tip_" + i))
         {
             tips.Add("tip_" + i);
             i++;

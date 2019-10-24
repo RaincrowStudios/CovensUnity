@@ -51,12 +51,12 @@ public class LocationTutorial : UIInfoPanel
     protected override void Awake()
     {
         base.Awake();
-        tips.Add(DownloadedAssets.localizedText["first_pop_lms"]);
-        tips.Add(DownloadedAssets.localizedText["first_pop_fly"]);
-        tips.Add(DownloadedAssets.localizedText["first_pop_cloak"]);
-        tips.Add(DownloadedAssets.localizedText["first_pop_summon"]);
-        tips.Add(DownloadedAssets.localizedText["first_pop_islands"]);
-        tips.Add(DownloadedAssets.localizedText["first_pop_guardian"]);
+        tips.Add(DownloadedAssets.LocalizationDictionary["first_pop_lms"]);
+        tips.Add(DownloadedAssets.LocalizationDictionary["first_pop_fly"]);
+        tips.Add(DownloadedAssets.LocalizationDictionary["first_pop_cloak"]);
+        tips.Add(DownloadedAssets.LocalizationDictionary["first_pop_summon"]);
+        tips.Add(DownloadedAssets.LocalizationDictionary["first_pop_islands"]);
+        tips.Add(DownloadedAssets.LocalizationDictionary["first_pop_guardian"]);
         var title = this.transform.GetChild(0).GetChild(1).GetComponentInChildren<TextMeshProUGUI>();
         title.text = LocalizeLookUp.GetText("school_title") + ": " + LocalizeLookUp.GetText("pop_title");
         descCG = description.GetComponent<CanvasGroup>();

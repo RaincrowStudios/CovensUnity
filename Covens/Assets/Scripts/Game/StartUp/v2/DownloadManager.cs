@@ -98,7 +98,7 @@ public class DownloadManager : MonoBehaviour
         Debug.Log("Requesting asset list from server");
 
         if (SplashManager.Instance)
-            SplashManager.Instance.SetDownloadMessage("Getting asset list from server", "");
+            SplashManager.Instance.SetDownloadMessage(LocalizeLookUp.GetText("server_syncing"), "");
 
         //APIManagerServer.EnableAutoRetry = false;
 
@@ -430,7 +430,7 @@ public class DownloadManager : MonoBehaviour
     {
         try
         {
-            DownloadedAssets.localizedText = JsonConvert.DeserializeObject<Dictionary<string, string>>(json);
+            DownloadedAssets.LocalizationDictionary = JsonConvert.DeserializeObject<Dictionary<string, string>>(json);
             return true;
         }
         catch (System.Exception e)
