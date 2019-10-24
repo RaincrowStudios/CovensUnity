@@ -532,6 +532,7 @@ MonoBehaviour:
   prefix: 
   id: login_back
   suffix: 
+  toUpper: 0
 --- !u!114 &465230795
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1305,6 +1306,7 @@ MonoBehaviour:
   prefix: 
   id: policy_title
   suffix: 
+  toUpper: 0
 --- !u!114 &806834051
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1559,6 +1561,7 @@ MonoBehaviour:
   prefix: 
   id: policy_title
   suffix: 
+  toUpper: 0
 --- !u!114 &1007454786
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2237,6 +2240,7 @@ MonoBehaviour:
   prefix: 
   id: login_agegate
   suffix: 
+  toUpper: 0
 --- !u!114 &1458696184
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2656,6 +2660,7 @@ MonoBehaviour:
   prefix: 
   id: leveled_continue
   suffix: 
+  toUpper: 0
 --- !u!222 &1524962936
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -3463,6 +3468,7 @@ MonoBehaviour:
   prefix: 
   id: login_agegate_error
   suffix: 
+  toUpper: 0
 --- !u!114 &2032926025
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -6994,6 +7000,7 @@ MonoBehaviour:
   prefix: 
   id: enter_password_upper
   suffix: 
+  toUpper: 0
 --- !u!114 &114058114447455470
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -7261,6 +7268,7 @@ MonoBehaviour:
   prefix: 
   id: no_email
   suffix: 
+  toUpper: 0
 --- !u!114 &114095142744874518
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -7321,6 +7329,7 @@ MonoBehaviour:
   prefix: 
   id: character_name
   suffix: 
+  toUpper: 0
 --- !u!114 &114123587879182598
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -7500,6 +7509,7 @@ MonoBehaviour:
   prefix: 
   id: reset_user_invalid
   suffix: 
+  toUpper: 0
 --- !u!114 &114153445539693316
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -7663,6 +7673,7 @@ MonoBehaviour:
   prefix: 
   id: re_enter_password
   suffix: 
+  toUpper: 0
 --- !u!114 &114170479957689502
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -8367,6 +8378,7 @@ MonoBehaviour:
   prefix: 
   id: login_back
   suffix: 
+  toUpper: 0
 --- !u!114 &114297435146855160
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -8382,6 +8394,7 @@ MonoBehaviour:
   prefix: 
   id: reset_account_name
   suffix: 
+  toUpper: 0
 --- !u!114 &114310255867801902
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -8397,6 +8410,7 @@ MonoBehaviour:
   prefix: 
   id: sign_in_existing
   suffix: 
+  toUpper: 0
 --- !u!114 &114318381049841392
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -8412,6 +8426,7 @@ MonoBehaviour:
   prefix: 
   id: reset_bad_code
   suffix: 
+  toUpper: 0
 --- !u!114 &114319079719667816
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -8427,6 +8442,7 @@ MonoBehaviour:
   prefix: 
   id: password
   suffix: 
+  toUpper: 0
 --- !u!114 &114330019576951944
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -8946,6 +8962,7 @@ MonoBehaviour:
   prefix: 
   id: continue
   suffix: 
+  toUpper: 0
 --- !u!114 &114480231888829294
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -9003,6 +9020,7 @@ MonoBehaviour:
   prefix: 
   id: login_back
   suffix: 
+  toUpper: 0
 --- !u!114 &114514237754399850
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -9317,6 +9335,7 @@ MonoBehaviour:
   prefix: 
   id: password
   suffix: 
+  toUpper: 0
 --- !u!114 &114565367982492976
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -9523,6 +9542,7 @@ MonoBehaviour:
   prefix: 
   id: change_wardrobe
   suffix: 
+  toUpper: 0
 --- !u!114 &114586931902451456
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -9601,6 +9621,7 @@ MonoBehaviour:
   prefix: 
   id: continue_generic
   suffix: 
+  toUpper: 0
 --- !u!114 &114608590874844516
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -9645,6 +9666,7 @@ MonoBehaviour:
   prefix: 
   id: raincrow_id
   suffix: 
+  toUpper: 0
 --- !u!114 &114617832653716680
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -9660,6 +9682,7 @@ MonoBehaviour:
   prefix: 
   id: password
   suffix: 
+  toUpper: 0
 --- !u!114 &114620039469782154
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -9738,6 +9761,7 @@ MonoBehaviour:
   prefix: 
   id: continue_generic
   suffix: 
+  toUpper: 0
 --- !u!114 &114652546619507442
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -10038,6 +10062,7 @@ MonoBehaviour:
   prefix: 
   id: reset_password
   suffix: 
+  toUpper: 0
 --- !u!114 &114697821006642346
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -10274,6 +10299,7 @@ MonoBehaviour:
   prefix: 
   id: login_back
   suffix: 
+  toUpper: 0
 --- !u!114 &114724751283301802
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -10325,6 +10351,7 @@ MonoBehaviour:
   prefix: 
   id: continue_without_tutorial
   suffix: 
+  toUpper: 0
 --- !u!114 &114735303188363130
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -10553,6 +10580,7 @@ MonoBehaviour:
   prefix: 
   id: reset_password
   suffix: 
+  toUpper: 0
 --- !u!114 &114772367481495290
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -10568,6 +10596,7 @@ MonoBehaviour:
   prefix: 
   id: login_back
   suffix: 
+  toUpper: 0
 --- !u!114 &114772662304621966
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -10690,6 +10719,7 @@ MonoBehaviour:
   prefix: 
   id: forgot_password
   suffix: 
+  toUpper: 0
 --- !u!114 &114794213811900126
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -10790,6 +10820,7 @@ MonoBehaviour:
   prefix: 
   id: start_new
   suffix: 
+  toUpper: 0
 --- !u!114 &114818825934734824
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -10805,6 +10836,7 @@ MonoBehaviour:
   prefix: 
   id: email
   suffix: 
+  toUpper: 0
 --- !u!114 &114822392767615014
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -11063,6 +11095,7 @@ MonoBehaviour:
   prefix: 
   id: raincrow_id
   suffix: 
+  toUpper: 0
 --- !u!114 &114866536532710324
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -11107,6 +11140,7 @@ MonoBehaviour:
   prefix: 
   id: login_back
   suffix: 
+  toUpper: 0
 --- !u!114 &114880319378844036
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -11226,6 +11260,7 @@ MonoBehaviour:
   prefix: 
   id: login_create_appropriate
   suffix: 
+  toUpper: 0
 --- !u!114 &114906295966302268
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -11322,6 +11357,7 @@ MonoBehaviour:
   prefix: 
   id: login_welcome_witch
   suffix: ' . . .'
+  toUpper: 0
 --- !u!114 &114925019118158878
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -11445,6 +11481,7 @@ MonoBehaviour:
   prefix: 
   id: continue_generic
   suffix: 
+  toUpper: 0
 --- !u!114 &114970050224015696
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -20748,7 +20785,7 @@ ParticleSystem:
 --- !u!199 &199449852290353564
 ParticleSystemRenderer:
   serializedVersion: 6
-  m_ObjectHideFlags: 0
+  m_ObjectHideFlags: 2
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
@@ -20810,7 +20847,7 @@ ParticleSystemRenderer:
 --- !u!199 &199907851508563380
 ParticleSystemRenderer:
   serializedVersion: 6
-  m_ObjectHideFlags: 0
+  m_ObjectHideFlags: 2
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
@@ -22162,7 +22199,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 0.00030517578, y: 105.00066}
+  m_AnchoredPosition: {x: 0.00030517578, y: 65}
   m_SizeDelta: {x: 1128.6, y: 142}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!224 &224090510483241478
@@ -24051,7 +24088,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 0, y: -51}
+  m_AnchoredPosition: {x: 0, y: -128}
   m_SizeDelta: {x: 849, y: 118}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!224 &224986444374098292
@@ -24508,6 +24545,7 @@ MonoBehaviour:
   prefix: 
   id: policy_agree_continue
   suffix: 
+  toUpper: 0
 --- !u!114 &3398035618889787756
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -24610,6 +24648,7 @@ MonoBehaviour:
   prefix: 
   id: email_providing
   suffix: 
+  toUpper: 0
 --- !u!114 &7429426297823415486
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -24625,6 +24664,7 @@ MonoBehaviour:
   prefix: 
   id: raincrow_id_info
   suffix: 
+  toUpper: 0
 --- !u!114 &8411663360385348724
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -24669,3 +24709,4 @@ MonoBehaviour:
   prefix: 
   id: savannah_upper
   suffix: 
+  toUpper: 0
