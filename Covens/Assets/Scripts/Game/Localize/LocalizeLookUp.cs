@@ -13,9 +13,8 @@ public class LocalizeLookUp : MonoBehaviour
 
     void Start()
     {
-        if (DownloadAssetBundle.isDictLoaded)
-            RefreshText();
-
+        //if (DownloadAssetBundle.isDictLoaded)
+        RefreshText();
         LocalizationManager.OnChangeLanguage += RefreshText;
 
         this.enabled = false;
@@ -41,6 +40,7 @@ public class LocalizeLookUp : MonoBehaviour
         Text text = GetComponent<Text>();
         if (text != null)
         {
+            Debug.LogError(GetText(id));
             text.text = prefix + GetText(id) + suffix;
         }
     }
