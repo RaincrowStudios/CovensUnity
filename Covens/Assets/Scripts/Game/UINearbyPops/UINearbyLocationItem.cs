@@ -31,6 +31,7 @@ public class UINearbyLocationItem : MonoBehaviour
     [SerializeField] private TextMeshProUGUI m_NameText;
     [SerializeField] private TextMeshProUGUI m_Status;
     [SerializeField] private TextMeshProUGUI m_ClaimedBy;
+    [SerializeField] private Toggle m_SubscribeNotificaiton;
 
     [SerializeField] private Button m_FlyTo;
 

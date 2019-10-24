@@ -16,6 +16,7 @@ public class UISpiritInfo : UIInfoPanel
     [Header("Texts")]
     [SerializeField] private TextMeshProUGUI m_SpiritName;
     [SerializeField] private TextMeshProUGUI m_Tier;
+    [SerializeField] private TextMeshProUGUI m_NewTier;
     //[SerializeField] private TextMeshProUGUI m_Level;
     [SerializeField] private TextMeshProUGUI m_Energy;
     [SerializeField] private TextMeshProUGUI m_Desc;
@@ -160,7 +161,7 @@ public class UISpiritInfo : UIInfoPanel
             case 4: tier = LocalizeLookUp.GetText("cast_spirit_legendary"); break;
             default: tier = "?"; break;
         };
-        m_Tier.text = tier + " " + LocalizeLookUp.GetText("attacked_spirit");
+        m_NewTier.text = tier + " " + LocalizeLookUp.GetText("attacked_spirit");
 
         if (PlayerDataManager.playerData.level < 4 && m_SpiritData.tier > 1)
             PlayerNotificationManager.Instance.ShowNotification((LocalizeLookUp.GetText("spell_ui_notif_challenging")).ToUpper());//"This is challenging spirit for your level, witch.").ToUpper());
@@ -292,16 +293,17 @@ public class UISpiritInfo : UIInfoPanel
         if (string.IsNullOrEmpty(SpiritMarkerDetails.owner))
         {
             m_Desc.text = "";
+            m_Tier.text = LocalizeLookUp.GetText("ftf_wild_spirit");
             if (!LocationIslandController.isInBattle)
             { m_Desc.text = LocalizeLookUp.GetText("cast_spirit_knowledge"); }// "Defeating this spirit will give you the power to summon it.";
             if (m_SpiritData.tier == 1)
-                m_Tier.text = LocalizeLookUp.GetText("ftf_wild_spirit") + " (" + LocalizeLookUp.GetText("cast_spirit_lesser") + ")";//"Wild Spirit (Lesser)";
+                m_NewTier.text = LocalizeLookUp.GetText("cast_spirit_lesser");
             else if (m_SpiritData.tier == 2)
-                m_Tier.text = LocalizeLookUp.GetText("ftf_wild_spirit") + " (" + LocalizeLookUp.GetText("cast_spirit_greater") + ")";//"Wild Spirit (Greater)";
+                m_NewTier.text = LocalizeLookUp.GetText("cast_spirit_greater");
             else if (m_SpiritData.tier == 3)
-                m_Tier.text = LocalizeLookUp.GetText("ftf_wild_spirit") + " (" + LocalizeLookUp.GetText("cast_spirit_superior") + ")";//"Wild Spirit (Superior)";
+                m_NewTier.text = LocalizeLookUp.GetText("cast_spirit_superior");
             else
-                m_Tier.text = LocalizeLookUp.GetText("ftf_wild_spirit") + " (" + LocalizeLookUp.GetText("cast_spirit_legendary") + ")";//"Wild Spirit (Legendary)";
+                m_NewTier.text = LocalizeLookUp.GetText("cast_spirit_legendary");
 
             foreach (var item in PlayerDataManager.playerData.knownSpirits)
             {

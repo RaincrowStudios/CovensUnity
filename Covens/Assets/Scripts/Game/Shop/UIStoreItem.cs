@@ -25,6 +25,7 @@ public class UIStoreItem : MonoBehaviour
     [SerializeField] private Button m_BuyButton;
     [SerializeField] private Image m_BuyIcon;
     [SerializeField] private TextMeshProUGUI m_BuyText;
+    [SerializeField] private TextMeshProUGUI m_BuyText2;
     [Space()]
     [SerializeField] private Sprite m_GreenSprite;
     [SerializeField] private Sprite m_RedSprite;
@@ -83,9 +84,9 @@ public class UIStoreItem : MonoBehaviour
     private void SetIconLayout_Full()
     {
         RectTransform rectTransform = m_ItemIcon.rectTransform;
-        rectTransform.pivot = new Vector2(0.5f, 0.5f);
-        rectTransform.sizeDelta = new Vector2(560, 420);
-        rectTransform.anchoredPosition = new Vector2(280, 210);
+        rectTransform.pivot = new Vector2(0.5f, 0f);
+        rectTransform.sizeDelta = new Vector2(546.7f, 339.5f);
+        rectTransform.anchoredPosition = new Vector2(279.55f, 16);
     }
 
     public void Setup(StoreItem item, object data)
@@ -237,7 +238,8 @@ public class UIStoreItem : MonoBehaviour
         m_IconId = id + "_icon";
 
         bool claimed = PlayerDataManager.playerData.OwnedPacks.Contains(id);
-        m_BuyText.text = claimed ? LocalizeLookUp.GetText("store_gear_owned_upper") : LocalizeLookUp.GetText("store_claim").ToUpper();
+        m_BuyIcon.gameObject.SetActive(false);
+        m_BuyText2.text = claimed ? LocalizeLookUp.GetText("store_gear_owned_upper") : LocalizeLookUp.GetText("claim_gift").ToUpper();
         m_BuyButton.onClick.RemoveAllListeners();
 
         if (!claimed)
@@ -413,6 +415,7 @@ public class UIStoreItem : MonoBehaviour
 
         m_CostOr.gameObject.SetActive(item.silver > 0 && item.gold > 0);
         m_BuyText.text = item.silver == 0 && item.gold == 0 ? LocalizeLookUp.GetText("store_claim").ToUpper() : LocalizeLookUp.GetText("store_buy_upper");
+        m_BuyText2.text = "";
 
         m_CostLayout.enabled = true;
         LayoutRebuilder.ForceRebuildLayoutImmediate(m_CostLayout.GetComponent<RectTransform>());

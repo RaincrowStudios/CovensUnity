@@ -20,7 +20,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &3067308748353320631
 RectTransform:
   m_ObjectHideFlags: 0
@@ -220,6 +220,7 @@ MonoBehaviour:
   prefix: 
   id: spell_immune
   suffix: 
+  toUpper: 0
 --- !u!1 &2629592909300211854
 GameObject:
   m_ObjectHideFlags: 0

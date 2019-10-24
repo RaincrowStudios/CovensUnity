@@ -36,6 +36,7 @@ public class FTFLocationController : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
+        dialogueTxt.text = LocalizeLookUp.GetText("ftf_12");
         nextBtn.transform.parent.gameObject.SetActive(false);
         LeanTween.value(0, 1, 3f).setOnUpdate((float v) =>
         {
@@ -47,7 +48,7 @@ public class FTFLocationController : MonoBehaviour
             StartCoroutine(HandleAttack());
             nextBtn.onClick.AddListener(() =>
             {
-                dialogueTxt.text = "Savannah Grey: \"This Place of Power is a Last Witch Standing battle, they must defeat the Guardian and each other to be victorious.\"";
+                dialogueTxt.text = LocalizeLookUp.GetText("ftf_13"); ;
                 nextBtn.transform.parent.gameObject.SetActive(false);
                 StartCoroutine(ActivateSpirit());
             });
@@ -289,7 +290,7 @@ public class FTFLocationController : MonoBehaviour
             "spirit_barghest","spirit_maximon","spirit_alakshmi","spirit_banshee","spirit_ayizan","spirit_quetzalcoatl"
         };
 
-        foreach(var renderer in m_Witches)
+        foreach (var renderer in m_Witches)
         {
             if (renderer == null)
                 continue;
