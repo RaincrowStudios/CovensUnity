@@ -6353,6 +6353,7 @@ GameObject:
   - component: {fileID: 1298376052229256217}
   - component: {fileID: 1073376615263592721}
   - component: {fileID: 206787587326446345}
+  - component: {fileID: 8343345873553260269}
   m_Layer: 15
   m_Name: Placeholder
   m_TagString: Untagged
@@ -6421,6 +6422,22 @@ MonoBehaviour:
     m_VerticalOverflow: 0
     m_LineSpacing: 1
   m_Text: Enter text...
+--- !u!114 &8343345873553260269
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2876412404894514209}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 64a59a015644a4f44b632497e81f3cc7, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  prefix: 
+  id: coven_invite_enter_text
+  suffix: 
+  toUpper: 0
 --- !u!1 &2915324086402728426
 GameObject:
   m_ObjectHideFlags: 0
