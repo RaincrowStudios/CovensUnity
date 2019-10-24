@@ -23,7 +23,7 @@ public class DownloadedAssets : MonoBehaviour
         {
             if (m_LocalizationDict == null)
             {
-                string path = "Localization/" + "Portuguese";// DictionaryManager.Languages[DictionaryManager.languageIndex];
+                string path = "Localization/" + DictionaryManager.Languages[DictionaryManager.languageIndex];
                 TextAsset asset = Resources.Load<TextAsset>(path);
                 string json = asset ? asset.text : Resources.Load<TextAsset>("Localization/English").text;
                 Debug.Log("Initializing default localization \"" + path + ".json\"");
