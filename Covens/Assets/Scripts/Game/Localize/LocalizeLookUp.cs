@@ -40,7 +40,6 @@ public class LocalizeLookUp : MonoBehaviour
         Text text = GetComponent<Text>();
         if (text != null)
         {
-            Debug.LogError(GetText(id));
             text.text = prefix + GetText(id) + suffix;
         }
     }
