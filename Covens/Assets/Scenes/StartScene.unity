@@ -5311,7 +5311,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   prefix: 
-  id: location_on_title
+  id: missing_location_permission
   suffix: 
   toUpper: 0
 --- !u!1 &1123757603
@@ -9115,7 +9115,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   prefix: 
-  id: location_permission_title
+  id: missing_location_permission
   suffix: 
   toUpper: 0
 --- !u!1 &1710158875
