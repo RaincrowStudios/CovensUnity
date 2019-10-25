@@ -78,13 +78,13 @@ public static class SpellcastingTextFeedback
         }
 
         string str = null;
-        if (caster == PlayerManager.marker && DownloadedAssets.localizedText.ContainsKey(response.spell + "_caster"))
+        if (caster == PlayerManager.marker && DownloadedAssets.LocalizationDictionary.ContainsKey(response.spell + "_caster"))
         {
-            str = DownloadedAssets.localizedText[response.spell + "_caster"];
+            str = DownloadedAssets.LocalizationDictionary[response.spell + "_caster"];
         }
-        if (caster != PlayerManager.marker && DownloadedAssets.localizedText.ContainsKey(response.spell + "_target"))
+        if (caster != PlayerManager.marker && DownloadedAssets.LocalizationDictionary.ContainsKey(response.spell + "_target"))
         {
-            str = DownloadedAssets.localizedText[response.spell + "_target"];
+            str = DownloadedAssets.LocalizationDictionary[response.spell + "_target"];
         }
 
         if (str != null)

@@ -309,10 +309,11 @@ public class LocationIslandController : MonoBehaviour
     {
         AddWitchHandlerPOP.OnWitchAddPOP -= WitchJoined;
         RemoveTokenHandlerPOP.OnRemoveTokenPOP -= WitchRemoved;
+        isInBattle = false;
+        OnComplete?.Invoke();
         // APIManager.Instance.Put($"place-of-power/leave", "{}", (response, result) =>
         //   {
-        //       isInBattle = false;
-        //       OnComplete();
+
         //   });
     }
 

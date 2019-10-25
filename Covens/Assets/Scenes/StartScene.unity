@@ -689,6 +689,7 @@ GameObject:
   - component: {fileID: 166796094}
   - component: {fileID: 166796096}
   - component: {fileID: 166796095}
+  - component: {fileID: 166796097}
   m_Layer: 5
   m_Name: Desc
   m_TagString: Untagged
@@ -837,6 +838,22 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 166796093}
   m_CullTransparentMesh: 0
+--- !u!114 &166796097
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 166796093}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 64a59a015644a4f44b632497e81f3cc7, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  prefix: 
+  id: location_on
+  suffix: 
+  toUpper: 0
 --- !u!1 &175511486
 GameObject:
   m_ObjectHideFlags: 0
@@ -2672,6 +2689,7 @@ GameObject:
   - component: {fileID: 672273309}
   - component: {fileID: 672273311}
   - component: {fileID: 672273310}
+  - component: {fileID: 672273312}
   m_Layer: 5
   m_Name: CovensPermissionDesc
   m_TagString: Untagged
@@ -2821,6 +2839,22 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 672273308}
   m_CullTransparentMesh: 0
+--- !u!114 &672273312
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 672273308}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 64a59a015644a4f44b632497e81f3cc7, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  prefix: 
+  id: location_permission
+  suffix: 
+  toUpper: 0
 --- !u!1 &673164766
 GameObject:
   m_ObjectHideFlags: 0
@@ -5116,6 +5150,7 @@ GameObject:
   - component: {fileID: 1118641820}
   - component: {fileID: 1118641822}
   - component: {fileID: 1118641821}
+  - component: {fileID: 1118641823}
   m_Layer: 5
   m_Name: Title
   m_TagString: Untagged
@@ -5263,6 +5298,22 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1118641819}
   m_CullTransparentMesh: 0
+--- !u!114 &1118641823
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1118641819}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 64a59a015644a4f44b632497e81f3cc7, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  prefix: 
+  id: missing_location_permission
+  suffix: 
+  toUpper: 0
 --- !u!1 &1123757603
 GameObject:
   m_ObjectHideFlags: 0
@@ -6758,6 +6809,7 @@ GameObject:
   - component: {fileID: 1635572606}
   - component: {fileID: 1635572608}
   - component: {fileID: 1635572607}
+  - component: {fileID: 1635572609}
   m_Layer: 5
   m_Name: LocationSettingDesc
   m_TagString: Untagged
@@ -6906,6 +6958,22 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1635572605}
   m_CullTransparentMesh: 0
+--- !u!114 &1635572609
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1635572605}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 64a59a015644a4f44b632497e81f3cc7, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  prefix: 
+  id: location_permission
+  suffix: 
+  toUpper: 0
 --- !u!1 &1638755251
 GameObject:
   m_ObjectHideFlags: 0
@@ -8886,6 +8954,7 @@ GameObject:
   - component: {fileID: 1681662706}
   - component: {fileID: 1681662708}
   - component: {fileID: 1681662707}
+  - component: {fileID: 1681662709}
   m_Layer: 5
   m_Name: Title
   m_TagString: Untagged
@@ -9033,6 +9102,22 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1681662705}
   m_CullTransparentMesh: 0
+--- !u!114 &1681662709
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1681662705}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 64a59a015644a4f44b632497e81f3cc7, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  prefix: 
+  id: missing_location_permission
+  suffix: 
+  toUpper: 0
 --- !u!1 &1710158875
 GameObject:
   m_ObjectHideFlags: 0

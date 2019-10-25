@@ -36742,6 +36742,7 @@ GameObject:
   - component: {fileID: 1726666984}
   - component: {fileID: 1726666983}
   - component: {fileID: 1726666982}
+  - component: {fileID: 1726666985}
   m_Layer: 5
   m_Name: Text (TMP)
   m_TagString: Untagged
@@ -36901,6 +36902,22 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1726666980}
   m_CullTransparentMesh: 0
+--- !u!114 &1726666985
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1726666980}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 64a59a015644a4f44b632497e81f3cc7, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  prefix: 
+  id: ftf_battle_world
+  suffix: 
+  toUpper: 0
 --- !u!1 &1741874466
 GameObject:
   m_ObjectHideFlags: 0

@@ -13,9 +13,8 @@ public class LocalizeLookUp : MonoBehaviour
 
     void Start()
     {
-        if (DownloadAssetBundle.isDictLoaded)
-            RefreshText();
-
+        //if (DownloadAssetBundle.isDictLoaded)
+        RefreshText();
         LocalizationManager.OnChangeLanguage += RefreshText;
 
         this.enabled = false;
@@ -47,15 +46,15 @@ public class LocalizeLookUp : MonoBehaviour
 
     public static string GetText(string id)
     {
-        if (DownloadedAssets.localizedText.ContainsKey(id))
-            return DownloadedAssets.localizedText[id];
+        if (DownloadedAssets.LocalizationDictionary.ContainsKey(id))
+            return DownloadedAssets.LocalizationDictionary[id];
         else
             return $"<{id}>";
     }
 
     public static bool HasKey(string id)
     {
-        return DownloadedAssets.localizedText.ContainsKey(id);
+        return DownloadedAssets.LocalizationDictionary.ContainsKey(id);
     }
 
     //spell
