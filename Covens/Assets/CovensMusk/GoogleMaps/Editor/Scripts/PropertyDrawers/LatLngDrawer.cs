@@ -29,6 +29,11 @@ namespace Google.Maps.Editor.PropertyDrawers {
     /// </summary>
     private readonly GUIContent TextFieldContent = new GUIContent("");
 
+    /// <summary>
+    /// Previous text field string.
+    /// </summary>
+    private string PreviousString = null;
+
     /// <inheritdoc/>
     public override void OnGUI(Rect position, SerializedProperty property, GUIContent label) {
       EditorGUI.BeginProperty(position, label, property);
@@ -47,7 +52,10 @@ namespace Google.Maps.Editor.PropertyDrawers {
       // Draw text field and update LatLng if valid.
       string newLatLng =
           EditorGUI.TextField(position, TextFieldContent, LatLngPropertyToString(property));
-      TrySetLatLng(newLatLng, property);
+      if (!newLatLng.Equals(PreviousString)) {
+        PreviousString = newLatLng;
+        TrySetLatLng(newLatLng, property);
+      }
 
       EditorGUI.EndProperty();
     }
