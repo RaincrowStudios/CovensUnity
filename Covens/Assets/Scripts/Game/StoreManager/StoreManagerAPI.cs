@@ -37,6 +37,7 @@ namespace Raincrow.Store
                     return IsSilver ? item.silver : item.gold;
             }
 
+            Debug.LogError("store item not found for \"" + id + "\"");
             return 0;
         }
     }

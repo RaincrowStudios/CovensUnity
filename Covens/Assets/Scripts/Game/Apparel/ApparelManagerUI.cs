@@ -161,10 +161,10 @@ public class ApparelManagerUI : MonoBehaviour
         char gender = PlayerDataManager.playerData.male ? 'm' : 'f';
         foreach (var item in PlayerDataManager.playerData.inventory.cosmetics)
         {
-            if (item.type[0] != gender)
+            if (item.hidden)
                 continue;
 
-            if (item.hidden)
+            if (item.type[0] != gender)
                 continue;
 
             var g = Utilities.InstantiateObject(ApparelButton, container);
