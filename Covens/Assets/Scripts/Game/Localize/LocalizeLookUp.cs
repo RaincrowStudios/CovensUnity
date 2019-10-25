@@ -13,9 +13,8 @@ public class LocalizeLookUp : MonoBehaviour
 
     void Start()
     {
-        if (DownloadAssetBundle.isDictLoaded)
-            RefreshText();
-
+        //if (DownloadAssetBundle.isDictLoaded)
+        RefreshText();
         LocalizationManager.OnChangeLanguage += RefreshText;
 
         this.enabled = false;
