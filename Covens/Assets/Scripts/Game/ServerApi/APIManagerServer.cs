@@ -46,7 +46,14 @@ public class APIManagerServer
                 LoadingOverlay.Show();
             }
 
-            if (www.isHttpError && (www.responseCode == 401 || www.downloadHandler.text == "1006"))
+            if (www.isHttpError && www.responseCode == 412 && www.downloadHandler.text == "2016")
+            {
+                Debug.LogError("2016 - retry");
+                retryCount = 0;
+                retry = true;
+                yield return new WaitForSeconds(1f);
+            }
+            else if (www.isHttpError && (www.responseCode == 401 || www.downloadHandler.text == "1006"))
             {
                 //refresh auth tokens and repeat the request
                 bool waitingTokens = true;
