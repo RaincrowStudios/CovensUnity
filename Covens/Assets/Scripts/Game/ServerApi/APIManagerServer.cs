@@ -151,11 +151,11 @@ public class APIManagerServer
         www.SetRequestHeader("Content-Type", "application/json");
         if (bRequiresLoginToken)
         {
-            www.SetRequestHeader("Authorization", LoginAPIManager.loginToken);
+            www.SetRequestHeader("Authorization", LoginAPIManager.loginToken == null ? "" : LoginAPIManager.loginToken);
         }
         if (bRequiresWssToken)
         {
-            www.SetRequestHeader("Authorization", LoginAPIManager.wssToken);
+            www.SetRequestHeader("Authorization", LoginAPIManager.wssToken == null ? "" : LoginAPIManager.wssToken);
         }
         //if (PlayerPrefs.HasKey("cookie"))
         //{

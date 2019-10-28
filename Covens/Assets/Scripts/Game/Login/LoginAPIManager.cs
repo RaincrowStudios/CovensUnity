@@ -15,43 +15,43 @@ public static class LoginAPIManager
     public static bool characterLoggedIn { get { return PlayerDataManager.playerData != null; } }
     public static bool accountLoggedIn { get { return !(string.IsNullOrEmpty(loginToken) || string.IsNullOrEmpty(wssToken)); } }
 
-    public static string loginToken
-    {
-        get
-        {
-#if UNITY_EDITOR
-            return UnityEditor.EditorPrefs.GetString("authToken", "");
-#endif
-            return PlayerPrefs.GetString("authToken", "");
-        }
-        set
-        {
-#if UNITY_EDITOR
-            UnityEditor.EditorPrefs.SetString("authToken", value);
-            return;
-#endif
-            PlayerPrefs.SetString("authToken", value);
-        }
-    }
+    public static string loginToken { get; set; }
+//    {
+//        get
+//        {
+//#if UNITY_EDITOR
+//            return UnityEditor.EditorPrefs.GetString("authToken", "");
+//#endif
+//            return PlayerPrefs.GetString("authToken", "");
+//        }
+//        set
+//        {
+//#if UNITY_EDITOR
+//            UnityEditor.EditorPrefs.SetString("authToken", value);
+//            return;
+//#endif
+//            PlayerPrefs.SetString("authToken", value);
+//        }
+//    }
 
-    public static string wssToken
-    {
-        get
-        {
-#if UNITY_EDITOR
-            return UnityEditor.EditorPrefs.GetString("wssToken", "");
-#endif
-            return PlayerPrefs.GetString("wssToken", "");
-        }
-        set
-        {
-#if UNITY_EDITOR
-            UnityEditor.EditorPrefs.SetString("wssToken", value);
-            return;
-#endif
-            PlayerPrefs.SetString("wssToken", value);
-        }
-    }
+    public static string wssToken { get; set; }
+//    {
+//        get
+//        {
+//#if UNITY_EDITOR
+//            return UnityEditor.EditorPrefs.GetString("wssToken", "");
+//#endif
+//            return PlayerPrefs.GetString("wssToken", "");
+//        }
+//        set
+//        {
+//#if UNITY_EDITOR
+//            UnityEditor.EditorPrefs.SetString("wssToken", value);
+//            return;
+//#endif
+//            PlayerPrefs.SetString("wssToken", value);
+//        }
+//    }
 
     public static string StoredUserName
     {
