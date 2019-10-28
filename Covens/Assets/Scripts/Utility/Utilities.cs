@@ -529,6 +529,10 @@ public class Utilities : MonoBehaviour
             data.storeCatagory = "accessories";
             return;
         }
+
+        data.catagory = data.position;
+        data.storeCatagory = "accessories";
+        Debug.LogError("no category found for \"" + data.id + "\"");
     }
 
     public static int GetAvatar()
