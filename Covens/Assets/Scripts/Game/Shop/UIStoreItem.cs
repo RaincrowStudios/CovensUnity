@@ -254,7 +254,10 @@ public class UIStoreItem : MonoBehaviour
                         LoadingOverlay.Hide();
                         if (string.IsNullOrEmpty(error))
                         {
+                            var aux = m_ItemIcon.overrideSprite;
                             Setup(id, data);
+                            m_ItemIcon.overrideSprite = aux;
+
                             UIStorePurchaseSuccess.Show(
                                 m_ItemTitle.text,
                                 "",
