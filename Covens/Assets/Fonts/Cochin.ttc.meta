@@ -11,7 +11,8 @@ TrueTypeFontImporter:
   fontName: Cochin
   fontNames:
   - Cochin
-  fallbackFontReferences: []
+  fallbackFontReferences:
+  - {fileID: 12800000, guid: a289e80b0d03fdd458271e5cd8b7c9fe, type: 3}
   customCharacters: 
   fontRenderingMode: 0
   ascentCalculationMode: 1
