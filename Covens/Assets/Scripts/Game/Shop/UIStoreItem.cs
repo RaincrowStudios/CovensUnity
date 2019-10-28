@@ -399,6 +399,7 @@ public class UIStoreItem : MonoBehaviour
         m_ItemAmount.text = "";
         m_ItemIcon.overrideSprite = null;
         m_Tag.SetActive(false);
+        m_BuyIcon.gameObject.SetActive(true);
 
         name = "[UIStoreItem] " + item.id + " - " + m_ItemTitle.text;
 

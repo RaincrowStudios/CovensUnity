@@ -241,7 +241,7 @@ public class UIStoreContainer : MonoBehaviour
         group.SetSingleRowLayout(singleRow);
         spawnedGroups.Add(group);
 
-        if (m_Category == UIStore.Screen.COSMETICS)
+        if (m_Category == UIStore.Screen.COSMETICS && filter == Filter.clothing)
         {
             Debug.Log("Hard inserting free packs");
             List<string> packs = new List<string>();
