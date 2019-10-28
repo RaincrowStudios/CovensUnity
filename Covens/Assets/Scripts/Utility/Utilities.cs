@@ -529,9 +529,16 @@ public class Utilities : MonoBehaviour
             data.storeCatagory = "accessories";
             return;
         }
+        if (data.position == "style")
+        {
+            data.catagory = data.position;
+            data.storeCatagory = data.position;
+            return;
+        }
 
         data.catagory = data.position;
-        data.storeCatagory = "accessories";
+        data.storeCatagory = "clothing";
+
         Debug.LogError("no category found for \"" + data.id + "\"");
     }
 

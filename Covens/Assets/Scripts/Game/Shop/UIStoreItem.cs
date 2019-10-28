@@ -215,12 +215,13 @@ public class UIStoreItem : MonoBehaviour
     
     public void Setup(string id, PackData data)
     {
-        name = "[UIStoreItem] " + id;
         m_ItemTitle.text = LocalizeLookUp.GetStoreTitle(id);
         m_ItemSubtitle.text = "";
         m_ItemAmount.text = "";
         m_SilverCost.text = "";
         m_GoldCost.text = "";
+
+        name = "[UIStoreItem] " + id + " - " + m_ItemTitle.text;
 
         m_Tag.SetActive(false);
         m_SilverCost.gameObject.SetActive(false);
@@ -393,13 +394,13 @@ public class UIStoreItem : MonoBehaviour
 
     private void Setup(StoreItem item)
     {
-        name = "[UIStoreItem] " + item.id;
-
         m_ItemTitle.text = LocalizeLookUp.GetStoreTitle(item.id);
         m_ItemSubtitle.text = LocalizeLookUp.GetStoreSubtitle(item.id);
         m_ItemAmount.text = "";
         m_ItemIcon.overrideSprite = null;
         m_Tag.SetActive(false);
+
+        name = "[UIStoreItem] " + item.id + " - " + m_ItemTitle.text;
 
         m_SilverCost.text = item.silver.ToString();
         m_GoldCost.text = item.gold.ToString();

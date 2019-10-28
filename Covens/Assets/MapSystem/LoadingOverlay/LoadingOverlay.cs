@@ -105,4 +105,26 @@ public class LoadingOverlay : MonoBehaviour
 
         Instance._Hide();
     }
+
+    //public string itemsArray= "[]";
+    //[ContextMenu("debug_newitems")]
+    //private void Debug_NewItems()
+    //{
+    //    List<string> ids = Newtonsoft.Json.JsonConvert.DeserializeObject<List<string>>(itemsArray);
+
+    //    List<object> result = new List<object>();
+
+    //    foreach(string s in ids)
+    //    {
+    //        CosmeticData data = DownloadedAssets.GetCosmetic(s);
+    //        Dictionary<string, object> obj = new Dictionary<string, object>();
+    //        obj["id"] = data.id;
+    //        obj["type"] = "cosmetics";
+    //        obj["silver"] = Raincrow.Store.StoreManagerAPI.StoreData.GetPrice("cosmetics", s, true);
+    //        obj["gold"] = Raincrow.Store.StoreManagerAPI.StoreData.GetPrice("cosmetics", s, false);
+    //        result.Add(obj);
+    //    }
+
+    //    Debug.Log(Newtonsoft.Json.JsonConvert.SerializeObject(result));
+    //}
 }

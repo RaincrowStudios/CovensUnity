@@ -8820,6 +8820,22 @@ PrefabInstance:
         "+1200"     },     "silver6": {       "product": "com.raincrow.covens.silver6",       "cost":
         89.99,       "amount": 14500,       "extra": "+4500"     }   } }'
       objectReference: {fileID: 0}
+    - target: {fileID: 114728094488087716, guid: bfea223f8fe9daf4e92bd156d1244a42,
+        type: 3}
+      propertyPath: itemsArray
+      value: '[ "cosmetic_f_CR_COLDMOON", "cosmetic_m_CL_COLDMOON", "cosmetic_f_CR_DAYODEAD",
+        "cosmetic_m_CL_DAYODEAD", "cosmetic_f_CR_HALLOWEEN", "cosmetic_m_CL_HALLOWEEN",
+        "cosmetic_f_HA_HORNS", "cosmetic_m_HA_HORNS", "cosmetic_f_SC_HLLWBT", "cosmetic_m_SC_HLLWBT",
+        "cosmetic_f_SC_SPDRSMNDL", "cosmetic_m_SC_SPDRSMNDL", "cosmetic_f_SF_DTHAWKN",
+        "cosmetic_m_SF_DTHAWKN", "cosmetic_f_SF_RSNGMN", "cosmetic_m_SF_RSNGMN", "cosmetic_f_SF_SPRTTRML",
+        "cosmetic_m_SF_SPRTTRML", "cosmetic_f_SS_CHBDBGBY", "cosmetic_m_SS_CHBDBGBY",
+        "cosmetic_f_SS_FRNKNCPL", "cosmetic_m_SS_FRNKNCPL", "cosmetic_f_SS_GMBLLMCHN",
+        "cosmetic_m_SS_GMBLLMCHN", "cosmetic_f_SS_HLLWGHST", "cosmetic_m_SS_HLLWGHST",
+        "cosmetic_f_S_DAYOFDEAD", "cosmetic_m_S_DIWALI", "cosmetic_f_S_DIWALI", "cosmetic_m_S_HECATE",
+        "cosmetic_f_S_HECATE", "cosmetic_m_S_MABON", "cosmetic_f_S_MABON", "cosmetic_m_S_SAMHAIN",
+        "cosmetic_f_S_SAMHAIN", "cosmetic_m_S_SOOTHSAYER", "cosmetic_f_S_SOOTHSAYER",
+        "cosmetic_m_S_SLPPYHLLW" ]'
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: bfea223f8fe9daf4e92bd156d1244a42, type: 3}
 --- !u!1 &1648459122
