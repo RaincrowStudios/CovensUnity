@@ -92,7 +92,7 @@ public static class PickUpCollectibleAPI
             if (result == 200)
             {
                 int amount = token is CollectableToken ? (token as CollectableToken).amount : (token as EnergyToken).amount;
-                PlayerDataManager.playerData.AddEnergy(amount);
+                OnMapEnergyChange.ForceEvent(PlayerManager.marker, PlayerDataManager.playerData.energy + amount);
 
                 PlayerManagerUI.Instance.UpdateEnergy();
                 UIEnergyBarGlow.Instance.Glow();

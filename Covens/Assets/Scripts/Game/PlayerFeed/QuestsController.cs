@@ -116,7 +116,7 @@ public static class QuestsController
                     PlayerDataManager.playerData.quest.completed = true;
                     PlayerDataManager.playerData.silver += rewards.silver;
                     PlayerDataManager.playerData.gold += rewards.gold;
-                    PlayerDataManager.playerData.AddEnergy(rewards.energy);
+                    OnMapEnergyChange.ForceEvent(PlayerManager.marker, PlayerDataManager.playerData.energy + rewards.energy);
 
                     if (rewards.effect != null)
                         MarkerSpawner.ApplyStatusEffect(PlayerDataManager.playerData.instance, PlayerDataManager.playerData.instance, rewards.effect);
