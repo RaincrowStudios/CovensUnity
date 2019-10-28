@@ -316,6 +316,8 @@ public class QuestLogUI : UIAnimationManager
         openChest.SetActive(true);
         closedChest.SetActive(false);
         claimFX.SetActive(false);
+        PlayerManagerUI.Instance.UpdateDrachs();
+        PlayerManagerUI.Instance.UpdateEnergy();
         StartCoroutine(NewQuestTimer());
     }
 
@@ -440,7 +442,7 @@ public class QuestLogUI : UIAnimationManager
             }
             else
             {
-                Desc.text = LocalizeLookUp.GetText("daily_casting_on_a").Replace("{{type}}", " " + spellcraft.type);
+                Desc.text = LocalizeLookUp.GetText("daily_casting_on_a").Replace("{{type}}", " " + spellcraft.type).Replace("{{amount}}", spellcraft.amount.ToString());
             }
         }
 
