@@ -5,6 +5,7 @@ using Newtonsoft.Json;
 using Raincrow.Chat.UI;
 using UnityEditor.Callbacks;
 using Raincrow.FTF;
+using Raincrow.Store;
 
 namespace Raincrow.Test
 {
@@ -337,6 +338,11 @@ namespace Raincrow.Test
                 if (GUILayout.Button("Reset Review"))
                 {
                     ReviewPopupController.Reset();
+                }
+                if (GUILayout.Button("Pack purchase"))
+                {
+                    var pack = new List<PackData>(StoreManagerAPI.StoreData.Packs.Values)[Random.Range(0, StoreManagerAPI.StoreData.Packs.Values.Count)];
+                    UIStorePurchaseSuccess.Show(pack.content);
                 }
 
                 GUILayout.Space(5);

@@ -70,8 +70,8 @@ public class CosmeticData
     public string position;
     [System.ComponentModel.DefaultValue("")]
     public string iconId;
-    [System.ComponentModel.DefaultValue("")]
-    public string type;
+    [JsonProperty("type"), System.ComponentModel.DefaultValue("")]
+    public string gender;
 
     [JsonProperty("base")]
     public List<string> baseAssets;

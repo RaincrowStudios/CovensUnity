@@ -258,12 +258,7 @@ public class UIStoreItem : MonoBehaviour
                             Setup(id, data);
                             m_ItemIcon.overrideSprite = aux;
 
-                            UIStorePurchaseSuccess.Show(
-                                m_ItemTitle.text,
-                                "",
-                                m_ItemIcon.overrideSprite,
-                                null
-                            );
+                            UIStorePurchaseSuccess.Show(data.content);
                         }
                         else if (string.IsNullOrEmpty(error) == false)
                         {

@@ -621,14 +621,6 @@ public class PlayerData : WitchMarkerData
             PlayerManagerUI.Instance.setupXP();
     }
 
-    public override void AddEnergy(int amount)
-    {
-        base.AddEnergy(amount);
-
-        if (PlayerManagerUI.Instance)
-            PlayerManagerUI.Instance.UpdateEnergy();
-    }
-
     public void AddCurrency(int silver, int gold)
     {
         this.silver += silver;

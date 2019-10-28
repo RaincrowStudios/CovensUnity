@@ -59,7 +59,7 @@ public class UIStoreStylesWindow : MonoBehaviour
         foreach (var style in StoreManagerAPI.StoreData.Styles)
         {
             CosmeticData cosmetic = DownloadedAssets.GetCosmetic(style.id);
-            if (cosmetic.type[0] == gender)
+            if (cosmetic.gender[0] == gender)
                 m_Styles.Add(style);
         }
 

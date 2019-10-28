@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
+using Raincrow.Store;
 
 public class UIStorePurchaseSuccess : MonoBehaviour
 {
@@ -26,6 +27,7 @@ public class UIStorePurchaseSuccess : MonoBehaviour
     {
         if (m_Instance == null)
         {
+            Debug.LogError("purchase success not instantiated");
             onClose?.Invoke();
             return;
         }
@@ -76,13 +78,66 @@ public class UIStorePurchaseSuccess : MonoBehaviour
         m_InputRaycaster.enabled = false;
 
         LeanTween.cancel(m_AlphaTweenId);
-        Debug.Log("a. " + Time.time);
         m_AlphaTweenId = LeanTween.alphaCanvas(m_CanvasGroup, 0, 0.5f).setEaseOutCubic().setOnComplete(() =>
         {
             m_Canvas.enabled = false;
             m_Animator.gameObject.SetActive(false);
-            Debug.Log("b. " + Time.time);
         }).uniqueId;
         m_OnClose?.Invoke();
+    }
+
+    public static void Show(List<PackItemData> items)
+    {
+        if (items == null || items.Count == 0)
+            return;
+
+        System.Action<int, float> show = (i, delay) => { };
+        char gender = PlayerDataManager.playerData.male ? 'm' : 'f';
+
+        show = (i, delay) =>
+        {
+            if (i >= items.Count)
+                return;
+
+            if (delay > 0)
+            {
+                LeanTween.value(0, 0, delay).setOnComplete(() => show(i, 0));
+                return;
+            }
+
+            string iconId = items[i].id;
+            string title = LocalizeLookUp.GetStoreTitle(items[i].id);
+            string subtitle = LocalizeLookUp.GetStoreSubtitle(items[i].id);
+
+            if (items[i].type == StoreManagerAPI.TYPE_COSMETIC)
+            {
+                CosmeticData data = DownloadedAssets.GetCosmetic(items[i].id);
+
+                if (data.gender[0] != gender)
+                {
+                    show(i + 1, 0);
+                    return;
+                }
+
+                iconId = data == null ? items[i].id : data.iconId;
+            }
+            else if (items[i].type == StoreManagerAPI.TYPE_CURRENCY)
+            {
+                iconId = items[i].id + "2"; //gold2 and silver2
+                subtitle = items[i].amount.ToString();
+            }
+
+            LoadingOverlay.Show();
+            DownloadedAssets.GetSprite(
+                iconId,
+                spr =>
+                {
+                    LoadingOverlay.Hide();
+                    Show(title, subtitle, spr, () => show(i + 1, 0.2f));
+                },
+                true);
+        };
+
+        show(0, 0);
     }
 }

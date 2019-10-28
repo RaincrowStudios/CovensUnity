@@ -120,7 +120,7 @@ public class UIBundlePopup : MonoBehaviour
                     //only show cosmetics matching the character's gender
                     case StoreManagerAPI.TYPE_COSMETIC:
                         CosmeticData cosmetic = DownloadedAssets.GetCosmetic(item.id);
-                        if (cosmetic.type[0] != gender)
+                        if (cosmetic.gender[0] != gender)
                             instance.gameObject.SetActive(false);
                         else
                             instance.text = amount + "x " + LocalizeLookUp.GetStoreTitle(item.id);

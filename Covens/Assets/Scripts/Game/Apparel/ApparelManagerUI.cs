@@ -164,7 +164,7 @@ public class ApparelManagerUI : MonoBehaviour
             if (item.hidden)
                 continue;
 
-            if (item.type[0] != gender)
+            if (item.gender[0] != gender)
                 continue;
 
             var g = Utilities.InstantiateObject(ApparelButton, container);

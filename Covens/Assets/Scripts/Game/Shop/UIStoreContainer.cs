@@ -220,7 +220,7 @@ public class UIStoreContainer : MonoBehaviour
                 char gender = PlayerDataManager.playerData.male ? 'm' : 'f';
                 CosmeticData cosmetic = item as CosmeticData;
 
-                if (cosmetic.type[0] != gender)
+                if (cosmetic.gender[0] != gender)
                     return false;
 
                 if (cosmetic.storeCatagory != filter.ToString())
