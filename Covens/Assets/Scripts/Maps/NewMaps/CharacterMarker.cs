@@ -163,7 +163,7 @@ public abstract class CharacterMarker : MuskMarker
 
         if (fx)
         {
-            fx.SetParent(AvatarTransform);
+            fx.SetParent(m_AvatarGroup);
             fx.localPosition = Vector3.zero;
             fx.localScale = Vector3.one;
         }

@@ -265,7 +265,7 @@ public class WitchMarker : CharacterMarker
             if (m_ChannelingFX == null)
             {
                 m_ChannelingFX = SpellChanneling.SpawnFX(this, witchToken);
-                m_ChannelingFX.SetParent(AvatarTransform);
+                m_ChannelingFX.SetParent(m_AvatarGroup);
                 m_ChannelingFX.localPosition = Vector3.zero;
                 m_ChannelingFX.localScale = Vector3.one;
             }
