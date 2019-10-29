@@ -14,7 +14,14 @@ public static class BlessingManager
 
     public static double LastBlessing
     {
-        get => double.Parse(PlayerPrefs.GetString("LastBlessing." + PlayerDataManager.playerData.instance, "0"));
+        get
+        {
+            if (PlayerPrefs.HasKey("LastBlessing." + PlayerDataManager.playerData.instance) == false)
+            {
+                LastBlessing = Utilities.GetUnixTimestamp(System.DateTime.UtcNow.AddHours(-20));
+            }
+            return double.Parse(PlayerPrefs.GetString("LastBlessing." + PlayerDataManager.playerData.instance));
+        }
         set => PlayerPrefs.SetString("LastBlessing." + PlayerDataManager.playerData.instance, value.ToString());
     }
 

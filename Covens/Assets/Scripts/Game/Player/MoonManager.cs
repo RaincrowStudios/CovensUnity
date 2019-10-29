@@ -144,9 +144,14 @@ public class MoonManager : UIAnimationManager
     }
     public void SetupDailyBlessing()
     {
-        dailytext.text = string.Concat(BlessingManager.TimeUntilNextBlessing().Hours.ToString("D2"),
-        ":", BlessingManager.TimeUntilNextBlessing().Minutes.ToString("D2"),
-        ":", BlessingManager.TimeUntilNextBlessing().Seconds.ToString("D2"));
+        TimeSpan nextBlessing = BlessingManager.TimeUntilNextBlessing();
+        int hours = nextBlessing.Days > 0 ? 24 :  nextBlessing.Hours;
+        int minutes = nextBlessing.Minutes;
+        int seconds = nextBlessing.Seconds;
+
+        dailytext.text = string.Concat(hours.ToString("D2"),
+        ":", minutes.ToString("D2"),
+        ":",seconds.ToString("D2"));
 
         if (container.gameObject.activeSelf)
         {
