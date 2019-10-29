@@ -54,6 +54,8 @@ public class UISpellcastBook : MonoBehaviour//, IEnhancedScrollerDelegate
     private System.Action m_OnClose;
 
     private int m_MoveTweenId;
+    private int m_FocusTweenId;
+    private int m_OffsetTweenId;
     private int m_AlphaTweenId;
 
     [Header("Unity scroll")]
@@ -161,6 +163,7 @@ public class UISpellcastBook : MonoBehaviour//, IEnhancedScrollerDelegate
         LeanTween.cancel(m_AlphaTweenId);
         LeanTween.cancel(m_MoveTweenId);
         LeanTween.cancel(m_FocusTweenId);
+        LeanTween.cancel(m_OffsetTweenId);
         SceneManager.UnloadScene(SceneManager.Scene.SPELLCAST_BOOK, null, null);
     }
 
@@ -797,7 +800,6 @@ public class UISpellcastBook : MonoBehaviour//, IEnhancedScrollerDelegate
 
     #endregion
 
-    private int m_FocusTweenId;
     public void FocusOn(int cardIndex, float offset = 0.5f, System.Action onComplete = null)
     {
         LeanTween.cancel(m_FocusTweenId);
@@ -811,9 +813,21 @@ public class UISpellcastBook : MonoBehaviour//, IEnhancedScrollerDelegate
         offset -= 0.5f;
         offset *= m_Canvas.GetComponent<RectTransform>().sizeDelta.x;
 
+        float cardSize = m_Cards[0].RectTransform.sizeDelta.x;
         float cardPosition = m_Cards[cardIndex].RectTransform.anchoredPosition.x - m_ScrollLayoutGroup.padding.left;
-        float containerSize = (m_Cards[0].RectTransform.sizeDelta.x * (cardCount - 1));
-        float normalized = (cardPosition - offset) / containerSize;
+        float containerSize = (cardSize * (cardCount - 1));
+        float normalized = cardPosition / containerSize;
+
+        LeanTween.cancel(m_OffsetTweenId);
+        m_OffsetTweenId = LeanTween.value(m_ScrollRect.viewport.anchoredPosition.x, offset, 1f)
+            .setEaseOutCubic()
+            .setOnUpdate((float v) =>
+            {
+                m_ScrollRect.viewport.anchoredPosition = new Vector2(
+                    v,
+                    m_ScrollRect.viewport.anchoredPosition.y);
+            })
+            .uniqueId;
 
         m_FocusTweenId = LeanTween.value(m_ScrollRect.horizontalNormalizedPosition, normalized, 1f)
             .setEaseOutCubic()
@@ -829,48 +843,4 @@ public class UISpellcastBook : MonoBehaviour//, IEnhancedScrollerDelegate
         int index = m_Instance.m_Cards.FindIndex(card => card.Spell.id == spellId);
         m_Instance.FocusOn(index);
     }
-
-    //#region SCROLLER
-
-    //public EnhancedScrollerCellView GetCellView(EnhancedScroller scroller, int dataIndex, int cellIndex)
-    //{
-    //    UISpellcard cellView = scroller.GetCellView(m_CardPrefab) as UISpellcard;
-    //    cellView.SetData(m_ScrollerSpells[dataIndex], OnSelectSchool, OnSelectCard, OnClickCast);
-
-    //    cellView.UpdateCancast(m_TargetData, m_TargetMarker);
-    //    if (m_SelectedSpell == null || m_ScrollerSpells[dataIndex].id == m_SelectedSpell.id)
-    //    {
-    //        cellView.SetAlpha(1);
-
-    //    }
-    //    else
-    //    {
-    //        cellView.SetAlpha(0.15f);
-    //    }
-
-    //    return cellView;
-    //}
-
-    //public float GetCellViewSize(EnhancedScroller scroller, int dataIndex)
-    //{
-    //    return 300;
-    //}
-
-    //public int GetNumberOfCells(EnhancedScroller scroller)
-    //{
-    //    return m_ScrollerSpells.Count;
-    //}
-
-    //public void FocusOn(int dataIndex, float offset = 0.5f, System.Action onComplete = null)
-    //{
-    //    m_Scroller.JumpToDataIndex(
-    //        dataIndex: dataIndex,
-    //        scrollerOffset: offset,
-    //        cellOffset: 0.5f,
-    //        tweenType: EnhancedScroller.TweenType.easeOutCubic,
-    //        tweenTime: 0.5f,
-    //        jumpComplete: onComplete);
-    //}
-
-    //#endregion
 }
