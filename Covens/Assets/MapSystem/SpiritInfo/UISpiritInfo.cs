@@ -292,8 +292,9 @@ public class UISpiritInfo : UIInfoPanel
 
         if (string.IsNullOrEmpty(SpiritMarkerDetails.owner))
         {
+            Debug.Log(SpiritMarkerDetails.owner + " owner");
             m_Desc.text = "";
-            m_Tier.text = LocalizeLookUp.GetText("ftf_wild_spirit");
+            m_Tier.text = LocalizeLookUp.GetText("ftf_wild_spirit") + "\n";
             if (!LocationIslandController.isInBattle)
             { m_Desc.text = LocalizeLookUp.GetText("cast_spirit_knowledge"); }// "Defeating this spirit will give you the power to summon it.";
             if (m_SpiritData.tier == 1)
@@ -305,19 +306,20 @@ public class UISpiritInfo : UIInfoPanel
             else
                 m_NewTier.text = LocalizeLookUp.GetText("cast_spirit_legendary");
 
-            foreach (var item in PlayerDataManager.playerData.knownSpirits)
+            /*foreach (var item in PlayerDataManager.playerData.knownSpirits)
             {
                 if (item.spirit.ToString() == m_SpiritData.id)
                 {
                     m_Tier.text = m_Tier.text + "\n<color=#616161>" + LocalizeLookUp.GetText("spirit_known");
                     break;
                 }
-            }
+            }*/
 
 
         }
         else
         {
+            m_Tier.text = "";
             if (string.IsNullOrEmpty(details.coven))
             {
                 m_Desc.text = LocalizeLookUp.GetText("location_owned").Replace("{{Controller}}", "<color=black>" + details.owner + "</color>");
@@ -327,6 +329,14 @@ public class UISpiritInfo : UIInfoPanel
             {
                 m_Desc.text = LocalizeLookUp.GetText("location_owned").Replace("{{Controller}}", LocalizeLookUp.GetText("leaderboard_coven") + " <color=black>" + details.coven + "</color>");
                 m_OwnerButton.onClick.AddListener(OnClickCoven);
+            }
+        }
+        foreach (var item in PlayerDataManager.playerData.knownSpirits)
+        {
+            if (item.spirit.ToString() == m_SpiritData.id)
+            {
+                m_Tier.text = m_Tier.text + "<color=#616161>" + LocalizeLookUp.GetText("spirit_known");
+                break;
             }
         }
     }
