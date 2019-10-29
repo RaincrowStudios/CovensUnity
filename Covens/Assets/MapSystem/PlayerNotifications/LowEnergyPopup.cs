@@ -74,6 +74,8 @@ public class LowEnergyPopup : MonoBehaviour
 
                 PlayerManagerUI.Instance.UpdateDrachs();
                 PlayerManagerUI.Instance.UpdateEnergy();
+
+                UIGlobalPopup.ShowPopUp(null, LocalizeLookUp.GetText("blessing_full"));
             }
             else
             {

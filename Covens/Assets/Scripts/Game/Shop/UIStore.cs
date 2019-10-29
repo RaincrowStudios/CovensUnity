@@ -38,6 +38,8 @@ public class UIStore : MonoBehaviour
     [SerializeField] private Button m_IngredientsButton;
     [Space]
     [SerializeField] private UIBundleButton m_SpecialPack;
+    [Space]
+    [SerializeField] private Button m_RestoreEnergyButton;
 
     [Header("Store")]
     [SerializeField] private UIStoreContainer m_StoreWindow;
@@ -129,6 +131,7 @@ public class UIStore : MonoBehaviour
         m_HomeWindow.gameObject.SetActive(false);
 
         m_SpecialPack.gameObject.SetActive(false);
+        m_RestoreEnergyButton.gameObject.SetActive(false);
 
         m_CanvasGroup.alpha = 0;
         m_StoreWindow.alpha = 0;
@@ -136,6 +139,7 @@ public class UIStore : MonoBehaviour
         m_HomeWindow.alpha = 0;
 
         m_CloseButton.onClick.AddListener(OnClickClose);
+        m_RestoreEnergyButton.onClick.AddListener(OnClickRestoreEnergy);
         m_CosmeticsButton.onClick.AddListener(() => SetScreen(Screen.COSMETICS));
         m_CurrenciesButton.onClick.AddListener(() => SetScreen(Screen.CURRENCY));
         m_CharmsButton.onClick.AddListener(() => SetScreen(Screen.CHARMS));
@@ -144,11 +148,6 @@ public class UIStore : MonoBehaviour
         SetScreen(Screen.HOME);
 
         DownloadedAssets.OnWillUnloadAssets += OnWillUnloadAssets;
-    }
-
-    private void Start()
-    {
-        SetupHomePacks();
     }
 
     private void OnWillUnloadAssets()
@@ -400,6 +399,8 @@ public class UIStore : MonoBehaviour
     private void SetupHome()
     {
         SetHeaderText();
+        SetupHomePacks();
+        m_RestoreEnergyButton.gameObject.SetActive(PlayerDataManager.playerData.state == "vulnerable" || PlayerDataManager.playerData.state == "dead");
     }
 
     [ContextMenu("Setup Packs")]
@@ -413,9 +414,12 @@ public class UIStore : MonoBehaviour
                     continue;
 
                 m_SpecialPack.Setup(pack.Key);
+                m_SpecialPack.gameObject.SetActive(true);
                 return;
             }
         }
+
+        m_SpecialPack.gameObject.SetActive(false);
     }
 
     private void SetupCosmetics()
@@ -498,5 +502,35 @@ public class UIStore : MonoBehaviour
             SetScreen(Screen.COSMETICS);
         else
             SetScreen(Screen.HOME);
+    }
+
+    private void OnClickRestoreEnergy()
+    {
+        UIGlobalPopup.ShowPopUp(
+            () =>
+            {
+                LoadingOverlay.Show();
+                APIManager.Instance.Post("shop/energy", "{}", (response, result) =>
+                {
+                    LoadingOverlay.Hide();
+                    if (result == 200)
+                    {
+                        m_RestoreEnergyButton.gameObject.SetActive(false);
+                        PlayerDataManager.playerData.gold -= 1;
+                        PlayerDataManager.playerData.energy = PlayerDataManager.playerData.baseEnergy;
+
+                        PlayerManagerUI.Instance.UpdateDrachs();
+                        PlayerManagerUI.Instance.UpdateEnergy();
+
+                        UIGlobalPopup.ShowPopUp(null, LocalizeLookUp.GetText("blessing_full"));
+                    }
+                    else
+                    {
+                        UIGlobalPopup.ShowError(null, APIManager.ParseError(response));
+                    }
+                });
+            },
+            null,
+            LocalizeLookUp.GetText("energy_restore_confirm"));
     }
 }
