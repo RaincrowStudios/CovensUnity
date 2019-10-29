@@ -238,28 +238,9 @@ public class GardenMarkers : MonoBehaviour
             return;
 
         loreMarker.Interactable = false;
-        loreMarker.SetAlpha(0.5f, 0.2f);
+        loreMarker.SetAlpha(0f, 1f);
 
-        QuestsController.CompleteExplore(error =>
-        {
-            if (string.IsNullOrEmpty(error))
-            {
-
-                if (loreMarker == null)
-                    return;
-
-                loreMarker.SetAlpha(0, 1f, () =>
-                {
-                    loreMarker.GameObject.SetActive(false);
-                });
-            }
-            else
-            {
-                loreMarker.Interactable = true;
-                loreMarker.SetAlpha(1, 1f);
-                UIGlobalPopup.ShowError(null, error);
-            }
-        });
+        UIQuestLore.Show(QuestsController.Quests.explore.type);
     }
 
     public void OnClick(string id)

@@ -82,6 +82,9 @@ public class EditorScenes : MonoBehaviour
     [MenuItem("Scenes/Screens/ReviewPopup")]
     static void ReviewPopupScene() => OpenScene("ReviewPopup");
 
+    [MenuItem("Scenes/Screens/ExploreLore")]
+    static void ExploreLoreScene() => OpenScene("ExploreLore");
+
 
     private static void OpenScene(string name)
     {

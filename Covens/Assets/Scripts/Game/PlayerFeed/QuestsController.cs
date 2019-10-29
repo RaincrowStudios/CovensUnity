@@ -99,7 +99,7 @@ public static class QuestsController
             }
             else
             {
-                callback?.Invoke(APIManager.ParseError(response));
+                callback?.Invoke(response);
             }
         });
     }

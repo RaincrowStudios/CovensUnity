@@ -36,6 +36,7 @@ namespace Raincrow
             WARDROBE,
             STORE_BUNDLE,
             REVIEW_POPUP,
+            EXPLORE_LORE,
         }
 
         private static Dictionary<Scene, string> m_SceneNames = new Dictionary<Scene, string>
@@ -65,6 +66,7 @@ namespace Raincrow
             {Scene.WARDROBE,            "Wardrobe" },
             {Scene.STORE_BUNDLE,        "StoreBundle" },
             {Scene.REVIEW_POPUP,        "ReviewPopup" },
+            {Scene.EXPLORE_LORE,        "ExploreLore" },
         };
 
         private static SceneManager m_Instance;

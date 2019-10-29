@@ -68,6 +68,8 @@ public class MapCameraUtils : MonoBehaviour
     public static void ShakeCamera(Vector3 axis, float amount, float periodTime, float duration)
     {
         StopCameraShake();
+        LeanTween.cancel(m_ResetTweenId);
+        LeanTween.cancel(m_ShakeTweenId);
 
         LTDescr shake = LeanTween.rotateAroundLocal(
             m_Instance.m_Controller.camera.gameObject,

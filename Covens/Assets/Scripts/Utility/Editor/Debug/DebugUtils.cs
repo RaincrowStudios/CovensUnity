@@ -344,6 +344,10 @@ namespace Raincrow.Test
                     var pack = new List<PackData>(StoreManagerAPI.StoreData.Packs.Values)[Random.Range(0, StoreManagerAPI.StoreData.Packs.Values.Count)];
                     UIStorePurchaseSuccess.Show(pack.content);
                 }
+                if (GUILayout.Button("explore lore"))
+                {
+                    UIQuestLore.Show("lore_" + Random.Range(1, 45));
+                }
 
                 GUILayout.Space(5);
                 GUILayout.Label("Dictionary");

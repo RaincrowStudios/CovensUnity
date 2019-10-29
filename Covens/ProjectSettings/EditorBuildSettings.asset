@@ -83,4 +83,7 @@ EditorBuildSettings:
   - enabled: 1
     path: Assets/Scenes/ReviewPopup.unity
     guid: 259e2d099c4ad9440a3b9ab81df5e3a1
+  - enabled: 1
+    path: Assets/Scenes/ExploreLore.unity
+    guid: b03169a1a42168046a7c7ec0cdaae84f
   m_configObjects: {}
