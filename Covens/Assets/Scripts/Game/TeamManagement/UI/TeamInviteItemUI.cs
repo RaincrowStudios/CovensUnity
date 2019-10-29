@@ -91,7 +91,7 @@ public class TeamInviteItemUI : MonoBehaviour
                         }
                         else
                         {
-                            UIGlobalPopup.ShowError(null, error);
+                            UIGlobalPopup.ShowError(null, APIManager.ParseError(error));
                         }
                     });
                 },
@@ -143,7 +143,7 @@ public class TeamInviteItemUI : MonoBehaviour
                         }
                         else
                         {
-                            UIGlobalPopup.ShowError(null, error);
+                            UIGlobalPopup.ShowError(null, APIManager.ParseError(error));
                         }
                     });
                 },
@@ -168,7 +168,7 @@ public class TeamInviteItemUI : MonoBehaviour
                         }
                         else
                         {
-                            UIGlobalPopup.ShowError(null, error);
+                            UIGlobalPopup.ShowError(null, APIManager.ParseError(error));
                         }
                     });
                 },
@@ -216,7 +216,7 @@ public class TeamInviteItemUI : MonoBehaviour
                         }
                         else
                         {
-                            UIGlobalPopup.ShowError(null, error);
+                            UIGlobalPopup.ShowError(null, APIManager.ParseError(error));
                         }
                     });
                 },
@@ -242,7 +242,7 @@ public class TeamInviteItemUI : MonoBehaviour
                         }
                         else
                         {
-                            UIGlobalPopup.ShowError(null, error);
+                            UIGlobalPopup.ShowError(null, APIManager.ParseError(error));
                         }
                     });
                 },

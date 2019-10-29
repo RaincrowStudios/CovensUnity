@@ -215,7 +215,7 @@ public class TeamPlayerView : MonoBehaviour
                 }
                 else
                 {
-                    UIGlobalPopup.ShowError(null, error);
+                    UIGlobalPopup.ShowError(null, APIManager.ParseError(error));
                 }
             });
         }

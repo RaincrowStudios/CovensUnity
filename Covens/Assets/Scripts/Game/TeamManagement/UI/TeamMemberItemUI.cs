@@ -129,7 +129,7 @@ public class TeamMemberItemUI : MonoBehaviour
                     if (string.IsNullOrEmpty(error))
                         m_OnKick?.Invoke(MemberData.Id);
                     else
-                        UIGlobalPopup.ShowError(null, error);
+                        UIGlobalPopup.ShowError(null, APIManager.ParseError(error));
                 });
             },
             cancelAction: () => {},
@@ -157,7 +157,7 @@ public class TeamMemberItemUI : MonoBehaviour
                     if (string.IsNullOrEmpty(error))
                         m_OnDemote?.Invoke(MemberData.Id, role);
                     else
-                        UIGlobalPopup.ShowError(null, error);
+                        UIGlobalPopup.ShowError(null, APIManager.ParseError(error));
                 });
             },
             cancelAction: () => {},
@@ -185,7 +185,7 @@ public class TeamMemberItemUI : MonoBehaviour
                     if (string.IsNullOrEmpty(error))
                         m_OnPromote?.Invoke(MemberData.Id, role);
                     else
-                        UIGlobalPopup.ShowError(null, error);
+                        UIGlobalPopup.ShowError(null, APIManager.ParseError(error));
                 });
             },
             cancelAction: () => {},

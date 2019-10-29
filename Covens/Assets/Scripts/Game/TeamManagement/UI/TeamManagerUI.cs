@@ -158,7 +158,7 @@ public class TeamManagerUI : MonoBehaviour
                     if (string.IsNullOrEmpty(error))
                         m_Instance._Open(covenData);
                     else
-                        UIGlobalPopup.ShowError(m_Instance.OnClickClose, error);
+                        UIGlobalPopup.ShowError(m_Instance.OnClickClose, APIManager.ParseError(error));
                 });
             }
         });
@@ -191,7 +191,7 @@ public class TeamManagerUI : MonoBehaviour
                             if (string.IsNullOrEmpty(error))
                                 m_Instance._Open(covenData);
                             else
-                                UIGlobalPopup.ShowError(m_Instance.OnClickClose, error);
+                                UIGlobalPopup.ShowError(m_Instance.OnClickClose, APIManager.ParseError(error));
                         });
                     }
                     else //show the cached coven
@@ -209,7 +209,7 @@ public class TeamManagerUI : MonoBehaviour
                     if (string.IsNullOrEmpty(error))
                         m_Instance._Open(covenData);
                     else
-                        UIGlobalPopup.ShowError(m_Instance.OnClickClose, error);
+                        UIGlobalPopup.ShowError(m_Instance.OnClickClose, APIManager.ParseError(error));
                 });
             }
         });
@@ -661,7 +661,7 @@ public class TeamManagerUI : MonoBehaviour
                             }
                             else
                             {
-                                m_InputPopup.Error(error);
+                                m_InputPopup.Error(APIManager.ParseError(error));
                             }
                         });
                 }
@@ -753,7 +753,7 @@ public class TeamManagerUI : MonoBehaviour
                    }
                    else
                    {
-                       UIGlobalPopup.ShowError(null, error);
+                       UIGlobalPopup.ShowError(null, APIManager.ParseError(error));
                    }
                });
            },
@@ -809,7 +809,7 @@ public class TeamManagerUI : MonoBehaviour
                     }
                     else
                     {
-                        UIGlobalPopup.ShowError(null, error);
+                        UIGlobalPopup.ShowError(null, APIManager.ParseError(error));
                     }
                 });
             },
@@ -844,7 +844,7 @@ public class TeamManagerUI : MonoBehaviour
                     }
                     else
                     {
-                        m_InputPopup.Error(error);
+                        m_InputPopup.Error(APIManager.ParseError(error));
                     }
                 });
             },
@@ -911,7 +911,7 @@ public class TeamManagerUI : MonoBehaviour
                     }
                     else
                     {
-                        m_InputPopup.Error(error);
+                        m_InputPopup.Error(APIManager.ParseError(error));
                     }
                 });
             },
@@ -1065,7 +1065,7 @@ public class TeamManagerUI : MonoBehaviour
                        }
                        else
                        {
-                           m_InputPopup.Error(error);
+                           m_InputPopup.Error(APIManager.ParseError(error));
                        }
                    });
                }
@@ -1169,7 +1169,7 @@ public class TeamManagerUI : MonoBehaviour
             }
             else
             {
-                UIGlobalPopup.ShowError(null, error);
+                UIGlobalPopup.ShowError(null, APIManager.ParseError(error));
             }
         });
     }

@@ -49,7 +49,7 @@ public static class TeamManager
             else
             {
                 //return the error
-                callback?.Invoke(null, APIManager.ParseError(response));
+                callback?.Invoke(null, response);
             }
         });
     }
@@ -80,7 +80,7 @@ public static class TeamManager
             }
             else
             {
-                callback(null, APIManager.ParseError(response));
+                callback(null, response);
             }
         });
     }
@@ -118,7 +118,7 @@ public static class TeamManager
             }
             else
             {
-                callback?.Invoke(null, APIManager.ParseError(response));
+                callback?.Invoke(null, response);
             }
         });
     }
@@ -146,7 +146,7 @@ public static class TeamManager
             }
             else
             {
-                callback?.Invoke(APIManager.ParseError(response));
+                callback?.Invoke(response);
             }
         });
     }
@@ -165,7 +165,7 @@ public static class TeamManager
             }
             else
             {
-                callback?.Invoke(APIManager.ParseError(response));
+                callback?.Invoke(response);
             }
         });
     }
@@ -185,7 +185,7 @@ public static class TeamManager
             }
             else
             {
-                callback?.Invoke(null, APIManager.ParseError(response));
+                callback?.Invoke(null, response);
             }
         });
     }
@@ -204,7 +204,7 @@ public static class TeamManager
             }
             else
             {
-                callback?.Invoke(APIManager.ParseError(response));
+                callback?.Invoke(response);
             }
         });
     }
@@ -230,7 +230,7 @@ public static class TeamManager
             }
             else
             {
-                callback?.Invoke(null, APIManager.ParseError(response));
+                callback?.Invoke(null, response);
             }
         });
     }
@@ -249,7 +249,7 @@ public static class TeamManager
             }
             else
             {
-                callback(APIManager.ParseError(response));
+                callback(response);
             }
         });
     }
@@ -268,7 +268,7 @@ public static class TeamManager
             }
             else
             {
-                callback(APIManager.ParseError(response));
+                callback(response);
             }
         });        
     }
@@ -286,7 +286,7 @@ public static class TeamManager
             }
             else
             {
-                callback?.Invoke(APIManager.ParseError(response));
+                callback?.Invoke(response);
             }
         });
     }
@@ -304,7 +304,7 @@ public static class TeamManager
             }
             else
             {
-                callback?.Invoke(APIManager.ParseError(response));
+                callback?.Invoke(response);
             }
         });
     }
@@ -329,7 +329,7 @@ public static class TeamManager
             }
             else
             {
-                callback?.Invoke(APIManager.ParseError(response));
+                callback?.Invoke(response);
             }
         });
     }
@@ -347,7 +347,7 @@ public static class TeamManager
             }
             else
             {
-                callback(APIManager.ParseError(response));
+                callback(response);
             }
         });
     }
@@ -367,7 +367,7 @@ public static class TeamManager
             }
             else
             {
-                callback?.Invoke(APIManager.ParseError(response));
+                callback?.Invoke(response);
             }
         });
     }
