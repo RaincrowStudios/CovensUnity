@@ -19,7 +19,19 @@ public static class TeamManager
             if (string.IsNullOrEmpty(MyCovenId))
                 return CovenRole.NONE;
             else
-                return (CovenRole)PlayerDataManager.playerData.covenInfo.role;
+            {
+                if (MyCovenData == null)
+                    return CovenRole.MEMBER;
+                else
+                {
+                    foreach (var mem in MyCovenData.Members)
+                    {
+                        if (mem.Id == PlayerDataManager.playerData.instance)
+                            return mem.Role;
+                    }
+                    return CovenRole.MEMBER;
+                }
+            }
         }
     }
     
@@ -70,9 +82,7 @@ public static class TeamManager
                 PlayerDataManager.playerData.covenInfo = new CovenInfo
                 {
                     coven = covenData.Id,
-                    name = covenData.Name,
-                    role =  (int)covenData.Members[0].Role,
-                    joinedOn = covenData.CreatedOn
+                    name = covenData.Name
                 };
 
                 OnJoinCoven?.Invoke(covenData.Id, covenData.Name);

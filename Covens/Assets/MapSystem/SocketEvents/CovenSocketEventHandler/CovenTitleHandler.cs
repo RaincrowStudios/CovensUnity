@@ -25,9 +25,6 @@ namespace Raincrow.GameEventResponses
         {
             TitleEventData data = JsonConvert.DeserializeObject<TitleEventData>(eventData);
 
-            if (data.target == PlayerDataManager.playerData.name)
-                PlayerDataManager.playerData.covenInfo.title = data.title;
-
             if (TeamManager.MyCovenData == null)
                 return;
 

@@ -25,11 +25,7 @@ namespace Raincrow.GameEventResponses
         public void HandleResponse(string eventData)
         {
             RoleEventData data = JsonConvert.DeserializeObject<RoleEventData>(eventData);
-
-            //update player data if necessary
-            if (data.target == PlayerDataManager.playerData.name)
-                PlayerDataManager.playerData.covenInfo.role = data.role;
-
+            
             //udpate coven data if cached
             if (TeamManager.MyCovenData == null)
                 return;
