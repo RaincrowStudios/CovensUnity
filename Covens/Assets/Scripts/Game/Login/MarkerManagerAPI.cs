@@ -278,6 +278,7 @@ public class MarkerManagerAPI : MonoBehaviour
             aux = MarkerSpawner.Instance.AddMarker(spirits[i]);
             if (aux != null)
                 updatedMarkers.Add(aux);
+            yield return 1;
         }
         //collectables
         for (int i = 0; i < items.Count; i++)
@@ -285,6 +286,7 @@ public class MarkerManagerAPI : MonoBehaviour
             aux = MarkerSpawner.Instance.AddMarker(items[i]);
             if (aux != null)
                 updatedMarkers.Add(aux);
+            yield return 1;
         }
         //energy
         for (int i = 0; i < energies.Count; i++)
@@ -292,6 +294,7 @@ public class MarkerManagerAPI : MonoBehaviour
             aux = MarkerSpawner.Instance.AddMarker(energies[i]);
             if (aux != null)
                 updatedMarkers.Add(aux);
+            yield return 1;
         }
         //pops
         for (int i = 0; i < pops.Count; i++)
@@ -299,6 +302,7 @@ public class MarkerManagerAPI : MonoBehaviour
             aux = MarkerSpawner.Instance.AddMarker(pops[i]);
             if (aux != null)
                 updatedMarkers.Add(aux);
+            yield return 1;
         }
 
         //remove any other markers
@@ -313,7 +317,10 @@ public class MarkerManagerAPI : MonoBehaviour
         }
 
         foreach (string id in toRemove)
+        {
             MarkerSpawner.DeleteMarker(id);
+            yield return 1;
+        }
         
         m_SpawnCoroutine = null;
         IsSpawningTokens = false;
