@@ -10,8 +10,8 @@ public class DownloadManager : MonoBehaviour
 {
     public struct AssetResponse
     {
-        public string game;// => "127";
-        public string store;// => "117";
+        public string game;// => "130";
+        public string store;// => "121";
         public string localization;// => "124";
 
         public List<string> assets;// => new List<string>() { "spirits-3", "spells-2", "apparel-6", "icon-6", "icon-8", "icon-9", "icon-10", "icon-11", "spells-3" };
@@ -457,8 +457,6 @@ public class DownloadManager : MonoBehaviour
             PlayerDataManager.alignmentPerDegree = data.alignment;
             PlayerDataManager.xpToLevelup = data.experience;
             PlayerDataManager.baseEnergyPerLevel = data.baseEnergy;
-            PlayerDataManager.spiritRewardExp = data.spiritRewardExp;
-            PlayerDataManager.spiritRewardSilver = data.spiritRewardSilver;
             MoonManager.LunarEffeciency = data.lunarEfficiency;
 
             DownloadedAssets.spellDictData = data.Spells;

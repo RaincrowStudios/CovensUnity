@@ -74,7 +74,7 @@ public class MarkerManagerAPI : MonoBehaviour
 
         var data = new
         {
-            isPhysical,
+            physical = isPhysical,
             longitude,
             latitude,
         };

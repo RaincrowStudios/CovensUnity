@@ -66,12 +66,6 @@ namespace Raincrow.GameEventResponses
                         SpellcastingFX.SpawnText(target, LocalizeLookUp.GetSpellName(spell.id), 1);
                 }
             }
-
-            //spirit was banished
-            if (isCaster && data.target.energy == 0 && data.target.Type == MarkerManager.MarkerType.SPIRIT)
-            {
-                SpellCastHandler.SpiritBanished(data.caster.id, data.caster.type, data.target.id, data.target.name);
-            }
         }
 
         private void SpawnFx(IMarker marker, int school, int amount)

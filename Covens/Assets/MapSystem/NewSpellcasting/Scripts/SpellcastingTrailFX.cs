@@ -60,7 +60,7 @@ public class SpellcastingTrailFX : MonoBehaviour
 
         Vector3 offset = target.up * 40;
         float distance = Vector3.Distance(caster.position, target.position);
-        float projectileSpeed = 400f;
+        float projectileSpeed = 900f;
         float trailTime = distance / projectileSpeed;
 
         Vector3 startPosition = caster.position + offset;

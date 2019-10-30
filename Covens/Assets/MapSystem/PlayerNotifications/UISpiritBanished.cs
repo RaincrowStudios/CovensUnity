@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
+using Raincrow.GameEventResponses;
 
 public class UISpiritBanished : MonoBehaviour
 {
@@ -42,6 +43,7 @@ public class UISpiritBanished : MonoBehaviour
 
     private string m_SpiritId;
     private int m_TweenId;
+    private int m_ScaleTweenId;
 
     private void Awake()
     {
@@ -50,6 +52,7 @@ public class UISpiritBanished : MonoBehaviour
         m_CloseButton.onClick.AddListener(Close);
         m_SpiritArt.color = new Color(0, 0, 0, 0);
         m_CanvasGroup.alpha = 0;
+        m_Content.transform.localScale = Vector3.one * 0.25f;
 
         DownloadedAssets.OnWillUnloadAssets += OnWillUnloadAssets;
     }
@@ -60,60 +63,62 @@ public class UISpiritBanished : MonoBehaviour
             return;
 
         LeanTween.cancel(m_TweenId);
+        LeanTween.cancel(m_ScaleTweenId);
+
         DownloadedAssets.OnWillUnloadAssets -= OnWillUnloadAssets;
         Destroy(this.gameObject);
     }
 
-    public void Show(string spiritId, bool isInPop = false)
+    public void Show(SpiritBanishedHandler.SpiritBanishedEvent data)
     {
-        m_SpiritId = spiritId;
+        m_SpiritId = data.spirit;
         m_CloseButton.interactable = false;
 
-        float CanvasAlpha = 0.65f;
-        if (isInPop)
-            CanvasAlpha = 1f;
-
-        BackButtonListener.AddCloseAction(Close);
-
-        DownloadedAssets.GetSprite(spiritId, (sprite) =>
+        //wait for the marker to be despawned
+        if (MarkerManager.GetMarker(data.id) != null)
         {
-            BackButtonListener.RemoveCloseAction();
+            LeanTween.value(0, 0, 0.2f).setOnComplete(() => Show(data));
+            return;
+        }
 
-            if (spiritId != m_SpiritId)
-                return;
+        //wait half second before actualy showing
+        LeanTween.value(0, 0, 0.5f).setOnComplete(() =>
+        {
+            BackButtonListener.AddCloseAction(null);
 
-            LeanTween.value(0, 0, 0).setDelay(0.2f).setOnComplete(() => { m_CloseButton.interactable = true; });
+            DownloadedAssets.GetSprite(data.spirit, (sprite) =>
+            {
+                BackButtonListener.RemoveCloseAction();
 
-            SpiritData data = DownloadedAssets.GetSpirit(spiritId);
-            long exp = PlayerDataManager.spiritRewardExp[data.tier - 1];
-            int silver = PlayerDataManager.spiritRewardSilver[data.tier - 1];
+                if (data.spirit != m_SpiritId)
+                    return;
 
-            m_SpiritArt.overrideSprite = sprite;
-            m_SpiritArt.color = new Color(1, 1, 1, 0.9f);
-            m_ExpReward.text = $"+{exp} XP";
-            m_SilverReward.text = $"+{silver} {LocalizeLookUp.GetText("store_silver")}";
-
-            LeanTween.cancel(m_TweenId);
-            m_TweenId = LeanTween.value(0, CanvasAlpha, 0.7f).setDelay(0.5f)
-                .setEaseOutCubic()
-                .setOnUpdate((float t) =>
+                //wait 0.2s before enabling the close button
+                LeanTween.value(0, 0, 0).setDelay(0.2f).setOnComplete(() =>
                 {
-                    m_CanvasGroup.alpha = t;
-                    if (isInPop == false)
-                    {
-                        m_Content.transform.localScale = new Vector3(t, t, t);
-                    }
-                    else
-                    {
-                        m_Content.transform.localScale = new Vector3(t * 0.8f, t * 0.8f, t * 0.8f);
-                    }
-                })
-                .uniqueId;
+                    BackButtonListener.RemoveCloseAction();
+                    BackButtonListener.AddCloseAction(Close);
+                    m_CloseButton.interactable = true;
+                });
 
-            m_Canvas.enabled = true;
-            m_InputRaycaster.enabled = true;
+                //setup screen
+                SpiritData spiritData = DownloadedAssets.GetSpirit(data.spirit);
+                m_SpiritArt.overrideSprite = sprite;
+                m_SpiritArt.color = new Color(1, 1, 1, 0.9f);
+                m_ExpReward.text = $"+{data.xp} XP";
+                m_SilverReward.text = $"+{data.silver} {LocalizeLookUp.GetText("store_silver")}";
 
-            BackButtonListener.AddCloseAction(Close);
+                //animate
+                LeanTween.cancel(m_TweenId);
+                LeanTween.cancel(m_ScaleTweenId);
+                m_ScaleTweenId = LeanTween.scale(m_Content.gameObject, Vector3.one * 0.6f, 0.2f).setEaseOutCubic().uniqueId;
+                m_TweenId = LeanTween.alphaCanvas(m_CanvasGroup, 0.65f, 0.5f).uniqueId;
+
+                m_Canvas.enabled = true;
+                m_InputRaycaster.enabled = true;
+
+                BackButtonListener.AddCloseAction(Close);
+            });
         });
     }
 
@@ -125,14 +130,9 @@ public class UISpiritBanished : MonoBehaviour
         m_InputRaycaster.enabled = false;
 
         LeanTween.cancel(m_TweenId);
-        m_TweenId = LeanTween.value(0.65f, 0, 0.8f)
-            .setEaseOutCubic()
-            .setOnUpdate((float t) =>
-            {
-                m_CanvasGroup.alpha = t;
-                m_Content.transform.localScale = new Vector3(t, t, t);
-            })
-            .setOnComplete(() => { m_Canvas.enabled = false; })
-            .uniqueId;
+        LeanTween.cancel(m_ScaleTweenId);
+
+        m_ScaleTweenId = LeanTween.scale(m_Content.gameObject, Vector3.one * 0.25f, 0.5f).setEaseOutCubic().uniqueId;
+        m_TweenId = LeanTween.alphaCanvas(m_CanvasGroup, 0, 0.25f).uniqueId;
     }
 }

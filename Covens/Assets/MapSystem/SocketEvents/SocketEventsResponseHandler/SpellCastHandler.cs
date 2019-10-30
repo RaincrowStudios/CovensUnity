@@ -9,6 +9,8 @@ namespace Raincrow.GameEventResponses
     {
         public struct SpellCastCharacter
         {
+            [JsonProperty("actionId")]
+            public string actionId;
             [JsonProperty("_id")]
             public string id;
             public string type;
@@ -44,10 +46,14 @@ namespace Raincrow.GameEventResponses
 
             [JsonProperty("xp")]
             public long xp;
+            [JsonProperty("alignment")]
+            public long alignment;
         }
 
         public struct SpellCastEventData
         {
+            [JsonProperty("actionId")]
+            public string actionId;
             [JsonProperty("spell")]
             public string spell;
             [JsonProperty("caster")]
@@ -72,11 +78,9 @@ namespace Raincrow.GameEventResponses
         public static event System.Action<SpellCastEventData> OnPlayerCast;
         public static event System.Action<SpellCastEventData> OnWillProcessSpell;
 
-        public static event System.Action<string, string, SpellData, Result> OnSpellCast;
+        public static event System.Action<SpellCastEventData> OnSpellCast;
         public static System.Action<string, string, StatusEffect> OnApplyEffect;
         public static System.Action<string, StatusEffect> OnExpireEffect;
-
-        public static event System.Action<string> OnSpiritBanished;
 
         public static HashSet<string> m_NonDamagingSpells = new HashSet<string> { "spell_bind", "spell_silence", "spell_seal", "spell_invisibility", "spell_dispel", "spell_clarity", "spell_sealBalance", "spell_sealLight", "spell_sealShadow", "spell_reflectiveWard", "spell_rageWard", "spell_greaterSeal", "spell_greaterDispel", "spell_banish", "spell_mirrors", "spell_trueSight", "spell_crowsEye", "spell_shadowMark", "spell_channeling", "spell_transquility", "spell_addledMind", "spell_whiteRain" };
 
@@ -129,26 +133,12 @@ namespace Raincrow.GameEventResponses
             int casterNewEnergy = data.caster.energy;
             int targetNewEnergy = data.target.energy;
 
-            OnSpellCast?.Invoke(data.caster.id, data.target.id, spell, data.result);
+            OnSpellCast?.Invoke(data);
 
             if (playerIsCaster)
             {
                 //localy add spell cooldown
                 CooldownManager.AddCooldown(spell.id, data.timestamp, data.cooldown);
-
-                //update the player alignment
-                int alignmentChange = spell.align;
-                if (spell.school < 0)
-                {
-                    alignmentChange *= -1;
-                }
-                else if (spell.school == 0)
-                {
-                    if (PlayerDataManager.playerData.degree < 0)
-                        alignmentChange *= -1;
-                }
-
-                PlayerDataManager.playerData.alignment += alignmentChange;
             }
 
             SpellcastingTrailFX.SpawnTrail(spell.school, caster, target,
@@ -263,10 +253,6 @@ namespace Raincrow.GameEventResponses
                         }
                     }
 
-                    //spirit was banished
-                    if (data.target.energy == 0 && data.target.Type == MarkerManager.MarkerType.SPIRIT)
-                        SpiritBanished(data.caster.id, data.caster.type, data.target.id, data.target.name);
-
                     //show notification
                     if (playerIsTarget && !playerIsCaster)
                     {
@@ -305,26 +291,26 @@ namespace Raincrow.GameEventResponses
                 });
         }
 
-        //fail safe to make sure banished aint triggered twice
-        private static HashSet<string> m_BanishedSpirits = new HashSet<string>();
+        ////fail safe to make sure banished aint triggered twice
+        //private static HashSet<string> m_BanishedSpirits = new HashSet<string>();
 
-        public static void SpiritBanished(string casterId, string casterType, string targetId, string spirit)
-        {
-            if (casterId == PlayerDataManager.playerData.instance || PlayerDataManager.playerData.activeSpirits.Contains(casterId))
-            {
-                if (m_BanishedSpirits.Contains(targetId))
-                    return;
+        //public static void SpiritBanished(string casterId, string casterType, string targetId, string spirit)
+        //{
+        //    if (casterId == PlayerDataManager.playerData.instance || PlayerDataManager.playerData.activeSpirits.Contains(casterId))
+        //    {
+        //        if (m_BanishedSpirits.Contains(targetId))
+        //            return;
 
-                m_BanishedSpirits.Add(targetId);
+        //        m_BanishedSpirits.Add(targetId);
 
-                SpiritData data = DownloadedAssets.GetSpirit(spirit);
+        //        SpiritData data = DownloadedAssets.GetSpirit(spirit);
 
-                int silverGained = PlayerDataManager.spiritRewardSilver[data.tier - 1];
+        //        int silverGained = PlayerDataManager.spiritRewardSilver[data.tier - 1];
 
-                PlayerDataManager.playerData.AddCurrency(silverGained, 0);
+        //        PlayerDataManager.playerData.AddCurrency(silverGained, 0);
 
-                OnSpiritBanished?.Invoke(spirit);
-            }
-        }
+        //        OnSpiritBanished?.Invoke(spirit);
+        //    }
+        //}
     }
 }

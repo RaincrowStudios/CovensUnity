@@ -8,13 +8,15 @@ namespace Raincrow.GameEventResponses
     public class SpiritDicoveredHandler : IGameEventHandler
     {
         public string EventName => "discover.spirit";
-        public static System.Action<string> OnSpiritDiscovered;
+        public static System.Action<DiscoveredEventData> OnSpiritDiscovered;
 
-        private struct DiscoveredEventData
+        public struct DiscoveredEventData
         {
+            [JsonProperty("actionId")]
+            public string actionId;
             public string spirit;
             public double banishedOn;
-            public string dominion;
+            //public string dominion;
             public double timestamp;
         }
 
@@ -25,10 +27,10 @@ namespace Raincrow.GameEventResponses
             var k = new KnownSpirits();
             k.banishedOn = data.banishedOn;
             k.spirit = data.spirit;
-            k.dominion = data.dominion;
+            k.dominion = PlayerDataManager.playerData.dominion;
 
             PlayerDataManager.playerData.knownSpirits.Add(k);
-            OnSpiritDiscovered?.Invoke(data.spirit);
+            OnSpiritDiscovered?.Invoke(data);
         }
     }
 }

@@ -7,8 +7,6 @@ using UnityEngine;
 public class MapView : MonoBehaviour
 {
     private static MapView m_Instance;
-    private List<string> m_DiscoveredSpirits = new List<string>();
-    private List<string> m_BanishedSpirits = new List<string>();
 
     public static bool InMapView { get; private set; }
 
@@ -25,7 +23,7 @@ public class MapView : MonoBehaviour
         LocationIslandController.OnExitLocation += OnLeavePoP;
 
         SpiritDicoveredHandler.OnSpiritDiscovered += _OnSpiritDiscovered;
-        SpellCastHandler.OnSpiritBanished += _OnSpiritBanished;
+        SpiritBanishedHandler.OnSpiritBanished += _OnSpiritBanished;
 
         PlayerManager.Instance.CreatePlayerStart();
         
@@ -146,49 +144,33 @@ public class MapView : MonoBehaviour
         }
     }
 
-    private void _OnSpiritBanished(string spirit)
+    private void _OnSpiritBanished(SpiritBanishedHandler.SpiritBanishedEvent data)
     {
         if (FTFManager.InFTF)
             return;
-
-        Debug.Log(spirit + " BANISHED");
         
-        //discover.spirit was triggered before the banish
-        if (m_DiscoveredSpirits.Contains(spirit))
+        //if another UI is open, wait and try to show again
+        if (UISpiritBanished.IsOpen || UISpiritDiscovered.IsOpen)
         {
-            m_DiscoveredSpirits.Remove(spirit);
-            UISpiritDiscovered.Instance.Show(spirit);
+            LeanTween.value(0, 0, 0.5f).setOnComplete(() => _OnSpiritBanished(data));
+            return;
         }
 
-        //discover.spirit was not triggered yet
-        else
-        {
-            bool discovered = PlayerDataManager.playerData.knownSpirits.Exists(spr => spr.spirit == spirit);
-
-            //player already had this spirit
-            if (discovered)
-                UISpiritBanished.Instance.Show(spirit);
-
-            //wait for the discover.spirit event
-            else
-                m_BanishedSpirits.Add(spirit);
-        }
+        Debug.Log(data.spirit + " BANISHED");
+        UISpiritBanished.Instance.Show(data);
     }
 
-    private void _OnSpiritDiscovered(string spirit)
+    private void _OnSpiritDiscovered(SpiritDicoveredHandler.DiscoveredEventData data)
     {
-        Debug.Log(spirit + " DISCOVERED");
+        //if another UI is open, wait half second and try to show again
+        if (UISpiritBanished.IsOpen || UISpiritDiscovered.IsOpen)
+        {
+            LeanTween.value(0, 0, 0.1f).setOnComplete(() => _OnSpiritDiscovered(data));
+            return;
+        }
 
-        //banished was already triggered
-        if (m_BanishedSpirits.Contains(spirit))
-        {
-            UISpiritDiscovered.Instance.Show(spirit);
-        }
-        //banish was not triggered yet
-        else
-        {
-            m_DiscoveredSpirits.Add(spirit);
-        }
+        Debug.Log(data.spirit + " DISCOVERED");
+        UISpiritDiscovered.Instance.Show(data.spirit);
     }
     
     private void _OnSummonDeath(string spirit)

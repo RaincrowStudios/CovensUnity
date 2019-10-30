@@ -13,11 +13,7 @@ public class UISpiritDiscovered : MonoBehaviour
     [SerializeField] protected TextMeshProUGUI m_Description;
     [SerializeField] private Animator m_Animator;
     [SerializeField] protected Image m_SpiritArt;
-    [Space()]
-    [SerializeField] private RectTransform m_RewardLayout;
-    [SerializeField] private TextMeshProUGUI m_SilverReward;
-    [SerializeField] private TextMeshProUGUI m_ExpReward;
-
+    
     private static UISpiritDiscovered m_Instance;
     public static UISpiritDiscovered Instance
     {
@@ -29,6 +25,18 @@ public class UISpiritDiscovered : MonoBehaviour
         }
     }
 
+    public static bool IsOpen
+    {
+        get
+        {
+            if (m_Instance == null)
+                return false;
+            else
+                return string.IsNullOrEmpty(m_Instance.m_SpiritId) == false;
+        }
+    }
+
+    private string m_SpiritId = null;
     private int m_TweenId;
     private System.Action m_OnClose;
 
@@ -36,18 +44,21 @@ public class UISpiritDiscovered : MonoBehaviour
     {
         m_CloseButton.onClick.AddListener(Close);
         m_Content.SetActive(false);
-        m_Content.transform.localScale = Vector3.zero;
         m_CanvasGroup.alpha = 0;
         m_Animator.enabled = false;
     }
 
     public void Show(string spiritId, System.Action onClose = null)
     {
+        LeanTween.cancel(m_TweenId);
+
+        m_SpiritId = spiritId;
         m_OnClose = onClose;
 
         BackButtonListener.AddCloseAction(null);
         DownloadedAssets.GetSprite(spiritId, (sprite) =>
         {
+            m_TweenId = LeanTween.alphaCanvas(m_CanvasGroup, 0, 0.5f).uniqueId;
             StartCoroutine(ShowCoroutine(spiritId, sprite));
         });
     }
@@ -56,24 +67,16 @@ public class UISpiritDiscovered : MonoBehaviour
     {
         BackButtonListener.RemoveCloseAction();
 
+        m_SpiritId = null;
         m_Animator.enabled = false;
         m_CloseButton.interactable = false;
         m_OnClose?.Invoke();
         m_OnClose = null;
+        m_Instance = null;
 
         LeanTween.cancel(m_TweenId);
-        m_TweenId = LeanTween.value(1, 0, 0.4f)
-            .setEaseOutCubic()
-            .setOnUpdate((float t) =>
-            {
-                m_Content.transform.localScale = new Vector3(t, t, t);
-                m_CanvasGroup.alpha = t;
-            })
-            .setOnComplete(() => 
-            {
-                Destroy(this.gameObject);
-            })
-            .uniqueId;
+        LeanTween.scale(m_Content.gameObject, m_Content.transform.localScale * 0.8f, 0.5f).setEaseOutCubic(); ;
+        m_TweenId = LeanTween.alphaCanvas(m_CanvasGroup, 0, 0.25f).setOnComplete(() => Destroy(this.gameObject)).uniqueId;
     }
 
     private IEnumerator ShowCoroutine(string id, Sprite sprite)
@@ -93,16 +96,12 @@ public class UISpiritDiscovered : MonoBehaviour
         BackButtonListener.AddCloseAction(Close);
     }
 
-    protected virtual void Setup(string id, Sprite sprite)
+    protected virtual void Setup(string id,Sprite sprite)
     {
         SpiritData data = DownloadedAssets.GetSpirit(id);
-        long exp = PlayerDataManager.spiritRewardExp[data.tier - 1];
-        int silver = PlayerDataManager.spiritRewardSilver[data.tier - 1];
 
         m_Title.text = data.Name + " Discovered!";
         m_Description.text = "You now have the knowledge to summon " + data.Name;
-        m_ExpReward.text = $"+{exp} XP";
-        m_SilverReward.text = $"+{silver} {LocalizeLookUp.GetText("store_silver")}";
         m_SpiritArt.overrideSprite = sprite;
     }
 }

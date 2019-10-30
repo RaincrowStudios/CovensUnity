@@ -24,9 +24,6 @@ public class PlayerDataManager : MonoBehaviour
     public static int tribunal;
     public static double tribunalDaysRemaining;
 
-    public static long[] spiritRewardExp;
-    public static int[] spiritRewardSilver;
-
     public static int idleTimeOut;
     public static string currentDominion;
     public static int zone = 0;    

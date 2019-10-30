@@ -74,6 +74,7 @@ public class UIWaitingCastResult : UIInfoPanel
     private System.Action m_OnClickContinue;
     private System.Action m_OnClose;
 
+    private string m_ActionId;
     private IMarker m_Target;
     private SpellData m_Spell;
     private int m_LoadingTweenId;
@@ -98,9 +99,10 @@ public class UIWaitingCastResult : UIInfoPanel
         DegreeSetup();
     }
 
-    public void Show(IMarker target, SpellData spell, List<spellIngredientsData> ingredients, System.Action<Raincrow.GameEventResponses.SpellCastHandler.Result> onContinue, System.Action onClose = null)
+    public void Show(string actionId, IMarker target, SpellData spell, List<spellIngredientsData> ingredients, System.Action<Raincrow.GameEventResponses.SpellCastHandler.Result> onContinue, System.Action onClose = null)
     {
         OnMapEnergyChange.OnPlayerDead += Close;
+        SpellCastHandler.OnSpellCast += SpellCastHandler_OnSpellCast;
 
         m_WaitingResults = true;
 
@@ -109,6 +111,7 @@ public class UIWaitingCastResult : UIInfoPanel
         LeanTween.cancel(m_ButtonTweenId);
         CloseResults();
 
+        m_ActionId = actionId;
         m_Target = target;
         m_Spell = spell;
         m_OnContinueCallback = onContinue;
@@ -247,6 +250,8 @@ public class UIWaitingCastResult : UIInfoPanel
     public override void Close()
     {
         OnMapEnergyChange.OnPlayerDead -= Close;
+        SpellCastHandler.OnSpellCast -= SpellCastHandler_OnSpellCast;
+
         base.Close();
 
         m_OnContinueCallback = null;
@@ -290,6 +295,7 @@ public class UIWaitingCastResult : UIInfoPanel
         m_OnClickContinue?.Invoke();
         Close();
     }
+
     public void DegreeSetup()
     {
         if (LocationIslandController.isInBattle)
@@ -365,6 +371,17 @@ public class UIWaitingCastResult : UIInfoPanel
                 LeanTween.alphaCanvas(HandleSlideArea, 0f, 0.5f); //turning off Glow
             });
         }
+    }
+
+
+
+    private void SpellCastHandler_OnSpellCast(SpellCastHandler.SpellCastEventData data)
+    {
+        if (m_ActionId != data.actionId)
+            return;
+
+        SpellData spell = DownloadedAssets.GetSpell(data.spell);
+        ShowResults(spell, data.result);
     }
 }
 

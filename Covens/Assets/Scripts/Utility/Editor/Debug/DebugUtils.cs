@@ -292,10 +292,13 @@ namespace Raincrow.Test
                 {
                     UISpiritDiscovered.Instance.Show("spirit_barghest");
                 }
-                if (GUILayout.Button("spirit banished"))
-                {
-                    UISpiritBanished.Instance.Show("spirit_barghest");
-                }
+                //if (GUILayout.Button("spirit banished"))
+                //{
+                //    UISpiritBanished.Instance.Show(new GameEventResponses.SpiritBanishedHandler.SpiritBanishedEvent
+                //    {
+                //        spirit = "spirit_barghest"
+                //    });
+                //}
                 if(GUILayout.Button("summon success"))
                 {
                     UISummonSuccess.Instance.Show("spirit_barghest");

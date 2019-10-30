@@ -219,6 +219,7 @@ public class Spellcasting
                                  System.Action onClose)
     {
         string targetId = target == PlayerManager.marker ? PlayerDataManager.playerData.instance : target.Token.instance;
+        string actionId = "cast." + Time.unscaledTime.ToString("N2");
 
         List<spellIngredientsData> toRemove = new List<spellIngredientsData>();
         List<spellIngredientsData> auxIngr = new List<spellIngredientsData>();
@@ -235,7 +236,7 @@ public class Spellcasting
 
         var data = new
         {
-            actionId = "cast." + Time.unscaledTime.ToString("N2"),
+            actionId = actionId,
             spell = spell.id,
             ingredients = auxIngr
         };
@@ -274,7 +275,7 @@ public class Spellcasting
             CooldownManager.AddCooldown(spell.id, Utilities.GetUnixTimestamp(System.DateTime.UtcNow.AddSeconds(100)), spell.cooldown);
 
             //show the animted UI
-            UIWaitingCastResult.Instance.Show(target, spell, ingredients,
+            UIWaitingCastResult.Instance.Show(actionId, target, spell, ingredients,
                 (result) =>
                 { // on click continue (after spellcast result)
                     onContinue?.Invoke(result);
@@ -292,11 +293,11 @@ public class Spellcasting
                     foreach (spellIngredientsData _ing in toRemove)
                         PlayerDataManager.playerData.SubIngredient(_ing.collectible, _ing.count);
 
-                    Raincrow.GameEventResponses.SpellCastHandler.SpellCastEventData eventData = JsonConvert.DeserializeObject<Raincrow.GameEventResponses.SpellCastHandler.SpellCastEventData>(response);
-                    SpellCastHandler.HandleEvent(
-                        eventData,
-                        null,
-                        () => UIWaitingCastResult.Instance.ShowResults(spell, eventData.result));
+                    //Raincrow.GameEventResponses.SpellCastHandler.SpellCastEventData eventData = JsonConvert.DeserializeObject<Raincrow.GameEventResponses.SpellCastHandler.SpellCastEventData>(response);
+                    //SpellCastHandler.HandleEvent(
+                    //    eventData,
+                    //    null,
+                    //    () => UIWaitingCastResult.Instance.ShowResults(spell, eventData.result));
                 }
                 else
                 {

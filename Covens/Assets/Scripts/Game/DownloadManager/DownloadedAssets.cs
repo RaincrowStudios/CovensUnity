@@ -95,6 +95,12 @@ public class DownloadedAssets : MonoBehaviour
     #region SpriteGetters
     public static void GetSprite(string id, System.Action<Sprite> callback, bool isIcon = false)
     {
+        if (string.IsNullOrEmpty(id))
+        {
+            Debug.LogException(new System.Exception("nullorempty id"));
+            callback?.Invoke(null);
+        }
+
         if (!isIcon && AllSprites.ContainsKey(id))
         {
             callback?.Invoke(AllSprites[id]);
@@ -314,7 +320,7 @@ public class DownloadedAssets : MonoBehaviour
 
     public static SpiritData GetSpirit(string id)
     {
-        if (spiritDict.ContainsKey(id))
+        if (string.IsNullOrEmpty(id) == false && spiritDict.ContainsKey(id))
         {
             return spiritDict[id];
         }

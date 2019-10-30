@@ -521,7 +521,7 @@ public class FTFManager : MonoBehaviour
         SpellData spell = DownloadedAssets.GetSpell(spellId);
 
         //show casting UI
-        UIWaitingCastResult.Instance.Show(target, spell, new List<spellIngredientsData>(), null, null);
+        UIWaitingCastResult.Instance.Show("", target, spell, new List<spellIngredientsData>(), null, null);
 
         //wait few seconds
         yield return new WaitForSecondsRealtime(0.2f);
