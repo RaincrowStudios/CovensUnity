@@ -170,6 +170,7 @@ public class PlayerManager : MonoBehaviour
 
         if (dist < 0.1f)
         {
+            MapCameraUtils.FocusOnPosition(PlayerManager.marker.GameObject.transform.position, true, 2f);
             PlayerManager.Instance.atLocationUIShow();
             return;
         }

@@ -52,8 +52,12 @@ public class MarkerManagerAPI : MonoBehaviour
     {
 
         double dist = MapsAPI.Instance.DistanceBetweenPointsD(new Vector2(longitude, latitude), GetGPS.coordinates);
-        bool physical = dist < PlayerDataManager.DisplayRadius;
-        IsSpiritForm = !physical;
+        bool wasPhysical = !IsSpiritForm;
+        bool isPhysical = dist < PlayerDataManager.DisplayRadius;
+        IsSpiritForm = !isPhysical;
+
+        if (wasPhysical && !isPhysical)
+            GetGPS.SetNoise();
 
         if (PlayerDataManager.IsFTF || PlayerDataManager.playerData.insidePlaceOfPower)
         {
@@ -62,22 +66,15 @@ public class MarkerManagerAPI : MonoBehaviour
 
         if (PlayerDataManager.playerData.state == "dead")
         {
-            physical = true;
+            isPhysical = true;
             longitude = GetGPS.longitude;
             latitude = GetGPS.latitude;
-            IsSpiritForm = !physical;
-        }
-
-        if (physical)
-        {
-            Vector2 randCircle = Random.insideUnitCircle.normalized;
-            longitude += randCircle.x * 0.0007f;
-            latitude += randCircle.y * 0.0007f;
+            IsSpiritForm = !isPhysical;
         }
 
         var data = new
         {
-            physical,
+            isPhysical,
             longitude,
             latitude,
         };
@@ -99,7 +96,7 @@ public class MarkerManagerAPI : MonoBehaviour
                 IsSpawningTokens = false;
 
                 if (r == 200)
-                    GetMarkersCallback(timestamp, longitude, latitude, s, r);
+                    GetMarkersSuccess(timestamp, longitude, latitude, s, r);
                 else
                     GetMarkersFailed(longitude, latitude, animateMap, loadMap, s, r);
 
@@ -122,7 +119,6 @@ public class MarkerManagerAPI : MonoBehaviour
     {
         if (isPhysical)
         {
-            IsSpiritForm = false;
             GetMarkers(GetGPS.longitude, GetGPS.latitude, callback, animateMap, showLoading, true);
         }
         else
@@ -162,7 +158,7 @@ public class MarkerManagerAPI : MonoBehaviour
         }
     }
 
-    private static void GetMarkersCallback(string timestamp, float longitude, float latitude, string result, int response)
+    private static void GetMarkersSuccess(string timestamp, float longitude, float latitude, string result, int response)
     {
         if (timestamp != m_LastRequestTime)
         {

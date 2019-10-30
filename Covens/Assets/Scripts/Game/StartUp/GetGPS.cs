@@ -25,14 +25,16 @@ public class GetGPS : MonoBehaviour
     public static event System.Action<LocationServiceStatus> statusChanged;
     public static event System.Action OnInitialized;
 
+    public static Vector2 noise { get; private set; }
+
     public static float longitude
     {
         get
         {
             if (Application.isEditor)
-                return instance != null ? instance.lng : 0;
+                return (instance != null ? instance.lng : 0) + noise.x;
 
-            return Input.location.lastData.longitude;
+            return Input.location.lastData.longitude + noise.x;
         }
         set
         {
@@ -45,8 +47,8 @@ public class GetGPS : MonoBehaviour
         get
         {
             if (Application.isEditor)
-                return instance != null ? instance.lat : 0;
-            return Input.location.lastData.latitude;
+                return (instance != null ? instance.lat : 0) + noise.x;
+            return Input.location.lastData.latitude + noise.x;
         }
         set
         {
@@ -58,6 +60,13 @@ public class GetGPS : MonoBehaviour
     public static Vector2 coordinates
     {
         get { return new Vector2(longitude, latitude); }
+    }
+
+    public static void SetNoise()
+    {
+        Debug.Log("adding gps noise");
+        Vector2 randCircle = Random.insideUnitCircle.normalized;
+        noise = new Vector2(randCircle.x * 0.0005f, randCircle.y * 0.0005f);
     }
 
     private void Awake()
@@ -84,17 +93,6 @@ public class GetGPS : MonoBehaviour
 
         GPSicon.SetActive(false);
         WifiIccon.SetActive(false);
-    }
-
-    public void OnEnable()
-    {
-        if (Application.isEditor)
-        {
-            float range = 1f / 300f;
-            lng = lng + Random.Range(-range, range);
-            range = 1f / 450f;
-            lat = lat + Random.Range(-range, range);
-        }
     }
 
     IEnumerator Start()
@@ -201,11 +199,12 @@ public class GetGPS : MonoBehaviour
 
         Debug.Log("7. Location status: " + Input.location.status.ToString());
 
+        SetNoise();
+
         OnInitialized?.Invoke();
         StartCoroutine(CheckStatus());
     }
-
-
+        
     private void RedirectToSettings()
     {
         try

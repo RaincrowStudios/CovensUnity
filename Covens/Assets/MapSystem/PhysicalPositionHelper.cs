@@ -39,6 +39,7 @@ public class PhysicalPositionHelper : MonoBehaviour
 
             if (changed)
             {
+                //Debug.Log("<color=magenta>moved lat" + (GetGPS.latitude - m_LastLatitude) + " lng" + (GetGPS.longitude - m_LastLongitude) + "</color>");
                 OnPositionChange?.Invoke();
                 m_LastLongitude = GetGPS.longitude;
                 m_LastLatitude = GetGPS.latitude;
