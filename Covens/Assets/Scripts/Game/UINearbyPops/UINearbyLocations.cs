@@ -151,6 +151,8 @@ public class UINearbyLocations : MonoBehaviour
         if (IsOpen)
             return;
 
+        DownloadedAssets.OnWillUnloadAssets -= DownloadedAssets_OnWillUnloadAssets;
+
         LeanTween.cancel(m_AnimTweenId);
         m_ItemPool?.DestroyAll();
 
