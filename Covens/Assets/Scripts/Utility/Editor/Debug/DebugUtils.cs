@@ -111,23 +111,23 @@ namespace Raincrow.Test
 
         private void Users()
         {
-            ExpandTokens = BoxFoldout(ExpandTokens, "Tokens");
-            if (ExpandTokens)
-            {
-                using (new BoxScope())
-                {
-                    using (new GUILayout.HorizontalScope())
-                    {
-                        GUILayout.Label($"Game:", m_LabelWidth);
-                        LoginAPIManager.loginToken = EditorGUILayout.TextField(LoginAPIManager.loginToken);
-                    }
-                    using (new GUILayout.HorizontalScope())
-                    {
-                        GUILayout.Label($"Socket:", m_LabelWidth);
-                        LoginAPIManager.wssToken = EditorGUILayout.TextField(LoginAPIManager.wssToken);
-                    }
-                }
-            }
+            //ExpandTokens = BoxFoldout(ExpandTokens, "Tokens");
+            //if (ExpandTokens)
+            //{
+            //    using (new BoxScope())
+            //    {
+            //        using (new GUILayout.HorizontalScope())
+            //        {
+            //            GUILayout.Label($"Game:", m_LabelWidth);
+            //            LoginAPIManager.loginToken = EditorGUILayout.TextField(LoginAPIManager.loginToken);
+            //        }
+            //        using (new GUILayout.HorizontalScope())
+            //        {
+            //            GUILayout.Label($"Socket:", m_LabelWidth);
+            //            LoginAPIManager.wssToken = EditorGUILayout.TextField(LoginAPIManager.wssToken);
+            //        }
+            //    }
+            //}
 
             ExpandCurrentUser = BoxFoldout(ExpandCurrentUser, "Current User");
             if (ExpandCurrentUser)

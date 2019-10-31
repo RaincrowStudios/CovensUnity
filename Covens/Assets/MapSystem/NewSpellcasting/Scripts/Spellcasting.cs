@@ -218,6 +218,8 @@ public class Spellcasting
                                  System.Action<Raincrow.GameEventResponses.SpellCastHandler.Result> onContinue,
                                  System.Action onClose)
     {
+        Debug.Log("[CastSpell]\nspell: " + (spell != null ? spell.Name : "null") + "\ntarget: " + (target != null ? target.GameObject.name : "null"));
+
         string targetId = target == PlayerManager.marker ? PlayerDataManager.playerData.instance : target.Token.instance;
         string actionId = "cast." + Time.unscaledTime.ToString("N2");
 
@@ -248,6 +250,8 @@ public class Spellcasting
             1f,
             10f
         );
+
+        string json = JsonConvert.SerializeObject(data);
 
         /// SPECIAL FLOW (SPELLS THAT HAVE THEIR OWN REQUESTS
         if (m_SpecialSpells.ContainsKey(spell.id))
@@ -312,7 +316,7 @@ public class Spellcasting
                         Debug.LogError("[2016] retrying spell cast");
                         APIManager.Instance.Post(
                             "character/cast/" + targetId,
-                            JsonConvert.SerializeObject(data),
+                            json,
                             handleResult
                         );
                         return;
@@ -343,7 +347,7 @@ public class Spellcasting
             //LoadingOverlay.Show();
             APIManager.Instance.Post(
                     "character/cast/" + targetId,
-                    JsonConvert.SerializeObject(data),
+                    json,
                     handleResult
                 );
         }

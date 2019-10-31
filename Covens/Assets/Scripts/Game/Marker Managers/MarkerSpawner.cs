@@ -237,6 +237,8 @@ public class MarkerSpawner : MarkerManager
     
     private void OnClickMarker(IMarker m)
     {
+        Debug.Log("OnClickMarker " + m.GameObject.name);
+
         if (!UIStateManager.isMain)
             return;
 
