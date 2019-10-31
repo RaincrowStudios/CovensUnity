@@ -137,6 +137,8 @@ public class UISummoning : MonoBehaviour
         DownloadedAssets.OnWillUnloadAssets -= DownloadedAssets_OnWillUnloadAssets;
 
         LeanTween.cancel(m_TweenId);
+        LeanTween.cancel(m_PageTweenId);
+        LeanTween.cancel(m_ArtTweenId);
         SceneManager.UnloadScene(SceneManager.Scene.SUMMONING, null, null);
     }
 
