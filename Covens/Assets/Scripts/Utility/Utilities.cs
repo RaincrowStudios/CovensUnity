@@ -540,7 +540,7 @@ public class Utilities : MonoBehaviour
         data.storeCatagory = "clothing";
 
         if (data.hidden == false)
-            Debug.LogException(new System.Exception("no store category found for \"" + data.id + "\""));
+            Debug.LogError("no store category found for \"" + data.id + "\"");
     }
 
     public static int GetAvatar()

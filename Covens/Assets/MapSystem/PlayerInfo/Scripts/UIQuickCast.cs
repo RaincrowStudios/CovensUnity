@@ -180,14 +180,11 @@ public class UIQuickCast : MonoBehaviour
 
         IsOpen = false;
         AnimHide();
-        try
-        {
-            m_OnClose?.Invoke();
-        }
-        catch (System.Exception e)
-        {
-            Debug.LogError(e.Message + "\n" + e.InnerException + "\n" + e.StackTrace);
-        }
+
+        if (m_Picker.IsOpen)
+            m_Picker.Hide();
+
+        m_OnClose?.Invoke();
         m_OnClose = null;
         m_Target = null;
         m_TargetData = null;

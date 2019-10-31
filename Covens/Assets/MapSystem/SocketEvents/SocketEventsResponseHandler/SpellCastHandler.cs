@@ -146,17 +146,10 @@ namespace Raincrow.GameEventResponses
                 {
                     onTrailStart?.Invoke();
 
-                    //trigger a map_energy_change event for the caster
-                    LeanTween.value(0, 0, 0.25f).setOnComplete(() =>
-                    {
-                        if (playerIsCaster && spell.cost >= PlayerDataManager.playerData.energy)
-                            OnCharacterDeath.OnCastSuicide?.Invoke(spell.id);
+                    OnMapEnergyChange.ForceEvent(caster, casterNewEnergy, data.timestamp);
 
-                        OnMapEnergyChange.ForceEvent(caster, casterNewEnergy, data.timestamp);
-
-                        if (playerIsCaster)
-                            OnPlayerCast?.Invoke(data);
-                    });
+                    if (playerIsCaster)
+                        OnPlayerCast?.Invoke(data);
 
                     //spell text for the energy lost casting the spell
                     if (playerIsCaster)
@@ -176,26 +169,8 @@ namespace Raincrow.GameEventResponses
                 {
                     onTrailEnd?.Invoke();
 
-                    //trigger a map_energy_change event for the target
-                    LeanTween.value(0, 0, 0.25f).setOnComplete(() =>
-                    {
-                        if (playerIsTarget && targetNewEnergy == 0)
-                        {
-                            if (playerIsCaster)
-                            {
-                                OnCharacterDeath.OnCastSuicide?.Invoke(spell.id);
-                            }
-                            else
-                            {
-                                if (data.caster.Type == MarkerManager.MarkerType.SPIRIT)
-                                    OnCharacterDeath.OnSpiritDeath?.Invoke(data.caster.name);
-                                else if (data.caster.Type == MarkerManager.MarkerType.WITCH)
-                                    OnCharacterDeath.OnWitchDeath?.Invoke(data.caster.name);
-                            }
-                        }
-
-                        OnMapEnergyChange.ForceEvent(target, targetNewEnergy, data.timestamp);
-                    });
+                    ////trigger a map_energy_change event for the target
+                    OnMapEnergyChange.ForceEvent(target, targetNewEnergy, data.timestamp);
 
                     //add status effects to PlayerDataManager.playerData
                     if (data.result.effect != null && string.IsNullOrEmpty(data.result.effect.spell) == false)

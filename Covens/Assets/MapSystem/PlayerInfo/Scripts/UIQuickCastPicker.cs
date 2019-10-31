@@ -55,7 +55,7 @@ public class UIQuickCastPicker : MonoBehaviour
         BackButtonListener.AddCloseAction(Hide);
     }
 
-    private void Hide()
+    public void Hide()
     {
         BackButtonListener.RemoveCloseAction();
 
