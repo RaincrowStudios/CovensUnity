@@ -22,7 +22,7 @@ public class UINearbyLocationItem : MonoBehaviour
         public double battleFinishedOn;
         public double closeOn;
         public double openOn;
-
+        public bool subscribed;
         public bool isOpen;
         public bool isActive;
     }
@@ -31,7 +31,8 @@ public class UINearbyLocationItem : MonoBehaviour
     [SerializeField] private TextMeshProUGUI m_NameText;
     [SerializeField] private TextMeshProUGUI m_Status;
     [SerializeField] private TextMeshProUGUI m_ClaimedBy;
-    [SerializeField] private Toggle m_SubscribeNotificaiton;
+    [SerializeField] private Button m_SubscribeNotificaiton;
+    [SerializeField] private GameObject m_SubscribeGraphic;
 
     [SerializeField] private Button m_FlyTo;
 
@@ -41,6 +42,16 @@ public class UINearbyLocationItem : MonoBehaviour
     private void Awake()
     {
         m_FlyTo.onClick.AddListener(OnClickFlyTo);
+        m_SubscribeNotificaiton.onClick.AddListener(() =>
+            {
+                Debug.Log("clicked");
+                APIManager.Instance.Post("character/reminder/" + m_Data.id, "{}", (s, r) =>
+                {
+                    Debug.Log("subb");
+                    m_SubscribeGraphic.SetActive(!m_SubscribeGraphic.activeInHierarchy);
+                    m_Data.subscribed = !m_Data.subscribed;
+                });
+            });
     }
 
     private void OnClickFlyTo()
@@ -56,6 +67,8 @@ public class UINearbyLocationItem : MonoBehaviour
     public void Setup(LocationData data, System.Action onFlyTo)
     {
         StopAllCoroutines();
+        m_SubscribeGraphic.SetActive(data.subscribed);
+
         m_Data = data;
         m_OnFlyTo = onFlyTo;
         m_NameText.text = data.name;
