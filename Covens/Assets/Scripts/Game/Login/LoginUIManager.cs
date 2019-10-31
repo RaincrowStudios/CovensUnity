@@ -148,6 +148,9 @@ public class LoginUIManager : MonoBehaviour
 
         AgeGateCG.alpha = 0;
         AgeGate.SetActive(false);
+        //dateDay.text = "10";
+        //dateYear.text = "1801";
+        //dateMonth.text = "09";
 
         //setup buttons
         //main
@@ -473,6 +476,9 @@ public class LoginUIManager : MonoBehaviour
 
     private void AgeGateStart()
     {
+        if (Application.platform == RuntimePlatform.IPhonePlayer)
+            return;
+
         if (m_AgeChecked)
             return;
 
