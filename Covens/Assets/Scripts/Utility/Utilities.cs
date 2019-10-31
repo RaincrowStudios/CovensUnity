@@ -539,7 +539,8 @@ public class Utilities : MonoBehaviour
         data.catagory = data.position;
         data.storeCatagory = "clothing";
 
-        Debug.LogError("no category found for \"" + data.id + "\"");
+        if (data.hidden == false)
+            Debug.LogException(new System.Exception("no store category found for \"" + data.id + "\""));
     }
 
     public static int GetAvatar()
