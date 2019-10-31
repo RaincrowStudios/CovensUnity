@@ -378,6 +378,9 @@ public class DownloadManager : MonoBehaviour
             {
                 www.SendWebRequest();
                 OnDownloadStart?.Invoke(assetName, i + 1, bundlesToDownload.Count, size);
+
+                //Debug.Log(assetName + ": " + size.ToString("F2") + "MB");
+
                 while (!www.isDone)
                 {
                     OnDownloadProgress?.Invoke(assetName, www.downloadProgress, size);

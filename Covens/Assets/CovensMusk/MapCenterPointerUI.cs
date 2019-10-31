@@ -37,6 +37,11 @@ public class MapCenterPointerUI : MonoBehaviour
         MapsAPI.Instance.OnCameraUpdate += OnMapUpdate;
     }
 
+    private void OnDestroy()
+    {
+        MapsAPI.Instance.OnCameraUpdate -= OnMapUpdate;
+    }
+
     private void OnMapUpdate(bool position, bool zoom, bool rotation)
     {
         if (m_Enabled == false)

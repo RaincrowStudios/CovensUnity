@@ -82,13 +82,21 @@ public class SoundManagerOneShot : MonoBehaviour
     AudioSource AS;
     void Awake()
     {
+        if(m_Instance != null)
+        {
+            Destroy(this.gameObject);
+            return;
+        }
+
         m_Instance = this;
         AS = GetComponent<AudioSource>();
     }
+
     void Start()
     {
         ASBG = SocketClient.Instance.GetComponent<AudioSource>();
     }
+
     public void SetBGTrack(int i)
     {
         ASBG.clip = soundsBG[Mathf.Clamp(i, 0, soundsBG.Length - 1)];

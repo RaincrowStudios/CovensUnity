@@ -6,7 +6,7 @@ namespace Raincrow.GameEventResponses
 {
     public class CharacterDeathHandler : IGameEventHandler
     {
-        public string EventName => "character.death";
+        public string EventName => "character.dead";
 
         public struct DeathEventData
         {

@@ -173,7 +173,7 @@ public class SocketClient : MonoBehaviour
 
     #endregion
 
-    private void DisconnectFromSocket()
+    public void DisconnectFromSocket()
     {
         Log("Disconnecting from socket");
 

@@ -88,9 +88,9 @@ public class UIConditionItem : MonoBehaviour
                 }
                 else
                 {
-                    if (timespan.TotalDays > 1)
+                    if (timespan.TotalDays >= 2)
                         m_TimerText.text = timespan.Days + " " + LocalizeLookUp.GetText("lt_time_days");
-                    else if (timespan.TotalDays == 1)
+                    else if (timespan.TotalDays > 1)
                         m_TimerText.text = timespan.Days + " " + LocalizeLookUp.GetText("lt_time_day");
                     else if (timespan.TotalHours >= 1)
                         m_TimerText.text = string.Format("{0:D2}:{1:D2}:{2:D2}", timespan.Hours, timespan.Minutes, timespan.Seconds);

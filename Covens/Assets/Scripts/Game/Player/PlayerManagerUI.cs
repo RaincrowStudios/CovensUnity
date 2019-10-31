@@ -78,6 +78,15 @@ public class PlayerManagerUI : UIAnimationManager
 
     private void CharacterDeathHandler_OnPlayerDeath(Raincrow.GameEventResponses.CharacterDeathHandler.DeathEventData data)
     {
+        if (FTFManager.InFTF)
+            return;
+
+        if (PlayerDataManager.playerData.energy > 0)
+        {
+            LeanTween.value(0, 0, 0.2f).setOnComplete(() => CharacterDeathHandler_OnPlayerDeath(data));
+            return;
+        }
+
         //killed by another player
         if (string.IsNullOrEmpty(data.spirit))
         {
@@ -101,7 +110,10 @@ public class PlayerManagerUI : UIAnimationManager
             }
         }
 
-        ShowDeathReason();
+        deathblessing.text = LocalizeLookUp.GetText("blessing_time")
+            .Replace("{{Hours}}", ((int)BlessingManager.TimeUntilNextBlessing().TotalHours).ToString());// "Savannah's next blessing will come in " + hours + " hours or you can ask for a fellow witch to revive you.";
+        
+        LeanTween.value(0, 0, 0.5f).setOnComplete(() => DeathReason.SetActive(true));
     }
 
     private void OnDestroy()
@@ -543,20 +555,6 @@ public class PlayerManagerUI : UIAnimationManager
             curDominion.alpha = Mathf.SmoothStep(1, 0, t);
             yield return 0;
         }
-    }
-
-    public void ShowDeathReason()
-    {
-        if (!PlayerDataManager.IsFTF)
-        {
-            deathblessing.text = LocalizeLookUp.GetText("blessing_time").Replace("{{Hours}}", ((int)BlessingManager.TimeUntilNextBlessing().TotalHours).ToString());// "Savannah's next blessing will come in " + hours + " hours or you can ask for a fellow witch to revive you.";
-            Invoke("deathReasonShow", 2.5f);
-        }
-    }
-
-    void deathReasonShow()
-    {
-        DeathReason.SetActive(true);
     }
 }
 

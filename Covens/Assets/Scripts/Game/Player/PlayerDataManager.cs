@@ -33,6 +33,11 @@ public class PlayerDataManager : MonoBehaviour
 
     void Awake()
     {
+        if (Instance != null)
+        {
+            Destroy(this.gameObject);
+            return;
+        }
         DontDestroyOnLoad(this);
         Instance = this;
     }
