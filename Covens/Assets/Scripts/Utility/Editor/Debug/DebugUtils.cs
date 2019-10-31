@@ -352,6 +352,9 @@ namespace Raincrow.Test
                     UIQuestLore.Show("lore_" + Random.Range(1, 45));
                 }
 
+                if (GUILayout.Button("pt")) DictionaryManager.languageIndex = 1;
+                if (GUILayout.Button("en")) DictionaryManager.languageIndex = 0;
+
                 GUILayout.Space(5);
                 GUILayout.Label("Dictionary");
                 UseLocalGameDictionary = EditorGUILayout.ToggleLeft("Use local game.json (\"Editor Default Resources/game.json\"", UseLocalGameDictionary);

@@ -620,6 +620,7 @@ public class PlayerData : WitchMarkerData
 
         if (PlayerManagerUI.Instance)
             PlayerManagerUI.Instance.UpdateDrachs();
+        UIStore.UpdateDrachs();
     }
 }
 

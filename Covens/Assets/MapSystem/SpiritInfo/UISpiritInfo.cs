@@ -248,7 +248,6 @@ public class UISpiritInfo : UIInfoPanel
 
         m_OnClose?.Invoke();
         m_OnClose = null;
-
         SpiritMarker = null;
         SpiritToken = null;
         SpiritMarkerDetails = null;

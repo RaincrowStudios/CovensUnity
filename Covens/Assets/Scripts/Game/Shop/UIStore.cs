@@ -516,11 +516,8 @@ public class UIStore : MonoBehaviour
                     if (result == 200)
                     {
                         m_RestoreEnergyButton.gameObject.SetActive(false);
-                        PlayerDataManager.playerData.gold -= 1;
-                        PlayerDataManager.playerData.energy = PlayerDataManager.playerData.baseEnergy;
-
-                        PlayerManagerUI.Instance.UpdateDrachs();
-                        PlayerManagerUI.Instance.UpdateEnergy();
+                        PlayerDataManager.playerData.AddCurrency(0, -1);
+                        OnMapEnergyChange.ForceEvent(PlayerManager.marker, PlayerDataManager.playerData.baseEnergy);
 
                         UIGlobalPopup.ShowPopUp(null, LocalizeLookUp.GetText("blessing_full"));
                     }
