@@ -392,7 +392,9 @@ public class FTFManager : MonoBehaviour
             throw new System.Exception("[ShowMessage] missing param[0] (message)");
 
         string message = LocalizeLookUp.GetText(parameters[0]);
-        bool top = parameters.Length > 1 ? bool.Parse(parameters[1]) : false;
+        bool top = false;
+        if (parameters.Length > 1)
+            bool.TryParse(parameters[1], out top);
         List<string> specialKeys = new List<string>();
 
         MatchCollection matches = Regex.Matches(message, @"{[^}]*}", RegexOptions.IgnoreCase);
@@ -513,7 +515,9 @@ public class FTFManager : MonoBehaviour
     {
         string spellId = parameters[0];
         string targetId = parameters[1];
-        int damage = int.Parse(parameters[2]);
+        int damage = 0;
+        if (parameters.Length > 2)
+            int.TryParse(parameters[2], out damage);
 
         //load
         IMarker target = MarkerSpawner.GetMarker(targetId);
@@ -555,7 +559,9 @@ public class FTFManager : MonoBehaviour
     {
         string spellId = parameters[0];
         string casterId = parameters[1];
-        int damage = int.Parse(parameters[2]);
+        int damage = 0;
+        if(parameters.Length > 2)
+            int.TryParse(parameters[2], out damage);
 
         IMarker caster = MarkerSpawner.GetMarker(casterId);
         CharacterToken token = caster.Token as CharacterToken;
@@ -629,7 +635,9 @@ public class FTFManager : MonoBehaviour
     {
         float longitude = PlayerDataManager.playerData.longitude + float.Parse(parameters[0]);
         float latitude = PlayerDataManager.playerData.latitude+ float.Parse(parameters[1]);
-        float zoom = float.Parse(parameters[2]);
+        float zoom = 1f;
+        if (parameters.Length > 2)
+            float.TryParse(parameters[2], out zoom);
 
         Vector3 worldPosition = MapsAPI.Instance.GetWorldPosition(longitude, latitude);
 
@@ -794,8 +802,14 @@ public class FTFManager : MonoBehaviour
     private IEnumerator SpawnFX(string[] parameters)
     {
         string id = parameters[0];
-        float longitude = PlayerDataManager.playerData.longitude + float.Parse(parameters[1]);
-        float latitude = PlayerDataManager.playerData.latitude + float.Parse(parameters[2]);
+        float longitude = 0;
+        float latitude = 0;
+
+        if (parameters.Length > 1) float.TryParse(parameters[1], out longitude);
+        if (parameters.Length > 2) float.TryParse(parameters[2], out latitude);
+
+        longitude += PlayerDataManager.playerData.longitude;
+        latitude += PlayerDataManager.playerData.latitude;
 
         m_FXSpawner.Spawn(id, longitude, latitude);
         yield return 0;
