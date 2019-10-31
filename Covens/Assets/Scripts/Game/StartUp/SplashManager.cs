@@ -12,6 +12,8 @@ public class SplashManager : MonoBehaviour
     public static SplashManager Instance { get; set; }
     public static event System.Action OnFinish;
 
+    [SerializeField] private Button Helpcrow;
+
     [Header("General")]
     [SerializeField] private GameObject LoadingImage;
     [SerializeField] private Image progressBar;
@@ -51,7 +53,7 @@ public class SplashManager : MonoBehaviour
     [SerializeField] private GameObject playstoreIcon;
     [SerializeField] private GameObject appleIcon;
     [SerializeField] private Button m_AppStoreButton;
-    
+
     private int[] tribunals = new int[] { 1, 2, 3, 4, 1, 2 };
 
     private float m_LogoSpeed = 1;
@@ -65,7 +67,7 @@ public class SplashManager : MonoBehaviour
     void Awake()
     {
         Instance = this;
-
+        Helpcrow.onClick.AddListener(SendEmail);
         progressBar.fillAmount = 0;
         progressBar.gameObject.SetActive(false);
 
@@ -94,6 +96,21 @@ public class SplashManager : MonoBehaviour
             m_LogoSpeed = 1f;
 
         m_AppStoreButton.onClick.AddListener(Utilities.OpenAppStore);
+    }
+
+    void SendEmail()
+    {
+
+        string email = "help@raincrowgames.com";
+        string subject = MyEscapeURL("Covens Bug # New User");
+        string body = MyEscapeURL($"Version: {Application.version} \n Platform: {Application.platform} \n\n\n ***Your Message*** +\n\n\n ***Screenshot***\n\n\n");
+
+        Application.OpenURL("mailto:" + email + "?subject=" + subject + "&body=" + body);
+
+    }
+    string MyEscapeURL(string url)
+    {
+        return WWW.EscapeURL(url).Replace("+", "%20");
     }
 
     private void OnDestroy()
@@ -146,7 +163,7 @@ public class SplashManager : MonoBehaviour
         msg = "";
 
         if (totalFiles > 0)
-            msg =  LocalizeLookUp.GetText("download") + ": " + (fileIndex).ToString() + "/" + totalFiles.ToString();
+            msg = LocalizeLookUp.GetText("download") + ": " + (fileIndex).ToString() + "/" + totalFiles.ToString();
         else if (string.IsNullOrEmpty(fileName) == false)
             msg = fileName;
 
@@ -202,22 +219,22 @@ public class SplashManager : MonoBehaviour
             }
 
             logos[idx].gameObject.SetActive(true);
-            LeanTween.alphaCanvas(logos[idx], 1, fadeTime/m_LogoSpeed).setEaseOutCubic().setOnComplete(() =>
-            {
-                LeanTween.value(0, 0, logoTime/m_LogoSpeed).setOnComplete(() =>
-                {
-                    LeanTween.alphaCanvas(logos[idx], 0, fadeTime/m_LogoSpeed).setEaseOutCubic().setOnComplete(() =>
-                    {
-                        logos[idx].gameObject.SetActive(false);
-                        showLogo(idx + 1);
-                    });
-                });
-            });
+            LeanTween.alphaCanvas(logos[idx], 1, fadeTime / m_LogoSpeed).setEaseOutCubic().setOnComplete(() =>
+              {
+                  LeanTween.value(0, 0, logoTime / m_LogoSpeed).setOnComplete(() =>
+                  {
+                      LeanTween.alphaCanvas(logos[idx], 0, fadeTime / m_LogoSpeed).setEaseOutCubic().setOnComplete(() =>
+                      {
+                          logos[idx].gameObject.SetActive(false);
+                          showLogo(idx + 1);
+                      });
+                  });
+              });
         };
 
         showLogo(0);
     }
-    
+
     private IEnumerator CovenLogoCoroutine(System.Action onComplete)
     {
         VideoPlayback.gameObject.SetActive(true);
@@ -225,12 +242,12 @@ public class SplashManager : MonoBehaviour
         //if (!VideoPlayback.m_bAutoPlay)
         //    VideoPlayback.Play();
         VideoPlayback.SetSpeed(m_LogoSpeed);
-        
+
         //wait for video to be ready to start
         bool videoReady = false;
         VideoPlayback.OnVideoFirstFrameReady += () => videoReady = true;
         float maxTimer = 10;
-        while (!videoReady &&  maxTimer > 0)
+        while (!videoReady && maxTimer > 0)
         {
             maxTimer -= 1;
             yield return new WaitForSeconds(1);
@@ -411,5 +428,5 @@ public class SplashManager : MonoBehaviour
         yield return new WaitForSeconds(1f);
 
         onShow?.Invoke();
-    }  
+    }
 }
