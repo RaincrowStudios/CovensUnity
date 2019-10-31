@@ -8,6 +8,7 @@ public class LoginUIManager : MonoBehaviour
 {
     private static LoginUIManager m_Instance;
 
+    [SerializeField] private Button Helpcrow;
     [Header("General")]
     [SerializeField] private CanvasGroup mainCanvasGroup;
     public GameObject loadingObject;
@@ -107,6 +108,7 @@ public class LoginUIManager : MonoBehaviour
     {
         m_Instance = this;
 
+        Helpcrow.onClick.AddListener(SendEmail);
         CanvasGroup emptyCg = new GameObject().AddComponent<CanvasGroup>();
         emptyCg.transform.SetParent(this.transform);
         emptyCg.alpha = 1;
@@ -207,6 +209,21 @@ public class LoginUIManager : MonoBehaviour
         createCharacterError.text = "";
 
 
+    }
+
+    void SendEmail()
+    {
+
+        string email = "help@raincrowgames.com";
+        string subject = MyEscapeURL("Covens Bug # New User");
+        string body = MyEscapeURL($"Version: {Application.version} \n Platform: {Application.platform} \n\n\n ***Your Message*** +\n\n\n ***Screenshot***\n\n\n");
+
+        Application.OpenURL("mailto:" + email + "?subject=" + subject + "&body=" + body);
+
+    }
+    string MyEscapeURL(string url)
+    {
+        return WWW.EscapeURL(url).Replace("+", "%20");
     }
 
     private void Start()
@@ -614,7 +631,7 @@ public class LoginUIManager : MonoBehaviour
 
     private void OnPressReturn()
     {
-        switch(m_CurrentScreen)
+        switch (m_CurrentScreen)
         {
             case Screen.WELCOME:
                 UIGlobalPopup.ShowPopUp(Application.Quit, () => { }, LocalizeLookUp.GetText("close_app_prompt"));

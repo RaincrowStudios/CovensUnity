@@ -1778,6 +1778,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c61695dfe4c0d4a4dad12ac3096230b5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  Helpcrow: {fileID: 1945486863}
   mainCanvasGroup: {fileID: 225491406931931954}
   loadingObject: {fileID: 1885931789803706}
   animSavannah: {fileID: 95168031666336808}
@@ -3543,13 +3544,13 @@ RectTransform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1945486861}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalPosition: {x: 0, y: 0, z: -0.000084572785}
   m_LocalScale: {x: 1.0000306, y: 1.0000306, z: 1.0000306}
   m_Children:
   - {fileID: 1522979436}
   - {fileID: 1852041400}
-  m_Father: {fileID: 224298562715571648}
-  m_RootOrder: 2
+  m_Father: {fileID: 224873060626198538}
+  m_RootOrder: 9
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 1, y: 1}
   m_AnchorMax: {x: 1, y: 1}
@@ -23020,7 +23021,6 @@ RectTransform:
   m_Children:
   - {fileID: 224230986188125956}
   - {fileID: 224261748144803418}
-  - {fileID: 1945486862}
   m_Father: {fileID: 224294092148120050}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -24180,6 +24180,7 @@ RectTransform:
   - {fileID: 224367163226745360}
   - {fileID: 224336775597575384}
   - {fileID: 224130012722590334}
+  - {fileID: 1945486862}
   m_Father: {fileID: 224294092148120050}
   m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
