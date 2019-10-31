@@ -72,6 +72,41 @@ public class PlayerManagerUI : UIAnimationManager
         }
 
         LastDailyTimeStamp = Double.Parse(PlayerPrefs.GetString("LastDailyTimeStamp"));
+
+        Raincrow.GameEventResponses.CharacterDeathHandler.OnPlayerDeath += CharacterDeathHandler_OnPlayerDeath;
+    }
+
+    private void CharacterDeathHandler_OnPlayerDeath(Raincrow.GameEventResponses.CharacterDeathHandler.DeathEventData data)
+    {
+        //killed by another player
+        if (string.IsNullOrEmpty(data.spirit))
+        {
+            deathDesc.text = LocalizeLookUp.GetText("ui_response_witch").Replace("{{Name}}", data.character).Replace("{{Witch Type}}", Utilities.GetSchool(data.degree));
+        }
+        //killed by spirit
+        else
+        {
+            //spirit was wild
+            if (string.IsNullOrEmpty(data.character))
+            {
+                deathDesc.text = LocalizeLookUp.GetText("ui_response_spirit_wild")
+                    .Replace("{{Spirit Name}}", LocalizeLookUp.GetSpiritName(data.spirit));
+            }
+            //spirit had an owner
+            else
+            {
+                deathDesc.text = LocalizeLookUp.GetText("ui_response_spirit")
+                    .Replace("{{Spirit}}", LocalizeLookUp.GetSpiritName(data.spirit))
+                    .Replace("{{Name}}", data.character);
+            }
+        }
+
+        ShowDeathReason();
+    }
+
+    private void OnDestroy()
+    {
+        Raincrow.GameEventResponses.CharacterDeathHandler.OnPlayerDeath -= CharacterDeathHandler_OnPlayerDeath;
     }
 
     private void Start()

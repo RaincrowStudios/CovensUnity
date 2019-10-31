@@ -26,18 +26,6 @@ namespace Raincrow.GameEventResponses
             IMarker caster = isCaster ? PlayerManager.marker : MarkerSpawner.GetMarker(data.caster.id);
             IMarker target = isTarget ? PlayerManager.marker : MarkerSpawner.GetMarker(data.target.id);
 
-            if (isCaster && data.caster.energy == 0)
-            {
-                OnCharacterDeath.OnCastSuicide?.Invoke(data.spell);
-            }
-            else if (isTarget && data.target.energy == 0)
-            {
-                if (data.caster.Type == MarkerManager.MarkerType.SPIRIT)
-                    OnCharacterDeath.OnSpiritDeath?.Invoke(data.caster.name);
-                else if (data.caster.Type == MarkerManager.MarkerType.WITCH)
-                    OnCharacterDeath.OnWitchDeath?.Invoke(data.caster.name);
-            }
-
             //update energy
             if (caster != null)
                 OnMapEnergyChange.ForceEvent(caster, data.caster.energy, data.timestamp);

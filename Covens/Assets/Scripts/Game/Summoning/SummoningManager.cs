@@ -43,9 +43,6 @@ public static class SummoningManager
 
                 PlayerDataManager.playerData.activeSpirits.Add(token.instance);
 
-                if (summonCost > PlayerDataManager.playerData.energy)
-                    OnCharacterDeath.OnSummonDeath?.Invoke(spirit);
-
                 OnMapEnergyChange.ForceEvent(PlayerManager.marker, PlayerDataManager.playerData.energy - summonCost);
 
                 //PlayerDataManager.playerData.AddExp(xpGained);
