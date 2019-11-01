@@ -145,8 +145,6 @@ public class UIStore : MonoBehaviour
         m_CharmsButton.onClick.AddListener(() => SetScreen(Screen.CHARMS));
         m_IngredientsButton.onClick.AddListener(() => SetScreen(Screen.INGREDIENTS));
 
-        SetScreen(Screen.HOME);
-
         DownloadedAssets.OnWillUnloadAssets += OnWillUnloadAssets;
     }
 
@@ -189,6 +187,10 @@ public class UIStore : MonoBehaviour
             .setOnComplete(() => MapsAPI.Instance.HideMap(true))
             .setEaseOutCubic()
             .uniqueId;
+
+        SetScreen(Screen.HOME);
+
+        m_RestoreEnergyButton.gameObject.SetActive(/*PlayerDataManager.playerData.state == "vulnerable" ||*/ PlayerDataManager.playerData.state == "dead");
     }
 
     [ContextMenu("Close")]
@@ -400,7 +402,6 @@ public class UIStore : MonoBehaviour
     {
         SetHeaderText();
         SetupHomePacks();
-        m_RestoreEnergyButton.gameObject.SetActive(/*PlayerDataManager.playerData.state == "vulnerable" ||*/ PlayerDataManager.playerData.state == "dead");
     }
 
     [ContextMenu("Setup Packs")]

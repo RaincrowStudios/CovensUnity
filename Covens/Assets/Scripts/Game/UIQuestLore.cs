@@ -10,6 +10,7 @@ public class UIQuestLore : MonoBehaviour
     [SerializeField] private Canvas m_Canvas;
     [SerializeField] private GraphicRaycaster m_InputRaycaster;
     [SerializeField] private CanvasGroup m_CanvasGroup;
+    [SerializeField] private RectTransform m_Content;
 
     [SerializeField] private Button m_CloseButton;
     [SerializeField] private TextMeshProUGUI m_Title;
@@ -24,6 +25,7 @@ public class UIQuestLore : MonoBehaviour
         m_InputRaycaster.enabled = false;
         m_Canvas.enabled = false;
         m_CanvasGroup.alpha = 0;
+        m_Content.gameObject.SetActive(false);
 
         m_CloseButton.onClick.AddListener(_Hide);
     }
@@ -55,6 +57,7 @@ public class UIQuestLore : MonoBehaviour
         m_AlphaTweenId = LeanTween.alphaCanvas(m_CanvasGroup, 1, 0.7f).setEaseOutCubic().uniqueId;
         m_Canvas.enabled = true;
         m_InputRaycaster.enabled = true;
+        m_Content.gameObject.SetActive(true);
     }
 
     private void _Hide()
@@ -66,8 +69,9 @@ public class UIQuestLore : MonoBehaviour
             .setEaseOutCubic()
             .setOnComplete(() =>
             {
+                m_Content.gameObject.SetActive(false);
                 m_Canvas.enabled = false;
-                //SceneManager.UnloadScene(SceneManager.Scene.EXPLORE_LORE, null, null);
+                SceneManager.UnloadScene(SceneManager.Scene.EXPLORE_LORE, null, null);
             })
             .uniqueId;
 
