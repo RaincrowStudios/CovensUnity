@@ -139,9 +139,9 @@ public class DictionaryManager
         }
 
         DownloadFile(LOCALIZATION_URL + version + "/" + language + ".json", language, version, (resultCode, response) =>
-         {
-             if (resultCode == 200)
-             {
+        {
+            if (resultCode == 200 || resultCode == 304)
+            {
                  if (DownloadManager.DeserializeLocalisationDictionary(response))
                  {
                      PlayerPrefs.SetString(LOCALISATION_DICT_KEY + language, version);
@@ -210,7 +210,7 @@ public class DictionaryManager
 
         DownloadFile(GAME_URL + version + ".json", "game", version, (resultCode, response) =>
         {
-            if (resultCode == 200)
+            if (resultCode == 200 || resultCode == 304)
             {
                 if (DownloadManager.DeserializeGameDictionary(response))
                 {
@@ -276,7 +276,7 @@ public class DictionaryManager
 
         DownloadFile(STORE_URL + version + ".json", "store", version, (resultCode, response) =>
         {
-            if (resultCode == 200)
+            if (resultCode == 200 || resultCode == 304)
             {
                 if (DownloadManager.DeserializeStoreDictionary(response))
                 {
