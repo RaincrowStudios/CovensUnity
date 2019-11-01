@@ -13,7 +13,7 @@ public class DownloadManager : MonoBehaviour
     {
         public string game;// => "130";
         public string store;// => "121";
-        public string localization => "128";
+        public string localization;// => "128";
 
         public List<string> assets;// => new List<string>() { "spirits-3", "spells-2", "apparel-6", "icon-6", "icon-8", "icon-9", "icon-10", "icon-11", "spells-3" };
         public string version;
