@@ -506,34 +506,24 @@ public class UIStore : MonoBehaviour
 
     private void OnClickRestoreEnergy()
     {
-        //UIGlobalPopup.ShowPopUp(
-        //    () =>
-        //    {
-                LoadingOverlay.Show();
-                APIManager.Instance.Post("character/revive", "{}", (response, result) =>
-                {
-                    LoadingOverlay.Hide();
-                    if (result == 200)
-                    {
-                        m_RestoreEnergyButton.gameObject.SetActive(false);
-                        //PlayerDataManager.playerData.AddCurrency(0, -1);
-                        
-                        OnMapEnergyChange.ForceEvent(PlayerManager.marker, PlayerDataManager.playerData.baseEnergy);
-                        UIGlobalPopup.ShowPopUp(() =>
-                        {
-                            Close();
-                            MapFlightTransition.Instance.RecallHome(true);
-                            //PlayerManager.Instance.RecallHome();
-                        }, 
-                        LocalizeLookUp.GetText("blessing_full"));
-                    }
-                    else
-                    {
-                        UIGlobalPopup.ShowError(null, APIManager.ParseError(response));
-                    }
-                });
-            //},
-            //null,
-            //LocalizeLookUp.GetText("energy_restore_confirm"));
+        //player is already dead so he must be on his phys position
+        //MapFlightTransition.Instance.RecallHome(true);
+
+        LoadingOverlay.Show();
+        APIManager.Instance.Post("character/revive", "{}", (response, result) =>
+        {
+            LoadingOverlay.Hide();
+            if (result == 200)
+            {
+                m_RestoreEnergyButton.gameObject.SetActive(false);                        
+                OnMapEnergyChange.ForceEvent(PlayerManager.marker, PlayerDataManager.playerData.baseEnergy);
+
+                UIGlobalPopup.ShowPopUp(() => Close(), LocalizeLookUp.GetText("blessing_full"));
+            }
+            else
+            {
+                UIGlobalPopup.ShowError(null, APIManager.ParseError(response));
+            }
+        });
     }
 }
