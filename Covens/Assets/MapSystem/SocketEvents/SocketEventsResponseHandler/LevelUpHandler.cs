@@ -62,6 +62,9 @@ namespace Raincrow.GameEventResponses
                         //update token data
                         token.level = data.level;
 
+                        if (token.energy < token.baseEnergy)
+                            OnMapEnergyChange.ForceEvent(marker, token.baseEnergy, data.timestamp);
+
                         //update level text
                         marker.SetStats();
                     }
