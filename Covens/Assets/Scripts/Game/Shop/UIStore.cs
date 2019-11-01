@@ -219,8 +219,8 @@ public class UIStore : MonoBehaviour
 
     public void SetScreen(Screen screen)
     {
-        if (screen == m_CurrentScreen)
-            return;
+        //if (screen == m_CurrentScreen)
+        //    return;
 
         LeanTween.cancel(m_ScreenTweenId);
         CanvasGroup toShow = null;
@@ -400,6 +400,7 @@ public class UIStore : MonoBehaviour
     {
         SetHeaderText();
         SetupHomePacks();
+
         m_RestoreEnergyButton.gameObject.SetActive(/*PlayerDataManager.playerData.state == "vulnerable" ||*/ PlayerDataManager.playerData.state == "dead");
     }
 
