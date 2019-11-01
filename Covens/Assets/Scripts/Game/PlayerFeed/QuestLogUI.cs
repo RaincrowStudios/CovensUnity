@@ -226,6 +226,9 @@ public class QuestLogUI : UIAnimationManager
         questObject.SetActive(true);
         questCG.alpha = 1;
         logCG.alpha = .4f;
+
+        LoadingOverlay.Show();
+        LoadingOverlay.Hide();
         QuestsController.GetQuests((error) =>
         {
             if (string.IsNullOrEmpty(error))

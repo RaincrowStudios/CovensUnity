@@ -52,8 +52,11 @@ public static class QuestsController
     }
 
     public static event System.Action OnCollectDailyRewards;
+    public static event System.Action OnResetDaily;
 
     public static CovenDaily Quests => PlayerDataManager.playerData.quest.daily;
+
+    public static int m_DailyResetTweenId;
 
     public static void GetQuests(System.Action<string> callback)
     {
@@ -62,6 +65,7 @@ public static class QuestsController
             System.TimeSpan timeRemaing = Utilities.TimespanFromJavaTime(PlayerDataManager.playerData.quest.daily.endDate);
             if (timeRemaing.TotalSeconds > 0)
             {
+                ResetDailyTimer(PlayerDataManager.playerData.quest.daily.endDate);
                 callback?.Invoke(null);
                 return;
             }
@@ -75,11 +79,13 @@ public static class QuestsController
                 if (response == 200)
                 {
                     PlayerDataManager.playerData.quest.daily = Newtonsoft.Json.JsonConvert.DeserializeObject<CovenDaily>(result);
+                    ResetDailyTimer(PlayerDataManager.playerData.quest.daily.endDate);
                     callback?.Invoke(null);
                 }
                 else
                 {
                     callback?.Invoke(APIManager.ParseError(result));
+                    Debug.LogException(new System.Exception("failed to retrieve quests:\n" + result));
                 }
             });
     }
@@ -134,5 +140,31 @@ public static class QuestsController
                     callback?.Invoke(new DailyRewards(), APIManager.ParseError(result));
                 }
             });
+    }
+
+    private static void ResetDailyTimer(double expireOn)
+    {
+        var expireDate = Utilities.TimespanFromJavaTime(expireOn);
+
+        Debug.Log("[QuestController] daily reset in " + expireDate.TotalSeconds);
+
+        LeanTween.cancel(m_DailyResetTweenId);
+        m_DailyResetTweenId = LeanTween.value(0, 0, 0)
+            .setDelay((float)expireDate.TotalSeconds)
+            .setOnStart(() => 
+            {
+                GetQuests((error) =>
+                {
+                    if (string.IsNullOrEmpty(error))
+                    {
+                        OnResetDaily?.Invoke();
+                    }
+                    else
+                    {
+                        Debug.LogError("failed to reset dailies:\n" + error);
+                    }
+                });
+            })
+            .uniqueId;
     }
 }
