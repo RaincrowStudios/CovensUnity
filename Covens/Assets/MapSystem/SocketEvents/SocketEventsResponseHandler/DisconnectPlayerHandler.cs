@@ -10,6 +10,11 @@ namespace Raincrow.GameEventResponses
 
         public void HandleResponse(string eventData)
         {
+            DisconnectPlayer();
+        }
+
+        public static void DisconnectPlayer()
+        {
             UIGlobalPopup.ShowPopUp(() =>
             {
                 Application.Quit();

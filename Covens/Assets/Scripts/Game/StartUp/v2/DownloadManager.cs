@@ -1,4 +1,5 @@
-﻿using Newtonsoft.Json;
+﻿using BestHTTP;
+using Newtonsoft.Json;
 using Raincrow.Store;
 using System.Collections;
 using System.Collections.Generic;
@@ -12,7 +13,7 @@ public class DownloadManager : MonoBehaviour
     {
         public string game;// => "130";
         public string store;// => "121";
-        public string localization;// => "124";
+        public string localization => "128";
 
         public List<string> assets;// => new List<string>() { "spirits-3", "spells-2", "apparel-6", "icon-6", "icon-8", "icon-9", "icon-10", "icon-11", "spells-3" };
         public string version;
@@ -168,7 +169,6 @@ public class DownloadManager : MonoBehaviour
         //download game the dictionary
         OnDictionaryDownloadStart?.Invoke();
         {
-
             bool isDictionaryComplete = false;
             bool isDictionaryParseError = false;
             string dictionaryDownloadError = null;
@@ -205,12 +205,50 @@ public class DownloadManager : MonoBehaviour
                 yield break;
             }
         }
-        //OnDownloadedDictionary?.Invoke();
+
+        //download the store dictionary
+        {
+            bool isDictionaryComplete = false;
+            bool isDictionaryParseError = false;
+            string dictionaryDownloadError = null;
+
+            DictionaryManager.GetStoreDictionary(assets.store,
+                onDicionaryReady: () =>
+                {
+                    isDictionaryComplete = true;
+                },
+                onDownloadError: (code, response) =>
+                {
+                    isDictionaryComplete = true;
+                    dictionaryDownloadError = $"Error downloading store settings. [{code}] {response}";
+                },
+                onParseError: () =>
+                {
+                    isDictionaryComplete = true;
+                    isDictionaryParseError = true;
+                });
+
+            //wait for download to finish
+            while (isDictionaryComplete == false)
+                yield return 0;
+
+            //check if there was any error
+            if (string.IsNullOrEmpty(dictionaryDownloadError) == false)
+            {
+                OnDictionaryError?.Invoke(dictionaryDownloadError);
+                yield break;
+            }
+
+            if (isDictionaryParseError)
+            {
+                //error delegate was already invoked in SaveDict method
+                //OnDictionaryParserError?.Invoke();
+                yield break;
+            }
+        }
 
         //download the localisation dictionary
-        //OnDictionaryDownloadStart?.Invoke();
         {
-
             bool isDictionaryComplete = false;
             bool isDictionaryParseError = false;
             string dictionaryDownloadError = null;
@@ -247,45 +285,6 @@ public class DownloadManager : MonoBehaviour
                 yield break;
             }
         }
-        //download the store dictionary
-        //OnDictionaryDownloadStart?.Invoke();
-        {
-            bool isDictionaryComplete = false;
-            bool isDictionaryParseError = false;
-            string dictionaryDownloadError = null;
-
-            DictionaryManager.GetStoreDictionary(assets.store,
-                onDicionaryReady: () =>
-                {
-                    isDictionaryComplete = true;
-                },
-                onDownloadError: (code, response) =>
-                {
-                    isDictionaryComplete = true;
-                    dictionaryDownloadError = $"Error downloading store settings. [{code}] {response}";
-                },
-                onParseError: () =>
-                {
-                    isDictionaryComplete = true;
-                    isDictionaryParseError = true;
-                });
-
-            while (isDictionaryComplete == false)
-                yield return 0;
-
-            if (string.IsNullOrEmpty(dictionaryDownloadError) == false)
-            {
-                OnDictionaryError?.Invoke(dictionaryDownloadError);
-                yield break;
-            }
-
-            if (isDictionaryParseError)
-            {
-                //error delegate was already invoked in SaveDict method
-                //OnDictionaryParserError?.Invoke();
-                yield break;
-            }
-        }
 
 
         OnDownloadedDictionary?.Invoke();
@@ -293,7 +292,7 @@ public class DownloadManager : MonoBehaviour
         dictionariesDownloaded?.Invoke();
 
 
-        //download the asset bundles
+        //figure out which bundles must be downloaded
         List<string> bundlesToDownload = new List<string>();
         AssetCacheJson cachedAssetKeys;
 
@@ -328,6 +327,7 @@ public class DownloadManager : MonoBehaviour
         }
 
 
+        //download the bundles
         string assetBaseUrl = DownloadManager.downloadUrl;
         if (Application.platform == RuntimePlatform.IPhonePlayer)
             assetBaseUrl += "appleassets/";
@@ -337,40 +337,41 @@ public class DownloadManager : MonoBehaviour
             string assetName = bundlesToDownload[i];
             float size = 0;
 
-            //get the header
             bool fail = true;
             int retryCount = 0;
-            UnityWebRequest head = UnityWebRequest.Head(assetBaseUrl + assetName);
-            while (fail && retryCount < APIManagerServer.MaxRetries)
-            {
-                head.SendWebRequest();
 
-                while (!head.isDone)
-                    yield return 0;
+            ////get the header for the filesize
+            //UnityWebRequest head = UnityWebRequest.Head(assetBaseUrl + assetName);
+            //while (fail && retryCount < APIManagerServer.MaxRetries)
+            //{
+            //    head.SendWebRequest();
 
-                fail = head.isNetworkError || head.isHttpError;
-                retryCount += 1;
+            //    while (!head.isDone)
+            //        yield return 0;
 
-                if (fail)
-                {
-                    APIManager.ThrowRetryError(head, head.url, "");
-                    yield return new WaitForSeconds(APIManagerServer.RetryCooldown);
-                    head = UnityWebRequest.Head(assetBaseUrl + assetName);
-                }
-            }
+            //    fail = head.isNetworkError || head.isHttpError;
+            //    retryCount += 1;
 
-            if (fail)
-            {
-                Debug.LogError("Failed to download header " + assetName + "\n" + head.error);
-                OnDownloadError?.Invoke(assetName, head.error);
-                yield break;
-            }
-            else
-            {
-                size = float.Parse(head.GetResponseHeader("Content-Length")) * 0.000001f;
-            }
+            //    if (fail)
+            //    {
+            //        APIManager.ThrowRetryError(head, head.url, "");
+            //        yield return new WaitForSeconds(APIManagerServer.RetryCooldown);
+            //        head = UnityWebRequest.Head(assetBaseUrl + assetName);
+            //    }
+            //}
 
-            //get the file
+            //if (fail)
+            //{
+            //    Debug.LogError("Failed to download header " + assetName + "\n" + head.error);
+            //    OnDownloadError?.Invoke(assetName, head.error);
+            //    yield break;
+            //}
+            //else
+            //{
+            //    size = float.Parse(head.GetResponseHeader("Content-Length")) * 0.000001f;
+            //}
+
+            //get the actual file
             fail = true;
             retryCount = 0;
             UnityWebRequest www = UnityWebRequest.Get(assetBaseUrl + assetName);
@@ -439,6 +440,8 @@ public class DownloadManager : MonoBehaviour
         catch (System.Exception e)
         {
             Debug.LogError("Failed to parse localization dictionary");
+            if (Application.isEditor)
+                Debug.Log(json);
             Debug.LogException(e);
             OnDictionaryParserError?.Invoke(e.Message, e.StackTrace);
             return false;
@@ -523,5 +526,27 @@ public class DownloadManager : MonoBehaviour
             OnDictionaryParserError?.Invoke(e.Message, e.StackTrace);
             return false;
         }
+    }
+
+    public static void DownloadFile(string url, System.Action<long,long> onProgress, System.Action<int, string> onComplete)
+    {
+        var uri = new System.Uri(url);
+        var bestHTTPRequest = new HTTPRequest(uri, (request, response) =>
+        {
+            Debug.Log("[download complete] " + url);
+            onComplete?.Invoke(response.StatusCode, response.DataAsText);
+        });
+
+        Debug.Log("[download start] " + url);
+
+        bestHTTPRequest.OnProgress += (request, downloaded, length) =>
+        {
+            //Debug.Log("[download progress] " + url + "\n" + downloaded + "/" + length);
+            onProgress?.Invoke(downloaded, length);
+        };
+
+        //bestHTTPRequest.DisableRetry
+
+        bestHTTPRequest.Send();
     }
 }

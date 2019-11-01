@@ -1,4 +1,5 @@
 using UnityEngine;
+using BestHTTP;
 using UnityEngine.CrashReportHandler;
 
 public class DictionaryManager
@@ -102,7 +103,7 @@ public class DictionaryManager
         return Cultures[languageIndex];
     }
 
-    public static event System.Action<string, float, float> OnDownloadProgress;
+    //public static event System.Action<string, float, float> OnDownloadProgress;
 
 
     public static void GetLocalisationDictionary(string version, System.Action onDicionaryReady, System.Action<int, string> onDownloadError, System.Action onParseError)
@@ -157,7 +158,7 @@ public class DictionaryManager
                  onDownloadError?.Invoke(resultCode, response);
              }
          },
-        5, 0);
+        5);
     }
 
     public static void GetGameDictionary(string version, System.Action onDicionaryReady, System.Action<int, string> onDownloadError, System.Action onParseError)
@@ -227,7 +228,7 @@ public class DictionaryManager
                 onDownloadError?.Invoke(resultCode, response);
             }
         },
-        5, 0);
+        5);
     }
 
     public static void GetStoreDictionary(string version, System.Action onDicionaryReady, System.Action<int, string> onDownloadError, System.Action onParseError)
@@ -293,7 +294,7 @@ public class DictionaryManager
                 onDownloadError?.Invoke(resultCode, response);
             }
         },
-        5, 0);
+        5);
     }
 
 
@@ -327,48 +328,57 @@ public class DictionaryManager
         }
     }
 
-    private async static void DownloadFile(string url, string name, string version, System.Action<int, string> onComplete, int maxRetries, int tryCount = 0)
+    private static void DownloadFile(string url, string name, string version, System.Action<int, string> onComplete, int maxRetries)
     {
-        var uri = new System.Uri(url);
-        Debug.Log("Downloading " + uri.ToString());
-        using (var webClient = new System.Net.WebClient())
-        {
-            try
+        DownloadManager.DownloadFile(
+            url,
+            (downloaded, length) =>
             {
-                //get header
-                var openReadTask = await webClient.OpenReadTaskAsync(uri);
-                long size = size = System.Convert.ToInt64(webClient.ResponseHeaders["Content-Length"]);
-                openReadTask.Close();
-
-                //get file
-                webClient.DownloadProgressChanged += (sender, args) => DownloadProgressChanged(name, size, args);
-                string result = await webClient.DownloadStringTaskAsync(uri);
-
-                onComplete(200, result);
-            }
-            catch (System.Net.WebException e)
+                //OnDownloadProgress?.Invoke(name, size * 0.000001f, e.ProgressPercentage / 100f);
+            },
+            (status, response) =>
             {
-                Debug.LogError("Error in " + name + " dictionary:\n" + e.Message + "\nStacktrace: " + e.StackTrace);
-                tryCount++;
-                if (tryCount <= maxRetries)
-                {
-                    LeanTween.value(0, 0, 2f).setOnComplete(() => DownloadFile(url, name, version, onComplete, maxRetries, tryCount));
-                }
-                else
-                {
-                    var response = e.Response as System.Net.HttpWebResponse;
-
-                    if (response == null)
-                        onComplete(0, "null response");
-                    else
-                        onComplete((int)response.StatusCode, response.StatusDescription);
-                }
-            }
-        }
+                onComplete?.Invoke(status, response);
+            });
     }
 
-    private static void DownloadProgressChanged(string name, long size, System.Net.DownloadProgressChangedEventArgs e)
-    {
-        OnDownloadProgress?.Invoke(name, size * 0.000001f, e.ProgressPercentage / 100f);
-    }
+    //private async static void DownloadFile(string url, string name, string version, System.Action<int, string> onComplete, int maxRetries, int tryCount = 0)
+    //{
+    //    var uri = new System.Uri(url);
+    //    Debug.Log("Downloading " + uri.ToString());
+    //    using (var webClient = new System.Net.WebClient())
+    //    {
+    //        try
+    //        {
+    //            //get header
+    //            var openReadTask = await webClient.OpenReadTaskAsync(uri);
+    //            long size = size = System.Convert.ToInt64(webClient.ResponseHeaders["Content-Length"]);
+    //            openReadTask.Close();
+
+    //            //get file
+    //            webClient.DownloadProgressChanged += (sender, args) => DownloadProgressChanged(name, size, args);
+    //            string result = await webClient.DownloadStringTaskAsync(uri);
+
+    //            onComplete(200, result);
+    //        }
+    //        catch (System.Net.WebException e)
+    //        {
+    //            Debug.LogError("Error in " + name + " dictionary:\n" + e.Message + "\nStacktrace: " + e.StackTrace);
+    //            tryCount++;
+    //            if (tryCount <= maxRetries)
+    //            {
+    //                LeanTween.value(0, 0, 2f).setOnComplete(() => DownloadFile(url, name, version, onComplete, maxRetries, tryCount));
+    //            }
+    //            else
+    //            {
+    //                var response = e.Response as System.Net.HttpWebResponse;
+
+    //                if (response == null)
+    //                    onComplete(0, "null response");
+    //                else
+    //                    onComplete((int)response.StatusCode, response.StatusDescription);
+    //            }
+    //        }
+    //    }
+    //}
 }
