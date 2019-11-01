@@ -68,7 +68,7 @@ SpriteRenderer:
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: 0
   m_SortingLayer: 0
-  m_SortingOrder: 1
+  m_SortingOrder: 0
   m_Sprite: {fileID: 21300000, guid: 6ab346d49e0385c4585b4443d45ddd66, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 0.972549}
   m_FlipX: 0
@@ -139,18 +139,11 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_AvatarRenderer: {fileID: 212419499867207832}
-  m_NameBanner: {fileID: 0}
-  m_StatsContainer: {fileID: 0}
-  m_EnergyRing: {fileID: 0}
-  m_EnergyRingEmpty: {fileID: 0}
   m_Shadows:
   - {fileID: 212375521424643466}
-  m_DebugFloat: 0
   m_AvatarGroup: {fileID: 4416586458041762}
-  m_IconGroup: {fileID: 4363296288485832}
   m_Ring: {fileID: 212419499867207832}
   m_CharacterTransform: {fileID: 4570700201433390}
-  m_IconTransform: {fileID: 4947001655997614}
 --- !u!1 &1320835451952284
 GameObject:
   m_ObjectHideFlags: 0
@@ -249,7 +242,7 @@ SpriteRenderer:
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: 0
   m_SortingLayer: 0
-  m_SortingOrder: -2
+  m_SortingOrder: -10
   m_Sprite: {fileID: 21300000, guid: 9281945b6e52498418f3b077d9230e7a, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
@@ -488,7 +481,7 @@ SpriteRenderer:
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: 0
   m_SortingLayer: 0
-  m_SortingOrder: -2
+  m_SortingOrder: -10
   m_Sprite: {fileID: 21300000, guid: 8f2c7041327245f48bb12f2b9afd2bff, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
@@ -5205,7 +5198,7 @@ ParticleSystem:
 --- !u!199 &4583654618813432985
 ParticleSystemRenderer:
   serializedVersion: 6
-  m_ObjectHideFlags: 2
+  m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
@@ -5331,8 +5324,8 @@ SpriteRenderer:
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: 0
   m_SortingLayer: 0
-  m_SortingOrder: -3
-  m_Sprite: {fileID: 21300000, guid: 8e6d87fa5e3c6584495a7ea33bd14c95, type: 3}
+  m_SortingOrder: -10
+  m_Sprite: {fileID: 21300000, guid: 264dad0343adf0c4ea8c5a48976da2e3, type: 3}
   m_Color: {r: 0.1254902, g: 0.13725491, b: 0.1254902, a: 1}
   m_FlipX: 0
   m_FlipY: 0
