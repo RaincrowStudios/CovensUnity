@@ -556,18 +556,7 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 1065786770}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls:
-      - m_Target: {fileID: 1565036002}
-        m_MethodName: SetActive
-        m_Mode: 6
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
+      m_Calls: []
     m_TypeName: UnityEngine.UI.Button+ButtonClickedEvent, UnityEngine.UI, Version=1.0.0.0,
       Culture=neutral, PublicKeyToken=null
 --- !u!114 &1065786770
@@ -1115,6 +1104,7 @@ MonoBehaviour:
   m_Canvas: {fileID: 2756057986007484900}
   m_InputRaycaster: {fileID: 7294050109421112185}
   m_CanvasGroup: {fileID: 2649944198048748151}
+  m_Content: {fileID: 1565036003}
   m_CloseButton: {fileID: 1065786769}
   m_Title: {fileID: 1943365173}
   m_Desc: {fileID: 265236218}
