@@ -99,23 +99,6 @@ public class GardenMarkers : MonoBehaviour
             gardens.Add(item.Value);
         }
 
-        //for (int i = 0; i < greyHandOffices.Length; i++)
-        //{
-        //    string officeName = greyHandOffices[i].officeLocation;
-        //    var greyHand = Utilities.InstantiateObject(greyHandMarker, map.trackedContainer);
-        //    greyHand.name = "[greyhand] " + greyHandOffices[i].officeLocation;
-        //    greyHand.transform.position = map.GetWorldPosition(greyHandOffices[i].officeLongitude, greyHandOffices[i].officeLatitude);
-        //    greyHand.transform.Rotate(90, 0, 0);
-        //    greyHandOfficesTrans[i] = greyHand.transform;
-
-        //    MuskMarker marker = greyHandMarker.GetComponent<MuskMarker>();
-        //    if (marker == null)
-        //        marker = greyHand.AddComponent<MuskMarker>();
-        //    marker.OnClick = (m) => OnClickGreyOffice(officeName);
-        //    marker.Coords = new Vector2(greyHandOffices[i].officeLongitude, greyHandOffices[i].officeLatitude);
-        //}
-        //SetGreyHandMarkerScale();
-
         Debug.Log("setup explore quests");
         QuestsController.GetQuests(error =>
         {
@@ -126,10 +109,6 @@ public class GardenMarkers : MonoBehaviour
 
     private void SetupExplore(QuestsController.CovenDaily.Explore lore)
     {
-
-        if (PlayerDataManager.playerData.quest.explore.completed)
-            return;
-
         if (loreMarker == null)
         {
             var go = Utilities.InstantiateObject(lorePrefab, map.trackedContainer);
@@ -145,6 +124,7 @@ public class GardenMarkers : MonoBehaviour
 
         loreMarker.OnClick = (m) => SendQuestLore();
         loreMarker.Coords = new Vector2(lore.location.longitude, lore.location.latitude);
+        //loreMarker.SetAlpha(PlayerDataManager.playerData.quest.explore.completed ? 0.4f : 1f);
         SetLoreScale();
     }
 
@@ -153,15 +133,12 @@ public class GardenMarkers : MonoBehaviour
     {
         SetLoreScale();
         updateGardenScale();
-        //SetGreyHandMarkerScale();
     }
 
     void checkLoreOnLand()
     {
-        if (loreMarker == null)
+        if (PlayerDataManager.playerData.quest.explore.completed)
             return;
-
-        //Debug.Log("check lore on land:\n" + map.position + "\n" + loreMarker.Coords);
 
         if (!PlayerDataManager.playerData.quest.explore.completed &&
             map.DistanceBetweenPointsD(map.position, new Vector2(loreMarker.Coords.x, loreMarker.Coords.y)) < 8)
@@ -169,23 +146,6 @@ public class GardenMarkers : MonoBehaviour
             SendQuestLore();
         }
     }
-
-    //void SetGreyHandMarkerScale()
-    //{
-    //    for (int i = 0; i < greyHandOffices.Length; i++)
-    //    {
-    //        if (map.normalizedZoom > minForbiddenZoom)
-    //        {
-    //            greyHandOfficesTrans[i].localScale = Vector3.one * forbiddenScale * MapLineraScale.linearMultiplier;
-    //            greyHandOfficesTrans[i].transform.position = map.GetWorldPosition(greyHandOffices[i].officeLongitude, greyHandOffices[i].officeLatitude);
-    //            greyHandOfficesTrans[i].gameObject.SetActive(!map.streetLevel);
-    //        }
-    //        else
-    //        {
-    //            greyHandOfficesTrans[i].gameObject.SetActive(false);
-    //        }
-    //    }
-    //}
 
 
     void updateGardenScale()
@@ -234,11 +194,8 @@ public class GardenMarkers : MonoBehaviour
 
     private void SendQuestLore()
     {
-        if (loreMarker == null)
-            return;
-
-        loreMarker.Interactable = false;
-        loreMarker.SetAlpha(0f, 1f);
+        //loreMarker.Interactable = false;
+        loreMarker.SetAlpha(0.4f, 1f);
 
         UIQuestLore.Show(QuestsController.Quests.explore.type);
     }
@@ -250,11 +207,6 @@ public class GardenMarkers : MonoBehaviour
         title.text = LocalizeLookUp.GetGardenName(id);
         desc.text = LocalizeLookUp.GetGardenDesc(id);
         StartCoroutine(GetImage(id));
-    }
-
-    private void OnClickGreyOffice(string name)
-    {
-        GreyHandOffice.Show(name);
     }
 
     IEnumerator GetImage(string id)

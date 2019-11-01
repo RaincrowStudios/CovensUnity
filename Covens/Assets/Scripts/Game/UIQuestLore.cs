@@ -67,9 +67,12 @@ public class UIQuestLore : MonoBehaviour
             .setOnComplete(() =>
             {
                 m_Canvas.enabled = false;
-                SceneManager.UnloadScene(SceneManager.Scene.EXPLORE_LORE, null, null);
+                //SceneManager.UnloadScene(SceneManager.Scene.EXPLORE_LORE, null, null);
             })
             .uniqueId;
+
+        if (PlayerDataManager.playerData.quest.explore.completed)
+            return;
 
         QuestsController.CompleteExplore(error =>
         {

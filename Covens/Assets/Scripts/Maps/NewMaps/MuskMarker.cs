@@ -92,7 +92,7 @@ namespace Raincrow.Maps
 
         private void Awake()
         {
-            enabled = false;
+            //enabled = false;
             AvatarAlpha = 1;
             Alpha = 1;
             TextAlpha = 1;
