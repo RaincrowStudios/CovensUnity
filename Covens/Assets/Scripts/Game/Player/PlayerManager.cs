@@ -170,7 +170,11 @@ public class PlayerManager : MonoBehaviour
 
         if (dist < 0.1f)
         {
-            MapCameraUtils.FocusOnPosition(PlayerManager.marker.GameObject.transform.position, true, 2f);
+            if (isFlying)
+                MapCameraUtils.FocusOnPosition(marker.Coords.x, marker.Coords.y, true, 2f);
+            else
+                MapCameraUtils.FocusOnPosition(PlayerManager.marker.GameObject.transform.position, true, 2f);
+            
             PlayerManager.Instance.atLocationUIShow();
             return;
         }

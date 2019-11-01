@@ -36,6 +36,11 @@ public class MapCameraUtils : MonoBehaviour
         m_Instance.m_Controller.AnimatePosition(worldPosition, time, allowCancel);
     }
 
+    public static void FocusOnPosition(float longitude, float latitude, bool allowCancel, float time = 1f)
+    {
+        m_Instance.m_Controller.AnimatePosition(new Vector2(longitude, latitude), time, allowCancel);
+    }
+
     public static void FocusOnMarker(Vector3 position, float time = 1f)
     {
         FocusOnPosition(
