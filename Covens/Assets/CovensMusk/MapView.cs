@@ -40,7 +40,11 @@ public class MapView : MonoBehaviour
             MarkerManagerAPI.GetMarkers(
                 PlayerDataManager.playerData.longitude,
                 PlayerDataManager.playerData.latitude,
-                null,
+                () =>
+                {
+                    if (PlayerDataManager.playerData.state == "vulnerable"/* || PlayerDataManager.playerData.state == "dead"*/)
+                        _OnPlayerVulnerable();
+                },
                 true,
                 false,
                 true

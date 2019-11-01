@@ -400,7 +400,7 @@ public class UIStore : MonoBehaviour
     {
         SetHeaderText();
         SetupHomePacks();
-        m_RestoreEnergyButton.gameObject.SetActive(PlayerDataManager.playerData.state == "vulnerable" || PlayerDataManager.playerData.state == "dead");
+        m_RestoreEnergyButton.gameObject.SetActive(/*PlayerDataManager.playerData.state == "vulnerable" ||*/ PlayerDataManager.playerData.state == "dead");
     }
 
     [ContextMenu("Setup Packs")]
@@ -506,28 +506,34 @@ public class UIStore : MonoBehaviour
 
     private void OnClickRestoreEnergy()
     {
-        UIGlobalPopup.ShowPopUp(
-            () =>
-            {
+        //UIGlobalPopup.ShowPopUp(
+        //    () =>
+        //    {
                 LoadingOverlay.Show();
-                APIManager.Instance.Post("shop/energy", "{}", (response, result) =>
+                APIManager.Instance.Post("character/revive", "{}", (response, result) =>
                 {
                     LoadingOverlay.Hide();
                     if (result == 200)
                     {
                         m_RestoreEnergyButton.gameObject.SetActive(false);
-                        PlayerDataManager.playerData.AddCurrency(0, -1);
+                        //PlayerDataManager.playerData.AddCurrency(0, -1);
+                        
                         OnMapEnergyChange.ForceEvent(PlayerManager.marker, PlayerDataManager.playerData.baseEnergy);
-
-                        UIGlobalPopup.ShowPopUp(null, LocalizeLookUp.GetText("blessing_full"));
+                        UIGlobalPopup.ShowPopUp(() =>
+                        {
+                            Close();
+                            MapFlightTransition.Instance.RecallHome(true);
+                            //PlayerManager.Instance.RecallHome();
+                        }, 
+                        LocalizeLookUp.GetText("blessing_full"));
                     }
                     else
                     {
                         UIGlobalPopup.ShowError(null, APIManager.ParseError(response));
                     }
                 });
-            },
-            null,
-            LocalizeLookUp.GetText("energy_restore_confirm"));
+            //},
+            //null,
+            //LocalizeLookUp.GetText("energy_restore_confirm"));
     }
 }
