@@ -33,7 +33,7 @@ xcopy %SRC_PATH% %CD%\%2 /s /q /i /y /EXCLUDE:exclude
 ::cd ..
 
 ::call gsutil -m rm -r %DEST_PATH%
-call gsutil -m -h "Content-Type:application/json; charset=utf-8" -h "Cache-Control:no-cache" cp -Z -a public-read -r %2 %DEST_PATH% 
+call gsutil -m -h "Content-Type:application/json; charset=utf-8" -h "Cache-Control:no-cache" cp -a public-read -r %2 %DEST_PATH% 
 rmdir /s /q %2
 
 pause
