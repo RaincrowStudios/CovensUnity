@@ -38,6 +38,8 @@ namespace Raincrow.GameEventResponses
                 //update level
                 player.level = data.level;
                 player.silver += data.silver;
+                if (player.energy < player.baseEnergy)
+                    OnMapEnergyChange.ForceEvent(PlayerManager.marker, player.baseEnergy, data.timestamp);
                 PlayerDataManager.playerData.UpdateSpells();
                 
                 //udpate UI
