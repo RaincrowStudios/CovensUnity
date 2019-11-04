@@ -149,17 +149,11 @@ public class SocketClient : MonoBehaviour
                 case SocketIOErrors.UnknownTransport:
                     UnityMainThreadDispatcher.Instance().Enqueue(GameResyncHandler.ResyncGame);
                     break;
+                //default:
+                //    InitiateSocketConnection(true);
+                //    break;
             }
         }
-
-        //if (!LoginAPIManager.accountLoggedIn)
-        //{
-
-        //}
-        //else
-        //{
-        //    UnityMainThreadDispatcher.Instance().Enqueue(GameResyncHandler.ResyncGame);
-        //}
     }
 
     private void OnDisconnect(Socket socket, Packet packet, object[] args)

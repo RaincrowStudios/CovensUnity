@@ -463,6 +463,7 @@ public class DownloadManager : MonoBehaviour
             PlayerDataManager.alignmentPerDegree = data.alignment;
             PlayerDataManager.xpToLevelup = data.experience;
             PlayerDataManager.baseEnergyPerLevel = data.baseEnergy;
+            PlayerDataManager.forbiddenValue = data.forbiddenValue;
             MoonManager.LunarEffeciency = data.lunarEfficiency;
 
             DownloadedAssets.spellDictData = data.Spells;

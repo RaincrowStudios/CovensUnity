@@ -18,6 +18,7 @@ public class PlayerDataManager : MonoBehaviour
     public static int[] summoningCosts;
     public static long[] alignmentPerDegree;
     public static int[] baseEnergyPerLevel;
+    public static int[] forbiddenValue;
     public static ulong[] xpToLevelup;
     public static MoonData moonData;
     public static Sun sunData;

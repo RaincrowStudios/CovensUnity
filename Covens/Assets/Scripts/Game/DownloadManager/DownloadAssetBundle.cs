@@ -77,6 +77,7 @@ public class GameSettingsData
     [JsonProperty("xp")]
     public ulong[] experience;
     public int[] baseEnergy;
+    public int[] forbiddenValue;
     public float[] lunarEfficiency;
 
     [JsonProperty("spiritTierXp")]

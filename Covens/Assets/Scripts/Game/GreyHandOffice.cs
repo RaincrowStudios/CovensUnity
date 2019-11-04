@@ -213,21 +213,15 @@ public class GreyHandOffice : MonoBehaviour
             {
                 inventoryItems.Add(item);
                 forbidTool += item.count;
-                if (data.rarity == 1)
+
+                int idx = data.rarity - 1;
+                if (idx >= 0 && idx < PlayerDataManager.forbiddenValue?.Length)
                 {
-                    forbidToolValue += (5 * item.count);
-                }
-                else if (data.rarity == 2)
-                {
-                    forbidToolValue += (15 * item.count);
-                }
-                else if (data.rarity == 3)
-                {
-                    forbidToolValue += (50 * item.count);
+                    forbidToolValue += PlayerDataManager.forbiddenValue[idx];
                 }
                 else
                 {
-                    forbidToolValue += (125 * item.count);
+                    Debug.LogException(new System.Exception("Invalid raririty [" + data.rarity + "] for tool \"" + item.id + "\""));
                 }
             }
         }
