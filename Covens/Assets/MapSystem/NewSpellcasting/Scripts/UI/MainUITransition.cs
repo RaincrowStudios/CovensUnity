@@ -6,7 +6,6 @@ using UnityEngine.UI;
 public class MainUITransition : MonoBehaviour
 {
     [SerializeField] private RectTransform leftBar;
-    [SerializeField] private RectTransform leftBar_halloween; //Halloween
     [SerializeField] private RectTransform bottomBar;
     [SerializeField] private GameObject[] scaleObjects;
     [SerializeField] private float time = 1;
@@ -77,7 +76,7 @@ public class MainUITransition : MonoBehaviour
                 alpha = Mathf.Lerp(startAlpha, 0, t);
                 foreach (var item in bars)
                     item.alpha = alpha;
-                leftBar_halloween.GetComponent<CanvasGroup>().alpha = alpha; //halloween
+
             })
             .uniqueId;
 
@@ -121,7 +120,7 @@ public class MainUITransition : MonoBehaviour
                 alpha = Mathf.Lerp(startAlpha, 1, t);
                 foreach (var item in bars)
                     item.alpha = alpha;
-                leftBar_halloween.GetComponent<CanvasGroup>().alpha = alpha; //halloween
+
 
             })
             .uniqueId;
