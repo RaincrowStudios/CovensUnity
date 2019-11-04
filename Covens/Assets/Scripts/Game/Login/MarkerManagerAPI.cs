@@ -66,9 +66,15 @@ public class MarkerManagerAPI : MonoBehaviour
         if (PlayerDataManager.playerData.state == "dead")
         {
             isPhysical = true;
-            longitude = GetGPS.longitude + GetGPS.noise.x;
-            latitude = GetGPS.latitude + GetGPS.noise.y;
+            longitude = GetGPS.longitude;
+            latitude = GetGPS.latitude;
             IsSpiritForm = !isPhysical;
+        }
+
+        if (isPhysical)
+        {
+            longitude += GetGPS.noise.x;
+            latitude += GetGPS.noise.y;
         }
 
         var data = new
