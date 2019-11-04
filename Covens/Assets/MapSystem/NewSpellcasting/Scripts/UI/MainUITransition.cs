@@ -6,7 +6,6 @@ using UnityEngine.UI;
 public class MainUITransition : MonoBehaviour
 {
     [SerializeField] private RectTransform leftBar;
-    [SerializeField] private RectTransform leftBar_halloween; //Halloween
     [SerializeField] private RectTransform bottomBar;
     [SerializeField] private GameObject[] scaleObjects;
     [SerializeField] private float time = 1;
@@ -14,6 +13,7 @@ public class MainUITransition : MonoBehaviour
     [SerializeField] private CanvasGroup[] bars;
     [SerializeField] private RectTransform energy;
     [SerializeField] private MapCenterPointerUI mapPointer;
+
 
 
     [Header("Buttons")]
@@ -44,9 +44,9 @@ public class MainUITransition : MonoBehaviour
         LeanTween.cancel(m_TweenId);
 
         float leftBar_Start = leftBar.anchoredPosition.x;
-        //float leftBar_Halloween_Start = leftBar_halloween.anchoredPosition.x; //Halloween
+
         float leftBar_End = -150;
-        //float leftBar_Halloween_End = -150; //Halloween
+
 
 
         float bottomBarAnchor_Start = bottomBar.anchoredPosition.y;
@@ -65,7 +65,7 @@ public class MainUITransition : MonoBehaviour
             .setOnUpdate((float t) =>
             {
                 leftBar.anchoredPosition = new Vector2(Mathf.Lerp(leftBar_Start, leftBar_End, t), leftBar.anchoredPosition.y);
-                //leftBar_halloween.anchoredPosition = new Vector2(Mathf.Lerp(leftBar_Halloween_Start, leftBar_Halloween_End, t), leftBar_halloween.anchoredPosition.y); //Halloween
+
                 bottomBar.anchoredPosition = new Vector2(bottomBar.anchoredPosition.x, Mathf.Lerp(bottomBarAnchor_Start, bottomBarAnchor_End, t));
 
                 energy.offsetMin = new Vector2(Mathf.Lerp(energyBarOffset_Start, energyBarOffset_End, t), bottomBar.offsetMin.y);
@@ -77,7 +77,7 @@ public class MainUITransition : MonoBehaviour
                 alpha = Mathf.Lerp(startAlpha, 0, t);
                 foreach (var item in bars)
                     item.alpha = alpha;
-                leftBar_halloween.GetComponent<CanvasGroup>().alpha = alpha; //halloween
+
             })
             .uniqueId;
 
@@ -89,9 +89,9 @@ public class MainUITransition : MonoBehaviour
         LeanTween.cancel(m_TweenId);
 
         float leftBar_Start = leftBar.anchoredPosition.x;
-        //float leftBar_Halloween_Start = leftBar_halloween.anchoredPosition.x; //Halloween
+
         float leftBar_End = 130;
-        //float leftBar_Halloween_End = 130; //Halloween
+
 
         float bottomBarAnchor_Start = bottomBar.anchoredPosition.y;
         float bottomBarAnchor_End = 50;
@@ -109,7 +109,7 @@ public class MainUITransition : MonoBehaviour
             .setOnUpdate((float t) =>
             {
                 leftBar.anchoredPosition = new Vector2(Mathf.Lerp(leftBar_Start, leftBar_End, t), leftBar.anchoredPosition.y);
-                //leftBar_halloween.anchoredPosition = new Vector2(Mathf.Lerp(leftBar_Halloween_Start, leftBar_Halloween_End, t), leftBar_halloween.anchoredPosition.y); //Halloween
+
                 bottomBar.anchoredPosition = new Vector2(bottomBar.anchoredPosition.x, Mathf.Lerp(bottomBarAnchor_Start, bottomBarAnchor_End, t));
 
                 energy.offsetMin = new Vector2(Mathf.Lerp(energyBarOffset_Start, energyBarOffset_End, t), bottomBar.offsetMin.y);
@@ -121,7 +121,7 @@ public class MainUITransition : MonoBehaviour
                 alpha = Mathf.Lerp(startAlpha, 1, t);
                 foreach (var item in bars)
                     item.alpha = alpha;
-                leftBar_halloween.GetComponent<CanvasGroup>().alpha = alpha; //halloween
+
 
             })
             .uniqueId;

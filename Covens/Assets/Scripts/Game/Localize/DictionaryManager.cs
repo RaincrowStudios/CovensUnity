@@ -40,9 +40,9 @@ public class DictionaryManager
 #if UNITY_EDITOR
             switch (UnityEditor.EditorPrefs.GetString("game"))
             {
-                case "Local": url += "dev/"; break;
+                case "Local": url += "staging/"; break;
                 case "Release": url += "release/"; break;
-                case "Gustavo": url += "dev/"; break;
+                case "Gustavo": url += "staging/"; break;
                 default: url += "staging/"; break;
             }
 #elif PRODUCTION

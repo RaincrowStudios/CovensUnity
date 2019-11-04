@@ -41,6 +41,6 @@ Material:
     - _Borders: {r: 0, g: 0, b: 0, a: 0}
     - _BotLeft: {r: 0, g: 0, b: 0, a: 0}
     - _CircleCenter: {r: 0.5, g: 0.5, b: 0, a: 0}
-    - _Color: {r: 0.7411765, g: 0.23137257, b: 0.007843138, a: 1}
+    - _Color: {r: 0.0627451, g: 0.0627451, b: 0.0627451, a: 1}
     - _Screen: {r: 0, g: 0, b: 1280, a: 720}
     - _ScreenSize: {r: 1280, g: 720, b: 0, a: 0}

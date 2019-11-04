@@ -129,6 +129,7 @@ MonoBehaviour:
   m_Shadows:
   - {fileID: 212630952619904094}
   - {fileID: 212686033159262028}
+  - {fileID: 2158161597202025838}
   m_AvatarGroup: {fileID: 4915499845343902}
   m_IconGroup: {fileID: 4527749467080838}
   m_Character: {fileID: 4080475960509876}

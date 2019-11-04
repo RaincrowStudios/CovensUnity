@@ -19,6 +19,7 @@ public class SocketClient : MonoBehaviour
     private bool _isRefreshingConnection = false;
 
     public Queue<CommandResponse> responsesQueue = new Queue<CommandResponse>();
+    private Coroutine m_ReadFromQueueCoroutine;
 
     private static Dictionary<string, IGameEventHandler> m_EventActionDictionary;
 
@@ -103,15 +104,19 @@ public class SocketClient : MonoBehaviour
 
     private void OnConnect(Socket socket, Packet packet, object[] args)
     {
-        _gameSocket = _socketManager["/client"];
-        _gameSocket.On("game.event", OnGameEvent);
-        Log($"Connected to Socket: { CovenConstants.wssAddress} - Token: {LoginAPIManager.wssToken}");
-
-        if (!_isRefreshingConnection)
+        if (_gameSocket == null)
         {
+            _gameSocket = _socketManager["/client"];
+            _gameSocket.On("game.event", OnGameEvent);
+
+            Log($"Connected to Socket: { CovenConstants.wssAddress} - Token: {LoginAPIManager.wssToken}");            
         }
 
-        StartCoroutine(ReadFromQueue());
+        if (m_ReadFromQueueCoroutine == null)
+        {
+            Log($"Reading socket event queue");
+            m_ReadFromQueueCoroutine = StartCoroutine(ReadFromQueue());
+        }
     }
 
     private void OnGameEvent(Socket socket, Packet packet, object[] args)
@@ -149,17 +154,11 @@ public class SocketClient : MonoBehaviour
                 case SocketIOErrors.UnknownTransport:
                     UnityMainThreadDispatcher.Instance().Enqueue(GameResyncHandler.ResyncGame);
                     break;
+                //default:
+                //    InitiateSocketConnection(true);
+                //    break;
             }
         }
-
-        //if (!LoginAPIManager.accountLoggedIn)
-        //{
-
-        //}
-        //else
-        //{
-        //    UnityMainThreadDispatcher.Instance().Enqueue(GameResyncHandler.ResyncGame);
-        //}
     }
 
     private void OnDisconnect(Socket socket, Packet packet, object[] args)
@@ -169,6 +168,10 @@ public class SocketClient : MonoBehaviour
             string errorMessage = args[0].ToString();
             Log(string.Concat("Disconnected from Socket: ", errorMessage));
         }
+        else
+        {
+            Log("Disconnected from Socket with no errors");
+        }
     }
 
     #endregion
@@ -177,7 +180,11 @@ public class SocketClient : MonoBehaviour
     {
         Log("Disconnecting from socket");
 
-        StopAllCoroutines();
+        if (m_ReadFromQueueCoroutine != null)
+        {
+            StopCoroutine(m_ReadFromQueueCoroutine);
+            m_ReadFromQueueCoroutine = null;
+        }
 
         if (_socketManager != null)
         {
@@ -185,6 +192,7 @@ public class SocketClient : MonoBehaviour
             {
                 _gameSocket.Off("game.event", OnGameEvent);
                 _gameSocket.Disconnect();
+                _gameSocket = null;
             }
 
             _socketManager.Socket.Off(SocketIOEventTypes.Connect, OnConnect);
