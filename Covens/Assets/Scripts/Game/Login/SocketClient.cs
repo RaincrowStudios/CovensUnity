@@ -103,7 +103,7 @@ public class SocketClient : MonoBehaviour
 
     private void OnConnect(Socket socket, Packet packet, object[] args)
     {
-        if (_gameSocket == null || _gameSocket.IsOpen)
+        if (_gameSocket == null || _gameSocket.IsOpen == false)
         {
             _gameSocket = _socketManager["/client"];
             _gameSocket.On("game.event", OnGameEvent);
