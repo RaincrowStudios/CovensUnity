@@ -32,9 +32,9 @@ public class GetGPS : MonoBehaviour
         get
         {
             if (Application.isEditor)
-                return (instance != null ? instance.lng : 0) + noise.x;
+                return (instance != null ? instance.lng : 0);// + noise.x;
 
-            return Input.location.lastData.longitude + noise.x;
+            return Input.location.lastData.longitude;// + noise.x;
         }
         set
         {
@@ -47,8 +47,8 @@ public class GetGPS : MonoBehaviour
         get
         {
             if (Application.isEditor)
-                return (instance != null ? instance.lat : 0) + noise.x;
-            return Input.location.lastData.latitude + noise.x;
+                return (instance != null ? instance.lat : 0);// + noise.x;
+            return Input.location.lastData.latitude;// + noise.x;
         }
         set
         {

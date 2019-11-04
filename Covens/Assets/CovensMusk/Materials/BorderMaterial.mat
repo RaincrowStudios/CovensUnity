@@ -5,7 +5,8 @@ Material:
   serializedVersion: 6
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
   m_Name: BorderMaterial
   m_Shader: {fileID: 4800000, guid: a5f3535bfca876e41a1c356ae3074b83, type: 3}
   m_ShaderKeywords: 
@@ -40,6 +41,6 @@ Material:
     - _Borders: {r: 0, g: 0, b: 0, a: 0}
     - _BotLeft: {r: 0, g: 0, b: 0, a: 0}
     - _CircleCenter: {r: 0.5, g: 0.5, b: 0, a: 0}
-    - _Color: {r: 0.07058824, g: 0.07058824, b: 0.07058824, a: 1}
+    - _Color: {r: 0.7411765, g: 0.23137257, b: 0.007843138, a: 1}
     - _Screen: {r: 0, g: 0, b: 1280, a: 720}
     - _ScreenSize: {r: 1280, g: 720, b: 0, a: 0}
