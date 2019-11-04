@@ -103,15 +103,18 @@ public class SocketClient : MonoBehaviour
 
     private void OnConnect(Socket socket, Packet packet, object[] args)
     {
-        _gameSocket = _socketManager["/client"];
-        _gameSocket.On("game.event", OnGameEvent);
-        Log($"Connected to Socket: { CovenConstants.wssAddress} - Token: {LoginAPIManager.wssToken}");
-
-        if (!_isRefreshingConnection)
+        if (_gameSocket == null || _gameSocket.IsOpen)
         {
-        }
+            _gameSocket = _socketManager["/client"];
+            _gameSocket.On("game.event", OnGameEvent);
+            Log($"Connected to Socket: { CovenConstants.wssAddress} - Token: {LoginAPIManager.wssToken}");
 
-        StartCoroutine(ReadFromQueue());
+            //if (!_isRefreshingConnection)
+            //{
+            //}
+
+            StartCoroutine(ReadFromQueue());
+        }
     }
 
     private void OnGameEvent(Socket socket, Packet packet, object[] args)
@@ -163,6 +166,10 @@ public class SocketClient : MonoBehaviour
             string errorMessage = args[0].ToString();
             Log(string.Concat("Disconnected from Socket: ", errorMessage));
         }
+        else
+        {
+            Log("Disconnected from Socket with no errors");
+        }
     }
 
     #endregion
@@ -179,6 +186,7 @@ public class SocketClient : MonoBehaviour
             {
                 _gameSocket.Off("game.event", OnGameEvent);
                 _gameSocket.Disconnect();
+                _gameSocket = null;
             }
 
             _socketManager.Socket.Off(SocketIOEventTypes.Connect, OnConnect);
