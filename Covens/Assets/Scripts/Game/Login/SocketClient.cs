@@ -19,6 +19,7 @@ public class SocketClient : MonoBehaviour
     private bool _isRefreshingConnection = false;
 
     public Queue<CommandResponse> responsesQueue = new Queue<CommandResponse>();
+    private Coroutine m_ReadFromQueueCoroutine;
 
     private static Dictionary<string, IGameEventHandler> m_EventActionDictionary;
 
@@ -103,17 +104,18 @@ public class SocketClient : MonoBehaviour
 
     private void OnConnect(Socket socket, Packet packet, object[] args)
     {
-        if (_gameSocket == null || _gameSocket.IsOpen == false)
+        if (_gameSocket == null)
         {
             _gameSocket = _socketManager["/client"];
             _gameSocket.On("game.event", OnGameEvent);
-            Log($"Connected to Socket: { CovenConstants.wssAddress} - Token: {LoginAPIManager.wssToken}");
 
-            //if (!_isRefreshingConnection)
-            //{
-            //}
+            Log($"Connected to Socket: { CovenConstants.wssAddress} - Token: {LoginAPIManager.wssToken}");            
+        }
 
-            StartCoroutine(ReadFromQueue());
+        if (m_ReadFromQueueCoroutine == null)
+        {
+            Log($"Reading socket event queue");
+            m_ReadFromQueueCoroutine = StartCoroutine(ReadFromQueue());
         }
     }
 
@@ -178,7 +180,11 @@ public class SocketClient : MonoBehaviour
     {
         Log("Disconnecting from socket");
 
-        StopAllCoroutines();
+        if (m_ReadFromQueueCoroutine != null)
+        {
+            StopCoroutine(m_ReadFromQueueCoroutine);
+            m_ReadFromQueueCoroutine = null;
+        }
 
         if (_socketManager != null)
         {
