@@ -54,12 +54,11 @@ public class MarkerManagerAPI : MonoBehaviour
         double dist = MapsAPI.Instance.DistanceBetweenPointsD(new Vector2(longitude, latitude), GetGPS.coordinates);
         bool wasPhysical = !IsSpiritForm;
         bool isPhysical = dist < PlayerDataManager.DisplayRadius;
-        IsSpiritForm = !isPhysical;
 
         if (wasPhysical && !isPhysical)
             GetGPS.SetNoise();
 
-        if (PlayerDataManager.IsFTF || PlayerDataManager.playerData.insidePlaceOfPower)
+        if (PlayerDataManager.IsFTF || LocationIslandController.isInBattle)
         {
             return;
         }
@@ -88,6 +87,8 @@ public class MarkerManagerAPI : MonoBehaviour
 
         System.Action requestMarkers = () => { };
         IsSpawningTokens = true;
+        IsSpiritForm = !isPhysical;
+
         string timestamp = m_LastRequestTime = Time.time.ToString();
         requestMarkers = () => APIManager.Instance.Post("character/move", dataJson,
             (s, r) =>
