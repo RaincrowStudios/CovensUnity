@@ -44,6 +44,9 @@ public class UISpiritBanished : MonoBehaviour
     private string m_SpiritId;
     private int m_TweenId;
     private int m_ScaleTweenId;
+    private int m_ScaleTweenId2;
+    private int m_ScaleTweenId3;
+
 
     private void Awake()
     {
@@ -53,7 +56,7 @@ public class UISpiritBanished : MonoBehaviour
         m_SpiritArt.color = new Color(0, 0, 0, 0);
         m_CanvasGroup.alpha = 0;
         m_Content.transform.localScale = Vector3.one * 0.25f;
-
+        m_RewardLayout.transform.localScale = Vector3.one * 0.25f;
         DownloadedAssets.OnWillUnloadAssets += OnWillUnloadAssets;
     }
 
@@ -64,6 +67,9 @@ public class UISpiritBanished : MonoBehaviour
 
         LeanTween.cancel(m_TweenId);
         LeanTween.cancel(m_ScaleTweenId);
+        LeanTween.cancel(m_ScaleTweenId2);
+        LeanTween.cancel(m_ScaleTweenId3);
+
 
         DownloadedAssets.OnWillUnloadAssets -= OnWillUnloadAssets;
         Destroy(this.gameObject);
@@ -111,7 +117,13 @@ public class UISpiritBanished : MonoBehaviour
                 //animate
                 LeanTween.cancel(m_TweenId);
                 LeanTween.cancel(m_ScaleTweenId);
+                LeanTween.cancel(m_ScaleTweenId2);
+                LeanTween.cancel(m_ScaleTweenId3);
                 m_ScaleTweenId = LeanTween.scale(m_Content.gameObject, Vector3.one * 0.6f, 0.2f).setEaseOutCubic().uniqueId;
+                m_ScaleTweenId2 = LeanTween.scale(m_RewardLayout.gameObject, Vector3.one * 2.5f, 0.5f).setEaseInOutCubic().setOnComplete(() =>
+                {
+                    m_ScaleTweenId3 = LeanTween.scale(m_RewardLayout.gameObject, Vector3.one * 1.5f, 0.3f).uniqueId;
+                }).uniqueId;
                 m_TweenId = LeanTween.alphaCanvas(m_CanvasGroup, 0.65f, 0.5f).uniqueId;
 
                 m_Canvas.enabled = true;
@@ -131,7 +143,11 @@ public class UISpiritBanished : MonoBehaviour
 
         LeanTween.cancel(m_TweenId);
         LeanTween.cancel(m_ScaleTweenId);
+        LeanTween.cancel(m_ScaleTweenId2);
+        LeanTween.cancel(m_ScaleTweenId3);
 
+
+        m_ScaleTweenId2 = LeanTween.scale(m_RewardLayout.gameObject, Vector3.one * 0.25f, 0.5f).setEaseInOutCubic().uniqueId;
         m_ScaleTweenId = LeanTween.scale(m_Content.gameObject, Vector3.one * 0.25f, 0.5f).setEaseOutCubic().uniqueId;
         m_TweenId = LeanTween.alphaCanvas(m_CanvasGroup, 0, 0.25f).uniqueId;
     }
