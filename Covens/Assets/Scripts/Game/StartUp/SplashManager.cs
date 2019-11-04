@@ -12,7 +12,7 @@ public class SplashManager : MonoBehaviour
     public static SplashManager Instance { get; set; }
     public static event System.Action OnFinish;
 
-    [SerializeField] private Button Helpcrow;
+    public Button Helpcrow;
     [Header("General")]
     [SerializeField] private GameObject LoadingImage;
     [SerializeField] private Image progressBar;
@@ -66,7 +66,7 @@ public class SplashManager : MonoBehaviour
     void Awake()
     {
         Instance = this;
-        Helpcrow.onClick.AddListener(SendEmail);
+        Helpcrow.onClick.AddListener(HelpManager.Open);
         progressBar.fillAmount = 0;
         progressBar.gameObject.SetActive(false);
 

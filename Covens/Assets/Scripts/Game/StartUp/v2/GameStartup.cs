@@ -102,7 +102,7 @@ public class GameStartup : MonoBehaviour
 
         //show the initial logos
         m_LogosReady = false;
-        SplashManager.Instance.ShowLogos(OnSplashLogosFinished);
+        SplashManager.Instance.ShowLogos(() => StartCoroutine(OnSplashLogosFinished()));
     }
 
     private void OnServerError(int responseCode, string response)
@@ -193,9 +193,12 @@ public class GameStartup : MonoBehaviour
         CompleteStartup();
     }
 
-    private void OnSplashLogosFinished()
+    private IEnumerator OnSplashLogosFinished()
     {
         m_LogosReady = true;
+        yield return new WaitUntil(() => HelpManager.IsOpen == false);
+        //hide help button
+        SplashManager.Instance.Helpcrow.gameObject.SetActive(false);
         CompleteStartup();
     }
 
@@ -328,7 +331,7 @@ public class GameStartup : MonoBehaviour
         {
             SocketClient.Instance.InitiateSocketConnection();
             ChatManager.InitChat();
-            
+
             if (PlayerDataManager.playerData.insidePlaceOfPower && PlayerDataManager.playerData.placeOfPower != "")
             {
                 LocationIslandController.ResumeBattle(PlayerDataManager.playerData.placeOfPower);

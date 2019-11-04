@@ -1,0 +1,270 @@
+[
+  {
+    "Question": "How do I play?",
+    "Answer": "Explore the world. Gather items to empower your magics. Banish spirits and practice your spells on other witches.\nAll of these things will prepare you to battle in the world’s many Places of Power and rise among the ranks of a new generation of witches."
+  },
+  {
+    "Question": "Where am I?",
+    "Answer": "Your player will start out at approximately your physical location in the real-world, but me fuzz this for privacy. You can swipe around the screen to explore inside your ring of influence, and an arrow with your witch's icon will indicate how to get back to your player. You can fly to other locations around the world, and can tap Recall on the Main Screen to return to your physical location."
+  },
+  {
+    "Question": "How to give Covens GPS permision?",
+    "Answer": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Lobortis mattis aliquam faucibus"
+  },
+  {
+    "Question": "Is internet connection needed to play Covens?",
+    "Answer": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Lobortis mattis aliquam faucibus"
+  },
+  {
+    "Question": "How to make a new account?",
+    "Answer": "After downloading the game, select Create New Account, and enter a Raincrow ID, email address (Optional), and Password. Afterward, you can pick the way you want your witch to look, and enter a name."
+  },
+  {
+    "Question": "How to sign in with existing account?",
+    "Answer": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Lobortis mattis aliquam faucibus"
+  },
+  {
+    "Question": "How to change the language in Covens?",
+    "Answer": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Lobortis mattis aliquam faucibus"
+  },
+  {
+    "Question": "Where to find tutorial for Covens?",
+    "Answer": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Lobortis mattis aliquam faucibus"
+  },
+  {
+    "Question": "How does a real moon phase affect Covens witches?",
+    "Answer": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Lobortis mattis aliquam faucibus"
+  },
+  {
+    "Question": "Where can I turn in Forbidden Tools to the Grey Hand Coven?",
+    "Answer": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Lobortis mattis aliquam faucibus"
+  },
+  {
+    "Question": "Where can I see how long until my next daily blessing from Savannah?",
+    "Answer": "Your daily blessing timer is located in the Moon Phase icon to the right of your player icon in the upper left corner of the main screen."
+  },
+  {
+    "Question": "How to change wardrobe?",
+    "Answer": "Tap on your witch in the top left corner to open your Wardrobe."
+  },
+  {
+    "Question": "How to get more wardrobe pieces?",
+    "Answer": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Lobortis mattis aliquam faucibus"
+  },
+  {
+    "Question": "What are Styles?",
+    "Answer": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Lobortis mattis aliquam faucibus"
+  },
+  {
+    "Question": "How to get more Styles?",
+    "Answer": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Lobortis mattis aliquam faucibus"
+  },
+  {
+    "Question": "What to do with Silver drachs?",
+    "Answer": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Lobortis mattis aliquam faucibus"
+  },
+  {
+    "Question": "How to get Silver drachs?",
+    "Answer": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Lobortis mattis aliquam faucibus"
+  },
+  {
+    "Question": "What to do with Gold drachs?",
+    "Answer": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Lobortis mattis aliquam faucibus"
+  },
+  {
+    "Question": "How to get Gold drachs?",
+    "Answer": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Lobortis mattis aliquam faucibus"
+  },
+  {
+    "Question": "What is energy?",
+    "Answer": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Lobortis mattis aliquam faucibus"
+  },
+  {
+    "Question": "How to get more energy?",
+    "Answer": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Lobortis mattis aliquam faucibus"
+  },
+  {
+    "Question": "How do I add ingredients to empower spells?",
+    "Answer": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Lobortis mattis aliquam faucibus"
+  },
+  {
+    "Question": "What is alignement?",
+    "Answer": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Lobortis mattis aliquam faucibus"
+  },
+  {
+    "Question": "How to gain alignement?",
+    "Answer": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Lobortis mattis aliquam faucibus"
+  },
+  {
+    "Question": "What is experience?",
+    "Answer": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Lobortis mattis aliquam faucibus"
+  },
+  {
+    "Question": "How to gain experience?",
+    "Answer": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Lobortis mattis aliquam faucibus"
+  },
+  {
+    "Question": "What is the maximum level in Covens?",
+    "Answer": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Lobortis mattis aliquam faucibus"
+  },
+  {
+    "Question": "What are Daily Achievements?",
+    "Answer": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Lobortis mattis aliquam faucibus"
+  },
+  {
+    "Question": "What is an Event Log?",
+    "Answer": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Lobortis mattis aliquam faucibus"
+  },
+  {
+    "Question": "What is a Daily Blessing?",
+    "Answer": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Lobortis mattis aliquam faucibus"
+  },
+  {
+    "Question": "What are Spirits?",
+    "Answer": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Lobortis mattis aliquam faucibus"
+  },
+  {
+    "Question": "How to summon a Spirit?",
+    "Answer": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Lobortis mattis aliquam faucibus"
+  },
+  {
+    "Question": "How to empower a Summoned spirit?",
+    "Answer": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Lobortis mattis aliquam faucibus"
+  },
+  {
+    "Question": "What are Places of Power?",
+    "Answer": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Lobortis mattis aliquam faucibus"
+  },
+  {
+    "Question": "How to find Places of Power?",
+    "Answer": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Lobortis mattis aliquam faucibus"
+  },
+  {
+    "Question": "How to enter a Place of Power battle?",
+    "Answer": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Lobortis mattis aliquam faucibus"
+  },
+  {
+    "Question": "What do you get from fighting in Place of Power?",
+    "Answer": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Lobortis mattis aliquam faucibus"
+  },
+  {
+    "Question": "What are Gardens?",
+    "Answer": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Lobortis mattis aliquam faucibus"
+  },
+  {
+    "Question": "How to find a Guarden?",
+    "Answer": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Lobortis mattis aliquam faucibus"
+  },
+  {
+    "Question": "How to open personal inventory?",
+    "Answer": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Lobortis mattis aliquam faucibus"
+  },
+  {
+    "Question": "What are gems, tools and herbs?",
+    "Answer": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Lobortis mattis aliquam faucibus"
+  },
+  {
+    "Question": "How to get more gems, tools and herbs?",
+    "Answer": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Lobortis mattis aliquam faucibus"
+  },
+  {
+    "Question": "What are elixirs?",
+    "Answer": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Lobortis mattis aliquam faucibus"
+  },
+  {
+    "Question": "How to get more spells?",
+    "Answer": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Lobortis mattis aliquam faucibus"
+  },
+  {
+    "Question": "How to join a Coven?",
+    "Answer": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Lobortis mattis aliquam faucibus"
+  },
+  {
+    "Question": "How to make a Coven?",
+    "Answer": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Lobortis mattis aliquam faucibus"
+  },
+  {
+    "Question": "How to invite more members in to a Coven?",
+    "Answer": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Lobortis mattis aliquam faucibus"
+  },
+  {
+    "Question": "How to leave a Coven?",
+    "Answer": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Lobortis mattis aliquam faucibus"
+  },
+  {
+    "Question": "How to chat with other players?",
+    "Answer": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Lobortis mattis aliquam faucibus"
+  },
+  {
+    "Question": "How to chat with your Coven members?",
+    "Answer": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Lobortis mattis aliquam faucibus"
+  },
+  {
+    "Question": "What is Leaderboard?",
+    "Answer": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Lobortis mattis aliquam faucibus"
+  },
+  {
+    "Question": "How to get rank on Leaderboard?",
+    "Answer": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Lobortis mattis aliquam faucibus"
+  },
+  {
+    "Question": "How do Covens get higher rank on Leaderboard?",
+    "Answer": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Lobortis mattis aliquam faucibus"
+  },
+  {
+    "Question": "Who is Savannah Gray?",
+    "Answer": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Lobortis mattis aliquam faucibus"
+  },
+  {
+    "Question": "Who is Madam Fortuna?",
+    "Answer": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Lobortis mattis aliquam faucibus"
+  },
+  {
+    "Question": "What is immunity?",
+    "Answer": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Lobortis mattis aliquam faucibus"
+  },
+  {
+    "Question": "What is the Seasonal Tournament of Witchcraft?",
+    "Answer": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Lobortis mattis aliquam faucibus"
+  },
+  {
+    "Question": "How to join the Seasonal Tournament of Witchcraft?",
+    "Answer": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Lobortis mattis aliquam faucibus"
+  },
+  {
+    "Question": "What are the Ember Days?",
+    "Answer": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Lobortis mattis aliquam faucibus"
+  },
+  {
+    "Question": "What is the Book of Shadows?",
+    "Answer": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Lobortis mattis aliquam faucibus"
+  },
+  {
+    "Question": "What is Death state?",
+    "Answer": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Lobortis mattis aliquam faucibus"
+  },
+  {
+    "Question": "How to exit Death state?",
+    "Answer": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Lobortis mattis aliquam faucibus"
+  },
+  {
+    "Question": "How to move on the map?",
+    "Answer": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Lobortis mattis aliquam faucibus"
+  },
+  {
+    "Question": "How to return to physical location?",
+    "Answer": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Lobortis mattis aliquam faucibus"
+  },
+  {
+    "Question": "How to find other players?",
+    "Answer": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Lobortis mattis aliquam faucibus"
+  },
+  {
+    "Question": "How to turn 3D buildings on the map On or Off?",
+    "Answer": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Lobortis mattis aliquam faucibus"
+  },
+  {
+    "Question": "How to turn the ingame sound On or Off?",
+    "Answer": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Lobortis mattis aliquam faucibus"
+  }
+]
