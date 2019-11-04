@@ -101,7 +101,7 @@ public class SplashManager : MonoBehaviour
 
         string email = "help@raincrowgames.com";
         string subject = MyEscapeURL("Covens Bug # New User");
-        string body = MyEscapeURL($"Version: {Application.version} \n Platform: {Application.platform} \n\n\n ***Your Message*** +\n\n\n ***Screenshot***\n\n\n");
+        string body = MyEscapeURL($"***Enter Your Message Here*** \n\n\n Version: {Application.version} \n Platform: {Application.platform}");
 
         Application.OpenURL("mailto:" + email + "?subject=" + subject + "&body=" + body);
 
