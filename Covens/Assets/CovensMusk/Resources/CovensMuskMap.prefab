@@ -747,8 +747,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   ApiKey: AIzaSyDQqgU5ERPRSF5WH1pAdQdATUejsoT-p-E
   VectorTileApiAddress: vectortile.googleapis.com
-  AdsImpressionsApiAddress: geoads.googleapis.com
-  CreateAdEventManager: 1
   NetworkPoolSize: 100
   NetworkTimeoutSeconds: 10
   EnableDiagnostics: 1
@@ -758,87 +756,105 @@ MonoBehaviour:
         m_PersistentCalls:
           m_Calls: []
         m_TypeName: Google.Maps.Event.WillCreateExtrudedStructureEvent, Google.Maps,
-          Version=1.0.791.0, Culture=neutral, PublicKeyToken=null
+          Version=1.0.948.0, Culture=neutral, PublicKeyToken=null
       DidCreate:
         m_PersistentCalls:
           m_Calls: []
         m_TypeName: Google.Maps.Event.DidCreateExtrudedStructureEvent, Google.Maps,
-          Version=1.0.791.0, Culture=neutral, PublicKeyToken=null
+          Version=1.0.948.0, Culture=neutral, PublicKeyToken=null
     _ModeledStructureEvents:
       WillCreate:
         m_PersistentCalls:
           m_Calls: []
         m_TypeName: Google.Maps.Event.WillCreateModeledStructureEvent, Google.Maps,
-          Version=1.0.791.0, Culture=neutral, PublicKeyToken=null
+          Version=1.0.948.0, Culture=neutral, PublicKeyToken=null
       DidCreate:
         m_PersistentCalls:
           m_Calls: []
         m_TypeName: Google.Maps.Event.DidCreateModeledStructureEvent, Google.Maps,
-          Version=1.0.791.0, Culture=neutral, PublicKeyToken=null
+          Version=1.0.948.0, Culture=neutral, PublicKeyToken=null
     _SegmentEvents:
       WillCreate:
         m_PersistentCalls:
           m_Calls: []
-        m_TypeName: Google.Maps.Event.WillCreateSegmentEvent, Google.Maps, Version=1.0.791.0,
+        m_TypeName: Google.Maps.Event.WillCreateSegmentEvent, Google.Maps, Version=1.0.948.0,
           Culture=neutral, PublicKeyToken=null
       DidCreate:
         m_PersistentCalls:
           m_Calls: []
-        m_TypeName: Google.Maps.Event.DidCreateSegmentEvent, Google.Maps, Version=1.0.791.0,
+        m_TypeName: Google.Maps.Event.DidCreateSegmentEvent, Google.Maps, Version=1.0.948.0,
           Culture=neutral, PublicKeyToken=null
     _RegionEvents:
       WillCreate:
         m_PersistentCalls:
           m_Calls: []
-        m_TypeName: Google.Maps.Event.WillCreateRegionEvent, Google.Maps, Version=1.0.791.0,
+        m_TypeName: Google.Maps.Event.WillCreateRegionEvent, Google.Maps, Version=1.0.948.0,
           Culture=neutral, PublicKeyToken=null
       DidCreate:
         m_PersistentCalls:
           m_Calls: []
-        m_TypeName: Google.Maps.Event.DidCreateRegionEvent, Google.Maps, Version=1.0.791.0,
+        m_TypeName: Google.Maps.Event.DidCreateRegionEvent, Google.Maps, Version=1.0.948.0,
           Culture=neutral, PublicKeyToken=null
     _AreaWaterEvents:
       WillCreate:
         m_PersistentCalls:
           m_Calls: []
-        m_TypeName: Google.Maps.Event.WillCreateAreaWaterEvent, Google.Maps, Version=1.0.791.0,
+        m_TypeName: Google.Maps.Event.WillCreateAreaWaterEvent, Google.Maps, Version=1.0.948.0,
           Culture=neutral, PublicKeyToken=null
       DidCreate:
         m_PersistentCalls:
           m_Calls: []
-        m_TypeName: Google.Maps.Event.DidCreateAreaWaterEvent, Google.Maps, Version=1.0.791.0,
+        m_TypeName: Google.Maps.Event.DidCreateAreaWaterEvent, Google.Maps, Version=1.0.948.0,
           Culture=neutral, PublicKeyToken=null
     _LineWaterEvents:
       WillCreate:
         m_PersistentCalls:
           m_Calls: []
-        m_TypeName: Google.Maps.Event.WillCreateLineWaterEvent, Google.Maps, Version=1.0.791.0,
+        m_TypeName: Google.Maps.Event.WillCreateLineWaterEvent, Google.Maps, Version=1.0.948.0,
           Culture=neutral, PublicKeyToken=null
       DidCreate:
         m_PersistentCalls:
           m_Calls: []
-        m_TypeName: Google.Maps.Event.DidCreateLineWaterEvent, Google.Maps, Version=1.0.791.0,
+        m_TypeName: Google.Maps.Event.DidCreateLineWaterEvent, Google.Maps, Version=1.0.948.0,
+          Culture=neutral, PublicKeyToken=null
+    _RoadLatticeEvents:
+      DidModify:
+        m_PersistentCalls:
+          m_Calls: []
+        m_TypeName: Google.Maps.Event.DidModifyRoadLatticeEvent, Google.Maps, Version=1.0.948.0,
           Culture=neutral, PublicKeyToken=null
     _MapEvents:
       Loaded:
         m_PersistentCalls:
           m_Calls: []
-        m_TypeName: Google.Maps.Event.MapLoadedEvent, Google.Maps, Version=1.0.791.0,
+        m_TypeName: Google.Maps.Event.MapLoadedEvent, Google.Maps, Version=1.0.948.0,
           Culture=neutral, PublicKeyToken=null
       LoadError:
         m_PersistentCalls:
           m_Calls: []
-        m_TypeName: Google.Maps.Event.MapLoadErrorEvent, Google.Maps, Version=1.0.791.0,
+        m_TypeName: Google.Maps.Event.MapLoadErrorEvent, Google.Maps, Version=1.0.948.0,
           Culture=neutral, PublicKeyToken=null
       Progress:
         m_PersistentCalls:
           m_Calls: []
-        m_TypeName: Google.Maps.Event.MapLoadProgressEvent, Google.Maps, Version=1.0.791.0,
+        m_TypeName: Google.Maps.Event.MapLoadProgressEvent, Google.Maps, Version=1.0.948.0,
           Culture=neutral, PublicKeyToken=null
   EnableModeledStructures: 0
   EnablePoliticalFeatures: 0
+  EnablePrivateRoads: 0
   ObjectCreationFrameBudget: 500
   StaticBatching: 0
+  EnableExhaustiveIntersectionReconstruction: 0
+  EnableRoadLattice: 0
+  MapPreviewOptions:
+    Enable: 0
+    Location:
+      _Lat: 48.85837
+      _Lng: 2.294481000000019
+    Size: 500
+  MetadataOptions:
+    Method: 1
+    MetadataRegister: {fileID: 0}
   ZoomLevel: 17
   _CacheOptions:
     BasePath: 
@@ -846,6 +862,9 @@ MonoBehaviour:
     MaxDiskBytes: 10485760
     DiskTimeoutSeconds: 0
   CountryProvider: {fileID: 0}
+  MinBasemapSortingOrder: -32767
+  MaxBasemapSortingOrder: -1
+  NonBasemapSortingOrder: 0
 --- !u!1 &1335840947439940
 GameObject:
   m_ObjectHideFlags: 0
@@ -969,7 +988,7 @@ Camera:
   m_Enabled: 1
   serializedVersion: 2
   m_ClearFlags: 2
-  m_BackGroundColor: {r: 0.08627451, g: 0.08627451, b: 0.08627451, a: 1}
+  m_BackGroundColor: {r: 0.07450981, g: 0.3647059, b: 0.47058827, a: 1}
   m_projectionMatrixMode: 1
   m_GateFitMode: 2
   m_FOVAxisMode: 0
