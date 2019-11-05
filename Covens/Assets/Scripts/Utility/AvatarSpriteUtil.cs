@@ -230,7 +230,13 @@ public class AvatarSpriteUtil : MonoBehaviour
         
         if( m_Schedule.Count > 0)
         {
-            yield return 0;
+            //wait 5 frames
+            int auxI = 0;
+            while (auxI < 5)
+            {
+                yield return null;
+                auxI++;
+            }
             SpriteGenerationSetting prop = m_Schedule[0];
             m_Schedule.RemoveAt(0);
             m_Current = StartCoroutine(GenerateSpriteCoroutine(prop));

@@ -265,15 +265,27 @@ public class MarkerManagerAPI : MonoBehaviour
 
         IMarker aux;
 
-        //witches
-        for (int i = 0; i < witches.Count; i++)
+        int auxI = 0;
+
+        Debug.Log($"spawning pops: {pops.Count}");
+        for (int i = 0; i < pops.Count; i++)
         {
-            aux = MarkerSpawner.Instance.AddMarker(witches[i]);
+            aux = MarkerSpawner.Instance.AddMarker(pops[i]);
             if (aux != null)
                 updatedMarkers.Add(aux);
-            yield return 1;
         }
-        //spirits
+        yield return null;
+
+        Debug.Log($"spawning collectables: {items.Count}");
+        for (int i = 0; i < items.Count; i++)
+        {
+            aux = MarkerSpawner.Instance.AddMarker(items[i]);
+            if (aux != null)
+                updatedMarkers.Add(aux);
+        }
+        yield return null;
+
+        Debug.Log($"spawning spirits: {spirits.Count}");
         for (int i = 0; i < spirits.Count; i++)
         {
             if (spirits[i].energy == 0)
@@ -281,31 +293,40 @@ public class MarkerManagerAPI : MonoBehaviour
             aux = MarkerSpawner.Instance.AddMarker(spirits[i]);
             if (aux != null)
                 updatedMarkers.Add(aux);
-            yield return 1;
+
+            //wait 5 frames
+            auxI = 0;
+            while (auxI < 5)
+            {
+                yield return null;
+                auxI++;
+            }
         }
-        //collectables
-        for (int i = 0; i < items.Count; i++)
+
+        Debug.Log($"spawning witches: {witches.Count}");
+        for (int i = 0; i < witches.Count; i++)
         {
-            aux = MarkerSpawner.Instance.AddMarker(items[i]);
+            aux = MarkerSpawner.Instance.AddMarker(witches[i]);
             if (aux != null)
                 updatedMarkers.Add(aux);
-            yield return 1;
+
+            //wait 5 frames
+            auxI = 0;
+            while (auxI < 5)
+            {
+                yield return null;
+                auxI++;
+            }
         }
-        //energy
+
+
+        Debug.Log($"spawning energy: {energies.Count}");
         for (int i = 0; i < energies.Count; i++)
         {
             aux = MarkerSpawner.Instance.AddMarker(energies[i]);
             if (aux != null)
                 updatedMarkers.Add(aux);
-            yield return 1;
-        }
-        //pops
-        for (int i = 0; i < pops.Count; i++)
-        {
-            aux = MarkerSpawner.Instance.AddMarker(pops[i]);
-            if (aux != null)
-                updatedMarkers.Add(aux);
-            yield return 1;
+            yield return null;
         }
 
         //remove any other markers
@@ -319,6 +340,7 @@ public class MarkerManagerAPI : MonoBehaviour
             toRemove.Add(marker[0].Token.Id);
         }
 
+        Debug.Log($"removing old markers: {toRemove.Count}");
         foreach (string id in toRemove)
         {
             MarkerSpawner.DeleteMarker(id);
