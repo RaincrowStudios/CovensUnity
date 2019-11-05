@@ -69,13 +69,13 @@ public class HelpManager : MonoBehaviour
 
     public static void Open()
     {
-        LoadingOverlay.Show();
         if (m_Instance != null)
         {
             m_Instance._Open();
         }
         else
         {
+            LoadingOverlay.Show();
             SceneManager.LoadSceneAsync(SceneManager.Scene.HELP, UnityEngine.SceneManagement.LoadSceneMode.Additive, null, () =>
             {
                 LoadingOverlay.Hide();
@@ -120,8 +120,8 @@ public class HelpManager : MonoBehaviour
     private void SendEmail()
     {
         string email = "help@raincrowgames.com";
-        string subject = MyEscapeURL("Covens Help : " + PlayerDataManager.playerData.name);
-        string body = MyEscapeURL($"Version: {Application.version} \n Platform: {Application.platform} \n  _id: {PlayerDataManager.playerData.instance} \n  displayName: {PlayerDataManager.playerData.name}  \n\n\n ***Your Message*** +\n\n\n ***Screenshot***\n\n\n");
+        string subject = MyEscapeURL("Covens Help");
+        string body = MyEscapeURL($"Version: {Application.version} \n Platform: {Application.platform} \n\n\n ***Your Message*** +\n\n\n ***Screenshot***\n\n\n");
         Application.OpenURL("mailto:" + email + "?subject=" + subject + "&body=" + body);
 
     }
