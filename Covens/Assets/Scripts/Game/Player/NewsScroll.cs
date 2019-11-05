@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using Raincrow.Chat;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
@@ -21,9 +22,38 @@ public class NewsScroll : MonoBehaviour {
 		Instance = this;
 		Previous.text = "";
 		New.text = "";
+
+        ChatManager.OnReceiveMessage += OnReceiveMessage;
 	}
 
-	public void ShowText(string text, bool isChat = false)
+    private void OnDestroy()
+    {
+        ChatManager.OnReceiveMessage -= OnReceiveMessage;
+    }
+
+    private void OnReceiveMessage(ChatCategory category, ChatMessage message)
+    {
+        string msg = "(";
+        switch (category)
+        {
+            case ChatCategory.COVEN: msg += PlayerDataManager.playerData.covenInfo.name; break;
+            case ChatCategory.WORLD: msg += LocalizeLookUp.GetText("chat_world"); break;
+            case ChatCategory.DOMINION: msg += PlayerDataManager.playerData.dominion; break;
+            case ChatCategory.NEWS: msg += LocalizeLookUp.GetText("chat_news"); break;
+        }
+        msg += ") " + message.player.name + ": ";
+
+        switch(message.type)
+        {
+            case MessageType.TEXT: msg += message.data.message; break;
+            case MessageType.LOCATION: msg += LocalizeLookUp.GetText("chat_share_location"); break;
+            case MessageType.IMAGE: msg += LocalizeLookUp.GetText("chat_share_image"); break;
+        }
+
+        ShowText(msg, true);
+    }
+
+    public void ShowText(string text, bool isChat = false)
 	{
 		this.CancelInvoke ();
 		Animate ();
