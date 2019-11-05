@@ -49,6 +49,7 @@ namespace Raincrow.Chat
         public static event System.Action<ChatCategory> OnLeaveChatRequested;
         public static event System.Action<ChatCategory> OnLeaveChatSuccess;
         public static event System.Action<string, string> OnEnterCovenChat;
+        public static event System.Action OnResetNewMsgCount;
 
         //network monitor event
         public static event System.Action<CommandResponse> OnResponseParsedEvent;
@@ -531,12 +532,13 @@ namespace Raincrow.Chat
 
         public static int NewMessagesCount(ChatCategory category)
         {
-            return m_NewMessages[category];
+            return Mathf.Min(m_NewMessages[category], MaxMessages);
         }
 
         public static void ResetNewMessagesCount(ChatCategory category)
         {
             m_NewMessages[category] = 0;
+            OnResetNewMsgCount?.Invoke();
         }
 
         private static void OnApplicationQuitting()

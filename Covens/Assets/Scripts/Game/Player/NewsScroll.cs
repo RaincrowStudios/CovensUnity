@@ -3,9 +3,12 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using TMPro;
 
-public class NewsScroll : MonoBehaviour {
+public class NewsScroll : MonoBehaviour
+{
 	public static NewsScroll Instance { get; set;}
+
 	public Text Previous;
 	public Text New;
 	public GameObject scrollContainer;
@@ -15,20 +18,41 @@ public class NewsScroll : MonoBehaviour {
 	public Sprite InfoIcon;
 	public Sprite ChatIcon;
 
+    [SerializeField] private GameObject m_NewMessagesObj;
+    [SerializeField] private TextMeshProUGUI m_NewMessagesText;
+
 	string curText ="";
-	Sprite curSp ;
+	Sprite curSp;
+
 	void Awake()
 	{
 		Instance = this;
 		Previous.text = "";
 		New.text = "";
 
+        m_NewMessagesText.text = "";
+        m_NewMessagesObj.SetActive(false);
+
         ChatManager.OnReceiveMessage += OnReceiveMessage;
+        ChatManager.OnResetNewMsgCount += UpdateNewMsgCount;
 	}
 
     private void OnDestroy()
     {
         ChatManager.OnReceiveMessage -= OnReceiveMessage;
+        ChatManager.OnResetNewMsgCount -= UpdateNewMsgCount;
+    }
+
+    private void UpdateNewMsgCount()
+    {
+        int newMsgCount =
+              ChatManager.NewMessagesCount(ChatCategory.NEWS) +
+              ChatManager.NewMessagesCount(ChatCategory.WORLD) +
+              ChatManager.NewMessagesCount(ChatCategory.COVEN) +
+              ChatManager.NewMessagesCount(ChatCategory.DOMINION);
+
+        m_NewMessagesText.text = newMsgCount > 9 ? "9+" : newMsgCount.ToString();
+        m_NewMessagesObj.SetActive(newMsgCount > 0);
     }
 
     private void OnReceiveMessage(ChatCategory category, ChatMessage message)
@@ -51,6 +75,8 @@ public class NewsScroll : MonoBehaviour {
         }
 
         ShowText(msg, true);
+
+        UpdateNewMsgCount();
     }
 
     public void ShowText(string text, bool isChat = false)
