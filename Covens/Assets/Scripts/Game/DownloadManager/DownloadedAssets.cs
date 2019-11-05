@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using MEC;
 using UnityEngine.UI;
+using UnityEngine.Profiling;
 
 public class DownloadedAssets : MonoBehaviour
 {
@@ -68,7 +69,12 @@ public class DownloadedAssets : MonoBehaviour
 
     private IEnumerator UnloadMemory()
     {
-        Debug.LogError("Memory is low. Unloading assets.");
+        string debug = "Memory is low. Unloading assets";
+        debug += "\n- Total Reserved memory by Unity: " + Profiler.GetTotalReservedMemoryLong() + "Bytes";
+        debug += "\n- Allocated memory by Unity: " + Profiler.GetTotalAllocatedMemoryLong() + "Bytes";
+        debug += "\n- Reserved but not allocated: " + Profiler.GetTotalUnusedReservedMemoryLong() + "Bytes";
+        Debug.LogError(debug);
+
         UnloadingMemory = true;
         OnWillUnloadAssets?.Invoke();
         
