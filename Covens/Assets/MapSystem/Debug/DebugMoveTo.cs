@@ -16,6 +16,7 @@ public class DebugMoveTo : MonoBehaviour
     [SerializeField] private Button m_KillMemoryButton;
     [SerializeField] private Button m_SkipTutorialButton;
     [SerializeField] private Button m_MemoryStatsButton;
+    [SerializeField] private Button m_UnloadAssetsButton;
 
     [SerializeField] private Button m_MoveButton;
     [SerializeField] private Button m_ResetButton;
@@ -93,6 +94,7 @@ public class DebugMoveTo : MonoBehaviour
 #endif
 
         m_MemoryStatsButton.onClick.AddListener(ShowMemoryStats);
+        m_UnloadAssetsButton.onClick.AddListener(ForceMemoryUnload);
     }
 
     private bool m_GeneratingTextures = false;
@@ -169,6 +171,11 @@ public class DebugMoveTo : MonoBehaviour
         debug += "\n- Reserved space for managed-memory: " + (Profiler.GetMonoHeapSizeLong() / 1000000) + "MB";
         debug += "\n- Allocated managed-memory: " + (Profiler.GetMonoHeapSizeLong() / 1000000) + "MB";
         Debug.Log(debug);
+    }
+
+    public static void ForceMemoryUnload()
+    {
+        DownloadedAssets.Instance?.OnApplicationLowMemory();
     }
 
     private float m_Delta;
