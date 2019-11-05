@@ -97,6 +97,9 @@ public class DownloadedAssets : MonoBehaviour
         AsyncOperation unloadAssets = Resources.UnloadUnusedAssets();
         yield return unloadAssets;
 
+        yield return 0;
+        yield return new WaitForEndOfFrame();
+
         //hide the UI
         UnloadingMemory = false;
 

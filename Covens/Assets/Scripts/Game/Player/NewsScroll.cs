@@ -46,10 +46,10 @@ public class NewsScroll : MonoBehaviour
     private void UpdateNewMsgCount()
     {
         int newMsgCount =
-              ChatManager.NewMessagesCount(ChatCategory.NEWS) +
-              ChatManager.NewMessagesCount(ChatCategory.WORLD) +
-              ChatManager.NewMessagesCount(ChatCategory.COVEN) +
-              ChatManager.NewMessagesCount(ChatCategory.DOMINION);
+              ChatManager.UnreadMessageCount(ChatCategory.NEWS) +
+              ChatManager.UnreadMessageCount(ChatCategory.WORLD) +
+              ChatManager.UnreadMessageCount(ChatCategory.COVEN) +
+              ChatManager.UnreadMessageCount(ChatCategory.DOMINION);
 
         m_NewMessagesText.text = newMsgCount > 9 ? "9+" : newMsgCount.ToString();
         m_NewMessagesObj.SetActive(newMsgCount > 0);

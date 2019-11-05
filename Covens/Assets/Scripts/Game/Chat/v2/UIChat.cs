@@ -144,7 +144,7 @@ namespace Raincrow.Chat.UI
 
             if (!repopulateChatItems)
             {
-                int unreadMessages = ChatManager.NewMessagesCount(_currentCategory);
+                int unreadMessages = ChatManager.UnreadMessageCount(_currentCategory);
                 repopulateChatItems = unreadMessages > 0;
             }
 
@@ -262,7 +262,7 @@ namespace Raincrow.Chat.UI
             TMPro.TextMeshProUGUI unreadText = null;
             GetCategoryTextAndLastMessageIdKey(chatCategory, ref unreadText);
 
-            int unreadMessagesCount = ChatManager.NewMessagesCount(chatCategory);
+            int unreadMessagesCount = ChatManager.UnreadMessageCount(chatCategory);
 
             if (unreadMessagesCount > 0)
             {
@@ -397,7 +397,7 @@ namespace Raincrow.Chat.UI
                 return;
             }
 
-            ChatManager.ResetNewMessagesCount(category);
+            ChatManager.ResetUnreadMessageCount(category);
             RefreshCategoryUnreadMessages(category);
 
             HighlightHeader(category);

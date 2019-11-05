@@ -336,7 +336,8 @@ namespace Raincrow.Chat
                 }
 
                 m_Messages[category].Add(msg);
-                m_NewMessages[category] += 1;
+                if (msg.player.name != PlayerDataManager.playerData.name)
+                    m_NewMessages[category] += 1;
                 OnReceiveMessage(category, msg);
             }
             else
@@ -530,12 +531,12 @@ namespace Raincrow.Chat
             }
         }
 
-        public static int NewMessagesCount(ChatCategory category)
+        public static int UnreadMessageCount(ChatCategory category)
         {
             return Mathf.Min(m_NewMessages[category], MaxMessages);
         }
 
-        public static void ResetNewMessagesCount(ChatCategory category)
+        public static void ResetUnreadMessageCount(ChatCategory category)
         {
             m_NewMessages[category] = 0;
             OnResetNewMsgCount?.Invoke();
