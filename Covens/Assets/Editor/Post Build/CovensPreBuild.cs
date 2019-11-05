@@ -12,11 +12,19 @@ public class CovensPreBuild : MonoBehaviour
             int.TryParse(manifest.GetValue<string>("buildNumber"), out iBuildNumber);
             iBuildNumber += 1050;
             Debug.Log("[CovensPreBuild] buildNumber: " + iBuildNumber);
+
+#if PRODUCTION        
+            Debug.Log("[CovensPreBuild] android scripting backend set to IL2CPP");
+            PlayerSettings.SetScriptingBackend(BuildTargetGroup.Android, ScriptingImplementation.IL2CPP);
+#endif
+
 #if UNITY_ANDROID
-            PlayerSettings.Android.bundleVersionCode = iBuildNumber;
-#elif UNITY_IOS
+        PlayerSettings.Android.bundleVersionCode = iBuildNumber;
+#endif
+
+#if UNITY_IOS
             PlayerSettings.iOS.buildNumber = iBuildNumber.ToString();
 #endif
-        }
+    }
 }
 #endif
