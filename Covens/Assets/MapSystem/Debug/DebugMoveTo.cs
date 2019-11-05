@@ -164,6 +164,8 @@ public class DebugMoveTo : MonoBehaviour
     public static void ShowMemoryStats()
     {
         string debug = "Memory usage: ";
+        debug += "\n- Total system memory: " + SystemInfo.systemMemorySize;
+        debug += "\n- Total video memory: " + SystemInfo.graphicsMemorySize;
         debug += "\n- Total Reserved memory by Unity: " + (Profiler.GetTotalReservedMemoryLong() / 1000000) + "MB";
         debug += "\n- Allocated memory by Unity: " + (Profiler.GetTotalAllocatedMemoryLong() / 1000000) + "MB";
         debug += "\n- Reserved but not allocated: " + (Profiler.GetTotalUnusedReservedMemoryLong() / 1000000) + "MB";

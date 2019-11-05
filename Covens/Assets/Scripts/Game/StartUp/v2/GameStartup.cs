@@ -307,7 +307,6 @@ public class GameStartup : MonoBehaviour
             UINearbyLocations.GetLocations(null, false);
 
             Debug.Log("Initializing the map at lat" + PlayerDataManager.playerData.latitude + " lon" + PlayerDataManager.playerData.longitude);
-            MapsAPI.Instance.InitMap(PlayerDataManager.playerData.longitude, PlayerDataManager.playerData.latitude, 1, null, false);
 
             Debug.Log("Loading the game scene");
             SceneManager.LoadSceneAsync(
@@ -320,7 +319,7 @@ public class GameStartup : MonoBehaviour
 
     private void OnGameSceneLoaded()
     {
-        //SplashManager.Instance.HideTribunal(() => SceneManager.UnloadScene(SceneManager.Scene.START, null, null));
+        //MapsAPI.Instance.InitMap(PlayerDataManager.playerData.longitude, PlayerDataManager.playerData.latitude, 1, null, false);
 
         if (PlayerDataManager.IsFTF)
         {
