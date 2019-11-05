@@ -168,6 +168,7 @@ public class DebugMoveTo : MonoBehaviour
         debug += "\n- Allocated memory for graphics driver: " + (Profiler.GetAllocatedMemoryForGraphicsDriver() / 1000000) + "MB";
         debug += "\n- Reserved space for managed-memory: " + (Profiler.GetMonoHeapSizeLong() / 1000000) + "MB";
         debug += "\n- Allocated managed-memory: " + (Profiler.GetMonoHeapSizeLong() / 1000000) + "MB";
+        Debug.Log(debug);
     }
 
     private float m_Delta;
