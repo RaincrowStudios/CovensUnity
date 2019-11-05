@@ -70,9 +70,9 @@ public class DownloadedAssets : MonoBehaviour
     private IEnumerator UnloadMemory()
     {
         string debug = "Memory is low. Unloading assets";
-        debug += "\n- Total Reserved memory by Unity: " + Profiler.GetTotalReservedMemoryLong() + "Bytes";
-        debug += "\n- Allocated memory by Unity: " + Profiler.GetTotalAllocatedMemoryLong() + "Bytes";
-        debug += "\n- Reserved but not allocated: " + Profiler.GetTotalUnusedReservedMemoryLong() + "Bytes";
+        debug += "\n- Total Reserved memory by Unity: " + (Profiler.GetTotalReservedMemoryLong() * 1000000) + "Bytes";
+        debug += "\n- Allocated memory by Unity: " + (Profiler.GetTotalAllocatedMemoryLong() * 1000000) + "Bytes";
+        debug += "\n- Reserved but not allocated: " + (Profiler.GetTotalUnusedReservedMemoryLong() * 1000000) + "Bytes";
         Debug.LogError(debug);
 
         UnloadingMemory = true;
@@ -96,6 +96,12 @@ public class DownloadedAssets : MonoBehaviour
 
         //hide the UI
         UnloadingMemory = false;
+
+        debug = "Asset unloading complete";
+        debug += "\n- Total Reserved memory by Unity: " + (Profiler.GetTotalReservedMemoryLong() * 1000000) + "Bytes";
+        debug += "\n- Allocated memory by Unity: " + (Profiler.GetTotalAllocatedMemoryLong() * 1000000) + "Bytes";
+        debug += "\n- Reserved but not allocated: " + (Profiler.GetTotalUnusedReservedMemoryLong() * 1000000) +"Bytes";
+        Debug.Log(debug);
     }
 
     #region SpriteGetters
