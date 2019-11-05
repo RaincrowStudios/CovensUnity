@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
+using UnityEngine.Profiling;
 
 public class DebugMoveTo : MonoBehaviour
 {
@@ -14,6 +15,7 @@ public class DebugMoveTo : MonoBehaviour
     [SerializeField] private Button m_ToggleParticlesButton;
     [SerializeField] private Button m_KillMemoryButton;
     [SerializeField] private Button m_SkipTutorialButton;
+    [SerializeField] private Button m_MemoryStatsButton;
 
     [SerializeField] private Button m_MoveButton;
     [SerializeField] private Button m_ResetButton;
@@ -89,6 +91,8 @@ public class DebugMoveTo : MonoBehaviour
             Debug.Log($"Ignored {skipedCount} particle systems:\n{skipped}");
         });
 #endif
+
+        m_MemoryStatsButton.onClick.AddListener(ShowMemoryStats);
     }
 
     private bool m_GeneratingTextures = false;
@@ -153,6 +157,17 @@ public class DebugMoveTo : MonoBehaviour
             m_Canvas.enabled = m_InputRaycaster.enabled = m_Showing;
         })
         .uniqueId;
+    }
+
+    public static void ShowMemoryStats()
+    {
+        string debug = "Memory usage: ";
+        debug += "\n- Total Reserved memory by Unity: " + (Profiler.GetTotalReservedMemoryLong() / 1000000) + "MB";
+        debug += "\n- Allocated memory by Unity: " + (Profiler.GetTotalAllocatedMemoryLong() / 1000000) + "MB";
+        debug += "\n- Reserved but not allocated: " + (Profiler.GetTotalUnusedReservedMemoryLong() / 1000000) + "MB";
+        debug += "\n- Allocated memory for graphics driver: " + (Profiler.GetAllocatedMemoryForGraphicsDriver() / 1000000) + "MB";
+        debug += "\n- Reserved space for managed-memory: " + (Profiler.GetMonoHeapSizeLong() / 1000000) + "MB";
+        debug += "\n- Allocated managed-memory: " + (Profiler.GetMonoHeapSizeLong() / 1000000) + "MB";
     }
 
     private float m_Delta;

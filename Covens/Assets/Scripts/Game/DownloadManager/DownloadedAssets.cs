@@ -70,9 +70,12 @@ public class DownloadedAssets : MonoBehaviour
     private IEnumerator UnloadMemory()
     {
         string debug = "Memory is low. Unloading assets";
-        debug += "\n- Total Reserved memory by Unity: " + (Profiler.GetTotalReservedMemoryLong() * 1000000) + "Bytes";
-        debug += "\n- Allocated memory by Unity: " + (Profiler.GetTotalAllocatedMemoryLong() * 1000000) + "Bytes";
-        debug += "\n- Reserved but not allocated: " + (Profiler.GetTotalUnusedReservedMemoryLong() * 1000000) + "Bytes";
+        debug += "\n- Total Reserved memory by Unity: " + (Profiler.GetTotalReservedMemoryLong() / 1000000) + "MB";
+        debug += "\n- Allocated memory by Unity: " + (Profiler.GetTotalAllocatedMemoryLong() / 1000000) + "MB";
+        debug += "\n- Reserved but not allocated: " + (Profiler.GetTotalUnusedReservedMemoryLong() / 1000000) + "MB";
+        debug += "\n- Allocated memory for graphics driver: " + (Profiler.GetAllocatedMemoryForGraphicsDriver() / 1000000) + "MB";
+        debug += "\n- Reserved space for managed-memory: " + (Profiler.GetMonoHeapSizeLong() / 1000000) + "MB";
+        debug += "\n- Allocated managed-memory: " + (Profiler.GetMonoHeapSizeLong() / 1000000) + "MB";
         Debug.LogError(debug);
 
         UnloadingMemory = true;
@@ -98,9 +101,12 @@ public class DownloadedAssets : MonoBehaviour
         UnloadingMemory = false;
 
         debug = "Asset unloading complete";
-        debug += "\n- Total Reserved memory by Unity: " + (Profiler.GetTotalReservedMemoryLong() * 1000000) + "Bytes";
-        debug += "\n- Allocated memory by Unity: " + (Profiler.GetTotalAllocatedMemoryLong() * 1000000) + "Bytes";
-        debug += "\n- Reserved but not allocated: " + (Profiler.GetTotalUnusedReservedMemoryLong() * 1000000) +"Bytes";
+        debug += "\n- Total Reserved memory by Unity: " + (Profiler.GetTotalReservedMemoryLong() / 1000000) + "MB";
+        debug += "\n- Allocated memory by Unity: " + (Profiler.GetTotalAllocatedMemoryLong() / 1000000) + "MB";
+        debug += "\n- Reserved but not allocated: " + (Profiler.GetTotalUnusedReservedMemoryLong() / 1000000) + "MB";
+        debug += "\n- Allocated memory for graphics driver: " + (Profiler.GetAllocatedMemoryForGraphicsDriver() / 1000000) + "MB";
+        debug += "\n- Reserved space for managed-memory: " + (Profiler.GetMonoHeapSizeLong() / 1000000) + "MB";
+        debug += "\n- Allocated managed-memory: " + (Profiler.GetMonoHeapSizeLong() / 1000000) + "MB";
         Debug.Log(debug);
     }
 
