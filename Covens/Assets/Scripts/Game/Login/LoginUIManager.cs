@@ -108,7 +108,7 @@ public class LoginUIManager : MonoBehaviour
     {
         m_Instance = this;
 
-        Helpcrow.onClick.AddListener(SendEmail);
+        Helpcrow.onClick.AddListener(HelpManager.Open);
         CanvasGroup emptyCg = new GameObject().AddComponent<CanvasGroup>();
         emptyCg.transform.SetParent(this.transform);
         emptyCg.alpha = 1;
