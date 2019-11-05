@@ -277,8 +277,17 @@ namespace Raincrow.Chat
 #endif
             Log("Joined " + category + " chat");
 
-            List<ChatMessage> messages = JsonConvert.DeserializeObject<List<ChatMessage>>(args[0].ToString());
-            //messages.Reverse();
+            List<ChatMessage> messages;
+
+            try
+            {
+                messages = JsonConvert.DeserializeObject<List<ChatMessage>>(args[0].ToString());
+            }
+            catch
+            {
+                messages = new List<ChatMessage>();
+            }
+
             m_Messages[category] = messages;
 
             JoinChat(category);
