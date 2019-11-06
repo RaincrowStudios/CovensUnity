@@ -12,12 +12,12 @@ public class SimplePool<T> where T : Component
 
     public SimplePool(T prefab, int startAmount)
     {
-        if (startAmount <= 0)
+        //if (startAmount <= 0)
             startAmount = 1;
 
         m_Container = new GameObject($"[SimplePool]{prefab.name}").transform;
         m_Container.gameObject.SetActive(false);
-        GameObject.DontDestroyOnLoad(m_Container.gameObject);
+        //GameObject.DontDestroyOnLoad(m_Container.gameObject);
 
         m_Prefab = prefab;
         if (prefab.gameObject.scene.rootCount != 0)
