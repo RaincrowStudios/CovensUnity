@@ -9,18 +9,18 @@ public class DebugInitializer : MonoBehaviour
     [SerializeField] private float m_Latitude = 47.70168f;
     [SerializeField] private bool m_Login = false;
     [SerializeField] private bool m_IAP = false;
-    
+
     private void Awake()
     {
 #if PRODUCTION
         Destroy(this.gameObject);
         return;
-#endif
-
-#if !UNITY_EDITOR
-        Destroy(this.gameObject);
-        return;
-#endif
+#else
+        if (string.IsNullOrEmpty(LoginAPIManager.StoredUserName) || string.IsNullOrEmpty(LoginAPIManager.StoredUserPassword))
+        {
+            LoginAPIManager.StoredUserPassword = "lucas002";
+            LoginAPIManager.StoredUserPassword = "password";
+        }
 
         if (m_InitializeMap)
         {
@@ -48,6 +48,7 @@ public class DebugInitializer : MonoBehaviour
                 }
             }
         }
+#endif
     }
 
     private void Start()

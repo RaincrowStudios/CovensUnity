@@ -34,6 +34,12 @@ public class PhysicalPositionHelper : MonoBehaviour
         bool changed = false;
         while (true)
         {
+            if (GetGPS.IsReady == false)
+            {
+                yield return new WaitForSeconds(1f);
+                continue;
+            }
+
             if (m_LastLatitude != GetGPS.latitude || m_LastLongitude != GetGPS.longitude)
                 changed = true;
 

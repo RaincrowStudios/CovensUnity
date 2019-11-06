@@ -27,6 +27,8 @@ public class GetGPS : MonoBehaviour
 
     public static Vector2 noise { get; private set; }
 
+    public static bool IsReady => Input.location.status == LocationServiceStatus.Running;
+
     public static float longitude
     {
         get
