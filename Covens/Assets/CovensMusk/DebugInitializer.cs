@@ -18,7 +18,7 @@ public class DebugInitializer : MonoBehaviour
 #else
         if (string.IsNullOrEmpty(LoginAPIManager.StoredUserName) || string.IsNullOrEmpty(LoginAPIManager.StoredUserPassword))
         {
-            LoginAPIManager.StoredUserPassword = "lucas002";
+            LoginAPIManager.StoredUserName = "lucas002";
             LoginAPIManager.StoredUserPassword = "password";
         }
 
