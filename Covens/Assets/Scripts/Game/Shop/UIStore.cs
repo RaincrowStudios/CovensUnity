@@ -70,7 +70,7 @@ public class UIStore : MonoBehaviour
             SceneManager.LoadSceneAsync(
                 SceneManager.Scene.STORE,
                 UnityEngine.SceneManagement.LoadSceneMode.Additive,
-                (progress) => { },
+                (progress) => Debug.Log("store: " + progress),
                 () =>
                 {
                     LoadingOverlay.Hide();

@@ -32,11 +32,10 @@ public class UIDominionSplash : MonoBehaviour
             m_InputRaycaster.enabled = false;
             m_CanvasGroup.alpha = 0;
         }
-        //show as soon as the scene loads
         else
         {
-            m_InputRaycaster.enabled = true;
-            m_Canvas.enabled = true;
+            m_InputRaycaster.enabled = false;
+            m_Canvas.enabled = false;
             m_CanvasGroup.alpha = 1;
         }
     }

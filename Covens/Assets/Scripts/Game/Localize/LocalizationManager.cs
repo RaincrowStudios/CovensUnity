@@ -3,8 +3,8 @@ using System.Collections;
 using System;
 using System.Collections.Generic;
 
-[ExecuteInEditMode]
-public class LocalizationManager : MonoBehaviour
+//[ExecuteInEditMode]
+public static class LocalizationManager
 {
     public static Dictionary<string, string> LocalizeDictionary = new Dictionary<string, string>();
     public static HashSet<string> localizeIDs = new HashSet<string>();

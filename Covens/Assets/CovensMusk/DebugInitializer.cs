@@ -9,6 +9,7 @@ public class DebugInitializer : MonoBehaviour
     [SerializeField] private float m_Latitude = 47.70168f;
     [SerializeField] private bool m_Login = false;
     [SerializeField] private bool m_IAP = false;
+    [SerializeField] private bool m_Socket = false;
 
     private void Awake()
     {
@@ -47,6 +48,12 @@ public class DebugInitializer : MonoBehaviour
                     new GameObject("IAPManager", typeof(IAPSilver));
                 }
             }
+        }
+
+        if (m_Socket && SocketClient.Instance == null)
+        {
+            new GameObject("SocketCLient", typeof(SocketClient));
+            SocketClient.Instance.InitiateSocketConnection();
         }
 #endif
     }

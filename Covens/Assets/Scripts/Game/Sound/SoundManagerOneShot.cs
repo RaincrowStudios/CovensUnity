@@ -94,7 +94,8 @@ public class SoundManagerOneShot : MonoBehaviour
 
     void Start()
     {
-        ASBG = SocketClient.Instance.GetComponent<AudioSource>();
+        //ASBG = SocketClient.Instance.GetComponent<AudioSource>();
+        ASBG = this.GetComponent<AudioSource>();
     }
 
     public void SetBGTrack(int i)

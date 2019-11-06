@@ -25,7 +25,14 @@ public class SocketClient : MonoBehaviour
 
     void Awake()
     {
+        if (Instance != null)
+        {
+            Destroy(this.gameObject);
+            return;
+        }
+
         Instance = this;
+        DontDestroyOnLoad(this.gameObject);
         Application.targetFrameRate = 30;
         Screen.sleepTimeout = SleepTimeout.NeverSleep;
 
