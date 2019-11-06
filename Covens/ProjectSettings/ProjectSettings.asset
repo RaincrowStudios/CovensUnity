@@ -170,7 +170,7 @@ PlayerSettings:
     Standalone: 681
     iPhone: 970
   AndroidBundleVersionCode: 1030
-  AndroidMinSdkVersion: 24
+  AndroidMinSdkVersion: 16
   AndroidTargetSdkVersion: 0
   AndroidPreferredInstallLocation: 1
   aotOptions: 
