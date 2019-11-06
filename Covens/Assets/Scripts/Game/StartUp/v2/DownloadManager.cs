@@ -96,9 +96,6 @@ public class DownloadManager : MonoBehaviour
 
     public static void DownloadAssets(System.Action downloadComplete)
     {
-        downloadComplete?.Invoke();
-        return;
-
         Debug.Log("Requesting asset list from server");
 
         if (SplashManager.Instance)
@@ -329,6 +326,10 @@ public class DownloadManager : MonoBehaviour
             bundlesToDownload = assets.assets;
         }
 
+
+        OnDownloadsComplete?.Invoke();
+        bundlesDownloaded?.Invoke();
+        yield break;
 
         //download the bundles
         string assetBaseUrl = DownloadManager.downloadUrl;
