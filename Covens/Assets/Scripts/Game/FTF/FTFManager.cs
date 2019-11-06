@@ -144,6 +144,8 @@ public class FTFManager : MonoBehaviour
                 StoreManagerAPI.StoreData.Bundles[i] = item;
             }
         };
+
+        MapsAPI.Instance.InitMap(PlayerDataManager.playerData.longitude, PlayerDataManager.playerData.latitude, 1, null, false);
     }
     
     [ContextMenu("Start FTF")]
