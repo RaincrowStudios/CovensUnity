@@ -94,8 +94,11 @@ public class DownloadManager : MonoBehaviour
 
     public static AssetResponse AssetVersion { get; private set; }
 
-    public static void DownloadAssets(System.Action dictionaryDownloaded)
+    public static void DownloadAssets(System.Action downloadComplete)
     {
+        downloadComplete?.Invoke();
+        return;
+
         Debug.Log("Requesting asset list from server");
 
         if (SplashManager.Instance)
@@ -115,7 +118,7 @@ public class DownloadManager : MonoBehaviour
                     //APIManagerServer.EnableAutoRetry = true;
                     Debug.Log("Assets to download:\n" + s);
                     var d = JsonConvert.DeserializeObject<AssetResponse>(s);
-                    Instance.StartCoroutine(StartDownloads(d, dictionaryDownloaded, null));
+                    Instance.StartCoroutine(StartDownloads(d, downloadComplete, null));
                 }
                 else
                 {

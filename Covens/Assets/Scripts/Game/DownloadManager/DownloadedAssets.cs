@@ -136,7 +136,7 @@ public class DownloadedAssets : MonoBehaviour
         }
         else
         {
-            Timing.RunCoroutine(getSpiritHelper(id, callback, isIcon));
+            Timing.RunCoroutine(getSpritetHelper(id, callback, isIcon));
         }
     }
 
@@ -154,13 +154,15 @@ public class DownloadedAssets : MonoBehaviour
         }
         else
         {
-            Timing.RunCoroutine(getSpiritHelper(id, spr, isIcon));
+            Timing.RunCoroutine(getSpriteHelper(id, spr, isIcon));
         }
     }
     #endregion
     
-    static IEnumerator<float> getSpiritHelper(string id, System.Action<Sprite> callback, bool isIcon)
+    static IEnumerator<float> getSpritetHelper(string id, System.Action<Sprite> callback, bool isIcon)
     {
+        callback?.Invoke(null);
+        yield break;
 
         string type = "";
         if (id.Contains("spirit"))
@@ -171,9 +173,7 @@ public class DownloadedAssets : MonoBehaviour
             type = "apparel";
         else if (isIcon)
             type = "icon";
-
-
-
+        
         if (!loadedBundles.ContainsKey(type))
         {
             if (assetBundleDirectory.ContainsKey(type) == false)
@@ -186,8 +186,11 @@ public class DownloadedAssets : MonoBehaviour
             loadedBundles[type] = new List<AssetBundle>();
             foreach (var item in assetBundleDirectory[type])
             {
-                var bundleRequest = AssetBundle.LoadFromFile(item);
-                loadedBundles[type].Add(bundleRequest);
+                //var bundleRequest = AssetBundle.LoadFromFile(item);
+                var bundleRequest = AssetBundle.LoadFromFileAsync(item);
+                while (!bundleRequest.isDone)
+                    yield return 0;
+                loadedBundles[type].Add(bundleRequest.assetBundle);
             }
         }
 
@@ -226,8 +229,10 @@ public class DownloadedAssets : MonoBehaviour
         callback?.Invoke(null);
     }
 
-    static IEnumerator<float> getSpiritHelper(string id, Image spr, bool isIcon)
+    static IEnumerator<float> getSpriteHelper(string id, Image spr, bool isIcon)
     {
+        spr.overrideSprite = null;
+        yield break;
 
         string type = "";
         if (id.Contains("spirit"))
@@ -244,9 +249,10 @@ public class DownloadedAssets : MonoBehaviour
             loadedBundles[type] = new List<AssetBundle>();
             foreach (var item in assetBundleDirectory[type])
             {
-                var bundleRequest = AssetBundle.LoadFromFile(item);
-                loadedBundles[type].Add(bundleRequest);
-
+                var bundleRequest = AssetBundle.LoadFromFileAsync(item);
+                while (!bundleRequest.isDone)
+                    yield return 0;
+                loadedBundles[type].Add(bundleRequest.assetBundle);
             }
         }
 
@@ -266,12 +272,13 @@ public class DownloadedAssets : MonoBehaviour
                     IconSprites[tempSp.texture.name] = tempSp;
                 else
                     AllSprites[tempSp.texture.name] = tempSp;
-
+                yield break;
             }
         }
 
         yield return Timing.WaitForOneFrame;
 
+        Debug.LogException(new System.Exception("sprite not found for " + id + " in bundle " + type));
     }
 
     //public static void LoadStyleApparel(string id, System.Action<Sprite> callback)
