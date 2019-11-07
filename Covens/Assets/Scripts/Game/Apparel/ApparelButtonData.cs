@@ -5,7 +5,6 @@ using UnityEngine.UI;
 using TMPro;
 public class ApparelButtonData : MonoBehaviour
 {
-
     public GameObject newTag;
     public GameObject whiteAsset;
     public GameObject greyAsset;

@@ -294,12 +294,12 @@ public class MarkerManagerAPI : MonoBehaviour
                 updatedMarkers.Add(aux);
 
             //wait 5 frames
-            auxI = 0;
-            while (auxI < 5)
-            {
+            //auxI = 0;
+            //while (auxI < 5)
+            //{
                 yield return null;
-                auxI++;
-            }
+            //    auxI++;
+            //}
         }
 
         Debug.Log($"spawning witches: {witches.Count}");
@@ -309,13 +309,13 @@ public class MarkerManagerAPI : MonoBehaviour
             if (aux != null)
                 updatedMarkers.Add(aux);
 
-            //wait 5 frames
-            auxI = 0;
-            while (auxI < 5)
-            {
+            ////wait 5 frames
+            //auxI = 0;
+            //while (auxI < 5)
+            //{
                 yield return null;
-                auxI++;
-            }
+            //    auxI++;
+            //}
         }
 
 
@@ -343,7 +343,7 @@ public class MarkerManagerAPI : MonoBehaviour
         foreach (string id in toRemove)
         {
             MarkerSpawner.DeleteMarker(id);
-            yield return 1;
+            yield return null;
         }
         
         m_SpawnCoroutine = null;

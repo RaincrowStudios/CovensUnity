@@ -65,6 +65,24 @@ public class AvatarSpriteUtil : MonoBehaviour
         m_PortraitCamera_Wardrobe.enabled = false;
     }
 
+    public void GenerateHighResSprite(bool male, List<EquippedApparel> equips, System.Action<Sprite> callback)
+    {
+        SpriteGenerationSetting prop = new SpriteGenerationSetting
+        {
+            male = male,
+            equips = equips,
+            callbacks = new System.Action<Sprite>[] { callback },
+            sizes = new Vector2[] { new Vector2(256, 512) },
+            pivots = new Vector2[] { new Vector2(0.5f, 0.035f) },
+            types = new Type[] { Type.Avatar }
+        };
+
+        if (m_Current == null)
+            m_Current = StartCoroutine(GenerateSpriteCoroutine(prop));
+        else
+            m_Schedule.Add(prop);
+    }
+
     public void GenerateFullbodySprite(bool male, List<EquippedApparel> equips, System.Action<Sprite> callback)
     {
         SpriteGenerationSetting prop = new SpriteGenerationSetting
@@ -137,7 +155,12 @@ public class AvatarSpriteUtil : MonoBehaviour
         root.transform.position = new Vector3(-1000, 0, 0);
         root.gameObject.SetActive(true);
         characterView.gameObject.SetActive(true);
-        yield return characterView.InitializeChar(properties.equips);
+
+        bool _ready = false;
+        characterView.InitializeChar(properties.equips, () => _ready = true);
+
+        while (!_ready)
+            yield return null;
 
         //generate the sprites for each camera passed
         for (int i = 0; i < properties.callbacks.Length; i++)

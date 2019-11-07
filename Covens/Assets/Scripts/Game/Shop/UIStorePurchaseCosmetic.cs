@@ -55,6 +55,12 @@ public class UIStorePurchaseCosmetic : UIStorePurchase
         base._Show(item, type, title, description, icon, locked, onPurchase);
     }
 
+    protected override void _OnClosed()
+    {
+        m_MaleView.ResetApparel();
+        m_FemaleView.ResetApparel();
+    }
+
     private void TogglePreview()
     {
         m_PreviewIndex++;

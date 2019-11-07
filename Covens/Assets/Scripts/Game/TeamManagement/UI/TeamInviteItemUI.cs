@@ -69,8 +69,7 @@ public class TeamInviteItemUI : MonoBehaviour
 
         m_OnSelect = () =>
         {
-            LoadingOverlay.Show();
-            TeamPlayerView.ViewCharacter(data.Character, (m,s) => LoadingOverlay.Hide());
+            TeamPlayerView.ViewCharacter(data.Character, null);
         };
         m_OnConfirm = null;
         m_OnCancel = () =>
@@ -123,7 +122,7 @@ public class TeamInviteItemUI : MonoBehaviour
         m_OnSelect = () =>
         {
             LoadingOverlay.Show();
-            TeamPlayerView.ViewCharacter(data.Character, (m, s) => LoadingOverlay.Hide());
+            TeamPlayerView.ViewCharacter(data.Character, null);
         };
         m_OnConfirm = () =>
         {

@@ -38,6 +38,7 @@ namespace Raincrow
             REVIEW_POPUP,
             EXPLORE_LORE,
             HELP,
+            PLAYER_DESC,
         }
 
         private static Dictionary<Scene, string> m_SceneNames = new Dictionary<Scene, string>
@@ -69,6 +70,7 @@ namespace Raincrow
             {Scene.REVIEW_POPUP,        "ReviewPopup" },
             {Scene.EXPLORE_LORE,        "ExploreLore" },
             {Scene.HELP,                "Help" },
+            {Scene.PLAYER_DESC,         "TeamPlayerView" },
         };
 
         private static SceneManager m_Instance;

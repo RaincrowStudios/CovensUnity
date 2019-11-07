@@ -2,10 +2,13 @@ using Newtonsoft.Json;
 using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
+using Raincrow;
 
 public class TeamPlayerView : MonoBehaviour
 {
-    public static TeamPlayerView Instance { get; set; }
+    private static TeamPlayerView m_Instance;
+
+    public static bool IsOpen => m_Instance != null && m_Instance.m_InputRaycaster.enabled;
 
     [SerializeField] private Canvas m_Canvas;
     [SerializeField] private GraphicRaycaster m_InputRaycaster;
@@ -39,19 +42,47 @@ public class TeamPlayerView : MonoBehaviour
     private System.Action m_OnCoven;
     private System.Action m_OnClose;
 
+    public static void Show(WitchMarkerData data, System.Action onFly = null, System.Action onCoven = null, System.Action onClose = null)
+    {
+        if (m_Instance != null)
+        {
+            m_Instance._Show(data, onFly, onCoven, onClose);
+        }
+        else
+        {
+            SceneManager.LoadSceneAsync(
+                SceneManager.Scene.PLAYER_DESC,
+                UnityEngine.SceneManagement.LoadSceneMode.Additive,
+                null,
+                () => m_Instance._Show(data, onFly, onCoven, onClose)
+            );
+        }
+    }
+
     void Awake()
     {
-        Instance = this;
         btnBack.onClick.AddListener(OnClickClose);
         flyToPlayerBtn.onClick.AddListener(FlyToPlayer);
-
-
+        
         m_Canvas.enabled = false;
         m_InputRaycaster.enabled = false;
         m_CanvasGroup.alpha = 0;
+
+        DownloadedAssets.OnWillUnloadAssets += DownloadedAssets_OnWillUnloadAssets;
     }
 
-    public void Show(WitchMarkerData data, System.Action onFly = null, System.Action onCoven = null, System.Action onClose = null)
+    private void DownloadedAssets_OnWillUnloadAssets()
+    {
+        if (IsOpen)
+            return;
+
+        DownloadedAssets.OnWillUnloadAssets -= DownloadedAssets_OnWillUnloadAssets;
+
+        LeanTween.cancel(m_TweenId);
+        SceneManager.UnloadScene(SceneManager.Scene.PLAYER_DESC, null, null);
+    }
+
+    private void _Show(WitchMarkerData data, System.Action onFly = null, System.Action onCoven = null, System.Action onClose = null)
     {
         inviteToCoven.onClick.RemoveAllListeners();
         inviteToCoven.onClick.AddListener(() =>
@@ -140,6 +171,8 @@ public class TeamPlayerView : MonoBehaviour
             .setOnComplete(() =>
             {
                 m_Canvas.enabled = false;
+                male.ResetApparel();
+                female.ResetApparel();
             })
             .uniqueId;
     }
@@ -184,23 +217,27 @@ public class TeamPlayerView : MonoBehaviour
 
     public static void ViewCharacter(string id, System.Action<WitchMarkerData, string> callback, bool searchByName = false, System.Action onFlyTo = null)
     {
+        LoadingOverlay.Show();
         APIManager.Instance.Get(
             "character/select/" + id + "?selection=chat&name=" + searchByName.ToString().ToLower(),
             "",
             (response, result) =>
             {
+                LoadingOverlay.Hide();
                 if (result == 200)
                 {
                     WitchMarkerData data = JsonConvert.DeserializeObject<WitchMarkerData>(response);
-                    Instance.Show(data, onFlyTo);
+                    Show(data, onFlyTo);
                     callback?.Invoke(data, null);
                 }
                 else
                 {
-                    callback?.Invoke(null, APIManager.ParseError(response));
+                    UIGlobalPopup.ShowError(() => callback?.Invoke(null, response), APIManager.ParseError(response));
+                    //callback?.Invoke(null, );
                 }
             });
     }
+
     public void InviteToCoven(string id)
     {
         if (string.IsNullOrEmpty(TeamManager.MyCovenId) == false)

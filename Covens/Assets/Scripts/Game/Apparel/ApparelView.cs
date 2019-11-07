@@ -42,6 +42,9 @@ public class ApparelView : MonoBehaviour
     private bool m_IsStyle;
     private List<EquippedApparel> previousEquips;
 
+    private static Coroutine m_LoadEquipsCoroutine = null;
+    private static Coroutine m_LoadVisualsCoroutine = null;
+
     private void Awake()
     {
         InitApparelDict();
@@ -91,7 +94,7 @@ public class ApparelView : MonoBehaviour
         }
     }
 
-    public Coroutine InitializeChar(List<EquippedApparel> data)
+    public void InitializeChar(List<EquippedApparel> data, System.Action onComplete = null)
     {
         if (ApparelDict == null)
             InitApparelDict();
@@ -111,39 +114,43 @@ public class ApparelView : MonoBehaviour
                 isCenser = true;
         }
 
-        return StartCoroutine(LoadVisuals(data));
+        foreach(var eqp in data)
+        {
+            equippedApparel[eqp.position] = eqp;
+        }
+
+        m_LoadEquipsCoroutine = StartCoroutine(LoadEquips(data, onComplete));
     }
 
-    private IEnumerator LoadVisuals(List<EquippedApparel> data)
+    private IEnumerator LoadEquips(List<EquippedApparel> equips, System.Action onComplete = null)
     {
-        foreach (var item in data)
+        bool canShow = false;
+        foreach (var item in equips)
         {
-            equippedApparel[item.position] = item;
-            //only show the style allowed equips
-            if (m_IsStyle)
+            canShow = !m_IsStyle || validStyleEquips.Contains(item.position);
+
+            if (canShow)
             {
-                if (validStyleEquips.Contains(item.position))
-                    yield return StartCoroutine(LoadEquip(item));
-            }
-            //show everyhing equiped
-            else
-            {
-                yield return StartCoroutine(LoadEquip(item));
+                while (m_LoadVisualsCoroutine != null)
+                    yield return null;
+
+                m_LoadVisualsCoroutine = StartCoroutine(LoadVisuals(item));
+                yield return m_LoadVisualsCoroutine;
             }
         }
+
+        m_LoadEquipsCoroutine = null;
+        onComplete?.Invoke();
     }
 
-    private IEnumerator LoadEquip(EquippedApparel data)
+    private IEnumerator LoadVisuals(EquippedApparel data)
     {
-        if (data == null)
+        if (data == null || string.IsNullOrEmpty(data.id) || string.IsNullOrEmpty(data.position))
+        {
+            m_LoadVisualsCoroutine = null;
             yield break;
-
-        if (string.IsNullOrEmpty(data.id))
-            yield break;
-
-        if (string.IsNullOrEmpty(data.position))
-            yield break;
-
+        }
+        
         if (data.position == "style")
         {
             string assetId = "";
@@ -203,6 +210,8 @@ public class ApparelView : MonoBehaviour
                 slots[0].gameObject.SetActive(true);
             }
         }
+
+        m_LoadVisualsCoroutine = null;
     }
 
     private void UnloadVisuals(string position)
@@ -248,8 +257,9 @@ public class ApparelView : MonoBehaviour
         equippedApparel[equip.position] = equip;
         m_IsStyle = isStyle;
 
-        StartCoroutine(LoadEquip(equip));
-        RefreshCensorEquips();
+        //RefreshCensorEquips();
+
+        RefreshEquips();
     }
 
     private void UnequipConflicts(string position)
@@ -304,19 +314,13 @@ public class ApparelView : MonoBehaviour
         {
             UnloadVisuals(position);
             equippedApparel.Remove(position);
-            RefreshCensorEquips();
+            //RefreshCensorEquips();
+            RefreshEquips();
         }
     }
 
-    void RefreshCensorEquips()
+    private void RefreshEquips()
     {
-        bool previousValue = isCenser;
-        isCenser = equippedApparel.ContainsKey("carryOnLeft") || equippedApparel.ContainsKey("carryOnRight");
-
-        if (isCenser == previousValue)
-            return;
-        
-        foreach (var apparel in equippedApparel)
-            StartCoroutine(LoadEquip(apparel.Value));
+        m_LoadEquipsCoroutine = StartCoroutine(LoadEquips(equippedApparel.Values.ToList()));
     }
 }
