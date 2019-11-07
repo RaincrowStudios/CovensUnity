@@ -325,12 +325,7 @@ public class DownloadManager : MonoBehaviour
             };
             bundlesToDownload = assets.assets;
         }
-
-
-        OnDownloadsComplete?.Invoke();
-        bundlesDownloaded?.Invoke();
-        yield break;
-
+        
         //download the bundles
         string assetBaseUrl = DownloadManager.downloadUrl;
         if (Application.platform == RuntimePlatform.IPhonePlayer)
@@ -343,37 +338,6 @@ public class DownloadManager : MonoBehaviour
 
             bool fail = true;
             int retryCount = 0;
-
-            ////get the header for the filesize
-            //UnityWebRequest head = UnityWebRequest.Head(assetBaseUrl + assetName);
-            //while (fail && retryCount < APIManagerServer.MaxRetries)
-            //{
-            //    head.SendWebRequest();
-
-            //    while (!head.isDone)
-            //        yield return 0;
-
-            //    fail = head.isNetworkError || head.isHttpError;
-            //    retryCount += 1;
-
-            //    if (fail)
-            //    {
-            //        APIManager.ThrowRetryError(head, head.url, "");
-            //        yield return new WaitForSeconds(APIManagerServer.RetryCooldown);
-            //        head = UnityWebRequest.Head(assetBaseUrl + assetName);
-            //    }
-            //}
-
-            //if (fail)
-            //{
-            //    Debug.LogError("Failed to download header " + assetName + "\n" + head.error);
-            //    OnDownloadError?.Invoke(assetName, head.error);
-            //    yield break;
-            //}
-            //else
-            //{
-            //    size = float.Parse(head.GetResponseHeader("Content-Length")) * 0.000001f;
-            //}
 
             //get the actual file
             fail = true;

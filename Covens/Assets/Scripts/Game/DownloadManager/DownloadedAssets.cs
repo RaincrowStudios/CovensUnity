@@ -1,13 +1,22 @@
 ﻿using UnityEngine;
 using System.Collections;
 using System.Collections.Generic;
-using MEC;
+//using MEC;
 using UnityEngine.UI;
 using UnityEngine.Profiling;
 
 public class DownloadedAssets : MonoBehaviour
 {
-    public static DownloadedAssets Instance { get; set; }
+    private static DownloadedAssets m_Instance;
+    public static DownloadedAssets Instance
+    {
+        get
+        {
+            if (m_Instance == null)
+                m_Instance = new GameObject("DownloadedAssets").AddComponent<DownloadedAssets>();
+            return m_Instance;
+        }
+    }
 
     private static Dictionary<string, List<AssetBundle>> loadedBundles = new Dictionary<string, List<AssetBundle>>();
     public static Dictionary<string, List<string>> assetBundleDirectory = new Dictionary<string, List<string>>();
@@ -47,16 +56,18 @@ public class DownloadedAssets : MonoBehaviour
 
     public static PlaceOfPowerSettings PlaceOfPowerSettings { get; set; }
 
-
+    public static bool LoadingAsset { get; private set; }
     public static bool UnloadingMemory { get; private set; }
     public static event System.Action OnWillUnloadAssets;
 
     void Awake()
-    {
-        Instance = this;
-        DontDestroyOnLoad(this.gameObject);
-        
+    {        
         Application.lowMemory += OnApplicationLowMemory;
+    }
+
+    private void OnDestroy()
+    {
+        Application.lowMemory -= OnApplicationLowMemory;
     }
 
     public void OnApplicationLowMemory()
@@ -118,51 +129,46 @@ public class DownloadedAssets : MonoBehaviour
     }
 
     #region SpriteGetters
-    public static void GetSprite(string id, System.Action<Sprite> callback, bool isIcon = false)
+    public static Coroutine GetSprite(string id, System.Action<Sprite> callback, bool isIcon = false)
     {
         if (string.IsNullOrEmpty(id))
         {
             Debug.LogException(new System.Exception("nullorempty id"));
             callback?.Invoke(null);
+            return null;
         }
 
         if (!isIcon && AllSprites.ContainsKey(id))
         {
             callback?.Invoke(AllSprites[id]);
+            return null;
         }
         else if (isIcon && IconSprites.ContainsKey(id))
         {
             callback?.Invoke(IconSprites[id]);
+            return null;
         }
         else
         {
-            Timing.RunCoroutine(getSpritetHelper(id, callback, isIcon));
+            return Instance.StartCoroutine(getSpritetHelper(id, callback, isIcon));
+            //Timing.RunCoroutine(getSpritetHelper(id, callback, isIcon));
         }
     }
 
-    public static void GetSprite(string id, Image spr, bool isIcon = false)
+    public static Coroutine GetSprite(string id, Image image, bool isIcon = false)
     {
-        if (!isIcon && AllSprites.ContainsKey(id))
-        {
-            spr.overrideSprite = AllSprites[id];
-
-        }
-        else if (isIcon && IconSprites.ContainsKey(id))
-        {
-            spr.overrideSprite = IconSprites[id];
-
-        }
-        else
-        {
-            Timing.RunCoroutine(getSpriteHelper(id, spr, isIcon));
-        }
+        return GetSprite(id, spr => image.overrideSprite = spr, isIcon);
     }
+
     #endregion
     
-    static IEnumerator<float> getSpritetHelper(string id, System.Action<Sprite> callback, bool isIcon)
+    static IEnumerator getSpritetHelper(string id, System.Action<Sprite> callback, bool isIcon)
     {
-        callback?.Invoke(null);
-        yield break;
+        //Log("get sprite " + id);
+        while (LoadingAsset)
+            yield return null;
+
+        LoadingAsset = true;
 
         string type = "";
         if (id.Contains("spirit"))
@@ -179,6 +185,7 @@ public class DownloadedAssets : MonoBehaviour
             if (assetBundleDirectory.ContainsKey(type) == false)
             {
                 Debug.LogError($"Asset bundle \"{type}\" not found");
+                LoadingAsset = false;
                 callback?.Invoke(null);
                 yield break;
             }
@@ -186,11 +193,12 @@ public class DownloadedAssets : MonoBehaviour
             loadedBundles[type] = new List<AssetBundle>();
             foreach (var item in assetBundleDirectory[type])
             {
-                //var bundleRequest = AssetBundle.LoadFromFile(item);
-                var bundleRequest = AssetBundle.LoadFromFileAsync(item);
-                while (!bundleRequest.isDone)
-                    yield return 0;
-                loadedBundles[type].Add(bundleRequest.assetBundle);
+                //float time = Time.unscaledTime;
+                //Log("loading " + item);
+                var request = AssetBundle.LoadFromFileAsync(item);
+                yield return request;
+                //Log("loaded " + item + " in " + (Time.unscaledTime - time));
+                loadedBundles[type].Add(request.assetBundle);
             }
         }
 
@@ -199,6 +207,7 @@ public class DownloadedAssets : MonoBehaviour
             SpellData spell = GetSpell(id);
             if (spell == null)
             {
+                LoadingAsset = false;
                 callback?.Invoke(null);
                 yield break;
             }
@@ -209,8 +218,11 @@ public class DownloadedAssets : MonoBehaviour
         {
             if (item.Contains(id + ".png"))
             {
-                var request = item.LoadAssetAsync(id + ".png", typeof(Sprite));
-                Timing.WaitUntilDone(request);
+                //float time = Time.unscaledTime;
+                //Log("loading " + id + ".png");
+                AssetBundleRequest request = item.LoadAssetAsync(id + ".png", typeof(Sprite));
+                yield return request;
+                //Log("loaded " + id + ".png in " + (Time.unscaledTime - time));
                 var tempSp = request.asset as Sprite;
                 callback?.Invoke(tempSp);
 
@@ -219,66 +231,16 @@ public class DownloadedAssets : MonoBehaviour
                 else
                     AllSprites[tempSp.texture.name] = tempSp;
 
-                yield return Timing.WaitForOneFrame;
+                //yield return Timing.WaitForOneFrame;
+                LoadingAsset = false;
                 yield break;
             }
         }
 
-        yield return Timing.WaitForOneFrame;
+        //yield return Timing.WaitForOneFrame;
         Debug.LogException(new System.Exception("sprite not found for " + id + " in bundle " + type));
+        LoadingAsset = false;
         callback?.Invoke(null);
-    }
-
-    static IEnumerator<float> getSpriteHelper(string id, Image spr, bool isIcon)
-    {
-        spr.overrideSprite = null;
-        yield break;
-
-        string type = "";
-        if (id.Contains("spirit"))
-            type = "spirit";
-        else if (id.Contains("spell") || id == "elixir_xp" || id == "elixir_degree")
-            type = "spell";
-        else if (!isIcon)
-            type = "apparel";
-        else if (isIcon)
-            type = "icon";
-
-        if (!loadedBundles.ContainsKey(type))
-        {
-            loadedBundles[type] = new List<AssetBundle>();
-            foreach (var item in assetBundleDirectory[type])
-            {
-                var bundleRequest = AssetBundle.LoadFromFileAsync(item);
-                while (!bundleRequest.isDone)
-                    yield return 0;
-                loadedBundles[type].Add(bundleRequest.assetBundle);
-            }
-        }
-
-        if (type == "spell")
-            id = spellDictData[id].glyph.ToString();
-
-        spr.overrideSprite = null;
-        foreach (var item in loadedBundles[type])
-        {
-            if (item.Contains(id + ".png"))
-            {
-                var request = item.LoadAssetAsync(id + ".png", typeof(Sprite));
-                Timing.WaitUntilDone(request);
-                var tempSp = request.asset as Sprite;
-                spr.overrideSprite = tempSp;
-                if (isIcon)
-                    IconSprites[tempSp.texture.name] = tempSp;
-                else
-                    AllSprites[tempSp.texture.name] = tempSp;
-                yield break;
-            }
-        }
-
-        yield return Timing.WaitForOneFrame;
-
-        Debug.LogException(new System.Exception("sprite not found for " + id + " in bundle " + type));
     }
 
     //public static void LoadStyleApparel(string id, System.Action<Sprite> callback)
@@ -397,6 +359,11 @@ public class DownloadedAssets : MonoBehaviour
             Debug.LogError($"Cosmetic \"{id}\" not found.");
             return null;
         }
+    }
+
+    private static void Log(string msg)
+    {
+        Debug.Log("<color=magenta> " + msg + " </color>");
     }
 }
 

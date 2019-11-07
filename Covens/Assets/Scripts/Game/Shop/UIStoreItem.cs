@@ -91,6 +91,7 @@ public class UIStoreItem : MonoBehaviour
 
     public void Setup(StoreItem item, object data)
     {
+        Debug.LogError("setup item " + item.id);
         m_IconId = item.id;
         m_ItemIcon.overrideSprite = null;
         IconLoaded = false;

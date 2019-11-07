@@ -149,9 +149,12 @@ public class MoonManager : UIAnimationManager
         int minutes = nextBlessing.Minutes;
         int seconds = nextBlessing.Seconds;
 
-        dailytext.text = string.Concat(hours.ToString("D2"),
-        ":", minutes.ToString("D2"),
-        ":",seconds.ToString("D2"));
+        dailytext.text = string.Concat(
+            hours.ToString("D2"),
+            ":",
+            minutes.ToString("D2"),
+            ":",
+            seconds.ToString("D2"));
 
         if (container.gameObject.activeSelf)
         {

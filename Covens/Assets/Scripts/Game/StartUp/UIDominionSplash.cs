@@ -24,6 +24,15 @@ public class UIDominionSplash : MonoBehaviour
         Instance = this;
         m_CloseButton.gameObject.SetActive(false);
         m_CloseButton.onClick.AddListener(Close);
+        m_Canvas.enabled = false;
+        m_InputRaycaster.enabled = false;
+        m_CanvasGroup.alpha = 0;
+    }
+
+    private IEnumerator Start()
+    {
+        while (PlayerDataManager.playerData == null)
+            yield return 0;
 
         //just hide so it can be shown on the end of the tutorial
         if (FTFManager.InFTF || PlayerDataManager.playerData.insidePlaceOfPower)
@@ -35,7 +44,7 @@ public class UIDominionSplash : MonoBehaviour
         else
         {
             m_InputRaycaster.enabled = false;
-            m_Canvas.enabled = false;
+            m_Canvas.enabled = true;
             m_CanvasGroup.alpha = 1;
         }
     }

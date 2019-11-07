@@ -63,8 +63,8 @@ public class CovensMuskMap : MonoBehaviour
     private int m_MinZoom;
     private int m_MaxZoom;
 
-    private float m_Zoom;
-    private float m_NormalizedZoom;
+    private float m_Zoom = 17;
+    private float m_NormalizedZoom = 1;
 
     private List<int> m_PreviousZoomLevels = new List<int>();
 
@@ -183,6 +183,8 @@ public class CovensMuskMap : MonoBehaviour
         m_MinZoom = m_CameraSettings[0].zoomLv;
         m_MaxZoom = m_CameraSettings[m_CameraSettings.Length - 1].zoomLv;
         m_CamDat = m_CameraSettings[m_CameraSettings.Length - 1];
+        m_Zoom = 1;
+        m_MapsService.ZoomLevel = 17;
 
         m_BuildingsEnabled = Application.isEditor;
     }
@@ -190,9 +192,10 @@ public class CovensMuskMap : MonoBehaviour
     private void Start()
     {
         LatLng startingPosition = new LatLng(0, 0);
+        if (PlayerDataManager.playerData != null)
+            startingPosition = new LatLng(PlayerDataManager.playerData.latitude, PlayerDataManager.playerData.longitude);
         m_MapsService.InitFloatingOrigin(startingPosition);
         m_OriginInitialized = true;
-        m_MapsService.ZoomLevel = -1;
 
         if (m_InitOnStart)
         {

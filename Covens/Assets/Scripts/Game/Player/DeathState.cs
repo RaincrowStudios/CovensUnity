@@ -12,16 +12,12 @@ public class DeathState : MonoBehaviour
     public Transform[] ScaleUpObjects;
     public CanvasGroup[] FadeButtons;
     public GameObject[] DisableItems;
-    public Camera UICamera;
-    public Camera MainCamera;
     public float speed = 1;
-    //	public GameObject Particles;
     public GameObject DeathContainer;
     public GameObject FlightGlowFX;
     bool isDead = false;
     public GameObject DeathPersist;
     public GameObject flyDead;
-    // public GameObject mapDarkBox;
     public Button[] turnOffInteraction;
     public static bool IsDead { get; private set; }
     IMaps map;
@@ -87,7 +83,6 @@ public class DeathState : MonoBehaviour
                 item.interactable = true;
         }
         DeathPersist.SetActive(false);
-        PlayerManagerUI.Instance.Revived();
     }
 
     void HideDeath()

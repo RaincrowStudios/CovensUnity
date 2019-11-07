@@ -93,7 +93,8 @@ public class WitchSchoolPlayer : MonoBehaviour
             })
             .uniqueId;
 
-        PlayerDataManager.Instance?.GetComponent<AudioSource>().Pause();
+        Debug.LogError("TODO: PAUSE MAIN AUDIOSOURCE");
+        //PlayerDataManager.Instance?.GetComponent<AudioSource>().Pause();
         m_VideoTitle.text = title;
         m_VideoImage.color = Color.black;
 
@@ -124,7 +125,8 @@ public class WitchSchoolPlayer : MonoBehaviour
             .setOnComplete(() =>
             {
                 gameObject.SetActive(false);
-                PlayerDataManager.Instance?.GetComponent<AudioSource>().UnPause();
+                Debug.LogError("TODO: RESUME MAIN AUDIOSOURCE");
+                //PlayerDataManager.Instance?.GetComponent<AudioSource>().UnPause();
 
                 m_TweenId = LeanTween.value(0, 0, 120).setOnComplete(() =>
                 {

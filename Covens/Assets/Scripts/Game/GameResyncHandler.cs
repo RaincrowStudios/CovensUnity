@@ -96,6 +96,8 @@ public class GameResyncHandler : MonoBehaviour
 
     public static void ResyncGame()
     {
+        return;
+
 #if LOCAL_API
         return;
 #endif

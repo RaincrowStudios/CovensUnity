@@ -26,16 +26,12 @@ public class PlayerManager : MonoBehaviour
     public static float reinitTime = 50;
 
     public GameObject AtLocation_UI;
-
-    public Image playerFlyIcon;
-
+    
     private static IMarker m_Marker;
 
     public static IMarker marker => LocationIslandController.isInBattle ? LocationPlayerAction.playerMarker : m_Marker;
     public static WitchMarker witchMarker => marker as WitchMarker;
-
-    [SerializeField] private GameObject selectionRing;
-
+    
     public static bool inSpiritForm { get => MarkerManagerAPI.IsSpiritForm; }
 
     public static bool isFlying { get => !MapsAPI.Instance.streetLevel; }
@@ -62,13 +58,23 @@ public class PlayerManager : MonoBehaviour
         Instance = this;
     }
 
-    void Start()
+    IEnumerator Start()
     {
+        while (PlayerDataManager.playerData == null)
+            yield return null;
+
+        while (MapsAPI.Instance.IsInitialized == false)
+            yield return null;
+
+        CreatePlayerStart();
+
+        yield return null;
+
         MapsAPI.Instance.OnEnterStreetLevel += OnFinishFlying;
         MapsAPI.Instance.OnExitStreetLevel += OnStartFlying;
     }
 
-    public void CreatePlayerStart()
+    private void CreatePlayerStart()
     {
         if (marker != null)
             return;
@@ -187,7 +193,7 @@ public class PlayerManager : MonoBehaviour
     
     public void AddAttackRing()
     {
-        selectionRing = marker.GameObject.transform.GetChild(0).GetChild(2).gameObject;
+        GameObject selectionRing = marker.GameObject.transform.GetChild(0).GetChild(2).gameObject;
 
         if (PlayerDataManager.playerData.degree < 0)
         {
@@ -225,7 +231,9 @@ public class PlayerManager : MonoBehaviour
         MainUITransition.Instance.EnableShoutButton(false);
         MainUITransition.Instance.EnableLocationButton(false);
         FlightVisuals.Instance.StartFlight();
-        FlySFX.Instance.fly();
+
+        Debug.LogError("TODO: ENABLE FLYSFX");
+        //FlySFX.Instance.fly();
 
         onStartFlight?.Invoke();
     }
@@ -236,7 +244,8 @@ public class PlayerManager : MonoBehaviour
 
         System.Action finishFlight = () =>
         {
-            FlySFX.Instance.EndFly();
+            Debug.LogError("TODO: DISABLE FLY SFX");
+            //FlySFX.Instance.EndFly();
             MainUITransition.Instance.EnableLocationButton(true);
             MainUITransition.Instance.EnableSummonButton(true);
             MainUITransition.Instance.EnableShoutButton(true);

@@ -13,10 +13,18 @@ public class MapView : MonoBehaviour
     private void Awake()
     {
         m_Instance = this;
+
+        MapsAPI.Instance.InstantiateMap();
     }
 
-    private void Start()
+    private IEnumerator Start()
     {
+        while (MapsAPI.Instance.IsInitialized == false)
+            yield return null;
+
+        while (PlayerDataManager.playerData == null)
+            yield return null;
+        
         OnLeavePoP();
 
         LocationIslandController.OnEnterLocation += OnEnterPoP;
@@ -24,8 +32,6 @@ public class MapView : MonoBehaviour
 
         SpiritDicoveredHandler.OnSpiritDiscovered += _OnSpiritDiscovered;
         SpiritBanishedHandler.OnSpiritBanished += _OnSpiritBanished;
-
-        PlayerManager.Instance.CreatePlayerStart();
         
         LineRendererBasedDome.Instance.Setup(PlayerDataManager.DisplayRadius * MapsAPI.Instance.OneKmInWorldspace);
 

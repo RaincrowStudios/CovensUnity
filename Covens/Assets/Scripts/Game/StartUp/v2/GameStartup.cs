@@ -64,6 +64,12 @@ public class GameStartup : MonoBehaviour
     void Awake()
     {
         LeanTween.init(1000);
+        Application.targetFrameRate = 30;
+        Screen.sleepTimeout = SleepTimeout.NeverSleep;
+
+#if DISABLE_LOG
+        Debug.unityLogger.logEnabled = false;
+#endif
     }
 
     private void Start()
@@ -88,8 +94,6 @@ public class GameStartup : MonoBehaviour
 
         //wait for the gps/network
         GetGPS.OnInitialized += OnGPSReady;
-
-        MapsAPI.Instance.InstantiateMap();
     }
 
     private void OnGPSReady()

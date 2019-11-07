@@ -4,7 +4,6 @@ using UnityEngine;
 
 public class PushManager : MonoBehaviour
 {
-
     void Awake()
     {
         LoginAPIManager.OnCharacterReceived += InitPush;

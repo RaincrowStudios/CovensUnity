@@ -5,7 +5,6 @@ using Newtonsoft.Json;
 using Raincrow.Maps;
 using Raincrow.GameEventResponses;
 
-[RequireComponent(typeof(MarkerSpawner))]
 public class MarkerManagerAPI : MonoBehaviour
 {
     public class MapMoveResponse

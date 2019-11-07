@@ -3,11 +3,18 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-//[RequireComponent(typeof(PlayerManager))] 
-
-public class PlayerDataManager : MonoBehaviour
+public class PlayerDataManager
 {
-    public static PlayerDataManager Instance { get; set; }
+    private static PlayerDataManager m_Instance;
+    public static PlayerDataManager Instance
+    {
+        get
+        {
+            if (m_Instance == null)
+                m_Instance = new PlayerDataManager();
+            return m_Instance;
+        }
+    }
 
     //player
     public static PlayerData playerData;
@@ -31,18 +38,7 @@ public class PlayerDataManager : MonoBehaviour
     public static int soundTrack = 0;
 
     public static double[] tribunalStamps => new double[] { 1553040000, 1561075200, 1569196800, 1576972800, 1584662400, 1592697600 };
-
-    void Awake()
-    {
-        if (Instance != null)
-        {
-            Destroy(this.gameObject);
-            return;
-        }
-        DontDestroyOnLoad(this);
-        Instance = this;
-    }
-
+    
     public EnumGender Gender
     {
         get

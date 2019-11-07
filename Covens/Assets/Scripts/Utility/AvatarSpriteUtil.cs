@@ -137,7 +137,7 @@ public class AvatarSpriteUtil : MonoBehaviour
         root.transform.position = new Vector3(-1000, 0, 0);
         root.gameObject.SetActive(true);
         characterView.gameObject.SetActive(true);
-        characterView.InitializeChar(properties.equips);
+        yield return characterView.InitializeChar(properties.equips);
 
         //generate the sprites for each camera passed
         for (int i = 0; i < properties.callbacks.Length; i++)

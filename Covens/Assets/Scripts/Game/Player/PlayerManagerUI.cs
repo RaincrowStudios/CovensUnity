@@ -5,6 +5,7 @@ using Newtonsoft.Json;
 using System;
 using TMPro;
 
+[RequireComponent(typeof(FlightVisualManager))]
 public class PlayerManagerUI : UIAnimationManager
 {
     public static PlayerManagerUI Instance { get; set; }
@@ -16,8 +17,6 @@ public class PlayerManagerUI : UIAnimationManager
     public GameObject overFlowEn;
     public TextMeshProUGUI silverDrachs;
     public TextMeshProUGUI goldDrachs;
-    public TextMeshProUGUI silverDrachsStore;
-    public TextMeshProUGUI goldDrachsStore;
     public GameObject physicalForm;
     public GameObject spiritForm;
     public GameObject coinGlow;
@@ -28,10 +27,7 @@ public class PlayerManagerUI : UIAnimationManager
     public Sprite[] LunarPhase;
     public Slider xpSlider;
     public TextMeshProUGUI xpText;
-
-    public GameObject EnergyElixir;
-    public Button elixirButton;
-
+    
     int elixirCount;
 
     public CanvasGroup curDominion;
@@ -121,8 +117,11 @@ public class PlayerManagerUI : UIAnimationManager
         Raincrow.GameEventResponses.CharacterDeathHandler.OnPlayerDeath -= CharacterDeathHandler_OnPlayerDeath;
     }
 
-    private void Start()
+    private IEnumerator Start()
     {
+        while (PlayerDataManager.playerData == null)
+            yield return null;
+
         PlayerManager.onFinishFlight += CheckPhysicalForm;
         SetupUI();
     }
@@ -340,14 +339,6 @@ public class PlayerManagerUI : UIAnimationManager
                 silverDrachs.text = i.ToString();
             });
 
-
-            //running Lerp if you are in the store
-            if (updateStore)
-            {
-                silverDrachsStore.text = PlayerDataManager.playerData.silver.ToString();
-                goldDrachsStore.text = PlayerDataManager.playerData.gold.ToString();
-            }
-
         }
         catch
         {
@@ -393,22 +384,22 @@ public class PlayerManagerUI : UIAnimationManager
     }
     */
 
-    public void Revived()
-    {
-        Hide(EnergyElixir, true, 4);
-    }
+    //public void Revived()
+    //{
+    //    Hide(EnergyElixir, true, 4);
+    //}
 
-    public void ShowElixirOnBuy()
-    {
-        // if (PlayerDataManager.playerData.state == "vulnerable")
-        // {
-        //     ShowElixirVulnerable(false);
-        // }
-        // else
-        // {
-        //     ShowElixirVulnerable(true);
-        // }
-    }
+    //public void ShowElixirOnBuy()
+    //{
+    //    // if (PlayerDataManager.playerData.state == "vulnerable")
+    //    // {
+    //    //     ShowElixirVulnerable(false);
+    //    // }
+    //    // else
+    //    // {
+    //    //     ShowElixirVulnerable(true);
+    //    // }
+    //}
 
     // public void ShowElixirVulnerable(bool Persist)
     // {

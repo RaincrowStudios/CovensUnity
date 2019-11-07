@@ -6,8 +6,7 @@ using System.Collections.Generic;
 
 public class IAPSilver : MonoBehaviour, IStoreListener
 {
-
-    public static IAPSilver instance { get; set; }
+    public static IAPSilver instance { get; private set; }
     private static IStoreController m_StoreController;
     private static IExtensionProvider m_StoreExtensionProvider;
         
@@ -26,8 +25,11 @@ public class IAPSilver : MonoBehaviour, IStoreListener
         instance = this;
     }
 
-    private void Start()
+    private System.Collections.IEnumerator Start()
     {
+        while (StoreManagerAPI.StoreData == null)
+            yield return null;
+
         InitializePurchasing();
     }
 

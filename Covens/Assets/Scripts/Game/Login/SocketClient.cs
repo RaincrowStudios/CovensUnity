@@ -9,7 +9,19 @@ using System.Linq;
 
 public class SocketClient : MonoBehaviour
 {
-    public static SocketClient Instance { get; set; }
+    private static SocketClient m_Instance;
+    public static SocketClient Instance
+    {
+        get
+        {
+            if (m_Instance == null)
+            {
+                m_Instance = new GameObject("SocketClient").AddComponent<SocketClient>();
+                DontDestroyOnLoad(m_Instance.gameObject);
+            }
+            return m_Instance;
+        }
+    }
     public static bool SocketPaused { get; set; }
 
     public static event System.Action<CommandResponse> OnResponseParsedEvent;
@@ -25,21 +37,6 @@ public class SocketClient : MonoBehaviour
 
     void Awake()
     {
-        if (Instance != null)
-        {
-            Destroy(this.gameObject);
-            return;
-        }
-
-        Instance = this;
-        DontDestroyOnLoad(this.gameObject);
-        Application.targetFrameRate = 30;
-        Screen.sleepTimeout = SleepTimeout.NeverSleep;
-
-#if DISABLE_LOG
-        Debug.unityLogger.logEnabled = false;
-#endif
-
         //setup the dictionary through reflection
         System.Type type = typeof(IGameEventHandler);
         List<System.Type> types = System.AppDomain.CurrentDomain.GetAssemblies()
@@ -159,7 +156,6 @@ public class SocketClient : MonoBehaviour
                 case SocketIOErrors.BadHandshakeMethod:
                 case SocketIOErrors.UnknownSid:
                 case SocketIOErrors.UnknownTransport:
-                    UnityMainThreadDispatcher.Instance().Enqueue(GameResyncHandler.ResyncGame);
                     break;
                 //default:
                 //    InitiateSocketConnection(true);
@@ -185,8 +181,6 @@ public class SocketClient : MonoBehaviour
 
     public void DisconnectFromSocket()
     {
-        Log("Disconnecting from socket");
-
         if (m_ReadFromQueueCoroutine != null)
         {
             StopCoroutine(m_ReadFromQueueCoroutine);
@@ -195,6 +189,8 @@ public class SocketClient : MonoBehaviour
 
         if (_socketManager != null)
         {
+            Log("Disconnecting from socket");
+
             if (_gameSocket != null)
             {
                 _gameSocket.Off("game.event", OnGameEvent);

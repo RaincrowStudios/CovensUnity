@@ -66,7 +66,7 @@ MonoBehaviour:
     m_TypeName: UnityEngine.UI.MaskableGraphic+CullStateChangedEvent, UnityEngine.UI,
       Version=1.0.0.0, Culture=neutral, PublicKeyToken=null
   m_FontData:
-    m_Font: {fileID: 12800000, guid: 40e15eafaab302141b543da5af4ff07a, type: 3}
+    m_Font: {fileID: 12800000, guid: 33fb44b1f717ebb44a6ecd2e81cd4d58, type: 3}
     m_FontSize: 65
     m_FontStyle: 0
     m_BestFit: 0
@@ -171,7 +171,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &224328891140488544
 RectTransform:
   m_ObjectHideFlags: 0
@@ -496,7 +496,7 @@ MonoBehaviour:
     m_TypeName: UnityEngine.UI.MaskableGraphic+CullStateChangedEvent, UnityEngine.UI,
       Version=1.0.0.0, Culture=neutral, PublicKeyToken=null
   m_FontData:
-    m_Font: {fileID: 12800000, guid: 40e15eafaab302141b543da5af4ff07a, type: 3}
+    m_Font: {fileID: 12800000, guid: 33fb44b1f717ebb44a6ecd2e81cd4d58, type: 3}
     m_FontSize: 80
     m_FontStyle: 0
     m_BestFit: 0
@@ -569,6 +569,7 @@ MonoBehaviour:
   prefix: 
   id: school_skip
   suffix: 
+  toUpper: 0
 --- !u!1 &1591650210124612
 GameObject:
   m_ObjectHideFlags: 0
@@ -635,7 +636,7 @@ MonoBehaviour:
     m_TypeName: UnityEngine.UI.MaskableGraphic+CullStateChangedEvent, UnityEngine.UI,
       Version=1.0.0.0, Culture=neutral, PublicKeyToken=null
   m_FontData:
-    m_Font: {fileID: 12800000, guid: 40e15eafaab302141b543da5af4ff07a, type: 3}
+    m_Font: {fileID: 12800000, guid: 33fb44b1f717ebb44a6ecd2e81cd4d58, type: 3}
     m_FontSize: 80
     m_FontStyle: 0
     m_BestFit: 0
@@ -716,7 +717,7 @@ MonoBehaviour:
     m_TypeName: UnityEngine.UI.MaskableGraphic+CullStateChangedEvent, UnityEngine.UI,
       Version=1.0.0.0, Culture=neutral, PublicKeyToken=null
   m_FontData:
-    m_Font: {fileID: 12800000, guid: 40e15eafaab302141b543da5af4ff07a, type: 3}
+    m_Font: {fileID: 12800000, guid: 33fb44b1f717ebb44a6ecd2e81cd4d58, type: 3}
     m_FontSize: 80
     m_FontStyle: 0
     m_BestFit: 0
@@ -789,6 +790,7 @@ MonoBehaviour:
   prefix: 
   id: school_watch
   suffix: 
+  toUpper: 0
 --- !u!1 &1967751227047498
 GameObject:
   m_ObjectHideFlags: 0
@@ -933,9 +935,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8a74749cb55b11549890b678d415dfb2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  title: {fileID: 114505931926309000}
-  desc: {fileID: 114847787381551048}
-  thumb: {fileID: 114421753549301114}
   CG: {fileID: 225451295087092406}
   m_ThumbnailButton: {fileID: 114535388305268944}
   m_WatchButton: {fileID: 114564879627168228}

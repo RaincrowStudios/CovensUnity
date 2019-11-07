@@ -91,7 +91,7 @@ public class ApparelView : MonoBehaviour
         }
     }
 
-    public void InitializeChar(List<EquippedApparel> data)
+    public Coroutine InitializeChar(List<EquippedApparel> data)
     {
         if (ApparelDict == null)
             InitApparelDict();
@@ -111,6 +111,11 @@ public class ApparelView : MonoBehaviour
                 isCenser = true;
         }
 
+        return StartCoroutine(LoadVisuals(data));
+    }
+
+    private IEnumerator LoadVisuals(List<EquippedApparel> data)
+    {
         foreach (var item in data)
         {
             equippedApparel[item.position] = item;
@@ -118,26 +123,26 @@ public class ApparelView : MonoBehaviour
             if (m_IsStyle)
             {
                 if (validStyleEquips.Contains(item.position))
-                    LoadVisuals(item);
+                    yield return StartCoroutine(LoadEquip(item));
             }
             //show everyhing equiped
             else
             {
-                LoadVisuals(item);
+                yield return StartCoroutine(LoadEquip(item));
             }
         }
     }
 
-    private void LoadVisuals(EquippedApparel data)
+    private IEnumerator LoadEquip(EquippedApparel data)
     {
         if (data == null)
-            return;
+            yield break;
 
         if (string.IsNullOrEmpty(data.id))
-            return;
+            yield break;
 
         if (string.IsNullOrEmpty(data.position))
-            return;
+            yield break;
 
         if (data.position == "style")
         {
@@ -152,7 +157,7 @@ public class ApparelView : MonoBehaviour
 
             //load the sprite
             Image img = ApparelDict["style"][0];
-            DownloadedAssets.GetSprite(assetId, img);
+            yield return DownloadedAssets.GetSprite(assetId, img);
             img.gameObject.SetActive(true);
         }
         else
@@ -170,7 +175,7 @@ public class ApparelView : MonoBehaviour
                     if (isCenser)
                         assetId = assetId.Replace("_Relaxed", "_Censer");
 
-                    DownloadedAssets.GetSprite(assetId, slots[0]);
+                    yield return DownloadedAssets.GetSprite(assetId, slots[0]);
                     slots[0].gameObject.SetActive(true);
                     slots[1].gameObject.SetActive(false);
                 }
@@ -184,8 +189,8 @@ public class ApparelView : MonoBehaviour
                         assetId[1] = isCenser ? assetId[1].Replace("_Relaxed", "_Censer") : assetId[1];
                     }
 
-                    DownloadedAssets.GetSprite(assetId[0], slots[0]);
-                    DownloadedAssets.GetSprite(assetId[1], slots[1]);
+                    yield return DownloadedAssets.GetSprite(assetId[0], slots[0]);
+                    yield return DownloadedAssets.GetSprite(assetId[1], slots[1]);
 
                     slots[0].gameObject.SetActive(true);
                     slots[1].gameObject.SetActive(true);
@@ -194,7 +199,7 @@ public class ApparelView : MonoBehaviour
             else
             {
                 string assetId = isCenser ? data.assets[0].Replace("_Relaxed", "_Censer") : data.assets[0];
-                DownloadedAssets.GetSprite(assetId, slots[0]);
+                yield return DownloadedAssets.GetSprite(assetId, slots[0]);
                 slots[0].gameObject.SetActive(true);
             }
         }
@@ -243,7 +248,7 @@ public class ApparelView : MonoBehaviour
         equippedApparel[equip.position] = equip;
         m_IsStyle = isStyle;
 
-        LoadVisuals(equip);
+        StartCoroutine(LoadEquip(equip));
         RefreshCensorEquips();
     }
 
@@ -312,6 +317,6 @@ public class ApparelView : MonoBehaviour
             return;
         
         foreach (var apparel in equippedApparel)
-            LoadVisuals(apparel.Value);
+            StartCoroutine(LoadEquip(apparel.Value));
     }
 }

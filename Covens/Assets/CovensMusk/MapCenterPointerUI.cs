@@ -32,8 +32,14 @@ public class MapCenterPointerUI : MonoBehaviour
         m_PhysicalCenter.alpha = 0;
     }
 
-    private void Start()
+    private IEnumerator Start()
     {
+        while (MapsAPI.Instance.IsInitialized == false)
+            yield return null;
+
+        while (PlayerManager.marker == null)
+            yield return null;
+
         MapsAPI.Instance.OnCameraUpdate += OnMapUpdate;
     }
 
