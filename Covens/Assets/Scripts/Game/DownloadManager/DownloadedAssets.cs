@@ -190,7 +190,7 @@ public class DownloadedAssets : MonoBehaviour
                     id = spell.glyph.ToString();
             }
 
-            if (!loadedBundles.ContainsKey(type))
+            if (!loadedBundles.ContainsKey(type) && assetBundleDirectory.ContainsKey(type))
             {
                 loadedBundles[type] = new List<AssetBundle>();
                 foreach (var item in assetBundleDirectory[type])
@@ -204,20 +204,23 @@ public class DownloadedAssets : MonoBehaviour
                 }
             }
 
-            foreach (var bundle in loadedBundles[type])
+            if (loadedBundles.ContainsKey(type))
             {
-                if (bundle.Contains(id + ".png"))
+                foreach (var bundle in loadedBundles[type])
                 {
-                    //float time = Time.unscaledTime;
-                    //Log("loading " + id + ".png");
-                    AssetBundleRequest request = bundle.LoadAssetAsync(id + ".png", typeof(Sprite));
-                    yield return request;
-                    //Log("loaded " + id + ".png in " + (Time.unscaledTime - time));
-                    var sprite = request.asset as Sprite;
-                    callback?.Invoke(sprite);
-                    
-                    failed = false;
-                    break;
+                    if (bundle.Contains(id + ".png"))
+                    {
+                        //float time = Time.unscaledTime;
+                        //Log("loading " + id + ".png");
+                        AssetBundleRequest request = bundle.LoadAssetAsync(id + ".png", typeof(Sprite));
+                        yield return request;
+                        //Log("loaded " + id + ".png in " + (Time.unscaledTime - time));
+                        var sprite = request.asset as Sprite;
+                        callback?.Invoke(sprite);
+
+                        failed = false;
+                        break;
+                    }
                 }
             }
 
