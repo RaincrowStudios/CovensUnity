@@ -29,9 +29,6 @@ public class DownloadedAssets : MonoBehaviour
 
     public static string AppVersion { get; set; }
 
-    //public static Dictionary<string, Sprite> AllSprites = new Dictionary<string, Sprite>();
-    //public static Dictionary<string, Sprite> IconSprites = new Dictionary<string, Sprite>();
-
     private static Dictionary<string, string> m_LocalizationDict = null;
     public static Dictionary<string, string> LocalizationDictionary
     {
@@ -52,8 +49,7 @@ public class DownloadedAssets : MonoBehaviour
             m_LocalizationDict = value;
         }
     }
-
-
+    
     public static Dictionary<string, SpellData> spellDictData = new Dictionary<string, SpellData>();
     public static Dictionary<string, SpiritData> spiritDict = new Dictionary<string, SpiritData>();
     public static Dictionary<string, ConditionData> conditionsDict = new Dictionary<string, ConditionData>();
@@ -111,8 +107,6 @@ public class DownloadedAssets : MonoBehaviour
             }
         }
         loadedBundles.Clear();
-        //AllSprites.Clear();
-        //IconSprites.Clear();
 
         //unload unused
         AsyncOperation unloadAssets = Resources.UnloadUnusedAssets();
@@ -146,30 +140,19 @@ public class DownloadedAssets : MonoBehaviour
             return null;
         }
 
-        //if (!isIcon && AllSprites.ContainsKey(id))
-        //{
-        //    callback?.Invoke(AllSprites[id]);
-        //    return null;
-        //}
-        //else if (isIcon && IconSprites.ContainsKey(id))
-        //{
-        //    callback?.Invoke(IconSprites[id]);
-        //    return null;
-        //}
-        //else
+        m_RequestQueue.Add(new CovensAssetRequest
         {
-            m_RequestQueue.Add(new CovensAssetRequest
-            {
-                id = id,
-                callback = callback,
-                isIcon = isIcon
-            });
+            id = id,
+            callback = callback,
+            isIcon = isIcon
+        });
 
-            if (m_LoadAssetCoroutine == null)
-                m_LoadAssetCoroutine = Instance.StartCoroutine(GetSpriteCoroutine());
+        //Log("load asset count " + m_RequestQueue.Count);
 
-            return m_LoadAssetCoroutine;
-        }
+        if (m_LoadAssetCoroutine == null)
+            m_LoadAssetCoroutine = Instance.StartCoroutine(GetSpriteCoroutine());
+
+        return m_LoadAssetCoroutine;
     }
 
     public static Coroutine GetSprite(string id, Image image, bool isIcon = false)
@@ -197,8 +180,7 @@ public class DownloadedAssets : MonoBehaviour
                 type = "apparel";
             else if (isIcon)
                 type = "icon";
-
-
+            
             if (type == "spell")
             {
                 SpellData spell = GetSpell(id);
@@ -222,24 +204,18 @@ public class DownloadedAssets : MonoBehaviour
                 }
             }
 
-            foreach (var item in loadedBundles[type])
+            foreach (var bundle in loadedBundles[type])
             {
-                if (item.Contains(id + ".png"))
+                if (bundle.Contains(id + ".png"))
                 {
                     //float time = Time.unscaledTime;
                     //Log("loading " + id + ".png");
-                    AssetBundleRequest request = item.LoadAssetAsync(id + ".png", typeof(Sprite));
+                    AssetBundleRequest request = bundle.LoadAssetAsync(id + ".png", typeof(Sprite));
                     yield return request;
                     //Log("loaded " + id + ".png in " + (Time.unscaledTime - time));
-                    var tempSp = request.asset as Sprite;
-                    callback?.Invoke(tempSp);
-
-                    //if (isIcon)
-                    //    IconSprites[tempSp.texture.name] = tempSp;
-                    //else
-                    //    AllSprites[tempSp.texture.name] = tempSp;
-
-                    //continue;
+                    var sprite = request.asset as Sprite;
+                    callback?.Invoke(sprite);
+                    
                     failed = false;
                     break;
                 }

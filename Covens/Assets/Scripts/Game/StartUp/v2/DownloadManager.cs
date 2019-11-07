@@ -150,7 +150,7 @@ public class DownloadManager : MonoBehaviour
         appVersion = assets.apple;
 #endif
 
-        DownloadedAssets.AppVersion = string.Concat(appVersion, ".", assets.version);
+        DownloadedAssets.AppVersion = string.Concat(Application.version, ".", appVersion);
 
         if (Debug.isDebugBuild)
             DownloadedAssets.AppVersion += ".DEV";
