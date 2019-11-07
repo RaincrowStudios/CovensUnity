@@ -134,6 +134,7 @@ public class MapCameraController : MonoBehaviour
         LeanTween.cancel(m_FlyButtonTweenId, true);
         LeanTween.cancel(m_ElasticTweenId);
 
+        EnableControl(true);
         AnimateZoom(1, 2f, false);
 
         //LeanTween.cancel(m_LandTweenId, true);
