@@ -17,12 +17,12 @@ public class UINearbyLocationItem : MonoBehaviour
         public float latitude;
         public double longitude;
         public int tier;
+        public bool subscribed;
 
         public double battleBeginsOn;
         public double battleFinishedOn;
         public double closeOn;
         public double openOn;
-        public bool subscribed;
         public bool isOpen;
         public bool isActive;
     }
@@ -57,6 +57,16 @@ public class UINearbyLocationItem : MonoBehaviour
     private void OnClickFlyTo()
     {
         m_OnFlyTo?.Invoke();
+        if (m_Data.isOpen)
+        {
+            Invoke("ShowPop", 5);
+        }
+    }
+
+    private void ShowPop()
+    {
+        Debug.Log("SHOW POP INFO");
+        LoadPOPManager.EnterPOP(m_Data.id);
     }
 
     private void OnDisable()

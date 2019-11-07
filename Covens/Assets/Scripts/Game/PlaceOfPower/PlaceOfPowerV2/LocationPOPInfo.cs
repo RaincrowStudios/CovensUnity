@@ -289,6 +289,12 @@ public class LocationPOPInfo : UIInfoPanel
             await Task.Delay(2200);
             m_EnterAnimation.SetActive(false);
         }
+        else
+        {
+            m_Content.text = "Place of power is already full!";
+            m_Enter.gameObject.SetActive(false);
+            m_Locked.SetActive(true);
+        }
     }
 
     private void UpdateWitchCount()
