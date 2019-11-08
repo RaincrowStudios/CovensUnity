@@ -105,9 +105,9 @@ public class ApparelView : MonoBehaviour
         //store previous equip to reenable if the player removes the Style
         previousEquips = new List<EquippedApparel>(data);
         previousEquips.RemoveAll(eqp => eqp.position == "style");
-        
+
         //find out if the player has a style or censor equiped
-        foreach(var item in data)
+        foreach (var item in data)
         {
             if (item.position == "style")
                 m_IsStyle = true;
@@ -115,17 +115,12 @@ public class ApparelView : MonoBehaviour
                 isCenser = true;
         }
 
-        foreach(var eqp in data)
-        {
-            equippedApparel[eqp.position] = eqp;
-        }
-
-        LoadEquips(data, onComplete);
+        InitEquips(data, onComplete);
     }
 
-    private void LoadEquips(List<EquippedApparel> equips, System.Action callback = null)
+    private void InitEquips(List<EquippedApparel> equips, System.Action callback = null)
     {
-        System.Action<int> onLoadAsset = (idx) => 
+        System.Action<int> onLoadAsset = (idx) =>
         {
             if (idx >= equips.Count - 1)
             {
@@ -136,10 +131,21 @@ public class ApparelView : MonoBehaviour
 
         bool canShow = false;
 
-        for(int i = 0; i < equips.Count; i++)
+        for (int i = 0; i < equips.Count; i++)
         {
             int aux = i;
             EquippedApparel data = equips[i];
+
+            //already equiped
+            //if (equippedApparel.ContainsKey(data.position) && equippedApparel[data.position].id == data.id)
+            //    continue;
+            if (ApparelDict[data.position].Count == 1 && ApparelDict[data.position][0].overrideSprite == null)
+                continue;
+            else if (ApparelDict[data.position].Count == 2 && ApparelDict[data.position][0].overrideSprite == null && ApparelDict[data.position][1].overrideSprite == null)
+                continue;
+
+            equippedApparel[data.position] = data;
+
             canShow = !m_IsStyle || validStyleEquips.Contains(data.position);
 
             if (canShow == false)
@@ -247,9 +253,6 @@ public class ApparelView : MonoBehaviour
         if (string.IsNullOrEmpty(position))
             return;
 
-        if (!equippedApparel.ContainsKey(position))
-            return;
-
         List<Image> slots = ApparelDict[position];
         foreach (Image _slot in slots)
         {
@@ -260,6 +263,10 @@ public class ApparelView : MonoBehaviour
 
     public void EquipApparel(CosmeticData data)
     {
+        //dont equip same style
+        if (data.position == "style" && equippedApparel.ContainsKey(data.position) && equippedApparel[data.position].id == data.id)
+            return;
+
         bool isStyle = false;
         if (data.position == "style")
         {
@@ -269,7 +276,7 @@ public class ApparelView : MonoBehaviour
         }
 
         UnequipConflicts(data.position);
-        
+
         EquippedApparel equip = new EquippedApparel();
         equip.id = data.id;
 
@@ -282,12 +289,12 @@ public class ApparelView : MonoBehaviour
         else if (data.apparelType == ApparelType.White)
             equip.assets = data.assets.white;
 
-        equippedApparel[equip.position] = equip;
         m_IsStyle = isStyle;
 
-        //RefreshCensorEquips();
-
-        RefreshEquips();
+        List<EquippedApparel> aux = equippedApparel.Values.ToList();
+        aux.Add(equip);
+        InitEquips(aux);
+        RefreshCensorEquips();
     }
 
     private void UnequipConflicts(string position)
@@ -301,6 +308,7 @@ public class ApparelView : MonoBehaviour
             foreach (var pair in equippedApparel)
             {
                 //dont remove base body, hand
+                //but hide it
                 if (fixedEquips.Contains(pair.Key))
                 {
                     UnloadVisuals(pair.Key);
@@ -324,7 +332,11 @@ public class ApparelView : MonoBehaviour
         }
 
         foreach (string key in toRemove)
-            UnequipApparel(key);
+        {
+            if (equippedApparel.ContainsKey(key))
+                equippedApparel.Remove(key);
+            UnloadVisuals(key);
+        }
     }
 
     public void UnequipApparel(string position)
@@ -336,19 +348,46 @@ public class ApparelView : MonoBehaviour
         if (position == "style")
         {
             m_IsStyle = false;
-            InitializeChar(previousEquips);
+            foreach (var equip in previousEquips)
+                UnequipConflicts(equip.position);
+            InitEquips(previousEquips);
         }
         else
         {
-            UnloadVisuals(position);
             equippedApparel.Remove(position);
-            //RefreshCensorEquips();
-            RefreshEquips();
+            UnloadVisuals(position);
         }
+
+        RefreshCensorEquips();
     }
 
-    private void RefreshEquips()
+    void RefreshCensorEquips()
     {
-        LoadEquips(equippedApparel.Values.ToList());
+        bool previousValue = isCenser;
+        isCenser = equippedApparel.ContainsKey("carryOnLeft") || equippedApparel.ContainsKey("carryOnRight");
+
+        if (isCenser == previousValue)
+            return;
+
+        List<EquippedApparel> equips = equippedApparel.Values.ToList();
+
+        //remove censer related assets to be reequiped
+        List<string> toRemove = new List<string>();
+        foreach(var pair in equippedApparel)
+        {
+            foreach (var assets in pair.Value.assets)
+            {
+                if (assets.Contains("_Relaxed") || assets.Contains("_Censer")) 
+                {
+                    toRemove.Add(pair.Key);
+                    break;
+                }
+            }
+        }
+
+        foreach (string key in toRemove)
+            equippedApparel.Remove(key);
+
+        InitEquips(equips);
     }
 }
