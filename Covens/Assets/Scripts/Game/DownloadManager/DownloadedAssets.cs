@@ -160,8 +160,8 @@ public class DownloadedAssets : MonoBehaviour
     {
         while (m_RequestQueue.Count > 0)
         {
-            for (int i = 0; i < 10; i++)
-                yield return null;
+            //for (int i = 0; i < 10; i++)
+            //    yield return null;
 
             bool failed = true;
             string id = m_RequestQueue[0].id;
