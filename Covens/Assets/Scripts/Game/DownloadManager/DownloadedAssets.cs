@@ -78,56 +78,50 @@ public class DownloadedAssets : MonoBehaviour
     {
         if (!UnloadingMemory)
         {
-            StartCoroutine(UnloadMemory());
-        }
-    }
+            string debug = "Memory is low. Unloading assets";
+            debug += "\n- Total system memory: " + SystemInfo.systemMemorySize;
+            debug += "\n- Total video memory: " + SystemInfo.graphicsMemorySize;
+            debug += "\n- Total Reserved memory by Unity: " + (Profiler.GetTotalReservedMemoryLong() / 1000000) + "MB";
+            debug += "\n- Allocated memory by Unity: " + (Profiler.GetTotalAllocatedMemoryLong() / 1000000) + "MB";
+            debug += "\n- Reserved but not allocated: " + (Profiler.GetTotalUnusedReservedMemoryLong() / 1000000) + "MB";
+            debug += "\n- Allocated memory for graphics driver: " + (Profiler.GetAllocatedMemoryForGraphicsDriver() / 1000000) + "MB";
+            debug += "\n- Reserved space for managed-memory: " + (Profiler.GetMonoHeapSizeLong() / 1000000) + "MB";
+            debug += "\n- Allocated managed-memory: " + (Profiler.GetMonoHeapSizeLong() / 1000000) + "MB";
+            Debug.LogError(debug);
 
-    private IEnumerator UnloadMemory()
-    {
-        string debug = "Memory is low. Unloading assets";
-        debug += "\n- Total system memory: " + SystemInfo.systemMemorySize;
-        debug += "\n- Total video memory: " + SystemInfo.graphicsMemorySize;
-        debug += "\n- Total Reserved memory by Unity: " + (Profiler.GetTotalReservedMemoryLong() / 1000000) + "MB";
-        debug += "\n- Allocated memory by Unity: " + (Profiler.GetTotalAllocatedMemoryLong() / 1000000) + "MB";
-        debug += "\n- Reserved but not allocated: " + (Profiler.GetTotalUnusedReservedMemoryLong() / 1000000) + "MB";
-        debug += "\n- Allocated memory for graphics driver: " + (Profiler.GetAllocatedMemoryForGraphicsDriver() / 1000000) + "MB";
-        debug += "\n- Reserved space for managed-memory: " + (Profiler.GetMonoHeapSizeLong() / 1000000) + "MB";
-        debug += "\n- Allocated managed-memory: " + (Profiler.GetMonoHeapSizeLong() / 1000000) + "MB";
-        Debug.LogError(debug);
+            UnloadingMemory = true;
+            OnWillUnloadAssets?.Invoke();
 
-        UnloadingMemory = true;
-        OnWillUnloadAssets?.Invoke();
-        
-        //unload assetbundles
-        foreach (var bundleList in loadedBundles.Values)
-        {
-            foreach (var bundle in bundleList)
+            //unload assetbundles
+            foreach (var bundleList in loadedBundles.Values)
             {
-                bundle.Unload(false);
+                foreach (var bundle in bundleList)
+                {
+                    bundle.Unload(false);
+                }
             }
+            loadedBundles.Clear();
+
+            //unload unused
+            AsyncOperation unloadAssets = Resources.UnloadUnusedAssets();
+            unloadAssets.allowSceneActivation = true;
+            unloadAssets.completed += (op) =>
+            {
+                //hide the UI
+                UnloadingMemory = false;
+
+                debug = "Asset unloading complete";
+                debug += "\n- Total system memory: " + SystemInfo.systemMemorySize;
+                debug += "\n- Total video memory: " + SystemInfo.graphicsMemorySize;
+                debug += "\n- Total Reserved memory by Unity: " + (Profiler.GetTotalReservedMemoryLong() / 1000000) + "MB";
+                debug += "\n- Allocated memory by Unity: " + (Profiler.GetTotalAllocatedMemoryLong() / 1000000) + "MB";
+                debug += "\n- Reserved but not allocated: " + (Profiler.GetTotalUnusedReservedMemoryLong() / 1000000) + "MB";
+                debug += "\n- Allocated memory for graphics driver: " + (Profiler.GetAllocatedMemoryForGraphicsDriver() / 1000000) + "MB";
+                debug += "\n- Reserved space for managed-memory: " + (Profiler.GetMonoHeapSizeLong() / 1000000) + "MB";
+                debug += "\n- Allocated managed-memory: " + (Profiler.GetMonoHeapSizeLong() / 1000000) + "MB";
+                Debug.Log(debug);
+            };
         }
-        loadedBundles.Clear();
-
-        //unload unused
-        AsyncOperation unloadAssets = Resources.UnloadUnusedAssets();
-        yield return unloadAssets;
-
-        yield return 0;
-        yield return new WaitForEndOfFrame();
-
-        //hide the UI
-        UnloadingMemory = false;
-
-        debug = "Asset unloading complete";
-        debug += "\n- Total system memory: " + SystemInfo.systemMemorySize;
-        debug += "\n- Total video memory: " + SystemInfo.graphicsMemorySize;
-        debug += "\n- Total Reserved memory by Unity: " + (Profiler.GetTotalReservedMemoryLong() / 1000000) + "MB";
-        debug += "\n- Allocated memory by Unity: " + (Profiler.GetTotalAllocatedMemoryLong() / 1000000) + "MB";
-        debug += "\n- Reserved but not allocated: " + (Profiler.GetTotalUnusedReservedMemoryLong() / 1000000) + "MB";
-        debug += "\n- Allocated memory for graphics driver: " + (Profiler.GetAllocatedMemoryForGraphicsDriver() / 1000000) + "MB";
-        debug += "\n- Reserved space for managed-memory: " + (Profiler.GetMonoHeapSizeLong() / 1000000) + "MB";
-        debug += "\n- Allocated managed-memory: " + (Profiler.GetMonoHeapSizeLong() / 1000000) + "MB";
-        Debug.Log(debug);
     }
 
     #region SpriteGetters
