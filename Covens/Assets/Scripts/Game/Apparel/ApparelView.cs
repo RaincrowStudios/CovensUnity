@@ -155,7 +155,7 @@ public class ApparelView : MonoBehaviour
                 Image img = ApparelDict["style"][0];
                 DownloadedAssets.GetSprite(assetId, spr =>
                 {
-                    OnLoadSprite("style", data.position, img, spr);
+                    OnLoadSprite(data.id, data.position, img, spr);
                     onLoadAsset(aux);
                 });
                 img.gameObject.SetActive(true);
