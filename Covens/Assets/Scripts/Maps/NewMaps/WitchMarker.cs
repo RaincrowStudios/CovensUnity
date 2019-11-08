@@ -104,7 +104,7 @@ public class WitchMarker : CharacterMarker
         LeanTween.cancel(m_AvatarColorTweenId);
         Sprite mannequin = male ? m_MaleMannequin : m_FemaleMannequin;
         m_AvatarRenderer.sprite = mannequin;
-        m_AvatarRenderer.color = Color.black;
+        m_AvatarRenderer.color = Color.black * m_CharacterAlphaMul;
 
         //generate sprites for avatar and icon
         AvatarSpriteUtil.Instance.GenerateFullbodySprite(male, equips, spr =>
