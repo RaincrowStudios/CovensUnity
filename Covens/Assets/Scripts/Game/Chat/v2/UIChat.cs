@@ -273,8 +273,6 @@ namespace Raincrow.Chat.UI
             {
                 unreadText.gameObject.SetActive(false);
             }
-
-            Debug.LogError(chatCategory + " >> " + unreadMessagesCount);
         }
 
         private void ClearCategoryUnreadMessages(ChatCategory chatCategory)
