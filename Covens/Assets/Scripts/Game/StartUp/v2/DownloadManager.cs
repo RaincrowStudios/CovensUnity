@@ -327,9 +327,11 @@ public class DownloadManager : MonoBehaviour
         }
         
         //download the bundles
-        string assetBaseUrl = DownloadManager.downloadUrl;
+        string assetBaseUrl = DownloadManager.downloadUrl + "assetbundles/";
         if (Application.platform == RuntimePlatform.IPhonePlayer)
-            assetBaseUrl += "appleassets/";
+            assetBaseUrl += "ios/";
+        else
+            assetBaseUrl += "android/";
 
         for (int i = 0; i < bundlesToDownload.Count; i++)
         {
