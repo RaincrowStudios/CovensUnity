@@ -42,9 +42,6 @@ public class ApparelView : MonoBehaviour
     private bool m_IsStyle;
     private List<EquippedApparel> previousEquips;
 
-    private static Coroutine m_LoadEquipsCoroutine = null;
-    private static Coroutine m_LoadVisualsCoroutine = null;
-
     private void Awake()
     {
         InitApparelDict();
@@ -119,99 +116,120 @@ public class ApparelView : MonoBehaviour
             equippedApparel[eqp.position] = eqp;
         }
 
-        m_LoadEquipsCoroutine = StartCoroutine(LoadEquips(data, onComplete));
+        LoadEquips(data, onComplete);
     }
 
-    private IEnumerator LoadEquips(List<EquippedApparel> equips, System.Action onComplete = null)
+    private void LoadEquips(List<EquippedApparel> equips, System.Action callback = null)
     {
+        System.Action<int> onLoadAsset = (idx) => 
+        {
+            if (idx >= equips.Count - 1)
+                callback?.Invoke();
+        };
+
         bool canShow = false;
-        foreach (var item in equips)
-        {
-            canShow = !m_IsStyle || validStyleEquips.Contains(item.position);
 
-            if (canShow)
+        for(int i = 0; i < equips.Count; i++)
+        {
+            int aux = i;
+            EquippedApparel data = equips[i];
+            canShow = !m_IsStyle || validStyleEquips.Contains(data.position);
+
+            if (canShow == false)
+                continue;
+            if (data == null || string.IsNullOrEmpty(data.id) || string.IsNullOrEmpty(data.position))
+                continue;
+
+            if (data.position == "style")
             {
-                while (m_LoadVisualsCoroutine != null)
-                    yield return null;
+                string assetId = "";
+                string[] races = new string[] { "A_", "E_", "O_", "A_", "E_", "O_" };
+                string race = races[PlayerDataManager.playerData.bodyType];
+                assetId = data.id.Replace("cosmetic_", "").Replace("_S_", "_S_" + race);
+                if (isCenser)
+                    assetId += "_Censer";
+                else
+                    assetId += "_Relaxed";
 
-                m_LoadVisualsCoroutine = StartCoroutine(LoadVisuals(item));
-                yield return m_LoadVisualsCoroutine;
-            }
-        }
-
-        m_LoadEquipsCoroutine = null;
-        onComplete?.Invoke();
-    }
-
-    private IEnumerator LoadVisuals(EquippedApparel data)
-    {
-        if (data == null || string.IsNullOrEmpty(data.id) || string.IsNullOrEmpty(data.position))
-        {
-            m_LoadVisualsCoroutine = null;
-            yield break;
-        }
-        
-        if (data.position == "style")
-        {
-            string assetId = "";
-            string[] races = new string[] { "A_", "E_", "O_", "A_", "E_", "O_" };
-            string race = races[PlayerDataManager.playerData.bodyType];
-            assetId = data.id.Replace("cosmetic_", "").Replace("_S_", "_S_" + race);
-            if (isCenser)
-                assetId += "_Censer";
-            else
-                assetId += "_Relaxed";
-
-            //load the sprite
-            Image img = ApparelDict["style"][0];
-            yield return DownloadedAssets.GetSprite(assetId, img);
-            img.gameObject.SetActive(true);
-        }
-        else
-        {
-            List<Image> slots = ApparelDict[data.position];
-
-            //it has a front and back slot
-            if (slots.Count == 2)
-            {
-                //only the front slot is used
-                if (data.assets.Count == 1)
+                //load the style sprite
+                Image img = ApparelDict["style"][0];
+                DownloadedAssets.GetSprite(assetId, spr =>
                 {
-                    string assetId = data.assets[0];
+                    OnLoadSprite("style", data.position, img, spr);
+                    onLoadAsset(aux);
+                });
+                img.gameObject.SetActive(true);
+            }
+            else
+            {
+                List<Image> slots = ApparelDict[data.position];
 
-                    if (isCenser)
-                        assetId = assetId.Replace("_Relaxed", "_Censer");
+                //it has a front and back slot
+                if (slots.Count == 2)
+                {
+                    //only the front slot is used
+                    if (data.assets.Count == 1)
+                    {
+                        string assetId = data.assets[0];
 
-                    yield return DownloadedAssets.GetSprite(assetId, slots[0]);
-                    slots[0].gameObject.SetActive(true);
-                    slots[1].gameObject.SetActive(false);
+                        if (isCenser)
+                            assetId = assetId.Replace("_Relaxed", "_Censer");
+
+                        DownloadedAssets.GetSprite(assetId, spr =>
+                        {
+                            OnLoadSprite(data.id, data.position, slots[0], spr);
+                            onLoadAsset(aux);
+                        });
+                        slots[0].gameObject.SetActive(true);
+                        slots[1].gameObject.SetActive(false);
+                    }
+                    //both slots are used
+                    else
+                    {
+                        string[] assetId = new string[] { data.assets[0], data.assets[1] };
+                        if (isCenser)
+                        {
+                            assetId[0] = isCenser ? assetId[0].Replace("_Relaxed", "_Censer") : assetId[0];
+                            assetId[1] = isCenser ? assetId[1].Replace("_Relaxed", "_Censer") : assetId[1];
+                        }
+
+                        DownloadedAssets.GetSprite(assetId[0], spr =>
+                        {
+                            OnLoadSprite(data.id, data.position, slots[0], spr);
+                            //onLoadAsset(aux);
+                        });
+                        DownloadedAssets.GetSprite(assetId[1], spr =>
+                        {
+                            OnLoadSprite(data.id, data.position, slots[1], spr);
+                            onLoadAsset(aux);
+                        });
+
+                        slots[0].gameObject.SetActive(true);
+                        slots[1].gameObject.SetActive(true);
+                    }
                 }
-                //both slots are used
                 else
                 {
-                    string[] assetId = new string[] { data.assets[0], data.assets[1] };
-                    if (isCenser)
+                    string assetId = isCenser ? data.assets[0].Replace("_Relaxed", "_Censer") : data.assets[0];
+                    DownloadedAssets.GetSprite(assetId, spr =>
                     {
-                        assetId[0] = isCenser ? assetId[0].Replace("_Relaxed", "_Censer") : assetId[0];
-                        assetId[1] = isCenser ? assetId[1].Replace("_Relaxed", "_Censer") : assetId[1];
-                    }
-
-                    yield return DownloadedAssets.GetSprite(assetId[0], slots[0]);
-                    yield return DownloadedAssets.GetSprite(assetId[1], slots[1]);
-
+                        OnLoadSprite(data.id, data.position, slots[0], spr);
+                        onLoadAsset(aux);
+                    });
                     slots[0].gameObject.SetActive(true);
-                    slots[1].gameObject.SetActive(true);
                 }
-            }
-            else
-            {
-                string assetId = isCenser ? data.assets[0].Replace("_Relaxed", "_Censer") : data.assets[0];
-                yield return DownloadedAssets.GetSprite(assetId, slots[0]);
-                slots[0].gameObject.SetActive(true);
             }
         }
 
-        m_LoadVisualsCoroutine = null;
+        //callback?.Invoke();
+    }
+
+    private void OnLoadSprite(string cosmetic, string position, Image image, Sprite sprite)
+    {
+        if (equippedApparel[position].id != cosmetic)
+            return;
+
+        image.overrideSprite = sprite;
     }
 
     private void UnloadVisuals(string position)
@@ -321,6 +339,6 @@ public class ApparelView : MonoBehaviour
 
     private void RefreshEquips()
     {
-        m_LoadEquipsCoroutine = StartCoroutine(LoadEquips(equippedApparel.Values.ToList()));
+        LoadEquips(equippedApparel.Values.ToList());
     }
 }
