@@ -1,9 +1,9 @@
 fileFormatVersion: 2
 guid: 49a41a07cf3aa0e4d96c059bcc6b121b
 TextureImporter:
-  fileIDToRecycleName: {}
+  internalIDToNameTable: []
   externalObjects: {}
-  serializedVersion: 7
+  serializedVersion: 10
   mipmaps:
     mipMapMode: 0
     enableMipMap: 0
@@ -84,12 +84,12 @@ TextureImporter:
     buildTarget: iPhone
     maxTextureSize: 256
     resizeAlgorithm: 0
-    textureFormat: -1
+    textureFormat: 53
     textureCompression: 1
     compressionQuality: 50
     crunchedCompression: 0
     allowsAlphaSplitting: 0
-    overridden: 0
+    overridden: 1
     androidETC2FallbackOverride: 0
   - serializedVersion: 2
     buildTarget: Android
@@ -104,7 +104,7 @@ TextureImporter:
     androidETC2FallbackOverride: 0
   - serializedVersion: 2
     buildTarget: WebGL
-    maxTextureSize: 2048
+    maxTextureSize: 256
     resizeAlgorithm: 0
     textureFormat: -1
     textureCompression: 1
@@ -120,10 +120,12 @@ TextureImporter:
     physicsShape: []
     bones: []
     spriteID: a03b762b496217345a26293ba4460dad
+    internalID: 0
     vertices: []
     indices: 
     edges: []
     weights: []
+    secondaryTextures: []
   spritePackingTag: 
   pSDRemoveMatte: 0
   pSDShowRemoveMatteOption: 0
