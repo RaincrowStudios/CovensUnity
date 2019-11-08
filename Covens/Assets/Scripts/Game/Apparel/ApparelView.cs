@@ -233,6 +233,9 @@ public class ApparelView : MonoBehaviour
 
     private void OnLoadSprite(string cosmetic, string position, Image image, Sprite sprite)
     {
+        if (equippedApparel[position] == null)
+            return;
+
         if (equippedApparel[position].id != cosmetic)
             return;
 
