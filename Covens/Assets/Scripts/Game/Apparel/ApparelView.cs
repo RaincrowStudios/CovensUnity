@@ -7,6 +7,8 @@ using System.Linq;
 
 public class ApparelView : MonoBehaviour
 {
+    [SerializeField] private Image mannequin;
+    [Space]
     [SerializeField] private Image baseBody;
     [SerializeField] private Image baseHand;
     [SerializeField] private Image head;
@@ -86,7 +88,7 @@ public class ApparelView : MonoBehaviour
             {
                 item.gameObject.SetActive(false);
                 item.overrideSprite = null;
-                item.sprite = null;
+                //item.sprite = null;
             }
         }
     }
@@ -95,6 +97,8 @@ public class ApparelView : MonoBehaviour
     {
         if (ApparelDict == null)
             InitApparelDict();
+
+        mannequin.gameObject.SetActive(true);
 
         ResetApparel();
 
@@ -124,7 +128,10 @@ public class ApparelView : MonoBehaviour
         System.Action<int> onLoadAsset = (idx) => 
         {
             if (idx >= equips.Count - 1)
+            {
                 callback?.Invoke();
+                mannequin.gameObject.SetActive(false);
+            }
         };
 
         bool canShow = false;

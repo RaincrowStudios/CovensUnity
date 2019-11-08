@@ -76,7 +76,7 @@ SpriteAtlas:
     - {fileID: 2800000, guid: 3e59896aa4d35d544ad535a0d3762954, type: 3}
     - {fileID: 2800000, guid: 82ce0374242ea7148931632aa8dbd4b2, type: 3}
     - {fileID: 2800000, guid: 6ab346d49e0385c4585b4443d45ddd66, type: 3}
-    totalSpriteSurfaceArea: 770768
+    totalSpriteSurfaceArea: 705232
     bindAsDefault: 1
   m_MasterAtlas: {fileID: 0}
   m_PackedSprites:
@@ -91,7 +91,6 @@ SpriteAtlas:
   - {fileID: 21300000, guid: 0eafca5435024914dac4238c31bf13bd, type: 3}
   - {fileID: 21300000, guid: 82ce0374242ea7148931632aa8dbd4b2, type: 3}
   - {fileID: 21300000, guid: 6ab346d49e0385c4585b4443d45ddd66, type: 3}
-  - {fileID: 21300000, guid: 265f5ae47347df346846fa2b49c93b11, type: 3}
   - {fileID: 21300000, guid: c9c97625760bc7c43987d95db1a32c38, type: 3}
   - {fileID: 21300000, guid: 4959e216b30a242418188fe31ecda566, type: 3}
   - {fileID: 21300000, guid: c6673296d2bb24247b2580fc42396d06, type: 3}
@@ -102,10 +101,11 @@ SpriteAtlas:
   - {fileID: 21300000, guid: 3e59896aa4d35d544ad535a0d3762954, type: 3}
   - {fileID: 21300000, guid: 5c79a5eadd0431b4c82692543bd37a70, type: 3}
   - {fileID: 21300000, guid: 9281945b6e52498418f3b077d9230e7a, type: 3}
+  - {fileID: 21300000, guid: ad18d58bf56f9ba4c9689a0eb048ae1c, type: 3}
   - {fileID: 21300000, guid: d16edffbc1e83fe4a869651334ae981b, type: 3}
+  - {fileID: 21300000, guid: 87384e0c611a7214981fd2c0681fc3a7, type: 3}
   - {fileID: 21300000, guid: 5ed8eebc38cb0a546bae09db64637c44, type: 3}
   - {fileID: 21300000, guid: 972ec3cce4306914c981d8e40b871f4c, type: 3}
-  - {fileID: 21300000, guid: cd810aed3563a4743a28b741d0b4671b, type: 3}
   - {fileID: 21300000, guid: 8e5544fdcc05a324e9a7849ea429aa56, type: 3}
   - {fileID: 21300000, guid: 0bce03ded24419149a3826774d0adb95, type: 3}
   - {fileID: 21300000, guid: 8762c9fe0ef49c44391c5fbbc58266b9, type: 3}
@@ -122,7 +122,6 @@ SpriteAtlas:
   - Familiar
   - Trickster
   - GreaterSummoning
-  - star-3-quad
   - Places of Power Crests-LIGHT_simple_ALPHA
   - Guardian
   - Protection
@@ -133,10 +132,11 @@ SpriteAtlas:
   - Harvester
   - Circle
   - Arena emblem
+  - mannequin_female
   - Herb
+  - mannequin_male
   - Warrior
   - BasicPortalRune
-  - ring-energy-sample
   - EnergyMarkerIcon
   - Crafting
   - Icon_Shield

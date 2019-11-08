@@ -376,6 +376,8 @@ MonoBehaviour:
   m_EnergyRingEmpty: {fileID: 176596696117358692}
   m_DisplayName: {fileID: 114174510990242188}
   m_Level: {fileID: 114955874805477328}
+  m_MaleMannequin: {fileID: 21300000, guid: 87384e0c611a7214981fd2c0681fc3a7, type: 3}
+  m_FemaleMannequin: {fileID: 21300000, guid: ad18d58bf56f9ba4c9689a0eb048ae1c, type: 3}
 --- !u!1 &1357364774846178
 GameObject:
   m_ObjectHideFlags: 0

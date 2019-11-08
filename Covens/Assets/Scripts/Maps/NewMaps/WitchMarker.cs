@@ -6,7 +6,11 @@ using System.Collections.Generic;
 using UnityEngine.UI;
 
 public class WitchMarker : CharacterMarker
-{    
+{
+    [Header("Witch Marker")]
+    [SerializeField] private Sprite m_MaleMannequin;
+    [SerializeField] private Sprite m_FemaleMannequin;
+
     public WitchToken witchToken { get => Token as WitchToken; }
 
     public override string Name => witchToken.displayName;
@@ -14,6 +18,8 @@ public class WitchMarker : CharacterMarker
     private Transform m_DeathIcon;
     private Transform m_ImmunityIcon;
     private Transform m_ChannelingFX;
+
+    private int m_AvatarColorTweenId;
     
     public void GetAvatar(System.Action<Sprite> callback)
     {
@@ -95,16 +101,32 @@ public class WitchMarker : CharacterMarker
 
     public void SetupAvatar(bool male, List<EquippedApparel> equips, System.Action<Sprite> callback = null)
     {
+        LeanTween.cancel(m_AvatarColorTweenId);
+        Sprite mannequin = male ? m_MaleMannequin : m_FemaleMannequin;
+        m_AvatarRenderer.sprite = mannequin;
+        m_AvatarRenderer.color = Color.black;
+
         //generate sprites for avatar and icon
         AvatarSpriteUtil.Instance.GenerateFullbodySprite(male, equips, spr =>
         {
             if (m_AvatarRenderer != null)
             {
-                if (m_AvatarRenderer.sprite != null && m_AvatarRenderer.sprite.texture != null)
+                if (m_AvatarRenderer.sprite != mannequin && m_AvatarRenderer.sprite != null && m_AvatarRenderer.sprite.texture != null)
                     Destroy(m_AvatarRenderer.sprite.texture);
 
                 m_AvatarRenderer.transform.localPosition = Vector3.zero;
                 m_AvatarRenderer.sprite = spr;
+
+                Color aux;
+                m_AvatarColorTweenId = LeanTween.value(0, 1, 1f)
+                    //.setEaseOutCubic()
+                    .setOnUpdate((float t) => 
+                    {
+                        aux = Color.Lerp(Color.black, Color.white, t);
+                        aux.a = m_CharacterAlphaMul;
+                        m_AvatarRenderer.color = aux;
+                    })
+                    .uniqueId;
             }
 
             callback?.Invoke(spr);
@@ -141,7 +163,11 @@ public class WitchMarker : CharacterMarker
 
     public override void OnDespawn()
     {
-        if (m_AvatarRenderer.sprite != null)
+        LeanTween.cancel(m_AvatarColorTweenId);
+        
+        if (m_AvatarRenderer.sprite != null && 
+            m_AvatarRenderer.sprite != m_MaleMannequin && 
+            m_AvatarRenderer.sprite != m_FemaleMannequin)
             Destroy(m_AvatarRenderer.sprite.texture);
 
         if (m_IconRenderer.sprite != null)
