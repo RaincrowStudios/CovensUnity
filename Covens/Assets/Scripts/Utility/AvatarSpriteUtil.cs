@@ -157,7 +157,7 @@ public class AvatarSpriteUtil : MonoBehaviour
         characterView.gameObject.SetActive(true);
 
         bool _ready = false;
-        characterView.InitializeChar(properties.equips, () => _ready = true);
+        characterView.InitCharacter(properties.equips, true, () => _ready = true);
 
         while (!_ready)
             yield return null;
@@ -248,7 +248,7 @@ public class AvatarSpriteUtil : MonoBehaviour
         //reset character to initial state
         root.transform.position = prevRootPos;
         root.gameObject.SetActive(prevRootState);
-        //characterView.ResetApparel();
+        characterView.ResetApparelView();
         characterView.gameObject.SetActive(prevState);
         
         if( m_Schedule.Count > 0)

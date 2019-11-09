@@ -47,7 +47,7 @@ public class PlayerPortraitUtil : MonoBehaviour
         root.transform.position = new Vector3(-1000, 0, 0);
         root.gameObject.SetActive(true);
         characterView.gameObject.SetActive(true);
-        characterView.InitializeChar(PlayerDataManager.playerData.equipped);
+        characterView.InitCharacter(PlayerDataManager.playerData.equipped);
         m_Camera.gameObject.SetActive(true);
 
         //generate the texture and sprite
