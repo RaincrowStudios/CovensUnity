@@ -104,7 +104,7 @@ public class WitchMarker : CharacterMarker
         LeanTween.cancel(m_AvatarColorTweenId);
         Sprite mannequin = male ? m_MaleMannequin : m_FemaleMannequin;
         m_AvatarRenderer.sprite = mannequin;
-        m_AvatarRenderer.color = Color.black * m_CharacterAlphaMul;
+        m_AvatarRenderer.color = new Color(0, 0, 0, m_AvatarRenderer.color.a);
 
         //generate sprites for avatar and icon
         AvatarSpriteUtil.Instance.GenerateFullbodySprite(male, equips, spr =>
@@ -122,9 +122,7 @@ public class WitchMarker : CharacterMarker
                     //.setEaseOutCubic()
                     .setOnUpdate((float t) => 
                     {
-                        aux = Color.Lerp(Color.black, Color.white, t);
-                        aux.a = m_CharacterAlphaMul;
-                        m_AvatarRenderer.color = aux;
+                        m_AvatarRenderer.color = new Color(t, t, t, m_AvatarRenderer.color.a);
                     })
                     .uniqueId;
             }
