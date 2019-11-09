@@ -103,7 +103,7 @@ public class UIStorePurchaseCosmetic : UIStorePurchase
         }
         else
         {
-            apparel.InitCharacter(PlayerDataManager.playerData.equipped);
+            apparel.UnequipApparel(m_Cosmetic.position);
             m_PreviewIndex = -1;
         }
     }
