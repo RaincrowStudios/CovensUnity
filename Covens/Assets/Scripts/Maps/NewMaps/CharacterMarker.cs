@@ -50,8 +50,8 @@ public abstract class CharacterMarker : MuskMarker
         UpdateEnergy();
         IsShowingAvatar = false;
         IsShowingIcon = false;
-        m_IconRenderer.sprite = null;
-        m_AvatarRenderer.sprite = null;
+        //m_IconRenderer.sprite = null;
+        //m_AvatarRenderer.sprite = null;
         
         if (character.effects != null)
         {
