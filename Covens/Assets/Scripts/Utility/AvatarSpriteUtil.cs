@@ -51,11 +51,6 @@ public class AvatarSpriteUtil : MonoBehaviour
 
         Instance = this;
 
-        //if (m_PortraitImage == null)
-        //    m_PortraitImage = m_PortraitMask.GetComponent<Image>();
-
-        //m_PortraitMask.enabled = false;
-        //m_PortraitImage.enabled = false;
         m_PortraitFrame.enabled = false;
         m_PortraitBackground.enabled = false;
         m_PortraitFrame_Wardrobe.enabled = false;
@@ -169,8 +164,6 @@ public class AvatarSpriteUtil : MonoBehaviour
                                    
             if (properties.types[i] == Type.Portrait)
             {
-                //m_PortraitImage.enabled = true;
-                //m_PortraitMask.enabled = true;
                 m_PortraitFrame.enabled = true;
                 m_PortraitBackground.enabled = true;
 
@@ -178,8 +171,6 @@ public class AvatarSpriteUtil : MonoBehaviour
             }
             else if (properties.types[i] == Type.WardrobePortrait)
             {
-                //m_PortraitImage.enabled = true;
-                //m_PortraitMask.enabled = true;
                 m_PortraitFrame_Wardrobe.enabled = true;
 
                 cam = m_PortraitCamera_Wardrobe;
@@ -232,15 +223,11 @@ public class AvatarSpriteUtil : MonoBehaviour
 
             if (properties.types[i] == Type.Portrait)
             {
-                //m_PortraitImage.enabled = false;
-                //m_PortraitMask.enabled = false;
                 m_PortraitFrame.enabled = false;
                 m_PortraitBackground.enabled = false;
             }
             else if (properties.types[i] == Type.WardrobePortrait)
             {
-                //m_PortraitImage.enabled = false;
-                //m_PortraitMask.enabled = false;
                 m_PortraitFrame_Wardrobe.enabled = false;
             }
         }
