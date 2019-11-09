@@ -180,8 +180,8 @@ public class ApparelView : MonoBehaviour
         m_IsStyle = isStyle;
         if (m_IsCenser == false && (data.position == "carryOnLeft" || data.position == "carryOnRight"))
         {
-            RefreshCensorEquips();
             m_IsCenser = true;
+            RefreshCensorEquips();
         }
 
         //load the new visuals
@@ -202,9 +202,9 @@ public class ApparelView : MonoBehaviour
         {
             if (m_IsCenser)
             {
+                m_IsCenser = false;
                 RefreshCensorEquips();
             }
-            m_IsCenser = false;
         }
 
         //update style state
