@@ -159,7 +159,10 @@ public class ApparelView : MonoBehaviour
 
         //unequip them
         foreach (var position in conflicts)
-            UnequipApparel(position);
+        {
+            if (position != data.position)
+                UnequipApparel(position);
+        }
 
         //create the apparel object
         EquippedApparel equip = new EquippedApparel();
