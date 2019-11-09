@@ -92,4 +92,7 @@ EditorBuildSettings:
   - enabled: 1
     path: Assets/Scenes/Help.unity
     guid: af48ef28d9db393479f48c432d9c73a7
+  - enabled: 1
+    path: Assets/Scenes/TeamPlayerView.unity
+    guid: 8c696e7df36fe894daa582265489199a
   m_configObjects: {}

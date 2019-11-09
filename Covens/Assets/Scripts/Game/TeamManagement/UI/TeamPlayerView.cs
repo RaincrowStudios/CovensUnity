@@ -61,6 +61,8 @@ public class TeamPlayerView : MonoBehaviour
 
     void Awake()
     {
+        m_Instance = this;
+
         btnBack.onClick.AddListener(OnClickClose);
         flyToPlayerBtn.onClick.AddListener(FlyToPlayer);
         
