@@ -1414,6 +1414,8 @@ MonoBehaviour:
   m_RoofMaterial: {fileID: 2100000, guid: ddf7d88eed74b6643ad102f8997ca03b, type: 2}
   m_WaterMaterial: {fileID: 2100000, guid: 313d2f60b6e1d024fab719af4d6c88d3, type: 2}
   m_SegmentMaterial: {fileID: 2100000, guid: 220d808c33f95e542859c5aaa7fc34f2, type: 2}
+  m_SegmentBorderMaterial: {fileID: 2100000, guid: 6bb484e1fd800134e8d6a34973108891,
+    type: 2}
   m_MinCamDistance: -800
   m_MaxCamDistance: -13959870
   refreshMap: 0

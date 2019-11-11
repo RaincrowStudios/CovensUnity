@@ -165,7 +165,11 @@ public class DownloadedAssets : MonoBehaviour
 
     public static Coroutine GetSprite(string id, Image image, bool isIcon = false)
     {
-        return GetSprite(id, spr => image.overrideSprite = spr, isIcon);
+        return GetSprite(id, spr =>
+        {
+            if (image)
+                image.overrideSprite = spr;
+        }, isIcon);
     }
 
     #endregion

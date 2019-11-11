@@ -24,6 +24,7 @@ public class CovensMuskMap : MonoBehaviour
     [SerializeField] private Material m_RoofMaterial;
     [SerializeField] private Material m_WaterMaterial;
     [SerializeField] private Material m_SegmentMaterial;
+    [SerializeField] private Material m_SegmentBorderMaterial;
     [SerializeField] private GameObjectOptions m_MapStyle;
 
     //musk properties
@@ -116,7 +117,7 @@ public class CovensMuskMap : MonoBehaviour
             }.Build(),
             ModeledStructureStyle = new ModeledStructureStyle.Builder
             {
-                BuildingMaterial = new Material(m_WallMaterial),
+                Material = new Material(m_WallMaterial),
             }.Build(),
             RegionStyle = new RegionStyle.Builder
             {
@@ -135,7 +136,8 @@ public class CovensMuskMap : MonoBehaviour
             SegmentStyle = new SegmentStyle.Builder
             {
                 Material = new Material(m_SegmentMaterial),
-                Width = 5
+                BorderMaterial = new Material(m_SegmentBorderMaterial),
+                Width = 5,
             }.Build(),
         };
 
@@ -245,6 +247,7 @@ public class CovensMuskMap : MonoBehaviour
             //update segment width
             m_MapStyle.SegmentStyle = new SegmentStyle.Builder
             {
+                BorderMaterial = m_MapsService.ZoomLevel == 17 ? m_MapStyle.SegmentStyle.BorderMaterial : null,
                 Material = m_MapStyle.SegmentStyle.Material,
                 Width = 10.0f * m_CamDat.segmentWidth,
             }.Build();
