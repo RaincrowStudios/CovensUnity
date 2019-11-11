@@ -165,18 +165,28 @@ public class UIStorePurchase : MonoBehaviour
     {
         bool hasSilver = PlayerDataManager.playerData.silver >= m_Item.silver;
         if (hasSilver == false)
+        {
+            UIGlobalPopup.ShowError(null, LocalizeLookUp.GetText("store_not_enough_silver"));
             return;
+        }
 
-        LoadingOverlay.Show();
-        StoreManagerAPI.Purchase(
-            m_Item.id,
-            m_ItemType,
-            "silver",
-            (error) =>
+        UIGlobalPopup.ShowPopUp(
+            () =>
             {
-                m_OnPurchase?.Invoke(error);
-                LoadingOverlay.Hide();
-            }
+                LoadingOverlay.Show();
+                StoreManagerAPI.Purchase(
+                    m_Item.id,
+                    m_ItemType,
+                    "silver",
+                    (error) =>
+                    {
+                        m_OnPurchase?.Invoke(error);
+                        LoadingOverlay.Hide();
+                    }
+                );
+            },
+            () => { },
+            m_Title.text + "\n" + LocalizeLookUp.GetText("store_confirm_upper")
         );
     }
 
@@ -184,18 +194,28 @@ public class UIStorePurchase : MonoBehaviour
     {
         bool hasGold = PlayerDataManager.playerData.gold >= m_Item.gold;
         if (hasGold == false)
+        {
+            UIGlobalPopup.ShowError(null, LocalizeLookUp.GetText("store_not_enough_gold"));
             return;
+        }
 
-        LoadingOverlay.Show();
-        StoreManagerAPI.Purchase(
-            m_Item.id,
-            m_ItemType,
-            "gold",
-            (error) =>
+        UIGlobalPopup.ShowPopUp(
+            () =>
             {
-                m_OnPurchase?.Invoke(error);
-                LoadingOverlay.Hide();
-            }
+                LoadingOverlay.Show();
+                StoreManagerAPI.Purchase(
+                    m_Item.id,
+                    m_ItemType,
+                    "gold",
+                    (error) =>
+                    {
+                        m_OnPurchase?.Invoke(error);
+                        LoadingOverlay.Hide();
+                    }
+                );
+            },
+            () => { },
+            m_Title.text + "\n" + LocalizeLookUp.GetText("store_confirm_upper")
         );
     }
 }

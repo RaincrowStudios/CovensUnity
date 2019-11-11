@@ -162,30 +162,49 @@ public class UIStoreStylesWindow : MonoBehaviour
 
     private void Purchase(StoreItem item, string currency)
     {
+        if (currency == "silver" && PlayerDataManager.playerData.silver < item.silver)
+        {
+            UIGlobalPopup.ShowError(null, LocalizeLookUp.GetText("store_not_enough_silver"));
+            return;
+        }
+
+        if (currency == "gold" && PlayerDataManager.playerData.gold < item.gold)
+        {
+            UIGlobalPopup.ShowError(null, LocalizeLookUp.GetText("store_not_enough_gold"));
+            return;
+        }
+
         CosmeticData cosmetic = DownloadedAssets.GetCosmetic(item.id);
 
-        LoadingOverlay.Show();
-        StoreManagerAPI.Purchase(
-            item.id,
-            StoreManagerAPI.TYPE_COSMETIC,
-            currency,
-            (error) =>
+        UIGlobalPopup.ShowPopUp(
+            () =>
             {
-                if (string.IsNullOrEmpty(error))
-                {
-                    DownloadedAssets.GetSprite(cosmetic.iconId, spr =>
+                LoadingOverlay.Show();
+                StoreManagerAPI.Purchase(
+                    item.id,
+                    StoreManagerAPI.TYPE_COSMETIC,
+                    currency,
+                    (error) =>
                     {
-                        UIStorePurchaseSuccess.Show(m_Title.text, "", spr, () => SetupStyle(item));
-                        LoadingOverlay.Hide();
-                    },
-                    true);
-                }
-                else
-                {
-                    UIGlobalPopup.ShowError(null, APIManager.ParseError(error));
-                    LoadingOverlay.Hide();
-                }
-            }
+                        if (string.IsNullOrEmpty(error))
+                        {
+                            DownloadedAssets.GetSprite(cosmetic.iconId, spr =>
+                            {
+                                UIStorePurchaseSuccess.Show(m_Title.text, "", spr, () => SetupStyle(item));
+                                LoadingOverlay.Hide();
+                            },
+                            true);
+                        }
+                        else
+                        {
+                            UIGlobalPopup.ShowError(null, APIManager.ParseError(error));
+                            LoadingOverlay.Hide();
+                        }
+                    }
+                );
+            },
+            () => { },
+            m_Title.text + "\n" + LocalizeLookUp.GetText("store_confirm_upper")
         );
     }
 }
