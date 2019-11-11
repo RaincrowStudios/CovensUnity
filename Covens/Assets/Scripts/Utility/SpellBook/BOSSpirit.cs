@@ -12,9 +12,9 @@ public class BOSSpirit : BOSBase
     [SerializeField] private GameObject selectZone;
     [SerializeField] private GameObject header;
 
-	public CanvasGroup ImageCG;
-	public CanvasGroup Image1CG;
-	public CanvasGroup Image2CG;
+    public CanvasGroup ImageCG;
+    public CanvasGroup Image1CG;
+    public CanvasGroup Image2CG;
 
     [SerializeField] private TextMeshProUGUI deckButton;
     [SerializeField] private TextMeshProUGUI portalsButton;
@@ -37,7 +37,7 @@ public class BOSSpirit : BOSBase
 
     void Start()
     {
-		
+
         CG = GetComponent<CanvasGroup>();
         CG.alpha = 0;
         deckButton.GetComponent<Button>().onClick.AddListener(ShowSpiritDeck);
@@ -62,9 +62,9 @@ public class BOSSpirit : BOSBase
 
     public void ShowSelectedZone()
     {
-		Image1CG.alpha = 0f;
-		ImageCG.alpha = 0f;
-		Image2CG.alpha = 0f;
+        Image1CG.alpha = 0f;
+        ImageCG.alpha = 0f;
+        Image2CG.alpha = 0f;
         header.SetActive(false);
         DestroyPrevious(currentObject);
         currentObject = CreateScreen(selectZone);
@@ -100,39 +100,50 @@ public class BOSSpirit : BOSBase
         deckButton.color = spiritsButton.color = portalsButton.color = new Color(0, 0, 0, .55f);
         if (index == 0)
         {
-			Fade (deckButton);
+            Fade(deckButton);
             //deckButton.fontStyle = FontStyles.Underline;
             deckButton.color = new Color(0, 0, 0, 1);
         }
         else if (index == 1)
         {
-			Fade (spiritsButton);
-           // spiritsButton.fontStyle = FontStyles.Underline;
+            Fade(spiritsButton);
+            // spiritsButton.fontStyle = FontStyles.Underline;
             spiritsButton.color = new Color(0, 0, 0, 1);
         }
         else
         {
-			Fade (portalsButton);
+            Fade(portalsButton);
             //portalsButton.fontStyle = FontStyles.Underline;
             portalsButton.color = new Color(0, 0, 0, 1);
         }
     }
-	void Fade(TextMeshProUGUI button) {
-		if (button.Equals(deckButton)) {
-			LeanTween.alphaCanvas (ImageCG, 1f, 0.4f);
-			LeanTween.alphaCanvas (Image1CG, 0f, 0.4f);
-			LeanTween.alphaCanvas (Image2CG, 0f, 0.4f);
-			Debug.Log ("deckButton");
-		} else if (button.Equals(spiritsButton)) {
-			LeanTween.alphaCanvas (ImageCG, 0f, 0.4f);
-			LeanTween.alphaCanvas (Image1CG, 1f, 0.4f);
-			LeanTween.alphaCanvas (Image2CG, 0f, 0.4f);
-			Debug.Log ("SpiritsButton");
-		} else {
-			LeanTween.alphaCanvas (ImageCG, 0f, 0.4f);
-			LeanTween.alphaCanvas (Image1CG, 0f, 0.4f);
-			LeanTween.alphaCanvas (Image2CG, 1f, 0.4f);
-			Debug.Log ("PortalsButton");
-		}
-	}
+    void Fade(TextMeshProUGUI button)
+    {
+        if (button.Equals(deckButton))
+        {
+            LeanTween.alphaCanvas(ImageCG, 1f, 0.4f);
+            LeanTween.alphaCanvas(Image1CG, 0f, 0.4f);
+            LeanTween.alphaCanvas(Image2CG, 0f, 0.4f);
+            Debug.Log("deckButton");
+        }
+        else if (button.Equals(spiritsButton))
+        {
+            LeanTween.alphaCanvas(ImageCG, 0f, 0.4f);
+            LeanTween.alphaCanvas(Image1CG, 1f, 0.4f);
+            LeanTween.alphaCanvas(Image2CG, 0f, 0.4f);
+            Debug.Log("SpiritsButton");
+        }
+        else
+        {
+            LeanTween.alphaCanvas(ImageCG, 0f, 0.4f);
+            LeanTween.alphaCanvas(Image1CG, 0f, 0.4f);
+            LeanTween.alphaCanvas(Image2CG, 1f, 0.4f);
+            Debug.Log("PortalsButton");
+        }
+    }
+
+    private void OnDestroy()
+    {
+        BOSController.Instance.CloseDefault();
+    }
 }
