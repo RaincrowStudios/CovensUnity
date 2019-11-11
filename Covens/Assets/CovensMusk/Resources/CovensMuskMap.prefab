@@ -608,7 +608,6 @@ MonoBehaviour:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
-  m_Debug_TargetZoom: 1
 --- !u!114 &114251691747433052
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1028,7 +1027,7 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1362497958356494}
-  m_Enabled: 0
+  m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 82104385c1731a14f915290dbf7d53df, type: 3}
   m_Name: 

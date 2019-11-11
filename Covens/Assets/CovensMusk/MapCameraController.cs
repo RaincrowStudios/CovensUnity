@@ -134,64 +134,61 @@ public class MapCameraController : MonoBehaviour
         LeanTween.cancel(m_FlyButtonTweenId, true);
         LeanTween.cancel(m_ElasticTweenId);
 
-        EnableControl(true);
-        AnimateZoom(1, 2f, false);
+        LeanTween.cancel(m_LandTweenId, true);
+        LeanTween.cancel(m_LandFxTweenId, true);
 
-        //LeanTween.cancel(m_LandTweenId, true);
-        //LeanTween.cancel(m_LandFxTweenId, true);
+        EnableControl(false);
+        float _LuminosityAmount_Start = 0;
+        float _LuminosityAmount_End = 0.4f;
+        float cameraDistance_Start = m_Camera.transform.localPosition.z;
+        float cameraDistance_End = -800;
+        //float cameraAngle_Start = m_AnglePivot.localEulerAngles.x;
+        //float cameraAngle_End = m_AnglePivot.localEulerAngles.x;
+        float rotation_Start = m_CenterPoint.localEulerAngles.y;
+        float rotation_End = m_CameraRot;
+        float normZoom_Start = m_MuskMapWrapper.normalizedZoom;
+        float normZoom_End = 1f;
 
-        //EnableControl(false);
-        //float _LuminosityAmount_Start = 0;
-        //float _LuminosityAmount_End = 0.4f;
-        //float cameraDistance_Start = m_Camera.transform.localPosition.z;
-        //float cameraDistance_End = -800;
-        ////float cameraAngle_Start = m_AnglePivot.localEulerAngles.x;
-        ////float cameraAngle_End = m_AnglePivot.localEulerAngles.x;
-        //float rotation_Start = m_CenterPoint.localEulerAngles.y;
-        //float rotation_End = m_CameraRot;
-        //float normZoom_Start = m_MuskMapWrapper.normalizedZoom;
-        //float normZoom_End = 1f;
+        System.Action<float> fxTween = t =>
+        {
+            material.SetFloat("_LuminosityAmount", Mathf.Lerp(_LuminosityAmount_Start, _LuminosityAmount_End, t));
+            material.SetFloat("_VRadius", Mathf.Lerp(m_MinVig, m_MaxVig, t));
+            material.SetFloat("_VSoft", Mathf.Lerp(m_MinVSoft, m_MaxVSoft, t));
+        };
 
-        //System.Action<float> fxTween = t =>
-        //{
-        //    material.SetFloat("_LuminosityAmount", Mathf.Lerp(_LuminosityAmount_Start, _LuminosityAmount_End, t));
-        //    material.SetFloat("_VRadius", Mathf.Lerp(m_MinVig, m_MaxVig, t));
-        //    material.SetFloat("_VSoft", Mathf.Lerp(m_MinVSoft, m_MaxVSoft, t));
-        //};
+        m_LandFxTweenId = LeanTween.value(0, 1, m_FXTimeIn)
+            .setEase(m_TweenType)
+            .setOnUpdate(fxTween)
+            .setOnComplete(() =>
+            {
+                m_LandFxTweenId = LeanTween.value(1, 0, m_FXTimeOut)
+                .setEase(m_TweenType)
+                .setOnUpdate(fxTween)
+                .uniqueId;
+            })
+            .uniqueId;
 
-        //m_LandFxTweenId = LeanTween.value(0, 1, m_FXTimeIn)
-        //    .setEase(m_TweenType)
-        //    .setOnUpdate(fxTween)
-        //    .setOnComplete(() =>
-        //    {
-        //        m_LandFxTweenId = LeanTween.value(1, 0, m_FXTimeOut)
-        //        .setEase(m_TweenType)
-        //        .setOnUpdate(fxTween)
-        //        .uniqueId;
-        //    })
-        //    .uniqueId;
+        m_LandTweenId = LeanTween.value(0, 1, m_TransitionTime)
+            .setEase(m_TweenType)
+            .setOnUpdate((float t) =>
+            {
+                m_Camera.transform.localPosition = new Vector3(0, 0, Mathf.Lerp(cameraDistance_Start, cameraDistance_End, t));
 
-        //m_LandTweenId = LeanTween.value(0, 1, m_TransitionTime)
-        //    .setEase(m_TweenType)
-        //    .setOnUpdate((float t) =>
-        //    {
-        //        m_Camera.transform.localPosition = new Vector3(0, 0, Mathf.Lerp(cameraDistance_Start, cameraDistance_End, t));
+                m_CenterPoint.localEulerAngles = new Vector3(0, Mathf.Lerp(rotation_Start, rotation_End, t), 0);
+                m_CurrentTwist = m_TargetTwist = m_CenterPoint.localEulerAngles.y;
 
-        //        m_CenterPoint.localEulerAngles = new Vector3(0, Mathf.Lerp(rotation_Start, rotation_End, t), 0);
-        //        m_CurrentTwist = m_TargetTwist = m_CenterPoint.localEulerAngles.y;
+                m_TargetZoom = Mathf.Lerp(normZoom_Start, normZoom_End, t);
+                m_MuskMapWrapper.SetZoom(m_TargetZoom);
 
-        //        m_TargetZoom = Mathf.Lerp(normZoom_Start, normZoom_End, t);
-        //        m_MuskMapWrapper.SetZoom(m_TargetZoom);
-
-        //        onChangeRotation?.Invoke();
-        //        onChangeZoom?.Invoke();
-        //        onUpdate?.Invoke(false, true, true);
-        //    })
-        //    .setOnComplete(() =>
-        //    {
-        //        EnableControl(true);
-        //    })
-        //    .uniqueId;
+                onChangeRotation?.Invoke();
+                onChangeZoom?.Invoke();
+                onUpdate?.Invoke(false, true, true);
+            })
+            .setOnComplete(() =>
+            {
+                EnableControl(true);
+            })
+            .uniqueId;
     }
 
     public void OnFlyButton(System.Action onComplete)
@@ -722,19 +719,5 @@ public class MapCameraController : MonoBehaviour
         {
             Gizmos.DrawWireSphere(m_MuskMapWrapper.transform.position, MaxDistanceFromCenter);
         }
-    }
-
-    [Header("debug")]
-    [SerializeField] private float m_Debug_TargetZoom = 1;
-    [ContextMenu("animate zoom")]
-    private void Debug_Zoom()
-    {
-        AnimateZoom(m_Debug_TargetZoom, 1f, false);
-    }
-
-    [ContextMenu("Toggle control")]
-    private void ToggleControl()
-    {
-        EnableControl(!controlEnabled);
     }
 }
