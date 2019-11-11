@@ -118,7 +118,7 @@ public class DictionaryManager
         if (result == LocalFileState.FILE_AVAILABLE && json != null)
         {
             Debug.Log($"\"{language + version}\" already downloaded.");
-            if (DownloadManager.DeserializeLocalisationDictionary(json))
+            if (DownloadManager.DeserializeLocalisationDictionary(json, null))
             {
                 onDicionaryReady?.Invoke();
                 return;
@@ -142,7 +142,7 @@ public class DictionaryManager
         {
             if (resultCode == 200 || resultCode == 304)
             {
-                 if (DownloadManager.DeserializeLocalisationDictionary(response))
+                 if (DownloadManager.DeserializeLocalisationDictionary(response, null))
                  {
                      PlayerPrefs.SetString(LOCALISATION_DICT_KEY + language, version);
                      System.IO.File.WriteAllText(localPath, response);
@@ -171,7 +171,7 @@ public class DictionaryManager
         if (UnityEditor.EditorPrefs.GetBool("DebugUtils.UseLocalGameDict", false))
         {
             TextAsset gamedata = (TextAsset)UnityEditor.EditorGUIUtility.Load("game.json");
-            if (DownloadManager.DeserializeGameDictionary(gamedata.text))
+            if (DownloadManager.DeserializeGameDictionary(gamedata.text, null))
                 onDicionaryReady?.Invoke();
             else
                 onParseError?.Invoke();
@@ -188,7 +188,7 @@ public class DictionaryManager
         if (result == LocalFileState.FILE_AVAILABLE && json != null)
         {
             Debug.Log($"\"game{version}\" already downloaded.");
-            if (DownloadManager.DeserializeGameDictionary(json))
+            if (DownloadManager.DeserializeGameDictionary(json, null))
             {
                 onDicionaryReady?.Invoke();
                 return;
@@ -212,7 +212,7 @@ public class DictionaryManager
         {
             if (resultCode == 200 || resultCode == 304)
             {
-                if (DownloadManager.DeserializeGameDictionary(response))
+                if (DownloadManager.DeserializeGameDictionary(response, null))
                 {
                     PlayerPrefs.SetString(GAME_DICT_KEY, version);
                     System.IO.File.WriteAllText(localPath, response);
@@ -254,7 +254,7 @@ public class DictionaryManager
         if (result == LocalFileState.FILE_AVAILABLE && json != null)
         {
             Debug.Log($"\"store{version}\" already downloaded.");
-            if (DownloadManager.DeserializeStoreDictionary(json))
+            if (DownloadManager.DeserializeStoreDictionary(json, null))
             {
                 onDicionaryReady?.Invoke();
                 return;
@@ -278,7 +278,7 @@ public class DictionaryManager
         {
             if (resultCode == 200 || resultCode == 304)
             {
-                if (DownloadManager.DeserializeStoreDictionary(response))
+                if (DownloadManager.DeserializeStoreDictionary(response, null))
                 {
                     PlayerPrefs.SetString(STORE_DICT_KEY, version);
                     System.IO.File.WriteAllText(localPath, response);
@@ -330,6 +330,7 @@ public class DictionaryManager
 
     private static void DownloadFile(string url, string name, string version, System.Action<int, string> onComplete, int maxRetries)
     {
+        //LeanTween.value(0, 0, 0).setDelay(10).setOnComplete(() => { 
         DownloadManager.DownloadFile(
             url,
             (downloaded, length) =>
@@ -340,45 +341,6 @@ public class DictionaryManager
             {
                 onComplete?.Invoke(status, response);
             });
+        //});
     }
-
-    //private async static void DownloadFile(string url, string name, string version, System.Action<int, string> onComplete, int maxRetries, int tryCount = 0)
-    //{
-    //    var uri = new System.Uri(url);
-    //    Debug.Log("Downloading " + uri.ToString());
-    //    using (var webClient = new System.Net.WebClient())
-    //    {
-    //        try
-    //        {
-    //            //get header
-    //            var openReadTask = await webClient.OpenReadTaskAsync(uri);
-    //            long size = size = System.Convert.ToInt64(webClient.ResponseHeaders["Content-Length"]);
-    //            openReadTask.Close();
-
-    //            //get file
-    //            webClient.DownloadProgressChanged += (sender, args) => DownloadProgressChanged(name, size, args);
-    //            string result = await webClient.DownloadStringTaskAsync(uri);
-
-    //            onComplete(200, result);
-    //        }
-    //        catch (System.Net.WebException e)
-    //        {
-    //            Debug.LogError("Error in " + name + " dictionary:\n" + e.Message + "\nStacktrace: " + e.StackTrace);
-    //            tryCount++;
-    //            if (tryCount <= maxRetries)
-    //            {
-    //                LeanTween.value(0, 0, 2f).setOnComplete(() => DownloadFile(url, name, version, onComplete, maxRetries, tryCount));
-    //            }
-    //            else
-    //            {
-    //                var response = e.Response as System.Net.HttpWebResponse;
-
-    //                if (response == null)
-    //                    onComplete(0, "null response");
-    //                else
-    //                    onComplete((int)response.StatusCode, response.StatusDescription);
-    //            }
-    //        }
-    //    }
-    //}
 }

@@ -51,11 +51,6 @@ public class AvatarSpriteUtil : MonoBehaviour
 
         Instance = this;
 
-        //if (m_PortraitImage == null)
-        //    m_PortraitImage = m_PortraitMask.GetComponent<Image>();
-
-        //m_PortraitMask.enabled = false;
-        //m_PortraitImage.enabled = false;
         m_PortraitFrame.enabled = false;
         m_PortraitBackground.enabled = false;
         m_PortraitFrame_Wardrobe.enabled = false;
@@ -157,7 +152,7 @@ public class AvatarSpriteUtil : MonoBehaviour
         characterView.gameObject.SetActive(true);
 
         bool _ready = false;
-        characterView.InitializeChar(properties.equips, () => _ready = true);
+        characterView.InitCharacter(properties.equips, true, () => _ready = true);
 
         while (!_ready)
             yield return null;
@@ -169,8 +164,6 @@ public class AvatarSpriteUtil : MonoBehaviour
                                    
             if (properties.types[i] == Type.Portrait)
             {
-                //m_PortraitImage.enabled = true;
-                //m_PortraitMask.enabled = true;
                 m_PortraitFrame.enabled = true;
                 m_PortraitBackground.enabled = true;
 
@@ -178,8 +171,6 @@ public class AvatarSpriteUtil : MonoBehaviour
             }
             else if (properties.types[i] == Type.WardrobePortrait)
             {
-                //m_PortraitImage.enabled = true;
-                //m_PortraitMask.enabled = true;
                 m_PortraitFrame_Wardrobe.enabled = true;
 
                 cam = m_PortraitCamera_Wardrobe;
@@ -232,15 +223,11 @@ public class AvatarSpriteUtil : MonoBehaviour
 
             if (properties.types[i] == Type.Portrait)
             {
-                //m_PortraitImage.enabled = false;
-                //m_PortraitMask.enabled = false;
                 m_PortraitFrame.enabled = false;
                 m_PortraitBackground.enabled = false;
             }
             else if (properties.types[i] == Type.WardrobePortrait)
             {
-                //m_PortraitImage.enabled = false;
-                //m_PortraitMask.enabled = false;
                 m_PortraitFrame_Wardrobe.enabled = false;
             }
         }
@@ -248,7 +235,7 @@ public class AvatarSpriteUtil : MonoBehaviour
         //reset character to initial state
         root.transform.position = prevRootPos;
         root.gameObject.SetActive(prevRootState);
-        //characterView.ResetApparel();
+        characterView.ResetApparelView();
         characterView.gameObject.SetActive(prevState);
         
         if( m_Schedule.Count > 0)

@@ -51,6 +51,7 @@ public class BOSSpells : BOSBase
         swipeDetector.detectSwipeOnlyAfterRelease = true;
 
         LeanTween.alphaCanvas(navCG, 1, .7f);
+        StopAllCoroutines();
         StartCoroutine(CreateSpellNavigation());
     }
 
@@ -93,20 +94,20 @@ public class BOSSpells : BOSBase
             LeanTween.scale(navButton, Vector3.one, 1f).setEase(LeanTweenType.easeOutCubic);
         }
 
-        yield return 0;
-
+        yield return null;
         //prepar ethe selected spell
         ShowSpell(spellList[0].id);
 
         //load the icons
-        yield return new WaitForSeconds(0.1f);
+        yield return null;
         for (int i = 0; i < aux.Count; i++)
         {
-            DownloadedAssets.GetSprite(spellList[i].id, spr =>
+            int idx = i;
+            DownloadedAssets.GetSprite(spellList[idx].id, spr =>
             {
-                aux[i].GetChild(1).GetComponent<Image>().overrideSprite = spr;
+                if (idx < aux.Count)
+                    aux[idx].GetChild(1).GetComponent<Image>().overrideSprite = spr;
             });
-            yield return new WaitForSeconds(0.1f);
         }
     }
 

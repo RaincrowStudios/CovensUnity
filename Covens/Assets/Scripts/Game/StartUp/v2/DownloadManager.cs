@@ -97,13 +97,10 @@ public class DownloadManager : MonoBehaviour
     public static void DownloadAssets(System.Action downloadComplete)
     {
         Debug.Log("Requesting asset list from server");
-
-        if (SplashManager.Instance)
-            SplashManager.Instance.SetDownloadMessage(LocalizeLookUp.GetText("server_syncing"), "");
-
+        
         //APIManagerServer.EnableAutoRetry = false;
 
-        int retryCount = 0;
+        //int retryCount = 0;
         System.Action getAssets = () => { };
 
         getAssets = () =>
@@ -130,9 +127,6 @@ public class DownloadManager : MonoBehaviour
 
     private static IEnumerator StartDownloads(AssetResponse assets, System.Action dictionariesDownloaded, System.Action bundlesDownloaded)
     {
-        if (SplashManager.Instance)
-            SplashManager.Instance.SetDownloadMessage("", "");
-
         //check if server is under maintenance
         if (assets.maintenance)
         {
@@ -164,10 +158,10 @@ public class DownloadManager : MonoBehaviour
             OnVersionOutdated?.Invoke();
             yield break;
         }
-
-
+        
         //download game the dictionary
         OnDictionaryDownloadStart?.Invoke();
+
         {
             bool isDictionaryComplete = false;
             bool isDictionaryParseError = false;
@@ -200,8 +194,7 @@ public class DownloadManager : MonoBehaviour
 
             if (isDictionaryParseError)
             {
-                //error delegate was already invoked in SaveDict method
-                //OnDictionaryParserError?.Invoke();
+                OnDictionaryParserError?.Invoke("","");
                 yield break;
             }
         }
@@ -241,8 +234,7 @@ public class DownloadManager : MonoBehaviour
 
             if (isDictionaryParseError)
             {
-                //error delegate was already invoked in SaveDict method
-                //OnDictionaryParserError?.Invoke();
+                OnDictionaryParserError?.Invoke("","");
                 yield break;
             }
         }
@@ -280,8 +272,7 @@ public class DownloadManager : MonoBehaviour
 
             if (isDictionaryParseError)
             {
-                //error delegate was already invoked in SaveDict method
-                //OnDictionaryParserError?.Invoke();
+                OnDictionaryParserError?.Invoke("","");
                 yield break;
             }
         }
@@ -393,14 +384,14 @@ public class DownloadManager : MonoBehaviour
 
         foreach (string key in assets.assets)
         {
-            DownloadedAssets.LoadAsset(key);
+            DownloadedAssets.LoadAssetPath(key);
         }
 
         OnDownloadsComplete?.Invoke();
         bundlesDownloaded?.Invoke();
     }
 
-    public static bool DeserializeLocalisationDictionary(string json)
+    public static bool DeserializeLocalisationDictionary(string json, System.Action onError)
     {
         try
         {
@@ -413,12 +404,13 @@ public class DownloadManager : MonoBehaviour
             if (Application.isEditor)
                 Debug.Log(json);
             Debug.LogException(e);
-            OnDictionaryParserError?.Invoke(e.Message, e.StackTrace);
+            //OnDictionaryParserError?.Invoke(e.Message, e.StackTrace);
+            onError?.Invoke();
             return false;
         }
     }
 
-    public static bool DeserializeGameDictionary(string json)
+    public static bool DeserializeGameDictionary(string json, System.Action onError)
     {
         try
         {
@@ -467,12 +459,13 @@ public class DownloadManager : MonoBehaviour
         {
             Debug.LogError("Failed to parse game dictionary");
             Debug.LogException(e);
-            OnDictionaryParserError?.Invoke(e.Message, e.StackTrace);
+            //OnDictionaryParserError?.Invoke(e.Message, e.StackTrace);
+            onError?.Invoke();
             return false;
         }
     }
 
-    public static bool DeserializeStoreDictionary(string json)
+    public static bool DeserializeStoreDictionary(string json, System.Action onError)
     {
         try
         {
@@ -494,7 +487,9 @@ public class DownloadManager : MonoBehaviour
         {
             Debug.LogError("Failed to parse store dictionary");
             Debug.LogException(e);
-            OnDictionaryParserError?.Invoke(e.Message, e.StackTrace);
+            //OnDictionaryParserError?.Invoke(e.Message, e.StackTrace);
+
+            onError?.Invoke();
             return false;
         }
     }

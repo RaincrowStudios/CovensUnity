@@ -41,14 +41,14 @@ public class ApparelManager : MonoBehaviour
         {
             female.gameObject.SetActive(false);
             male.gameObject.SetActive(true);
-            male.InitializeChar(PlayerDataManager.playerData.equipped);
+            male.InitCharacter(PlayerDataManager.playerData.equipped, false);
             ActiveViewPlayer = male;
         }
         else
         {
             female.gameObject.SetActive(true);
             male.gameObject.SetActive(false);
-            female.InitializeChar(PlayerDataManager.playerData.equipped);
+            female.InitCharacter(PlayerDataManager.playerData.equipped, false);
             ActiveViewPlayer = female;
         }
     }

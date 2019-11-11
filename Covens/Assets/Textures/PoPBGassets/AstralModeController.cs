@@ -31,7 +31,7 @@ public class AstralModeController : MonoBehaviour
         if (isActive == true)
         {
             Debug.Log("Canceling Astral");
-            LeanTween.cancelAll();
+            //LeanTween.cancelAll();
             LeanTween.value(DurationFill.fillAmount, 0f, 0.5f).setOnUpdate((float i) =>
             {
                 DurationFill.fillAmount = i;

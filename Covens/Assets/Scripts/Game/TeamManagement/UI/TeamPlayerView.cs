@@ -61,6 +61,8 @@ public class TeamPlayerView : MonoBehaviour
 
     void Awake()
     {
+        m_Instance = this;
+
         btnBack.onClick.AddListener(OnClickClose);
         flyToPlayerBtn.onClick.AddListener(FlyToPlayer);
         
@@ -108,13 +110,13 @@ public class TeamPlayerView : MonoBehaviour
         {
             female.gameObject.SetActive(false);
             male.gameObject.SetActive(true);
-            male.InitializeChar(data.equipped);
+            male.InitCharacter(data.equipped);
         }
         else
         {
             female.gameObject.SetActive(true);
             male.gameObject.SetActive(false);
-            female.InitializeChar(data.equipped);
+            female.InitCharacter(data.equipped);
         }
 
         ChangeDegree(data.degree);
@@ -171,8 +173,8 @@ public class TeamPlayerView : MonoBehaviour
             .setOnComplete(() =>
             {
                 m_Canvas.enabled = false;
-                male.ResetApparel();
-                female.ResetApparel();
+                male.ResetApparelView();
+                female.ResetApparelView();
             })
             .uniqueId;
     }

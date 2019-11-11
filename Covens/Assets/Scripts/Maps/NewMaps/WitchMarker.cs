@@ -72,14 +72,19 @@ public class WitchMarker : CharacterMarker
     {
         //update equip list and generate new textures if visible
         witchToken.equipped = equips;
-
+        
         if (m_AvatarRenderer != null)
         {
             if (IsShowingAvatar)
+            {
                 SetupAvatar(witchToken.male, witchToken.equipped);
-            else if (m_AvatarRenderer.sprite != null && m_AvatarRenderer.sprite.texture != null)
+            }
+            else if (m_AvatarRenderer.sprite != null && m_AvatarRenderer.sprite.texture != null && m_AvatarRenderer.sprite != m_FemaleMannequin && m_AvatarRenderer.sprite != m_MaleMannequin)
+            {
                 Destroy(m_AvatarRenderer.sprite.texture);
+            }
         }
+
         if (m_IconRenderer != null)
         {
             if (IsShowingIcon)
@@ -104,7 +109,7 @@ public class WitchMarker : CharacterMarker
         LeanTween.cancel(m_AvatarColorTweenId);
         Sprite mannequin = male ? m_MaleMannequin : m_FemaleMannequin;
         m_AvatarRenderer.sprite = mannequin;
-        m_AvatarRenderer.color = Color.black * m_CharacterAlphaMul;
+        m_AvatarRenderer.color = new Color(0, 0, 0, m_AvatarRenderer.color.a);
 
         //generate sprites for avatar and icon
         AvatarSpriteUtil.Instance.GenerateFullbodySprite(male, equips, spr =>
@@ -119,12 +124,9 @@ public class WitchMarker : CharacterMarker
 
                 Color aux;
                 m_AvatarColorTweenId = LeanTween.value(0, 1, 1f)
-                    //.setEaseOutCubic()
                     .setOnUpdate((float t) => 
                     {
-                        aux = Color.Lerp(Color.black, Color.white, t);
-                        aux.a = m_CharacterAlphaMul;
-                        m_AvatarRenderer.color = aux;
+                        m_AvatarRenderer.color = new Color(t, t, t, m_AvatarRenderer.color.a);
                     })
                     .uniqueId;
             }
