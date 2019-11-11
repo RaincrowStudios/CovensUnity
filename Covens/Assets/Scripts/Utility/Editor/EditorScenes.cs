@@ -85,6 +85,8 @@ public class EditorScenes : MonoBehaviour
     [MenuItem("Scenes/Screens/ExploreLore")]
     static void ExploreLoreScene() => OpenScene("ExploreLore");
 
+    [MenuItem("Scenes/Screens/TeamPlayerview")]
+    static void TeamPlayerViewScene() => OpenScene("TeamPlayerview");
 
     private static void OpenScene(string name)
     {

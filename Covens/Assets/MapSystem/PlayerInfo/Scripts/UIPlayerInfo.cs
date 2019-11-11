@@ -155,13 +155,19 @@ public class UIPlayerInfo : UIInfoPanel
 
         if (data.male)
         {
-            m_FemaleView.ResetApparel();
-            m_MaleView.InitializeChar(data.equipped);
+            m_FemaleView.ResetApparelView();
+            m_MaleView.InitCharacter(data.equipped);
+
+            m_MaleView.gameObject.SetActive(true);
+            m_FemaleView.gameObject.SetActive(false);
         }
         else
         {
-            m_MaleView.ResetApparel();
-            m_FemaleView.InitializeChar(data.equipped);
+            m_MaleView.ResetApparelView();
+            m_FemaleView.InitCharacter(data.equipped);
+
+            m_MaleView.gameObject.SetActive(false);
+            m_FemaleView.gameObject.SetActive(true);
         }
 
         if (!LocationIslandController.isInBattle)

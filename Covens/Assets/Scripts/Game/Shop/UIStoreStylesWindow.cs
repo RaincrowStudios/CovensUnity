@@ -77,6 +77,7 @@ public class UIStoreStylesWindow : MonoBehaviour
             m_Apparel = m_FemaleApparel;
             m_StyleArt = m_FemaleStyle;
         }
+        m_Apparel.gameObject.SetActive(true);
 
         m_CurrentIndex = 0;
         SetupStyle(m_Styles[0]);
@@ -122,7 +123,8 @@ public class UIStoreStylesWindow : MonoBehaviour
         if (cosmetic.assets.shadow.Count > 0)       cosmetic.apparelType = (ApparelType.Shadow);
         if (cosmetic.assets.grey.Count > 0)         cosmetic.apparelType = (ApparelType.Grey);
         if (cosmetic.assets.white.Count > 0)        cosmetic.apparelType = (ApparelType.White);
-
+        
+        m_Apparel.InitCharacter(new List<EquippedApparel>());
         m_Apparel.EquipApparel(cosmetic);
 
         m_Title.text = LocalizeLookUp.GetStoreTitle(item.id);

@@ -141,7 +141,7 @@ public class DownloadedAssets : MonoBehaviour
             isIcon = isIcon
         });
 
-        //Log("load asset count " + m_RequestQueue.Count);
+        Log("load asset count " + m_RequestQueue.Count);
 
         if (m_LoadAssetCoroutine == null)
             m_LoadAssetCoroutine = Instance.StartCoroutine(GetSpriteCoroutine());
@@ -192,11 +192,11 @@ public class DownloadedAssets : MonoBehaviour
                 loadedBundles[type] = new List<AssetBundle>();
                 foreach (var item in assetBundleDirectory[type])
                 {
-                    //float time = Time.unscaledTime;
-                    //Log("loading " + item);
+                    float time = Time.unscaledTime;
+                    Log("loading " + item);
                     var request = AssetBundle.LoadFromFileAsync(item);
                     yield return request;
-                    //Log("loaded " + item + " in " + (Time.unscaledTime - time));
+                    Log("loaded " + item + " in " + (Time.unscaledTime - time));
                     loadedBundles[type].Add(request.assetBundle);
                 }
             }
@@ -207,11 +207,11 @@ public class DownloadedAssets : MonoBehaviour
                 {
                     if (bundle.Contains(id + ".png"))
                     {
-                        //float time = Time.unscaledTime;
-                        //Log("loading " + id + ".png");
+                        float time = Time.unscaledTime;
+                        Log("loading " + id + ".png");
                         AssetBundleRequest request = bundle.LoadAssetAsync(id + ".png", typeof(Sprite));
                         yield return request;
-                        //Log("loaded " + id + ".png in " + (Time.unscaledTime - time));
+                        Log("loaded " + id + ".png in " + (Time.unscaledTime - time));
                         var sprite = request.asset as Sprite;
                         callback?.Invoke(sprite);
 
@@ -345,7 +345,9 @@ public class DownloadedAssets : MonoBehaviour
 
     private static void Log(string msg)
     {
+#if UNITY_EDITOR
         Debug.Log("<color=magenta> " + msg + " </color>");
+#endif
     }
 }
 

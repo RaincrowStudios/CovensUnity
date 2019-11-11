@@ -46,7 +46,7 @@ public class UIStorePurchaseCosmetic : UIStorePurchase
         m_FemaleView.gameObject.SetActive(false);
 
         ApparelView apparel = PlayerDataManager.playerData.male ? m_MaleView : m_FemaleView;
-        apparel.InitializeChar(PlayerDataManager.playerData.equipped);
+        apparel.InitCharacter(PlayerDataManager.playerData.equipped);
         apparel.gameObject.SetActive(true);
 
         m_PreviewIndex = -1;
@@ -57,8 +57,8 @@ public class UIStorePurchaseCosmetic : UIStorePurchase
 
     protected override void _OnClosed()
     {
-        m_MaleView.ResetApparel();
-        m_FemaleView.ResetApparel();
+        m_MaleView.ResetApparelView();
+        m_FemaleView.ResetApparelView();
     }
 
     private void TogglePreview()
@@ -103,7 +103,7 @@ public class UIStorePurchaseCosmetic : UIStorePurchase
         }
         else
         {
-            apparel.InitializeChar(PlayerDataManager.playerData.equipped);
+            apparel.UnequipApparel(m_Cosmetic.position);
             m_PreviewIndex = -1;
         }
     }
