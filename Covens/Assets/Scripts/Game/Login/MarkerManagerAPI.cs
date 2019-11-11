@@ -49,7 +49,6 @@ public class MarkerManagerAPI : MonoBehaviour
 
     public static void GetMarkers(float longitude, float latitude, System.Action callback = null, bool animateMap = true, bool showLoading = false, bool loadMap = false)
     {
-
         double dist = MapsAPI.Instance.DistanceBetweenPointsD(new Vector2(longitude, latitude), GetGPS.coordinates);
         bool wasPhysical = !IsSpiritForm;
         bool isPhysical = dist < PlayerDataManager.DisplayRadius;
@@ -95,7 +94,17 @@ public class MarkerManagerAPI : MonoBehaviour
         IsSpiritForm = !isPhysical;
 
         string timestamp = m_LastRequestTime = Time.time.ToString();
-        requestMarkers = () => APIManager.Instance.Post("character/move", dataJson,
+        requestMarkers = () =>
+        {
+            //move markers to new map position
+            foreach (var marker in MarkerSpawner.Markers.Values)
+            {
+                var token = marker[0].Token;
+                marker[0].SetWorldPosition(MapsAPI.Instance.GetWorldPosition(token.longitude, token.latitude));
+                MarkerSpawner.Instance.UpdateMarker(marker[0]);
+            }
+
+            APIManager.Instance.Post("character/move", dataJson,
             (s, r) =>
             {
                 LoadingOverlay.Hide();
@@ -108,7 +117,7 @@ public class MarkerManagerAPI : MonoBehaviour
 
                 callback?.Invoke();
             });
-
+        };
 
         //pre-move the player marker and load the map at the target position
         if (loadMap)
@@ -142,7 +151,6 @@ public class MarkerManagerAPI : MonoBehaviour
 
     private static void GetMarkersFailed(float longitude, float latitude, bool animateMap, bool loadMap, string result, int response)
     {
-        //move back to previous position
         LeanTween.cancel(m_MoveTweenId);
         Vector3 targetPosition = MapsAPI.Instance.GetWorldPosition(PlayerDataManager.playerData.longitude, PlayerDataManager.playerData.latitude);
 
@@ -159,7 +167,15 @@ public class MarkerManagerAPI : MonoBehaviour
                PlayerDataManager.playerData.longitude,
                PlayerDataManager.playerData.latitude,
                MapsAPI.Instance.normalizedZoom,
-               () => { },
+               () => 
+               {
+                   //move markers back
+                   foreach (var marker in MarkerSpawner.Markers.Values)
+                   {
+                       var token = marker[0].Token;
+                       marker[0].SetWorldPosition(MapsAPI.Instance.GetWorldPosition(token.longitude, token.latitude));
+                   }
+               },
                animateMap);
         }
     }
@@ -263,9 +279,7 @@ public class MarkerManagerAPI : MonoBehaviour
         HashSet<IMarker> updatedMarkers = new HashSet<IMarker>();
 
         IMarker aux;
-
-        int auxI = 0;
-
+        
         Debug.Log($"spawning pops: {pops.Count}");
         for (int i = 0; i < pops.Count; i++)
         {

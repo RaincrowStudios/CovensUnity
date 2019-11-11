@@ -132,7 +132,7 @@ public class MarkerSpawner : MarkerManager
             {
                 item.Coords = new Vector2(Data.longitude, Data.latitude);
                 item.Setup(Data);
-                item.SetWorldPosition(MapsAPI.Instance.GetWorldPosition(Data.longitude, Data.latitude), 1);
+                item.SetWorldPosition(MapsAPI.Instance.GetWorldPosition(Data.longitude, Data.latitude), 0);
                 UpdateMarker(item);
             }
             return Markers[Data.instance][0];
