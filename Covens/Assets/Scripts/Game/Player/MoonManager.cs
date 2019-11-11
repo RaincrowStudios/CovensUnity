@@ -5,12 +5,16 @@ using UnityEngine.UI;
 using System;
 using TMPro;
 using Raincrow.FTF;
+using Raincrow;
 
 
 public class MoonManager : UIAnimationManager
 {
+    //[SerializeField] private Canvas m_Canvas;
+    [SerializeField] private GraphicRaycaster m_InputRaycaster;
+    
     public GameObject container;
-    public static MoonManager Instance { get; set; }
+    private static MoonManager m_Instance;
     int moonAge;
     public Sprite[] moonSprites;
     public Image middle;
@@ -46,7 +50,24 @@ public class MoonManager : UIAnimationManager
 
     void Awake()
     {
-        Instance = this;
+        m_Instance = this;
+        container.SetActive(false);
+        //m_Canvas.enabled = false;
+        m_InputRaycaster.enabled = false;
+
+        DownloadedAssets.OnWillUnloadAssets += DownloadedAssets_OnWillUnloadAssets;
+    }
+
+    private void DownloadedAssets_OnWillUnloadAssets()
+    {
+        if (container.activeSelf)
+            return;
+
+        CancelInvoke();
+        StopAllCoroutines();
+
+        DownloadedAssets.OnWillUnloadAssets -= DownloadedAssets_OnWillUnloadAssets;
+        SceneManager.UnloadScene(SceneManager.Scene.MOONPHASE, null, null);
     }
 
     void Start()
@@ -59,16 +80,31 @@ public class MoonManager : UIAnimationManager
         {
             alignmentButton.enabled = false;
         });
-
     }
-    //
-    //    public void DelayOpen()
-    //    {
-    //        Invoke("Open", 1f);
-    //    }
 
-    public void Open()
+    public static void Open()
     {
+        if (m_Instance != null)
+        {
+            m_Instance._Open();
+        }
+        else
+        {
+            LoadingOverlay.Show();
+            SceneManager.LoadSceneAsync(SceneManager.Scene.MOONPHASE, UnityEngine.SceneManagement.LoadSceneMode.Additive, null, () =>
+            {
+                LoadingOverlay.Hide();
+                m_Instance._Open();
+            });
+        }
+    }
+
+    private void _Open()
+    {
+        CancelInvoke();
+        StopAllCoroutines();
+
+        m_InputRaycaster.enabled = true;
         BackButtonListener.AddCloseAction(Close);
 
         UIStateManager.Instance.CallWindowChanged(false);
@@ -77,7 +113,6 @@ public class MoonManager : UIAnimationManager
             Close();
         });
         MapsAPI.Instance.HideMap(true);
-        //Invoke("disableMap", 1f);
         SoundManagerOneShot.Instance.MenuSound();
         data = PlayerDataManager.moonData;
 
@@ -89,11 +124,6 @@ public class MoonManager : UIAnimationManager
         if (FirstTapManager.IsFirstTime("moonphase"))
             FirstTapManager.Show("moonphase", null);
         StartCoroutine(CountDown());
-    }
-
-    void disableMap()
-    {
-        MapsAPI.Instance.HideMap(true);
     }
 
     IEnumerator CountDown()
@@ -125,6 +155,10 @@ public class MoonManager : UIAnimationManager
 
     public void Close()
     {
+        StopAllCoroutines();
+        CancelInvoke();
+
+        m_InputRaycaster.enabled = false;
         BackButtonListener.RemoveCloseAction();
 
         StartCoroutine(EnableAlignmentButtonInteractability());
@@ -134,7 +168,6 @@ public class MoonManager : UIAnimationManager
         MapsAPI.Instance.HideMap(false);
         StopCoroutine("CountDown");
         Disable(container, 1);
-
     }
 
     IEnumerator EnableAlignmentButtonInteractability()
@@ -142,8 +175,12 @@ public class MoonManager : UIAnimationManager
         yield return new WaitForSeconds(1f);
         alignmentButton.enabled = true;
     }
+
     public void SetupDailyBlessing()
     {
+        if (container == null)
+            return;
+
         TimeSpan nextBlessing = BlessingManager.TimeUntilNextBlessing();
         int hours = nextBlessing.Days > 0 ? 24 :  nextBlessing.Hours;
         int minutes = nextBlessing.Minutes;
@@ -164,6 +201,7 @@ public class MoonManager : UIAnimationManager
             });
         }
     }
+
     public void SetupMoon()
     {
         data.phase = Math.Round(data.phase, 2);
@@ -204,20 +242,6 @@ public class MoonManager : UIAnimationManager
         else
             spellEfficiency.text = LocalizeLookUp.GetText("spell_efficiency_bonus").Replace("{{value}}", (lunarEffect * 100).ToString(" +#;-#"));// + "% Spell efficiency";
     }
-
-    //public void SetupSavannaEnergy(bool show, int amount = 0)
-    //{
-    //    if (show)
-    //    {
-    //        spellEfficiency.gameObject.SetActive(true);
-    //        spellEfficiency.text = "+" + LocalizeLookUp.GetText("moon_energy").Replace("{{Amount}}", amount.ToString());// "+ " + amount.ToString() + " Energy";
-    //    }
-    //    else
-    //    {
-    //        spellEfficiency.gameObject.SetActive(true);
-    //        spellEfficiency.text = "+" + LocalizeLookUp.GetText("moon_energy").Replace("{{Amount}}", "0");//"+0 Energy";
-    //    }
-    //}
 
     Sprite returnMoonSprite(int age)
     {
@@ -268,7 +292,6 @@ public class MoonManager : UIAnimationManager
         else
             ag = ip * 29.53059 - 29.53059 / 2;
         return Mathf.RoundToInt((float)ag);
-
     }
 
     int SetPlayerRelationToMoon()
@@ -338,11 +361,6 @@ public class MoonManager : UIAnimationManager
             WhiteIcon.SetActive(true);
             ShadowIcon.SetActive(true);
             BlackBar.SetActive(true);
-
-
-
-
-
         }
         else
         {

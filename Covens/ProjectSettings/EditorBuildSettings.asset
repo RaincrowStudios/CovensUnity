@@ -95,4 +95,7 @@ EditorBuildSettings:
   - enabled: 1
     path: Assets/Scenes/TeamPlayerView.unity
     guid: 8c696e7df36fe894daa582265489199a
+  - enabled: 1
+    path: Assets/Scenes/Moonphase.unity
+    guid: f94c3de4420c3c34daa58a74aa2a18ad
   m_configObjects: {}
