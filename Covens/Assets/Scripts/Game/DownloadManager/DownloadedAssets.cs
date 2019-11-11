@@ -19,7 +19,10 @@ public class DownloadedAssets : MonoBehaviour
         get
         {
             if (m_Instance == null)
+            {
                 m_Instance = new GameObject("DownloadedAssets").AddComponent<DownloadedAssets>();
+                DontDestroyOnLoad(m_Instance.gameObject);
+            }
             return m_Instance;
         }
     }
@@ -67,11 +70,22 @@ public class DownloadedAssets : MonoBehaviour
     void Awake()
     {        
         Application.lowMemory += OnApplicationLowMemory;
+
+        //make sure no assetbundle is loaded
+        var loadedBundles = AssetBundle.GetAllLoadedAssetBundles();
+        foreach(var bundle in loadedBundles)
+        {
+            bundle.Unload(false);
+        }
     }
 
     private void OnDestroy()
     {
         Application.lowMemory -= OnApplicationLowMemory;
+
+        foreach (var bundleList in loadedBundles.Values)
+            foreach (var bundle in bundleList)
+                bundle.Unload(false);
     }
 
     public void OnApplicationLowMemory()
@@ -195,6 +209,7 @@ public class DownloadedAssets : MonoBehaviour
                     float time = Time.unscaledTime;
                     Log("loading " + item);
                     var request = AssetBundle.LoadFromFileAsync(item);
+                    request.completed += op => { Log(item + "\n" + op.isDone + " : " + op.progress); };
                     yield return request;
                     Log("loaded " + item + " in " + (Time.unscaledTime - time));
                     loadedBundles[type].Add(request.assetBundle);
@@ -210,6 +225,7 @@ public class DownloadedAssets : MonoBehaviour
                         float time = Time.unscaledTime;
                         Log("loading " + id + ".png");
                         AssetBundleRequest request = bundle.LoadAssetAsync(id + ".png", typeof(Sprite));
+                        request.completed += op => { Log(id + ".png\n" + op.isDone + " : " + op.progress); };
                         yield return request;
                         Log("loaded " + id + ".png in " + (Time.unscaledTime - time));
                         var sprite = request.asset as Sprite;
@@ -232,7 +248,7 @@ public class DownloadedAssets : MonoBehaviour
         m_LoadAssetCoroutine = null;
     }
 
-    public static void LoadAsset(string assetKey)
+    public static void LoadAssetPath(string assetKey)
     {
         string path = System.IO.Path.Combine(Application.persistentDataPath, assetKey + ".unity3d");
         string currentKey = "";
@@ -345,9 +361,9 @@ public class DownloadedAssets : MonoBehaviour
 
     private static void Log(string msg)
     {
-#if UNITY_EDITOR
-        Debug.Log("<color=magenta> " + msg + " </color>");
-#endif
+//#if UNITY_EDITOR
+        //Debug.Log("<color=magenta> " + msg + " </color>");
+//#endif
     }
 }
 

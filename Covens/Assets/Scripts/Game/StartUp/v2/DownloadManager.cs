@@ -384,7 +384,7 @@ public class DownloadManager : MonoBehaviour
 
         foreach (string key in assets.assets)
         {
-            DownloadedAssets.LoadAsset(key);
+            DownloadedAssets.LoadAssetPath(key);
         }
 
         OnDownloadsComplete?.Invoke();
