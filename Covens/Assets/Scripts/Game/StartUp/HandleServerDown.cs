@@ -30,15 +30,17 @@ public class HandleServerDown : MonoBehaviour
     {
         Instance = this;
     }
+
     void Update()
     {
         if (runTimer)
             timeElapsed += Time.deltaTime;
     }
+
     public void ShowMaintenance()
     {
         serverDownContainer.SetActive(true);
-        text.text = "Servers will be down briefly for maintenance.";
+        text.text = LocalizeLookUp.GetText("server_maintenance");
     }
 
 
@@ -61,7 +63,7 @@ public class HandleServerDown : MonoBehaviour
     public void ShowServerDown(bool isRelease)
     {
         serverDownContainer.SetActive(true);
-        text.text = "Demons have infiltrated the servers. Give us a little time to sort this out. (Servers are down)";
+        text.text = LocalizeLookUp.GetText("server_down_top");
         if (isRelease)
             StartCoroutine(ServerDownHelper());
     }

@@ -90,7 +90,7 @@ public class GameStartup : MonoBehaviour
         }
 #endif
         //show loading screen
-        SplashManager.Instance.ShowLoading(0);
+        SplashManager.Instance.ShowLoading(1);
 
         //wait for the gps/network
         GetGPS.OnInitialized += OnGPSReady;
@@ -99,6 +99,8 @@ public class GameStartup : MonoBehaviour
     private void OnGPSReady()
     {
         SplashManager.Instance.ShowLoading(1);
+        SplashManager.Instance.SetDownloadMessage("", LocalizeLookUp.GetText("server_syncing"));
+
         GetGPS.OnInitialized -= OnGPSReady;
 
         //start downloading the assets
@@ -136,6 +138,11 @@ public class GameStartup : MonoBehaviour
     private void OnDictionaryStart()
     {
         m_DictionaryReady = false;
+
+        if (m_LogosReady)
+            SplashManager.Instance?.SetDownloadMessage(LocalizeLookUp.GetText("loading"), LocalizeLookUp.GetText("generic_please_wait"));
+        else
+            SplashManager.Instance?.SetDownloadMessage("", "");
     }
 
     private void OnDictionaryReady()
@@ -146,12 +153,16 @@ public class GameStartup : MonoBehaviour
 
     private void OnDictionaryError(string error)
     {
+        SplashManager.Instance?.SetDownloadMessage("", "");
+        SplashManager.Instance?.ShowLoading(1);
         HandleServerDown.Instance.ShowErrorDictionary();
         Debug.LogException(new System.Exception(error));
     }
 
     private void OnDictionaryParseError(string error, string stackTrace)
     {
+        SplashManager.Instance?.SetDownloadMessage("", "");
+        SplashManager.Instance?.ShowLoading(1);
         HandleServerDown.Instance.ShowErrorParseDictionary();
         Debug.LogException(new System.Exception(error));
     }
@@ -199,6 +210,12 @@ public class GameStartup : MonoBehaviour
 
     private IEnumerator OnSplashLogosFinished()
     {
+        SplashManager.Instance.ShowLoading(0);
+        if (m_DownloadsReady)
+            SplashManager.Instance?.SetDownloadMessage("", "");
+        else
+            SplashManager.Instance?.SetDownloadMessage("", LocalizeLookUp.GetText("server_syncing"));
+
         m_LogosReady = true;
         yield return new WaitUntil(() => HelpManager.IsOpen == false);
         //hide help button
