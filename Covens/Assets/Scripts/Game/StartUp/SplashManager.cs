@@ -347,11 +347,11 @@ public class SplashManager : MonoBehaviour
         else
             hintText.text = "";
 
-        //get a random spirit
         spirit.overrideSprite = null;
         spiritName.text = "";
 
-        if (DownloadedAssets.spiritDict.Count > 0)
+        //get a random spirit
+        if (DownloadedAssets.spiritDict.Count > 0 && DownloadedAssets.IsBundleDownloaded("spirits"))
         {
             SpiritData spiritData = DownloadedAssets.spiritDict.ElementAt(Random.Range(0, DownloadedAssets.spiritDict.Count)).Value;
             DownloadedAssets.GetSprite(spiritData.id, (spr) =>
