@@ -103,11 +103,7 @@ public class BOSSpells : BOSBase
         for (int i = 0; i < aux.Count; i++)
         {
             int idx = i;
-            DownloadedAssets.GetSprite(spellList[idx].id, spr =>
-            {
-                if (idx < aux.Count)
-                    aux[idx].GetChild(1).GetComponent<Image>().overrideSprite = spr;
-            });
+            DownloadedAssets.GetSprite(spellList[idx].id, aux[idx].GetChild(1).GetComponent<Image>());
         }
     }
 

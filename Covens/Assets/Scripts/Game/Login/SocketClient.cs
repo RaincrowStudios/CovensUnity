@@ -483,7 +483,15 @@ public sealed class JsonDotNetEncoder : IJsonEncoder
 {
     public List<object> Decode(string json)
     {
-        return JsonConvert.DeserializeObject<List<object>>(json);
+        try
+        {
+            return JsonConvert.DeserializeObject<List<object>>(json);
+        }
+        catch (System.Exception e)
+        {
+            Debug.LogException(e);
+            return new List<object>();
+        }
     }
 
     public string Encode(List<object> obj)

@@ -135,7 +135,7 @@ public class UIMain : MonoBehaviour
 
     private void OnClickMoonphase()
     {
-        MoonManager.Instance.Open();
+        MoonManager.Open();
     }
 
     private void OnClickRecall()

@@ -172,6 +172,8 @@ public class WitchMarker : CharacterMarker
             m_AvatarRenderer.sprite != m_FemaleMannequin)
             Destroy(m_AvatarRenderer.sprite.texture);
 
+        m_AvatarRenderer.sprite = null;
+
         if (m_IconRenderer.sprite != null)
             Destroy(m_IconRenderer.sprite.texture);
 

@@ -252,6 +252,17 @@ public class DownloadedAssets : MonoBehaviour
         m_LoadAssetCoroutine = null;
     }
 
+    public static bool IsBundleDownloaded(string id)
+    {
+        foreach (string key in assetBundleDirectory.Keys)
+        {
+            if (key.Contains(id))
+                return true;
+        }
+
+        return false;
+    }
+
     public static void LoadAssetPath(string assetKey)
     {
         string path = System.IO.Path.Combine(Application.persistentDataPath, assetKey + ".unity3d");

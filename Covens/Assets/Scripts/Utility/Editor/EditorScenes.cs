@@ -88,6 +88,9 @@ public class EditorScenes : MonoBehaviour
     [MenuItem("Scenes/Screens/TeamPlayerview")]
     static void TeamPlayerViewScene() => OpenScene("TeamPlayerview");
 
+    [MenuItem("Scenes/Screens/Moonphase")]
+    static void MoonphaseScene() => OpenScene("Moonphase");
+
     private static void OpenScene(string name)
     {
         if (EditorSceneManager.SaveCurrentModifiedScenesIfUserWantsTo())

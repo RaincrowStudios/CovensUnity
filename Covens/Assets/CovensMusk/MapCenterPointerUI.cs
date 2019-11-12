@@ -79,10 +79,10 @@ public class MapCenterPointerUI : MonoBehaviour
             m_CanvasRect.sizeDelta.y - m_VerticalBorders.y
         );
 
-        Vector3 mapCenter = MapsAPI.Instance.mapCenter.position.normalized;
+        //Vector3 mapCenter = MapsAPI.Instance.mapCenter.position.normalized;
         m_PhysicalCenter.GetComponent<RectTransform>().anchoredPosition = canvasPos;
         m_PointerTransform.anchoredPosition = canvasPos;
-        m_PointerArrow.localRotation = Quaternion.LookRotation(Vector3.forward, new Vector3(-mapCenter.x, -mapCenter.z));
+        m_PointerArrow.localRotation = Quaternion.LookRotation(Vector3.forward, m_PointerTransform.localPosition);
     }
 
     private void ShowPointer()

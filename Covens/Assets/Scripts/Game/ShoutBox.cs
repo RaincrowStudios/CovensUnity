@@ -4,68 +4,110 @@ using System.Collections;
 using Newtonsoft.Json;
 using Raincrow.GameEventResponses;
 using Raincrow.FTF;
+using TMPro;
 
 public class ShoutBox : MonoBehaviour
 {
-
     public Button shoutButton;
-    public GameObject sendButton;
-    public InputField inputField;
+    public Button sendButton;
+    public TMP_InputField inputField;
 
-    bool show = false;
-    public void OnShout()
+    private bool m_IsShowing = false;
+
+    private void Awake()
     {
+        shoutButton.onClick.AddListener(OnClickShout);
+        sendButton.onClick.AddListener(OnClickSend);
 
+        inputField.gameObject.SetActive(false);
+        sendButton.gameObject.SetActive(false);
+        shoutButton.gameObject.SetActive(true);
+
+        inputField.onSubmit.AddListener(InputField_OnSubmit);
+        inputField.text = "";
+    }
+
+    private void InputField_OnSubmit(string msg)
+    {
+        OnClickSend();
+    }
+
+    private void Open()
+    {
+        if (m_IsShowing)
+            return;
+
+        inputField.gameObject.SetActive(true);
+        sendButton.gameObject.SetActive(true);
+        m_IsShowing = true;
+
+        BackButtonListener.AddCloseAction(OnPressBack);
+    }
+
+    private void Close()
+    {
+        if (m_IsShowing == false)
+            return;
+
+        inputField.text = "";
+
+        inputField.gameObject.SetActive(false);
+        sendButton.gameObject.SetActive(false);
+        m_IsShowing = false;
+
+        BackButtonListener.RemoveCloseAction();
+    }
+
+    public void OnClickShout()
+    {
         if (FirstTapManager.IsFirstTime("shout"))
         {
-            FirstTapManager.Show("shout", OnShout);
+            FirstTapManager.Show("shout", OnClickShout);
             return;
         }
 
-        if (!show)
-        {
-            //			shoutButton.gameObject.SetActive (false);
-            inputField.gameObject.SetActive(true);
-            sendButton.SetActive(true);
-            //			shoutButton.interactable = false;
-        }
+        if (m_IsShowing)
+            Close();
         else
-        {
-            inputField.gameObject.SetActive(false);
-            sendButton.SetActive(false);
-        }
-
-        show = !show;
+            Open();
     }
 
-    public void OnSend()
+    public void OnClickSend()
     {
-        inputField.gameObject.SetActive(false);
-        sendButton.SetActive(false);
-
         string message = inputField.text;
-        string data = $"{{\"message\":\"{message}\"}}";
 
-        APIManager.Instance.Post("character/shout", data, (response, result) =>
+        if (string.IsNullOrWhiteSpace(message) == false)
         {
-            if (result == 200)
+            string data = $"{{\"message\":\"{message}\"}}";
+            
+            APIManager.Instance.Post("character/shout", data, (response, result) =>
             {
-                ShoutHandler.SpawnShoutbox(PlayerDataManager.playerData.instance, message);
-            }
-            else
-            {
-                Debug.LogError("shout error\n" + response);
-            }
-        });
-        StartCoroutine(ReEnableSendButton());
+                if (result == 200)
+                {
+                    ShoutHandler.SpawnShoutbox(PlayerDataManager.playerData.instance, message);
+                }
+                else
+                {
+                    Debug.LogError("shout error\n" + response);
+                }
+            });
+
+            shoutButton.interactable = false;
+            StartCoroutine(ReEnableSendButton());
+        }
+
+        Close();
     }
 
     IEnumerator ReEnableSendButton()
     {
-        yield return new WaitForSeconds(5);
+        yield return new WaitForSeconds(2);
         shoutButton.interactable = true;
     }
 
-
+    private void OnPressBack()
+    {
+        Close();
+    }
 }
 

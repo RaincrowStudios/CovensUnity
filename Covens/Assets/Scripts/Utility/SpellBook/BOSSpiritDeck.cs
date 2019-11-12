@@ -92,6 +92,5 @@ public class BOSSpiritDeck : BOSBase
             yield return new WaitForSeconds(.08f);
 
         }
-
     }
 }
