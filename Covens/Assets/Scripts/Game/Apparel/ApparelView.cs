@@ -109,6 +109,9 @@ public class ApparelView : MonoBehaviour
                 m_IsCenser = true;
         }
 
+        if (equipped.Count == 0)
+            onComplete?.Invoke();
+
         //load the sprite assets
         for (int i = 0; i < equipped.Count; i++)
         {
