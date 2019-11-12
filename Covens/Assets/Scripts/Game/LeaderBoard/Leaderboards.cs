@@ -4,6 +4,7 @@ using UnityEngine;
 using UnityEngine.UI;
 using Newtonsoft.Json;
 using System.Linq;
+using TMPro;
 
 //suggestion: use a cursor to get leaderboard pages
 public class Leaderboards : UIAnimationManager
@@ -13,6 +14,10 @@ public class Leaderboards : UIAnimationManager
     public Button topCovensButton;
     public Button topPlayersButton;
     public Button closeButton;
+    public Button hideshowButton;
+
+    public TextMeshProUGUI showHideText;
+    public Transform arrow;
 
     public Text title;
 
@@ -21,8 +26,8 @@ public class Leaderboards : UIAnimationManager
     private bool isPlayer = true;
 
     public Transform container;
+    public Transform DescContainer;
     public GameObject prefab;
-
 
     private static LeaderboardData[] m_Players;
     private static LeaderboardData[] m_Covens;
@@ -83,11 +88,35 @@ public class Leaderboards : UIAnimationManager
         }
     }
 
-
+    public void ShowDesc()
+    {
+        hideshowButton.interactable = false;
+        hideshowButton.onClick.RemoveAllListeners();
+        hideshowButton.onClick.AddListener(HideDesc);
+        LeanTween.moveLocalY(DescContainer.gameObject, -124f, 0.6f).setEaseOutCubic().setOnComplete(() =>
+        {
+            hideshowButton.interactable = true;
+        });
+        showHideText.text = LocalizeLookUp.GetText("daily_hide");
+        arrow.transform.localScale = new Vector3(1, 1, 1);
+    }
+    public void HideDesc()
+    {
+        hideshowButton.interactable = false;
+        hideshowButton.onClick.RemoveAllListeners();
+        hideshowButton.onClick.AddListener(ShowDesc);
+        LeanTween.moveLocalY(DescContainer.gameObject, -522f, 0.4f).setEaseOutCubic().setOnComplete(() =>
+        {
+            hideshowButton.interactable = true;
+        });
+        showHideText.text = "";
+        arrow.transform.localScale = new Vector3(-1, 1, 1);
+    }
     void Start()
     {
         topCovensButton.onClick.AddListener(() => { isPlayer = false; Show(); });
         topPlayersButton.onClick.AddListener(() => { isPlayer = true; Show(); });
+        hideshowButton.onClick.AddListener(ShowDesc);
         closeButton.onClick.AddListener(Hide);
         GetComponent<CanvasGroup>().alpha = 0;
         transform.localScale = Vector3.zero;
