@@ -22,6 +22,40 @@ public class ShoutBox : MonoBehaviour
         inputField.gameObject.SetActive(false);
         sendButton.gameObject.SetActive(false);
         shoutButton.gameObject.SetActive(true);
+
+        inputField.onSubmit.AddListener(InputField_OnSubmit);
+        inputField.text = "";
+    }
+
+    private void InputField_OnSubmit(string msg)
+    {
+        OnClickSend();
+    }
+
+    private void Open()
+    {
+        if (m_IsShowing)
+            return;
+
+        inputField.gameObject.SetActive(true);
+        sendButton.gameObject.SetActive(true);
+        m_IsShowing = true;
+
+        BackButtonListener.AddCloseAction(OnPressBack);
+    }
+
+    private void Close()
+    {
+        if (m_IsShowing == false)
+            return;
+
+        inputField.text = "";
+
+        inputField.gameObject.SetActive(false);
+        sendButton.gameObject.SetActive(false);
+        m_IsShowing = false;
+
+        BackButtonListener.RemoveCloseAction();
     }
 
     public void OnClickShout()
@@ -32,51 +66,48 @@ public class ShoutBox : MonoBehaviour
             return;
         }
 
-        if (!m_IsShowing)
-        {
-            inputField.gameObject.SetActive(true);
-            sendButton.gameObject.SetActive(true);
-        }
+        if (m_IsShowing)
+            Close();
         else
-        {
-            inputField.gameObject.SetActive(false);
-            sendButton.gameObject.SetActive(false);
-        }
-
-        m_IsShowing = !m_IsShowing;
-        inputField.text = "";
+            Open();
     }
 
     public void OnClickSend()
     {
-        inputField.gameObject.SetActive(false);
-        sendButton.gameObject.SetActive(false);
-        m_IsShowing = false;
-
         string message = inputField.text;
-        string data = $"{{\"message\":\"{message}\"}}";
-        inputField.text = "";
 
-        APIManager.Instance.Post("character/shout", data, (response, result) =>
+        if (string.IsNullOrWhiteSpace(message) == false)
         {
-            if (result == 200)
+            string data = $"{{\"message\":\"{message}\"}}";
+            
+            APIManager.Instance.Post("character/shout", data, (response, result) =>
             {
-                ShoutHandler.SpawnShoutbox(PlayerDataManager.playerData.instance, message);
-            }
-            else
-            {
-                Debug.LogError("shout error\n" + response);
-            }
-        });
+                if (result == 200)
+                {
+                    ShoutHandler.SpawnShoutbox(PlayerDataManager.playerData.instance, message);
+                }
+                else
+                {
+                    Debug.LogError("shout error\n" + response);
+                }
+            });
 
-        shoutButton.interactable = false;
-        StartCoroutine(ReEnableSendButton());
+            shoutButton.interactable = false;
+            StartCoroutine(ReEnableSendButton());
+        }
+
+        Close();
     }
 
     IEnumerator ReEnableSendButton()
     {
         yield return new WaitForSeconds(2);
         shoutButton.interactable = true;
+    }
+
+    private void OnPressBack()
+    {
+        Close();
     }
 }
 
