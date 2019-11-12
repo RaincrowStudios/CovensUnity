@@ -154,10 +154,21 @@ public class AvatarSpriteUtil : MonoBehaviour
         bool _ready = false;
         characterView.InitCharacter(properties.equips, true, () => _ready = true);
 
+        //float time = 0;
+        //int j = 0;
         while (!_ready)
+        {
             yield return null;
+            //time += Time.deltaTime;
+            //int aux = (int)time;
+            //if (aux % 10 == 0 && aux > j)
+            //{
+            //    j = aux;
+            //    Debug.LogError(time + "\n" + m_Schedule.Count);
+            //}
+        }
 
-        //generate the sprites for each camera passed
+        //generate the sprites for each property set passed
         for (int i = 0; i < properties.callbacks.Length; i++)
         {
             yield return new WaitForEndOfFrame();
@@ -241,12 +252,7 @@ public class AvatarSpriteUtil : MonoBehaviour
         if( m_Schedule.Count > 0)
         {
             //wait 5 frames
-            int auxI = 0;
-            while (auxI < 5)
-            {
-                yield return null;
-                auxI++;
-            }
+            yield return null;
             SpriteGenerationSetting prop = m_Schedule[0];
             m_Schedule.RemoveAt(0);
             m_Current = StartCoroutine(GenerateSpriteCoroutine(prop));

@@ -105,6 +105,11 @@ public class DownloadedAssets : MonoBehaviour
 
             UnloadingMemory = true;
             OnWillUnloadAssets?.Invoke();
+            
+            //stop current load requests
+            StopAllCoroutines();
+            m_LoadAssetCoroutine = null;
+
 
             //unload assetbundles
             foreach (var bundleList in loadedBundles.Values)
@@ -123,6 +128,12 @@ public class DownloadedAssets : MonoBehaviour
             {
                 //hide the UI
                 UnloadingMemory = false;
+                
+                //restart asset queue if necessary
+                if (m_RequestQueue.Count > 0)
+                {
+                    m_LoadAssetCoroutine = Instance.StartCoroutine(GetSpriteCoroutine());
+                }
 
                 debug = "Asset unloading complete";
                 debug += "\n- Total system memory: " + SystemInfo.systemMemorySize;
