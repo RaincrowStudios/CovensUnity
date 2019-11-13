@@ -1023,7 +1023,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 1, y: 1}
   m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: -195.20001, y: -183.70001}
+  m_AnchoredPosition: {x: -195.20001, y: -361}
   m_SizeDelta: {x: 293.8, y: 265.4}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &685266961
@@ -20981,7 +20981,7 @@ ParticleSystem:
 --- !u!199 &199449852290353564
 ParticleSystemRenderer:
   serializedVersion: 6
-  m_ObjectHideFlags: 0
+  m_ObjectHideFlags: 2
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
@@ -21043,7 +21043,7 @@ ParticleSystemRenderer:
 --- !u!199 &199907851508563380
 ParticleSystemRenderer:
   serializedVersion: 6
-  m_ObjectHideFlags: 0
+  m_ObjectHideFlags: 2
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
