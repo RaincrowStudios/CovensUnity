@@ -87,7 +87,7 @@ public class CharacterToken : Token
     [JsonIgnore]
     public virtual int maxEnergy => (2 * baseEnergy);
 
-       
+
     public bool HasStatus(string status)
     {
         if (effects == null)
@@ -144,8 +144,8 @@ public class WitchToken : CharacterToken
     {
         get
         {
-            if (level-1 < PlayerDataManager.baseEnergyPerLevel.Length)
-                return PlayerDataManager.baseEnergyPerLevel[level-1];
+            if (level - 1 < PlayerDataManager.baseEnergyPerLevel.Length)
+                return PlayerDataManager.baseEnergyPerLevel[level - 1];
             return PlayerDataManager.baseEnergyPerLevel[PlayerDataManager.baseEnergyPerLevel.Length - 1];
         }
     }
@@ -155,6 +155,17 @@ public class PopToken : Token
 {
     public override string type => "placeOfPower";
     public int tier;
+    public PopLastOwnedBy lastOwnedBy;
+}
+
+public class PopLastOwnedBy
+{
+    [JsonProperty("_id")]
+    public string instance;
+    public int degree;
+    [JsonProperty("name")]
+    public string displayName;
+    public List<EquippedApparel> equipped;
 }
 
 public class EnergyToken : Token

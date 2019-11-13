@@ -21,7 +21,7 @@ public class BOSSpells : BOSBase
     [SerializeField] private CanvasGroup navCG;
     [SerializeField] private Image crestImage;
     [SerializeField] private Image spellImage;
-    [SerializeField] private Button castButton;
+    //[SerializeField] private Button castButton;
     [SerializeField] private Sprite[] crestSprites;
     [SerializeField] private LeanTweenType easeType;
     [SerializeField] private float speed;
@@ -158,10 +158,10 @@ public class BOSSpells : BOSBase
         else if (side > 0)
             contentTransform.transform.Translate(-movement, 0, 0);
 
-        if (id == "spell_trueSight" || id == "spell_invisibility")
+        /*if (id == "spell_trueSight" || id == "spell_invisibility")
             castButton.gameObject.SetActive(true);
         else
-            castButton.gameObject.SetActive(false);
+            castButton.gameObject.SetActive(false);*/
 
         var curSpell = DownloadedAssets.GetSpell(id);
         cost.text = LocalizeLookUp.GetText("spell_cost") + ": <b>" + curSpell.cost.ToString();
