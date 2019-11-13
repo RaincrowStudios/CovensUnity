@@ -27,7 +27,7 @@ public class CovenConstants : MonoBehaviour
             }
             else if (UnityEditor.EditorPrefs.GetString("game") == "Gustavo")
             {
-                return "http://192.168.0.194:9000/api/";
+                return "http://192.168.0.157:9000/api/";
             }
             else
             {
@@ -68,7 +68,7 @@ public class CovenConstants : MonoBehaviour
             }
             else if (UnityEditor.EditorPrefs.GetString("ws") == "Gustavo")
             {
-                return "http://192.168.0.194:8084/socket.io/?";
+                return "http://192.168.0.157:8084/socket.io/?";
             }
             else
             {
@@ -118,7 +118,7 @@ public class CovenConstants : MonoBehaviour
             }
             else if (UnityEditor.EditorPrefs.GetString("chat") == "Gustavo")
             {
-                return "http://192.168.0.194:8083/socket.io/";
+                return "http://192.168.0.157:8083/socket.io/";
             }
             else
             {
@@ -147,7 +147,7 @@ public class CovenConstants : MonoBehaviour
             }
             else if (UnityEditor.EditorPrefs.GetString("map") == "Gustavo")
             {
-                return "http://192.168.0.194:8081/";
+                return "http://192.168.0.157:8081/";
             }
             else
             {
