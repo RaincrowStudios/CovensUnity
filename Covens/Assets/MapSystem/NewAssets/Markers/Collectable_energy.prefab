@@ -525,6 +525,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3ed159eb22764cb4a9c1ad944b37610c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  frequency: 3
-  scaleFinal: 0.71
-  scaleInit: 0.8
+  frequency: 1.5
+  scaleFinal: 0.8
+  scaleInit: 0.71
