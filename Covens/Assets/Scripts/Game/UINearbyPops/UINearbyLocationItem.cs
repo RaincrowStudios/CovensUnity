@@ -18,7 +18,7 @@ public class UINearbyLocationItem : MonoBehaviour
         public double longitude;
         public int tier;
         public bool subscribed;
-
+        public PopLastOwnedBy lastOwnedBy;
         public double battleBeginsOn;
         public double battleFinishedOn;
         public double closeOn;
@@ -26,6 +26,8 @@ public class UINearbyLocationItem : MonoBehaviour
         public bool isOpen;
         public bool isActive;
     }
+
+
 
     [SerializeField] private TextMeshProUGUI m_Cost;
     [SerializeField] private TextMeshProUGUI m_NameText;
@@ -82,7 +84,22 @@ public class UINearbyLocationItem : MonoBehaviour
         m_Data = data;
         m_OnFlyTo = onFlyTo;
         m_NameText.text = data.name;
-        m_ClaimedBy.text = LocalizeLookUp.GetText("location_unclaimed");// "Unclaimed";
+        if (data.lastOwnedBy.displayName != null)
+        {
+            m_ClaimedBy.text = data.lastOwnedBy.displayName;
+            if (data.lastOwnedBy.degree > 0)
+                m_ClaimedBy.color = Utilities.Orange;
+            else if (data.lastOwnedBy.degree < 0)
+                m_ClaimedBy.color = Utilities.Purple;
+            else
+                m_ClaimedBy.color = Utilities.Blue;
+        }
+        else
+        {
+            m_ClaimedBy.text = LocalizeLookUp.GetText("location_unclaimed");// "Unclaimed";
+            m_ClaimedBy.color = Color.gray;
+        }
+
 
         //setup cost
         int goldCost = DownloadedAssets.PlaceOfPowerSettings.entryCosts[data.tier - 1].gold;
