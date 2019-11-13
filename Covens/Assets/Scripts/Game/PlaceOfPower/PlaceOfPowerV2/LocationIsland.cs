@@ -78,7 +78,7 @@ public class LocationIsland : MonoBehaviour
         {
             m_HighlightCylinde.localScale = new Vector3(51.5f, Mathf.Lerp(0, 5.7f, v), 51.5f);
             m_HighlightRune.transform.localRotation = Quaternion.Euler(new Vector3(-90, 0, Mathf.Lerp(0, 60, v)));
-            m_HighlightGlow.localScale = Vector3.one * Mathf.Lerp(40, 65, v);
+            m_HighlightGlow.localScale = Vector3.one * Mathf.Lerp(35, 46.15f, v);
             m_HighlightEdge.localScale = Vector3.one * Mathf.Lerp(11, 13, v);
         }).setEase(LeanTweenType.easeInOutQuad);
     }
