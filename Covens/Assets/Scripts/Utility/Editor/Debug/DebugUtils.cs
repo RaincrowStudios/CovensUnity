@@ -315,6 +315,23 @@ namespace Raincrow.Test
                 {
                     Debug.Log(MapView.InMapView);
                 }
+                if(GUILayout.Button("generated sprite count"))
+                {
+                    Debug.Log("avatar: " + WitchMarker.GeneratedAvatarCount + "\nicon: " + WitchMarker.GeneratedPortraitCount);
+                }
+                if (GUILayout.Button("double sprite limit"))
+                {
+                    WitchMarker.WITCH_AVATAR_LIMIT *= 2;
+                    WitchMarker.WITCH_PORTRAIT_LIMIT *= 2;
+                    Debug.Log("avatar: " + WitchMarker.WITCH_AVATAR_LIMIT + "\nicon: " + WitchMarker.WITCH_PORTRAIT_LIMIT);
+                }
+                if (GUILayout.Button("set sprite limit to 10"))
+                {
+                    WitchMarker.WITCH_AVATAR_LIMIT = 10;
+                    WitchMarker.WITCH_PORTRAIT_LIMIT = 10;
+                    Debug.Log("avatar: " + WitchMarker.WITCH_AVATAR_LIMIT + "\nicon: " + WitchMarker.WITCH_PORTRAIT_LIMIT);
+                }
+
                 using (new BoxScope())
                 {
                     m_StatusId = EditorGUILayout.TextField(m_StatusId);
@@ -420,22 +437,6 @@ namespace Raincrow.Test
                     string debug = "[" + PlayerDataManager.playerData.instance + "] " + PlayerDataManager.playerData.name + "\n";
                     debug += SerializeObj(PlayerDataManager.playerData);
                     Debug.Log(debug);
-                }
-
-                if (GUILayout.Button("Pop Notification"))
-                {
-                    Sprite spr = null;
-                    AvatarSpriteUtil.Instance.GeneratePortrait(
-                        PlayerDataManager.playerData.male,
-                        PlayerDataManager.playerData.equipped, _spr =>
-                        {
-                            spr = _spr;
-
-                            PlayerNotificationManager.Instance.ShowNotification(
-                                Random.Range(0f, 100000f) + " notifcation dsaoidh aso´bd hsaodh saodh aso dhasohsoádhas oídha odha dohas dosadgoás",
-                                spr
-                            );
-                        });
                 }
 
                 if (GUILayout.Button("Skip tutorial"))

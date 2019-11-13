@@ -266,8 +266,12 @@ public class MarkerManagerAPI : MonoBehaviour
     public static void SpawnMarkers(List<WitchToken> witches, List<SpiritToken> spirits, List<CollectableToken> items, List<EnergyToken> energies, List<PopToken> pops)
     {
         //finaly add/update markers
+
         if (m_SpawnCoroutine != null)
             m_Instance.StopCoroutine(m_SpawnCoroutine);
+        
+        //stop avatar generation
+        AvatarSpriteUtil.Instance.ClearQueues();
 
         m_SpawnCoroutine = m_Instance.StartCoroutine(SpawnMarkersCoroutine(witches, spirits, items, energies, pops));
     }

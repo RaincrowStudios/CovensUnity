@@ -64,6 +64,7 @@ namespace Raincrow.Maps
             LeanTween.cancel(m_MoveTweenId);
 
             OnClick = null;
+            Token = null;
 
             for (int i = 0; i < m_SpawnedItems.Count; i++)
             {
@@ -348,6 +349,21 @@ namespace Raincrow.Maps
         public virtual void OnExpireStatusEffect(StatusEffect effect)
         {
 
+        }
+
+        public virtual void OnEnterMapView()
+        {
+            //marker.SetAlpha(0);
+            SetAlpha(Alpha);
+            SetAlpha(1, 1f);
+            gameObject.SetActive(true);
+            inMapView = true;
+        }
+
+        public virtual void OnLeaveMapView()
+        {
+            SetAlpha(0, 1f, () => gameObject.SetActive(false));
+            inMapView = false;
         }
 
 

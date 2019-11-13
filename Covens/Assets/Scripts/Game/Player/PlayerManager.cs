@@ -219,8 +219,8 @@ public class PlayerManager : MonoBehaviour
 
     public void OnUpdateEquips(System.Action callback = null)
     {
-        witchMarker.SetupAvatar(PlayerDataManager.playerData.male, PlayerDataManager.playerData.equipped, (spr) => callback?.Invoke());
-        witchMarker.SetupPortrait(PlayerDataManager.playerData.male, PlayerDataManager.playerData.equipped);
+        witchMarker.GenerateAvatar((spr) => callback?.Invoke(), true);
+        witchMarker.GeneratePortrait(null, true);
     }
 
     private void OnStartFlying()

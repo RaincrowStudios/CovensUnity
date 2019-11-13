@@ -378,6 +378,8 @@ MonoBehaviour:
   m_Level: {fileID: 114955874805477328}
   m_MaleMannequin: {fileID: 21300000, guid: 87384e0c611a7214981fd2c0681fc3a7, type: 3}
   m_FemaleMannequin: {fileID: 21300000, guid: ad18d58bf56f9ba4c9689a0eb048ae1c, type: 3}
+  m_MalePortrait: {fileID: 21300000, guid: 5991068030d0c5d4ebe9d867f8f90a37, type: 3}
+  m_FemalePortrait: {fileID: 21300000, guid: 8ec6b651fc8531247b999938cc618a85, type: 3}
 --- !u!1 &1357364774846178
 GameObject:
   m_ObjectHideFlags: 0
@@ -639,7 +641,7 @@ GameObject:
   - component: {fileID: 4511603883127518}
   - component: {fileID: 212179545891570306}
   m_Layer: 20
-  m_Name: Sprite
+  m_Name: AvatarSprite
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -911,7 +913,7 @@ GameObject:
   - component: {fileID: 212460677584067914}
   - component: {fileID: 65052902465193014}
   m_Layer: 20
-  m_Name: Sprite
+  m_Name: IconSprite
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

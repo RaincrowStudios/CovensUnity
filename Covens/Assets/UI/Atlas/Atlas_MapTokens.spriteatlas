@@ -76,14 +76,16 @@ SpriteAtlas:
     - {fileID: 2800000, guid: 3e59896aa4d35d544ad535a0d3762954, type: 3}
     - {fileID: 2800000, guid: 82ce0374242ea7148931632aa8dbd4b2, type: 3}
     - {fileID: 2800000, guid: 6ab346d49e0385c4585b4443d45ddd66, type: 3}
-    totalSpriteSurfaceArea: 705232
+    totalSpriteSurfaceArea: 713424
     bindAsDefault: 1
   m_MasterAtlas: {fileID: 0}
   m_PackedSprites:
   - {fileID: 21300000, guid: 2e200b00bbea5da4294d638e9f281ab4, type: 3}
   - {fileID: 21300000, guid: 55b21c00609e34347858082c6adb0b1b, type: 3}
+  - {fileID: 21300000, guid: 5991068030d0c5d4ebe9d867f8f90a37, type: 3}
   - {fileID: 21300000, guid: 130e63c023d0c574293578ebd36bf423, type: 3}
   - {fileID: 21300000, guid: 8f2c7041327245f48bb12f2b9afd2bff, type: 3}
+  - {fileID: 21300000, guid: 8ec6b651fc8531247b999938cc618a85, type: 3}
   - {fileID: 21300000, guid: 01e5476169e172446bb8f681fdb399e6, type: 3}
   - {fileID: 21300000, guid: cb51fce1d522a524982c2274687ada24, type: 3}
   - {fileID: 21300000, guid: 264dad0343adf0c4ea8c5a48976da2e3, type: 3}
@@ -113,8 +115,10 @@ SpriteAtlas:
   m_PackedSpriteNamesToIndex:
   - Icon_Death
   - Gem
+  - mannequin_male_portrait
   - Places of Power Crests-SHADOW_ALPHA
   - orbitSmall
+  - mannequin_female_portait
   - Shadow01
   - Nameplate
   - moonFade

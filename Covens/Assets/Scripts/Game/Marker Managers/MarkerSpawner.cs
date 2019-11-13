@@ -274,6 +274,7 @@ public class MarkerSpawner : MarkerManager
         //show the basic available info, and waut for the map/select response to fill the details
         if (Data.Type == MarkerType.WITCH)
         {
+            (m as WitchMarker).GenerateAvatar();
             UIQuickCast.Open();
             UIQuickCast.UpdateCanCast(m, null);
             UIPlayerInfo.Show(m as WitchMarker, Data as WitchToken, UIQuickCast.Close);
@@ -461,17 +462,15 @@ public class MarkerSpawner : MarkerManager
 
             if (!marker.inMapView)
             {
-                marker.SetAlpha(0);
-                marker.SetAlpha(1, 1f);
-                marker.GameObject.SetActive(true);
                 marker.inMapView = true;
+                marker.OnEnterMapView();
             }
             UpdateMarker(marker, scale);
         }
         else if (marker.inMapView)
         {
             marker.inMapView = false;
-            marker.SetAlpha(0, 1f, () => marker.GameObject.SetActive(false));
+            marker.OnLeaveMapView();
         }
     }
 

@@ -39,5 +39,7 @@ namespace Raincrow.Maps
         bool isNull { get; }
         void OnDespawn();
         void UpdateRenderers();
+        void OnEnterMapView();
+        void OnLeaveMapView();
     }
 }
