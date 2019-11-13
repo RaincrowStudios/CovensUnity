@@ -424,11 +424,10 @@ public class WitchMarker : CharacterMarker
     {
         base.OnLeaveMapView();
 
-        if (GeneratedAvatarCount >= WITCH_AVATAR_LIMIT/2)
-            DestroyGeneratedAvatar();
-
-        if (GeneratedPortraitCount >= WITCH_PORTRAIT_LIMIT/2)
-            DestroyGeneratedPortrait();
+#if LIMIT_GENERATED_SPRITES
+        DestroyGeneratedAvatar();
+        DestroyGeneratedPortrait();
+#endif
 
         IsShowingAvatar = false;
         IsShowingIcon = false;
