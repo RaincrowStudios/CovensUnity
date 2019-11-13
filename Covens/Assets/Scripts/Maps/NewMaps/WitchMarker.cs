@@ -433,7 +433,7 @@ public class WitchMarker : CharacterMarker
         IsShowingIcon = false;
     }
 
-    private void DestroyGeneratedAvatar()
+    public void DestroyGeneratedAvatar()
     {
         if (GeneratedAvatars.ContainsKey(Token.Id) && GeneratedAvatars[Token.Id] != null)
         {
@@ -446,7 +446,7 @@ public class WitchMarker : CharacterMarker
         m_AvatarRenderer.sprite = null;
     }
 
-    private void DestroyGeneratedPortrait()
+    public void DestroyGeneratedPortrait()
     {
         if (GeneratedPortraits.ContainsKey(Token.Id) && GeneratedPortraits[Token.Id] != null)
         {

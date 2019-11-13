@@ -30,9 +30,12 @@ public class LoadPlayerPortrait : MonoBehaviour {
 
         while (AvatarSpriteUtil.Instance == null)
             yield return 0;
-
+        
         AvatarSpriteUtil.Instance.GenerateWardrobePortrait(spr =>
         {
+            if (m_Image.overrideSprite != null)
+                Destroy(m_Image.overrideSprite.texture);
+
             m_Image.overrideSprite = spr;
             LeanTween.value(0, 1, 1f)
             .setEaseOutCubic()

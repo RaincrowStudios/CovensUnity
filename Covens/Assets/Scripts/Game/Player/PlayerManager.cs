@@ -219,7 +219,10 @@ public class PlayerManager : MonoBehaviour
 
     public void OnUpdateEquips(System.Action callback = null)
     {
+        witchMarker.DestroyGeneratedAvatar();
         witchMarker.GenerateAvatar((spr) => callback?.Invoke(), true);
+
+        witchMarker.DestroyGeneratedPortrait();
         witchMarker.GeneratePortrait(null, true);
     }
 
