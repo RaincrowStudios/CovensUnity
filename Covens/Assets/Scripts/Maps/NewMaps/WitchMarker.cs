@@ -1,4 +1,4 @@
-﻿//#define LIMIT_GENERATED_SPRITES
+﻿#define LIMIT_GENERATED_SPRITES
 using UnityEngine;
 using System.Collections;
 using Raincrow.Maps;
