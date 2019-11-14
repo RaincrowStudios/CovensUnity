@@ -199,7 +199,7 @@ namespace Raincrow.GameEventResponses
                             //SpellcastingFX.SpawnGlyph(target, spell, data.spell);
                             SpellcastingFX.SpawnEnergyChange(target, energyChange, data.result.isCritical ? 1.4f : 1f);
                         }
-                        else
+                        else if (playerIsCaster)
                         {
                             SpellcastingFX.SpawnFail(target);
                         }

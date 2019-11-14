@@ -224,6 +224,9 @@ public class MapView : MonoBehaviour
         BackButtonListener.onPressBackBtn -= OnPressBackBtn;
 
         InMapView = false;
+
+        //force despawn markers
+        MarkerManagerAPI.SpawnMarkers(new List<WitchToken>(), new List<SpiritToken>(), new List<CollectableToken>(), new List<EnergyToken>(), new List<PopToken>());
     }
 
     private void OnLeavePoP()
@@ -248,7 +251,5 @@ public class MapView : MonoBehaviour
         BackButtonListener.onPressBackBtn += OnPressBackBtn;
 
         InMapView = true;
-
-        //PlayerManager.Instance.OnUpdateEquips(() => PlayerManager.witchMarker.EnableAvatar());
     }
 }
