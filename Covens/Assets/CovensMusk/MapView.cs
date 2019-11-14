@@ -248,5 +248,7 @@ public class MapView : MonoBehaviour
         BackButtonListener.onPressBackBtn += OnPressBackBtn;
 
         InMapView = true;
+
+        PlayerManager.Instance.OnUpdateEquips(() => PlayerManager.witchMarker.EnableAvatar());
     }
 }

@@ -185,6 +185,8 @@ public class UIWaitingCastResult : UIInfoPanel
 
     public void ShowResults(SpellData spell, Raincrow.GameEventResponses.SpellCastHandler.Result result)
     {
+        SpellCastHandler.OnSpellCast -= SpellCastHandler_OnSpellCast;
+
         if (result.isSuccess)
         {
             DegreeSetup();

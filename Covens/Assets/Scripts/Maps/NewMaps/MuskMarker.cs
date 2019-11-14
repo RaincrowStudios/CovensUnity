@@ -64,7 +64,7 @@ namespace Raincrow.Maps
             LeanTween.cancel(m_MoveTweenId);
 
             OnClick = null;
-            Token = null;
+            //Token = null;
 
             for (int i = 0; i < m_SpawnedItems.Count; i++)
             {

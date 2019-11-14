@@ -308,6 +308,16 @@ public class Spellcasting
                     //remove the local cooldown if there was an error
                     CooldownManager.RemoveCooldown(spell.id);
 
+                    if (result == 500)
+                    {
+                        //if internal error, show failed reuslt screen
+                        UIWaitingCastResult.Instance.ShowResults(spell, new SpellCastHandler.Result
+                        {
+
+                        });
+                        return;
+                    }
+
                     UIWaitingCastResult.Instance.Close();
                     
                     //retry
