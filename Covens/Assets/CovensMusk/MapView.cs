@@ -48,8 +48,10 @@ public class MapView : MonoBehaviour
                 PlayerDataManager.playerData.latitude,
                 () =>
                 {
-                    //if (PlayerDataManager.playerData.state == "vulnerable"/* || PlayerDataManager.playerData.state == "dead"*/)
-                    //    _OnPlayerVulnerable();
+                    if (PlayerDataManager.playerData.state == "vulnerable"/* || PlayerDataManager.playerData.state == "dead"*/)
+                        _OnPlayerVulnerable();
+                    if (PlayerDataManager.playerData.state == "dead")
+                        _OnPlayerDead();
                 },
                 true,
                 false,
@@ -75,6 +77,8 @@ public class MapView : MonoBehaviour
         DeathState.Instance.ShowDeath();
 
         MapFlightTransition.Instance.RecallHome(true);
+
+        LowEnergyPopup.Show();
     }
 
     [ContextMenu("_OnPlayerRevived")]
@@ -87,8 +91,7 @@ public class MapView : MonoBehaviour
     [ContextMenu("_OnPlayerVulnerable")]
     private void _OnPlayerVulnerable()
     {
-        //if (LowEnergyPopup.Instance == null)
-        //    Utilities.InstantiateObject(Resources.Load<GameObject>("UILowEnergyPopUp"), null);//, DeathState.Instance.transform);
+        LowEnergyPopup.Show();
     }
 
     private void _OnMapTokenAdd(IMarker marker)
