@@ -37,7 +37,7 @@ SpriteAtlas:
       padding: 2
       blockOffset: 1
       allowAlphaSplitting: 0
-      enableRotation: 0
+      enableRotation: 1
       enableTightPacking: 1
     variantMultiplier: 1
     packables:

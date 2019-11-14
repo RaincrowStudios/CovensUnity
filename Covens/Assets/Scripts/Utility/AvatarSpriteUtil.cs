@@ -48,10 +48,12 @@ public class AvatarSpriteUtil : MonoBehaviour
     {
         if(Instance != null)
         {
-            Debug.LogError("MULTIPLE INSTANCES IN SCENE");
+            Destroy(this.gameObject);
+            return;
         }
 
         Instance = this;
+        DontDestroyOnLoad(this.gameObject);
 
         m_PortraitFrame.enabled = false;
         m_PortraitBackground.enabled = false;
