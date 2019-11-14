@@ -6,13 +6,19 @@ using TMPro;
 
 public class LowEnergyPopup : MonoBehaviour
 {
-    public static LowEnergyPopup Instance { get; set; }
+    private static LowEnergyPopup Instance { get; set; }
 
     [SerializeField] private TextMeshProUGUI m_offerText;
     [SerializeField] private TextMeshProUGUI m_buttonText;
     [SerializeField] private Button m_close;
     [SerializeField] private Button m_continue;
     [SerializeField] private CanvasGroup thisCG;
+
+    public static void Show()
+    {
+        if (LowEnergyPopup.Instance == null)
+            Utilities.InstantiateObject(Resources.Load<GameObject>("UILowEnergyPopUp"), null);
+    }
 
     private void Awake()
     {
@@ -54,32 +60,35 @@ public class LowEnergyPopup : MonoBehaviour
         m_buttonText.text = LocalizeLookUp.GetText("store_accept");
         m_continue.onClick.AddListener(() =>
         {
-            AddEnergy();
+            PurchaseEnergy();
         });
     }
 
     // Update is called once per frame
-    void AddEnergy()
+    public static void PurchaseEnergy(System.Action<string> callback = null)
     {
         LoadingOverlay.Show();
-        Close();
 
         APIManager.Instance.Post("shop/energy", "{}", (response, result) =>
         {
             LoadingOverlay.Hide();
             if (result == 200)
             {
+                Instance.Close();
+
                 PlayerDataManager.playerData.gold -= 1;
-                PlayerDataManager.playerData.energy = PlayerDataManager.playerData.baseEnergy;
+                OnMapEnergyChange.ForceEvent(PlayerManager.marker, PlayerDataManager.playerData.baseEnergy);
 
                 PlayerManagerUI.Instance.UpdateDrachs();
                 PlayerManagerUI.Instance.UpdateEnergy();
 
                 UIGlobalPopup.ShowPopUp(null, LocalizeLookUp.GetText("blessing_full"));
+                callback?.Invoke(null);
             }
             else
             {
                 UIGlobalPopup.ShowError(null, APIManager.ParseError(response));
+                callback?.Invoke(response);
             }
         });
     }

@@ -190,7 +190,7 @@ public class UIStore : MonoBehaviour
 
         SetScreen(Screen.HOME);
 
-        m_RestoreEnergyButton.gameObject.SetActive(/*PlayerDataManager.playerData.state == "vulnerable" ||*/ PlayerDataManager.playerData.state == "dead");
+        m_RestoreEnergyButton.gameObject.SetActive(PlayerDataManager.playerData.state == "vulnerable" || PlayerDataManager.playerData.state == "dead");
     }
 
     [ContextMenu("Close")]
@@ -507,24 +507,24 @@ public class UIStore : MonoBehaviour
 
     private void OnClickRestoreEnergy()
     {
-        //player is already dead so he must be on his phys position
-        //MapFlightTransition.Instance.RecallHome(true);
+        m_RestoreEnergyButton.gameObject.SetActive(false);
+        LowEnergyPopup.Show();
 
-        LoadingOverlay.Show();
-        APIManager.Instance.Post("character/revive", "{}", (response, result) =>
-        {
-            LoadingOverlay.Hide();
-            if (result == 200)
-            {
-                m_RestoreEnergyButton.gameObject.SetActive(false);                        
-                OnMapEnergyChange.ForceEvent(PlayerManager.marker, PlayerDataManager.playerData.baseEnergy);
+        //LoadingOverlay.Show();
+        //APIManager.Instance.Post("character/revive", "{}", (response, result) =>
+        //{
+        //    LoadingOverlay.Hide();
+        //    if (result == 200)
+        //    {
+        //        m_RestoreEnergyButton.gameObject.SetActive(false);                        
+        //        OnMapEnergyChange.ForceEvent(PlayerManager.marker, PlayerDataManager.playerData.baseEnergy);
 
-                UIGlobalPopup.ShowPopUp(() => Close(), LocalizeLookUp.GetText("blessing_full"));
-            }
-            else
-            {
-                UIGlobalPopup.ShowError(null, APIManager.ParseError(response));
-            }
-        });
+        //        UIGlobalPopup.ShowPopUp(() => Close(), LocalizeLookUp.GetText("blessing_full"));
+        //    }
+        //    else
+        //    {
+        //        UIGlobalPopup.ShowError(null, APIManager.ParseError(response));
+        //    }
+        //});
     }
 }
