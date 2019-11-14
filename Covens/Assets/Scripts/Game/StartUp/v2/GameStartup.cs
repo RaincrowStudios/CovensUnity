@@ -358,6 +358,7 @@ public class GameStartup : MonoBehaviour
             }
             else
             {
+
                 UIDominionSplash.Instance.Show(() =>
                 {
                     if (Raincrow.FTF.FirstTapManager.IsFirstTime("nextpoplaunch"))
@@ -371,6 +372,7 @@ public class GameStartup : MonoBehaviour
 
                     ReviewPopupController.Init();
                 });
+
             }
         }
     }

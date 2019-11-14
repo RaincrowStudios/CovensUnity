@@ -24,7 +24,7 @@ public class MapView : MonoBehaviour
 
         while (PlayerDataManager.playerData == null)
             yield return null;
-        
+
         OnLeavePoP();
 
         LocationIslandController.OnEnterLocation += OnEnterPoP;
@@ -32,7 +32,7 @@ public class MapView : MonoBehaviour
 
         SpiritDicoveredHandler.OnSpiritDiscovered += _OnSpiritDiscovered;
         SpiritBanishedHandler.OnSpiritBanished += _OnSpiritBanished;
-        
+
         LineRendererBasedDome.Instance.Setup(PlayerDataManager.DisplayRadius * MapsAPI.Instance.OneKmInWorldspace);
 
         WaitSocketConnection();
@@ -44,8 +44,8 @@ public class MapView : MonoBehaviour
         {
             //get the markers at the current position
             MarkerManagerAPI.GetMarkers(
-                PlayerDataManager.playerData.longitude,
-                PlayerDataManager.playerData.latitude,
+               PushManager.flyToPop ? (float)PushManager.longitude : PlayerDataManager.playerData.longitude,
+                 PushManager.flyToPop ? (float)PushManager.latitude : PlayerDataManager.playerData.latitude,
                 () =>
                 {
                     if (PlayerDataManager.playerData.state == "vulnerable"/* || PlayerDataManager.playerData.state == "dead"*/)
@@ -125,7 +125,7 @@ public class MapView : MonoBehaviour
     {
         marker.SetWorldPosition(position, 2f);
     }
-        
+
     private void _OnSpiritExpire(IMarker marker)
     {
         MarkerSpawner.DeleteMarker(marker.Token.instance);
@@ -161,7 +161,7 @@ public class MapView : MonoBehaviour
     {
         if (FTFManager.InFTF)
             return;
-        
+
         //if another UI is open, wait and try to show again
         if (UISpiritBanished.IsOpen || UISpiritDiscovered.IsOpen)
         {
