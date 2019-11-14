@@ -65,8 +65,7 @@ public abstract class CharacterMarker : MuskMarker
         if (IsShowingIcon)
             return;
 
-        if (m_IconRenderer.sprite == null)
-            SetupIcon();
+        SetupIcon();
 
         IsShowingIcon = true;
         IsShowingAvatar = false;
@@ -96,8 +95,7 @@ public abstract class CharacterMarker : MuskMarker
         if (IsShowingAvatar)
             return;
 
-        if (m_AvatarRenderer.sprite == null)
-            SetupAvatar();
+        SetupAvatar();
 
         IsShowingAvatar = true;
         IsShowingIcon = false;
