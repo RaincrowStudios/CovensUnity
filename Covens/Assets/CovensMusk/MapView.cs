@@ -249,6 +249,6 @@ public class MapView : MonoBehaviour
 
         InMapView = true;
 
-        PlayerManager.Instance.OnUpdateEquips(() => PlayerManager.witchMarker.EnableAvatar());
+        //PlayerManager.Instance.OnUpdateEquips(() => PlayerManager.witchMarker.EnableAvatar());
     }
 }
