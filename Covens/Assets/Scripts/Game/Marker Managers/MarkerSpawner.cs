@@ -440,8 +440,7 @@ public class MarkerSpawner : MarkerManager
     {
         if (PlayerManager.marker != null)
         {
-            PlayerManager.marker.GameObject.SetActive(m_StreetLevel);
-            //  Debug.Log("setting playerMarker");
+            PlayerManager.marker.GameObject.SetActive(true);
             PlayerManager.marker.GameObject.transform.localScale = new Vector3(m_MarkerScale, m_MarkerScale, m_MarkerScale);
             PlayerManager.marker.AvatarTransform.rotation = MapsAPI.Instance.camera.transform.rotation;
         }
@@ -472,24 +471,33 @@ public class MarkerSpawner : MarkerManager
 
     public static void UpdateMarker(IMarker marker, bool portraitMode, bool streetLevel, float scale)
     {
-        if (streetLevel && MapsAPI.Instance.IsPointInsideView(marker.GameObject.transform.position))
-        {
-            if (portraitMode)
-                marker.EnablePortait();
-            else
-                marker.EnableAvatar();
+        UpdateMarker(marker, scale);
 
-            if (!marker.inMapView)
-            {
-                marker.inMapView = true;
-                marker.OnEnterMapView();
-            }
-            UpdateMarker(marker, scale);
-        }
-        else if (marker.inMapView)
+        if (streetLevel)
         {
+            if (MapsAPI.Instance.IsPointInsideView(marker.GameObject.transform.position))
+            {
+                if (portraitMode)
+                    marker.EnablePortait();
+                else
+                    marker.EnableAvatar();
+
+                if (!marker.inMapView)
+                {
+                    marker.inMapView = true;
+                    marker.OnEnterMapView();
+                }
+            }
+            else if (marker.inMapView)
+            {
+                marker.inMapView = false;
+                marker.OnLeaveMapView();
+            }
+        }
+        else
+        {
+            marker.GameObject.SetActive(false);
             marker.inMapView = false;
-            marker.OnLeaveMapView();
         }
     }
 

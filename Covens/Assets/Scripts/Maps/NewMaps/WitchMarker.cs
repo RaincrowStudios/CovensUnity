@@ -34,15 +34,8 @@ public class WitchMarker : CharacterMarker
             return;
         }
 
-        //portrait was already generated
-        if (GeneratedPortraits.ContainsKey(Token.Id) && GeneratedPortraits[Token.Id] != null)
-        {
-            callback.Invoke(GeneratedPortraits[Token.Id]);
-            return;
-        }
-
         //generate the portrait
-        GeneratePortrait(callback);
+        GeneratePortrait(callback, true);
     }
 
     public static int WITCH_AVATAR_LIMIT
@@ -122,7 +115,7 @@ public class WitchMarker : CharacterMarker
         m_AvatarRenderer.color = new Color(0, 0, 0, m_AvatarRenderer.color.a);
 
 #if LIMIT_GENERATED_SPRITES
-        if (GeneratedAvatars.Count >= WITCH_AVATAR_LIMIT)
+        if (GeneratedAvatars.Count >= WITCH_AVATAR_LIMIT && !GeneratedAvatars.ContainsKey(Token.Id))
         {
             return;
         }
@@ -136,7 +129,7 @@ public class WitchMarker : CharacterMarker
         m_IconRenderer.sprite = witchToken.male ? m_MalePortrait : m_FemalePortrait;
 
 #if LIMIT_GENERATED_SPRITES
-        if (GeneratedPortraits.Count >= WITCH_PORTRAIT_LIMIT)
+        if (GeneratedPortraits.Count >= WITCH_PORTRAIT_LIMIT && !GeneratedPortraits.ContainsKey(Token.Id))
         {
             return;
         }
@@ -209,7 +202,7 @@ public class WitchMarker : CharacterMarker
 
     private void OnGenerateAvatar(Sprite spr, System.Action<Sprite> callback)
     {
-        if (m_AvatarRenderer.gameObject.activeSelf)
+        if (MarkerSpawner.GetMarker(Token.Id) != null)
         {
             //destroy old avatar in case the generation started without destroying it
             DestroyGeneratedAvatar();
@@ -224,7 +217,7 @@ public class WitchMarker : CharacterMarker
 
             callback?.Invoke(spr);
         }
-        else
+        else //the gameobject was despawned
         {
             Destroy(spr.texture);
             callback?.Invoke(null);
@@ -233,7 +226,7 @@ public class WitchMarker : CharacterMarker
 
     private void OnGeneratedPortrait(Sprite spr, System.Action<Sprite> callback)
     {
-        if (m_IconRenderer.gameObject.activeSelf)
+        if (MarkerSpawner.GetMarker(Token.Id) != null)
         {
             DestroyGeneratedPortrait();
             GeneratedPortraits[Token.Id] = spr;
@@ -264,8 +257,12 @@ public class WitchMarker : CharacterMarker
     {
         LeanTween.cancel(m_AvatarColorTweenId);
 
-        DestroyGeneratedAvatar();
-        DestroyGeneratedPortrait();
+        //dont destroy in case its being used by another marker
+        if (MarkerSpawner.GetMarker(Token.Id) == null)
+        {
+            DestroyGeneratedAvatar();
+            DestroyGeneratedPortrait();
+        }
 
         if (m_DeathIcon != null)
         {
@@ -414,9 +411,9 @@ public class WitchMarker : CharacterMarker
     {
         base.OnEnterMapView();
 
-        if (IsShowingAvatar && m_AvatarRenderer.sprite == null)
+        if (IsShowingAvatar)
             SetupAvatar();
-        if (IsShowingIcon && m_IconRenderer.sprite == null)
+        if (IsShowingIcon)
             SetupIcon();
     }
 

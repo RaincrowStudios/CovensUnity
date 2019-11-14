@@ -17,8 +17,8 @@ namespace Raincrow.Maps
         public virtual Transform AvatarTransform { get { return transform; } }
 
         public MarkerManager.MarkerType Type { get; private set; }
-        public bool IsShowingIcon { get; protected set; }
-        public bool IsShowingAvatar { get; protected set; }
+        public bool IsShowingIcon { get; set; }
+        public bool IsShowingAvatar { get; set; }
 
         public Vector2 Coords { get; set; }
         public System.Action<IMarker> OnClick { get; set; }
@@ -364,6 +364,8 @@ namespace Raincrow.Maps
         {
             SetAlpha(0, 1f, () => gameObject.SetActive(false));
             inMapView = false;
+            IsShowingAvatar = false;
+            IsShowingIcon = false;
         }
 
 

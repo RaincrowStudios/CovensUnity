@@ -92,6 +92,19 @@ public class MarkerManagerAPI : MonoBehaviour
         System.Action requestMarkers = () => { };
         IsSpawningTokens = true;
         IsSpiritForm = !isPhysical;
+        
+        //////////////////////////////////////////remove any other markers
+        
+        //Dictionary<string, List<IMarker>>.ValueCollection values = MarkerSpawner.Markers.Values;
+        //List<string> toRemove = new List<string>();
+
+        //foreach (List<IMarker> marker in values)
+        //    toRemove.Add(marker[0].Token.Id);
+
+        //foreach (string id in toRemove)
+        //    MarkerSpawner.DeleteMarker(id);
+
+        ////////////////////////////////////////
 
         string timestamp = m_LastRequestTime = Time.time.ToString();
         requestMarkers = () =>
@@ -118,6 +131,10 @@ public class MarkerManagerAPI : MonoBehaviour
                 callback?.Invoke();
             });
         };
+
+        //stop despawning markers
+        if (m_SpawnCoroutine != null)
+            m_Instance.StopCoroutine(m_SpawnCoroutine);
 
         //pre-move the player marker and load the map at the target position
         if (loadMap)
@@ -266,9 +283,6 @@ public class MarkerManagerAPI : MonoBehaviour
     public static void SpawnMarkers(List<WitchToken> witches, List<SpiritToken> spirits, List<CollectableToken> items, List<EnergyToken> energies, List<PopToken> pops)
     {
         //finaly add/update markers
-
-        if (m_SpawnCoroutine != null)
-            m_Instance.StopCoroutine(m_SpawnCoroutine);
         
         //stop avatar generation
         AvatarSpriteUtil.Instance.ClearQueues();
@@ -291,7 +305,7 @@ public class MarkerManagerAPI : MonoBehaviour
             if (aux != null)
                 updatedMarkers.Add(aux);
         }
-        yield return null;
+        //yield return null;
 
         Debug.Log($"spawning collectables: {items.Count}");
         for (int i = 0; i < items.Count; i++)
@@ -300,7 +314,7 @@ public class MarkerManagerAPI : MonoBehaviour
             if (aux != null)
                 updatedMarkers.Add(aux);
         }
-        yield return null;
+        //yield return null;
 
         Debug.Log($"spawning spirits: {spirits.Count}");
         for (int i = 0; i < spirits.Count; i++)
@@ -310,14 +324,8 @@ public class MarkerManagerAPI : MonoBehaviour
             aux = MarkerSpawner.Instance.AddMarker(spirits[i]);
             if (aux != null)
                 updatedMarkers.Add(aux);
-
-            //wait 5 frames
-            //auxI = 0;
-            //while (auxI < 5)
-            //{
-                yield return null;
-            //    auxI++;
-            //}
+            
+            //yield return null;
         }
 
         Debug.Log($"spawning witches: {witches.Count}");
@@ -326,14 +334,8 @@ public class MarkerManagerAPI : MonoBehaviour
             aux = MarkerSpawner.Instance.AddMarker(witches[i]);
             if (aux != null)
                 updatedMarkers.Add(aux);
-
-            ////wait 5 frames
-            //auxI = 0;
-            //while (auxI < 5)
-            //{
-                yield return null;
-            //    auxI++;
-            //}
+            
+            //yield return null;
         }
 
 
@@ -343,29 +345,30 @@ public class MarkerManagerAPI : MonoBehaviour
             aux = MarkerSpawner.Instance.AddMarker(energies[i]);
             if (aux != null)
                 updatedMarkers.Add(aux);
-            yield return null;
+            //yield return null;
         }
 
-        //remove any other markers
+        ////////////////////////////////////////remove any other markers
+
         Dictionary<string, List<IMarker>>.ValueCollection values = MarkerSpawner.Markers.Values;
         List<string> toRemove = new List<string>();
+
         foreach (List<IMarker> marker in values)
         {
-            if (updatedMarkers.Contains(marker[0]))
-                continue;
-
-            toRemove.Add(marker[0].Token.Id);
+            if (!updatedMarkers.Contains(marker[0]))
+                toRemove.Add(marker[0].Token.Id);
         }
 
-        Debug.Log($"removing old markers: {toRemove.Count}");
+        Debug.Log($"despawning tokens: {toRemove.Count}");
+
         foreach (string id in toRemove)
-        {
             MarkerSpawner.DeleteMarker(id);
-            yield return null;
-        }
-        
+
+        //////////////////////////////////////
+
         m_SpawnCoroutine = null;
         IsSpawningTokens = false;
+        yield return null;
     }
 }
 

@@ -30,6 +30,7 @@ public class MapCenterPointerUI : MonoBehaviour
         m_PointerTransform.gameObject.SetActive(false);
         m_PointerCavnasGroup.alpha = 0;
         m_PhysicalCenter.alpha = 0;
+        m_Portrait.gameObject.SetActive(true);
     }
 
     private IEnumerator Start()
@@ -87,24 +88,19 @@ public class MapCenterPointerUI : MonoBehaviour
 
     private void ShowPointer()
     {
+        m_PointerTransform.gameObject.SetActive(true);
+
         if (m_ShowingPointer)
+        {
             return;
+        }
 
         if (PlayerManager.witchMarker)
         {
-            PlayerManager.witchMarker.GetPortrait(spr =>
-            {
-                m_Portrait.sprite = spr;
-                m_Portrait.gameObject.SetActive(true);
-            });
-        }
-        else
-        {
-            m_Portrait.gameObject.SetActive(false);
+            PlayerManager.witchMarker.GetPortrait(spr => m_Portrait.overrideSprite = spr);
         }
 
         m_ShowingPointer = true;
-        m_PointerTransform.gameObject.SetActive(true);
 
         LeanTween.cancel(m_TweenId);
         m_TweenId = LeanTween.value(0, 1, 0.5f)
@@ -119,8 +115,12 @@ public class MapCenterPointerUI : MonoBehaviour
 
     private void HidePointer()
     {
+        m_PointerTransform.gameObject.SetActive(false);
+
         if (!m_ShowingPointer)
+        {
             return;
+        }
 
         m_ShowingPointer = false;
 

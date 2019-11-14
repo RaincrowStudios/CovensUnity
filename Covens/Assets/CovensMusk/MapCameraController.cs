@@ -187,6 +187,7 @@ public class MapCameraController : MonoBehaviour
             .setOnComplete(() =>
             {
                 EnableControl(true);
+                onUpdate?.Invoke(false, true, true);
             })
             .uniqueId;
     }
