@@ -20,7 +20,7 @@ public class OnLocationOpen : IGameEventHandler
     {
         var data = JsonConvert.DeserializeObject<OpenData>(eventData);
 
-        if (MarkerSpawner.Markers.ContainsKey(data.id) && BackButtonListener.ActionCount == 0)
+        if (MarkerSpawner.Markers.ContainsKey(data.id) && BackButtonListener.ActionCount == 0 && !LocationIslandController.isInBattle)
         {
             LoadPOPManager.EnterPOP(data.id);
         }

@@ -105,7 +105,7 @@ public class MultiKeyDictionary<TKey1, TKey2, TValue>
                 return Key1Dictionary[key1];
             else
             {
-                Debug.LogError("Key Not found " + key1 + " \n " + key2);
+                Debug.Log("Key Not found " + key1 + " \n " + key2);
                 return default(TValue);
             }
         }
