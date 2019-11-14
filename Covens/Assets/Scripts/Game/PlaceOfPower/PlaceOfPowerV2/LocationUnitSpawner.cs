@@ -352,6 +352,17 @@ public class LocationUnitSpawner : MonoBehaviour
         }
     }
 
+    public void DespawnMarkers()
+    {
+        foreach (var item in Markers)
+        {
+            if (item.Value.Type == MarkerType.WITCH) m_WitchPool.Despawn(item.Value.GameObject.transform);
+            else if (item.Value.Type == MarkerType.SPIRIT) m_SpiritPool.Despawn(item.Value.GameObject.transform);
+            item.Value.OnDespawn();
+        }
+        Markers.Clear();
+    }
+
     public void RemoveAllMarkers()
     {
         foreach (var item in Markers)

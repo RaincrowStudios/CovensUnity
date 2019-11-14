@@ -143,6 +143,7 @@ public class LocationIslandController : MonoBehaviour
         OnMapEnergyChange.OnEnergyChange -= HandleEnergyZero;
         isInBattle = false;
         PlayerDataManager.playerData.insidePlaceOfPower = false;
+        instance.locationUnitSpawner.DespawnMarkers();
     }
 
     private static void WitchJoined(WitchToken token)
@@ -244,7 +245,6 @@ public class LocationIslandController : MonoBehaviour
 
     private static void OnReward(RewardHandlerPOP.RewardPOPData rewardData)
     {
-        Debug.Log("REWARD!!!");
         PlayerDataManager.playerData.xp += (ulong)rewardData.xp;
         PlayerDataManager.playerData.gold += rewardData.gold;
         PlayerManagerUI.Instance.UpdateDrachs();

@@ -33,6 +33,13 @@ public class PushManager : MonoBehaviour
     // Gets called when the player opens the notification.
     private static void HandleNotificationOpened(OSNotificationOpenedResult result)
     {
-
+        OSNotificationPayload payload = result.notification.payload;
+        Dictionary<string, object> additionalData = payload.additionalData;
+        Debug.Log("PUSH OPENED");
+        foreach (var item in additionalData)
+        {
+            Debug.Log(item.Key);
+            Debug.Log(item.Value);
+        }
     }
 }
