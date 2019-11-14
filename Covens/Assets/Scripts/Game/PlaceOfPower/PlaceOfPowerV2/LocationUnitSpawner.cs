@@ -581,7 +581,10 @@ public class LocationUnitSpawner : MonoBehaviour
 
     public static void EnableMarkers()
     {
-        UIQuickCast.Close();
+        if (UIQuickCast.IsOpen)
+        {
+            UIQuickCast.Close();
+        }
         foreach (var item in Markers)
         {
             item.Value.SetAlpha(1, 1);

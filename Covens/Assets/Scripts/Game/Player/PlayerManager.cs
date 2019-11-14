@@ -26,12 +26,12 @@ public class PlayerManager : MonoBehaviour
     public static float reinitTime = 50;
 
     public GameObject AtLocation_UI;
-    
+
     private static IMarker m_Marker;
 
     public static IMarker marker => LocationIslandController.isInBattle ? LocationPlayerAction.playerMarker : m_Marker;
     public static WitchMarker witchMarker => marker as WitchMarker;
-    
+
     public static bool inSpiritForm { get => MarkerManagerAPI.IsSpiritForm; }
 
     public static bool isFlying { get => !MapsAPI.Instance.streetLevel; }
@@ -84,7 +84,7 @@ public class PlayerManager : MonoBehaviour
 
         GardenMarkers.instance.SetupGardens();
         SoundManagerOneShot.Instance.PlayWelcome();
-        
+
         if (PlayerDataManager.playerData.state == "dead")
             DeathState.Instance.ShowDeath();
 
@@ -95,7 +95,7 @@ public class PlayerManager : MonoBehaviour
         foreach (var condition in conditions)
             MarkerSpawner.ApplyStatusEffect(PlayerDataManager.playerData.instance, null, condition);
     }
-    
+
     void onMapChangePos()
     {
         SnapMapToPosition = false;
@@ -140,11 +140,15 @@ public class PlayerManager : MonoBehaviour
 
     public void FlyTo(double longitude, double latitude, float minDistance = 0.0003f, float maxDistance = 0.0006f)
     {
+
+        Debug.Log("FLYING!");
         if (DeathState.IsDead || PlayerDataManager.playerData.energy == 0)
             return;
 
         if (BanishManager.isBind)
             return;
+
+
 
         float distance = UnityEngine.Random.Range(minDistance, maxDistance);
         float randAngle = UnityEngine.Random.Range(0, 360) * Mathf.Deg2Rad;
@@ -180,7 +184,7 @@ public class PlayerManager : MonoBehaviour
                 MapCameraUtils.FocusOnPosition(marker.Coords.x, marker.Coords.y, true, 2f);
             else
                 MapCameraUtils.FocusOnPosition(PlayerManager.marker.GameObject.transform.position, true, 2f);
-            
+
             PlayerManager.Instance.atLocationUIShow();
             return;
         }
@@ -190,7 +194,7 @@ public class PlayerManager : MonoBehaviour
 
         MapFlightTransition.Instance.RecallHome();
     }
-    
+
     public void AddAttackRing()
     {
         GameObject selectionRing = marker.GameObject.transform.GetChild(0).GetChild(2).gameObject;

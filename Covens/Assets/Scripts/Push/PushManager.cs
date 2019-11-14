@@ -1,9 +1,14 @@
-﻿using System.Collections;
+﻿using System.Security;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
 public class PushManager : MonoBehaviour
 {
+    public static double latitude { get; private set; }
+    public static double longitude { get; private set; }
+    public static bool flyToPop { get; private set; }
+
     void Awake()
     {
         LoginAPIManager.OnCharacterReceived += InitPush;
@@ -30,16 +35,21 @@ public class PushManager : MonoBehaviour
         }
     }
 
+    public static System.Action OnNotificationReceived;
     // Gets called when the player opens the notification.
     private static void HandleNotificationOpened(OSNotificationOpenedResult result)
     {
         OSNotificationPayload payload = result.notification.payload;
         Dictionary<string, object> additionalData = payload.additionalData;
-        Debug.Log("PUSH OPENED");
-        foreach (var item in additionalData)
+        if (additionalData.ContainsKey("longitude") && additionalData.ContainsKey("latitude"))
         {
-            Debug.Log(item.Key);
-            Debug.Log(item.Value);
+            latitude = (double)(additionalData["latitude"]);
+            longitude = (double)(additionalData["longitude"]);
+            flyToPop = true;
+        }
+        else
+        {
+            flyToPop = false;
         }
     }
 }
