@@ -209,7 +209,7 @@ public class WitchMarker : CharacterMarker
 
     private void OnGenerateAvatar(Sprite spr, System.Action<Sprite> callback)
     {
-        if (Token != null)
+        if (m_AvatarRenderer.gameObject.activeSelf)
         {
             //destroy old avatar in case the generation started without destroying it
             DestroyGeneratedAvatar();
@@ -233,7 +233,7 @@ public class WitchMarker : CharacterMarker
 
     private void OnGeneratedPortrait(Sprite spr, System.Action<Sprite> callback)
     {
-        if (Token != null)
+        if (m_IconRenderer.gameObject.activeSelf)
         {
             DestroyGeneratedPortrait();
             GeneratedPortraits[Token.Id] = spr;
