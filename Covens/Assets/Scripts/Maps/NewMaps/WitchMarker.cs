@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿#define LIMIT_GENERATED_SPRITES
+using UnityEngine;
 using System.Collections;
 using Raincrow.Maps;
 using TMPro;
@@ -11,6 +12,9 @@ public class WitchMarker : CharacterMarker
     [SerializeField] private Sprite m_MaleMannequin;
     [SerializeField] private Sprite m_FemaleMannequin;
 
+    [SerializeField] private Sprite m_MalePortrait;
+    [SerializeField] private Sprite m_FemalePortrait;
+
     public WitchToken witchToken { get => Token as WitchToken; }
 
     public override string Name => witchToken.displayName;
@@ -21,25 +25,49 @@ public class WitchMarker : CharacterMarker
 
     private int m_AvatarColorTweenId;
     
-    public void GetAvatar(System.Action<Sprite> callback)
-    {
-        if (m_AvatarRenderer.sprite != null)
-            callback.Invoke(m_AvatarRenderer.sprite);
-        else
-            SetupAvatar(witchToken.male, witchToken.equipped, callback);
-    }
-
     public void GetPortrait(System.Action<Sprite> callback)
     {
-        if (m_IconRenderer.sprite != null)
-            callback.Invoke(m_IconRenderer.sprite);
-        else
-            SetupPortrait(witchToken.male, witchToken.equipped, callback);
+        //if already despawned, return null
+        if (Token == null)
+        {
+            callback?.Invoke(null);
+            return;
+        }
+
+        //portrait was already generated
+        if (GeneratedPortraits.ContainsKey(Token.Id) && GeneratedPortraits[Token.Id] != null)
+        {
+            callback.Invoke(GeneratedPortraits[Token.Id]);
+            return;
+        }
+
+        //generate the portrait
+        GeneratePortrait(callback);
     }
+
+    public static int WITCH_AVATAR_LIMIT
+    {
+        get => PlayerPrefs.GetInt("Settings.WitchAvatarLimit", 50);
+        set => PlayerPrefs.SetInt("Settings.WitchAvatarLimit", value);
+    }
+
+    public static int WITCH_PORTRAIT_LIMIT
+    {
+        get => PlayerPrefs.GetInt("Settings.WitchPortraitLimit", 50);
+        set => PlayerPrefs.SetInt("Settings.WitchPortraitLimit", value);
+    }
+
+    private static Dictionary<string, Sprite> GeneratedAvatars = new Dictionary<string, Sprite>();
+    private static Dictionary<string, Sprite> GeneratedPortraits = new Dictionary<string, Sprite>();
+
+    public static int GeneratedAvatarCount => GeneratedAvatars.Count;
+    public static int GeneratedPortraitCount => GeneratedPortraits.Count;
 
     public override void Setup(Token data)
     {
         base.Setup(data);
+
+        m_AvatarRenderer.transform.localPosition = Vector3.zero;
 
         m_DisplayName.text = witchToken.displayName;
         UpdateNameplate(m_DisplayName.preferredWidth);
@@ -70,84 +98,153 @@ public class WitchMarker : CharacterMarker
 
     public void UpdateEquips(List<EquippedApparel> equips)
     {
-        //update equip list and generate new textures if visible
+        //update equip list
         witchToken.equipped = equips;
-        
-        if (m_AvatarRenderer != null)
+
+        //destroy old sprites
+        DestroyGeneratedAvatar();
+        DestroyGeneratedPortrait();
+
+        //generate new sprites
+        if (inMapView)
         {
             if (IsShowingAvatar)
-            {
-                SetupAvatar(witchToken.male, witchToken.equipped);
-            }
-            else if (m_AvatarRenderer.sprite != null && m_AvatarRenderer.sprite.texture != null && m_AvatarRenderer.sprite != m_FemaleMannequin && m_AvatarRenderer.sprite != m_MaleMannequin)
-            {
-                Destroy(m_AvatarRenderer.sprite.texture);
-            }
-        }
-
-        if (m_IconRenderer != null)
-        {
+                GenerateAvatar();
             if (IsShowingIcon)
-                SetupPortrait(witchToken.male, witchToken.equipped);
-            else if (m_IconRenderer.sprite != null && m_IconRenderer.sprite.texture != null)
-                Destroy(m_IconRenderer.sprite.texture);
+                GeneratePortrait();
         }
     }
 
     protected override void SetupAvatar()
     {
-        SetupAvatar(witchToken.male, witchToken.equipped);
+        LeanTween.cancel(m_AvatarColorTweenId);
+        m_AvatarRenderer.sprite = witchToken.male ? m_MaleMannequin : m_FemaleMannequin;
+        m_AvatarRenderer.color = new Color(0, 0, 0, m_AvatarRenderer.color.a);
+
+#if LIMIT_GENERATED_SPRITES
+        if (GeneratedAvatars.Count >= WITCH_AVATAR_LIMIT)
+        {
+            return;
+        }
+#endif
+
+        GenerateAvatar();
     }
 
     protected override void SetupIcon()
     {
-        SetupPortrait(witchToken.male, witchToken.equipped);
+        m_IconRenderer.sprite = witchToken.male ? m_MalePortrait : m_FemalePortrait;
+
+#if LIMIT_GENERATED_SPRITES
+        if (GeneratedPortraits.Count >= WITCH_PORTRAIT_LIMIT)
+        {
+            return;
+        }
+#endif
+
+        GeneratePortrait();
     }
 
-    public void SetupAvatar(bool male, List<EquippedApparel> equips, System.Action<Sprite> callback = null)
+    public void GenerateAvatar(System.Action<Sprite> callback = null, bool ignoreQueue = false)
     {
-        LeanTween.cancel(m_AvatarColorTweenId);
-        Sprite mannequin = male ? m_MaleMannequin : m_FemaleMannequin;
-        m_AvatarRenderer.sprite = mannequin;
-        m_AvatarRenderer.color = new Color(0, 0, 0, m_AvatarRenderer.color.a);
-
-        //generate sprites for avatar and icon
-        AvatarSpriteUtil.Instance.GenerateFullbodySprite(male, equips, spr =>
+        //check if it already exists
+        if (GeneratedAvatars.ContainsKey(Token.Id) && GeneratedAvatars[Token.Id] != null)
         {
-            if (m_AvatarRenderer != null)
-            {
-                if (m_AvatarRenderer.sprite != mannequin && m_AvatarRenderer.sprite != null && m_AvatarRenderer.sprite.texture != null)
-                    Destroy(m_AvatarRenderer.sprite.texture);
+            m_AvatarRenderer.sprite = GeneratedAvatars[Token.Id];
 
-                m_AvatarRenderer.transform.localPosition = Vector3.zero;
-                m_AvatarRenderer.sprite = spr;
+            //fade avatar
+            LeanTween.cancel(m_AvatarColorTweenId);
+            m_AvatarColorTweenId = LeanTween.value(m_AvatarRenderer.color.r, 1, 1f)
+              .setOnUpdate((float t) => m_AvatarRenderer.color = new Color(t, t, t, m_AvatarRenderer.color.a))
+              .uniqueId;
 
-                Color aux;
-                m_AvatarColorTweenId = LeanTween.value(0, 1, 1f)
-                    .setOnUpdate((float t) => 
-                    {
-                        m_AvatarRenderer.color = new Color(t, t, t, m_AvatarRenderer.color.a);
-                    })
-                    .uniqueId;
-            }
+            callback?.Invoke(m_AvatarRenderer.sprite);
+            return;
+        }
 
-            callback?.Invoke(spr);
-        });
+        bool male = witchToken.male;
+        List<EquippedApparel> equips = witchToken.equipped;
+        GeneratedAvatars[Token.Id] = null;
+
+        //generate without using the avatar queue
+        if (ignoreQueue)
+        {
+            AvatarSpriteUtil.Instance.GenerateAvatar(
+                male,
+                equips,
+                spr => OnGenerateAvatar(spr, callback));
+        }
+        //use the avatar queue, which is aborted when landing on a new area
+        else
+        {
+            AvatarSpriteUtil.Instance.AddToAvatarQueue(this, (spr) => OnGenerateAvatar(spr, callback));
+        }
     }
 
-    public void SetupPortrait(bool male, List<EquippedApparel> equips, System.Action<Sprite> callback = null)
+    public void GeneratePortrait(System.Action<Sprite> callback = null, bool ignoreQueue = false)
     {
-        AvatarSpriteUtil.Instance.GeneratePortrait(male, equips, spr =>
+        if (GeneratedPortraits.ContainsKey(Token.Id) && GeneratedPortraits[Token.Id] != null)
         {
-            if (m_IconRenderer != null)
-            {
-                if (m_IconRenderer.sprite != null && m_IconRenderer.sprite.texture != null)
-                    Destroy(m_IconRenderer.sprite.texture);
+            m_IconRenderer.sprite = GeneratedPortraits[Token.Id];
+            callback?.Invoke(m_IconRenderer.sprite);
+            return;
+        }
 
-                m_IconRenderer.sprite = spr;
-            }
+        bool male = witchToken.male;
+        List<EquippedApparel> equips = witchToken.equipped;
+        GeneratedPortraits[Token.Id] = null;
+
+        if (ignoreQueue)
+        {
+            AvatarSpriteUtil.Instance.GeneratePortrait(
+                male,
+                equips,
+                spr => OnGeneratedPortrait(spr, callback));
+        }
+        else
+        {
+            AvatarSpriteUtil.Instance.AddToPortraitQueue(this, spr => OnGeneratedPortrait(spr, callback));
+        }
+    }
+
+    private void OnGenerateAvatar(Sprite spr, System.Action<Sprite> callback)
+    {
+        if (Token != null)
+        {
+            //destroy old avatar in case the generation started without destroying it
+            DestroyGeneratedAvatar();
+            //save it
+            GeneratedAvatars[Token.Id] = spr;
+            m_AvatarRenderer.sprite = spr;
+            //fade avatar
+            LeanTween.cancel(m_AvatarColorTweenId);
+            m_AvatarColorTweenId = LeanTween.value(m_AvatarRenderer.color.r, 1, 1f)
+              .setOnUpdate((float t) => m_AvatarRenderer.color = new Color(t, t, t, m_AvatarRenderer.color.a))
+              .uniqueId;
+
             callback?.Invoke(spr);
-        });
+        }
+        else
+        {
+            Destroy(spr.texture);
+            callback?.Invoke(null);
+        }
+    }
+
+    private void OnGeneratedPortrait(Sprite spr, System.Action<Sprite> callback)
+    {
+        if (Token != null)
+        {
+            DestroyGeneratedPortrait();
+            GeneratedPortraits[Token.Id] = spr;
+            m_IconRenderer.sprite = spr;
+            callback?.Invoke(spr);
+        }
+        else
+        {
+            Destroy(spr.texture);
+            callback?.Invoke(null);
+        }
     }
 
     public void SetRingColor()
@@ -166,16 +263,9 @@ public class WitchMarker : CharacterMarker
     public override void OnDespawn()
     {
         LeanTween.cancel(m_AvatarColorTweenId);
-        
-        if (m_AvatarRenderer.sprite != null && 
-            m_AvatarRenderer.sprite != m_MaleMannequin && 
-            m_AvatarRenderer.sprite != m_FemaleMannequin)
-            Destroy(m_AvatarRenderer.sprite.texture);
 
-        m_AvatarRenderer.sprite = null;
-
-        if (m_IconRenderer.sprite != null)
-            Destroy(m_IconRenderer.sprite.texture);
+        DestroyGeneratedAvatar();
+        DestroyGeneratedPortrait();
 
         if (m_DeathIcon != null)
         {
@@ -318,6 +408,55 @@ public class WitchMarker : CharacterMarker
                 m_ChannelingFX = null;
             }
         }
+    }
+
+    public override void OnEnterMapView()
+    {
+        base.OnEnterMapView();
+
+        if (IsShowingAvatar && m_AvatarRenderer.sprite == null)
+            SetupAvatar();
+        if (IsShowingIcon && m_IconRenderer.sprite == null)
+            SetupIcon();
+    }
+
+    public override void OnLeaveMapView()
+    {
+        base.OnLeaveMapView();
+
+#if LIMIT_GENERATED_SPRITES
+        DestroyGeneratedAvatar();
+        DestroyGeneratedPortrait();
+#endif
+
+        IsShowingAvatar = false;
+        IsShowingIcon = false;
+    }
+
+    public void DestroyGeneratedAvatar()
+    {
+        if (GeneratedAvatars.ContainsKey(Token.Id) && GeneratedAvatars[Token.Id] != null)
+        {
+            Sprite spr = GeneratedAvatars[Token.Id];
+            Destroy(spr.texture);
+            Destroy(spr);
+        }
+
+        GeneratedAvatars.Remove(Token.Id);
+        m_AvatarRenderer.sprite = null;
+    }
+
+    public void DestroyGeneratedPortrait()
+    {
+        if (GeneratedPortraits.ContainsKey(Token.Id) && GeneratedPortraits[Token.Id] != null)
+        {
+            Sprite spr = GeneratedPortraits[Token.Id];
+            Destroy(spr.texture);
+            Destroy(spr);
+        }
+
+        GeneratedPortraits.Remove(Token.Id);
+        m_IconRenderer.sprite = null;
     }
 
 #if UNITY_EDITOR

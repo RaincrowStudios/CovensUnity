@@ -15,8 +15,8 @@ SubShader {
     LOD 0
 
 	Cull Back
-	ZWrite On
-	ZTest Always
+	//ZWrite On
+	//ZTest Always
 	
     // Non-lightmapped
     Pass {
