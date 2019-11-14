@@ -18,7 +18,7 @@ public class LoadPlayerPortrait : MonoBehaviour
         if (m_Image == null)
             m_Image = GetComponent<UnityEngine.UI.Image>();
 
-        m_Instance.m_Image.color = new Color(0, 0, 0, 0);
+        m_Instance.m_Image.color = new Color(1, 1, 1, 1);
     }
 
     private void OnEnable()
@@ -33,13 +33,7 @@ public class LoadPlayerPortrait : MonoBehaviour
 
         while (AvatarSpriteUtil.Instance == null)
             yield return null;
-
-        //hide current portrait
-        LeanTween.value(m_Image.color.a, 0, m_Image.color.a/2f)
-                .setOnUpdate((float t) => m_Image.color = new Color(1, 1, 1, t));
-
-        yield return new WaitForSeconds(0.5f);
-
+        
         AvatarSpriteUtil.Instance.GenerateWardrobePortrait(spr =>
         {
             //remove old sprite from memory
@@ -50,11 +44,6 @@ public class LoadPlayerPortrait : MonoBehaviour
             }
             
             m_LastGeneratedSprite = m_Image.overrideSprite = spr;
-
-            //show the portrait
-            LeanTween.value(0, 1, 1f)
-                .setEaseOutCubic()
-                .setOnUpdate((float t) => m_Image.color = new Color(1, 1, 1, t));
         });
     }
 
