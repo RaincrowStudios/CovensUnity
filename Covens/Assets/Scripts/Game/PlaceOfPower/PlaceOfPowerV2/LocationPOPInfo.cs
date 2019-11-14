@@ -210,6 +210,7 @@ public class LocationPOPInfo : UIInfoPanel
         else if (tSec > 0)
         {
             m_TimeTitle.text = tStamp.timeStamp;
+            Debug.Log(tStamp.timeStamp);
             m_TimeSubtitle.text = tStamp.timeType;
             m_Progress.fillAmount = MapUtils.scale(0, 1, 0, m_LocationViewData.coolDownTimeWindow, tSec);
             StartCoroutine(UpdateCooldownTimer());
@@ -355,13 +356,15 @@ public class LocationPOPInfo : UIInfoPanel
     private static (string timeStamp, string timeType) GetTime(double javaTimeStamp)
     {
         TimeSpan timeSpan = GetSpan(javaTimeStamp);
-
-        if (timeSpan.Hours >= 1)
-            return (timeSpan.Hours.ToString(), timeSpan.Hours > 1 ? LocalizeLookUp.GetText("lt_time_hours") : LocalizeLookUp.GetText("lt_time_hour"));
-        else if (timeSpan.Minutes >= 1)
-            return (timeSpan.Minutes.ToString(), timeSpan.Minutes > 1 ? LocalizeLookUp.GetText("lt_time_minutes") : LocalizeLookUp.GetText("lt_time_minute"));
+        Debug.Log(timeSpan.TotalMinutes);
+        Debug.Log(timeSpan.TotalSeconds);
+        // Debug.Log(timeSpan.Seconds);
+        if (timeSpan.TotalHours >= 1)
+            return (Mathf.Ceil((float)timeSpan.TotalHours).ToString(), timeSpan.Hours > 1 ? LocalizeLookUp.GetText("lt_time_hours") : LocalizeLookUp.GetText("lt_time_hour"));
+        else if (timeSpan.TotalMinutes >= 1)
+            return (Mathf.Ceil((float)timeSpan.TotalMinutes).ToString(), timeSpan.Minutes > 1 ? LocalizeLookUp.GetText("lt_time_minutes") : LocalizeLookUp.GetText("lt_time_minute"));
         else
-            return (timeSpan.Seconds.ToString(), timeSpan.Seconds > 1 ? LocalizeLookUp.GetText("lt_time_seconds") : LocalizeLookUp.GetText("lt_time_seconds"));
+            return (Mathf.Ceil((float)timeSpan.TotalSeconds).ToString(), timeSpan.Seconds > 1 ? LocalizeLookUp.GetText("lt_time_seconds") : LocalizeLookUp.GetText("lt_time_seconds"));
 
     }
 
