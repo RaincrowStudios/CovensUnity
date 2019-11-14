@@ -329,18 +329,21 @@ public class LocationPlayerAction : MonoBehaviour
             Debug.Log(m_BtnArr.Length);
             for (int i = 0; i < m_BtnArr.Length; i++)
             {
-                Debug.Log(m_BtnArr[i].gameObject.name);
-                UIQuickCast.AddItem(m_BtnArr[i].gameObject, i, () =>
+                if (m_BtnArr[i] != null)
                 {
-
-                    if (i < m_BtnArr.Length && m_BtnArr[i].gameObject.activeInHierarchy)
+                    Debug.Log(m_BtnArr[i].gameObject.name);
+                    UIQuickCast.AddItem(m_BtnArr[i].gameObject, i, () =>
                     {
-                        m_BtnArr[i].gameObject.SetActive(false);
-                        m_BtnArr[i].transform.SetParent(Instance.transform);
-                    }
 
-                });
-                m_BtnArr[i].gameObject.SetActive(true);
+                        if (i < m_BtnArr.Length && m_BtnArr[i].gameObject.activeInHierarchy)
+                        {
+                            m_BtnArr[i].gameObject.SetActive(false);
+                            m_BtnArr[i].transform.SetParent(Instance.transform);
+                        }
+
+                    });
+                    m_BtnArr[i].gameObject.SetActive(true);
+                }
             }
         });
     }
