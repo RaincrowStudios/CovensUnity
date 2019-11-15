@@ -7632,12 +7632,7 @@ MonoBehaviour:
       m_Calls: []
     m_TypeName: UnityEngine.UI.MaskableGraphic+CullStateChangedEvent, UnityEngine.UI,
       Version=1.0.0.0, Culture=neutral, PublicKeyToken=null
-  m_text: 'Here we list the strongest witches and covens of the world, as judged by
-    the Grey Hand coven. Your points will be calculated by many factors, including
-    your experience, your success in Place of Power battles, your mastery of spirits,
-    and your knowledge of the three schools of magic. Top witches and covens will
-    be awarded prizes at the end of each seasonal tournament, and your score will
-    reset. '
+  m_text: 
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 02a66f3e6f9773a47b20662a45aeba55, type: 2}
   m_sharedMaterial: {fileID: 21612738781109812, guid: 02a66f3e6f9773a47b20662a45aeba55,
@@ -7707,13 +7702,13 @@ MonoBehaviour:
   m_margin: {x: 0, y: 0, z: 0, w: 0}
   m_textInfo:
     textComponent: {fileID: 8145989958672574101}
-    characterCount: 397
+    characterCount: 0
     spriteCount: 0
-    spaceCount: 69
-    wordCount: 69
+    spaceCount: 0
+    wordCount: 0
     linkCount: 0
-    lineCount: 5
-    pageCount: 1
+    lineCount: 0
+    pageCount: 0
     materialCount: 1
   m_isUsingLegacyAnimationComponent: 0
   m_isVolumetricText: 0
