@@ -70,6 +70,10 @@ public class APIManager : Patterns.SingletonComponent<APIManager>
     {
         StartCoroutine(ServerApi.RequestServerRoutine(string.Concat(RaincrowEndpoint, endpoint), data, GetMethod, true, false, CallBack));
     }
+    public void PutRaincrow(string endpoint, string data, Action<string, int> CallBack)
+    {
+        StartCoroutine(ServerApi.RequestServerRoutine(string.Concat(RaincrowEndpoint, endpoint), data, PutMethod, true, false, CallBack));
+    }
     #endregion
 
 

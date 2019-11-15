@@ -1931,6 +1931,7 @@ MonoBehaviour:
   userResetObject: {fileID: 1653271973369770}
   codeResetObject: {fileID: 1849978995047154}
   resetPasswordContinueButton: {fileID: 114155771035632668}
+  requestResetButton: {fileID: 114517000516199734}
   m_ResetInitBackButton: {fileID: 114181884570315386}
   resetPasswordEndObject: {fileID: 225097741092660844}
   passwordResetInfo: {fileID: 114586931902451456}
@@ -4277,7 +4278,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!1 &1205489433957982
 GameObject:
   m_ObjectHideFlags: 0
@@ -10214,7 +10215,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: Please enter the X digit reset code sent to mr@d.com
+  m_Text: Please enter the reset code sent to your registered email.
 --- !u!114 &114682012005428782
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -11503,7 +11504,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: '****'
+  m_Text: '******'
 --- !u!114 &114912837068465758
 MonoBehaviour:
   m_ObjectHideFlags: 0

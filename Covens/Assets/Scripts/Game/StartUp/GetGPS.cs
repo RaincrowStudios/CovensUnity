@@ -19,6 +19,24 @@ public class GetGPS : MonoBehaviour
     public GameObject permissionDeniedAndroid;
     public Button goToAppSettingsBtn;
 
+    public static int hasAskedPermission
+    {
+        get
+        {
+#if UNITY_ANDROID
+            return PlayerPrefs.GetInt("gps", 0);
+#endif
+            return 0;
+        }
+        set
+        {
+#if UNITY_ANDROID
+            PlayerPrefs.SetInt("gps", value);
+            return;
+#endif
+        }
+    }
+
     public Button continueToPermission;
     private LocationServiceStatus m_LastStatus = LocationServiceStatus.Stopped;
 
@@ -83,6 +101,7 @@ public class GetGPS : MonoBehaviour
             continueToPermission.onClick.AddListener(() =>
             {
                 askUserGPSPermission.SetActive(false);
+                hasAskedPermission = 1;
                 UnityEngine.Android.Permission.RequestUserPermission(UnityEngine.Android.Permission.FineLocation);
             });
 
@@ -131,8 +150,14 @@ public class GetGPS : MonoBehaviour
 #if UNITY_ANDROID
                 locationError.SetActive(false);
                 GPSicon.SetActive(false);
-                permissionDeniedAndroid.SetActive(true);
-
+                Debug.Log("LOCATION PERMISSION " + hasAskedPermission);
+                if (hasAskedPermission == 1)
+                    permissionDeniedAndroid.SetActive(true);
+                else
+                {
+                    permissionDeniedAndroid.SetActive(false);
+                    askUserGPSPermission.SetActive(true);
+                }
 #endif
                 errorText.text = "Please turn on your location and try again.";
                 yield return new WaitForSeconds(1f);
@@ -140,7 +165,6 @@ public class GetGPS : MonoBehaviour
 
 #if UNITY_ANDROID
             permissionDeniedAndroid.SetActive(false);
-
 #endif
             locationError.SetActive(false);
 
@@ -206,7 +230,7 @@ public class GetGPS : MonoBehaviour
         OnInitialized?.Invoke();
         StartCoroutine(CheckStatus());
     }
-        
+
     private void RedirectToSettings()
     {
         try

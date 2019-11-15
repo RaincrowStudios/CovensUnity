@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 using Raincrow;
+using Newtonsoft.Json;
 
 public class LoginUIManager : MonoBehaviour
 {
@@ -45,6 +46,7 @@ public class LoginUIManager : MonoBehaviour
     public GameObject userResetObject;
     public GameObject codeResetObject;
     [SerializeField] private Button resetPasswordContinueButton;
+    [SerializeField] private Button requestResetButton;
     [SerializeField] private Button m_ResetInitBackButton;
 
     [Header("Reset pass B")]
@@ -98,6 +100,8 @@ public class LoginUIManager : MonoBehaviour
         CREATE_ACCOUNT,
         CREATE_CHARACTER,
         CHOOSE_CHARACTER,
+        RESET_ACCOUNT_START,
+        RESET_ACCOUNT_FINISH
     }
 
     private CanvasGroup[] m_Screens;
@@ -172,6 +176,8 @@ public class LoginUIManager : MonoBehaviour
         dateMonth.onEndEdit.AddListener(value => dateYear.Select());
         //dateYear.onEndEdit.AddListener(value => AgeGateCheck());
 
+
+
         //create acc
         m_CreatAccBackButton.onClick.AddListener(() => SetScreen(Screen.WELCOME));
         createAccountButton.onClick.AddListener(OnClickCreateAccount);
@@ -198,7 +204,8 @@ public class LoginUIManager : MonoBehaviour
 
         //reset pass A
         m_ResetInitBackButton.onClick.AddListener(() => SetScreen(Screen.WELCOME));
-        resetPasswordContinueButton.onClick.AddListener(OnClickResetPassword);
+        requestResetButton.onClick.AddListener(OnClickResetPassword);
+        resetPasswordContinueButton.onClick.AddListener(OnEnterCode);
 
         ////others
         m_LoginError.gameObject.SetActive(true);
@@ -604,9 +611,38 @@ public class LoginUIManager : MonoBehaviour
         m_ChooseCharConfirmButton.interactable = on;
     }
 
+    private void OnEnterCode()
+    {
+
+    }
+
     private void OnClickResetPassword()
     {
-        UIGlobalPopup.ShowError(null, "NOT IMPLEMENTED");
+        var data = new { username = resetAccountName.text };
+        userResetObject.SetActive(true);
+        codeResetObject.SetActive(false);
+        APIManager.Instance.PutRaincrow("requestRecoverPassword", JsonConvert.SerializeObject(data), (s, r) =>
+        {
+            if (r == 200)
+            {
+                resetUserNullError.SetActive(false);
+                codeResetObject.SetActive(true);
+                userResetObject.SetActive(false);
+
+            }
+            else
+            {
+                if (s == "1000")
+                {
+                    resetUserNullError.SetActive(true);
+                }
+                else if (s == "1007")
+                {
+                    SetScreen(Screen.MAIL_NOT_FOUND);
+                }
+            }
+        });
+        // UIGlobalPopup.ShowError(null, "NOT IMPLEMENTED");
     }
 
     public void OnClickRaincrowToS()
