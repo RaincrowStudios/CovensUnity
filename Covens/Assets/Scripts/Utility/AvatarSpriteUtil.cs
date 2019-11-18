@@ -9,10 +9,10 @@ public class AvatarSpriteUtil : MonoBehaviour
     {
         public bool male;
         public List<EquippedApparel> equips;
-        public System.Action<Sprite>[] callbacks;
-        public Vector2[] sizes;
-        public Vector2[] pivots;
-        public Type[] types;
+        public System.Action<Sprite> callback;
+        public Vector2 size;
+        public Vector2 pivot;
+        public Type type;
     }
 
     private enum Type
@@ -41,9 +41,7 @@ public class AvatarSpriteUtil : MonoBehaviour
     List<SpriteGenerationSetting> m_GenQueue = new List<SpriteGenerationSetting>();
     List<(WitchMarker,System.Action<Sprite>)> m_AvatarQueue = new List<(WitchMarker, System.Action<Sprite>)>();
     List<(WitchMarker, System.Action<Sprite>)> m_PortraitQueue = new List<(WitchMarker, System.Action<Sprite>)>();
-
-    private Coroutine m_GenCoroutine;
-
+    
     private void Awake()
     {
         if(Instance != null)
@@ -82,22 +80,27 @@ public class AvatarSpriteUtil : MonoBehaviour
     //        m_Schedule.Add(prop);
     //}
 
+    private void OnSpriteGenerated()
+    {
+        //if (m_GenQueue.Count > 0)
+    }
+
     public void GenerateAvatar(bool male, List<EquippedApparel> equips, System.Action<Sprite> callback)
     {
         SpriteGenerationSetting prop = new SpriteGenerationSetting
         {
             male = male,
             equips = equips,
-            callbacks = new System.Action<Sprite>[] { callback },
-            sizes = new Vector2[] { new Vector2(128, 256) },
-            pivots = new Vector2[] { new Vector2(0.5f, 0.035f) },
-            types = new Type[] { Type.Avatar }
+            callback = callback,
+            size = new Vector2(128, 256),
+            pivot = new Vector2(0.5f, 0.035f),
+            type = Type.Avatar
         };
 
-        if (m_GenCoroutine == null)
-            m_GenCoroutine = StartCoroutine(GenerateSpriteCoroutine(prop));
-        else
-            m_GenQueue.Add(prop);
+        m_GenQueue.Add(prop);
+
+        if (m_GenQueue.Count == 1)
+            GenerateSprite();
     }
 
     public void GeneratePortrait(bool male, List<EquippedApparel> equips, System.Action<Sprite> callback)
@@ -106,39 +109,39 @@ public class AvatarSpriteUtil : MonoBehaviour
         {
             male = male,
             equips = equips,
-            callbacks = new System.Action<Sprite>[] { callback },
-            sizes = new Vector2[] { new Vector2(256f/2, 256f/2) },
-            pivots = new Vector2[] { new Vector2(0.5f, 0.5f) },
-            types = new Type[] { Type.Portrait }
+            callback = callback,
+            size = new Vector2(256f / 2, 256f / 2),
+            pivot = new Vector2(0.5f, 0.5f),
+            type = Type.Portrait
         };
+        
+        m_GenQueue.Add(prop);
 
-        if (m_GenCoroutine == null)
-            m_GenCoroutine = StartCoroutine(GenerateSpriteCoroutine(prop));
-        else
-            m_GenQueue.Add(prop);
+        if (m_GenQueue.Count == 1)
+            GenerateSprite();
     }
 
     public void GenerateWardrobePortrait(System.Action<Sprite> callback)
     {
-        SpriteGenerationSetting sett = new SpriteGenerationSetting
+        SpriteGenerationSetting prop = new SpriteGenerationSetting
         {
             male = PlayerDataManager.playerData.male,
             equips = PlayerDataManager.playerData.equipped,
-            callbacks = new System.Action<Sprite>[] { callback },
-            sizes = new Vector2[] { new Vector2(256, 256) },
-            pivots = new Vector2[] { new Vector2(0.5f, 0.5f) },
-            types = new Type[] { Type.WardrobePortrait }
+            callback = callback,
+            size = new Vector2(256, 256),
+            pivot = new Vector2(0.5f, 0.5f),
+            type = Type.WardrobePortrait
         };
 
-        if (m_GenCoroutine == null)
-            m_GenCoroutine = StartCoroutine(GenerateSpriteCoroutine(sett));
-        else
-            m_GenQueue.Add(sett);
+        m_GenQueue.Add(prop);
+
+        if (m_GenQueue.Count == 1)
+            GenerateSprite();
     }
 
     public void AddToAvatarQueue(WitchMarker marker, System.Action<Sprite> callback)
     {
-        if (m_GenCoroutine == null)
+        if (m_GenQueue.Count == 0)
             GenerateAvatar(marker.witchToken.male, marker.witchToken.equipped, callback);
         else
             m_AvatarQueue.Add((marker, callback));
@@ -146,7 +149,7 @@ public class AvatarSpriteUtil : MonoBehaviour
     
     public void AddToPortraitQueue(WitchMarker marker, System.Action<Sprite> callback)
     {
-        if (m_GenCoroutine == null)
+        if (m_GenQueue.Count == 0)
             GeneratePortrait(marker.witchToken.male, marker.witchToken.equipped, callback);
         else
             m_PortraitQueue.Add((marker, callback));
@@ -166,8 +169,10 @@ public class AvatarSpriteUtil : MonoBehaviour
         m_PortraitQueue.Clear();
     }
 
-    private IEnumerator GenerateSpriteCoroutine(SpriteGenerationSetting properties)
+    private void GenerateSprite()
     {
+        SpriteGenerationSetting properties = m_GenQueue[0];
+
         //initialize vars
         ApparelView characterView;
         if (properties.male)
@@ -185,29 +190,17 @@ public class AvatarSpriteUtil : MonoBehaviour
         root.gameObject.SetActive(true);
         characterView.gameObject.SetActive(true);
 
-        bool _ready = false;
-        characterView.InitCharacter(properties.equips, true, () => _ready = true);
-
-        //wait for character to be fully loaded
-        while (!_ready)
+        characterView.InitCharacter(properties.equips, true, () =>
         {
-            yield return null;
-        }
-
-        //generate the sprites for each property set passed
-        for (int i = 0; i < properties.callbacks.Length; i++)
-        {
-            yield return new WaitForEndOfFrame();
-                       
             //setup which assets to use
-            if (properties.types[i] == Type.Portrait)
+            if (properties.type == Type.Portrait)
             {
                 m_PortraitFrame.enabled = true;
                 m_PortraitBackground.enabled = true;
 
                 cam = m_PortraitCamera;
             }
-            else if (properties.types[i] == Type.WardrobePortrait)
+            else if (properties.type == Type.WardrobePortrait)
             {
                 m_PortraitFrame_Wardrobe.enabled = true;
 
@@ -221,8 +214,8 @@ public class AvatarSpriteUtil : MonoBehaviour
             cam.enabled = true;
 
             //generate the texture and sprite
-            int width = (int)properties.sizes[i].x;
-            int height = (int)properties.sizes[i].y;
+            int width = (int)properties.size.x;
+            int height = (int)properties.size.y;
 
             RenderTexture rt = new RenderTexture(width, height, 0);
             cam.targetTexture = rt;
@@ -232,12 +225,12 @@ public class AvatarSpriteUtil : MonoBehaviour
             RenderTexture.active = rt;
             texture.ReadPixels(new Rect(0, 0, width, height), 0, 0);
 
-            if (properties.types[i] != Type.Avatar)
+            if (properties.type != Type.Avatar)
             {
                 float cx = width / 2f;
                 float cy = height / 2f;
                 float r2 = width / 2f;
-                for(int x = 0; x < width; x++)
+                for (int x = 0; x < width; x++)
                 {
                     for (int y = 0; y < height; y++)
                     {
@@ -247,70 +240,63 @@ public class AvatarSpriteUtil : MonoBehaviour
                 }
             }
 
+            //generate the sprite
             texture.Apply();
-            Sprite sprite = Sprite.Create(texture, new Rect(0, 0, width, height), properties.pivots[i]);
-            properties.callbacks[i]?.Invoke(sprite);
+            Sprite sprite = Sprite.Create(texture, new Rect(0, 0, width, height), properties.pivot);
 
-//#if UNITY_EDITOR
-//            SaveTexture(texture);
-//#endif
+            //#if UNITY_EDITOR
+            //            SaveTexture(texture);
+            //#endif
 
             //reset values
             RenderTexture.active = prev;
             Destroy(rt);
             cam.targetTexture = null;
             cam.enabled = false;
-                        
-            if (properties.types[i] == Type.Portrait)
+
+            if (properties.type == Type.Portrait)
             {
                 m_PortraitFrame.enabled = false;
                 m_PortraitBackground.enabled = false;
             }
-            else if (properties.types[i] == Type.WardrobePortrait)
+            else if (properties.type == Type.WardrobePortrait)
             {
                 m_PortraitFrame_Wardrobe.enabled = false;
             }
-        }
-        
-        //reset character to initial state
-        root.transform.position = prevRootPos;
-        root.gameObject.SetActive(prevRootState);
-        characterView.ResetApparelView();
-        characterView.gameObject.SetActive(prevState);
-
-        //get from map gen queue
-        if (m_GenQueue.Count == 0)
-        {
-            if (m_AvatarQueue.Count > 0)
-            {
-                var marker = m_AvatarQueue[0].Item1;
-                var callback = m_AvatarQueue[0].Item2;
-                m_AvatarQueue.RemoveAt(0);
-
-                GenerateAvatar(marker.witchToken.male, marker.witchToken.equipped, callback);
-            }
-
-            if (m_PortraitQueue.Count > 0)
-            {
-                var marker = m_PortraitQueue[0].Item1;
-                var callback = m_PortraitQueue[0].Item2;
-                m_PortraitQueue.RemoveAt(0);
-
-                GeneratePortrait(marker.witchToken.male, marker.witchToken.equipped, callback);
-            }
-        }
-        
-        if( m_GenQueue.Count > 0)
-        {
-            yield return null;
-            SpriteGenerationSetting prop = m_GenQueue[0];
+            
+            //reset character to initial state
+            root.transform.position = prevRootPos;
+            root.gameObject.SetActive(prevRootState);
+            characterView.ResetApparelView();
+            characterView.gameObject.SetActive(prevState);
+                       
+            properties.callback?.Invoke(sprite);
             m_GenQueue.RemoveAt(0);
-            m_GenCoroutine = StartCoroutine(GenerateSpriteCoroutine(prop));
-        }
-        else
-        {
-            m_GenCoroutine = null;
-        }
+            
+            //when all is over, check the map avatar and potrait queue
+            if (m_GenQueue.Count == 0)
+            {
+                if (m_AvatarQueue.Count > 0)
+                {
+                    var marker = m_AvatarQueue[0].Item1;
+                    var callback = m_AvatarQueue[0].Item2;
+                    m_AvatarQueue.RemoveAt(0);
+                    GenerateAvatar(marker.witchToken.male, marker.witchToken.equipped, callback);
+                }
+
+                if (m_PortraitQueue.Count > 0)
+                {
+                    var marker = m_PortraitQueue[0].Item1;
+                    var callback = m_PortraitQueue[0].Item2;
+                    m_PortraitQueue.RemoveAt(0);
+                    GeneratePortrait(marker.witchToken.male, marker.witchToken.equipped, callback);
+                }
+            }
+            else
+            {
+                GenerateSprite();
+            }
+        });       
     }
 
 #if UNITY_EDITOR
