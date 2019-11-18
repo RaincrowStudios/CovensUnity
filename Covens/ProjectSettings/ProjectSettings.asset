@@ -120,7 +120,7 @@ PlayerSettings:
     16:10: 1
     16:9: 1
     Others: 1
-  bundleVersion: 282
+  bundleVersion: 284
   preloadedAssets: []
   metroInputSource: 0
   wsaTransparentSwapchain: 0
@@ -737,7 +737,7 @@ PlayerSettings:
   scriptingDefineSymbols:
     1: 
     4: 
-    7: PRODUCTION
+    7: 
     13: CROSS_PLATFORM_INPUT
     14: CROSS_PLATFORM_INPUT;MOBILE_INPUT
     17: MOBILE_INPUT

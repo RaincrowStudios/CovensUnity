@@ -67,7 +67,6 @@ public class WitchMarker : CharacterMarker
         m_DisplayName.text = witchToken.displayName;
         UpdateNameplate(m_DisplayName.preferredWidth);
         SetRingColor();
-        UpdateEnergy();
 
         //set immunity icon
         if (MarkerSpawner.IsTargetImmune(witchToken))

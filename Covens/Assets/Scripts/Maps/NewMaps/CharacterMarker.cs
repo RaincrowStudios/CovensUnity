@@ -51,7 +51,7 @@ public abstract class CharacterMarker : MuskMarker
 
         base.Setup(data);
 
-        m_EnergyRing.color = new Color(1, 1, 1, 0);
+        UpdateEnergy(0);
 
         SetStats();
 
@@ -187,13 +187,17 @@ public abstract class CharacterMarker : MuskMarker
         }
     }
     
-    public override void UpdateEnergy()
+    public override void UpdateEnergy(float time = 1f)
     {
+        LeanTween.cancel(m_EnergyRingTweenId);
+
         m_EnergyFill = (float)(Token as CharacterToken).energy;
         m_EnergyFill /= (Token as CharacterToken).baseEnergy;
 
-        LeanTween.cancel(m_EnergyRingTweenId);
-        m_EnergyRingTweenId = LeanTween.alpha(m_EnergyRing.gameObject, m_EnergyFill, 1f).uniqueId;
+        if (time == 0)
+            m_EnergyRing.color *= new Color(1,1,1, m_EnergyFill);
+        else
+            m_EnergyRingTweenId = LeanTween.alpha(m_EnergyRing.gameObject, m_EnergyFill, time).uniqueId;
     }
 
     public override void UpdateNameplate(float preferredWidth)

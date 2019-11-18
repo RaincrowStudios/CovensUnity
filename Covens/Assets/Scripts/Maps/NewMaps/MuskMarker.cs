@@ -130,7 +130,7 @@ namespace Raincrow.Maps
 
         public virtual void SetStats() { }
 
-        public virtual void UpdateEnergy()
+        public virtual void UpdateEnergy(float time = 1f)
         {
             
         }
