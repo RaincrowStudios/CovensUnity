@@ -15,6 +15,9 @@ public class WitchMarker : CharacterMarker
     [SerializeField] private Sprite m_MalePortrait;
     [SerializeField] private Sprite m_FemalePortrait;
 
+    [SerializeField] private SpriteRenderer m_DeathIcon;
+    [SerializeField] private SpriteRenderer m_ImmuneIcon;
+
     public WitchToken witchToken;
 
     public override string Name => witchToken.displayName;
@@ -274,21 +277,25 @@ public class WitchMarker : CharacterMarker
 
     public void OnAddImmunity()
     {
+        m_ImmuneIcon.gameObject.SetActive(true);
         UpdateAnimationState();
     }
 
     public void OnDeath()
     {
+        m_DeathIcon.gameObject.SetActive(true);
         UpdateAnimationState();
     }
 
     public void OnRemoveImmunity()
     {
+        m_ImmuneIcon.gameObject.SetActive(false);
         UpdateAnimationState();
     }
 
     public void OnRevive()
     {
+        m_DeathIcon.gameObject.SetActive(false);
         UpdateAnimationState();
     }
 
