@@ -109,7 +109,7 @@ namespace Raincrow.Maps
         {
             if (marker == null)
                 return;
-
+            
             MuskMarker _marker = marker as MuskMarker;
             m_Markers.Remove(_marker);
         }

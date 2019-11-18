@@ -215,42 +215,55 @@ public class MarkerSpawner : MarkerManager
 
     public static void DeleteMarker(string ID, float despawnDelay = 2)
     {
-        if (Markers.ContainsKey(ID))
+        if (!Markers.ContainsKey(ID))
+            return;
+        
+        
+        IMarker marker = Markers[ID][0];
+
+        //marker.inMapView = false;
+        marker.Interactable = false;
+
+        //remove from dictionary
+        Markers.Remove(ID);
+
+        //remove from mapsapi tracker
+        MapsAPI.Instance.RemoveMarker(marker);
+
+        //remove from highlight list
+        if (m_Highlighting)
+            m_HighlightedMarkers.Remove(marker);
+
+        SimplePool<Transform> pool = null;
+        if (marker.Type == MarkerType.WITCH)
+            pool = m_WitchPool; //Instance.m_ToDespawn.Add((m_WitchPool, marker));
+        else if (marker.Type == MarkerType.SPIRIT)
+            pool = m_SpiritPool; //Instance.m_ToDespawn.Add((m_SpiritPool, marker));
+        else if (marker.Type == MarkerType.HERB)
+            pool = m_HerbPool; //Instance.m_ToDespawn.Add((m_HerbPool, marker));
+        else if (marker.Type == MarkerType.GEM)
+            pool = m_GemPool; //Instance.m_ToDespawn.Add((m_GemPool, marker));
+        else if (marker.Type == MarkerType.TOOL)
+            pool = m_ToolPool; // Instance.m_ToDespawn.Add((m_ToolPool, marker));
+        else if (marker.Type == MarkerType.ENERGY)
+            pool = m_EnergyPool; //Instance.m_ToDespawn.Add((m_EnergyPool, marker));
+        
+        if (despawnDelay == 0)
         {
-            IMarker marker = Markers[ID][0];
-
-            //marker.inMapView = false;
-            marker.Interactable = false;
-
-            //remove from dictionary
-            Markers.Remove(ID);
-
-            //despawn
-            if (marker.Type == MarkerType.WITCH)
-                Instance.m_ToDespawn.Add((m_WitchPool, marker));
-            else if (marker.Type == MarkerType.SPIRIT)
-                Instance.m_ToDespawn.Add((m_SpiritPool, marker));
-            else if (marker.Type == MarkerType.HERB)
-                Instance.m_ToDespawn.Add((m_HerbPool, marker));
-            else if (marker.Type == MarkerType.GEM)
-                Instance.m_ToDespawn.Add((m_GemPool, marker));
-            else if (marker.Type == MarkerType.TOOL)
-                Instance.m_ToDespawn.Add((m_ToolPool, marker));
-            else if (marker.Type == MarkerType.ENERGY)
-                Instance.m_ToDespawn.Add((m_EnergyPool, marker));
-
+            marker.OnDespawn();
+            pool.Despawn(marker.GameObject.transform);
+        }
+        else
+        {
+            marker.OnWillDespawn();
+            
             if (Instance.m_DespawnTimer < despawnDelay)
                 Instance.m_DespawnTimer = despawnDelay;
 
             if (Instance.m_DespawnCoroutine == null)
                 Instance.m_DespawnCoroutine = Instance.StartCoroutine(Instance.DespawnCoroutine());
 
-            MapsAPI.Instance.RemoveMarker(marker);
-
-            if (m_Highlighting)
-            {
-                m_HighlightedMarkers.Remove(marker);
-            }
+            Instance.m_ToDespawn.Add((pool, marker));
         }
     }
 
@@ -496,8 +509,8 @@ public class MarkerSpawner : MarkerManager
         }
         else
         {
-            //marker.GameObject.SetActive(false);
-            marker.inMapView = false;
+            if (marker.inMapView)
+                marker.OnLeaveMapView();
         }
     }
 

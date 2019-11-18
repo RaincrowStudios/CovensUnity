@@ -38,6 +38,7 @@ namespace Raincrow.Maps
         //void RemoveChild(Transform t);
         //void SpawnFX(SimplePool<Transform> fxPool, bool character, float duration, bool queued, System.Action<Transform> onSpawn);
         //bool isNull { get; }
+        void OnWillDespawn();
         void OnDespawn();
         //void UpdateRenderers();
         void OnEnterMapView();

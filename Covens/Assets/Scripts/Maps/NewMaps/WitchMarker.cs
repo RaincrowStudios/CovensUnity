@@ -19,8 +19,6 @@ public class WitchMarker : CharacterMarker
 
     public override string Name => witchToken.displayName;
     
-    private Transform m_DeathIcon;
-    private Transform m_ImmunityIcon;
     private Transform m_ChannelingFX;
 
     private int m_AvatarColorTweenId;
@@ -264,19 +262,7 @@ public class WitchMarker : CharacterMarker
             DestroyGeneratedAvatar();
             DestroyGeneratedPortrait();
         }
-
-        if (m_DeathIcon != null)
-        {
-            SpellcastingFX.DeathIconPool.Despawn(m_DeathIcon);
-            m_DeathIcon = null;
-        }
-
-        if (m_ImmunityIcon != null)
-        {
-            SpellcastingFX.ImmunityIconPool.Despawn(m_ImmunityIcon);
-            m_ImmunityIcon = null;
-        }
-
+        
         if (m_ChannelingFX != null)
         {
             SpellChanneling.DespawnFX(m_ChannelingFX);
@@ -288,59 +274,21 @@ public class WitchMarker : CharacterMarker
 
     public void OnAddImmunity()
     {
-        if (m_ImmunityIcon == null)
-        {
-            m_ImmunityIcon = SpellcastingFX.ImmunityIconPool.Spawn();
-            m_ImmunityIcon.SetParent(AvatarTransform);
-            m_ImmunityIcon.localPosition = new Vector3(0, 0, -0.5f);
-            m_ImmunityIcon.localScale = Vector3.one;
-            m_ImmunityIcon.localRotation = Quaternion.identity;
-            //UpdateRenderers();
-        }
-
         UpdateAnimationState();
     }
 
     public void OnDeath()
     {
-        if (m_DeathIcon != null)
-        {
-            UpdateAnimationState();
-            return;
-        }
-
-        m_DeathIcon = SpellcastingFX.DeathIconPool.Spawn();
-        m_DeathIcon.SetParent(AvatarTransform);
-        m_DeathIcon.localPosition = new Vector3(0, 0, -0.5f);
-        m_DeathIcon.localScale = Vector3.one;
-        m_DeathIcon.localRotation = Quaternion.identity;
-
-        //UpdateRenderers();
         UpdateAnimationState();
     }
 
     public void OnRemoveImmunity()
     {
-        if (m_ImmunityIcon == null)
-        {
-            UpdateAnimationState();
-            return;
-        }
-
-        SpellcastingFX.ImmunityIconPool.Despawn(m_ImmunityIcon);
-        m_ImmunityIcon = null;
-
-        //UpdateRenderers();
         UpdateAnimationState();
     }
 
     public void OnRevive()
     {
-        if (m_DeathIcon != null)
-        {
-            SpellcastingFX.DeathIconPool.Despawn(m_DeathIcon);
-            //UpdateRenderers();
-        }
         UpdateAnimationState();
     }
 

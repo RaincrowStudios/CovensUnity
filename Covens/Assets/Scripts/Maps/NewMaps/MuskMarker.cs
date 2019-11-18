@@ -8,6 +8,7 @@ namespace Raincrow.Maps
     public class MuskMarker : MonoBehaviour, IMarker
     {
         private static int HIDDEN_STATE_ID = Animator.StringToHash("hidden");
+        private static int DESPAWN_STATE_ID = Animator.StringToHash("despawn");
 
         [Header("Base Marker")]
         [SerializeField] protected SpriteRenderer m_AvatarRenderer;
@@ -60,6 +61,11 @@ namespace Raincrow.Maps
         public bool inMapView { get; set; }
 
         //public bool isNull { get { return this == null || this.GameObject == null; } }
+        
+        public virtual void OnWillDespawn()
+        {
+            m_Animator.SetTrigger(DESPAWN_STATE_ID);
+        }
 
         public virtual void OnDespawn()
         {
