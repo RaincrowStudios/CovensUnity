@@ -92,9 +92,9 @@ public class MarkerManagerAPI : MonoBehaviour
         System.Action requestMarkers = () => { };
         IsSpawningTokens = true;
         IsSpiritForm = !isPhysical;
-        
+
         //////////////////////////////////////////remove any other markers
-        
+
         //Dictionary<string, List<IMarker>>.ValueCollection values = MarkerSpawner.Markers.Values;
         //List<string> toRemove = new List<string>();
 
@@ -184,7 +184,7 @@ public class MarkerManagerAPI : MonoBehaviour
                PlayerDataManager.playerData.longitude,
                PlayerDataManager.playerData.latitude,
                MapsAPI.Instance.normalizedZoom,
-               () => 
+               () =>
                {
                    //move markers back
                    foreach (var marker in MarkerSpawner.Markers.Values)
@@ -206,7 +206,7 @@ public class MarkerManagerAPI : MonoBehaviour
         }
 
         MapMoveResponse moveResponse = JsonConvert.DeserializeObject<MapMoveResponse>(result);
-        
+
         PlayerManager.marker.Coords = new Vector2(longitude, latitude);
         PlayerDataManager.playerData.longitude = longitude;
         PlayerDataManager.playerData.latitude = latitude;
@@ -261,6 +261,7 @@ public class MarkerManagerAPI : MonoBehaviour
         {
             PlayerDataManager.soundTrack = 1;
             SoundManagerOneShot.Instance.SetBGTrack(1);
+            PlayerManagerUI.Instance.ShowGardenUI();
         }
 
         //update zone and dominion
@@ -283,7 +284,7 @@ public class MarkerManagerAPI : MonoBehaviour
     public static void SpawnMarkers(List<WitchToken> witches, List<SpiritToken> spirits, List<CollectableToken> items, List<EnergyToken> energies, List<PopToken> pops)
     {
         //finaly add/update markers
-        
+
         //stop avatar generation
         AvatarSpriteUtil.Instance.ClearQueues();
 
@@ -297,7 +298,7 @@ public class MarkerManagerAPI : MonoBehaviour
         HashSet<IMarker> updatedMarkers = new HashSet<IMarker>();
 
         IMarker aux;
-        
+
         Debug.Log($"spawning pops: {pops.Count}");
         for (int i = 0; i < pops.Count; i++)
         {
@@ -324,7 +325,7 @@ public class MarkerManagerAPI : MonoBehaviour
             aux = MarkerSpawner.Instance.AddMarker(spirits[i]);
             if (aux != null)
                 updatedMarkers.Add(aux);
-            
+
             //yield return null;
         }
 
@@ -334,7 +335,7 @@ public class MarkerManagerAPI : MonoBehaviour
             aux = MarkerSpawner.Instance.AddMarker(witches[i]);
             if (aux != null)
                 updatedMarkers.Add(aux);
-            
+
             yield return null;
         }
 

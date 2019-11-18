@@ -19,6 +19,7 @@ public class PlayerManagerUI : UIAnimationManager
     public TextMeshProUGUI goldDrachs;
     public GameObject physicalForm;
     public GameObject spiritForm;
+    public GameObject gardenUI;
     public GameObject coinGlow;
     FlightVisualManager FVM;
     public GameObject LandFX;
@@ -27,7 +28,7 @@ public class PlayerManagerUI : UIAnimationManager
     public Sprite[] LunarPhase;
     public Slider xpSlider;
     public TextMeshProUGUI xpText;
-    
+
     int elixirCount;
 
     public CanvasGroup curDominion;
@@ -108,7 +109,7 @@ public class PlayerManagerUI : UIAnimationManager
 
         deathblessing.text = LocalizeLookUp.GetText("blessing_time")
             .Replace("{{Hours}}", ((int)BlessingManager.TimeUntilNextBlessing().TotalHours).ToString());// "Savannah's next blessing will come in " + hours + " hours or you can ask for a fellow witch to revive you.";
-        
+
         LeanTween.value(0, 0, 0.5f).setOnComplete(() => DeathReason.SetActive(true));
     }
 
@@ -369,6 +370,14 @@ public class PlayerManagerUI : UIAnimationManager
                 SoundManagerOneShot.Instance.PlayReturnPhysical();
             }
         }
+    }
+    public void ShowGardenUI()
+    {
+        LeanTween.value(0f, 1f, 1.5f).setOnComplete(() =>
+        {
+
+            gardenUI.SetActive(true);
+        });
     }
 
     /*
