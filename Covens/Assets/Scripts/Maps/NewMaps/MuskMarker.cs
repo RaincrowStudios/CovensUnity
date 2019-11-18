@@ -7,9 +7,12 @@ namespace Raincrow.Maps
 {
     public class MuskMarker : MonoBehaviour, IMarker
     {
+        private static int HIDDEN_STATE_ID = Animator.StringToHash("hidden");
+
         [Header("Base Marker")]
         [SerializeField] protected SpriteRenderer m_AvatarRenderer;
-        [SerializeField] protected SpriteRenderer[] m_Shadows;
+        [SerializeField] protected Animator m_Animator;
+        //[SerializeField] protected SpriteRenderer[] m_Shadows;
 
         protected bool m_Interactable = true;
 
@@ -34,10 +37,10 @@ namespace Raincrow.Maps
         public virtual string Name => "";
 
 
-        protected List<SpriteRenderer> m_Renderers;
-        protected List<SpriteRenderer> m_CharacterRenderers;
-        protected TextMeshPro[] m_TextMeshes;
-        protected ParticleSystem[] m_Particles;
+        //protected List<SpriteRenderer> m_Renderers;
+        //protected List<SpriteRenderer> m_CharacterRenderers;
+        //protected TextMeshPro[] m_TextMeshes;
+        //protected ParticleSystem[] m_Particles;
 
         protected float m_CharacterAlphaMul = 1f;
         protected int m_MoveTweenId;
@@ -56,12 +59,13 @@ namespace Raincrow.Maps
 
         public bool inMapView { get; set; }
 
-        public bool isNull { get { return this == null || this.GameObject == null; } }
+        //public bool isNull { get { return this == null || this.GameObject == null; } }
 
         public virtual void OnDespawn()
         {
             LeanTween.cancel(m_AlphaTweenId);
             LeanTween.cancel(m_MoveTweenId);
+            LeanTween.cancel(m_CharacterAlphaTweenId);
 
             OnClick = null;
             //Token = null;
@@ -72,8 +76,6 @@ namespace Raincrow.Maps
                     Destroy(m_SpawnedItems[i].gameObject);
             }
             m_SpawnedItems.Clear();
-
-            GameObject.SetActive(false);
         }
 
         public bool Interactable
@@ -98,18 +100,18 @@ namespace Raincrow.Maps
             Alpha = 1;
             TextAlpha = 1;
 
-            m_TextMeshes = GetComponentsInChildren<TextMeshPro>(true);
-            m_Particles = GetComponentsInChildren<ParticleSystem>(true);
+            //m_TextMeshes = GetComponentsInChildren<TextMeshPro>(true);
+            //m_Particles = GetComponentsInChildren<ParticleSystem>(true);
 
-            if (m_AvatarRenderer != null)
-                m_CharacterRenderers = new List<SpriteRenderer> { m_AvatarRenderer };
-            else
-                m_CharacterRenderers = new List<SpriteRenderer>();
+            //if (m_AvatarRenderer != null)
+            //    m_CharacterRenderers = new List<SpriteRenderer> { m_AvatarRenderer };
+            //else
+            //    m_CharacterRenderers = new List<SpriteRenderer>();
 
-            if (m_Shadows == null)
-                m_Shadows = new SpriteRenderer[0];
+            //if (m_Shadows == null)
+            //    m_Shadows = new SpriteRenderer[0];
 
-            UpdateRenderers();
+            //UpdateRenderers();
         }
 
         public virtual void Setup(Token data)
@@ -138,174 +140,73 @@ namespace Raincrow.Maps
             
         }
 
-        public void SetTextAlpha(float a)
+        public virtual void SetHidden(bool hidden)
         {
-            if (this == null)
-                return;
-
-            TextAlpha = a;
-
-            for (int i = 0; i < m_TextMeshes.Length; i++)
-                m_TextMeshes[i].alpha = TextAlpha * Alpha;
+            m_Animator.SetBool(HIDDEN_STATE_ID, hidden);
         }
 
-        public void SetCharacterAlpha(float a, float time = 0, System.Action onComplete = null)
-        {
-            if (this == null)
-                return;
+        //public void SetTextAlpha(float a)
+        //{
+        //    if (this == null)
+        //        return;
 
-            LeanTween.cancel(m_CharacterAlphaTweenId);
+        //    TextAlpha = a;
 
-            Color aux;
+        //    for (int i = 0; i < m_TextMeshes.Length; i++)
+        //        m_TextMeshes[i].alpha = TextAlpha * Alpha;
+        //}
 
-            if (time == 0)
-            {
-                AvatarAlpha = a;
+        //public void SetCharacterAlpha(float a, float time = 0, System.Action onComplete = null)
+        //{
+        //    if (this == null)
+        //        return;
 
-                for (int i = 0; i < m_CharacterRenderers.Count; i++)
-                {
-                    aux = m_CharacterRenderers[i].color;
-                    aux.a = Alpha * AvatarAlpha * m_CharacterAlphaMul;
-                    m_CharacterRenderers[i].color = aux;
-                }
-                onComplete?.Invoke();
-            }
-            else
-            {
-                m_CharacterAlphaTweenId = LeanTween.value(AvatarAlpha, a, time)
-                      .setEaseOutCubic()
-                      .setOnUpdate((float t) =>
-                      {
-                          AvatarAlpha = t;
+        //    LeanTween.cancel(m_CharacterAlphaTweenId);
 
-                          for (int i = 0; i < m_CharacterRenderers.Count; i++)
-                          {
-                              aux = m_CharacterRenderers[i].color;
-                              aux.a = Alpha * AvatarAlpha * m_CharacterAlphaMul;
-                              m_CharacterRenderers[i].color = aux;
-                          }
-                      })
-                      .setOnComplete(onComplete)
-                      .uniqueId;
-            }
-        }
+        //    Color aux;
 
-        public virtual void SetAlpha(float a, float time = 0, System.Action onComplete = null)
-        {
-            if (isNull)
-                return;
+        //    if (time == 0)
+        //    {
+        //        AvatarAlpha = a;
 
-            LeanTween.cancel(m_AlphaTweenId, true);
+        //        for (int i = 0; i < m_CharacterRenderers.Count; i++)
+        //        {
+        //            aux = m_CharacterRenderers[i].color;
+        //            aux.a = Alpha * AvatarAlpha * m_CharacterAlphaMul;
+        //            m_CharacterRenderers[i].color = aux;
+        //        }
+        //        onComplete?.Invoke();
+        //    }
+        //    else
+        //    {
+        //        m_CharacterAlphaTweenId = LeanTween.value(AvatarAlpha, a, time)
+        //              .setEaseOutCubic()
+        //              .setOnUpdate((float t) =>
+        //              {
+        //                  AvatarAlpha = t;
 
-            //fade spriterenderers and textmeshes
-            if (time == 0)
-            {
-                Alpha = a;
+        //                  for (int i = 0; i < m_CharacterRenderers.Count; i++)
+        //                  {
+        //                      aux = m_CharacterRenderers[i].color;
+        //                      aux.a = Alpha * AvatarAlpha * m_CharacterAlphaMul;
+        //                      m_CharacterRenderers[i].color = aux;
+        //                  }
+        //              })
+        //              .setOnComplete(onComplete)
+        //              .uniqueId;
+        //    }
+        //}
+        
+        //public virtual void UpdateRenderers()
+        //{
+        //    m_TextMeshes = GetComponentsInChildren<TextMeshPro>(true);
+        //    m_Renderers = new List<SpriteRenderer>(GetComponentsInChildren<SpriteRenderer>(true));
 
-                Color aux;
-                for (int i = 0; i < m_Renderers.Count; i++)
-                {
-                    aux = m_Renderers[i].color;
-                    aux.a = Alpha;
-                    m_Renderers[i].color = aux;
-                }
-
-                for (int i = 0; i < m_CharacterRenderers.Count; i++)
-                {
-                    aux = m_CharacterRenderers[i].color;
-                    aux.a = Alpha * AvatarAlpha * m_CharacterAlphaMul;
-                    m_CharacterRenderers[i].color = aux;
-                }
-
-                for (int i = 0; i < m_Shadows.Length; i++)
-                {
-                    aux = m_Shadows[i].color;
-                    aux.a = Alpha * 0.4f;
-                    m_Shadows[i].color = aux;
-                }
-
-                for (int i = 0; i < m_TextMeshes.Length; i++)
-                {
-                    m_TextMeshes[i].alpha = TextAlpha * Alpha;
-                }
-
-                SetAlpha_OnUpdate(a);
-
-                onComplete?.Invoke();
-            }
-            else
-            {
-                m_AlphaTweenId = LeanTween.value(Alpha, a, time)
-                    .setEaseOutCubic()
-                    .setOnUpdate((float t) =>
-                    {
-                        Alpha = t;
-
-                        Color aux;
-                        for (int i = 0; i < m_Renderers.Count; i++)
-                        {
-                            aux = m_Renderers[i].color;
-                            aux.a = Alpha;
-                            m_Renderers[i].color = aux;
-                        }
-
-                        for (int i = 0; i < m_Shadows.Length; i++)
-                        {
-                            aux = m_Shadows[i].color;
-                            aux.a = Alpha * 0.5f;
-                            m_Shadows[i].color = aux;
-                        }
-
-                        for (int i = 0; i < m_TextMeshes.Length; i++)
-                            m_TextMeshes[i].alpha = TextAlpha * Alpha;
-
-                        for (int i = 0; i < m_CharacterRenderers.Count; i++)
-                        {
-                            aux = m_CharacterRenderers[i].color;
-                            aux.a = Alpha * AvatarAlpha * m_CharacterAlphaMul;
-                            m_CharacterRenderers[i].color = aux;
-                        }
-
-                        SetAlpha_OnUpdate(t);
-                    })
-                    .setOnComplete(onComplete)
-                    .uniqueId;
-            }
-
-            //stop particles
-            if (Mathf.Approximately(a, 0))
-            {
-                for (int i = 0; i < m_Particles.Length; i++)
-                {
-                    if (m_Particles[i].isEmitting && m_Particles[i].main.loop)
-                        m_Particles[i].Stop(false);
-                }
-            }
-            else //reenable particles
-            {
-                for (int i = 0; i < m_Particles.Length; i++)
-                {
-                    if (!m_Particles[i].isEmitting && m_Particles[i].main.loop)
-                        m_Particles[i].Play(false);
-                }
-            }
-        }
-
-        protected virtual void SetAlpha_OnUpdate(float alpha)
-        {
-
-        }
-
-        public virtual void UpdateRenderers()
-        {
-            m_TextMeshes = GetComponentsInChildren<TextMeshPro>(true);
-            m_Renderers = new List<SpriteRenderer>(GetComponentsInChildren<SpriteRenderer>(true));
-
-            foreach (SpriteRenderer sr in m_CharacterRenderers)
-                m_Renderers.Remove(sr);
-            foreach (SpriteRenderer sr in m_Shadows)
-                m_Renderers.Remove(sr);
-        }
+        //    foreach (SpriteRenderer sr in m_CharacterRenderers)
+        //        m_Renderers.Remove(sr);
+        //    foreach (SpriteRenderer sr in m_Shadows)
+        //        m_Renderers.Remove(sr);
+        //}
 
         public void InitializePositionPOP()
         {
@@ -351,18 +252,23 @@ namespace Raincrow.Maps
 
         }
 
+        public void SetAlpha(float vlaue, float time)
+        {
+
+        }
+
         public virtual void OnEnterMapView()
         {
-            //marker.SetAlpha(0);
-            SetAlpha(Alpha);
-            SetAlpha(1, 1f);
-            gameObject.SetActive(true);
+            ////marker.SetAlpha(0);
+            //SetAlpha(Alpha);
+            //SetAlpha(1, 1f);
+            //gameObject.SetActive(true);
             inMapView = true;
         }
 
         public virtual void OnLeaveMapView()
         {
-            SetAlpha(0, 1f, () => gameObject.SetActive(false));
+            //SetAlpha(0, 1f, () => gameObject.SetActive(false));
             inMapView = false;
             IsShowingAvatar = false;
             IsShowingIcon = false;

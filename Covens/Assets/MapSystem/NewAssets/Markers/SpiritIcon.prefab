@@ -11,7 +11,7 @@ GameObject:
   - component: {fileID: 4615079488591616}
   - component: {fileID: 212812467321759578}
   m_Layer: 20
-  m_Name: Sprite
+  m_Name: AvatarSprite
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -90,6 +90,7 @@ GameObject:
   m_Component:
   - component: {fileID: 4472521572149222}
   - component: {fileID: 114147787303744158}
+  - component: {fileID: 5458656147065079937}
   m_Layer: 20
   m_Name: SpiritIcon
   m_TagString: Untagged
@@ -126,10 +127,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_AvatarRenderer: {fileID: 212812467321759578}
-  m_Shadows:
-  - {fileID: 212630952619904094}
-  - {fileID: 212686033159262028}
-  - {fileID: 2158161597202025838}
+  m_Animator: {fileID: 5458656147065079937}
   m_AvatarGroup: {fileID: 4915499845343902}
   m_IconGroup: {fileID: 4527749467080838}
   m_Character: {fileID: 4080475960509876}
@@ -140,6 +138,25 @@ MonoBehaviour:
   m_EnergyRingEmpty: {fileID: 8920900679040479327}
   m_DisplayName: {fileID: 114468071247984912}
   m_Level: {fileID: 8382105340551566257}
+--- !u!95 &5458656147065079937
+Animator:
+  serializedVersion: 3
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1324217374148272}
+  m_Enabled: 1
+  m_Avatar: {fileID: 0}
+  m_Controller: {fileID: 9100000, guid: 33ca44527393f7c469799228a36ec218, type: 2}
+  m_CullingMode: 0
+  m_UpdateMode: 0
+  m_ApplyRootMotion: 0
+  m_LinearVelocityBlending: 0
+  m_WarningMessage: 
+  m_HasTransformHierarchy: 1
+  m_AllowConstantClipSamplingOptimization: 1
+  m_KeepAnimatorControllerStateOnDisable: 0
 --- !u!1 &1380211745843976
 GameObject:
   m_ObjectHideFlags: 0
@@ -152,7 +169,7 @@ GameObject:
   - component: {fileID: 212061742380053784}
   - component: {fileID: 65988881178763568}
   m_Layer: 20
-  m_Name: Sprite
+  m_Name: IconSprite
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -391,7 +408,7 @@ GameObject:
   - component: {fileID: 4385565083487850}
   - component: {fileID: 212686033159262028}
   m_Layer: 20
-  m_Name: Shadow
+  m_Name: IconShadow
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1125,7 +1142,7 @@ SpriteRenderer:
   m_SortingLayer: 0
   m_SortingOrder: -1
   m_Sprite: {fileID: 21300000, guid: 63a67f83578ab194b80257f780f43750, type: 3}
-  m_Color: {r: 0, g: 0, b: 0, a: 0.7254902}
+  m_Color: {r: 0, g: 0, b: 0, a: 0.9019608}
   m_FlipX: 0
   m_FlipY: 0
   m_DrawMode: 0

@@ -24,9 +24,10 @@ namespace Raincrow.Maps
         void SetStats();
         void UpdateEnergy();
         void ScaleNamePlate(bool scaleUp, float time = 1);
-        void SetCharacterAlpha(float t, float time = 0, System.Action onComplete = null);
-        void SetTextAlpha(float a);
-        void SetAlpha(float a, float time = 0, System.Action onComplete = null);
+        //void SetCharacterAlpha(float t, float time = 0, System.Action onComplete = null);
+        //void SetTextAlpha(float a);
+        void SetAlpha(float a, float time = 0);//, System.Action onComplete = null);
+        void SetHidden(bool hidden);
         void InitializePositionPOP();
         void SetWorldPosition(Vector3 worldPos, float time = 0, System.Action onComplete = null);
         void OnApplyStatusEffect(StatusEffect effect);
@@ -36,9 +37,9 @@ namespace Raincrow.Maps
         //void AddChild(Transform t, Transform parent, SimplePool<Transform> pool);
         //void RemoveChild(Transform t);
         //void SpawnFX(SimplePool<Transform> fxPool, bool character, float duration, bool queued, System.Action<Transform> onSpawn);
-        bool isNull { get; }
+        //bool isNull { get; }
         void OnDespawn();
-        void UpdateRenderers();
+        //void UpdateRenderers();
         void OnEnterMapView();
         void OnLeaveMapView();
     }

@@ -103,6 +103,7 @@ GameObject:
   m_Component:
   - component: {fileID: 4132828766649738}
   - component: {fileID: 114879210121939140}
+  - component: {fileID: -7008981033887259039}
   m_Layer: 20
   m_Name: Location2
   m_TagString: Untagged
@@ -139,12 +140,30 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_AvatarRenderer: {fileID: 212419499867207832}
-  m_Shadows:
-  - {fileID: 212375521424643466}
+  m_Animator: {fileID: -7008981033887259039}
   m_AvatarGroup: {fileID: 4416586458041762}
   m_Ring: {fileID: 212419499867207832}
   m_OwnedBy: {fileID: 8951449135916533013}
   m_CharacterTransform: {fileID: 4570700201433390}
+--- !u!95 &-7008981033887259039
+Animator:
+  serializedVersion: 3
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1173689217164340}
+  m_Enabled: 1
+  m_Avatar: {fileID: 0}
+  m_Controller: {fileID: 9100000, guid: 1658b5760ad22e0489d9b5d5ada6c4af, type: 2}
+  m_CullingMode: 0
+  m_UpdateMode: 0
+  m_ApplyRootMotion: 0
+  m_LinearVelocityBlending: 0
+  m_WarningMessage: 
+  m_HasTransformHierarchy: 1
+  m_AllowConstantClipSamplingOptimization: 1
+  m_KeepAnimatorControllerStateOnDisable: 0
 --- !u!1 &1320835451952284
 GameObject:
   m_ObjectHideFlags: 0

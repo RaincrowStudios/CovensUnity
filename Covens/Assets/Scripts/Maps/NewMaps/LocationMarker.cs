@@ -26,7 +26,7 @@ public class LocationMarker : MuskMarker
             m_OwnedBy.text = popData.lastOwnedBy.displayName;
         }
 
-        m_CharacterRenderers = new List<SpriteRenderer> { m_AvatarRenderer, m_Ring };
+        //m_CharacterRenderers = new List<SpriteRenderer> { m_AvatarRenderer, m_Ring };
 
         IsShowingAvatar = true;
     }

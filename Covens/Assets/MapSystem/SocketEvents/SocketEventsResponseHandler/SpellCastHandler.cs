@@ -162,7 +162,7 @@ namespace Raincrow.GameEventResponses
                     {
                         MarkerSpawner.RemoveImmunity(data.caster.id, data.target.id);
                         if (caster != null && caster is WitchMarker)
-                            (caster as WitchMarker).RemoveImmunityFX();
+                            (caster as WitchMarker).OnRemoveImmunity();
                     }
                 },
                 onComplete: () =>
@@ -183,7 +183,7 @@ namespace Raincrow.GameEventResponses
                     {
                         MarkerSpawner.AddImmunity(data.caster.id, data.target.id);
                         if (target != null && target is WitchMarker)
-                            (target as WitchMarker).AddImmunityFX();
+                            (target as WitchMarker).OnAddImmunity();
                     }
 
                     if (data.result.moveCharacter.move && playerIsTarget)

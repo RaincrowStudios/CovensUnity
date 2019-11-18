@@ -202,7 +202,7 @@ public class MarkerSpawner : MarkerManager
 
         var pos = new Vector2(Data.longitude, Data.latitude);
         IMarker marker = MapsAPI.Instance.AddMarker(pos, go);
-        marker.GameObject.SetActive(false);
+        //marker.GameObject.SetActive(false);
         marker.Setup(Data);
         marker.OnClick += OnClickMarker;
 
@@ -379,7 +379,7 @@ public class MarkerSpawner : MarkerManager
     /// <summary>
     /// Returns true if the target is immune to the player.
     /// </summary>
-    public static bool IsTargetImmune(WitchToken token)
+    public static bool IsTargetImmune(Token token)
     {
         return PlayerDataManager.playerData.immunities.Contains(token.instance);
     }
@@ -496,7 +496,7 @@ public class MarkerSpawner : MarkerManager
         }
         else
         {
-            marker.GameObject.SetActive(false);
+            //marker.GameObject.SetActive(false);
             marker.inMapView = false;
         }
     }
@@ -507,7 +507,7 @@ public class MarkerSpawner : MarkerManager
         marker.AvatarTransform.rotation = MapsAPI.Instance.camera.transform.rotation;
     }
 
-    public static void HighlightMarker(List<IMarker> targets)
+    public static void HighlightMarkers(List<IMarker> targets)
     {
         m_Highlighting = targets.Count > 0;
 
@@ -522,13 +522,13 @@ public class MarkerSpawner : MarkerManager
         {
             aux = item.Value[0];
             if (aux.inMapView && !targets.Contains(aux))
-                aux.SetAlpha(m_Highlighting ? 0.05f : 1, 1f);
+                aux.SetHidden(m_Highlighting);
         }
 
         foreach (IMarker _marker in targets)
         {
             _marker.inMapView = true;
-            _marker?.SetAlpha(1, 1f);
+            _marker.SetHidden(false);
         }
     }
 

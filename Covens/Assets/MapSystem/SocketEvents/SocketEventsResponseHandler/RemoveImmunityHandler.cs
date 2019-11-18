@@ -34,7 +34,7 @@ namespace Raincrow.GameEventResponses
                 //remove the fx if the witch was immune to me
                 IMarker marker = MarkerManager.GetMarker(data.target);
                 if (marker != null && marker is WitchMarker)
-                    (marker as WitchMarker).RemoveImmunityFX();
+                    (marker as WitchMarker).OnRemoveImmunity();
 
                 return;
             }

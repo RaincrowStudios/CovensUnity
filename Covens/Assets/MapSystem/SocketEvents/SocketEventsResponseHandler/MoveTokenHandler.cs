@@ -68,7 +68,7 @@ namespace Raincrow.GameEventResponses
                             targetPos = marker.GameObject.transform.position + direction;
 
                             marker.SetWorldPosition(targetPos, 2f);
-                            marker.SetAlpha(0, 1);
+                            //marker.SetAlpha(0, 1);
                         }
                     }
                 }

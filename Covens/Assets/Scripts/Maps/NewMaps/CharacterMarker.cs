@@ -5,6 +5,11 @@ using TMPro;
 
 public abstract class CharacterMarker : MuskMarker
 {
+    private static int DEAD_STATE_ID = Animator.StringToHash("dead");
+    private static int IMMUNE_STATE_ID = Animator.StringToHash("immune");
+    private static int AVATAR_STATE_ID = Animator.StringToHash("avatar");
+    private static int ICON_STATE_ID = Animator.StringToHash("icon");
+
     [Header("Character Marker")]
     [SerializeField] protected Transform m_AvatarGroup;
     [SerializeField] protected Transform m_IconGroup;
@@ -30,9 +35,9 @@ public abstract class CharacterMarker : MuskMarker
         }
     }
 
+    private CharacterToken characterToken;
     private float m_EnergyFill = 0;
     private int m_EnergyRingTweenId;
-    private int m_TweenId;
     private Transform m_HexFX;
     private Transform m_SealFX;
     private Transform m_CovenBuffFX;
@@ -42,20 +47,23 @@ public abstract class CharacterMarker : MuskMarker
 
     public override void Setup(Token data)
     {
+        characterToken = data as CharacterToken;
+
         base.Setup(data);
 
-        CharacterToken character = data as CharacterToken;
+        m_EnergyRing.color = new Color(1, 1, 1, 0);
 
         SetStats();
-        UpdateEnergy();
+
         IsShowingAvatar = false;
         IsShowingIcon = false;
+        
         //m_IconRenderer.sprite = null;
         //m_AvatarRenderer.sprite = null;
         
-        if (character.effects != null)
+        if (characterToken.effects != null)
         {
-            foreach (var effect in character.effects)
+            foreach (var effect in characterToken.effects)
                 OnApplyStatusEffect(effect);
         }
     }
@@ -70,24 +78,8 @@ public abstract class CharacterMarker : MuskMarker
         IsShowingIcon = true;
         IsShowingAvatar = false;
 
-        LeanTween.cancel(m_TweenId);
-
-        m_TweenId = LeanTween.value(m_IconGroup.localScale.x, 1, 0.5f)
-            .setEaseOutCubic()
-            .setOnStart(() =>
-            {
-                m_IconGroup.gameObject.SetActive(true);
-            })
-            .setOnUpdate((float t) =>
-            {
-                m_IconGroup.localScale = new Vector3(t, t, t);
-                m_AvatarGroup.localScale = new Vector3(1 - t, 1 - t, 1 - t);
-            })
-            .setOnComplete(() =>
-            {
-                m_AvatarGroup.gameObject.SetActive(false);
-            })
-            .uniqueId;
+        m_Animator.SetBool(AVATAR_STATE_ID, IsShowingAvatar);
+        m_Animator.SetBool(ICON_STATE_ID, IsShowingIcon);
     }
 
     public override void EnableAvatar()
@@ -100,36 +92,37 @@ public abstract class CharacterMarker : MuskMarker
         IsShowingAvatar = true;
         IsShowingIcon = false;
 
-        LeanTween.cancel(m_TweenId);
-
-        m_TweenId = LeanTween.value(m_AvatarGroup.localScale.x, 1, 0.5f)
-            .setEaseOutCubic()
-            .setOnStart(() =>
-            {
-                m_AvatarGroup.gameObject.SetActive(true);
-            })
-            .setOnUpdate((float t) =>
-            {
-                m_AvatarGroup.localScale = new Vector3(t, t, t);
-                m_IconGroup.localScale = new Vector3(1 - t, 1 - t, 1 - t);
-            })
-            .setOnComplete(() =>
-            {
-                m_IconGroup.gameObject.SetActive(false);
-            })
-            .uniqueId;
+        m_Animator.SetBool(AVATAR_STATE_ID, IsShowingAvatar);
+        m_Animator.SetBool(ICON_STATE_ID, IsShowingIcon);
     }
 
     public override void OnDespawn()
     {
         base.OnDespawn();
-        LeanTween.cancel(m_TweenId);
+
+        //LeanTween.cancel(m_TweenId);
+        LeanTween.cancel(m_EnergyRingTweenId);
 
         IsShowingAvatar = false;
         IsShowingIcon = false;
-
+        
         m_AvatarRenderer.sprite = null;
         m_IconRenderer.sprite = null;
+
+        m_Animator.SetBool("avatar", IsShowingAvatar);
+        m_Animator.SetBool("icon", IsShowingIcon);
+    }
+    
+    protected void UpdateAnimationState()
+    {
+        if (Token == null)
+            return;
+
+        bool dead = characterToken.energy <= 0 || characterToken.state == "dead";
+        bool immune = MarkerSpawner.IsTargetImmune(characterToken);
+        
+        m_Animator.SetBool(DEAD_STATE_ID, dead);
+        m_Animator.SetBool(IMMUNE_STATE_ID, immune);
     }
 
     public override void OnApplyStatusEffect(StatusEffect effect)
@@ -193,23 +186,7 @@ public abstract class CharacterMarker : MuskMarker
                 StatusEffectFX.DespawnCovenBuff(m_CovenBuffFX);
         }
     }
-
-    public override void UpdateRenderers()
-    {
-        base.UpdateRenderers();
-
-        m_Renderers.Remove(m_EnergyRing);
-    }
-
-    protected override void SetAlpha_OnUpdate(float alpha)
-    {
-        base.SetAlpha_OnUpdate(alpha);
-
-        Color aux = Color.Lerp(Color.black, m_SchoolColor, alpha);
-        aux.a = m_EnergyFill;
-        m_EnergyRing.color = aux;
-    }
-
+    
     public override void UpdateEnergy()
     {
         m_EnergyFill = (float)(Token as CharacterToken).energy;

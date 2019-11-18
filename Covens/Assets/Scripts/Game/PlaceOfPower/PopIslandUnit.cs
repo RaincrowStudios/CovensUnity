@@ -24,7 +24,7 @@ namespace Raincrow.DynamicPlacesOfPower
 
         public void FaceCamera(Camera camera)
         {
-            if (Marker != null && !Marker.isNull)
+            //if (Marker != null && !Marker.isNull)
                 Marker.AvatarTransform.rotation = camera.transform.rotation;
         }
     }

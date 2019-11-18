@@ -22,7 +22,7 @@ public class SpellcastingTrailFX : MonoBehaviour
 
     public static void SpawnTrail(int degree, IMarker caster, IMarker target, System.Action onStart, System.Action onComplete)
     {
-        if (caster == null || target == null || caster.isNull || target.isNull)
+        if (caster == null || target == null) // || caster.isNull || target.isNull)
         {
             LeanTween.value(0, 0, 0.1f)
                 .setOnStart(onStart)

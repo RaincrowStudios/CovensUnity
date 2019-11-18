@@ -15,7 +15,7 @@ public class WitchMarker : CharacterMarker
     [SerializeField] private Sprite m_MalePortrait;
     [SerializeField] private Sprite m_FemalePortrait;
 
-    public WitchToken witchToken { get => Token as WitchToken; }
+    public WitchToken witchToken;
 
     public override string Name => witchToken.displayName;
     
@@ -55,11 +55,13 @@ public class WitchMarker : CharacterMarker
 
     public static int GeneratedAvatarCount => GeneratedAvatars.Count;
     public static int GeneratedPortraitCount => GeneratedPortraits.Count;
-
+    
     public override void Setup(Token data)
     {
-        base.Setup(data);
+        witchToken = data as WitchToken;
 
+        base.Setup(data);
+        
         m_AvatarRenderer.transform.localPosition = Vector3.zero;
 
         m_DisplayName.text = witchToken.displayName;
@@ -69,15 +71,15 @@ public class WitchMarker : CharacterMarker
 
         //set immunity icon
         if (MarkerSpawner.IsTargetImmune(witchToken))
-            AddImmunityFX();
+            OnAddImmunity();
         else
-            RemoveImmunityFX();
+            OnRemoveImmunity();
         
         //set death icon
         if (witchToken.state == "dead" || witchToken.energy <= 0)
-            AddDeathFX();
+            OnDeath();
         else
-            RemoveDeathFX();
+            OnRevive();
     }
       
 
@@ -285,7 +287,7 @@ public class WitchMarker : CharacterMarker
         base.OnDespawn();
     }
 
-    public void AddImmunityFX()
+    public void OnAddImmunity()
     {
         if (m_ImmunityIcon == null)
         {
@@ -294,17 +296,17 @@ public class WitchMarker : CharacterMarker
             m_ImmunityIcon.localPosition = new Vector3(0, 0, -0.5f);
             m_ImmunityIcon.localScale = Vector3.one;
             m_ImmunityIcon.localRotation = Quaternion.identity;
-            UpdateRenderers();
+            //UpdateRenderers();
         }
 
-        UpdateCharacterAlphaMul();
+        UpdateAnimationState();
     }
 
-    public void AddDeathFX()
+    public void OnDeath()
     {
         if (m_DeathIcon != null)
         {
-            UpdateCharacterAlphaMul();
+            UpdateAnimationState();
             return;
         }
 
@@ -314,51 +316,33 @@ public class WitchMarker : CharacterMarker
         m_DeathIcon.localScale = Vector3.one;
         m_DeathIcon.localRotation = Quaternion.identity;
 
-        UpdateRenderers();
-        UpdateCharacterAlphaMul();
+        //UpdateRenderers();
+        UpdateAnimationState();
     }
 
-    public void RemoveImmunityFX()
+    public void OnRemoveImmunity()
     {
         if (m_ImmunityIcon == null)
         {
-            UpdateCharacterAlphaMul();
+            UpdateAnimationState();
             return;
         }
 
         SpellcastingFX.ImmunityIconPool.Despawn(m_ImmunityIcon);
         m_ImmunityIcon = null;
 
-        UpdateRenderers();
-        UpdateCharacterAlphaMul();
+        //UpdateRenderers();
+        UpdateAnimationState();
     }
 
-    public void RemoveDeathFX()
+    public void OnRevive()
     {
         if (m_DeathIcon != null)
         {
             SpellcastingFX.DeathIconPool.Despawn(m_DeathIcon);
-            UpdateRenderers();
+            //UpdateRenderers();
         }
-        UpdateCharacterAlphaMul();
-    }
-
-    private void UpdateCharacterAlphaMul()
-    {
-        if (Token == null)
-            return;
-
-        float prevValue = m_CharacterAlphaMul;
-
-        if (witchToken.energy <= 0 || witchToken.state == "dead")
-            m_CharacterAlphaMul = 0.45f;
-        else if (MarkerSpawner.IsTargetImmune(witchToken))
-            m_CharacterAlphaMul = 0.38f;
-        else
-            m_CharacterAlphaMul = 1f;
-
-        if (m_CharacterAlphaMul != prevValue)
-            SetCharacterAlpha(AvatarAlpha, 1f);
+        UpdateAnimationState();
     }
 
     public override void OnApplyStatusEffect(StatusEffect effect)

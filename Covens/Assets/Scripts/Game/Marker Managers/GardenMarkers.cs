@@ -195,7 +195,7 @@ public class GardenMarkers : MonoBehaviour
     private void SendQuestLore()
     {
         //loreMarker.Interactable = false;
-        loreMarker.SetAlpha(0.4f, 1f);
+        //loreMarker.SetAlpha(0.4f, 1f);
 
         UIQuestLore.Show(QuestsController.Quests.explore.type);
     }

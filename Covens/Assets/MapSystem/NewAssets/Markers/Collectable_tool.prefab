@@ -103,6 +103,7 @@ GameObject:
   m_Component:
   - component: {fileID: 4671572482984052}
   - component: {fileID: 114897159276740766}
+  - component: {fileID: -3786760843678005527}
   m_Layer: 20
   m_Name: Collectable_tool
   m_TagString: Untagged
@@ -139,14 +140,27 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_AvatarRenderer: {fileID: 212961463533161810}
-  m_NameBanner: {fileID: 0}
-  m_StatsContainer: {fileID: 0}
-  m_EnergyRing: {fileID: 0}
-  m_EnergyRingEmpty: {fileID: 0}
-  m_Shadows:
-  - {fileID: 212358194869544346}
-  m_DebugFloat: 0
+  m_Animator: {fileID: -3786760843678005527}
   m_ViewTransform: {fileID: 4250628353120804}
+--- !u!95 &-3786760843678005527
+Animator:
+  serializedVersion: 3
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1651202701508960}
+  m_Enabled: 1
+  m_Avatar: {fileID: 0}
+  m_Controller: {fileID: 9100000, guid: 585bc036478931744b3d4671b21eabb8, type: 2}
+  m_CullingMode: 0
+  m_UpdateMode: 0
+  m_ApplyRootMotion: 0
+  m_LinearVelocityBlending: 0
+  m_WarningMessage: 
+  m_HasTransformHierarchy: 1
+  m_AllowConstantClipSamplingOptimization: 1
+  m_KeepAnimatorControllerStateOnDisable: 0
 --- !u!1 &1898595898417018
 GameObject:
   m_ObjectHideFlags: 0

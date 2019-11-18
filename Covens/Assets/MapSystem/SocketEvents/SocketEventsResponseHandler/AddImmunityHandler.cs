@@ -33,7 +33,7 @@ namespace Raincrow.GameEventResponses
                 //add the fx if the witch is now immune to me
                 IMarker marker = MarkerManager.GetMarker(data.target);
                 if (marker != null && marker is WitchMarker)
-                    (marker as WitchMarker).AddImmunityFX();
+                    (marker as WitchMarker).OnAddImmunity();
 
                 return;
             }

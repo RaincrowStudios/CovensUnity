@@ -73,7 +73,7 @@ public class MapView : MonoBehaviour
     [ContextMenu("_OnPlayerDead")]
     private void _OnPlayerDead()
     {
-        PlayerManager.witchMarker.AddDeathFX();
+        PlayerManager.witchMarker.OnDeath();
         DeathState.Instance.ShowDeath();
 
         MapFlightTransition.Instance.RecallHome(true);
@@ -84,7 +84,7 @@ public class MapView : MonoBehaviour
     [ContextMenu("_OnPlayerRevived")]
     private void _OnPlayerRevived()
     {
-        PlayerManager.witchMarker.RemoveDeathFX();
+        PlayerManager.witchMarker.OnRevive();
         DeathState.Instance.Revived();
     }
 
@@ -102,7 +102,7 @@ public class MapView : MonoBehaviour
         if (marker.inMapView)
         {
             marker.GameObject.SetActive(true);
-            marker.SetAlpha(1, 1);
+            //marker.SetAlpha(1, 1);
         }
     }
 
@@ -117,7 +117,7 @@ public class MapView : MonoBehaviour
             marker.Interactable = false;
 
         //animate the marken
-        marker.SetAlpha(0, 1);
+        //marker.SetAlpha(0, 1);
         MarkerSpawner.DeleteMarker(marker.Token.instance);
     }
 
@@ -133,7 +133,7 @@ public class MapView : MonoBehaviour
         if (marker.Interactable)
             marker.Interactable = false;
 
-        marker.SetAlpha(0, 1);
+        //marker.SetAlpha(0, 1);
         LeanTween.scale(marker.GameObject, Vector3.zero, 2f).setEaseOutCubic();
     }
 
@@ -146,14 +146,14 @@ public class MapView : MonoBehaviour
         if (energy <= 0 || token.state == "dead")
         {
             if (token.Type == MarkerSpawner.MarkerType.WITCH)
-                (marker as WitchMarker).AddDeathFX();
+                (marker as WitchMarker).OnDeath();
             else if (marker.Type == MarkerSpawner.MarkerType.SPIRIT)
                 RemoveTokenHandler.ForceEvent(token.instance);
         }
         else
         {
             if (token.Type == MarkerSpawner.MarkerType.WITCH)
-                (marker as WitchMarker).RemoveDeathFX();
+                (marker as WitchMarker).OnRevive();
         }
     }
 

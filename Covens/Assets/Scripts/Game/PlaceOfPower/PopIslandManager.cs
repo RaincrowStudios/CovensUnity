@@ -96,7 +96,7 @@ namespace Raincrow.DynamicPlacesOfPower
                     {
                         aux = m_Islands[i].Units[j].Marker;
 
-                        if (aux == null || aux.isNull)
+                        if (aux == null/* || aux.isNull*/)
                             continue;
 
                         auxCoven = aux.IsPlayer ? PlayerDataManager.playerData.covenId : (aux.Token as CharacterToken).coven;

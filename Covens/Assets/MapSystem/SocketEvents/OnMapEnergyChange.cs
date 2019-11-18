@@ -86,8 +86,8 @@ public static class OnMapEnergyChange
 
     public static void ForceEvent(IMarker marker, int newEnergy, double timestamp)
     {
-        if (marker == null || marker.isNull)
-            return;
+        //if (marker == null || marker.isNull)
+        //    return;
 
         string instance;
         int baseEnergy;

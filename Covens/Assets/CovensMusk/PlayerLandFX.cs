@@ -44,8 +44,8 @@ public class PlayerLandFX : MonoBehaviour
         //SelectionRing.transform.localScale = Vector3.zero;
         //Character.transform.localScale = Vector3.zero;
 
-        if (PlayerManager.marker != null)
-            PlayerManager.marker.SetAlpha(0f, 0.1f);
+        //if (PlayerManager.marker != null)
+        //    PlayerManager.marker.SetAlpha(0f, 0.1f);
     }
 
     void LandingAnim()

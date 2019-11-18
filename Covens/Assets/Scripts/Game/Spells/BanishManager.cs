@@ -97,7 +97,7 @@ public class BanishManager : MonoBehaviour
                 LeanTween.value(0, 0, 0.05f).setOnComplete(() =>
                   {
                       target.SetWorldPosition(target.GameObject.transform.position + direction, 2f);
-                      target.SetAlpha(0, 1);
+                      //target.SetAlpha(0, 1);
                   });
             }
         }

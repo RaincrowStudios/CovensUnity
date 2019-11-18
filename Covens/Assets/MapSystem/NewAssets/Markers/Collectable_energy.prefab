@@ -47,8 +47,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_AvatarRenderer: {fileID: 4917277880906006782}
-  m_Shadows:
-  - {fileID: 212614738658301160}
+  m_Animator: {fileID: 4475479483321764716}
   m_ViewTransform: {fileID: 4959983671828090}
 --- !u!95 &4475479483321764716
 Animator:
@@ -60,7 +59,7 @@ Animator:
   m_GameObject: {fileID: 1138044086477858}
   m_Enabled: 1
   m_Avatar: {fileID: 0}
-  m_Controller: {fileID: 9100000, guid: 585bc036478931744b3d4671b21eabb8, type: 2}
+  m_Controller: {fileID: 9100000, guid: 25d252f591fc1f8418225bb8169383ca, type: 2}
   m_CullingMode: 0
   m_UpdateMode: 0
   m_ApplyRootMotion: 0
