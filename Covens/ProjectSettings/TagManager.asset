@@ -48,10 +48,10 @@ TagManager:
   - isoMapToken
   - map
   - 
-  - 
+  - MapMarkersHighlight
   - MapMarkers
   - Store
-  - HighlightMarker
+  - FlyingMarkers
   - ftf
   - 
   - 

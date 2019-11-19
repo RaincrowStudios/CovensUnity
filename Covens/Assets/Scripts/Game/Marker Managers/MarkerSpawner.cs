@@ -74,8 +74,8 @@ public class MarkerSpawner : MarkerManager
     private const float MARKER_SCALE_MIN = 1;
     private const float MARKER_SCALE_MAX = 2;
 
-    private static bool m_Highlighting = false;
-    private static List<IMarker> m_HighlightedMarkers = new List<IMarker>();
+    //private static bool m_Highlighting = false;
+    //private static List<IMarker> m_HighlightedMarkers = new List<IMarker>();
 
     void Awake()
     {
@@ -230,9 +230,9 @@ public class MarkerSpawner : MarkerManager
         //remove from mapsapi tracker
         MapsAPI.Instance.RemoveMarker(marker);
 
-        //remove from highlight list
-        if (m_Highlighting)
-            m_HighlightedMarkers.Remove(marker);
+        ////remove from highlight list
+        //if (m_Highlighting)
+        //    m_HighlightedMarkers.Remove(marker);
 
         SimplePool<Transform> pool = null;
         if (marker.Type == MarkerType.WITCH)
@@ -247,6 +247,11 @@ public class MarkerSpawner : MarkerManager
             pool = m_ToolPool; // Instance.m_ToDespawn.Add((m_ToolPool, marker));
         else if (marker.Type == MarkerType.ENERGY)
             pool = m_EnergyPool; //Instance.m_ToDespawn.Add((m_EnergyPool, marker));
+        else
+        {
+            Debug.LogError("no pool for " + marker.Name + " [" + marker.Type);
+            return;
+        }
 
         if (despawnDelay == 0)
         {
@@ -459,23 +464,23 @@ public class MarkerSpawner : MarkerManager
             PlayerManager.marker.AvatarTransform.rotation = MapsAPI.Instance.camera.transform.rotation;
         }
 
-        if (m_Highlighting)
-        {
-            foreach (IMarker _marker in m_HighlightedMarkers)
-            {
-                if (_marker != null && _marker.GameObject != null && _marker != PlayerManager.marker)
-                    UpdateMarker(_marker);
-            }
-        }
-        else
-        {
+        //if (m_Highlighting)
+        //{
+        //    foreach (IMarker _marker in m_HighlightedMarkers)
+        //    {
+        //        if (_marker != null && _marker.GameObject != null && _marker != PlayerManager.marker)
+        //            UpdateMarker(_marker);
+        //    }
+        //}
+        //else
+        //{
             IMarker aux;
             foreach (var item in Markers)
             {
                 aux = item.Value[0];
                 UpdateMarker(aux);
             }
-        }
+        //}
     }
 
     public void UpdateMarker(IMarker marker)
@@ -521,8 +526,9 @@ public class MarkerSpawner : MarkerManager
         marker.AvatarTransform.rotation = MapsAPI.Instance.camera.transform.rotation;
     }
 
-    public static void HighlightMarkers(List<IMarker> targets)
+    public static void HighlightMarkers(List<MuskMarker> targets)
     {
+        MapCameraUtils.HighlightMarkers(targets);
         //m_Highlighting = targets.Count > 0;
 
         //if (targets == null)

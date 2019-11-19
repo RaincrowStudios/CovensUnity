@@ -2,6 +2,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using TMPro;
 
 public class MapCameraUtils : MonoBehaviour
 {
@@ -13,16 +14,31 @@ public class MapCameraUtils : MonoBehaviour
     [Header("Settings")]
     [SerializeField] private Vector2 m_TargetFocusOffset = new Vector2(19.1266f, 19.5f);
 
-    private int m_HightlighTweenId;
-    //public static int markersLayer;
-    //public static int highlightsLayer;
+    private Material m_MarkerMat;
+    private Material m_MarkerMat_Aux;
+
+    private Material m_FontMat;
+    private Material m_FontMat_Aux;
+
+    private int m_HighlightTweenId;
+
+    private List<MuskMarker> m_HighlightedMarkers = new List<MuskMarker>();
 
     private void Awake()
     {
         m_Instance = this;
+    }
 
-        //markersLayer = LayerMask.NameToLayer("MapMarkers");
-        //highlightsLayer = LayerMask.NameToLayer("HighlightMarker");
+    private IEnumerator Start()
+    {
+        while (PlayerManager.marker == null)
+            yield return null;
+
+        m_MarkerMat = PlayerManager.witchMarker.GetComponentInChildren<SpriteRenderer>().sharedMaterial;
+        m_MarkerMat_Aux = new Material(m_MarkerMat);
+
+        m_FontMat = PlayerManager.witchMarker.GetComponentInChildren<TextMeshPro>(true).fontSharedMaterial;
+        m_FontMat_Aux = new Material(m_FontMat);
     }
 
     public static void FocusOnPosition(Vector3 worldPosition, float normalizedZoom, bool allowCancel, float time = 1f)
@@ -111,7 +127,7 @@ public class MapCameraUtils : MonoBehaviour
         foreach (Transform child in transform)
             SetLayer(child, layer);
     }
-
+    
     public static void SetRotation(float eulerAngle, float time, bool allowCancel, System.Action onComplete)
     {
         m_Instance.m_Controller.AnimateRotation(eulerAngle, time, allowCancel, onComplete);
@@ -155,13 +171,53 @@ public class MapCameraUtils : MonoBehaviour
         m_Instance.m_Controller.ExtraFOV = value;
     }
 
-    // public static void POPEnterAnimation()
-    // {
-    //     m_Instance.m_Controller.PlaceOfPowerEnter();
-    // }
+    public static void HighlightMarkers(List<MuskMarker> markers)
+    {
+        m_Instance._HighlightMarkers(markers);
+    }
 
-    // public static void POPExitAnimation()
-    // {
-    //     m_Instance.m_Controller.PlaceOfPowerExit();
-    // }
+    public static void SetMaterial(MuskMarker marker, Material sprite, Material font)
+    {
+        SpriteRenderer[] renderers = marker.GetComponentsInChildren<SpriteRenderer>();
+        for (int i = 0; i < renderers.Length; i++)
+            renderers[i].sharedMaterial = sprite;
+
+        TextMeshPro[] texts = marker.GetComponentsInChildren<TextMeshPro>();
+        for (int i = 0; i < texts.Length; i++)
+            texts[i].fontSharedMaterial = font;
+    }
+
+    private void _HighlightMarkers(List<MuskMarker> markers)
+    {        
+        //reset previous markers
+        foreach (var marker in m_HighlightedMarkers)
+            SetMaterial(marker, m_MarkerMat, m_FontMat);
+
+        //set targeted markers
+        foreach (var marker in markers)
+            SetMaterial(marker, m_MarkerMat_Aux, m_FontMat_Aux);
+
+        m_HighlightedMarkers = markers;
+
+        //lerp the alpha
+        LeanTween.cancel(m_HighlightTweenId);
+        float target = markers == null || markers.Count == 0 ? 1 : 0.1f;
+        m_HighlightTweenId = LeanTween.value(m_MarkerMat.GetColor("_Color").a, target, 1f)
+            .setEaseOutCubic()
+            .setOnUpdate((float t) =>
+            {
+                m_MarkerMat.SetColor("_Color", new Color(1, 1, 1, t));
+                m_FontMat.SetColor("_FaceColor", new Color(1, 1, 1, t));
+                m_FontMat.SetColor("_UnderlayColor", new Color(0, 0, 0, t));
+            })
+            .uniqueId;
+
+    }
+
+    private void OnDestroy()
+    {
+        m_MarkerMat?.SetColor("_Color", new Color(1, 1, 1, 1));
+        m_FontMat?.SetColor("_FaceColor", new Color(1, 1, 1, 1));
+        m_FontMat?.SetColor("_UnderlayColor", new Color(0, 0, 0, 1));
+    }
 }

@@ -173,7 +173,7 @@ public class UIPlayerInfo : UIInfoPanel
         if (!LocationIslandController.isInBattle)
         {
             MainUITransition.Instance.HideMainUI();
-            MarkerSpawner.HighlightMarkers(new List<IMarker> { PlayerManager.marker, WitchMarker });
+            MarkerSpawner.HighlightMarkers(new List<MuskMarker> { PlayerManager.witchMarker, WitchMarker });
 
             MoveTokenHandler.OnTokenMove += _OnMapTokenMove;
         }
@@ -258,7 +258,7 @@ public class UIPlayerInfo : UIInfoPanel
             MapsAPI.Instance.allowControl = true;
             MapCameraUtils.FocusOnPosition(previousMapPosition, m_PreviousMapZoom, true);
             MapCameraUtils.SetExtraFOV(0);
-            MarkerSpawner.HighlightMarkers(new List<IMarker> { });
+            MarkerSpawner.HighlightMarkers(new List<MuskMarker> { });
         }
         else
         {
