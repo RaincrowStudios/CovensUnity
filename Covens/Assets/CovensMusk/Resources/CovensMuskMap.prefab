@@ -1409,6 +1409,8 @@ MonoBehaviour:
   m_MapsService: {fileID: 114415505166503672}
   m_LinearScale: {fileID: 4164780109084455368}
   m_Camera: {fileID: 20604202365456760}
+  m_StreetCamera: {fileID: 20212312958115724}
+  m_FlyCamera: {fileID: 6454441364118927953}
   m_MapCenter: {fileID: 4923556965618326}
   m_TrackedObjectsContainer: {fileID: 1190131398276830}
   m_WallMaterial: {fileID: 2100000, guid: 1060ffb5d526b134190513703ed16c2d, type: 2}

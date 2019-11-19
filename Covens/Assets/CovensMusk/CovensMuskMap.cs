@@ -16,6 +16,8 @@ public class CovensMuskMap : MonoBehaviour
     [SerializeField] private MapsService m_MapsService;
     [SerializeField] private MapLineraScale m_LinearScale;
     [SerializeField] private Camera m_Camera;
+    [SerializeField] private Camera m_StreetCamera;
+    [SerializeField] private Camera m_FlyCamera;
     [SerializeField] private Transform m_MapCenter;
     [SerializeField] private GameObject m_TrackedObjectsContainer;
 
@@ -469,8 +471,12 @@ public class CovensMuskMap : MonoBehaviour
 
     public void HideMap(bool hide)
     {
-        m_Camera.gameObject.SetActive(!hide);
-        m_TrackedObjectsContainer.SetActive(!hide);
+        //m_Camera.gameObject.SetActive(!hide);
+        //m_TrackedObjectsContainer.SetActive(!hide);
+
+        m_Camera.enabled = !hide;
+        m_StreetCamera.enabled = !hide;
+        m_FlyCamera.enabled = !hide;
     }
 
     public bool IsVisible()
