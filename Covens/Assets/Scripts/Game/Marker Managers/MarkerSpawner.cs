@@ -306,8 +306,8 @@ public class MarkerSpawner : MarkerManager
         //show the basic available info, and waut for the map/select response to fill the details
         if (Data.Type == MarkerType.WITCH)
         {
-            if (!WitchMarker.DisableSpriteGeneration)
-                (m as WitchMarker).GenerateAvatar();
+            //if (!WitchMarker.DisableSpriteGeneration)
+            (m as WitchMarker).GenerateAvatar(null, true);
             UIQuickCast.Open();
             UIQuickCast.UpdateCanCast(m, null);
             UIPlayerInfo.Show(m as WitchMarker, Data as WitchToken, UIQuickCast.Close);

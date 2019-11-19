@@ -1,10 +1,88 @@
-﻿using System.Collections;
+﻿using System;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
 public class AvatarSpriteUtil : MonoBehaviour
 {
+    private class MarkerSpriteCollection
+    {
+        private Dictionary<WitchMarker, Action<Sprite>> m_Dict;
+        private List<WitchMarker> m_List;
+
+        public int Count => m_List.Count;
+
+        public MarkerSpriteCollection()
+        {
+            m_Dict = new Dictionary<WitchMarker, Action<Sprite>>();
+            m_List = new List<WitchMarker>();
+        }
+
+        ~MarkerSpriteCollection()
+        {
+            m_Dict.Clear();
+            m_List.Clear();
+            m_Dict = null;
+            m_List = null;
+        }
+
+        public void Add(WitchMarker marker, Action<Sprite> callback)
+        {
+            if (!m_Dict.ContainsKey(marker))
+            {
+                m_List.Add(marker);
+            }
+            m_Dict[marker] = callback;
+        }
+
+        public bool Remove(WitchMarker marker)
+        {
+            if (m_Dict.ContainsKey(marker))
+            {
+                for(int i = 0; i < m_List.Count; i++)
+                {
+                    if (m_List[i] == marker)
+                    {
+                        m_List.RemoveAt(i);
+                        break;
+                    }
+                }
+                m_Dict.Remove(marker);
+                return true;
+            }
+            else
+            {
+                return false;
+            }
+        }
+
+        public void Clear()
+        {
+            m_Dict.Clear();
+            m_List.Clear();
+        }
+
+        public bool GetFirst(out WitchMarker marker, out Action<Sprite> callback)
+        {
+            if (m_List.Count > 0)
+            {
+                marker = m_List[0];
+                callback = m_Dict[marker];
+
+                m_List.RemoveAt(0);
+                m_Dict.Remove(marker);
+
+                return true;
+            }
+            else
+            {
+                marker = null;
+                callback = null;
+                return false;
+            }
+        }
+    }
+
     private struct SpriteGenerationSetting
     {
         public bool male;
@@ -39,9 +117,9 @@ public class AvatarSpriteUtil : MonoBehaviour
     [SerializeField] private Camera m_PortraitCamera_Wardrobe;
 
     List<SpriteGenerationSetting> m_GenQueue = new List<SpriteGenerationSetting>();
-    List<(WitchMarker,System.Action<Sprite>)> m_AvatarQueue = new List<(WitchMarker, System.Action<Sprite>)>();
-    List<(WitchMarker, System.Action<Sprite>)> m_PortraitQueue = new List<(WitchMarker, System.Action<Sprite>)>();
-    
+    MarkerSpriteCollection m_AvatarQueue;
+    MarkerSpriteCollection m_PortraitQueue;
+
     private void Awake()
     {
         if(Instance != null)
@@ -60,6 +138,9 @@ public class AvatarSpriteUtil : MonoBehaviour
         m_PortraitCamera.enabled = false;
         m_FullbodyCamera.enabled = false;
         m_PortraitCamera_Wardrobe.enabled = false;
+
+        m_AvatarQueue = new MarkerSpriteCollection();
+        m_PortraitQueue = new MarkerSpriteCollection();
     }
 
     //public void GenerateHighResSprite(bool male, List<EquippedApparel> equips, System.Action<Sprite> callback)
@@ -79,11 +160,6 @@ public class AvatarSpriteUtil : MonoBehaviour
     //    else
     //        m_Schedule.Add(prop);
     //}
-
-    private void OnSpriteGenerated()
-    {
-        //if (m_GenQueue.Count > 0)
-    }
 
     public void GenerateAvatar(bool male, List<EquippedApparel> equips, System.Action<Sprite> callback)
     {
@@ -144,7 +220,15 @@ public class AvatarSpriteUtil : MonoBehaviour
         if (m_GenQueue.Count == 0)
             GenerateAvatar(marker.witchToken.male, marker.witchToken.equipped, callback);
         else
-            m_AvatarQueue.Add((marker, callback));
+            m_AvatarQueue.Add(marker, callback);
+    }
+
+    public void RemoveFromAvatarQueue(WitchMarker marker)
+    {
+        if (m_AvatarQueue.Remove(marker))
+        {
+            //Debug.Log(marker.name + " removed : " + m_AvatarQueue.Count);
+        }
     }
     
     public void AddToPortraitQueue(WitchMarker marker, System.Action<Sprite> callback)
@@ -152,7 +236,12 @@ public class AvatarSpriteUtil : MonoBehaviour
         if (m_GenQueue.Count == 0)
             GeneratePortrait(marker.witchToken.male, marker.witchToken.equipped, callback);
         else
-            m_PortraitQueue.Add((marker, callback));
+            m_PortraitQueue.Add(marker, callback);
+    }
+
+    public void RemoveFromPortraitQueue(WitchMarker marker)
+    {
+        m_PortraitQueue.Remove(marker);
     }
 
     public void ClearQueues()
@@ -276,21 +365,14 @@ public class AvatarSpriteUtil : MonoBehaviour
             //when all is over, check the map avatar and potrait queue
             if (m_GenQueue.Count == 0)
             {
-                if (m_AvatarQueue.Count > 0)
-                {
-                    var marker = m_AvatarQueue[0].Item1;
-                    var callback = m_AvatarQueue[0].Item2;
-                    m_AvatarQueue.RemoveAt(0);
-                    GenerateAvatar(marker.witchToken.male, marker.witchToken.equipped, callback);
-                }
+                WitchMarker marker = null;
+                Action<Sprite> callback = null;
 
-                if (m_PortraitQueue.Count > 0)
-                {
-                    var marker = m_PortraitQueue[0].Item1;
-                    var callback = m_PortraitQueue[0].Item2;
-                    m_PortraitQueue.RemoveAt(0);
+                if (m_AvatarQueue.GetFirst(out marker, out callback))
+                    GenerateAvatar(marker.witchToken.male, marker.witchToken.equipped, callback);
+
+                if (m_PortraitQueue.GetFirst(out marker, out callback))
                     GeneratePortrait(marker.witchToken.male, marker.witchToken.equipped, callback);
-                }
             }
             else
             {

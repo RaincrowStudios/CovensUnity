@@ -372,6 +372,9 @@ public class WitchMarker : CharacterMarker
 
         IsShowingAvatar = false;
         IsShowingIcon = false;
+
+        AvatarSpriteUtil.Instance.RemoveFromAvatarQueue(this);
+        AvatarSpriteUtil.Instance.RemoveFromPortraitQueue(this);
     }
 
     public void DestroyGeneratedAvatar()
