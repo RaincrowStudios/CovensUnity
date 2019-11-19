@@ -14,15 +14,15 @@ public class MapCameraUtils : MonoBehaviour
     [SerializeField] private Vector2 m_TargetFocusOffset = new Vector2(19.1266f, 19.5f);
 
     private int m_HightlighTweenId;
-    public static int markersLayer;
-    public static int highlightsLayer;
+    //public static int markersLayer;
+    //public static int highlightsLayer;
 
     private void Awake()
     {
         m_Instance = this;
 
-        markersLayer = LayerMask.NameToLayer("MapMarkers");
-        highlightsLayer = LayerMask.NameToLayer("HighlightMarker");
+        //markersLayer = LayerMask.NameToLayer("MapMarkers");
+        //highlightsLayer = LayerMask.NameToLayer("HighlightMarker");
     }
 
     public static void FocusOnPosition(Vector3 worldPosition, float normalizedZoom, bool allowCancel, float time = 1f)

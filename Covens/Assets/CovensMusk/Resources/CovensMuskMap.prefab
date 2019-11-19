@@ -536,6 +536,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Camera: {fileID: 20604202365456760}
+  m_StreetCamera: {fileID: 20212312958115724}
+  m_FlyingCamera: {fileID: 6454441364118927953}
   m_MuskMapWrapper: {fileID: 114921964724232780}
   m_CenterPoint: {fileID: 4923556965618326}
   m_AnglePivot: {fileID: 4259834071363570}
@@ -632,7 +634,7 @@ GameObject:
   m_Component:
   - component: {fileID: 4787886522178544}
   - component: {fileID: 212175266480171814}
-  m_Layer: 20
+  m_Layer: 22
   m_Name: near
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1090,7 +1092,7 @@ GameObject:
   m_Component:
   - component: {fileID: 4797967226853842}
   - component: {fileID: 114894383285576738}
-  m_Layer: 20
+  m_Layer: 22
   m_Name: WorldMarkerPrefab
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1939,7 +1941,7 @@ GameObject:
   - component: {fileID: 20212312958115724}
   - component: {fileID: 114964790563420934}
   m_Layer: 17
-  m_Name: markersCamera
+  m_Name: streetMarkers
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -2117,7 +2119,7 @@ GameObject:
   m_Component:
   - component: {fileID: 4952524191959104}
   - component: {fileID: 212608154925066046}
-  m_Layer: 20
+  m_Layer: 22
   m_Name: far
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -2292,7 +2294,7 @@ GameObject:
   - component: {fileID: 6454441364118927953}
   - component: {fileID: 4730629790059786435}
   m_Layer: 17
-  m_Name: highlightCamera
+  m_Name: flyingMarkers
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

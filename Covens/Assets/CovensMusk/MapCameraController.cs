@@ -10,6 +10,8 @@ public class MapCameraController : MonoBehaviour
     public delegate float FloatDelegate();
 
     [SerializeField] private Camera m_Camera;
+    [SerializeField] private Camera m_StreetCamera;
+    [SerializeField] private Camera m_FlyingCamera;
     [SerializeField] private CovensMuskMap m_MuskMapWrapper;
     [SerializeField] private Transform m_CenterPoint;
     [SerializeField] private Transform m_AnglePivot;
@@ -268,10 +270,14 @@ public class MapCameraController : MonoBehaviour
 
             if (_streetLevel)
             {
+                m_FlyingCamera.enabled = false;
+                m_StreetCamera.enabled = true;
                 onEnterStreetLevel?.Invoke();
             }
             else
             {
+                m_FlyingCamera.enabled = true;
+                m_StreetCamera.enabled = false;
                 onExitStreetLevel?.Invoke();
 
                 LeanTween.cancel(m_ElasticTweenId);
