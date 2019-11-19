@@ -37,6 +37,8 @@ public class MarkerManagerAPI : MonoBehaviour
 
     private static string m_LastRequestTime;
 
+    public static int WitchCount { get; private set; }
+
     private void Awake()
     {
         if (m_Instance != null)
@@ -284,6 +286,7 @@ public class MarkerManagerAPI : MonoBehaviour
     public static void SpawnMarkers(List<WitchToken> witches, List<SpiritToken> spirits, List<CollectableToken> items, List<EnergyToken> energies, List<PopToken> pops)
     {
         //finaly add/update markers
+        WitchCount = witches.Count;
 
         //stop avatar generation
         AvatarSpriteUtil.Instance.ClearQueues();

@@ -21,11 +21,11 @@ public class WitchMarker : CharacterMarker
     public WitchToken witchToken;
 
     public override string Name => witchToken.displayName;
-    
+
     private Transform m_ChannelingFX;
 
     private int m_AvatarColorTweenId;
-    
+
     public void GetPortrait(System.Action<Sprite> callback)
     {
         //if already despawned, return null
@@ -51,18 +51,20 @@ public class WitchMarker : CharacterMarker
         set => PlayerPrefs.SetInt("Settings.WitchPortraitLimit", value);
     }
 
+    public static bool DisableSpriteGeneration => MarkerManagerAPI.WitchCount > WITCH_AVATAR_LIMIT * 2;
+
     private static Dictionary<string, Sprite> GeneratedAvatars = new Dictionary<string, Sprite>();
     private static Dictionary<string, Sprite> GeneratedPortraits = new Dictionary<string, Sprite>();
 
     public static int GeneratedAvatarCount => GeneratedAvatars.Count;
     public static int GeneratedPortraitCount => GeneratedPortraits.Count;
-    
+
     public override void Setup(Token data)
     {
         witchToken = data as WitchToken;
 
         base.Setup(data);
-        
+
         m_AvatarRenderer.transform.localPosition = Vector3.zero;
 
         m_DisplayName.text = witchToken.displayName;
@@ -74,14 +76,14 @@ public class WitchMarker : CharacterMarker
             OnAddImmunity();
         else
             OnRemoveImmunity();
-        
+
         //set death icon
         if (witchToken.state == "dead" || witchToken.energy <= 0)
             OnDeath();
         else
             OnRevive();
     }
-      
+
 
     public override void SetStats()
     {
@@ -101,7 +103,7 @@ public class WitchMarker : CharacterMarker
         DestroyGeneratedPortrait();
 
         //generate new sprites
-        if (inMapView)
+        if (inMapView && !DisableSpriteGeneration)
         {
             if (IsShowingAvatar)
                 GenerateAvatar();
@@ -117,10 +119,12 @@ public class WitchMarker : CharacterMarker
         m_AvatarRenderer.color = new Color(0, 0, 0, m_AvatarRenderer.color.a);
 
 #if LIMIT_GENERATED_SPRITES
-        if (GeneratedAvatars.Count >= WITCH_AVATAR_LIMIT && !GeneratedAvatars.ContainsKey(Token.Id))
-        {
+
+        if (DisableSpriteGeneration)
             return;
-        }
+
+        if (GeneratedAvatars.Count >= WITCH_AVATAR_LIMIT && !GeneratedAvatars.ContainsKey(Token.Id))
+            return;
 #endif
 
         GenerateAvatar();
@@ -131,10 +135,12 @@ public class WitchMarker : CharacterMarker
         m_IconRenderer.sprite = witchToken.male ? m_MalePortrait : m_FemalePortrait;
 
 #if LIMIT_GENERATED_SPRITES
-        if (GeneratedPortraits.Count >= WITCH_PORTRAIT_LIMIT && !GeneratedPortraits.ContainsKey(Token.Id))
-        {
+
+        if (DisableSpriteGeneration)
             return;
-        }
+
+        if (GeneratedPortraits.Count >= WITCH_PORTRAIT_LIMIT && !GeneratedPortraits.ContainsKey(Token.Id))
+            return;
 #endif
 
         GeneratePortrait();
@@ -265,7 +271,7 @@ public class WitchMarker : CharacterMarker
             DestroyGeneratedAvatar();
             DestroyGeneratedPortrait();
         }
-        
+
         if (m_ChannelingFX != null)
         {
             SpellChanneling.DespawnFX(m_ChannelingFX);
@@ -302,7 +308,7 @@ public class WitchMarker : CharacterMarker
     public override void OnApplyStatusEffect(StatusEffect effect)
     {
         base.OnApplyStatusEffect(effect);
-        
+
         if (effect.HasStatus(SpellData.CHANNELING_STATUS) && m_ChannelingFX == null)
         {
             m_ChannelingFX = SpellChanneling.SpawnFX(this, witchToken);

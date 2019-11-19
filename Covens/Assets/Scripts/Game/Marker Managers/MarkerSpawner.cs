@@ -217,8 +217,8 @@ public class MarkerSpawner : MarkerManager
     {
         if (!Markers.ContainsKey(ID))
             return;
-        
-        
+
+
         IMarker marker = Markers[ID][0];
 
         //marker.inMapView = false;
@@ -247,7 +247,7 @@ public class MarkerSpawner : MarkerManager
             pool = m_ToolPool; // Instance.m_ToDespawn.Add((m_ToolPool, marker));
         else if (marker.Type == MarkerType.ENERGY)
             pool = m_EnergyPool; //Instance.m_ToDespawn.Add((m_EnergyPool, marker));
-        
+
         if (despawnDelay == 0)
         {
             marker.OnDespawn();
@@ -256,7 +256,7 @@ public class MarkerSpawner : MarkerManager
         else
         {
             marker.OnWillDespawn();
-            
+
             if (Instance.m_DespawnTimer < despawnDelay)
                 Instance.m_DespawnTimer = despawnDelay;
 
@@ -306,7 +306,8 @@ public class MarkerSpawner : MarkerManager
         //show the basic available info, and waut for the map/select response to fill the details
         if (Data.Type == MarkerType.WITCH)
         {
-            (m as WitchMarker).GenerateAvatar();
+            if (!WitchMarker.DisableSpriteGeneration)
+                (m as WitchMarker).GenerateAvatar();
             UIQuickCast.Open();
             UIQuickCast.UpdateCanCast(m, null);
             UIPlayerInfo.Show(m as WitchMarker, Data as WitchToken, UIQuickCast.Close);
@@ -488,7 +489,7 @@ public class MarkerSpawner : MarkerManager
 
         if (streetLevel)
         {
-            if (MapsAPI.Instance.IsPointInsideView(marker.GameObject.transform.position))
+            if (MapsAPI.Instance.IsPointInsideView(marker.GameObject.transform.position, 15))
             {
                 if (portraitMode)
                     marker.EnablePortait();
@@ -522,27 +523,27 @@ public class MarkerSpawner : MarkerManager
 
     public static void HighlightMarkers(List<IMarker> targets)
     {
-        m_Highlighting = targets.Count > 0;
+        //m_Highlighting = targets.Count > 0;
 
-        if (targets == null)
-            targets = new List<IMarker>();
+        //if (targets == null)
+        //    targets = new List<IMarker>();
 
-        m_HighlightedMarkers = targets;
-        //MapsAPI.Instance.EnableBuildingIcons(!highlight);
+        //m_HighlightedMarkers = targets;
+        ////MapsAPI.Instance.EnableBuildingIcons(!highlight);
 
-        IMarker aux;
-        foreach (var item in Markers)
-        {
-            aux = item.Value[0];
-            if (aux.inMapView && !targets.Contains(aux))
-                aux.SetHidden(m_Highlighting);
-        }
+        //IMarker aux;
+        //foreach (var item in Markers)
+        //{
+        //    aux = item.Value[0];
+        //    if (aux.inMapView && !targets.Contains(aux))
+        //        aux.SetHidden(m_Highlighting);
+        //}
 
-        foreach (IMarker _marker in targets)
-        {
-            _marker.inMapView = true;
-            _marker.SetHidden(false);
-        }
+        //foreach (IMarker _marker in targets)
+        //{
+        //    _marker.inMapView = true;
+        //    _marker.SetHidden(false);
+        //}
     }
 
 
