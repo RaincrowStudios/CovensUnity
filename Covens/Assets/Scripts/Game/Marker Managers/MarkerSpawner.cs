@@ -400,6 +400,9 @@ public class MarkerSpawner : MarkerManager
     /// </summary>
     public static bool IsTargetImmune(Token token)
     {
+        if (MarkerManagerAPI.IsGarden)
+            return false;
+
         return PlayerDataManager.playerData.immunities.Contains(token.instance);
     }
 

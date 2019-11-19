@@ -31,6 +31,8 @@ public class MarkerManagerAPI : MonoBehaviour
     public static bool IsSpiritForm { get; private set; }
     public static bool IsSpawningTokens { get; private set; }
 
+    public static bool IsGarden { get; private set; }
+
     private static MarkerManagerAPI m_Instance;
     private static int m_MoveTweenId;
     private static Coroutine m_SpawnCoroutine;
@@ -256,11 +258,13 @@ public class MarkerManagerAPI : MonoBehaviour
         //update soundtrack
         if (string.IsNullOrWhiteSpace(location.garden))
         {
+            IsGarden = true;
             PlayerDataManager.soundTrack = location.music;
             SoundManagerOneShot.Instance.SetBGTrack(location.music);
         }
         else
         {
+            IsGarden = false;
             PlayerDataManager.soundTrack = 1;
             SoundManagerOneShot.Instance.SetBGTrack(1);
             PlayerManagerUI.Instance.ShowGardenUI();
