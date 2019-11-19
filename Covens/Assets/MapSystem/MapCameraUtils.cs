@@ -20,6 +20,9 @@ public class MapCameraUtils : MonoBehaviour
     private Material m_FontMat;
     private Material m_FontMat_Aux;
 
+    private Material m_EnergyMat;
+    private Material m_EnergyMatAux;
+
     private int m_HighlightTweenId;
 
     private List<MuskMarker> m_HighlightedMarkers = new List<MuskMarker>();
@@ -34,11 +37,14 @@ public class MapCameraUtils : MonoBehaviour
         while (PlayerManager.marker == null)
             yield return null;
 
-        m_MarkerMat = PlayerManager.witchMarker.GetComponentInChildren<SpriteRenderer>().sharedMaterial;
+        m_MarkerMat = PlayerManager.witchMarker.AvatarRenderer.sharedMaterial;
         m_MarkerMat_Aux = new Material(m_MarkerMat);
 
         m_FontMat = PlayerManager.witchMarker.GetComponentInChildren<TextMeshPro>(true).fontSharedMaterial;
         m_FontMat_Aux = new Material(m_FontMat);
+
+        m_EnergyMat = PlayerManager.witchMarker.EnergyRing.sharedMaterial;
+        m_EnergyMatAux = new Material(m_EnergyMat);
     }
 
     public static void FocusOnPosition(Vector3 worldPosition, float normalizedZoom, bool allowCancel, float time = 1f)
@@ -176,11 +182,14 @@ public class MapCameraUtils : MonoBehaviour
         m_Instance._HighlightMarkers(markers);
     }
 
-    public static void SetMaterial(MuskMarker marker, Material sprite, Material font)
+    public static void SetMaterial(MuskMarker marker, Material sprite, Material energy, Material font)
     {
         SpriteRenderer[] renderers = marker.GetComponentsInChildren<SpriteRenderer>();
         for (int i = 0; i < renderers.Length; i++)
             renderers[i].sharedMaterial = sprite;
+
+        if (marker is CharacterMarker)
+            (marker as CharacterMarker).EnergyRing.sharedMaterial = energy;
 
         TextMeshPro[] texts = marker.GetComponentsInChildren<TextMeshPro>();
         for (int i = 0; i < texts.Length; i++)
@@ -191,11 +200,11 @@ public class MapCameraUtils : MonoBehaviour
     {        
         //reset previous markers
         foreach (var marker in m_HighlightedMarkers)
-            SetMaterial(marker, m_MarkerMat, m_FontMat);
+            SetMaterial(marker, m_MarkerMat, m_EnergyMat, m_FontMat);
 
         //set targeted markers
         foreach (var marker in markers)
-            SetMaterial(marker, m_MarkerMat_Aux, m_FontMat_Aux);
+            SetMaterial(marker, m_MarkerMat_Aux, m_EnergyMatAux, m_FontMat_Aux);
 
         m_HighlightedMarkers = markers;
 
@@ -207,6 +216,7 @@ public class MapCameraUtils : MonoBehaviour
             .setOnUpdate((float t) =>
             {
                 m_MarkerMat.SetColor("_Color", new Color(1, 1, 1, t));
+                m_EnergyMat?.SetColor("_Color", new Color(t, t, t, 1));
                 m_FontMat.SetColor("_FaceColor", new Color(1, 1, 1, t));
                 m_FontMat.SetColor("_UnderlayColor", new Color(0, 0, 0, t));
             })
@@ -217,6 +227,7 @@ public class MapCameraUtils : MonoBehaviour
     private void OnDestroy()
     {
         m_MarkerMat?.SetColor("_Color", new Color(1, 1, 1, 1));
+        m_EnergyMat?.SetColor("_Color", new Color(1, 1, 1, 1));
         m_FontMat?.SetColor("_FaceColor", new Color(1, 1, 1, 1));
         m_FontMat?.SetColor("_UnderlayColor", new Color(0, 0, 0, 1));
     }

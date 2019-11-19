@@ -10,7 +10,7 @@ GameObject:
   m_Component:
   - component: {fileID: 4501179301153312}
   - component: {fileID: 212010414393115028}
-  m_Layer: 20
+  m_Layer: 22
   m_Name: sprite
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -92,7 +92,7 @@ GameObject:
   - component: {fileID: 23334360895783338}
   - component: {fileID: 222056348038637890}
   - component: {fileID: 114907358185326800}
-  m_Layer: 20
+  m_Layer: 22
   m_Name: TextMeshPro
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -294,7 +294,7 @@ GameObject:
   m_Component:
   - component: {fileID: 4560486431845316}
   - component: {fileID: 212683394219777376}
-  m_Layer: 20
+  m_Layer: 22
   m_Name: sprite
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -373,7 +373,7 @@ GameObject:
   m_Component:
   - component: {fileID: 4290235088505026}
   - component: {fileID: 65638202296775114}
-  m_Layer: 20
+  m_Layer: 22
   m_Name: Garden
   m_TagString: garden
   m_Icon: {fileID: 0}
@@ -421,7 +421,7 @@ GameObject:
   m_Component:
   - component: {fileID: 3711692392545250347}
   - component: {fileID: 3188627574695808769}
-  m_Layer: 20
+  m_Layer: 22
   m_Name: sprite (1)
   m_TagString: Untagged
   m_Icon: {fileID: 0}

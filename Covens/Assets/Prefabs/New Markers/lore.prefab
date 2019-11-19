@@ -11,7 +11,7 @@ GameObject:
   - component: {fileID: 4888394195043580}
   - component: {fileID: 212786940997542360}
   - component: {fileID: 95984297314972072}
-  m_Layer: 20
+  m_Layer: 22
   m_Name: Male_shadow
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -109,7 +109,7 @@ GameObject:
   m_Component:
   - component: {fileID: 4569600285221196}
   - component: {fileID: 135378108922086744}
-  m_Layer: 20
+  m_Layer: 22
   m_Name: lore
   m_TagString: Untagged
   m_Icon: {fileID: 0}

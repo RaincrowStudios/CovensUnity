@@ -13,7 +13,7 @@ GameObject:
   - component: {fileID: 33009988645398970}
   - component: {fileID: 222686448037206268}
   - component: {fileID: 114120840670822410}
-  m_Layer: 20
+  m_Layer: 22
   m_Name: TextMeshPro
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -976,7 +976,6 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 4137734454995482}
-  - {fileID: 2232625557382815837}
   - {fileID: 2651457179116200268}
   m_Father: {fileID: 4259834071363570}
   m_RootOrder: 0
@@ -1433,10 +1432,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   m_Controller: {fileID: 114497691815219758}
   m_Map: {fileID: 114921964724232780}
-  m_FadeCamera: {fileID: 8629326389399283058}
   m_TargetFocusOffset: {x: 35, y: 58}
-  m_HighlightLayerName: 
-  m_DefaultLayerName: 
 --- !u!114 &4164780109084455368
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2205,95 +2201,6 @@ SpriteRenderer:
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
---- !u!1 &456554977576470228
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 2232625557382815837}
-  - component: {fileID: 2751730892595771870}
-  - component: {fileID: 2562934797917098937}
-  m_Layer: 17
-  m_Name: streetHighlight
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!4 &2232625557382815837
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 456554977576470228}
-  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0, y: 0.000061035156, z: -0.000061035156}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_Children: []
-  m_Father: {fileID: 4350325370475270}
-  m_RootOrder: 1
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!20 &2751730892595771870
-Camera:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 456554977576470228}
-  m_Enabled: 0
-  serializedVersion: 2
-  m_ClearFlags: 3
-  m_BackGroundColor: {r: 0.07450981, g: 0.3647059, b: 0.47058827, a: 1}
-  m_projectionMatrixMode: 1
-  m_GateFitMode: 2
-  m_FOVAxisMode: 0
-  m_SensorSize: {x: 36, y: 24}
-  m_LensShift: {x: 0, y: 0}
-  m_FocalLength: 50
-  m_NormalizedViewPortRect:
-    serializedVersion: 2
-    x: 0
-    y: 0
-    width: 1
-    height: 1
-  near clip plane: 10
-  far clip plane: 1e+15
-  field of view: 13
-  orthographic: 0
-  orthographic size: 5
-  m_Depth: 2
-  m_CullingMask:
-    serializedVersion: 2
-    m_Bits: 524288
-  m_RenderingPath: -1
-  m_TargetTexture: {fileID: 0}
-  m_TargetDisplay: 0
-  m_TargetEye: 3
-  m_HDR: 1
-  m_AllowMSAA: 0
-  m_AllowDynamicResolution: 0
-  m_ForceIntoRT: 0
-  m_OcclusionCulling: 1
-  m_StereoConvergence: 10
-  m_StereoSeparation: 0.022
---- !u!114 &2562934797917098937
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 456554977576470228}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 9aeaaa2989102854d86d21cdd16455fa, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  m_TargetCamera: {fileID: 20604202365456760}
-  m_FieldOfView: 1
 --- !u!1 &1674076936955593252
 GameObject:
   m_ObjectHideFlags: 0
@@ -2305,7 +2212,7 @@ GameObject:
   - component: {fileID: 5865393990372688633}
   - component: {fileID: 4949539878871572059}
   - component: {fileID: 4287997795118704296}
-  m_Layer: 20
+  m_Layer: 22
   m_Name: PoiMarker
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -2418,7 +2325,7 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 4350325370475270}
-  m_RootOrder: 2
+  m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!20 &6454441364118927953
 Camera:
@@ -2448,7 +2355,7 @@ Camera:
   field of view: 13
   orthographic: 0
   orthographic size: 5
-  m_Depth: 3
+  m_Depth: 1
   m_CullingMask:
     serializedVersion: 2
     m_Bits: 4194304

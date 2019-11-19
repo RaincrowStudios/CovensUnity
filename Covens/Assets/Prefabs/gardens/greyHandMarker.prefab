@@ -10,7 +10,7 @@ GameObject:
   m_Component:
   - component: {fileID: 4011226915583342}
   - component: {fileID: 65229306947655008}
-  m_Layer: 20
+  m_Layer: 22
   m_Name: greyHandMarker
   m_TagString: greyHand
   m_Icon: {fileID: 0}
@@ -56,7 +56,7 @@ GameObject:
   - component: {fileID: 2581729826507459848}
   - component: {fileID: 4459571285460365864}
   - component: {fileID: 49040917364788136}
-  m_Layer: 20
+  m_Layer: 22
   m_Name: sprite
   m_TagString: greyHand
   m_Icon: {fileID: 0}

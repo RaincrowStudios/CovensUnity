@@ -35,6 +35,10 @@ public abstract class CharacterMarker : MuskMarker
         }
     }
 
+    public SpriteRenderer EnergyRing => m_EnergyRing;
+
+    public SpriteRenderer AvatarRenderer => m_AvatarRenderer;
+
     private CharacterToken characterToken;
     private float m_EnergyFill = 0;
     private int m_EnergyRingTweenId;
