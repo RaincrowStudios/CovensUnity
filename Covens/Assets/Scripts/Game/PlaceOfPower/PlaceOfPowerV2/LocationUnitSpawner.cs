@@ -305,7 +305,7 @@ public class LocationUnitSpawner : MonoBehaviour
             go.transform.localPosition = Vector3.zero;
             go.transform.localScale = Vector3.one;
 
-            marker.SetAlpha(0, 1);
+            marker.SetHidden(true);
             marker.Interactable = false;
             if (remove)
                 Markers.Remove(instance);
@@ -405,9 +405,12 @@ public class LocationUnitSpawner : MonoBehaviour
             // TODO add fx
             if (data.instance != PlayerDataManager.playerData.instance)
             {
-                marker.SetAlpha(0, .7f);
+                // marker.SetAlpha(0, .7f);
+                marker.SetHidden(true);
                 await Task.Delay(700);
-                marker.SetAlpha(1, .7f);
+                // marker.SetAlpha(1, .7f);
+                marker.SetHidden(false);
+
             }
             var mToken = marker.Token as Token;
             mToken.position = data.position;
@@ -439,7 +442,7 @@ public class LocationUnitSpawner : MonoBehaviour
                 if (r == 200)
                 {
                     var charScale = LocationPlayerAction.playerMarker.AvatarTransform.localScale;
-                    LocationPlayerAction.playerMarker.SetAlpha(0, 1);
+                    LocationPlayerAction.playerMarker.SetHidden(true);
                     LeanTween.scale(LocationPlayerAction.playerMarker.AvatarTransform.gameObject, Vector3.zero, .5f).setEaseOutCubic();
                     ShowFlightFX();
                     SoundManagerOneShot.Instance.PlayWooshShort();
@@ -453,7 +456,7 @@ public class LocationUnitSpawner : MonoBehaviour
                         position = position,
                     };
                     SoundManagerOneShot.Instance.PlayLandFX();
-                    LocationPlayerAction.playerMarker.SetAlpha(1, 1);
+                    LocationPlayerAction.playerMarker.SetHidden(false);
                     LeanTween.scale(LocationPlayerAction.playerMarker.AvatarTransform.gameObject, charScale, .5f).setEaseOutCubic();
 
                     Instance.MoveMarker(moveData);
@@ -568,14 +571,16 @@ public class LocationUnitSpawner : MonoBehaviour
         {
             if (instance == null)
             {
-                item.Value.SetAlpha(.22f, 1);
+                // item.Value.SetAlpha(.22f, 1);
+                item.Value.SetHidden(true);
                 item.Value.Interactable = false;
             }
             else
             {
                 if (instance != item.Key)
                 {
-                    item.Value.SetAlpha(.22f, 1);
+                    // item.Value.SetAlpha(.22f, 1);
+                    item.Value.SetHidden(true);
                     item.Value.Interactable = true;
                 }
             }
@@ -590,7 +595,8 @@ public class LocationUnitSpawner : MonoBehaviour
         }
         foreach (var item in Markers)
         {
-            item.Value.SetAlpha(1, 1);
+            // item.Value.SetAlpha(1, 1);
+            item.Value.SetHidden(false);
             item.Value.Interactable = true;
         }
     }
