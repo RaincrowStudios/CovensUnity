@@ -199,7 +199,7 @@ public abstract class CharacterMarker : MuskMarker
         m_EnergyFill /= (Token as CharacterToken).baseEnergy;
 
         if (time == 0)
-            m_EnergyRing.color *= new Color(1,1,1, m_EnergyFill);
+            m_EnergyRing.color = new Color(1,1,1, m_EnergyFill);
         else
             m_EnergyRingTweenId = LeanTween.alpha(m_EnergyRing.gameObject, m_EnergyFill, time).uniqueId;
     }
