@@ -258,13 +258,13 @@ public class MarkerManagerAPI : MonoBehaviour
         //update soundtrack
         if (string.IsNullOrWhiteSpace(location.garden))
         {
-            IsGarden = true;
+            IsGarden = false;
             PlayerDataManager.soundTrack = location.music;
             SoundManagerOneShot.Instance.SetBGTrack(location.music);
         }
         else
         {
-            IsGarden = false;
+            IsGarden = true;
             PlayerDataManager.soundTrack = 1;
             SoundManagerOneShot.Instance.SetBGTrack(1);
             PlayerManagerUI.Instance.ShowGardenUI();

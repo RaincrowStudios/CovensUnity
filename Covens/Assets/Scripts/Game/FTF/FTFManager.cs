@@ -790,7 +790,7 @@ public class FTFManager : MonoBehaviour
         {
             if (result == 200)
             {
-                MarkerManagerAPI.GetMarkers(PlayerDataManager.playerData.longitude, PlayerDataManager.playerData.latitude);
+                //MarkerManagerAPI.GetMarkers(PlayerDataManager.playerData.longitude, PlayerDataManager.playerData.latitude);
             }
             else
             {

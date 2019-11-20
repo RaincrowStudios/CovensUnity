@@ -124,7 +124,7 @@ public abstract class CharacterMarker : MuskMarker
 
         bool dead = characterToken.energy <= 0 || characterToken.state == "dead";
         bool immune = MarkerSpawner.IsTargetImmune(characterToken);
-        
+                
         m_Animator.SetBool(DEAD_STATE_ID, dead);
         m_Animator.SetBool(IMMUNE_STATE_ID, immune);
     }

@@ -184,7 +184,7 @@ public class MapCameraUtils : MonoBehaviour
 
     public static void SetMaterial(MuskMarker marker, Material sprite, Material energy, Material font)
     {
-        SpriteRenderer[] renderers = marker.GetComponentsInChildren<SpriteRenderer>();
+        SpriteRenderer[] renderers = marker.GetComponentsInChildren<SpriteRenderer>(true);
         for (int i = 0; i < renderers.Length; i++)
             renderers[i].sharedMaterial = sprite;
 
