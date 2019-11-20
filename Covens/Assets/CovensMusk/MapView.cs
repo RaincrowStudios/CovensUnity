@@ -40,7 +40,7 @@ public class MapView : MonoBehaviour
 
     private void WaitSocketConnection()
     {
-        if (SocketClient.Instance.IsConnected())
+        if (PlayerDataManager.IsFTF == false && SocketClient.Instance.IsConnected())
         {
             //get the markers at the current position
             MarkerManagerAPI.GetMarkers(

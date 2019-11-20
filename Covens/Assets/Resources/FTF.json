@@ -69,6 +69,7 @@
 //close nearby pops, focus back on player
 {"timer":0.5, "onEnter":[{"method":"CloseNearbyPops"},{"method":"MoveCamera","parameters":["0.0","0.0","0.98"]}]},
 
+{"timer":0.5,"onEnter":[{"method":"SocketEvent","parameters":["remove.token","{\"_id\":\"ftf_pop\"}"]}]},
 
 //FLY BUTTON
 

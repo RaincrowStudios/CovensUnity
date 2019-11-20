@@ -247,13 +247,29 @@ public class MarkerSpawner : MarkerManager
             pool = m_ToolPool; // Instance.m_ToDespawn.Add((m_ToolPool, marker));
         else if (marker.Type == MarkerType.ENERGY)
             pool = m_EnergyPool; //Instance.m_ToDespawn.Add((m_EnergyPool, marker));
+        else if (marker.Type == MarkerType.PLACE_OF_POWER)
+        {
+            int? degree = (marker.Token as PopToken).lastOwnedBy?.degree;
+
+            if (!degree.HasValue)
+                pool = m_PopPool;
+            else if (degree.Value < 0)
+                pool = m_PopPoolShadow;
+            else if (degree.Value > 0)
+                pool = m_PopPoolWhite;
+            else
+                pool = m_PopPoolGrey;
+        }
         else
         {
-            Debug.LogError("no pool for " + marker.Name + " [" + marker.Type);
-            return;
+            Debug.LogError("no pool for " + marker.Name + " - " + marker.Type);
         }
 
-        if (despawnDelay == 0)
+        if (pool == null)
+        {
+            marker.OnDespawn();
+        }
+        else if (despawnDelay == 0)
         {
             marker.OnDespawn();
             pool.Despawn(marker.GameObject.transform);
