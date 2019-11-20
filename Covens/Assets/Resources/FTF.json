@@ -6,7 +6,7 @@
 //1
 {"onEnter":[{"method":"ShowMessage","parameters":["ftf_1"]},{"method":"SpawnSpirit","parameters":["{\"_id\":\"ftf_barghest\",\"spirit\":\"spirit_barghest\",\"energy\":1254,\"baseEnergy\":1254,\"latitude\":0.0003,\"longitude\":0.0006,\"state\":\"\",\"type\":\"spirit\"}"]}]},
 //2
-{"button":{"show":true,"anchorMin":[0.5,0.5],"anchorMax":[0.5,0.5],"position":[508.0,289.0],"size":[325.9,319.9]},"highlight":{"show":true,"anchorMin":[0.5,0.5],"anchorMax":[0.5,0.5],"position":[480.0,281.0],"size":[796.7,782.1]},"pointer":{"show":true,"anchorMin":[0.5,0.5],"anchorMax":[0.5,0.5],"position":[490.0,277.0]},"onEnter":[{"method":"ShowMessage","parameters":["ftf_2"]}]},
+{"button":{"show":true,"anchorMin":[0.5,0.5],"anchorMax":[0.5,0.5],"position":[337.0,233.0],"size":[325.9,319.9]},"highlight":{"show":true,"anchorMin":[0.5,0.5],"anchorMax":[0.5,0.5],"position":[368.0,246.0],"size":[796.7,782.1]},"pointer":{"show":true,"anchorMin":[0.5,0.5],"anchorMax":[0.5,0.5],"position":[343.0,240.0],"scale":0.9985212},"onEnter":[{"method":"ShowMessage","parameters":["ftf_2"]}]},
 //3
 {"timer":0.25,"onEnter":[{"method":"SelectMarker","parameters":["ftf_barghest","{\"effects\":[]}"]},{"method":"HideSavannah"}]},
 //4
