@@ -651,7 +651,7 @@ public class MarkerSpawner : MarkerManager
             Camera cam = MapsAPI.Instance.camera;
 
             RaycastHit hit;
-            if (Physics.Raycast(cam.ScreenPointToRay(Input.mousePosition), out hit, Mathf.Infinity, 1 << 20))
+            if (Physics.Raycast(cam.ScreenPointToRay(Input.mousePosition), out hit, Mathf.Infinity, 1 << 20 | 1 << 22))
             {
                 IMarker marker = hit.transform.GetComponentInParent<IMarker>();
                 if (marker != null)
