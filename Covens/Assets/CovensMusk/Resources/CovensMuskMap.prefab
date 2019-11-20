@@ -1940,7 +1940,6 @@ GameObject:
   - component: {fileID: 4137734454995482}
   - component: {fileID: 20212312958115724}
   - component: {fileID: 114964790563420934}
-  - component: {fileID: 8629326389399283058}
   m_Layer: 17
   m_Name: streetMarkers
   m_TagString: Untagged
@@ -2019,20 +2018,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   m_TargetCamera: {fileID: 20604202365456760}
   m_FieldOfView: 1
---- !u!114 &8629326389399283058
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1794311776589144}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 6553ad6477e6e0a4fa8c806e10760049, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  opacity: 1
-  color: {r: 0.07450981, g: 0.3647059, b: 0.47058827, a: 1}
 --- !u!1 &1853371139066326
 GameObject:
   m_ObjectHideFlags: 0
