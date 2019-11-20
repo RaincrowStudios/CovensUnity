@@ -146,7 +146,17 @@ namespace Raincrow.GameEventResponses
                 {
                     onTrailStart?.Invoke();
 
-                    OnMapEnergyChange.ForceEvent(caster, casterNewEnergy, data.timestamp);
+                    if (caster != null)
+                    {
+                        OnMapEnergyChange.ForceEvent(caster, casterNewEnergy, data.timestamp);
+
+                        //localy remove the immunity so you may attack again
+                        if (playerIsTarget && caster.Type == MarkerManager.MarkerType.WITCH)
+                        {
+                            MarkerSpawner.RemoveImmunity(data.caster.id, data.target.id);
+                            (caster as WitchMarker).OnRemoveImmunity();
+                        }
+                    }
 
                     if (playerIsCaster)
                         OnPlayerCast?.Invoke(data);
@@ -155,14 +165,6 @@ namespace Raincrow.GameEventResponses
                     if (playerIsCaster)
                     {
                         SpellcastingFX.SpawnEnergyChange(caster, -spell.cost, 1);
-                    }
-
-                    //localy remove the immunity so you may attack again
-                    if (playerIsTarget)
-                    {
-                        MarkerSpawner.RemoveImmunity(data.caster.id, data.target.id);
-                        if (caster != null && caster is WitchMarker)
-                            (caster as WitchMarker).OnRemoveImmunity();
                     }
                 },
                 onComplete: () =>
