@@ -123,10 +123,12 @@ public class LocationIslandController : MonoBehaviour
         }
         else if (LocationUnitSpawner.Markers.ContainsKey(id))
         {
-            LocationUnitSpawner.Markers[id].UpdateEnergy();
+            // LocationUnitSpawner.Markers[id].UpdateEnergy();
 
-            if (energy == 0)
-                instance.locationUnitSpawner.RemoveMarker(id);
+            // if (energy == 0)
+            //     instance.locationUnitSpawner.RemoveMarker(id);
+            Debug.LogError("[No Remove Token Received] Player Energy Zero " + id);
+
         }
     }
 

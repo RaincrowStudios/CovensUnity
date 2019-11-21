@@ -213,7 +213,6 @@ public class LocationPlayerAction : MonoBehaviour
 
     private void CloakingFX(float v)
     {
-        Debug.Log("cloaking FX");
         foreach (var item in m_CloakUIDisable)
         {
             if (item != null)
@@ -241,18 +240,21 @@ public class LocationPlayerAction : MonoBehaviour
         APIManager.Instance.Delete(
                "character/astral", "{}", (s, r) =>
                {
-                   //    if (r == 200)
-                   //    {
-
-                   DisableCloaking();
-                   //    }
+                   if (r == 200)
+                   {
+                       DisableCloaking();
+                   }
+                   else
+                   {
+                       Debug.Log("Cloaking disable failed, " + s);
+                       DisableCloaking();
+                   }
                    m_DisableCloakBtn.interactable = true;
                });
     }
 
     public static void DisableCloaking()
     {
-        Debug.Log("Disable Cloaking!!!");
         m_BtnArr[0].Setup(180);
         foreach (var item in LocationUnitSpawner.Markers)
         {
@@ -270,24 +272,18 @@ public class LocationPlayerAction : MonoBehaviour
 
         RenderSettings.fogMode = FogMode.Linear;
         RenderSettings.fogColor = new Color(0.14f, 0.14f, 0.14f);
-        Debug.Log("Disable Cloaking!!!2");
         LeanTween.value(0, 1, .5f).setOnUpdate((float v) =>
         {
-            Debug.Log("running fx");
             Instance.CloakingFX(v);
         }).setOnComplete(() =>
         {
             isCloaked = false;
             SoundManagerOneShot.Instance.FadeInBGTrack();
-            Debug.Log("isCloaked = false");
             SoundManagerOneShot.Instance.PlayCloakingSFX(false);
             RenderSettings.fog = false;
             Instance.m_CloakUI.gameObject.SetActive(false);
             Instance.m_CloakUIGreyScale.gameObject.SetActive(false);
-            Debug.Log("Disable Cloaking!!!3");
-
         });
-        Debug.Log("Disable Cloaking!!!4");
 
     }
 
