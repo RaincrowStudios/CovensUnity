@@ -382,4 +382,12 @@ public class UIPlayerInfo : UIInfoPanel
         //close this too
         Close();
     }
+
+    public static void HideCanvas(bool hide)
+    {
+        if (m_Instance == null)
+            return;
+
+        m_Instance.m_Canvas.enabled = !hide;
+    }
 }

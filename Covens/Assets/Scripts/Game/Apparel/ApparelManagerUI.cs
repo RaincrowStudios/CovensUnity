@@ -24,6 +24,8 @@ public class ApparelManagerUI : MonoBehaviour
 
     public bool IsOpen { get; private set; }
 
+    private int m_TweenId;
+
     public static void Show()
     {
         if (Instance != null)
@@ -77,6 +79,8 @@ public class ApparelManagerUI : MonoBehaviour
         ShowAll();
         BackButtonListener.AddCloseAction(Hide);
 
+        LeanTween.cancel(m_TweenId);
+        m_TweenId = LeanTween.value(0, 0, 0).setDelay(1f).setOnStart(() => MapsAPI.Instance.HideMap(true)).uniqueId;
     }
 
     public void Hide()
@@ -94,6 +98,9 @@ public class ApparelManagerUI : MonoBehaviour
 
         equipChanged = false;
         Invoke("DisableObjects", 1f);
+
+        LeanTween.cancel(m_TweenId);
+        MapsAPI.Instance.HideMap(false);
     }
 
     private void DisableObjects()

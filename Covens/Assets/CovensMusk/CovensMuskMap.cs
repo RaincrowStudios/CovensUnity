@@ -477,6 +477,8 @@ public class CovensMuskMap : MonoBehaviour
         m_Camera.enabled = !hide;
         m_StreetCamera.enabled = !hide;
         m_FlyCamera.enabled = !hide;
+        if (UIMain.Instance)
+            UIMain.Instance.GetComponent<Canvas>().enabled = !hide;
     }
 
     public bool IsVisible()

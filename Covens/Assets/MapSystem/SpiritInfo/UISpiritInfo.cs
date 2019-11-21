@@ -437,4 +437,12 @@ public class UISpiritInfo : UIInfoPanel
             //UIGlobalErrorPopup.ShowPopUp(null, LocalizeLookUp.GetText("spellbook_witch_is_gone").Replace("{{witch name}}", m_SpiritData.spiritName));// + " is gone.");
         }
     }
+
+    public static void HideCanvas(bool hide)
+    {
+        if (m_Instance == null)
+            return;
+
+        m_Instance.m_Canvas.enabled = !hide;
+    }
 }

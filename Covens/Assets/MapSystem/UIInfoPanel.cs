@@ -6,7 +6,7 @@ using UnityEngine.UI;
 public abstract class UIInfoPanel : MonoBehaviour
 {
     [Header("Base")]
-    [SerializeField] private Canvas m_Canvas;
+    [SerializeField] protected Canvas m_Canvas;
     [SerializeField] protected GraphicRaycaster m_InputRaycaster;
     [SerializeField] protected CanvasGroup m_CanvasGroup;
     [SerializeField] private RectTransform m_Panel;

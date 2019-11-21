@@ -257,7 +257,6 @@ public class UISpellcastBook : MonoBehaviour//, IEnhancedScrollerDelegate
 
     private void AnimOpen()
     {
-
         SoundManagerOneShot.Instance.PlayWhisperFX();
         SoundManagerOneShot.Instance.PlayWooshShort();
 
@@ -272,11 +271,27 @@ public class UISpellcastBook : MonoBehaviour//, IEnhancedScrollerDelegate
         m_AlphaTweenId = LeanTween.value(0f, 1f, 0.45f).setOnComplete(() =>
         {
             m_AlphaTweenId = LeanTween.alphaCanvas(m_ScrollerCanvasGroup, 1f, 1f).uniqueId;
+
+            if (UIPlayerInfo.IsShowing)
+                UIPlayerInfo.HideCanvas(true);
+
+            if (UISpiritInfo.IsShowing)
+                UISpiritInfo.HideCanvas(true);
+
+            MapsAPI.Instance.HideMap(true);
         })
         .uniqueId;
     }
     private void AnimClose()
     {
+        if (UIPlayerInfo.IsShowing)
+            UIPlayerInfo.HideCanvas(false);
+
+        if (UISpiritInfo.IsShowing)
+            UISpiritInfo.HideCanvas(false);
+
+        MapsAPI.Instance.HideMap(false);
+
         SoundManagerOneShot.Instance.PlayWhisperFX();
         LeanTween.cancel(m_AlphaTweenId);
         m_AlphaTweenId = LeanTween.alphaCanvas(m_ScrollerCanvasGroup, 0f, 0.4f).uniqueId;

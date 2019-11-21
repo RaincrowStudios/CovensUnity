@@ -196,9 +196,14 @@ public class UIQuickCast : MonoBehaviour
             return;
 
         if (hide)
+        {
+            m_Picker.Hide();
             AnimHide();
+        }
         else
+        {
             AnimOpen();
+        }
 
         UpdateCanCast(m_Target, m_TargetData);
     }
@@ -304,7 +309,7 @@ public class UIQuickCast : MonoBehaviour
             return;
 
         this._Hide(true);
-
+        
         UISpellcastBook.Open(
             m_TargetData,
             m_Target,
