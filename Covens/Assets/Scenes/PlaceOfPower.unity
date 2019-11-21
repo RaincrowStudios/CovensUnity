@@ -1554,7 +1554,7 @@ Transform:
   m_GameObject: {fileID: 576983378}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: -15, z: 0}
-  m_LocalScale: {x: 919.9125, y: 919.9125, z: 919.9125}
+  m_LocalScale: {x: 320.4883, y: 320.4883, z: 320.4883}
   m_Children: []
   m_Father: {fileID: 1046161309}
   m_RootOrder: 7
@@ -1568,15 +1568,31 @@ MonoBehaviour:
   m_GameObject: {fileID: 576983378}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 15798a30959a3f64f855449df8ea800b, type: 3}
+  m_Script: {fileID: 11500000, guid: 2ba913026a462b24f8ee61d406c04e62, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  ReflectionTexResolution: 512
-  Offset: 17.4
-  ReflectionAlpha: 0.598
-  LayersToReflect:
+  m_Camera: {fileID: 614580130}
+  m_TextureSize: 401
+  m_ClipPlaneOffset: 0.07
+  m_ReflectionStrength: 0.389
+  m_ReflectionTint: {r: 0.7830189, g: 0.7830189, b: 0.7830189, a: 1}
+  m_ReflectLayers:
     serializedVersion: 2
-    m_Bits: 15859511
+    m_Bits: 16379703
+  m_SdrBlur: {fileID: 4800000, guid: fe5a36b059df2574ba867fba17c2aa28, type: 3}
+  m_Iterations: 1
+  m_Interpolation: 1
+  m_BumpTex: {fileID: 2800000, guid: c69013a659832c649b56a9b1fb39911a, type: 3}
+  m_BumpStrength: 0.1
+  m_BumpTexScale: 5.9
+  m_MaskTex: {fileID: 0}
+  m_MaskTexScale: 5.06
+  m_EnableHeightFading: 0
+  m_HeightFadingPos: {x: 0, y: 80.28, z: 0, w: 0}
+  m_HeightFadingNorm: {x: 0, y: -1.48, z: 0, w: 0}
+  m_SdrDepth: {fileID: 4800000, guid: d7986ec85ef621941b43a5afac27f9d4, type: 3}
+  m_RTReflectionColor: {fileID: 0}
+  m_RTHeightAtten: {fileID: 0}
 --- !u!23 &576983381
 MeshRenderer:
   m_ObjectHideFlags: 0
@@ -1594,7 +1610,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: 0bb47dc7e37442e4ea56e9fab5c42e7c, type: 2}
+  - {fileID: 2100000, guid: 95594790b7b8e2848a86e8c0aafecba5, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -13773,7 +13789,7 @@ SpriteRenderer:
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: 0
   m_SortingLayer: 0
-  m_SortingOrder: 0
+  m_SortingOrder: -1
   m_Sprite: {fileID: 21300000, guid: 1b551b444423b05458ba93a9ac2e567a, type: 3}
   m_Color: {r: 0.0754717, g: 0.0754717, b: 0.0754717, a: 1}
   m_FlipX: 0
@@ -17237,7 +17253,7 @@ PrefabInstance:
     - target: {fileID: 22178697904437714, guid: 9449f148daa314b43a2bb46d71b8b665,
         type: 3}
       propertyPath: m_Layer
-      value: 0
+      value: 12
       objectReference: {fileID: 0}
     - target: {fileID: 22178697904437714, guid: 9449f148daa314b43a2bb46d71b8b665,
         type: 3}
