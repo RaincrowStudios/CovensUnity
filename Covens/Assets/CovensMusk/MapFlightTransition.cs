@@ -52,7 +52,7 @@ public class MapFlightTransition : MonoBehaviour
             {
                 CG.gameObject.SetActive(false);
                 PlayerManagerUI.Instance.CheckPhysicalForm();
-
+                MapCameraUtils.FocusOnPosition(PlayerManager.marker.GameObject.transform.position, true, 2f);
             });
 
         });

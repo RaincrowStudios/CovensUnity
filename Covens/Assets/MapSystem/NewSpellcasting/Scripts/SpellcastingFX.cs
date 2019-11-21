@@ -81,11 +81,11 @@ public static class SpellcastingFX
 
     public static void SpawnText(IMarker target, string text, float scale)
     {
-        TextMeshPro textObj = m_TextPopupPool.Spawn(target.AvatarTransform, 3f).GetComponent<TextMeshPro>();
+        TextMeshPro textObj = m_TextPopupPool.Spawn(null, 3f).GetComponent<TextMeshPro>();
         textObj.text = text;
         textObj.fontSize = 45 * scale;
-        textObj.transform.localScale = Vector3.one;
-        textObj.transform.localRotation = Quaternion.identity;
+        textObj.transform.localScale = target.AvatarTransform.lossyScale;
+        textObj.transform.rotation = target.AvatarTransform.rotation;
 
         if (LocationIslandController.isInBattle)
             textObj.transform.Translate(Random.Range(-7, -25), 61, 0);
