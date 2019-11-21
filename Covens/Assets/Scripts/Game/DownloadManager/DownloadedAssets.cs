@@ -65,7 +65,7 @@ public class DownloadedAssets : MonoBehaviour
     public static event System.Action OnWillUnloadAssets;
 
     private static List<CovensAssetRequest> m_RequestQueue = new List<CovensAssetRequest>();
-    private static Coroutine m_LoadAssetCoroutine = null;
+    //private static Coroutine m_LoadAssetCoroutine = null;
 
     void Awake()
     {        
@@ -106,11 +106,6 @@ public class DownloadedAssets : MonoBehaviour
             UnloadingMemory = true;
             OnWillUnloadAssets?.Invoke();
             
-            //stop current load requests
-            StopAllCoroutines();
-            m_LoadAssetCoroutine = null;
-
-
             //unload assetbundles
             foreach (var bundleList in loadedBundles.Values)
             {
@@ -129,12 +124,6 @@ public class DownloadedAssets : MonoBehaviour
                 //hide the UI
                 UnloadingMemory = false;
                 
-                //restart asset queue if necessary
-                if (m_RequestQueue.Count > 0)
-                {
-                    m_LoadAssetCoroutine = Instance.StartCoroutine(GetSpriteCoroutine());
-                }
-
                 debug = "Asset unloading complete";
                 debug += "\n- Total system memory: " + SystemInfo.systemMemorySize;
                 debug += "\n- Total video memory: " + SystemInfo.graphicsMemorySize;
@@ -150,13 +139,13 @@ public class DownloadedAssets : MonoBehaviour
     }
 
     #region SpriteGetters
-    public static Coroutine GetSprite(string id, System.Action<Sprite> callback, bool isIcon = false)
+    public static void GetSprite(string id, System.Action<Sprite> callback, bool isIcon = false)
     {
         if (string.IsNullOrEmpty(id))
         {
             Debug.LogException(new System.Exception("nullorempty id"));
             callback?.Invoke(null);
-            return null;
+            return;
         }
 
         m_RequestQueue.Add(new CovensAssetRequest
@@ -168,99 +157,130 @@ public class DownloadedAssets : MonoBehaviour
 
         Log("load asset count " + m_RequestQueue.Count);
 
-        if (m_LoadAssetCoroutine == null)
-            m_LoadAssetCoroutine = Instance.StartCoroutine(GetSpriteCoroutine());
-
-        return m_LoadAssetCoroutine;
+        if (m_RequestQueue.Count == 1)
+            GetSpriteCoroutine();
     }
 
-    public static Coroutine GetSprite(string id, Image image, bool isIcon = false)
+    public static void GetSprite(string id, Image image, bool isIcon = false)
     {
-        return GetSprite(id, spr =>
-        {
-            if (image)
-                image.overrideSprite = spr;
-        }, isIcon);
+        GetSprite(
+            id,
+            spr =>
+            {
+                if (image)
+                    image.overrideSprite = spr;
+            }, 
+            isIcon
+        );
     }
 
     #endregion
     
-    static IEnumerator GetSpriteCoroutine()
+    private static void GetSpriteCoroutine()
     {
-        while (m_RequestQueue.Count > 0)
-        {
-            //for (int i = 0; i < 10; i++)
-            //    yield return null;
+        if (m_RequestQueue.Count == 0)
+            return;
+        
+        string id = m_RequestQueue[0].id;
+        System.Action<Sprite> callback = m_RequestQueue[0].callback;
+        bool isIcon = m_RequestQueue[0].isIcon;
 
-            bool failed = true;
-            string id = m_RequestQueue[0].id;
-            System.Action<Sprite> callback = m_RequestQueue[0].callback;
-            bool isIcon = m_RequestQueue[0].isIcon;
-
-            string type = "";
-            if (id.Contains("spirit"))
-                type = "spirit";
-            else if (id == "attack" || id.Contains("spell") || id == "elixir_xp" || id == "elixir_degree")
-                type = "spell";
-            else if (!isIcon)
-                type = "apparel";
-            else if (isIcon)
-                type = "icon";
+        string type = "";
+        if (id.Contains("spirit"))
+            type = "spirit";
+        else if (id == "attack" || id.Contains("spell") || id == "elixir_xp" || id == "elixir_degree")
+            type = "spell";
+        else if (!isIcon)
+            type = "apparel";
+        else if (isIcon)
+            type = "icon";
             
-            if (type == "spell")
-            {
-                SpellData spell = GetSpell(id);
-                if (spell == null)
-                    id = "0";
-                else
-                    id = spell.glyph.ToString();
-            }
+        if (type == "spell")
+        {
+            SpellData spell = GetSpell(id);
+            if (spell == null)
+                id = "0";
+            else
+                id = spell.glyph.ToString();
+        }
 
-            if (!loadedBundles.ContainsKey(type) && assetBundleDirectory.ContainsKey(type))
-            {
-                loadedBundles[type] = new List<AssetBundle>();
-                foreach (var item in assetBundleDirectory[type])
-                {
-                    float time = Time.unscaledTime;
-                    Log("loading " + item);
-                    var request = AssetBundle.LoadFromFileAsync(item);
-                    request.completed += op => { Log(item + "\n" + op.isDone + " : " + op.progress); };
-                    yield return request;
-                    Log("loaded " + item + " in " + (Time.unscaledTime - time));
-                    loadedBundles[type].Add(request.assetBundle);
-                }
-            }
+        System.Action<Sprite> onComplete = (spr) =>
+        {
+            callback?.Invoke(spr);
 
+            m_RequestQueue.RemoveAt(0);
+
+            //load next in queue
+            GetSpriteCoroutine();
+        };
+
+        System.Action loadSpriteAction = () =>
+        {
             if (loadedBundles.ContainsKey(type))
             {
                 foreach (var bundle in loadedBundles[type])
                 {
                     if (bundle.Contains(id + ".png"))
                     {
-                        float time = Time.unscaledTime;
                         Log("loading " + id + ".png");
-                        AssetBundleRequest request = bundle.LoadAssetAsync(id + ".png", typeof(Sprite));
-                        request.completed += op => { Log(id + ".png\n" + op.isDone + " : " + op.progress); };
-                        yield return request;
-                        Log("loaded " + id + ".png in " + (Time.unscaledTime - time));
-                        var sprite = request.asset as Sprite;
-                        callback?.Invoke(sprite);
 
-                        failed = false;
-                        break;
+                        float time = Time.unscaledTime;
+                        AssetBundleRequest request = bundle.LoadAssetAsync(id + ".png", typeof(Sprite));
+
+                        request.completed += op => 
+                        {
+                            Log("loaded " + id + ".png in " + (Time.unscaledTime - time));
+
+                            var sprite = request.asset as Sprite;
+                            onComplete.Invoke(sprite);
+                        };
+
+                        return;
                     }
                 }
             }
 
-            m_RequestQueue.RemoveAt(0);
+            Debug.LogException(new System.Exception("sprite not found for " + id + " in bundle " + type));
+            onComplete.Invoke(null);
+        };
 
-            if (failed)
+        //load the bundle
+        if (!loadedBundles.ContainsKey(type) && assetBundleDirectory.ContainsKey(type))
+        {
+            loadedBundles[type] = new List<AssetBundle>();
+
+            for (int i = 0; i < assetBundleDirectory[type].Count; i++)
             {
-                Debug.LogException(new System.Exception("sprite not found for " + id + " in bundle " + type));
-                callback?.Invoke(null);
+                int aux = i;
+                string item = assetBundleDirectory[type][i];
+                Log("loading bundle " + item);
+
+                float time = Time.unscaledTime;
+                var request = AssetBundle.LoadFromFileAsync(item);
+                request.completed += op => 
+                {
+                    Log("loaded bundle " + item + " in " + (Time.unscaledTime - time) + "s");
+
+                    loadedBundles[type].Add(request.assetBundle);
+
+                    //all assetbundles for this category were loaded
+                    //try load sprite now
+                    if (aux >= assetBundleDirectory[type].Count - 1)
+                        loadSpriteAction.Invoke();
+                };
+            }
+
+            if (assetBundleDirectory[type].Count == 0)
+            {
+                Debug.LogException(new System.Exception("no bundle available for type " + type));
+                onComplete.Invoke(null);
             }
         }
-        m_LoadAssetCoroutine = null;
+        //bundle already loaded
+        else
+        {
+            loadSpriteAction.Invoke();
+        }        
     }
 
     public static bool IsBundleDownloaded(string id)
@@ -388,7 +408,7 @@ public class DownloadedAssets : MonoBehaviour
     private static void Log(string msg)
     {
 //#if UNITY_EDITOR
-        //Debug.Log("<color=magenta> " + msg + " </color>");
+//        Debug.Log("<color=magenta> " + msg + " </color>");
 //#endif
     }
 }
