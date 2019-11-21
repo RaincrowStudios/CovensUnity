@@ -49,8 +49,7 @@ public class LoadPOPManager : MonoBehaviour
             Instance.map = MapsAPI.Instance;
         }
         LoadingOverlay.Show();
-        // LocationIslandController.ExitPOP(() =>
-        // {
+
         APIManager.Instance.Get("place-of-power/view/" + id, (response, result) =>
           {
               Debug.Log(response);
@@ -68,7 +67,7 @@ public class LoadPOPManager : MonoBehaviour
               }
               onLoad?.Invoke();
           });
-        // });
+
     }
 
     public static void LoadScene(System.Action onComplete)
