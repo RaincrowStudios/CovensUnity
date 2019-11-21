@@ -145,10 +145,10 @@ public class LocationIslandController : MonoBehaviour
         ExpireAstralHandler.OnExpireAstral -= LocationUnitSpawner.DisableCloaking;
         RespawnSpiritPOP.OnSpiritRewspawn -= instance.AddGuardianSpirit;
         OnMapEnergyChange.OnEnergyChange -= HandleEnergyZero;
+        instance.locationUnitSpawner.DespawnMarkers();
         isInBattle = false;
         PlayerManager.marker.GameObject.SetActive(false);
         PlayerDataManager.playerData.insidePlaceOfPower = false;
-        instance.locationUnitSpawner.DespawnMarkers();
     }
 
     private static void WitchJoined(WitchToken token)

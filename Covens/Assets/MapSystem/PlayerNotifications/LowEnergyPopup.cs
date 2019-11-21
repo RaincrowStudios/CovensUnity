@@ -14,10 +14,15 @@ public class LowEnergyPopup : MonoBehaviour
     [SerializeField] private Button m_continue;
     [SerializeField] private CanvasGroup thisCG;
 
-    public static void Show()
+    private System.Action m_OnEnergyRestored;
+
+    public static void Show(System.Action onRestored = null)
     {
         if (LowEnergyPopup.Instance == null)
+        {
             Utilities.InstantiateObject(Resources.Load<GameObject>("UILowEnergyPopUp"), null);
+            Instance.m_OnEnergyRestored = onRestored;
+        }
     }
 
     private void Awake()
@@ -60,7 +65,11 @@ public class LowEnergyPopup : MonoBehaviour
         m_buttonText.text = LocalizeLookUp.GetText("store_accept");
         m_continue.onClick.AddListener(() =>
         {
-            PurchaseEnergy();
+            PurchaseEnergy((error) => 
+            {
+                if (string.IsNullOrEmpty(error))
+                    m_OnEnergyRestored?.Invoke();
+            });
         });
     }
 

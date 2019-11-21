@@ -507,8 +507,7 @@ public class UIStore : MonoBehaviour
 
     private void OnClickRestoreEnergy()
     {
-        m_RestoreEnergyButton.gameObject.SetActive(false);
-        LowEnergyPopup.Show();
+        LowEnergyPopup.Show(() => m_RestoreEnergyButton.gameObject.SetActive(false));
 
         //LoadingOverlay.Show();
         //APIManager.Instance.Post("character/revive", "{}", (response, result) =>
