@@ -139,7 +139,7 @@ public class APIManagerServer
         CallBack(fail ? www.error : www.downloadHandler.text, Convert.ToInt32(www.responseCode));
     }
 
-    static UnityWebRequest BakeRequest(string endpoint, string data, string sMethod, bool bRequiresLoginToken, bool bRequiresWssToken)
+    public static UnityWebRequest BakeRequest(string endpoint, string data, string sMethod, bool bRequiresLoginToken, bool bRequiresWssToken)
     {
         UnityWebRequest www;
         if (sMethod == "GET")

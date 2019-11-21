@@ -47,19 +47,37 @@ public class GetGPS : MonoBehaviour
 
     public static bool IsReady => Input.location.status == LocationServiceStatus.Running;
 
+    public static float LastLongitude { get; private set; }
+    public static float LastLatitude { get; private set; }
+
     public static float longitude
     {
         get
         {
             if (Application.isEditor)
-                return (instance != null ? instance.lng : 0);// + noise.x;
-
-            return Input.location.lastData.longitude;// + noise.x;
+            {
+                if (instance)
+                {
+                    LastLongitude = instance.lng;
+                    return instance.lng;
+                }
+                else
+                {
+                    return LastLongitude;
+                }
+            }
+            else
+            {
+                LastLongitude = Input.location.lastData.longitude;
+                return LastLongitude;
+            }
         }
         set
         {
             if (Application.isEditor && instance != null)
-                instance.lng = value;
+            {
+                LastLongitude = instance.lng = value;
+            }
         }
     }
     public static float latitude
@@ -67,13 +85,29 @@ public class GetGPS : MonoBehaviour
         get
         {
             if (Application.isEditor)
-                return (instance != null ? instance.lat : 0);// + noise.x;
-            return Input.location.lastData.latitude;// + noise.x;
+            {
+                if (instance)
+                {
+                    LastLatitude = instance.lat;
+                    return instance.lat;
+                }
+                else
+                {
+                    return LastLatitude;
+                }
+            }
+            else
+            {
+                LastLatitude = Input.location.lastData.latitude;
+                return LastLatitude;
+            }
         }
         set
         {
             if (Application.isEditor && instance != null)
-                instance.lat = value;
+            {
+                LastLatitude = instance.lat = value;
+            }
         }
     }
 
@@ -224,6 +258,7 @@ public class GetGPS : MonoBehaviour
         }
 
         Debug.Log("7. Location status: " + Input.location.status.ToString());
+        Debug.Log(longitude + " : " + latitude);
 
         SetNoise();
 

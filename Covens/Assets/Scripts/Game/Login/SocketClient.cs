@@ -211,6 +211,23 @@ public class SocketClient : MonoBehaviour
     protected virtual void OnDestroy()
     {
         DisconnectFromSocket();
+
+        //if (MapView.InMapView)
+        //{
+        //    float longitude = GetGPS.LastLongitude + GetGPS.noise.x;
+        //    float latitude = GetGPS.LastLatitude + GetGPS.noise.y;
+
+        //    var data = JsonConvert.SerializeObject(new
+        //    {
+        //        physical = true,
+        //        longitude,
+        //        latitude,
+        //    });
+
+        //    string url = string.Concat(CovenConstants.hostAddress + "character/move");
+        //    var req = APIManagerServer.BakeRequest(url, data, "POST", true, false);
+        //    req.SendWebRequest();
+        //}
     }
 
     public void AddMessage(CommandResponse response)
