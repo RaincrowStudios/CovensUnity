@@ -111,7 +111,14 @@ public static class SpellcastingFX
 
     public static void StopTweening()
     {
-        m_TextPopupPool.DespawnAll();
+        try
+        {
+            m_TextPopupPool.DespawnAll();
+        }
+        catch (System.Exception)
+        {
+
+        }
         m_PauseTween = true;
         foreach (var item in m_TextTweenIds)
         {
