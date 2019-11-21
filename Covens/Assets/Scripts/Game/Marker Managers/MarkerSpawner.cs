@@ -62,9 +62,9 @@ public class MarkerSpawner : MarkerManager
     private static SimplePool<Transform> m_GemPool;
     private static SimplePool<Transform> m_EnergyPool;
     private static SimplePool<Transform> m_PopPool;
-    private static SimplePool<Transform> m_PopPoolGrey;
-    private static SimplePool<Transform> m_PopPoolShadow;
-    private static SimplePool<Transform> m_PopPoolWhite;
+    // private static SimplePool<Transform> m_PopPoolGrey;
+    // private static SimplePool<Transform> m_PopPoolShadow;
+    // private static SimplePool<Transform> m_PopPoolWhite;
 
 
     private float m_Distance;
@@ -101,9 +101,9 @@ public class MarkerSpawner : MarkerManager
         m_ToolPool = new SimplePool<Transform>(tool.transform, 10);
         m_EnergyPool = new SimplePool<Transform>(energyIcon.transform, 10);
         m_PopPool = new SimplePool<Transform>(unclaimedLoc.transform, 10);
-        m_PopPoolGrey = new SimplePool<Transform>(greyLoc.transform, 10);
-        m_PopPoolShadow = new SimplePool<Transform>(shadowLoc.transform, 10);
-        m_PopPoolWhite = new SimplePool<Transform>(whiteLoc.transform, 10);
+        // m_PopPoolGrey = new SimplePool<Transform>(greyLoc.transform, 10);
+        // m_PopPoolShadow = new SimplePool<Transform>(shadowLoc.transform, 10);
+        // m_PopPoolWhite = new SimplePool<Transform>(whiteLoc.transform, 10);
 
         //init the map/markers variables
         UpdateMarkerProperties();
@@ -179,19 +179,19 @@ public class MarkerSpawner : MarkerManager
         else if (Data.Type == MarkerType.PLACE_OF_POWER)
         {
             var popData = (PopToken)Data;
-            if (popData != null && popData.lastOwnedBy != null && popData.lastOwnedBy.displayName != null)
-            {
-                if (popData.lastOwnedBy.degree > 0)
-                    go = m_PopPoolWhite.Spawn().gameObject;
-                else if (popData.lastOwnedBy.degree < 0)
-                    go = m_PopPoolShadow.Spawn().gameObject;
-                else
-                    go = m_PopPoolGrey.Spawn().gameObject;
-            }
-            else
-            {
-                go = m_PopPool.Spawn().gameObject;
-            }
+            // if (popData != null && popData.lastOwnedBy != null && popData.lastOwnedBy.displayName != null)
+            // {
+            //     if (popData.lastOwnedBy.degree > 0)
+            //         go = m_PopPoolWhite.Spawn().gameObject;
+            //     else if (popData.lastOwnedBy.degree < 0)
+            //         go = m_PopPoolShadow.Spawn().gameObject;
+            //     else
+            //         go = m_PopPoolGrey.Spawn().gameObject;
+            // }
+            // else
+            // {
+            go = m_PopPool.Spawn().gameObject;
+            // }
             go.name = $"[PlaceOfPower] {Data.instance}";
         }
         else
@@ -250,15 +250,14 @@ public class MarkerSpawner : MarkerManager
         else if (marker.Type == MarkerType.PLACE_OF_POWER)
         {
             int? degree = (marker.Token as PopToken).lastOwnedBy?.degree;
-
-            if (!degree.HasValue)
-                pool = m_PopPool;
-            else if (degree.Value < 0)
-                pool = m_PopPoolShadow;
-            else if (degree.Value > 0)
-                pool = m_PopPoolWhite;
-            else
-                pool = m_PopPoolGrey;
+            // if (!degree.HasValue)
+            pool = m_PopPool;
+            // else if (degree.Value < 0)
+            //     pool = m_PopPoolShadow;
+            // else if (degree.Value > 0)
+            //     pool = m_PopPoolWhite;
+            // else
+            //     pool = m_PopPoolGrey;
         }
         else
         {
@@ -493,12 +492,12 @@ public class MarkerSpawner : MarkerManager
         //}
         //else
         //{
-            IMarker aux;
-            foreach (var item in Markers)
-            {
-                aux = item.Value[0];
-                UpdateMarker(aux);
-            }
+        IMarker aux;
+        foreach (var item in Markers)
+        {
+            aux = item.Value[0];
+            UpdateMarker(aux);
+        }
         //}
     }
 

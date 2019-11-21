@@ -145,6 +145,8 @@ MonoBehaviour:
   m_Ring: {fileID: 212419499867207832}
   m_OwnedBy: {fileID: 8951449135916533013}
   m_CharacterTransform: {fileID: 4570700201433390}
+  m_SchoolBanners: []
+  m_BannerSprite: {fileID: 0}
 --- !u!95 &-7008981033887259039
 Animator:
   serializedVersion: 3
