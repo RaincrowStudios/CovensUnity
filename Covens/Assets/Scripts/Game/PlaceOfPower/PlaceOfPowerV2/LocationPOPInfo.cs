@@ -33,7 +33,7 @@ public class LocationPOPInfo : UIInfoPanel
     [SerializeField] private GameObject m_FTFEnter;
     [SerializeField] private Button m_HelpBtn;
 
-    private Dictionary<string, Sprite> m_LocationImagesCache = new Dictionary<string, Sprite>();
+    private static Dictionary<string, Sprite> m_LocationImagesCache = new Dictionary<string, Sprite>();
     public static Sprite selectedPopSprite = null;
     [SerializeField] private Button m_EnterBtn;
     private LocationViewData m_LocationViewData;
@@ -397,7 +397,6 @@ public class LocationPOPInfo : UIInfoPanel
         {
             m_locationImage.sprite = m_LocationImagesCache[id];
             selectedPopSprite = m_LocationImagesCache[id];
-
         }
         else
         {

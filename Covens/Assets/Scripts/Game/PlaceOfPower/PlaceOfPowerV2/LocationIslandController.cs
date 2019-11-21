@@ -63,7 +63,7 @@ public class LocationIslandController : MonoBehaviour
         {
             // TODO CHANGE FOR RESUME BATTLE
             isGuardianActive = false;
-
+            PlayerManager.marker.GameObject.SetActive(false);
             Debug.Log("[PLACE OF POWER] battle Starting");
             isInBattle = true;
             OnEnterLocation?.Invoke();
@@ -124,10 +124,12 @@ public class LocationIslandController : MonoBehaviour
         else if (LocationUnitSpawner.Markers.ContainsKey(id))
         {
             // LocationUnitSpawner.Markers[id].UpdateEnergy();
-
-            // if (energy == 0)
+            if (energy == 0)
+            {
+                Debug.LogError("[No Remove Token Received] Player Energy Zero " + id);
+            }
             //     instance.locationUnitSpawner.RemoveMarker(id);
-            Debug.LogError("[No Remove Token Received] Player Energy Zero " + id);
+            // Debug.LogError("[No Remove Token Received] Player Energy Zero " + id);
 
         }
     }
@@ -145,6 +147,7 @@ public class LocationIslandController : MonoBehaviour
         OnMapEnergyChange.OnEnergyChange -= HandleEnergyZero;
         instance.locationUnitSpawner.DespawnMarkers();
         isInBattle = false;
+        PlayerManager.marker.GameObject.SetActive(false);
         PlayerDataManager.playerData.insidePlaceOfPower = false;
     }
 
@@ -307,17 +310,17 @@ public class LocationIslandController : MonoBehaviour
           });
     }
 
-    public static void ExitPOP(System.Action OnComplete)
-    {
-        AddWitchHandlerPOP.OnWitchAddPOP -= WitchJoined;
-        RemoveTokenHandlerPOP.OnRemoveTokenPOP -= WitchRemoved;
-        isInBattle = false;
-        OnComplete?.Invoke();
-        // APIManager.Instance.Put($"place-of-power/leave", "{}", (response, result) =>
-        //   {
+    // public static void ExitPOP(System.Action OnComplete)
+    // {
+    //     AddWitchHandlerPOP.OnWitchAddPOP -= WitchJoined;
+    //     RemoveTokenHandlerPOP.OnRemoveTokenPOP -= WitchRemoved;
+    //     isInBattle = false;
+    //     OnComplete?.Invoke();
+    // APIManager.Instance.Put($"place-of-power/leave", "{}", (response, result) =>
+    //   {
 
-        //   });
-    }
+    //   });
+    // }
 
     private void CreateIslands(LocationData locationData)
     {

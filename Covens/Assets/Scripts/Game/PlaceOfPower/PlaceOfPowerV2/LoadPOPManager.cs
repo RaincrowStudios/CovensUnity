@@ -49,26 +49,25 @@ public class LoadPOPManager : MonoBehaviour
             Instance.map = MapsAPI.Instance;
         }
         LoadingOverlay.Show();
-        LocationIslandController.ExitPOP(() =>
-        {
-            APIManager.Instance.Get("place-of-power/view/" + id, (response, result) =>
+
+        APIManager.Instance.Get("place-of-power/view/" + id, (response, result) =>
+          {
+              Debug.Log(response);
+              if (result == 200)
               {
-                  Debug.Log(response);
-                  if (result == 200)
-                  {
-                      LoadingOverlay.Hide();
-                      var popInfo = LocationPOPInfo.Instance;
-                      var data = JsonConvert.DeserializeObject<LocationViewData>(response);
-                      popInfo.Show(data);
-                      Instance.isViewVisible = true;
-                  }
-                  else
-                  {
-                      Debug.Log(result);
-                  }
-                  onLoad?.Invoke();
-              });
-        });
+                  LoadingOverlay.Hide();
+                  var popInfo = LocationPOPInfo.Instance;
+                  var data = JsonConvert.DeserializeObject<LocationViewData>(response);
+                  popInfo.Show(data);
+                  Instance.isViewVisible = true;
+              }
+              else
+              {
+                  Debug.Log(result);
+              }
+              onLoad?.Invoke();
+          });
+
     }
 
     public static void LoadScene(System.Action onComplete)

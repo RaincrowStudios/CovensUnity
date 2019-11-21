@@ -33,6 +33,7 @@ namespace Raincrow.Maps
         void OnApplyStatusEffect(StatusEffect effect);
         void OnExpireStatusEffect(StatusEffect effect);
         Transform AvatarTransform { get; }
+        SpriteRenderer AvatarRenderer { get; }
 
         //void AddChild(Transform t, Transform parent, SimplePool<Transform> pool);
         //void RemoveChild(Transform t);

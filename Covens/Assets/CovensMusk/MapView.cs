@@ -42,6 +42,9 @@ public class MapView : MonoBehaviour
     {
         if (PlayerDataManager.IsFTF == false && SocketClient.Instance.IsConnected())
         {
+            if (PlayerDataManager.playerData.insidePlaceOfPower)
+                return;
+
             //get the markers at the current position
             MarkerManagerAPI.GetMarkers(
                PushManager.flyToPop ? (float)PushManager.longitude : PlayerDataManager.playerData.longitude,

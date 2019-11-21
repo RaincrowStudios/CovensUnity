@@ -19,6 +19,7 @@ namespace Raincrow.Maps
 
         public GameObject GameObject { get { return gameObject; } }
         public virtual Transform AvatarTransform { get { return transform; } }
+        public SpriteRenderer AvatarRenderer => m_AvatarRenderer;
 
         public MarkerManager.MarkerType Type { get; private set; }
         public bool IsShowingIcon { get; set; }
