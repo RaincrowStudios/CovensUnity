@@ -92,14 +92,14 @@ public static class SpellcastingFX
         textObj.text = text;
         textObj.fontSize = 45 * scale;
         textObj.transform.localScale = target.AvatarTransform.lossyScale;
-        textObj.transform.rotation = target.AvatarTransform.rotation;
+        textObj.transform.rotation = target.AvatarRenderer.transform.rotation;
 
         if (LocationIslandController.isInBattle)
             textObj.transform.Translate(Random.Range(-7, -25), 61, 0);
 
         //animate the text
-        textObj.transform.position = new Vector3(target.AvatarTransform.position.x, target.AvatarTransform.position.y + 22, target.AvatarTransform.position.z);
-        var RandomSpacing = new Vector3(Random.Range(-7, 7), textObj.transform.localPosition.y + Random.Range(20, 24), textObj.transform.localPosition.z);
+        textObj.transform.position = new Vector3(target.AvatarTransform.position.x, target.AvatarTransform.position.y + 42, target.AvatarTransform.position.z);
+        var RandomSpacing = new Vector3(Random.Range(-7, 7), Random.Range(20, 24), 0);
         textObj.transform.Translate(RandomSpacing);
         m_TextTweenIds.Add(LeanTween.moveLocalY(textObj.gameObject, textObj.transform.localPosition.y + Random.Range(8, 11), 2f).setEaseOutCubic().id);
         m_TextTweenIds.Add(LeanTween.value(1f, 0f, 2f).setOnUpdate((float a) =>
