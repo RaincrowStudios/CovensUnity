@@ -113,19 +113,19 @@ public class UIQuickCast : MonoBehaviour
         m_ButtonPrefab.gameObject.SetActive(false);
         m_MoreSpells.onClick.AddListener(OnClickMoreSpells);
 
-        DownloadedAssets.OnWillUnloadAssets += DownloadedAssets_OnWillUnloadAssets;
+        //DownloadedAssets.OnWillUnloadAssets += DownloadedAssets_OnWillUnloadAssets;
     }
 
-    private void DownloadedAssets_OnWillUnloadAssets()
-    {
-        if (IsOpen)
-            return;
+    //private void DownloadedAssets_OnWillUnloadAssets()
+    //{
+    //    if (IsOpen)
+    //        return;
 
-        LeanTween.cancel(m_AnimTweenId);
+    //    LeanTween.cancel(m_AnimTweenId);
 
-        DownloadedAssets.OnWillUnloadAssets -= DownloadedAssets_OnWillUnloadAssets;
-        SceneManager.UnloadScene(SceneManager.Scene.QUICKCAST, null, null);
-    }
+    //    DownloadedAssets.OnWillUnloadAssets -= DownloadedAssets_OnWillUnloadAssets;
+    //    SceneManager.UnloadScene(SceneManager.Scene.QUICKCAST, null, null);
+    //}
 
 
     private void _Open()

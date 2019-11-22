@@ -375,6 +375,8 @@ public class GameStartup : MonoBehaviour
 
             }
         }
+
+        UIQuickCast.Open();
     }
 
     private void OnFinishFTF()

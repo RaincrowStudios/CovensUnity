@@ -4846,7 +4846,7 @@ Camera:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1824721657}
-  m_Enabled: 0
+  m_Enabled: 1
   serializedVersion: 2
   m_ClearFlags: 2
   m_BackGroundColor: {r: 0.101960786, g: 0.37254903, b: 0.47843137, a: 1}
@@ -4867,7 +4867,7 @@ Camera:
   field of view: 60
   orthographic: 0
   orthographic size: 5
-  m_Depth: -1
+  m_Depth: -10
   m_CullingMask:
     serializedVersion: 2
     m_Bits: 0
@@ -84413,11 +84413,11 @@ RectTransform:
   - {fileID: 224688629954523476}
   - {fileID: 224582446248502710}
   m_Father: {fileID: 224750229409624316}
-  m_RootOrder: 0
+  m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 0, y: 0}
-  m_AnchoredPosition: {x: 640, y: 360}
+  m_AnchoredPosition: {x: 1280, y: 720}
   m_SizeDelta: {x: 120, y: 120}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!224 &224086005279745452
@@ -86957,8 +86957,8 @@ RectTransform:
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
-  - {fileID: 224084228663469882}
   - {fileID: 4171587285419168457}
+  - {fileID: 224084228663469882}
   m_Father: {fileID: 224640381093854292}
   m_RootOrder: 20
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -91100,7 +91100,7 @@ RectTransform:
   - {fileID: 7132444393856179010}
   - {fileID: 4417312414816104838}
   m_Father: {fileID: 224750229409624316}
-  m_RootOrder: 1
+  m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 0, y: 0}

@@ -482,13 +482,20 @@ namespace Raincrow.Chat.UI
         //private void SpawnChatItems()
         private IEnumerator SpawnChatItems()
         {
+            ShowLoading(true);
+            yield return null;
             List<ChatMessage> chatMessages = new List<ChatMessage>(_messages);
             chatMessages.Reverse();
+
+            _itemContainer.gameObject.SetActive(false);
+
             foreach (var message in chatMessages)
-            {
                 SpawnItem(_currentCategory, message).transform.SetAsFirstSibling();
-                yield return null;
-            }
+
+            _itemContainer.gameObject.SetActive(true);
+
+            yield return null;
+            ShowLoading(false);
         }
 
         private UIChatItem SpawnItem(ChatCategory category, ChatMessage message)

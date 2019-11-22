@@ -52,6 +52,7 @@ public class UIQuickcastButton : MonoBehaviour, IPointerDownHandler, IPointerUpH
         m_FillColor = m_CooldownFill.color;
         CastStatus = Spellcasting.SpellState.InvalidSpell;
         Interactable = false;
+        Hightlight(false);
     }
 
     private void OnDestroy()

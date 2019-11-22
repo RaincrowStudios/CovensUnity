@@ -121,7 +121,7 @@ public class PlayerManager : MonoBehaviour
 
         AddAttackRing();
 
-        marker.OnClick += (m) => OnClickSelf();
+        //marker.OnClick += (m) => OnClickSelf();
     }
 
     [ContextMenu("Cancel flight")]
@@ -287,32 +287,32 @@ public class PlayerManager : MonoBehaviour
         Utilities.Destroy(atLocationObject);
     }
 
-    private void OnClickSelf()
-    {
-        MapCameraUtils.FocusOnMarker(witchMarker.transform.position);
-        Vector3 previousPosition = MapsAPI.Instance.mapCenter.position;
-        float previousZoom = Mathf.Min(0.98f, MapsAPI.Instance.normalizedZoom);
+    //private void OnClickSelf()
+    //{
+    //    MapCameraUtils.FocusOnMarker(witchMarker.transform.position);
+    //    Vector3 previousPosition = MapsAPI.Instance.mapCenter.position;
+    //    float previousZoom = Mathf.Min(0.98f, MapsAPI.Instance.normalizedZoom);
 
-        List<SpellData> spells = new List<SpellData>(PlayerDataManager.playerData.UnlockedSpells);
-        //spells.RemoveAll(spell => spell.target == SpellData.Target.OTHER);
+    //    List<SpellData> spells = new List<SpellData>(PlayerDataManager.playerData.UnlockedSpells);
+    //    //spells.RemoveAll(spell => spell.target == SpellData.Target.OTHER);
 
-        UISpellcastBook.Open(PlayerDataManager.playerData, marker, spells,
-            (spell, ingredients) =>
-            {
-                //on click spell glyph
-                Spellcasting.CastSpell(spell, marker, ingredients,
-                    (result) => { },
-                    () => { });
-            },
-            () =>
-            { //on click return
-                MapCameraUtils.FocusOnPosition(previousPosition, previousZoom, true);
-            },
-            () =>
-            { //on click close
-                MapCameraUtils.FocusOnPosition(previousPosition, previousZoom, true);
-            });
-    }
+    //    UISpellcastBook.Open(PlayerDataManager.playerData, marker, spells,
+    //        (spell, ingredients) =>
+    //        {
+    //            //on click spell glyph
+    //            Spellcasting.CastSpell(spell, marker, ingredients,
+    //                (result) => { },
+    //                () => { });
+    //        },
+    //        () =>
+    //        { //on click return
+    //            MapCameraUtils.FocusOnPosition(previousPosition, previousZoom, true);
+    //        },
+    //        () =>
+    //        { //on click close
+    //            MapCameraUtils.FocusOnPosition(previousPosition, previousZoom, true);
+    //        });
+    //}
 
     public static string GetQuickcastSpell(int index)
     {
