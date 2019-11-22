@@ -1332,9 +1332,9 @@ MonoBehaviour:
   m_PlaceOfPower2: {fileID: 21300000, guid: e960e4aa9e18084489ef7b48650b2bbf, type: 3}
   m_PlaceOfPower3: {fileID: 21300000, guid: e960e4aa9e18084489ef7b48650b2bbf, type: 3}
   m_PlaceOfPower4: {fileID: 21300000, guid: e960e4aa9e18084489ef7b48650b2bbf, type: 3}
-  m_WitchColor: {r: 0.02745098, g: 0.5803922, b: 0.8, a: 0.8901961}
-  m_SpiritColor: {r: 0.02745098, g: 0.5803922, b: 0.8, a: 0.8901961}
-  m_CollectableColor: {r: 0.02745098, g: 0.5803922, b: 0.8, a: 0.8901961}
+  m_WitchColor: {r: 0.5964026, g: 0.027450992, b: 0.8, a: 0.8901961}
+  m_SpiritColor: {r: 0.8, g: 0.13504854, b: 0.027450992, a: 0.8901961}
+  m_CollectableColor: {r: 0.40207815, g: 0.8, b: 0.027450992, a: 0.8901961}
   m_CollectableEnergyColor: {r: 0.02745098, g: 0.5803922, b: 0.8, a: 0.8901961}
   m_PopColor: {r: 0.6117647, g: 0.6117647, b: 0.6117647, a: 0}
   m_MarkerDetailedThreshold: 0.82

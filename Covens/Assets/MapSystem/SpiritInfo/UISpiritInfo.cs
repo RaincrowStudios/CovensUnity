@@ -31,6 +31,9 @@ public class UISpiritInfo : UIInfoPanel
     // private int m_CurrentHexEffect;
     // private bool m_DisplayHexNotification;
 
+    public static event System.Action OnOpen;
+    public static event System.Action OnClose;
+
     public static bool IsShowing
     {
         get
@@ -177,7 +180,7 @@ public class UISpiritInfo : UIInfoPanel
 
         if (!LocationIslandController.isInBattle)
         {
-            MainUITransition.Instance.HideMainUI();
+            MainUITransition.Instance.SetAnimation(MainUITransition.State.MAPVIEW_SELECT);
             MarkerSpawner.HighlightMarkers(new List<MuskMarker> { PlayerManager.witchMarker, SpiritMarker });
             MoveTokenHandler.OnTokenMove += _OnMapTokenMove;
         }
@@ -209,6 +212,8 @@ public class UISpiritInfo : UIInfoPanel
                 }
             }
         }
+
+        OnOpen?.Invoke();
     }
 
     public override void ReOpen()
@@ -269,7 +274,7 @@ public class UISpiritInfo : UIInfoPanel
             MapsAPI.Instance.allowControl = true;
             MapCameraUtils.FocusOnPosition(MapsAPI.Instance.mapCenter.position, m_PreviousMapZoom, true);
             MapCameraUtils.SetExtraFOV(0);
-            MainUITransition.Instance.ShowMainUI();
+            MainUITransition.Instance.SetAnimation(MainUITransition.State.MAPVIEW);
             MarkerSpawner.HighlightMarkers(new List<MuskMarker> { });
         }
         else
@@ -279,6 +284,8 @@ public class UISpiritInfo : UIInfoPanel
 
         if (UISpellcastBook.IsOpen)
             UISpellcastBook.Close();
+
+        OnClose?.Invoke();
     }
 
     private void _SetupDetails(SelectSpiritData_Map details)

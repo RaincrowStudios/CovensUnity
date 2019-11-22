@@ -83,6 +83,9 @@ public class UIPlayerInfo : UIInfoPanel
     public static WitchMarker WitchMarker { get; private set; }
     public static SelectWitchData_Map WitchMarkerDetails { get; private set; }
 
+    public static event System.Action OnOpen;
+    public static event System.Action OnClose;
+
     protected override void Awake()
     {
         m_Instance = this;
@@ -172,7 +175,7 @@ public class UIPlayerInfo : UIInfoPanel
 
         if (!LocationIslandController.isInBattle)
         {
-            MainUITransition.Instance.HideMainUI();
+            MainUITransition.Instance.SetAnimation(MainUITransition.State.MAPVIEW_SELECT);
             MarkerSpawner.HighlightMarkers(new List<MuskMarker> { PlayerManager.witchMarker, WitchMarker });
 
             MoveTokenHandler.OnTokenMove += _OnMapTokenMove;
@@ -201,6 +204,8 @@ public class UIPlayerInfo : UIInfoPanel
                 });
             }
         }
+
+        OnOpen?.Invoke();
     }
 
     public override void ReOpen()
@@ -254,7 +259,7 @@ public class UIPlayerInfo : UIInfoPanel
 
         if (!LocationIslandController.isInBattle)
         {
-            MainUITransition.Instance.ShowMainUI();
+            MainUITransition.Instance.SetAnimation(MainUITransition.State.MAPVIEW);
             MapsAPI.Instance.allowControl = true;
             MapCameraUtils.FocusOnPosition(previousMapPosition, m_PreviousMapZoom, true);
             MapCameraUtils.SetExtraFOV(0);
@@ -267,6 +272,8 @@ public class UIPlayerInfo : UIInfoPanel
 
         if (UISpellcastBook.IsOpen)
             UISpellcastBook.Close();
+
+        OnClose?.Invoke();
     }
 
     private void _SetupDetails(SelectWitchData_Map details)

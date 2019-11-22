@@ -7,15 +7,17 @@ using Raincrow;
 
 public class UIQuickCastPicker : MonoBehaviour
 {
-    [SerializeField] private Canvas m_Canvas;
-    [SerializeField] private GraphicRaycaster m_InputRaycaster;
+    [SerializeField] private GameObject m_Content;
+    //[SerializeField] private Canvas m_Canvas;
+    //[SerializeField] private GraphicRaycaster m_InputRaycaster;
+    [SerializeField] private RectTransform m_Panel;
     [SerializeField] private Button m_CloseButton;
 
     [SerializeField] private Transform m_ItemPrefab;
     [SerializeField] private RectTransform m_WhiteContainer;
     [SerializeField] private RectTransform m_GreyContainer;
     [SerializeField] private RectTransform m_ShadowContainer;
-    private CanvasGroup UIQCPCanvasGroup;
+    [SerializeField] private CanvasGroup UIQCPCanvasGroup;
     
     private string m_SelectedSpell = null;
     private List<CanvasGroup> m_SpawnedItems = new List<CanvasGroup>();
@@ -26,12 +28,12 @@ public class UIQuickCastPicker : MonoBehaviour
 
     private void Awake()
     {
-        m_Canvas.enabled = false;
-        m_InputRaycaster.enabled = false;
+        //m_Canvas.enabled = false;
+        //m_InputRaycaster.enabled = false;
         m_CloseButton.onClick.AddListener(Hide);
         m_ItemPrefab.gameObject.SetActive(false);
-        UIQCPCanvasGroup = this.GetComponent<CanvasGroup>();
         UIQCPCanvasGroup.alpha = 0f;
+        m_Content.SetActive(false);
     }
 
     public void Show(string selected, System.Action<string> onSelect, System.Action onClose)
@@ -46,11 +48,14 @@ public class UIQuickCastPicker : MonoBehaviour
         StopAllCoroutines();
         StartCoroutine(SpawnSpellsCoroutine());
 
-        m_Canvas.enabled = true;
-        LeanTween.alphaCanvas(UIQCPCanvasGroup, 1f, 0.6f).setEaseOutCubic().setOnComplete(() =>
-        {
-            m_InputRaycaster.enabled = true;
-        });
+        //m_Canvas.enabled = true;
+        LeanTween.alphaCanvas(UIQCPCanvasGroup, 1f, 0.6f).setEaseOutCubic()
+            .setOnComplete(() =>
+            {
+                //m_InputRaycaster.enabled = true;
+            });
+
+        m_Content.SetActive(true);
 
         BackButtonListener.AddCloseAction(Hide);
     }
@@ -64,11 +69,13 @@ public class UIQuickCastPicker : MonoBehaviour
         m_OnClose = null;
         StopAllCoroutines();
 
-        LeanTween.alphaCanvas(UIQCPCanvasGroup, 0f, 0.4f).setEaseInCubic().setOnComplete(() =>
-        {
-            m_Canvas.enabled = false;
-        });
-        m_InputRaycaster.enabled = false;
+        LeanTween.alphaCanvas(UIQCPCanvasGroup, 0f, 0.4f).setEaseInCubic()
+            .setOnComplete(() =>
+            {
+                //m_Canvas.enabled = false;
+                m_Content.SetActive(false);
+            });
+        //m_InputRaycaster.enabled = false;
     }
 
     private void OnClickSpell(string spell)
@@ -121,7 +128,9 @@ public class UIQuickCastPicker : MonoBehaviour
         else
             item.SetParent(m_GreyContainer);
 
-        item.localScale = Vector3.one;
+        item.localPosition = Vector3.zero;
+        item.localScale = Vector3.one * 0.85f;
+        item.localRotation = Quaternion.identity;
 
         CanvasGroup cg = item.GetComponent<CanvasGroup>();
         Button button = item.GetComponent<Button>();

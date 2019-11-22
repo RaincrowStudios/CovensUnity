@@ -103,10 +103,10 @@ public static class SpellcastingFX
         textObj.transform.Translate(RandomSpacing);
         m_TextTweenIds.Add(LeanTween.moveLocalY(textObj.gameObject, textObj.transform.localPosition.y + Random.Range(8, 11), 2f).setEaseOutCubic().id);
         m_TextTweenIds.Add(LeanTween.value(1f, 0f, 2f).setOnUpdate((float a) =>
-       {
-           if (textObj != null)
-               textObj.alpha = a;
-       }).id);
+        {
+            if (textObj != null)
+                textObj.alpha = a;
+        }).id);
     }
 
     public static void StopTweening()

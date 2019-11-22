@@ -458,16 +458,13 @@ public class FTFManager : MonoBehaviour
         IMarker marker = MarkerSpawner.GetMarker(id);
 
         bool screenLoaded = false;
-        bool quickcastLoaded = false;
 
         if (marker.Type == MarkerManager.MarkerType.SPIRIT)
         {
             SelectSpiritData_Map details = JsonConvert.DeserializeObject<SelectSpiritData_Map>(json);
             details.token = marker.Token as SpiritToken;
-
-            
+                        
             UISpiritInfo.Show(marker as SpiritMarker, details.token, null, () => screenLoaded = true);
-            UIQuickCast.Open(() => quickcastLoaded = true);
             yield return new WaitForSeconds(0.5f);
             UISpiritInfo.SetupDetails(details);
             UIQuickCast.UpdateCanCast(marker, details);
@@ -478,7 +475,6 @@ public class FTFManager : MonoBehaviour
             details.token = marker.Token as WitchToken;
 
             UIPlayerInfo.Show(marker as WitchMarker, details.token, null, () => screenLoaded = true);
-            UIQuickCast.Open(() => quickcastLoaded = true);
             yield return new WaitForSeconds(0.5f);
             UIPlayerInfo.SetupDetails(details);
             UIQuickCast.UpdateCanCast(marker, details);
@@ -486,10 +482,9 @@ public class FTFManager : MonoBehaviour
         else if (marker.Type == MarkerManager.MarkerType.PLACE_OF_POWER)
         {
             screenLoaded = true;
-            quickcastLoaded = true;
         }
 
-        while (screenLoaded == false || quickcastLoaded == false)
+        while (screenLoaded == false)
             yield return 0;
     }
 

@@ -10,55 +10,37 @@ using UnityEngine.UI;
 public class UIQuickCast : MonoBehaviour
 {
     [Header("UI")]
-    [SerializeField] private Canvas m_Canvas;
-    [SerializeField] private GraphicRaycaster m_InputRaycaster;
     [SerializeField] private LayoutGroup m_SpellContainer;
     [SerializeField] private UIQuickcastButton m_ButtonPrefab;
     [SerializeField] private Button m_MoreSpells;
-    [SerializeField] private CanvasGroup m_Panel;
+    [SerializeField] private Button m_Button;
+
+    [Header("Anim")]
+    [SerializeField] private RectTransform m_RectTransform;
+    [SerializeField] private CanvasGroup m_ContentPanel;
 
     [Header("others")]
     [SerializeField] private UIQuickCastPicker m_Picker;
 
     private static UIQuickCast m_Instance;
     private static event System.Action m_OnClose;
-    public static bool IsOpen { get; private set; }
 
     private List<UIQuickcastButton> m_Buttons = new List<UIQuickcastButton>();
     private static IMarker m_Target;
     private static CharacterMarkerData m_TargetData;
-    private string m_PreviousMarker = "";
 
     private int m_AnimTweenId;
 
+    public static bool IsOpen { get; private set; }
+    public static IMarker target => m_Target != null ? m_Target : PlayerManager.marker;
+    public static CharacterMarkerData targetData => m_TargetData != null ? m_TargetData : PlayerDataManager.playerData;
+
     public static void Open(System.Action onLoaded = null)
     {
-        m_Target = null;
-        m_TargetData = null;
-
-        if (m_Instance != null)
-        {
-            m_Instance._Open();
-            onLoaded?.Invoke();
-        }
-        else
-        {
-            LoadingOverlay.Show();
-            SceneManager.LoadSceneAsync(SceneManager.Scene.QUICKCAST,
-                UnityEngine.SceneManagement.LoadSceneMode.Additive,
-                null,
-                () =>
-                {
-                    m_Instance._Open();
-                    onLoaded?.Invoke();
-                    LoadingOverlay.Hide();
-                });
-        }
     }
 
     public static void Close()
     {
-        m_Instance._Close();
     }
 
     public static void UpdateCanCast(IMarker marker, CharacterMarkerData details)
@@ -109,36 +91,57 @@ public class UIQuickCast : MonoBehaviour
     private void Awake()
     {
         m_Instance = this;
-        m_Canvas.enabled = false;
         m_ButtonPrefab.gameObject.SetActive(false);
         m_MoreSpells.onClick.AddListener(OnClickMoreSpells);
 
-        //DownloadedAssets.OnWillUnloadAssets += DownloadedAssets_OnWillUnloadAssets;
+        _Hide();
+
+        m_Button.onClick.AddListener(() =>
+        {
+            if (IsOpen)
+                _Hide();
+            else
+                _Show();
+        });
+
+        UISpiritInfo.OnOpen += OnSelectSpirit;
+        UISpiritInfo.OnClose += OnUnselectSpirit;
+
+        UIPlayerInfo.OnOpen += OnSelectWitch;
+        UIPlayerInfo.OnClose += OnUnselectWitch;
     }
 
-    //private void DownloadedAssets_OnWillUnloadAssets()
-    //{
-    //    if (IsOpen)
-    //        return;
-
-    //    LeanTween.cancel(m_AnimTweenId);
-
-    //    DownloadedAssets.OnWillUnloadAssets -= DownloadedAssets_OnWillUnloadAssets;
-    //    SceneManager.UnloadScene(SceneManager.Scene.QUICKCAST, null, null);
-    //}
-
-
-    private void _Open()
+    private void OnSelectSpirit()
     {
-        //in case the marker was rmeoved while loading the scene
-        if (m_Target != null)
-        {
-            if (MarkerSpawner.GetMarker(m_Target.Token.Id) == null)
-            {
-                _Close();
-                return;
-            }
-        }
+        m_Button.interactable = false;
+        _Show();
+    }
+
+    private void OnUnselectSpirit()
+    {
+        m_Button.interactable = true;
+        UpdateCanCast(null, null);
+        //_Hide();
+    }
+
+
+    private void OnSelectWitch()
+    {
+        m_Button.interactable = false;
+        _Show();
+    }
+
+    private void OnUnselectWitch()
+    {
+        m_Button.interactable = true;
+        UpdateCanCast(null, null);
+        //_Hide();
+    }
+
+    private void _Show()
+    {
+        if (IsOpen)
+            return;
 
         IsOpen = true;
 
@@ -155,7 +158,7 @@ public class UIQuickCast : MonoBehaviour
             m_MoreSpells.transform.SetAsLastSibling();
         }
 
-        UpdateCanCast(m_Target, m_TargetData);
+        UpdateCanCast(target, targetData);
 
         SpellCastHandler.OnPlayerTargeted += _OnPlayerAttacked;
         MarkerSpawner.OnImmunityChange += _OnImmunityChange;
@@ -168,7 +171,7 @@ public class UIQuickCast : MonoBehaviour
         AnimOpen();
     }
 
-    private void _Close()
+    private void _Hide()
     {
         SpellCastHandler.OnPlayerTargeted -= _OnPlayerAttacked;
         MarkerSpawner.OnImmunityChange -= _OnImmunityChange;
@@ -186,8 +189,6 @@ public class UIQuickCast : MonoBehaviour
 
         m_OnClose?.Invoke();
         m_OnClose = null;
-        m_Target = null;
-        m_TargetData = null;
     }
 
     private void _Hide(bool hide)
@@ -205,24 +206,25 @@ public class UIQuickCast : MonoBehaviour
             AnimOpen();
         }
 
-        UpdateCanCast(m_Target, m_TargetData);
+        UpdateCanCast(target, targetData);
     }
 
     private void AnimOpen()
     {
         LeanTween.cancel(m_AnimTweenId);
 
-        m_Canvas.enabled = true;
-        m_InputRaycaster.enabled = true;
+        m_Button.image.transform.localEulerAngles = new Vector3(0, 0, -90);
 
-        //m_AnimTweenId = LeanTween.moveLocalY(m_SpellContainer.gameObject, 0f, 0.6f)
-        m_AnimTweenId = LeanTween.value(m_Panel.alpha, 1, 0.6f)
+        m_AnimTweenId = LeanTween.value(m_ContentPanel.alpha, 1, 0.5f)
             .setOnUpdate((float t) =>
             {
-                m_Panel.transform.localPosition = new Vector3(0, Mathf.Lerp(-172, 0, t), 0);
-                m_Panel.alpha = t;
+                m_RectTransform.anchoredPosition = new Vector2(0, Mathf.Lerp(-200, 0, t));
+                m_ContentPanel.alpha = t;
             })
             .setEaseOutCubic()
+            .setOnComplete(() =>
+            {
+            })
             .uniqueId;
     }
 
@@ -230,16 +232,17 @@ public class UIQuickCast : MonoBehaviour
     {
         LeanTween.cancel(m_AnimTweenId);
 
-        m_InputRaycaster.enabled = false;
+        m_Button.image.transform.localEulerAngles = new Vector3(0, 0, 90);
 
-        //m_AnimTweenId = LeanTween.moveLocalY(m_SpellContainer.gameObject, -138f, 0.4f)
-        m_AnimTweenId = LeanTween.value(m_Panel.alpha, 0, 0.4f)
+        m_AnimTweenId = LeanTween.value(m_ContentPanel.alpha, 0, 0.3f)
             .setOnUpdate((float t) =>
             {
-                m_Panel.transform.localPosition = new Vector3(0, Mathf.Lerp(-172, 0, t), 0);
-                m_Panel.alpha = t;
+                m_RectTransform.anchoredPosition = new Vector2(0, Mathf.Lerp(-200, 0, t));
+                m_ContentPanel.alpha = t;
             })
-            .setOnComplete(() => m_Canvas.enabled = false)
+            .setOnComplete(() =>
+            {
+            })
             .setEaseOutCubic()
             .uniqueId;
     }
@@ -274,7 +277,7 @@ public class UIQuickCast : MonoBehaviour
 
         this._Hide(true);
 
-        Spellcasting.CastSpell(spell, m_Target, new List<spellIngredientsData>(),
+        Spellcasting.CastSpell(spell, target, new List<spellIngredientsData>(),
             (result) => this._Hide(false),
             () => this._Hide(false));
     }
@@ -297,7 +300,7 @@ public class UIQuickCast : MonoBehaviour
                     () => OnClickSpell(button),
                     () => OnHoldSpell(button));
 
-                button.UpdateCanCast(m_Target, m_TargetData);
+                button.UpdateCanCast(target, targetData);
             },
             () => button.Hightlight(false)
         );
@@ -332,82 +335,70 @@ public class UIQuickCast : MonoBehaviour
 
     private void _OnPlayerAttacked(string caster, SpellData spell, Raincrow.GameEventResponses.SpellCastHandler.Result result)
     {
-        if (m_Target == null || m_TargetData == null)
-            return;
+        //if (m_Target == null || m_TargetData == null)
+        //    return;
 
-        if (caster != m_Target.Token.instance)
-            return;
+        //if (caster != m_Target.Token.instance)
+        //    return;
 
-        UpdateCanCast(m_Target, m_TargetData);
+        UpdateCanCast(target, targetData);
     }
-
-    private void _OnCharacterDead()
-    {
-        _UpdateCanCast(null, null);
-    }
-
+    
     private void _OnStatusEffectExpired(StatusEffect effect)
     {
-        UpdateCanCast(m_Target, m_TargetData);
+        UpdateCanCast(target, targetData);
     }
 
     private void _OnStatusEffectApplied(string instance, string caster, StatusEffect statusEffect)
     {
-        if (m_Target == null || m_TargetData == null)
+        if (instance != target.Token.instance)
             return;
 
-        if (instance != m_Target.Token.instance)
-            return;
-
-        UpdateCanCast(m_Target, m_TargetData);
+        UpdateCanCast(target, targetData);
     }
 
-    private void _OnImmunityChange(string caster, string target, bool immune)
+    private void _OnImmunityChange(string _caster, string _target, bool immune)
     {
-        if (m_Target == null || m_TargetData == null)
-            return;
-
-        if (caster == PlayerDataManager.playerData.instance && target == m_Target.Token.instance)
-            UpdateCanCast(m_Target, m_TargetData);
-        else if (target == PlayerDataManager.playerData.instance && caster == m_Target.Token.instance)
-            UpdateCanCast(m_Target, m_TargetData);
+        if (_caster == PlayerDataManager.playerData.instance && _target == target.Token.instance)
+            UpdateCanCast(target, targetData);
+        else if (_target == PlayerDataManager.playerData.instance && _caster == target.Token.instance)
+            UpdateCanCast(target, targetData);
     }
 
     private void _OnEnergyChange(string instance, int newEnergy)
     {
-        if (m_Target == null || m_TargetData == null)
+        if (instance != target.Token.instance)
             return;
 
-        if (instance != m_Target.Token.instance)
-            return;
+        //if (newEnergy == 0 && target.Type == MarkerManager.MarkerType.SPIRIT)
+        //{
+        //    if (LocationIslandController.isInBattle)
+        //    {
 
-        if (newEnergy == 0 && m_Target.Type == MarkerManager.MarkerType.SPIRIT)
-        {
-            if (LocationIslandController.isInBattle)
-            {
-
-            }
-            else
-            {
-                _Close();
-            }
-        }
-        else
-        {
-            UpdateCanCast(m_Target, m_TargetData);
-        }
+        //    }
+        //    else
+        //    {
+        //        _Close();
+        //    }
+        //}
+        //else
+        //{
+            UpdateCanCast(target, targetData);
+        //}
     }
 
     private void _OnBanished()
     {
-        if (LocationIslandController.isInBattle)
-        {
+        //if (LocationIslandController.isInBattle)
+        //{
 
-        }
-        else
-        {
-            _Close();
-        }
+        //}
+        //else
+        //{
+        //    _Close();
+        //}
+
+        UpdateCanCast(null, null);
     }
 
     private void _OnPlayerDead()
@@ -417,19 +408,18 @@ public class UIQuickCast : MonoBehaviour
 
     private void _OnMapTokenRemove(string instance)
     {
-        if (m_Target == null)
+        if (instance != target.Token.instance)
             return;
 
-        if (instance != m_Target.Token.instance)
-            return;
+        //if (LocationIslandController.isInBattle)
+        //{
 
-        if (LocationIslandController.isInBattle)
-        {
+        //}
+        //else
+        //{
+        //    _Close();
+        //}
 
-        }
-        else
-        {
-            _Close();
-        }
+        UpdateCanCast(null, null);
     }
 }
