@@ -136,6 +136,7 @@ public class LocationIslandController : MonoBehaviour
 
     public static void BattleStopPOP()
     {
+        SpellcastingFX.StopTweening();
         OnExitLocation?.Invoke();
         MoveTokenHandlerPOP.OnMarkerMovePOP -= instance.locationUnitSpawner.MoveMarker;
         AddSpiritHandlerPOP.OnSpiritAddPOP -= instance.locationUnitSpawner.AddMarker;

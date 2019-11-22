@@ -104,6 +104,7 @@ public class LoadPOPManager : MonoBehaviour
             var t = LocationExitInfo.Instance;
             OnMapEnergyChange.ForceEvent(PlayerManager.marker, (int)(PlayerDataManager.playerData.baseEnergy * .25f));
             PlayerManagerUI.Instance.UpdateEnergy();
+            SpellcastingFX.ResumeTweening();
             if (UIQuickCast.IsOpen)
                 UIQuickCast.Close();
             t.ShowUI();
