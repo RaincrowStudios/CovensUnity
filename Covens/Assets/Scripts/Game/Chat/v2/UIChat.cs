@@ -116,7 +116,7 @@ namespace Raincrow.Chat.UI
 
         public void Show(ChatCategory category = ChatCategory.WORLD)
         {
-            SetCategory(category);
+            //SetCategory(category);
 
             AnimateShow(() => MapsAPI.Instance.HideMap(true));
 
