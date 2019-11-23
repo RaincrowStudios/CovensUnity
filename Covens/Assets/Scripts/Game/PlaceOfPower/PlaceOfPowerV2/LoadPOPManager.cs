@@ -157,13 +157,13 @@ public class LoadPOPManager : MonoBehaviour
 
     public static void HandleQuickCastOpen(System.Action OnOpen)
     {
-        UIQuickCast.Open(() =>
-        {
-            if (LocationIslandController.isInBattle)
-            {
-                OnOpen();
-            }
-        });
-
+        //UIQuickCast.Open(() =>
+        //{
+        //    if (LocationIslandController.isInBattle)
+        //    {
+        //        OnOpen();
+        //    }
+        //});
+        OnOpen?.Invoke();
     }
 }

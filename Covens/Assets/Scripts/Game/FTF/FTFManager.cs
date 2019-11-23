@@ -467,7 +467,7 @@ public class FTFManager : MonoBehaviour
             UISpiritInfo.Show(marker as SpiritMarker, details.token, null, () => screenLoaded = true);
             yield return new WaitForSeconds(0.5f);
             UISpiritInfo.SetupDetails(details);
-            UIQuickCast.UpdateCanCast(marker, details);
+            UIQuickCast.UpdateTarget(marker, details);
         }
         else if (marker.Type == MarkerManager.MarkerType.WITCH)
         {
@@ -477,7 +477,7 @@ public class FTFManager : MonoBehaviour
             UIPlayerInfo.Show(marker as WitchMarker, details.token, null, () => screenLoaded = true);
             yield return new WaitForSeconds(0.5f);
             UIPlayerInfo.SetupDetails(details);
-            UIQuickCast.UpdateCanCast(marker, details);
+            UIQuickCast.UpdateTarget(marker, details);
         }
         else if (marker.Type == MarkerManager.MarkerType.PLACE_OF_POWER)
         {

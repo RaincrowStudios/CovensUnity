@@ -329,13 +329,13 @@ public class MarkerSpawner : MarkerManager
             //if (!WitchMarker.DisableSpriteGeneration)
             (m as WitchMarker).GenerateAvatar(null, true);
             UIQuickCast.Open();
-            UIQuickCast.UpdateCanCast(m, null);
+            UIQuickCast.UpdateTarget(m, null);
             UIPlayerInfo.Show(m as WitchMarker, Data as WitchToken, UIQuickCast.Close);
         }
         else if (Data.Type == MarkerType.SPIRIT)
         {
             UIQuickCast.Open();
-            UIQuickCast.UpdateCanCast(m, null);
+            UIQuickCast.UpdateTarget(m, null);
             UISpiritInfo.Show(m as SpiritMarker, Data as SpiritToken, UIQuickCast.Close);
         }
 
@@ -375,7 +375,7 @@ public class MarkerSpawner : MarkerManager
                     if (witchSelected)
                     {
                         UIPlayerInfo.SetupDetails(witch);
-                        UIQuickCast.UpdateCanCast(marker, witch);
+                        UIQuickCast.UpdateTarget(marker, witch);
                     }
                 }
                 break;
@@ -392,7 +392,7 @@ public class MarkerSpawner : MarkerManager
                     if (spiritSelected)
                     {
                         UISpiritInfo.SetupDetails(spirit);
-                        UIQuickCast.UpdateCanCast(marker, spirit);
+                        UIQuickCast.UpdateTarget(marker, spirit);
                     }
 
                     if (spirit.state == "dead")

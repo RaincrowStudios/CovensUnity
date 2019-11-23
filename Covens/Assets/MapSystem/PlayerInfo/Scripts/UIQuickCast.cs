@@ -43,7 +43,7 @@ public class UIQuickCast : MonoBehaviour
     {
     }
 
-    public static void UpdateCanCast(IMarker marker, CharacterMarkerData details)
+    public static void UpdateTarget(IMarker marker, CharacterMarkerData details)
     {
         if (m_Instance == null)
         {
@@ -51,7 +51,7 @@ public class UIQuickCast : MonoBehaviour
             m_TargetData = details;
             return;
         }
-        m_Instance._UpdateCanCast(marker, details);
+        m_Instance._UpdateTarget(marker, details);
         //Spellcasting.SpellState canCast = Spellcasting.CanCast((SpellData)null, marker, data);
     }
 
@@ -120,8 +120,7 @@ public class UIQuickCast : MonoBehaviour
     private void OnUnselectSpirit()
     {
         m_Button.interactable = true;
-        UpdateCanCast(null, null);
-        //_Hide();
+        UpdateTarget(null, null);
     }
 
 
@@ -134,8 +133,7 @@ public class UIQuickCast : MonoBehaviour
     private void OnUnselectWitch()
     {
         m_Button.interactable = true;
-        UpdateCanCast(null, null);
-        //_Hide();
+        UpdateTarget(null, null);
     }
 
     private void _Show()
@@ -158,7 +156,7 @@ public class UIQuickCast : MonoBehaviour
             m_MoreSpells.transform.SetAsLastSibling();
         }
 
-        UpdateCanCast(target, targetData);
+        UpdateTarget(target, targetData);
 
         SpellCastHandler.OnPlayerTargeted += _OnPlayerAttacked;
         MarkerSpawner.OnImmunityChange += _OnImmunityChange;
@@ -206,7 +204,7 @@ public class UIQuickCast : MonoBehaviour
             AnimOpen();
         }
 
-        UpdateCanCast(target, targetData);
+        UpdateTarget(target, targetData);
     }
 
     private void AnimOpen()
@@ -247,13 +245,13 @@ public class UIQuickCast : MonoBehaviour
             .uniqueId;
     }
 
-    private void _UpdateCanCast(IMarker marker, CharacterMarkerData data)
+    private void _UpdateTarget(IMarker marker, CharacterMarkerData data)
     {
         m_Target = marker;
         m_TargetData = data;
 
         foreach (UIQuickcastButton item in m_Buttons)
-            item.UpdateCanCast(marker, data);
+            item.UpdateCanCast(target, targetData);
     }
 
     private void OnClickSpell(UIQuickcastButton button)
@@ -308,14 +306,14 @@ public class UIQuickCast : MonoBehaviour
 
     private void OnClickMoreSpells()
     {
-        if (m_Target == null || m_TargetData == null)
+        if (target == null || targetData == null)
             return;
 
         this._Hide(true);
         
         UISpellcastBook.Open(
-            m_TargetData,
-            m_Target,
+            targetData,
+            target,
             PlayerDataManager.playerData.UnlockedSpells,
             (spell, ingredients) =>
             {
@@ -335,18 +333,12 @@ public class UIQuickCast : MonoBehaviour
 
     private void _OnPlayerAttacked(string caster, SpellData spell, Raincrow.GameEventResponses.SpellCastHandler.Result result)
     {
-        //if (m_Target == null || m_TargetData == null)
-        //    return;
-
-        //if (caster != m_Target.Token.instance)
-        //    return;
-
-        UpdateCanCast(target, targetData);
+        UpdateTarget(target, targetData);
     }
     
     private void _OnStatusEffectExpired(StatusEffect effect)
     {
-        UpdateCanCast(target, targetData);
+        UpdateTarget(target, targetData);
     }
 
     private void _OnStatusEffectApplied(string instance, string caster, StatusEffect statusEffect)
@@ -354,15 +346,15 @@ public class UIQuickCast : MonoBehaviour
         if (instance != target.Token.instance)
             return;
 
-        UpdateCanCast(target, targetData);
+        UpdateTarget(target, targetData);
     }
 
     private void _OnImmunityChange(string _caster, string _target, bool immune)
     {
         if (_caster == PlayerDataManager.playerData.instance && _target == target.Token.instance)
-            UpdateCanCast(target, targetData);
+            UpdateTarget(target, targetData);
         else if (_target == PlayerDataManager.playerData.instance && _caster == target.Token.instance)
-            UpdateCanCast(target, targetData);
+            UpdateTarget(target, targetData);
     }
 
     private void _OnEnergyChange(string instance, int newEnergy)
@@ -370,40 +362,17 @@ public class UIQuickCast : MonoBehaviour
         if (instance != target.Token.instance)
             return;
 
-        //if (newEnergy == 0 && target.Type == MarkerManager.MarkerType.SPIRIT)
-        //{
-        //    if (LocationIslandController.isInBattle)
-        //    {
-
-        //    }
-        //    else
-        //    {
-        //        _Close();
-        //    }
-        //}
-        //else
-        //{
-            UpdateCanCast(target, targetData);
-        //}
+        UpdateTarget(target, targetData);
     }
 
     private void _OnBanished()
     {
-        //if (LocationIslandController.isInBattle)
-        //{
-
-        //}
-        //else
-        //{
-        //    _Close();
-        //}
-
-        UpdateCanCast(null, null);
+        UpdateTarget(null, null);
     }
 
     private void _OnPlayerDead()
     {
-        UpdateCanCast(null, null);
+        UpdateTarget(null, null);
     }
 
     private void _OnMapTokenRemove(string instance)
@@ -411,15 +380,6 @@ public class UIQuickCast : MonoBehaviour
         if (instance != target.Token.instance)
             return;
 
-        //if (LocationIslandController.isInBattle)
-        //{
-
-        //}
-        //else
-        //{
-        //    _Close();
-        //}
-
-        UpdateCanCast(null, null);
+        UpdateTarget(null, null);
     }
 }

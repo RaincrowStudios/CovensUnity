@@ -52,6 +52,15 @@ public class MainUITransition : MonoBehaviour
     void Awake()
     {
         Instance = this;
+        LocationIslandController.OnEnterLocation += () =>
+        {
+            SetAnimation(State.POPVIEW);
+        };
+
+        LocationIslandController.OnExitLocation += () =>
+        {
+            SetAnimation(State.MAPVIEW);
+        };
     }
 
     public void OnLocationClick()

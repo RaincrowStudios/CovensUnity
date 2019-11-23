@@ -319,8 +319,8 @@ public class LocationPlayerAction : MonoBehaviour
     public static void ShowActions()
     {
 
-        UIQuickCast.Open(() =>
-        {
+        //UIQuickCast.Open(() =>
+        //{
             UIQuickCast.EnableQuickcastButtons(false);
             Debug.Log(m_BtnArr.Length);
             for (int i = 0; i < m_BtnArr.Length; i++)
@@ -341,7 +341,7 @@ public class LocationPlayerAction : MonoBehaviour
                     m_BtnArr[i].gameObject.SetActive(true);
                 }
             }
-        });
+        //});
     }
 
     public static void HideActions()

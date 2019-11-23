@@ -240,7 +240,7 @@ public class LocationUnitSpawner : MonoBehaviour
                     if (UIPlayerInfo.IsShowing && UIPlayerInfo.WitchToken.instance == token.instance)
                     {
                         UIPlayerInfo.SetupDetails(witch);
-                        UIQuickCast.UpdateCanCast(m, witch);
+                        UIQuickCast.UpdateTarget(m, witch);
                     }
                 }
                 else if (m.Type == MarkerType.SPIRIT)
@@ -251,7 +251,7 @@ public class LocationUnitSpawner : MonoBehaviour
                     if (UISpiritInfo.IsShowing && UISpiritInfo.SpiritToken.instance == token.instance)
                     {
                         UISpiritInfo.SetupDetails(spirit);
-                        UIQuickCast.UpdateCanCast(m, spirit);
+                        UIQuickCast.UpdateTarget(m, spirit);
                     }
 
                     if (spirit.state == "dead")
