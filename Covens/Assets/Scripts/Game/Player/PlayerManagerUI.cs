@@ -23,6 +23,8 @@ public class PlayerManagerUI : UIAnimationManager
     public GameObject coinGlow;
     FlightVisualManager FVM;
     public GameObject LandFX;
+    public CanvasGroup WitchDisplay;
+    public TextMeshProUGUI DisplayText;
 
     public Image LunarPhaseHolder;
     public Sprite[] LunarPhase;
@@ -139,7 +141,19 @@ public class PlayerManagerUI : UIAnimationManager
         SetupAlignmentPhase();
         setupXP();
     }
+    public void SetupWitchDisplayText(int number)
+    {
+        if (number != 0)
+        {
+            LeanTween.alphaCanvas(WitchDisplay, 1f, 1f).setEaseInCubic();
+            DisplayText.text = LocalizeLookUp.GetText("witch_display").Replace("{amount}", number.ToString());
+        }
+        else
+        {
+            LeanTween.alphaCanvas(WitchDisplay, 0f, 1f).setEaseOutCubic();
+        }
 
+    }
     public void checkTime()
     {
         try
