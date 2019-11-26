@@ -190,7 +190,7 @@ public class LocationPlayerAction : MonoBehaviour
                               UIPlayerInfo.SetVisibility(false);
                           if (UISpiritInfo.IsShowing)
                               UISpiritInfo.SetVisibility(false);
-                          LeanTween.value(1, 0, .5f).setOnUpdate((float v) => CloakingFX(v));
+                          LocationUnitSpawner.leanTweenIds.Add(LeanTween.value(1, 0, .5f).setOnUpdate((float v) => CloakingFX(v)).id);
                           isCloaked = true;
                           SoundManagerOneShot.Instance.FadeOutBGTrack();
                           SoundManagerOneShot.Instance.PlayCloakingSFX(true);
@@ -272,18 +272,18 @@ public class LocationPlayerAction : MonoBehaviour
 
         RenderSettings.fogMode = FogMode.Linear;
         RenderSettings.fogColor = new Color(0.14f, 0.14f, 0.14f);
-        LeanTween.value(0, 1, .5f).setOnUpdate((float v) =>
-        {
-            Instance.CloakingFX(v);
-        }).setOnComplete(() =>
-        {
-            isCloaked = false;
-            SoundManagerOneShot.Instance.FadeInBGTrack();
-            SoundManagerOneShot.Instance.PlayCloakingSFX(false);
-            RenderSettings.fog = false;
-            Instance.m_CloakUI.gameObject.SetActive(false);
-            Instance.m_CloakUIGreyScale.gameObject.SetActive(false);
-        });
+        LocationUnitSpawner.leanTweenIds.Add(LeanTween.value(0, 1, .5f).setOnUpdate((float v) =>
+       {
+           Instance.CloakingFX(v);
+       }).setOnComplete(() =>
+       {
+           isCloaked = false;
+           SoundManagerOneShot.Instance.FadeInBGTrack();
+           SoundManagerOneShot.Instance.PlayCloakingSFX(false);
+           RenderSettings.fog = false;
+           Instance.m_CloakUI.gameObject.SetActive(false);
+           Instance.m_CloakUIGreyScale.gameObject.SetActive(false);
+       }).id);
 
     }
 

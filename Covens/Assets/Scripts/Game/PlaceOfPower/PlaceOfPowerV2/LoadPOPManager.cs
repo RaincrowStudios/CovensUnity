@@ -102,8 +102,8 @@ public class LoadPOPManager : MonoBehaviour
         {
             sceneLoaded = false;
             var t = LocationExitInfo.Instance;
-            OnMapEnergyChange.ForceEvent(PlayerManager.marker, (int)(PlayerDataManager.playerData.baseEnergy * .25f));
-            PlayerManagerUI.Instance.UpdateEnergy();
+            // OnMapEnergyChange.ForceEvent(PlayerManager.marker, (int)(PlayerDataManager.playerData.baseEnergy * .25f));
+            // PlayerManagerUI.Instance.UpdateEnergy();
             LocationIslandController.MainSceneLoaded();
             //  SpellcastingFX.ResumeTweening();
             if (UIQuickCast.IsOpen)

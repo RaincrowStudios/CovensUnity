@@ -85,9 +85,9 @@ public class SpellcastingTrailFX : MonoBehaviour
                     Vector3 endcontrol = (startPosition - targetPosition) * Random.Range(0.3f, 0.5f);
                     Vector3 startcontrol = (targetPosition - startPosition) * Random.Range(0.3f, 0.5f);
 
-                    startcontrol = Quaternion.Euler(0, Random.Range(-100,100), Random.Range(-100, 100)) * startcontrol;
+                    startcontrol = Quaternion.Euler(0, Random.Range(-100, 100), Random.Range(-100, 100)) * startcontrol;
                     endcontrol = Quaternion.Euler(0, Random.Range(-45, 45), Random.Range(-45, 45)) * endcontrol;
-                    
+
                     path = new LTBezierPath(new Vector3[] {
                         startPosition, //start point
                         targetPosition + endcontrol,

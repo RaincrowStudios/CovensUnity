@@ -44,9 +44,8 @@ public class LocationUnitSpawner : MonoBehaviour
     private static Dictionary<string, GameObject> m_cloaks = new Dictionary<string, GameObject>();
     public static string currentSelection { get; private set; }
     public static Dictionary<string, IMarker> Markers = new Dictionary<string, IMarker>();
-
     private static Dictionary<string, string> witchNames = new Dictionary<string, string>();
-
+    public static List<int> leanTweenIds = new List<int>();
     void Awake()
     {
         Instance = this;
@@ -84,19 +83,21 @@ public class LocationUnitSpawner : MonoBehaviour
             go.SetActive(true);
             //  if (m_cloaks.ContainsKey(instance)) DisableCloaking(instance);
             m_cloaks[instance] = go;
-            LeanTween.scale(go, Vector3.one, .5f).setEaseOutQuad();
+            m_TweenIds.Add(LeanTween.scale(go, Vector3.one, .5f).setEaseOutQuad().id);
         }
     }
+
+
 
     public static void DisableCloaking(string instance)
     {
         if (m_cloaks.ContainsKey(instance))
         {
-            LeanTween.scale(m_cloaks[instance], Vector3.zero, .5f).setEaseOutQuad().setOnComplete(() =>
+            m_TweenIds.Add(LeanTween.scale(m_cloaks[instance], Vector3.zero, .5f).setEaseOutQuad().setOnComplete(() =>
             {
                 m_CloakingPool.Despawn(m_cloaks[instance].transform);
                 m_cloaks.Remove(instance);
-            });
+            }).id);
 
         }
     }
@@ -311,7 +312,7 @@ public class LocationUnitSpawner : MonoBehaviour
                 Markers.Remove(instance);
 
             await Task.Delay(2000);
-            LeanTween.scale(go, Vector3.zero, .4f).setOnComplete(() =>
+            m_TweenIds.Add(LeanTween.scale(go, Vector3.zero, .4f).setOnComplete(() =>
           {
               m_DeathFXPool.Despawn(go.transform);
               if (marker.Token.Id != PlayerDataManager.playerData.instance)
@@ -319,7 +320,7 @@ public class LocationUnitSpawner : MonoBehaviour
               if (marker.Type == MarkerType.WITCH) m_WitchPool.Despawn(marker.GameObject.transform);
               else if (marker.Type == MarkerType.SPIRIT) m_SpiritPool.Despawn(marker.GameObject.transform);
               else throw new NotImplementedException("Unhandled Marker Type: " + marker.Type);
-          });
+          }).id);
             // await Task.Delay(1000);
         }
     }
@@ -355,6 +356,11 @@ public class LocationUnitSpawner : MonoBehaviour
 
     public void DespawnMarkers()
     {
+        foreach (var item in m_TweenIds)
+        {
+            LeanTween.cancel(item);
+        }
+        m_TweenIds.Clear();
         foreach (var item in Markers)
         {
             if (item.Value.Type == MarkerType.WITCH) m_WitchPool.Despawn(item.Value.GameObject.transform);
@@ -443,7 +449,7 @@ public class LocationUnitSpawner : MonoBehaviour
                 {
                     var charScale = LocationPlayerAction.playerMarker.AvatarTransform.localScale;
                     LocationPlayerAction.playerMarker.SetHidden(true);
-                    LeanTween.scale(LocationPlayerAction.playerMarker.AvatarTransform.gameObject, Vector3.zero, .5f).setEaseOutCubic();
+                    m_TweenIds.Add(LeanTween.scale(LocationPlayerAction.playerMarker.AvatarTransform.gameObject, Vector3.zero, .5f).setEaseOutCubic().id);
                     ShowFlightFX();
                     SoundManagerOneShot.Instance.PlayWooshShort();
 
@@ -457,7 +463,7 @@ public class LocationUnitSpawner : MonoBehaviour
                     };
                     SoundManagerOneShot.Instance.PlayLandFX();
                     LocationPlayerAction.playerMarker.SetHidden(false);
-                    LeanTween.scale(LocationPlayerAction.playerMarker.AvatarTransform.gameObject, charScale, .5f).setEaseOutCubic();
+                    m_TweenIds.Add(LeanTween.scale(LocationPlayerAction.playerMarker.AvatarTransform.gameObject, charScale, .5f).setEaseOutCubic().id);
 
                     Instance.MoveMarker(moveData);
                     LocationIslandController.SetActiveIslands();
@@ -489,9 +495,9 @@ public class LocationUnitSpawner : MonoBehaviour
     private async static void ShowFlightFX()
     {
         var SelectionRing = LocationPlayerAction.playerMarker.GameObject.transform.GetChild(0).GetChild(4);
-        LeanTween.scale(SelectionRing.gameObject, Vector3.zero, .6f).setEase(LeanTweenType.easeInOutQuad);
+        m_TweenIds.Add(LeanTween.scale(SelectionRing.gameObject, Vector3.zero, .6f).setEase(LeanTweenType.easeInOutQuad).id);
         await Task.Delay(600);
-        LeanTween.scale(SelectionRing.gameObject, Vector3.one * 1.5f, .6f).setEase(LeanTweenType.easeInOutQuad);
+        m_TweenIds.Add(LeanTween.scale(SelectionRing.gameObject, Vector3.one * 1.5f, .6f).setEase(LeanTweenType.easeInOutQuad).id);
         var selfToken = LocationPlayerAction.playerWitchToken;
         var FlightFX = LocationPlayerAction.playerMarker.GameObject.transform.GetChild(0).GetChild(5);
         if (FlightFX.gameObject.activeInHierarchy)
