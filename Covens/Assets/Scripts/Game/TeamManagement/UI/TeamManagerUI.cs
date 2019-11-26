@@ -697,7 +697,7 @@ public class TeamManagerUI : MonoBehaviour
         HideButtons();
         m_ViewMembersButton.gameObject.SetActive(true);
         m_JoinCovenButton.gameObject.SetActive(m_CovenData.IsMember == false);
-        m_LeaveCovenButton.gameObject.SetActive(m_CovenData.IsMember);
+        m_LeaveCovenButton.gameObject.SetActive(m_CovenData.IsMember && m_CovenData.Members.Count > 1);
         m_DisbandCovenButton.gameObject.SetActive(m_CovenData.IsMember && TeamManager.MyRole >= CovenRole.ADMIN);
         m_ViewRequestsButton.gameObject.SetActive(m_CovenData.IsMember);
         m_ViewInvitesButton.gameObject.SetActive(m_CovenData.IsMember);
@@ -740,6 +740,12 @@ public class TeamManagerUI : MonoBehaviour
 
     private void OnClickLeave()
     {
+        if (m_CovenData.IsMember && TeamManager.MyRole == CovenRole.ADMIN)
+        {
+            UIGlobalPopup.ShowError(null, APIManager.ParseError("3009"));
+            return;
+        }
+
         UIGlobalPopup.ShowPopUp(
            confirmAction: () =>
            {

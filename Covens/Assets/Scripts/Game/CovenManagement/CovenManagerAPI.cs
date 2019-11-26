@@ -10,7 +10,7 @@ public class CovenManagerAPI
     static CovenRequest_ByName RequestByCovenName(string sName)
     {
         var data = new CovenRequest_ByName();
-        data.covenName = sName;
+        data.name = sName;
         return data;
     }
     static CovenRequest_ByInstance RequestByCovenInstance(string sInstance)
@@ -125,14 +125,14 @@ public class CovenManagerAPI
     public static void CreateCoven(string sCovenName, Action<string> pSuccess, Action<string> pError)
     {
         var pData = RequestByCovenName(sCovenName);
-        PutCoven<string>("coven/create", pData, pSuccess, pError);
+        PostCoven<string>("coven", pData, pSuccess, pError);
     }
 
     // covens/coven/request --> req: {covenName: str} --> res: 200 | WSS --> command: coven_member_request
     public static void CovenRequest(string sCovenName, Action<string> pSuccess, Action<string> pError)
     {
-        var pData = RequestByCovenName(sCovenName);
-        PostCoven<string>("coven/request", pData, pSuccess, pError);
+        //var pData = RequestByCovenName(sCovenName);
+        PostCoven<string>($"coven/sendRequest/{sCovenName}?name=true", null, pSuccess, pError);
     }
 
     // covens/coven/covenInvites (new)
@@ -148,7 +148,7 @@ public class CovenManagerAPI
     {
         var pData = new CovenRequest_Join();
         pData.inviteToken = sCovenToken;
-        PostCoven<string>("coven/join", pData, pSuccess, pError);
+        PutCoven<string>("coven/join", pData, pSuccess, pError);
     }
     #endregion
 
@@ -173,7 +173,7 @@ public class CovenManagerAPI
     {
         var pData = new CovenRequest_Invite();
         pData.invitedName = sPlayerName;
-        PostCoven<string>("coven/invite", pData, pSuccess, pError);
+        PostCoven<string>($"coven/invite/{sPlayerName}?name=true", null, pSuccess, pError);
     }
 
     // covens/coven/kick --> req: {memberId: str || memberName: str} --> res: 200 | WSS --> command: coven_member_kick
@@ -216,7 +216,7 @@ public class CovenManagerAPI
         var pData = new CovenPlayerRequestData();
         //pData.covenName = sCovenName;
         pData.request = sUserName;
-        PostCoven<string>("coven/reject", pData, pSuccess, pError);
+        PostCoven<string>($"coven/rejectRequest/{sUserName}", null, pSuccess, pError);
     }
 
     public static void CovenViewPending(string sCovenName, Action<MemberInvite> pSuccess, Action<string> pError)

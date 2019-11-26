@@ -456,7 +456,7 @@ public class CovenRequest_Unally
 }
 public class CovenRequest_ByName
 {
-    public string covenName { get; set; }
+    public string name { get; set; }
 }
 public class CovenRequest_ByInstance
 {

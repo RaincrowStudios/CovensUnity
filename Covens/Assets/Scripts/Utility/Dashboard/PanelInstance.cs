@@ -33,7 +33,7 @@ public class PanelInstance : MonoBehaviour
     public InputField m_CovenPromote;
     public InputField m_covenPromoteTo;
 
-    public class PlayerData
+    public class PlayerDataRef
     {
         public string WSToken;
         public string LoginToken;
@@ -46,7 +46,7 @@ public class PanelInstance : MonoBehaviour
     }
 
 
-    private PlayerData m_Player;
+    private PlayerDataRef m_Player;
     public int Index;
     public DashboardToolbox m_Toolbox;
 
@@ -54,33 +54,41 @@ public class PanelInstance : MonoBehaviour
     public void OnClickLogin()
     {
         m_Log.text = "";
-        m_Player = new PlayerData();
+        m_Player = new PlayerDataRef();
         m_Player.Login = m_Login.text;
         m_Player.Password = m_LoginPassword.text;
 
-        Action<string, int> Success = (string result, int status) =>
+        Action<int, LoginAPIManager.LoginResponse> Success = (int status, LoginAPIManager.LoginResponse pResp) =>
         {
             Log("LoginProcess status: " + status);
             if (status == 200)
             {
-                m_Player.m_Responses.Add("LoginResponse", result);
-                PlayerLoginCallback Json = JsonConvert.DeserializeObject<PlayerLoginCallback>(result);
-                m_Player.WSToken = Json.wsToken;
-                m_Player.LoginToken = Json.token;
+                m_Player.m_Responses.Add("LoginResponse", pResp.ToString());
+                //PlayerLoginCallback Json = JsonConvert.DeserializeObject<PlayerLoginCallback>(result);
+
+                m_Player.WSToken = pResp.game;
+                m_Player.LoginToken = pResp.game;// Json.token;
                 m_Player.m_bLoggedin = true;
                 m_Toolbox.SetText(Index, m_Player.Login);
-                m_LoginToken.text = Json.token;
-                m_LoginWSToken.text = Json.wsToken;
-                //m_Player.m_pController = new CovenController(Json.character.coven);
-                //m_Player.m_pPlayerData = Json.character;
-                //m_CovenTitle.text = "Coven[" + Json.character.coven + "]";
-                //if (!string.IsNullOrEmpty(Json.character.coven))
-                //{
-                //    OnClickDisplay();
-                //}
+                m_LoginToken.text = pResp.game;
+                m_LoginWSToken.text = pResp.socket;
+
+                LoginAPIManager.GetCharacter((int iResp, string sResp) =>
+                {
+                    PlayerData player = JsonConvert.DeserializeObject<PlayerData>(sResp);
+                    player.Setup();
+
+                    m_Player.m_pController = new CovenController(player.coven);
+                    m_Player.m_pPlayerData = player;
+                    m_CovenTitle.text = "Coven[" + player.coven + "]";
+                    if (!string.IsNullOrEmpty(player.coven))
+                    {
+                        OnClickDisplay();
+                    }
+                });
             }
         };
-//        LoginAPIManager.Login(m_Player.Login, m_Player.Password, Success);
+        LoginAPIManager.Login(m_Player.Login, m_Player.Password, Success);
     }
     void UpdateTokens()
     {
@@ -92,37 +100,35 @@ public class PanelInstance : MonoBehaviour
     public void OnClickCreate()
     {
         m_Log.text = "";
-        m_Player = new PlayerData();
+        m_Player = new PlayerDataRef();
         m_Player.Login = m_Login.text;
         m_Player.Password = m_LoginPassword.text;
 
-//        LoginAPIManager.CreateAccount(m_Player.Login, m_Player.Password, m_Player.Login + "@DashHugo.com",
-//            (string result, int status) =>
-//            {
-//                if (status == 200)
-//                {
-//                    var Json = JsonConvert.DeserializeObject<PlayerLoginCallback>(result);
-//                    m_Player.WSToken = Json.token;
-//                    m_Player.LoginToken = Json.token;
-//                    OnClickCreateChar();
-//                }
-//            }
-//            );
+        LoginAPIManager.CreateAccount(m_Player.Login, m_Player.Password, m_Player.Login + "@DashHugo.com",
+            (int status, LoginAPIManager.LoginResponse pResp) =>
+            {
+                if (status == 200)
+                {
+                    m_Player.WSToken = pResp.game;
+                    m_Player.LoginToken = pResp.game;
+                    OnClickCreateChar();
+                }
+            }
+            );
     }
     private void OnClickCreateChar()
     {
         UpdateTokens();
-//        LoginAPIManager.CreateCharacter(m_Player.Login, UnityEngine.Random.Range(0,10) > 5,
-//            (string result, int status) =>
-//            {
-//                if (status == 200)
-//                {
-//                    var Json = JsonConvert.DeserializeObject<PlayerLoginCallback>(result);
-//                    m_Player.LoginToken = Json.token;
-//                }
-//                OnClickLogin();
-//            }
-//            );
+        LoginAPIManager.CreateCharacter(m_Player.Login, 0, UnityEngine.Random.Range(0, 10) > 5,
+            (int status, LoginAPIManager.LoginResponse pResp) =>
+            {
+                if (status == 200)
+                {
+                    m_Player.LoginToken = pResp.game;
+                }
+                OnClickLogin();
+            }
+            );
     }
     public void OnClickCovenCreate()
     {

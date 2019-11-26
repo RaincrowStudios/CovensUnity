@@ -16,7 +16,7 @@ public class FAQManager : MonoBehaviour
         public float cellSize;
     }
     private List<FAQData> faqs = new List<FAQData>();
-    private QAdata[] m_data;
+    private QAdata[] m_data; 
     private List<QAdata> m_data_updated;
     public TMP_InputField inputField;
     // Start is called before the first frame update

@@ -203,7 +203,8 @@ namespace Raincrow.Test
                 {
                     if (string.IsNullOrEmpty(user.Comment))
                         user.Comment = "commentary";
-                    user.Comment = EditorGUILayout.TextField(user.Comment, new GUIStyle("Label"));
+                    //user.Comment = EditorGUILayout.TextField(user.Comment, new GUIStyle("Label"));
+                    user.Comment = EditorGUILayout.TextField(user.Comment);
                 }
 
                 using (new GUILayout.HorizontalScope())

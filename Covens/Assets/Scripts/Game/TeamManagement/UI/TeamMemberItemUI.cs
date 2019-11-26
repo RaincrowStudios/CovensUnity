@@ -95,14 +95,13 @@ public class TeamMemberItemUI : MonoBehaviour
         m_LastActive.text = GetlastActive(MemberData.LastActiveOn);
         m_State.text = MemberData.State == "" ? "Normal" : MemberData.State;
 
-        bool isFounder = TeamManager.MyCovenData != null && TeamManager.MyCovenData.CreatedBy == PlayerDataManager.playerData.instance;
         bool isMe = MemberData.Id == PlayerDataManager.playerData.instance;
 
         //edit options
         //m_TitleField.gameObject.SetActive(isFounder || (Coven.IsMember && TeamManager.MyRole > MemberData.Role));
-        m_KickButton.gameObject.SetActive(isFounder || (Coven.IsMember && TeamManager.MyRole > MemberData.Role));
-        m_PromoteButton.gameObject.SetActive(isFounder || (Coven.IsMember && TeamManager.MyRole > MemberData.Role));
-        m_DemoteButton.gameObject.SetActive(isFounder || (Coven.IsMember && TeamManager.MyRole > MemberData.Role));
+        m_KickButton.gameObject.SetActive((Coven.IsMember && TeamManager.MyRole > MemberData.Role));
+        m_PromoteButton.gameObject.SetActive((Coven.IsMember && TeamManager.MyRole > MemberData.Role));
+        m_DemoteButton.gameObject.SetActive((Coven.IsMember && TeamManager.MyRole > MemberData.Role));
 
         m_PromoteButton.interactable = Coven.IsMember && isMe == false && MemberData.Role < CovenRole.ADMIN;
         m_DemoteButton.interactable = Coven.IsMember && isMe == false && MemberData.Role > CovenRole.MEMBER;
@@ -166,13 +165,27 @@ public class TeamMemberItemUI : MonoBehaviour
 
     private void OnClickPromote()
     {
-        CovenRole role = MemberData.Role + 1;
+        CovenRole eNewRole = MemberData.Role + 1;
         string roleName;
+        string sPopupDescription;
 
-        if (role == CovenRole.MODERATOR)
+        // set role name
+        if (eNewRole == CovenRole.MODERATOR)
             roleName = LocalizeLookUp.GetText("team_member_moderator_role");
         else
             roleName = LocalizeLookUp.GetText("team_member_admin_role");
+        // set description
+        if (eNewRole == CovenRole.ADMIN)
+        {
+            sPopupDescription = LocalizeLookUp.GetText("coven_member_promote_to_admin")
+                .Replace("{{moderator}}", LocalizeLookUp.GetText("team_member_moderator_role"))
+                .Replace("{{admin}}", LocalizeLookUp.GetText("team_member_admin_role"))
+                ;
+        }
+        else
+        {
+            sPopupDescription = LocalizeLookUp.GetText("coven_member_promote").Replace("{{name}}", MemberData.Name).Replace("{{role}}", roleName);
+        }
 
         UIGlobalPopup.ShowPopUp(
             confirmAction: () =>
@@ -183,13 +196,12 @@ public class TeamMemberItemUI : MonoBehaviour
                 {
                     LoadingOverlay.Hide();
                     if (string.IsNullOrEmpty(error))
-                        m_OnPromote?.Invoke(MemberData.Id, role);
+                        m_OnPromote?.Invoke(MemberData.Id, eNewRole);
                     else
                         UIGlobalPopup.ShowError(null, APIManager.ParseError(error));
                 });
             },
-            cancelAction: () => {},
-            LocalizeLookUp.GetText("coven_member_promote").Replace("{{name}}", MemberData.Name).Replace("{{role}}", roleName));
+            cancelAction: () => {}, sPopupDescription);
     }
 
     private void OnClickTitle()
