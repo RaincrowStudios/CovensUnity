@@ -83,7 +83,7 @@ public class LocationUnitSpawner : MonoBehaviour
             go.SetActive(true);
             //  if (m_cloaks.ContainsKey(instance)) DisableCloaking(instance);
             m_cloaks[instance] = go;
-            m_TweenIds.Add(LeanTween.scale(go, Vector3.one, .5f).setEaseOutQuad().id);
+            leanTweenIds.Add(LeanTween.scale(go, Vector3.one, .5f).setEaseOutQuad().id);
         }
     }
 
@@ -93,7 +93,7 @@ public class LocationUnitSpawner : MonoBehaviour
     {
         if (m_cloaks.ContainsKey(instance))
         {
-            m_TweenIds.Add(LeanTween.scale(m_cloaks[instance], Vector3.zero, .5f).setEaseOutQuad().setOnComplete(() =>
+            leanTweenIds.Add(LeanTween.scale(m_cloaks[instance], Vector3.zero, .5f).setEaseOutQuad().setOnComplete(() =>
             {
                 m_CloakingPool.Despawn(m_cloaks[instance].transform);
                 m_cloaks.Remove(instance);
@@ -312,7 +312,7 @@ public class LocationUnitSpawner : MonoBehaviour
                 Markers.Remove(instance);
 
             await Task.Delay(2000);
-            m_TweenIds.Add(LeanTween.scale(go, Vector3.zero, .4f).setOnComplete(() =>
+            leanTweenIds.Add(LeanTween.scale(go, Vector3.zero, .4f).setOnComplete(() =>
           {
               m_DeathFXPool.Despawn(go.transform);
               if (marker.Token.Id != PlayerDataManager.playerData.instance)
@@ -356,11 +356,11 @@ public class LocationUnitSpawner : MonoBehaviour
 
     public void DespawnMarkers()
     {
-        foreach (var item in m_TweenIds)
+        foreach (var item in leanTweenIds)
         {
             LeanTween.cancel(item);
         }
-        m_TweenIds.Clear();
+        leanTweenIds.Clear();
         foreach (var item in Markers)
         {
             if (item.Value.Type == MarkerType.WITCH) m_WitchPool.Despawn(item.Value.GameObject.transform);
@@ -449,7 +449,7 @@ public class LocationUnitSpawner : MonoBehaviour
                 {
                     var charScale = LocationPlayerAction.playerMarker.AvatarTransform.localScale;
                     LocationPlayerAction.playerMarker.SetHidden(true);
-                    m_TweenIds.Add(LeanTween.scale(LocationPlayerAction.playerMarker.AvatarTransform.gameObject, Vector3.zero, .5f).setEaseOutCubic().id);
+                    leanTweenIds.Add(LeanTween.scale(LocationPlayerAction.playerMarker.AvatarTransform.gameObject, Vector3.zero, .5f).setEaseOutCubic().id);
                     ShowFlightFX();
                     SoundManagerOneShot.Instance.PlayWooshShort();
 
@@ -463,7 +463,7 @@ public class LocationUnitSpawner : MonoBehaviour
                     };
                     SoundManagerOneShot.Instance.PlayLandFX();
                     LocationPlayerAction.playerMarker.SetHidden(false);
-                    m_TweenIds.Add(LeanTween.scale(LocationPlayerAction.playerMarker.AvatarTransform.gameObject, charScale, .5f).setEaseOutCubic().id);
+                    leanTweenIds.Add(LeanTween.scale(LocationPlayerAction.playerMarker.AvatarTransform.gameObject, charScale, .5f).setEaseOutCubic().id);
 
                     Instance.MoveMarker(moveData);
                     LocationIslandController.SetActiveIslands();
@@ -495,9 +495,9 @@ public class LocationUnitSpawner : MonoBehaviour
     private async static void ShowFlightFX()
     {
         var SelectionRing = LocationPlayerAction.playerMarker.GameObject.transform.GetChild(0).GetChild(4);
-        m_TweenIds.Add(LeanTween.scale(SelectionRing.gameObject, Vector3.zero, .6f).setEase(LeanTweenType.easeInOutQuad).id);
+        leanTweenIds.Add(LeanTween.scale(SelectionRing.gameObject, Vector3.zero, .6f).setEase(LeanTweenType.easeInOutQuad).id);
         await Task.Delay(600);
-        m_TweenIds.Add(LeanTween.scale(SelectionRing.gameObject, Vector3.one * 1.5f, .6f).setEase(LeanTweenType.easeInOutQuad).id);
+        leanTweenIds.Add(LeanTween.scale(SelectionRing.gameObject, Vector3.one * 1.5f, .6f).setEase(LeanTweenType.easeInOutQuad).id);
         var selfToken = LocationPlayerAction.playerWitchToken;
         var FlightFX = LocationPlayerAction.playerMarker.GameObject.transform.GetChild(0).GetChild(5);
         if (FlightFX.gameObject.activeInHierarchy)
