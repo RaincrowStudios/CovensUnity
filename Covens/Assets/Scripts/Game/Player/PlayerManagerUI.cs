@@ -4,6 +4,7 @@ using UnityEngine.UI;
 using Newtonsoft.Json;
 using System;
 using TMPro;
+using System.Collections.Generic;
 
 [RequireComponent(typeof(FlightVisualManager))]
 public class PlayerManagerUI : UIAnimationManager
@@ -46,6 +47,10 @@ public class PlayerManagerUI : UIAnimationManager
     //last daily check
     double LastDailyTimeStamp;
 
+    private int energyTweenId;
+    private int gDrachTweenId;
+    private int sDrachTweenId;
+    private bool m_PauseTween;
     void Awake()
     {
         if (spiritForm == null)
@@ -71,6 +76,22 @@ public class PlayerManagerUI : UIAnimationManager
         LastDailyTimeStamp = Double.Parse(PlayerPrefs.GetString("LastDailyTimeStamp"));
 
         Raincrow.GameEventResponses.CharacterDeathHandler.OnPlayerDeath += CharacterDeathHandler_OnPlayerDeath;
+
+        LocationIslandController.OnPopTransitionChange += b =>
+        {
+            if (b)
+            {
+                LeanTween.cancel(energyTweenId);
+                LeanTween.cancel(gDrachTweenId);
+                LeanTween.cancel(sDrachTweenId);
+                m_PauseTween = true;
+            }
+            else
+            {
+                m_PauseTween = false;
+            }
+
+        };
     }
 
     private void CharacterDeathHandler_OnPlayerDeath(Raincrow.GameEventResponses.CharacterDeathHandler.DeathEventData data)
@@ -80,7 +101,8 @@ public class PlayerManagerUI : UIAnimationManager
 
         if (PlayerDataManager.playerData.energy > 0)
         {
-            LeanTween.value(0, 0, 0.2f).setOnComplete(() => CharacterDeathHandler_OnPlayerDeath(data));
+            // deathTweenId = (LeanTween.value(0, 0, 0.2f).setOnComplete(() => CharacterDeathHandler_OnPlayerDeath(data)).id);
+            CharacterDeathHandler_OnPlayerDeath(data);
             return;
         }
 
@@ -206,22 +228,40 @@ public class PlayerManagerUI : UIAnimationManager
     void SetupEnergy()
     {
         var pData = PlayerDataManager.playerData;
-        //if (pData.baseEnergy >= pData.energy)
-        //{
+
         var fEnergy = (float)pData.energy;
         var energyLeftText = Energy.transform.GetChild(0).GetComponent<TextMeshProUGUI>();
         var energyRightText = Energy.transform.GetChild(2).GetComponent<TextMeshProUGUI>();
         var iEnergy = (float)Int32.Parse(energyLeftText.text);
         var fMax = pData.baseEnergy;
         energyRightText.text = fMax.ToString();
-        LeanTween.value(iEnergy, fEnergy, 1f).setOnUpdate((float f) =>
+        if (!m_PauseTween)
         {
-            f = (int)f;
-            energyLeftText.text = f.ToString();
+            energyTweenId = (LeanTween.value(iEnergy, fEnergy, 1f).setOnUpdate((float f) =>
+              {
+                  f = (int)f;
+                  energyLeftText.text = f.ToString();
+                  if (pData.baseEnergy >= pData.energy)
+                  {
+                      EnergySlider.maxValue = fMax;
+                      EnergySlider.value = f;
+                      overFlowEn.SetActive(false);
+                  }
+                  else
+                  {
+                      EnergySlider.maxValue = fMax;
+                      EnergySlider.value = fMax;
+                      overFlowEn.SetActive(true);
+                  }
+              }).setEaseInOutQuad().id);
+        }
+        else
+        {
+            energyLeftText.text = pData.energy.ToString();
             if (pData.baseEnergy >= pData.energy)
             {
                 EnergySlider.maxValue = fMax;
-                EnergySlider.value = f;
+                EnergySlider.value = pData.energy;
                 overFlowEn.SetActive(false);
             }
             else
@@ -230,8 +270,7 @@ public class PlayerManagerUI : UIAnimationManager
                 EnergySlider.value = fMax;
                 overFlowEn.SetActive(true);
             }
-        }).setEaseInOutQuad();
-
+        }
         //     Energy.text = pData.energy.ToString() + "/" + pData.baseEnergy;
         //     EnergySlider.maxValue = pData.baseEnergy;
         //     EnergySlider.value = pData.energy;
@@ -310,6 +349,12 @@ public class PlayerManagerUI : UIAnimationManager
         Debug.Log("Update Drachs");
         try
         {
+            if (m_PauseTween)
+            {
+                goldDrachs.text = PlayerDataManager.playerData.gold.ToString();
+                silverDrachs.text = PlayerDataManager.playerData.gold.ToString();
+                return;
+            }
             //Lerping between old gold # and new gold #
             var g = goldDrachs.text;
             var d = PlayerDataManager.playerData.gold.ToString();
@@ -319,11 +364,11 @@ public class PlayerManagerUI : UIAnimationManager
             {
                 goldDrachs.transform.parent.transform.parent.GetChild(0).GetChild(0).gameObject.SetActive(true); //activating glimmer fx
             }
-            LeanTween.value(g2, d2, 1f).setOnUpdate((float i) =>
+            gDrachTweenId = (LeanTween.value(g2, d2, 1f).setOnUpdate((float i) =>
             {
                 i = (int)i;
                 goldDrachs.text = i.ToString();
-            });
+            }).id);
             //Lerping between old silver # and new silver #
             var p = silverDrachs.text;
             var s = PlayerDataManager.playerData.silver.ToString();
@@ -334,11 +379,11 @@ public class PlayerManagerUI : UIAnimationManager
                 goldDrachs.transform.parent.transform.parent.GetChild(0).GetChild(0).gameObject.SetActive(true); //activating glimmer fx
             }
 
-            LeanTween.value(p2, s2, 1f).setOnUpdate((float i) =>
-            {
-                i = (int)i;
-                silverDrachs.text = i.ToString();
-            });
+            sDrachTweenId = (LeanTween.value(p2, s2, 1f).setOnUpdate((float i) =>
+           {
+               i = (int)i;
+               silverDrachs.text = i.ToString();
+           }).id);
 
         }
         catch
@@ -380,150 +425,6 @@ public class PlayerManagerUI : UIAnimationManager
         });
     }
 
-    /*
-    private void OnGUI()
-    {
-        if (GUI.Button(new Rect(30,30,100,50), "set pref"))
-        {
-            PlayerPrefs.SetString("LastDailyTimeStamp", "1559485920000");
-            Debug.Log(PlayerPrefs.GetString("LastDailyTimeStamp"));
-            StopCoroutine("WaitForTime");
-            CheckForNewDay();
-        }
-    }
-    */
-
-    //public void Revived()
-    //{
-    //    Hide(EnergyElixir, true, 4);
-    //}
-
-    //public void ShowElixirOnBuy()
-    //{
-    //    // if (PlayerDataManager.playerData.state == "vulnerable")
-    //    // {
-    //    //     ShowElixirVulnerable(false);
-    //    // }
-    //    // else
-    //    // {
-    //    //     ShowElixirVulnerable(true);
-    //    // }
-    //}
-
-    // public void ShowElixirVulnerable(bool Persist)
-    // {
-    //     if (Persist)
-    //     {
-    //         Show(EnergyElixir, true);
-    //     }
-    //     else
-    //     {
-    //         Show(EnergyElixir, false);
-    //     }
-    //     foreach (var item in PlayerDataManager.playerData.inventory.consumables)
-    //     {
-    //         if (item.id.Contains("energy"))
-    //         {
-    //             elixirCount = item.count;
-    //         }
-    //     }
-
-    //     if (PlayerDataManager.playerData.energy > PlayerDataManager.playerData.baseEnergy * 0.6f)
-    //     {
-    //         elixirButton.onClick.RemoveAllListeners();
-    //         Hide(EnergyElixir, true, 6);
-    //     }
-    //     else if (elixirCount == 0)
-    //     {
-    //         elixirButton.onClick.RemoveListener(ConsumeElixir);
-    //         elixirButton.onClick.RemoveListener(ShowStore);
-    //         elixirButton.onClick.AddListener(ShowStore);
-    //         EnergyElixirText.text = "Buy Energy";
-    //         if (!Persist)
-    //         {
-    //             Hide(EnergyElixir, true, 6);
-    //         }
-    //     }
-    //     else
-    //     {
-    //         EnergyElixirText.text = "Consume (" + elixirCount.ToString() + ")";
-    //         elixirButton.onClick.RemoveListener(ShowStore);
-    //         elixirButton.onClick.RemoveListener(ConsumeElixir);
-    //         elixirButton.onClick.AddListener(ConsumeElixir);
-    //     }
-    // }
-
-    // public void UpdateElixirCount()
-    // {
-    //     foreach (var item in PlayerDataManager.playerData.inventory.consumables)
-    //     {
-    //         if (item.id.Contains("energy"))
-    //         {
-    //             elixirCount = item.count;
-    //             if (elixirCount == 0)
-    //                 Hide(EnergyElixir, true);
-    //             EnergyElixirText.text = "Consume (" + elixirCount.ToString() + ")";
-    //         }
-    //     }
-    // }
-
-    // public void ShowStore()
-    // {
-    //     StoreUIManager.Instance.GetStore();
-    //     Invoke("showEnergyStore", .3f);
-
-    // }
-
-    // void showEnergyStore()
-    // {
-    //     StoreUIManager.Instance.ShowElixir(true);
-    //     EnergyStore.SetActive(true);
-    //     PotionsStore.SetActive(false);
-    //     leftButton.SetActive(false);
-    //     rightButton.SetActive(true);
-    // }
-
-    // public void ConsumeElixir()
-    // {
-    //     var data = new { consumable = "consumable_energyElixir1" };
-    //     APIManager.Instance.PostData("inventory/consume", JsonConvert.SerializeObject(data), Result);
-    //     elixirButton.interactable = false;
-    // }
-
-    // public void Result(string s, int r)
-    // {
-    //     Debug.Log(s + r);
-    //     if (r == 200)
-    //     {
-    //         SoundManagerOneShot.Instance.PlayReward();
-    //         elixirButton.interactable = true;
-    //         elixirCount--;
-    //         Debug.Log(elixirCount + "Elixir Changed");
-
-    //         foreach (var item in PlayerDataManager.playerData.inventory.consumables)
-    //         {
-    //             if (item.id.Contains("energy"))
-    //             {
-    //                 item.count = elixirCount;
-    //             }
-    //         }
-
-    //         if (elixirCount > 0)
-    //         {
-    //             EnergyElixirText.text = "Consume (" + elixirCount.ToString() + ")";
-    //             Invoke("HideDelay", 6f);
-    //         }
-    //         else
-    //         {
-    //             Hide(EnergyElixir, true, .1f);
-    //         }
-    //     }
-    // }
-
-    // void HideDelay()
-    // {
-    //     Hide(EnergyElixir, true);
-    // }
 
     public void ShowDominion(string dominion)
     {

@@ -17,6 +17,7 @@ public class LocationIslandController : MonoBehaviour
     public static event System.Action OnEnterLocation;
     public static event System.Action OnExitLocation;
 
+    public static event System.Action<bool> OnPopTransitionChange;   // true - stop all tweens // false resume all tweens
 
 
     private static bool m_IsInBattle = false;
@@ -56,6 +57,11 @@ public class LocationIslandController : MonoBehaviour
     }
 
     private static SpiritToken preInitializedSpirit = null;
+
+    public static void MainSceneLoaded()
+    {
+        OnPopTransitionChange?.Invoke(false);
+    }
 
     private void BattleBeginPOP(SpiritToken guardianSpirit)
     {
@@ -136,7 +142,8 @@ public class LocationIslandController : MonoBehaviour
 
     public static void BattleStopPOP()
     {
-        SpellcastingFX.StopTweening();
+        OnPopTransitionChange?.Invoke(true);
+        //  SpellcastingFX.StopTweening();
         OnExitLocation?.Invoke();
         MoveTokenHandlerPOP.OnMarkerMovePOP -= instance.locationUnitSpawner.MoveMarker;
         AddSpiritHandlerPOP.OnSpiritAddPOP -= instance.locationUnitSpawner.AddMarker;

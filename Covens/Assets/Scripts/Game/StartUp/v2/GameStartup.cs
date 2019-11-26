@@ -342,6 +342,11 @@ public class GameStartup : MonoBehaviour
     {
         //MapsAPI.Instance.InitMap(PlayerDataManager.playerData.longitude, PlayerDataManager.playerData.latitude, 1, null, false);
 
+
+        // TODO move it to better place | static class so i cant use awake @lucas
+        SpellcastingFX.SubscribePopEvents();
+
+
         if (PlayerDataManager.IsFTF)
         {
             FTFManager.OnFinishFTF += OnFinishFTF;

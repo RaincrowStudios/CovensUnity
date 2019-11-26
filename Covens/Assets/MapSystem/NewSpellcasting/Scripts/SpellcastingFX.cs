@@ -109,7 +109,17 @@ public static class SpellcastingFX
        }).id);
     }
 
-    public static void StopTweening()
+    // handles stopping and resuming tweens
+    public static void SubscribePopEvents()
+    {
+        LocationIslandController.OnPopTransitionChange += b =>
+        {
+            if (b) StopTweening();
+            else ResumeTweening();
+        };
+    }
+
+    private static void StopTweening()
     {
         try
         {
@@ -127,7 +137,7 @@ public static class SpellcastingFX
         m_TextTweenIds.Clear();
     }
 
-    public static void ResumeTweening()
+    private static void ResumeTweening()
     {
         m_PauseTween = false;
     }
