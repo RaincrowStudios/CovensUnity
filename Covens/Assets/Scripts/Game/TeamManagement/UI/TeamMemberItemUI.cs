@@ -178,8 +178,8 @@ public class TeamMemberItemUI : MonoBehaviour
         if (eNewRole == CovenRole.ADMIN)
         {
             sPopupDescription = LocalizeLookUp.GetText("coven_member_promote_to_admin")
-                .Replace("{{moderator}}", LocalizeLookUp.GetText("team_member_moderator_role"))
-                .Replace("{{admin}}", LocalizeLookUp.GetText("team_member_admin_role"))
+                .Replace("{moderator}", LocalizeLookUp.GetText("team_member_moderator_role"))
+                .Replace("{admin}", LocalizeLookUp.GetText("team_member_admin_role"))
                 ;
         }
         else
