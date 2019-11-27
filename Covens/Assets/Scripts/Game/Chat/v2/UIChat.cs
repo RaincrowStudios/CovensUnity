@@ -49,6 +49,7 @@ namespace Raincrow.Chat.UI
         [SerializeField] private UIChatItem _chatHelpPlayerPrefab;
         [SerializeField] private UIChatItem _chatHelpCrowPrefab;
         [SerializeField] private UIChatItem _chatImagePrefab;
+        [SerializeField] private ChatUIView _chatUIView;
 
         [Header("Unread Messages UI")]
         [SerializeField] private TMPro.TextMeshProUGUI _newsUnreadText;
@@ -70,9 +71,10 @@ namespace Raincrow.Chat.UI
         private SimplePool<UIChatItem> _chatHelpCrowPool;
         private SimplePool<UIChatItem> _chatImagePool;
 
-        private List<ChatMessage> _messages;
-        private List<UIChatItem> _items = new List<UIChatItem>();
+        //private List<ChatMessage> _messages;
+        //private List<UIChatItem> _items = new List<UIChatItem>();
         private ChatCategory _currentCategory = ChatCategory.WORLD;
+        //private Dictionary<ChatCategory, List<ChatMessage>> _MessageMap = new Dictionary<ChatCategory, List<ChatMessage>>();
 
         private int _loadingTweenId;
         private double _updateTimestampIntervalSeconds = 1.0;
@@ -82,6 +84,7 @@ namespace Raincrow.Chat.UI
         private Coroutine m_SpawnCoroutine;
         private Coroutine m_UpdateTimestampCoroutine;
         private Coroutine m_WaitInputCooldownCoroutine;
+        
 
         private static UIChat m_Instance;
 
@@ -214,12 +217,12 @@ namespace Raincrow.Chat.UI
         {
             while (enabled)
             {
-                for (int i = 0; i < _items.Count; i++)
+                for (var i = 0; i < _chatUIView.scroller.ActiveCellViews.Count; i++)
                 {
-                    UIChatAvatarItem avatarItem = _items[i].GetComponent<UIChatAvatarItem>();
-                    if (avatarItem != null)
+                    var pItem = _chatUIView.scroller.ActiveCellViews[i] as UIChatAvatarItem;
+                    if (pItem != null)
                     {
-                        avatarItem.RefreshTimeAgo();
+                        pItem.RefreshTimeAgo();
                         yield return null;
                     }
                 }
@@ -302,17 +305,18 @@ namespace Raincrow.Chat.UI
             _windowTransform.anchoredPosition = new Vector3(0, -_windowTransform.sizeDelta.y);
 
             //spawn pools
-            _chatMessagePool = new SimplePool<UIChatItem>(_chatMessagePrefab, 1);
-            _chatLocationPool = new SimplePool<UIChatItem>(_chatLocationPrefab, 1);
-            _chatHelpPlayerPool = new SimplePool<UIChatItem>(_chatHelpPlayerPrefab, 1);
-            _chatHelpCrowPool = new SimplePool<UIChatItem>(_chatHelpCrowPrefab, 1);
-            _chatImagePool = new SimplePool<UIChatItem>(_chatImagePrefab, 1);
+            //_chatMessagePool = new SimplePool<UIChatItem>(_chatMessagePrefab, 1);
+            //_chatLocationPool = new SimplePool<UIChatItem>(_chatLocationPrefab, 1);
+            //_chatHelpPlayerPool = new SimplePool<UIChatItem>(_chatHelpPlayerPrefab, 1);
+            //_chatHelpCrowPool = new SimplePool<UIChatItem>(_chatHelpCrowPrefab, 1);
+            //_chatImagePool = new SimplePool<UIChatItem>(_chatImagePrefab, 1);
 
             //button listeners            
             _closeButton.onClick.AddListener(_OnClickClose);
             _sendButton.onClick.AddListener(_OnClickSend);
             _shareLocationButton.onClick.AddListener(_OnClickShareLocation);
             _sendScreenshotButton.GetComponent<Button>().onClick.AddListener(() => { SendEmail(); });
+
 
             m_HeaderButtons = new Dictionary<ChatCategory, TMPro.TextMeshProUGUI>
             {
@@ -333,7 +337,29 @@ namespace Raincrow.Chat.UI
 
             DownloadedAssets.OnWillUnloadAssets += DownloadedAssets_OnWillUnloadAssets;
         }
+        //private void Start()
+        //{
+        //    _MessageMap = new Dictionary<ChatCategory, List<ChatMessage>>();
+        //    var pList = System.Enum.GetValues(typeof(ChatCategory));
+        //    foreach (ChatCategory eCategory in pList)
+        //    {
+        //        List<ChatMessage> pMessages = ChatManager.GetMessages(eCategory);
+        //        if (pMessages == null)
+        //            pMessages = new List<ChatMessage>();
+        //        _MessageMap.Add(eCategory, pMessages);
+        //    }
+        //}
 
+        private void OnDestroy()
+        {
+            // do not forget to remove your listeners...
+            ChatManager.OnReceiveMessage -= OnReceiveMessage;
+            ChatManager.OnConnected -= OnConnected;
+            ChatManager.OnSocketError -= OnSocketError;
+            ChatManager.OnDisconnected -= ShowReconnectOverlay;
+            ChatManager.OnLeaveChatRequested -= OnLeaveChatRequested;
+            ChatManager.OnEnterCovenChat -= OnEnterCovenChat;
+        }
         private void DownloadedAssets_OnWillUnloadAssets()
         {
             if (_isOpen)
@@ -341,11 +367,11 @@ namespace Raincrow.Chat.UI
 
             DownloadedAssets.OnWillUnloadAssets -= DownloadedAssets_OnWillUnloadAssets;
 
-            _chatLocationPool.DestroyAll();
-            _chatImagePool.DestroyAll();
-            _chatMessagePool.DestroyAll();
-            _chatHelpPlayerPool.DestroyAll();
-            _chatHelpCrowPool.DestroyAll();
+            //_chatLocationPool.DestroyAll();
+            //_chatImagePool.DestroyAll();
+            //_chatMessagePool.DestroyAll();
+            //_chatHelpPlayerPool.DestroyAll();
+            //_chatHelpCrowPool.DestroyAll();
 
             SceneManager.UnloadScene(SceneManager.Scene.CHAT, null, null);
         }
@@ -406,7 +432,7 @@ namespace Raincrow.Chat.UI
             ClearCategoryUnreadMessages(category);
             //_inputField.enabled = false;
 
-            Debug.Log("[Chat] SetCategory: " + category);
+            //Debug.Log("[Chat] SetCategory: " + category);
             ChatCategory previousCategory = _currentCategory;
             _currentCategory = category;
 
@@ -419,10 +445,9 @@ namespace Raincrow.Chat.UI
             if (ChatManager.IsConnected(category) && ChatManager.HasJoinedChat(category))
             {
                 //setup the UI with the available messages
-                _messages = new List<ChatMessage>();
-                _messages.AddRange(ChatManager.GetMessages(category));
+                //_messages = new List<ChatMessage>();
+                //_messages.AddRange(ChatManager.GetMessages(category));
                 m_SpawnCoroutine = StartCoroutine(SpawnChatItems());
-
                 LeanTween.alphaCanvas(_containerCanvasGroup, 1, 0.5f).setEaseOutCubic();
 
                 //hide the loading overlay (in case it was visible)
@@ -470,13 +495,13 @@ namespace Raincrow.Chat.UI
                 StopCoroutine(m_SpawnCoroutine);
                 m_SpawnCoroutine = null;
             }
-            _chatLocationPool.DespawnAll();
-            _chatImagePool.DespawnAll();
-            _chatMessagePool.DespawnAll();
-            _chatHelpPlayerPool.DespawnAll();
-            _chatHelpCrowPool.DespawnAll();
-            _items.Clear();
-            _messages = new List<ChatMessage>();
+            //_chatLocationPool.DespawnAll();
+            //_chatImagePool.DespawnAll();
+            //_chatMessagePool.DespawnAll();
+            //_chatHelpPlayerPool.DespawnAll();
+            //_chatHelpCrowPool.DespawnAll();
+            //_items.Clear();
+            //_messages = new List<ChatMessage>();
         }
 
         //private void SpawnChatItems()
@@ -484,13 +509,15 @@ namespace Raincrow.Chat.UI
         {
             ShowLoading(true);
             yield return null;
-            List<ChatMessage> chatMessages = new List<ChatMessage>(_messages);
-            chatMessages.Reverse();
+            //List<ChatMessage> chatMessages = new List<ChatMessage>(_messages);
+            //chatMessages.Reverse();
 
             _itemContainer.gameObject.SetActive(false);
-
-            foreach (var message in chatMessages)
-                SpawnItem(_currentCategory, message).transform.SetAsFirstSibling();
+            _chatUIView.SetupData(ChatManager.GetMessages(_currentCategory), _currentCategory, ShowLoading, _OnClickClose);
+            //foreach (var message in chatMessages)
+            //{
+            //    SpawnItem(_currentCategory, message).transform.SetAsFirstSibling();
+            //}
 
             _itemContainer.gameObject.SetActive(true);
 
@@ -498,52 +525,6 @@ namespace Raincrow.Chat.UI
             ShowLoading(false);
         }
 
-        private UIChatItem SpawnItem(ChatCategory category, ChatMessage message)
-        {
-            SimplePool<UIChatItem> pool = null;
-
-            //use special prefabs for support ui
-            if (category == ChatCategory.SUPPORT)
-            {
-                if (message.player.name == ChatManager.Player.name)
-                {
-                    pool = _chatHelpPlayerPool;
-                }
-                else
-                {
-                    pool = _chatHelpCrowPool;
-                }
-            }
-            else
-            {
-                if (message.type == MessageType.TEXT)
-                {
-                    pool = _chatMessagePool;
-                }
-                else if (message.type == MessageType.LOCATION)
-                {
-                    pool = _chatLocationPool;
-                }
-                else if (message.type == MessageType.IMAGE)
-                {
-                    pool = _chatImagePool;
-                }
-            }
-
-            if (pool == null)
-            {
-                Debug.LogError("No prefab set for " + category + " : " + message.type);
-                return null;
-            }
-
-            //setup the message and add it to the scrollview
-            UIChatItem item = pool.Spawn();
-            item.SetupMessage(message, ShowLoading, _OnClickClose);
-            item.transform.SetParent(_itemContainer);
-            item.transform.localScale = Vector3.one;
-            _items.Add(item);
-            return item;
-        }
 
         private void ShowLoading(bool show)
         {
@@ -555,9 +536,17 @@ namespace Raincrow.Chat.UI
                 .uniqueId;
         }
 
+        
+
         //EVENT LISTENERS
         private void OnReceiveMessage(ChatCategory category, ChatMessage message)
         {
+            //_MessageMap[category].Insert(0, message);
+            //if(_MessageMap[category].Count > ChatManager.MaxMessages)
+            //{
+            //    _MessageMap[category].RemoveAt(_MessageMap[category].Count -1);
+            //}
+
             if (_currentCategory != category)
             {
                 RefreshCategoryUnreadMessages(category);
@@ -566,13 +555,7 @@ namespace Raincrow.Chat.UI
 
             if (_isOpen)
             {
-                if (_items.Count >= ChatManager.MaxMessages)
-                {
-                    _items[0].Despawn();
-                    _items.RemoveAt(0);
-                }
-
-                SpawnItem(category, message);
+                _chatUIView.Refresh();
             }
         }
 

@@ -430,7 +430,13 @@ namespace EnhancedUI.EnhancedScroller
                 return _activeCellViewsStartIndex;
             }
         }
-
+        public SmallList<EnhancedScrollerCellView> ActiveCellViews
+        {
+            get
+            {
+                return _activeCellViews;
+            }
+        }
         /// <summary>
         /// This is the last cell view index showing in the scroller's visible area
         /// </summary>

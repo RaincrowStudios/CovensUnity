@@ -21,6 +21,8 @@ namespace Raincrow.Chat.UI
         private ChatPlayer _chatPlayer; // stores the player that is sending the location
         private long _timestamp;
 
+        
+
         protected virtual void OnEnable()
         {
             bool enableAvatarButton = _chatPlayer != null;
