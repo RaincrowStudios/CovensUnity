@@ -102,8 +102,8 @@ public class LoadPOPManager : MonoBehaviour
         {
             sceneLoaded = false;
             var t = LocationExitInfo.Instance;
-            // OnMapEnergyChange.ForceEvent(PlayerManager.marker, (int)(PlayerDataManager.playerData.baseEnergy * .25f));
-            // PlayerManagerUI.Instance.UpdateEnergy();
+            OnMapEnergyChange.ForceEvent(PlayerManager.marker, (int)(PlayerDataManager.playerData.baseEnergy * .25f));
+            PlayerManagerUI.Instance.UpdateEnergy();
             LocationIslandController.MainSceneLoaded();
             //  SpellcastingFX.ResumeTweening();
             if (UIQuickCast.IsOpen)
@@ -113,6 +113,8 @@ public class LoadPOPManager : MonoBehaviour
           {
               LoadingOverlay.Hide();
           });
+
+            OnMainSceneLoad();
 
         });
         OnMapEnergyChange.OnPlayerDead -= LoadPOPManager.UnloadScene;
@@ -132,11 +134,16 @@ public class LoadPOPManager : MonoBehaviour
             UIPlayerInfo.SetVisibility(false);
         if (UISpiritInfo.IsShowing)
             UISpiritInfo.SetVisibility(false);
-        Instance.map.HideMap(false);
+
         LocationIslandController.BattleStopPOP();
+
+    }
+
+    private static void OnMainSceneLoad()
+    {
+        Instance.map.HideMap(false);
         LocationUnitSpawner.UnloadScene();
         MarkerManagerAPI.GetMarkers();
-
     }
 
     public static void UnloadSceneReward()
@@ -149,6 +156,7 @@ public class LoadPOPManager : MonoBehaviour
                 LoadingOverlay.Hide();
 
             });
+            OnMainSceneLoad();
             sceneLoaded = false;
             UIQuickCast.Close();
             OnMapEnergyChange.OnPlayerDead -= LoadPOPManager.UnloadScene;
