@@ -127,11 +127,7 @@ public class LocationUnitSpawner : MonoBehaviour
     {
         if (!Markers.ContainsKey(token.instance))
         {
-            Debug.Log("Adding ");
             GameObject go = null;
-
-
-
             if (token.Type == MarkerType.WITCH)
             {
                 var witchToken = token as WitchToken;

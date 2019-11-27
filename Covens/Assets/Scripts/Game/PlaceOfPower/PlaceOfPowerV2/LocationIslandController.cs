@@ -50,6 +50,7 @@ public class LocationIslandController : MonoBehaviour
     [SerializeField] private PopCameraController popCameraController;
     [SerializeField] private LocationUnitSpawner locationUnitSpawner;
 
+    public static bool unloadingPop { get; private set; }
 
     private void Awake()
     {
@@ -60,6 +61,7 @@ public class LocationIslandController : MonoBehaviour
 
     public static void MainSceneLoaded()
     {
+        unloadingPop = false;
         OnPopTransitionChange?.Invoke(false);
     }
 
@@ -142,6 +144,7 @@ public class LocationIslandController : MonoBehaviour
 
     public static void BattleStopPOP()
     {
+        unloadingPop = true;
         OnPopTransitionChange?.Invoke(true);
         //  SpellcastingFX.StopTweening();
         OnExitLocation?.Invoke();

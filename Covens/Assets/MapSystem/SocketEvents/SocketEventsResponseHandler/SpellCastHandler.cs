@@ -93,6 +93,10 @@ namespace Raincrow.GameEventResponses
         public static void HandleEvent(SpellCastEventData data, System.Action onTrailStart = null, System.Action onTrailEnd = null)
         {
             //OnCharacterDeath.CheckSpellDeath(data);
+
+            if (LocationIslandController.unloadingPop) return; // dont need to process spell commands when pop scene is unloading. // handle this better later can cause issues. 
+
+
             OnWillProcessSpell?.Invoke(data);
 
             if (LocationIslandController.isInBattle)
