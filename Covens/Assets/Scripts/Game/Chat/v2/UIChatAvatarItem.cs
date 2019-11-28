@@ -14,7 +14,7 @@ namespace Raincrow.Chat.UI
         [SerializeField] private Button _showAvatarButton;
 
         [Header("Player Info")]
-        [SerializeField] private TextMeshProUGUI _playerName;
+        [SerializeField] protected TextMeshProUGUI _playerName;
         [SerializeField] private TextMeshProUGUI _playerDegree;
         [SerializeField] private TextMeshProUGUI _timeAgo;
 

@@ -18,6 +18,9 @@ public class DebugMoveTo : MonoBehaviour
     [SerializeField] private Button m_MemoryStatsButton;
     [SerializeField] private Button m_UnloadAssetsButton;
 
+    [SerializeField] private Button m_Set60FpsButton;
+    [SerializeField] private Button m_Set30FpsButton;
+
     [SerializeField] private Button m_MoveButton;
     [SerializeField] private Button m_ResetButton;
     [SerializeField] private TMP_InputField m_Longitude;
@@ -55,6 +58,15 @@ public class DebugMoveTo : MonoBehaviour
         {
             m_Longitude.text = "-122.3224";
             m_Latitude.text = "47.70168";
+        });
+
+        m_Set60FpsButton.onClick.AddListener(() =>
+        {
+            Application.targetFrameRate = 60;
+        });
+        m_Set60FpsButton.onClick.AddListener(() =>
+        {
+            Application.targetFrameRate = 30;
         });
 
         m_ToggleParticlesButton.onClick.AddListener(() =>

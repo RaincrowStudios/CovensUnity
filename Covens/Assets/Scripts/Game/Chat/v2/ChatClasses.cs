@@ -65,6 +65,9 @@
         public long timestamp;
         public bool read;
 
+        // used for view
+        public float height;
+
         public override bool Equals(object obj)
         {
             if (obj is ChatMessage chatMessage)

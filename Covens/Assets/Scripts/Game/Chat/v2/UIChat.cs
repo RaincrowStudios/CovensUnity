@@ -447,7 +447,8 @@ namespace Raincrow.Chat.UI
                 //setup the UI with the available messages
                 //_messages = new List<ChatMessage>();
                 //_messages.AddRange(ChatManager.GetMessages(category));
-                m_SpawnCoroutine = StartCoroutine(SpawnChatItems());
+                //m_SpawnCoroutine = StartCoroutine(SpawnChatItems());
+                _chatUIView.SetupData(ChatManager.GetMessages(_currentCategory), _currentCategory, ShowLoading, _OnClickClose);
                 LeanTween.alphaCanvas(_containerCanvasGroup, 1, 0.5f).setEaseOutCubic();
 
                 //hide the loading overlay (in case it was visible)
@@ -512,14 +513,9 @@ namespace Raincrow.Chat.UI
             //List<ChatMessage> chatMessages = new List<ChatMessage>(_messages);
             //chatMessages.Reverse();
 
-            _itemContainer.gameObject.SetActive(false);
+            //_itemContainer.gameObject.SetActive(false);
             _chatUIView.SetupData(ChatManager.GetMessages(_currentCategory), _currentCategory, ShowLoading, _OnClickClose);
-            //foreach (var message in chatMessages)
-            //{
-            //    SpawnItem(_currentCategory, message).transform.SetAsFirstSibling();
-            //}
-
-            _itemContainer.gameObject.SetActive(true);
+            //_itemContainer.gameObject.SetActive(true);
 
             yield return null;
             ShowLoading(false);

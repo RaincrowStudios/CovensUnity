@@ -38,7 +38,13 @@ namespace Raincrow.Chat.UI
 
         public class RequestChatLoadingEvent : UnityEvent<bool> { }
 
-        public virtual float Height => ((RectTransform)transform).sizeDelta.y;
-        
+        public virtual float Height { get; set; }
+
+        public virtual void UpdateHeigth(ChatMessage message)
+        {
+            message.height = ((RectTransform)transform).sizeDelta.y;
+            Height = message.height;
+        }
+
     }
 }
