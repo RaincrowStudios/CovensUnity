@@ -31,47 +31,17 @@ namespace Raincrow.Chat.UI
 
         public void SetupData(List<ChatMessage> pMessages, ChatCategory eCategory, UnityAction<bool> onRequestChatLoading = null, UnityAction onRequestChatClose = null)
         {
-            //Debug.Log($"SetupData: {eCategory} mess[{pMessages.Count}]");
             m_pChatMessages = pMessages;
             m_pCategory = eCategory;
             m_onRequestChatLoading = onRequestChatLoading;
             m_onRequestChatClose = onRequestChatClose;
             scroller.ReloadData(1f);
-            //ResizeScroller();
-            //scroller.ReloadData(1f);
         }
         public void Refresh()
         {
             scroller.ReloadData(1f);
-            //ResizeScroller();
         }
 
-        /*private void ResizeScroller()
-        {
-            // capture the scroller dimensions so that we can reset them when we are done
-            var rectTransform = scroller.GetComponent<RectTransform>();
-            var size = rectTransform.sizeDelta;
-
-            // set the dimensions to the largest size possible to acommodate all the cells
-            rectTransform.sizeDelta = new Vector2(size.x, float.MaxValue);
-
-            // First Pass: reload the scroller so that it can populate the text UI elements in the cell view.
-            // The content size fitter will determine how big the cells need to be on subsequent passes
-            //Debug.LogError(scroller.ActiveCellViews.Count);
-            scroller.ReloadData(1f);
-            Canvas.ForceUpdateCanvases();
-            for (int i = 0; i < scroller.ActiveCellViews.Count; i++)
-            {
-                ((UIChatItem)scroller.ActiveCellViews[i]).UpdateHeigth(m_pChatMessages[i]);
-            }
-            
-
-            // reset the scroller size back to what it was originally
-            rectTransform.sizeDelta = size;
-
-            // Second Pass: reload the data once more with the newly set cell view sizes and scroller content size
-            scroller.ReloadData(1f);
-        }*/
 
         public EnhancedScrollerCellView GetCellView(EnhancedScroller scroller, int dataIndex, int cellIndex)
         {
@@ -109,7 +79,6 @@ namespace Raincrow.Chat.UI
 
             cellView.SetupMessage(pItem, m_onRequestChatLoading, m_onRequestChatClose);
             cellView.transform.localScale = Vector3.one;
-            cellView.UpdateHeigth(pItem);
             return cellView;
         }
 
