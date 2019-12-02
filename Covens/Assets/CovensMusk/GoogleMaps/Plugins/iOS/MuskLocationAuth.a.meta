@@ -3,18 +3,19 @@ guid: cd9b340395a354ce1b08fb260c8e3e3c
 labels:
 - gvh
 - gvh_version-0.0.0
-timeCreated: 1480838400
 PluginImporter:
   externalObjects: {}
   serializedVersion: 2
   iconMap: {}
   executionOrder: {}
+  defineConstraints: []
   isPreloaded: 0
   isOverridable: 0
+  isExplicitlyReferenced: 0
+  validateReferences: 1
   platformData:
   - first:
-      ? ''
-      : Any
+      '': Any
     second:
       enabled: 0
       settings:
@@ -34,7 +35,7 @@ PluginImporter:
       settings:
         CPU: ARMv7
   - first:
-      Any:
+      Any: 
     second:
       enabled: 0
       settings: {}
@@ -69,7 +70,7 @@ PluginImporter:
     second:
       enabled: 0
       settings:
-        CPU: x86_64
+        CPU: AnyCPU
   - first:
       Standalone: LinuxUniversal
     second:
@@ -99,8 +100,8 @@ PluginImporter:
     second:
       enabled: 0
       settings:
-        CompileFlags:
+        CompileFlags: 
         FrameworkDependencies: ImageIO;ARKit;
-  userData:
-  assetBundleName:
-  assetBundleVariant:
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 

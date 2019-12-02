@@ -106,4 +106,10 @@ public class LoadingOverlay : MonoBehaviour
 
         Instance._Hide();
     }
+
+    [ContextMenu("test")]
+    private void test()
+    {
+        Debug.Log("ç\"");
+    }
 }
