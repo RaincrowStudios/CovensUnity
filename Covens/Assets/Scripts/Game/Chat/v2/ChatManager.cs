@@ -90,7 +90,7 @@ namespace Raincrow.Chat
                 {
                     string chatAddress = CovenConstants.chatAddress;
                     Log("Initializing chat (" + chatAddress + ")");
-
+                    
                     SocketManager = new SocketManager(new System.Uri(chatAddress))
                     {
                         Encoder = new JsonDotNetEncoder()
@@ -283,7 +283,7 @@ namespace Raincrow.Chat
             m_Messages[category] = messages;
 
             JoinChat(category);
-
+            
             OnConnected?.Invoke(category);
         }
 

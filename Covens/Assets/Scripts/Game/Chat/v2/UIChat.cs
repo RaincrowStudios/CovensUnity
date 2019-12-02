@@ -681,5 +681,13 @@ namespace Raincrow.Chat.UI
             }
             _SelectedGlow.gameObject.SetActive(true);
         }
+
+#if UNITY_EDITOR
+        [ContextMenu("Open")]
+        private void Debug_Open()
+        {
+            Show();
+        }
+#endif
     }
 }
