@@ -18,7 +18,7 @@ namespace Raincrow.Maps
         protected bool m_Interactable = true;
 
         public GameObject GameObject { get { return gameObject; } }
-        public virtual Transform AvatarTransform { get { return transform; } }
+        public virtual Transform AvatarTransform { get { return m_AvatarRenderer.transform; } }
         public SpriteRenderer AvatarRenderer => m_AvatarRenderer;
 
         public MarkerManager.MarkerType Type { get; private set; }

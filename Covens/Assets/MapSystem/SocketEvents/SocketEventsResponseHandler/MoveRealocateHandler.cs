@@ -18,6 +18,8 @@ namespace Raincrow.GameEventResponses
                 public List<CollectableToken> items;
                 public List<EnergyToken> energies;
                 public List<PopToken> placesOfPower;
+                public List<BossToken> boss;
+                public List<LootToken> loots;
             }
 
             public double latitude;
@@ -45,7 +47,9 @@ namespace Raincrow.GameEventResponses
                     realocate.tokens.spirits, 
                     realocate.tokens.items, 
                     realocate.tokens.energies,
-                    realocate.tokens.placesOfPower);
+                    realocate.tokens.placesOfPower,
+                    realocate.tokens.boss,
+                    realocate.tokens.loots);
             });
         }
     }

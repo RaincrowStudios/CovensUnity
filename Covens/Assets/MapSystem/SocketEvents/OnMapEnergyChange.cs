@@ -86,8 +86,11 @@ public static class OnMapEnergyChange
 
     public static void ForceEvent(IMarker marker, int newEnergy, double timestamp)
     {
-        //if (marker == null || marker.isNull)
-        //    return;
+        if (marker == null)
+        {
+            Debug.LogError("trying to update energy of null marker");
+            return;
+        }
 
         string instance;
         int baseEnergy;

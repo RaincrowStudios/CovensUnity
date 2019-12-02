@@ -5,14 +5,13 @@ using UnityEngine;
 
 public abstract class Token
 {
-    //portal, spirit, duke, location, witch, summoningEvent, gem, herb, tool, silver, lore, energy
     private static readonly Dictionary<string, MarkerSpawner.MarkerType> m_TypeMap = new Dictionary<string, MarkerSpawner.MarkerType>
     {
         { "",               MarkerSpawner.MarkerType.NONE },
         { "portal",         MarkerSpawner.MarkerType.PORTAL },
         { "spirit",         MarkerSpawner.MarkerType.SPIRIT },
         { "duke",           MarkerSpawner.MarkerType.DUKE },
-        { "placeOfPower",       MarkerSpawner.MarkerType.PLACE_OF_POWER },
+        { "placeOfPower",   MarkerSpawner.MarkerType.PLACE_OF_POWER },
         { "character",      MarkerSpawner.MarkerType.WITCH },
         { "summoningEvent", MarkerSpawner.MarkerType.SUMMONING_EVENT },
         { "gem",            MarkerSpawner.MarkerType.GEM },
@@ -20,7 +19,9 @@ public abstract class Token
         { "tool",           MarkerSpawner.MarkerType.TOOL },
         { "silver",         MarkerSpawner.MarkerType.SILVER },
         { "lore",           MarkerSpawner.MarkerType.LORE },
-        { "energy",         MarkerSpawner.MarkerType.ENERGY }
+        { "energy",         MarkerSpawner.MarkerType.ENERGY },
+        { "boss",           MarkerSpawner.MarkerType.BOSS },
+        { "loot",           MarkerSpawner.MarkerType.LOOT },
     };
 
     public static MarkerSpawner.MarkerType TypeFromString(string type)
@@ -150,6 +151,19 @@ public class WitchToken : CharacterToken
         }
     }
 }
+
+public class BossToken : CharacterToken
+{
+    [JsonProperty("spirit")]
+    public string spiritId;
+}
+
+public class LootToken : Token
+{
+
+}
+
+
 
 public class PopToken : Token
 {

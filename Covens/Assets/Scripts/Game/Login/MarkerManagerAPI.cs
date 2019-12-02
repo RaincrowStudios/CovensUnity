@@ -22,6 +22,9 @@ public class MarkerManagerAPI : MonoBehaviour
         public List<CollectableToken> items;
         public List<EnergyToken> energies;
         public List<PopToken> placesOfPower;
+        public List<BossToken> boss;
+        public List<LootToken> loots;
+
         public Location location;
         public double longitude;
         public double latitude;
@@ -226,7 +229,9 @@ public class MarkerManagerAPI : MonoBehaviour
             moveResponse.spirits,
             moveResponse.items,
             moveResponse.energies,
-            moveResponse.placesOfPower);
+            moveResponse.placesOfPower,
+            moveResponse.boss,
+            moveResponse.loots);
     }
 
     public static void LoadMap(double longitude, double latitude, bool animate, System.Action onComplete = null)
@@ -287,7 +292,7 @@ public class MarkerManagerAPI : MonoBehaviour
         }
     }
 
-    public static void SpawnMarkers(List<WitchToken> witches, List<SpiritToken> spirits, List<CollectableToken> items, List<EnergyToken> energies, List<PopToken> pops)
+    public static void SpawnMarkers(List<WitchToken> witches, List<SpiritToken> spirits, List<CollectableToken> items, List<EnergyToken> energies, List<PopToken> pops, List<BossToken> bosses, List<LootToken> loot)
     {
         //finaly add/update markers
         WitchCount = witches.Count;
@@ -295,10 +300,17 @@ public class MarkerManagerAPI : MonoBehaviour
         //stop avatar generation
         AvatarSpriteUtil.Instance.ClearQueues();
 
-        m_SpawnCoroutine = m_Instance.StartCoroutine(SpawnMarkersCoroutine(witches, spirits, items, energies, pops));
+        m_SpawnCoroutine = m_Instance.StartCoroutine(SpawnMarkersCoroutine(witches, spirits, items, energies, pops, bosses, loot));
     }
 
-    private static IEnumerator SpawnMarkersCoroutine(List<WitchToken> witches, List<SpiritToken> spirits, List<CollectableToken> items, List<EnergyToken> energies, List<PopToken> pops)
+    private static IEnumerator SpawnMarkersCoroutine(
+        List<WitchToken> witches,
+        List<SpiritToken> spirits,
+        List<CollectableToken> items,
+        List<EnergyToken> energies,
+        List<PopToken> pops,
+        List<BossToken> bosses,
+        List<LootToken> loot)
     {
         IsSpawningTokens = true;
 
@@ -351,6 +363,26 @@ public class MarkerManagerAPI : MonoBehaviour
         for (int i = 0; i < energies.Count; i++)
         {
             aux = MarkerSpawner.Instance.AddMarker(energies[i]);
+            if (aux != null)
+                updatedMarkers.Add(aux);
+            yield return null;
+        }
+
+
+        Debug.Log($"spawning bosses: {bosses.Count}");
+        for (int i = 0; i < bosses.Count; i++)
+        {
+            aux = MarkerSpawner.Instance.AddMarker(bosses[i]);
+            if (aux != null)
+                updatedMarkers.Add(aux);
+            yield return null;
+        }
+
+
+        Debug.Log($"spawning loot: {loot.Count}");
+        for (int i = 0; i < loot.Count; i++)
+        {
+            aux = MarkerSpawner.Instance.AddMarker(loot[i]);
             if (aux != null)
                 updatedMarkers.Add(aux);
             yield return null;

@@ -36,9 +36,6 @@ public class MarkerSpawner : MarkerManager
 
     [Header("Place Of Power")]
     public GameObject unclaimedLoc;
-    public GameObject greyLoc;
-    public GameObject shadowLoc;
-    public GameObject whiteLoc;
 
     [Header("Collectibles")]
     public GameObject herb;
@@ -46,9 +43,9 @@ public class MarkerSpawner : MarkerManager
     public GameObject gem;
     public GameObject energyIcon;
 
-    //[Header("MarkerEnergyRing")]
-    //public Sprite[] EnergyRings;
-    //private string lastEnergyInstance = "";
+    [Header("World Boss")]
+    [SerializeField] private GameObject m_WorldBossPrefab;
+    [SerializeField] private GameObject m_LootPrefab;
 
     private Dictionary<string, Sprite> m_SpiritIcons;
     private List<(SimplePool<Transform>, IMarker)> m_ToDespawn = new List<(SimplePool<Transform>, IMarker)>();
@@ -62,9 +59,8 @@ public class MarkerSpawner : MarkerManager
     private static SimplePool<Transform> m_GemPool;
     private static SimplePool<Transform> m_EnergyPool;
     private static SimplePool<Transform> m_PopPool;
-    // private static SimplePool<Transform> m_PopPoolGrey;
-    // private static SimplePool<Transform> m_PopPoolShadow;
-    // private static SimplePool<Transform> m_PopPoolWhite;
+    private static SimplePool<Transform> m_BossPool;
+    private static SimplePool<Transform> m_LootPool;
 
 
     private float m_Distance;
@@ -73,9 +69,6 @@ public class MarkerSpawner : MarkerManager
     private static bool m_StreetLevel;
     private const float MARKER_SCALE_MIN = 1;
     private const float MARKER_SCALE_MAX = 2;
-
-    //private static bool m_Highlighting = false;
-    //private static List<IMarker> m_HighlightedMarkers = new List<IMarker>();
 
     void Awake()
     {
@@ -101,9 +94,9 @@ public class MarkerSpawner : MarkerManager
         m_ToolPool = new SimplePool<Transform>(tool.transform, 10);
         m_EnergyPool = new SimplePool<Transform>(energyIcon.transform, 10);
         m_PopPool = new SimplePool<Transform>(unclaimedLoc.transform, 10);
-        // m_PopPoolGrey = new SimplePool<Transform>(greyLoc.transform, 10);
-        // m_PopPoolShadow = new SimplePool<Transform>(shadowLoc.transform, 10);
-        // m_PopPoolWhite = new SimplePool<Transform>(whiteLoc.transform, 10);
+        m_BossPool = new SimplePool<Transform>(m_WorldBossPrefab.transform, 1);
+        m_LootPool = new SimplePool<Transform>(m_LootPrefab.transform, 1);
+
 
         //init the map/markers variables
         UpdateMarkerProperties();
@@ -178,21 +171,18 @@ public class MarkerSpawner : MarkerManager
         }
         else if (Data.Type == MarkerType.PLACE_OF_POWER)
         {
-            var popData = (PopToken)Data;
-            // if (popData != null && popData.lastOwnedBy != null && popData.lastOwnedBy.displayName != null)
-            // {
-            //     if (popData.lastOwnedBy.degree > 0)
-            //         go = m_PopPoolWhite.Spawn().gameObject;
-            //     else if (popData.lastOwnedBy.degree < 0)
-            //         go = m_PopPoolShadow.Spawn().gameObject;
-            //     else
-            //         go = m_PopPoolGrey.Spawn().gameObject;
-            // }
-            // else
-            // {
             go = m_PopPool.Spawn().gameObject;
-            // }
             go.name = $"[PlaceOfPower] {Data.instance}";
+        }
+        else if (Data.Type == MarkerType.BOSS)
+        {
+            go = m_BossPool.Spawn().gameObject;
+            go.name = $"[WorldBoss] {Data.instance}";
+        }
+        else if (Data.Type == MarkerType.LOOT)
+        {
+            go = m_LootPool.Spawn().gameObject;
+            go.name = $"[Loot] {Data.instance}";
         }
         else
         {
@@ -320,6 +310,18 @@ public class MarkerSpawner : MarkerManager
                 return;
             }
             PickUpCollectibleAPI.CollectEnergy(m);
+            return;
+        }
+        
+        if (Data.Type == MarkerType.BOSS)
+        {
+            UIGlobalPopup.ShowError(null, "NOT IMPLEMENTED");
+            return;
+        }
+
+        if (Data.Type == MarkerType.LOOT)
+        {
+            UIGlobalPopup.ShowError(null, "NOT IMPLEMENTED");
             return;
         }
 

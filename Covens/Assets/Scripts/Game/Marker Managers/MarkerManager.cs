@@ -19,7 +19,9 @@ public class MarkerManager : MonoBehaviour
         TOOL = 9,
         SILVER = 10,
         LORE = 11,
-        ENERGY = 12
+        ENERGY = 12,
+        BOSS = 13,
+        LOOT = 14,
     }
 
     public enum MarkerSchool

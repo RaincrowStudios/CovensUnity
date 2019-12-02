@@ -229,7 +229,7 @@ public class MapView : MonoBehaviour
         InMapView = false;
 
         //force despawn markers
-        MarkerManagerAPI.SpawnMarkers(new List<WitchToken>(), new List<SpiritToken>(), new List<CollectableToken>(), new List<EnergyToken>(), new List<PopToken>());
+        MarkerManagerAPI.SpawnMarkers(new List<WitchToken>(), new List<SpiritToken>(), new List<CollectableToken>(), new List<EnergyToken>(), new List<PopToken>(), new List<BossToken>(), new List<LootToken>());
     }
 
     private void OnLeavePoP()
