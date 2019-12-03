@@ -20,7 +20,7 @@ namespace Raincrow.GameEventResponses
         {
             CharacterEnergyEventData data = JsonConvert.DeserializeObject<CharacterEnergyEventData>(eventData);
 
-            IMarker marker = MarkerManager.GetMarker(data.id);
+            IMarker marker = MarkerSpawner.GetMarker(data.id);
             OnMapEnergyChange.ForceEvent(marker, data.energy, data.timestamp);
         }
     }

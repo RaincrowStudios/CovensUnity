@@ -52,7 +52,7 @@ namespace Raincrow.GameEventResponses
             }
             else
             {
-                IMarker marker = MarkerManager.GetMarker(data.instance);
+                IMarker marker = MarkerSpawner.GetMarker(data.instance);
 
                 if (marker != null)
                 {

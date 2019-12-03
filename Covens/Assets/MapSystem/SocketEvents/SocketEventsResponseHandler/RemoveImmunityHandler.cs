@@ -32,7 +32,7 @@ namespace Raincrow.GameEventResponses
             if (data.caster == player.instance)
             {
                 //remove the fx if the witch was immune to me
-                IMarker marker = MarkerManager.GetMarker(data.target);
+                IMarker marker = MarkerSpawner.GetMarker(data.target);
                 if (marker != null && marker is WitchMarker)
                     (marker as WitchMarker).OnRemoveImmunity();
 

@@ -49,7 +49,7 @@ public class SpiritMarker : CharacterMarker
                     m_AvatarRenderer.sprite = sprite;
                     LeanTween.color(
                         m_AvatarRenderer.gameObject,
-                        spiritToken.IsBossSummon ? new Color(1, 0, 0.2f) : Color.white, 1f
+                        Color.white, 1f
                     ).setEaseOutCubic();
                     m_EnergyRing.color = spiritToken.IsBossSummon ? new Color(1, 0, 0.2f) : Color.white;
                 }

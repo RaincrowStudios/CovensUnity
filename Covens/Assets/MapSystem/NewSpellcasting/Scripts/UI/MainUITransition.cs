@@ -12,6 +12,7 @@ public class MainUITransition : MonoBehaviour
         public Vector2 bottomBar_pos;
         public Vector2 energy_offMin;
         public Vector2 quickcast_pos;
+        public Vector2 worldboss_pos;
         public float obj_scale;
         public float bar_alpha;
     }
@@ -34,6 +35,7 @@ public class MainUITransition : MonoBehaviour
     [SerializeField] private CanvasGroup[] bars;
     [SerializeField] private RectTransform energy;
     [SerializeField] private RectTransform quickCast;
+    [SerializeField] private RectTransform worldboss;
     
 
     [Header("Buttons")]
@@ -72,10 +74,6 @@ public class MainUITransition : MonoBehaviour
         Instantiate(k);
     }
 
-    public void HideMainUI(bool moveEnergy = true) {}
-
-    public void ShowMainUI(bool moveEnergy = true) {}
-
     public void EnableSummonButton(bool enable)
     {
         m_SummonButton.interactable = enable;
@@ -98,6 +96,8 @@ public class MainUITransition : MonoBehaviour
             case State.MAPVIEW_SELECT:  return m_MapView_Select;
             case State.POPVIEW:         return m_PopView;
             case State.POPVIEW_SELECT:  return m_PopView_Select;
+            case State.WORLDBOSS:       return m_Worldboss;
+            case State.WORLDBOSS_SELECT: return m_Worldboss_Select;
         }
         return m_MapView;
     }
@@ -111,6 +111,7 @@ public class MainUITransition : MonoBehaviour
         Vector2 bottombar_pos = bottomBar.anchoredPosition;
         Vector2 energy_offMin = energy.offsetMin;;
         Vector2 quickcast_pos = quickCast.anchoredPosition;
+        Vector2 worldboss_pos = worldboss.anchoredPosition;
 
         float scale = scaleObjects[0].transform.localScale.x;
         float alpha = bars[0].alpha;
@@ -123,6 +124,7 @@ public class MainUITransition : MonoBehaviour
                 bottomBar.anchoredPosition = Vector2.Lerp(bottombar_pos, target.bottomBar_pos, t);
                 energy.offsetMin = Vector2.Lerp(energy_offMin, target.energy_offMin, t);
                 quickCast.anchoredPosition = Vector2.Lerp(quickcast_pos, target.quickcast_pos, t);
+                worldboss.anchoredPosition = Vector2.Lerp(worldboss_pos, target.worldboss_pos, t);
 
                 float _scale = Mathf.Lerp(scale, target.obj_scale, t);
                 foreach (var item in scaleObjects)
@@ -142,6 +144,7 @@ public class MainUITransition : MonoBehaviour
         bottomBar.anchoredPosition = target.bottomBar_pos;
         energy.offsetMin = target.energy_offMin;
         quickCast.anchoredPosition = target.quickcast_pos;
+        worldboss.anchoredPosition = target.worldboss_pos;
 
         float _scale = target.obj_scale;
         foreach (var item in scaleObjects)
@@ -157,5 +160,11 @@ public class MainUITransition : MonoBehaviour
 
     [ContextMenu("SetState - MapSelect")]
     private void Debug_SetMapSelect() => SetState(GetStateSettings(State.MAPVIEW_SELECT));
+
+    [ContextMenu("SetState - WorldBoss")]
+    private void Debug_SetWorldBoss() => SetState(GetStateSettings(State.WORLDBOSS));
+
+    [ContextMenu("SetState - WorldBossSelect")]
+    private void Debug_SetWorldBossSelect() => SetState(GetStateSettings(State.WORLDBOSS_SELECT));
 #endif
 }

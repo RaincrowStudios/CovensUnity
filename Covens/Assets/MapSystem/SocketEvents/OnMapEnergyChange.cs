@@ -60,7 +60,7 @@ public static class OnMapEnergyChange
         }
         else //update another witch's energy
         {
-            marker = MarkerManager.GetMarker(instance);
+            marker = MarkerSpawner.GetMarker(instance);
             if (marker == null)
                 return;
 

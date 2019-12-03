@@ -32,7 +32,7 @@ namespace Raincrow.GameEventResponses
 
         public static void HandleEvent(string instance, float longitude, float latitude)
         {
-            if (MarkerManager.Markers.ContainsKey(instance))
+            if (MarkerSpawner.Markers.ContainsKey(instance))
             {
                 IMarker marker = MarkerSpawner.GetMarker(instance);
 

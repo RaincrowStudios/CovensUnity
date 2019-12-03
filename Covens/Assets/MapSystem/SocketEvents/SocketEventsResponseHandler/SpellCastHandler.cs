@@ -18,7 +18,7 @@ namespace Raincrow.GameEventResponses
             public string name;
 
             [JsonIgnore]
-            public MarkerManager.MarkerType Type => Token.TypeFromString(type);
+            public MarkerSpawner.MarkerType Type => Token.TypeFromString(type);
         }
 
         public struct Result
@@ -97,9 +97,9 @@ namespace Raincrow.GameEventResponses
 
             if (LocationIslandController.isInBattle)
             {
-                if (data.caster.Type == MarkerManager.MarkerType.WITCH)
+                if (data.caster.Type == MarkerSpawner.MarkerType.WITCH)
                 {
-                    if (data.target.Type == MarkerManager.MarkerType.SPIRIT && data.target.id == LocationUnitSpawner.guardianInstance)
+                    if (data.target.Type == MarkerSpawner.MarkerType.SPIRIT && data.target.id == LocationUnitSpawner.guardianInstance)
                     {
                         LocationIslandController.ActivateSpiritConnection(data.caster.id);
                     }
@@ -127,8 +127,8 @@ namespace Raincrow.GameEventResponses
             if (playerIsCaster || playerIsTarget)
                 LastAttackTime = Time.time;
 
-            IMarker caster = MarkerManager.GetMarker(data.caster.id);
-            IMarker target = MarkerManager.GetMarker(data.target.id);
+            IMarker caster = MarkerSpawner.GetMarker(data.caster.id);
+            IMarker target = MarkerSpawner.GetMarker(data.target.id);
             int energyChange = (int)data.result.amount;
             int casterNewEnergy = data.caster.energy;
             int targetNewEnergy = data.target.energy;
@@ -151,7 +151,7 @@ namespace Raincrow.GameEventResponses
                         OnMapEnergyChange.ForceEvent(caster, casterNewEnergy, data.timestamp);
 
                         //localy remove the immunity so you may attack again
-                        if (playerIsTarget && caster.Type == MarkerManager.MarkerType.WITCH)
+                        if (playerIsTarget && caster.Type == MarkerSpawner.MarkerType.WITCH)
                         {
                             MarkerSpawner.RemoveImmunity(data.caster.id, data.target.id);
                             (caster as WitchMarker).OnRemoveImmunity();

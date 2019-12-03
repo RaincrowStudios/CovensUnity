@@ -32,7 +32,7 @@ namespace Raincrow.GameEventResponses
             }
             else
             {
-                WitchMarker marker = MarkerManager.GetMarker(data.instance) as WitchMarker;
+                WitchMarker marker = MarkerSpawner.GetMarker(data.instance) as WitchMarker;
                 if (marker != null)
                 {
                     WitchToken token = marker.witchToken;

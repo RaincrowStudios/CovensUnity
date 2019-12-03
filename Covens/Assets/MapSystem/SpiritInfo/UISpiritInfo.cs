@@ -220,7 +220,7 @@ public class UISpiritInfo : UIInfoPanel
     {
         base.ReOpen();
 
-        IMarker spirit = MarkerManager.GetMarker(SpiritToken.instance);
+        IMarker spirit = MarkerSpawner.GetMarker(SpiritToken.instance);
 
         if (!LocationIslandController.isInBattle)
         {

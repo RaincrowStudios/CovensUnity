@@ -81,7 +81,7 @@ public class UISpiritBanished : MonoBehaviour
         m_CloseButton.interactable = false;
 
         //wait for the marker to be despawned
-        if (MarkerManager.GetMarker(data.id) != null)
+        if (MarkerSpawner.GetMarker(data.id) != null)
         {
             LeanTween.value(0, 0, 0.2f).setOnComplete(() => Show(data));
             return;

@@ -11,6 +11,7 @@ public class WorldBossMarker : CharacterMarker
     public override void Setup(Token data)
     {
         //spiritData = DownloadedAssets.GetSpirit((data as SpiritToken).spiritId);
+        m_EnergyRing.color = new Color(1, 0, 0.2f);
 
         base.Setup(data);
 

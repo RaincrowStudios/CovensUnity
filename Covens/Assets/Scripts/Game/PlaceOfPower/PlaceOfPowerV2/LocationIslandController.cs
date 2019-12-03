@@ -185,7 +185,7 @@ public class LocationIslandController : MonoBehaviour
         int witchCount = 0;
         foreach (var item in LocationUnitSpawner.Markers)
         {
-            if (item.Value.Token.Type == MarkerManager.MarkerType.WITCH)
+            if (item.Value.Token.Type == MarkerSpawner.MarkerType.WITCH)
             {
                 witchCount++;
             }

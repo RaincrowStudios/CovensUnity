@@ -216,7 +216,7 @@ public class UIPlayerInfo : UIInfoPanel
         {
             MapsAPI.Instance.allowControl = false;
 
-            IMarker marker = MarkerManager.GetMarker(WitchToken.instance);
+            IMarker marker = MarkerSpawner.GetMarker(WitchToken.instance);
             if (marker != null)
             {
                 MapCameraUtils.FocusOnMarker(marker.GameObject.transform.position);

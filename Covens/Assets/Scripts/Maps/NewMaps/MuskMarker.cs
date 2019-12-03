@@ -21,7 +21,7 @@ namespace Raincrow.Maps
         public virtual Transform AvatarTransform { get { return m_AvatarRenderer.transform; } }
         public SpriteRenderer AvatarRenderer => m_AvatarRenderer;
 
-        public MarkerManager.MarkerType Type { get; private set; }
+        public MarkerSpawner.MarkerType Type { get; private set; }
         public bool IsShowingIcon { get; set; }
         public bool IsShowingAvatar { get; set; }
 

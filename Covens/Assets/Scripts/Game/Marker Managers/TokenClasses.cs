@@ -27,12 +27,12 @@ public abstract class Token
     public static MarkerSpawner.MarkerType TypeFromString(string type)
     {
         if (type == null)
-            return MarkerManager.MarkerType.NONE;
+            return MarkerSpawner.MarkerType.NONE;
 
         if (m_TypeMap.ContainsKey(type))
             return m_TypeMap[type];
 
-        return MarkerManager.MarkerType.NONE;
+        return MarkerSpawner.MarkerType.NONE;
     }
 
     public virtual string type { get; set; }

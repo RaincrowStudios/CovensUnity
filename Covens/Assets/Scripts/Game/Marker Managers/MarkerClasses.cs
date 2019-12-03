@@ -137,20 +137,20 @@ public abstract class CharacterMarkerData : MarkerData
     public virtual int maxEnergy => (2 * baseEnergy);
 
     [JsonIgnore]
-    public virtual MarkerManager.MarkerSchool school
+    public virtual MarkerSpawner.MarkerSchool school
     {
         get
         {
-            if (Type == MarkerManager.MarkerType.SPIRIT)
-                return MarkerManager.MarkerSchool.SHADOW;
+            if (Type == MarkerSpawner.MarkerType.SPIRIT)
+                return MarkerSpawner.MarkerSchool.SHADOW;
 
             if (degree < 0)
-                return MarkerManager.MarkerSchool.SHADOW;
+                return MarkerSpawner.MarkerSchool.SHADOW;
 
             if (degree > 0)
-                return MarkerManager.MarkerSchool.WHITE;
+                return MarkerSpawner.MarkerSchool.WHITE;
 
-            return MarkerManager.MarkerSchool.GREY;
+            return MarkerSpawner.MarkerSchool.GREY;
         }
     }
 

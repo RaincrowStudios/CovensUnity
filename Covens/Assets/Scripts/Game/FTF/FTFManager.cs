@@ -459,7 +459,7 @@ public class FTFManager : MonoBehaviour
 
         bool screenLoaded = false;
 
-        if (marker.Type == MarkerManager.MarkerType.SPIRIT)
+        if (marker.Type == MarkerSpawner.MarkerType.SPIRIT)
         {
             SelectSpiritData_Map details = JsonConvert.DeserializeObject<SelectSpiritData_Map>(json);
             details.token = marker.Token as SpiritToken;
@@ -469,7 +469,7 @@ public class FTFManager : MonoBehaviour
             UISpiritInfo.SetupDetails(details);
             UIQuickCast.UpdateTarget(marker, details);
         }
-        else if (marker.Type == MarkerManager.MarkerType.WITCH)
+        else if (marker.Type == MarkerSpawner.MarkerType.WITCH)
         {
             SelectWitchData_Map details = JsonConvert.DeserializeObject<SelectWitchData_Map>(json);
             details.token = marker.Token as WitchToken;
@@ -479,7 +479,7 @@ public class FTFManager : MonoBehaviour
             UIPlayerInfo.SetupDetails(details);
             UIQuickCast.UpdateTarget(marker, details);
         }
-        else if (marker.Type == MarkerManager.MarkerType.PLACE_OF_POWER)
+        else if (marker.Type == MarkerSpawner.MarkerType.PLACE_OF_POWER)
         {
             screenLoaded = true;
         }

@@ -15,7 +15,7 @@ public static class PickUpCollectibleAPI
         string type = marker.Token.type;
         string collectable = marker.collectableToken.collectible;
         int amount = marker.collectableToken.amount;
-        MarkerManager.MarkerType eType = marker.Token.Type;
+        MarkerSpawner.MarkerType eType = marker.Token.Type;
 
         marker.Interactable = false;
 

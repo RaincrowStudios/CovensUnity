@@ -219,7 +219,7 @@ public class UISpellcastBook : MonoBehaviour//, IEnhancedScrollerDelegate
         SetupTargetEnergy(
             energy,
             m_TargetData.baseEnergy,
-            m_TargetMarker.Type == MarkerManager.MarkerType.SPIRIT ? new int?() : (m_TargetMarker as WitchMarker).witchToken.degree);
+            m_TargetMarker.Type == MarkerSpawner.MarkerType.SPIRIT ? new int?() : (m_TargetMarker as WitchMarker).witchToken.degree);
 
         UpdateCanCast();
     }
@@ -387,7 +387,7 @@ public class UISpellcastBook : MonoBehaviour//, IEnhancedScrollerDelegate
         m_TargetName.text = "";
         m_TargetPortrait.overrideSprite = null;
 
-        if (marker.Type == MarkerManager.MarkerType.WITCH)
+        if (marker.Type == MarkerSpawner.MarkerType.WITCH)
         {
             WitchMarker witch = marker as WitchMarker;
 
@@ -400,7 +400,7 @@ public class UISpellcastBook : MonoBehaviour//, IEnhancedScrollerDelegate
                 m_TargetPortrait.overrideSprite = spr;
             });
         }
-        else if (marker.Type == MarkerManager.MarkerType.SPIRIT)
+        else if (marker.Type == MarkerSpawner.MarkerType.SPIRIT)
         {
             SpiritMarker spirit = marker as SpiritMarker;
 

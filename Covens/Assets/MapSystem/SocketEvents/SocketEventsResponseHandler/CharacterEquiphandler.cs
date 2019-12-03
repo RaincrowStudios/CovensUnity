@@ -20,7 +20,7 @@ namespace Raincrow.GameEventResponses
             EquipEventData data = JsonConvert.DeserializeObject<EquipEventData>(eventData);
             IMarker marker = MarkerSpawner.GetMarker(data.character);
 
-            if (marker.Type != MarkerManager.MarkerType.WITCH)
+            if (marker.Type != MarkerSpawner.MarkerType.WITCH)
                 return;
 
             (marker as WitchMarker).UpdateEquips(data.equips);

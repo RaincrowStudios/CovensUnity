@@ -34,9 +34,9 @@ namespace Raincrow.GameEventResponses
             }
             else
             {
-                if (MarkerManager.Markers.ContainsKey(character))
+                if (MarkerSpawner.Markers.ContainsKey(character))
                 {
-                    marker = MarkerManager.GetMarker(character);
+                    marker = MarkerSpawner.GetMarker(character);
                     if (marker is WitchMarker)
                         name = (marker as WitchMarker).witchToken.displayName;
                     else if (marker is SpiritMarker)

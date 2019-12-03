@@ -150,17 +150,17 @@ public class Spellcasting
                         return SpellState.InvalidTarget;
 
                     //check immunity
-                    if (target.Type == MarkerManager.MarkerType.WITCH && MarkerSpawner.IsTargetImmune(target.Token as WitchToken))
+                    if (target.Type == MarkerSpawner.MarkerType.WITCH && MarkerSpawner.IsTargetImmune(target.Token as WitchToken))
                         return SpellState.TargetImmune;
                 }
 
                 //targetType
                 if (spell.targetType != SpellData.TargetType.ANY)
                 {
-                    if (target.Type == MarkerManager.MarkerType.WITCH && spell.targetType != SpellData.TargetType.WITCH)
+                    if (target.Type == MarkerSpawner.MarkerType.WITCH && spell.targetType != SpellData.TargetType.WITCH)
                         return SpellState.InvalidTargetType;
 
-                    if (target.Type == MarkerManager.MarkerType.SPIRIT && spell.targetType != SpellData.TargetType.SPIRIT)
+                    if (target.Type == MarkerSpawner.MarkerType.SPIRIT && spell.targetType != SpellData.TargetType.SPIRIT)
                         return SpellState.InvalidTargetType;
                 }
 
@@ -195,7 +195,7 @@ public class Spellcasting
         else if (target != null)
         {
             //check immunity
-            if (target.Type == MarkerManager.MarkerType.WITCH && MarkerSpawner.IsTargetImmune(target.Token as WitchToken))
+            if (target.Type == MarkerSpawner.MarkerType.WITCH && MarkerSpawner.IsTargetImmune(target.Token as WitchToken))
                 return SpellState.TargetImmune;
         }
 

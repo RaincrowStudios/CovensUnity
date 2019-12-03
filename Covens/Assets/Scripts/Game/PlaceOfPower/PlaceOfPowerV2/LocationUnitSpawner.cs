@@ -4,7 +4,7 @@ using System;
 using System.Collections.Generic;
 using Raincrow.Maps;
 using UnityEngine;
-using static MarkerManager;
+using static MarkerSpawner;
 using Newtonsoft.Json;
 using static Raincrow.GameEventResponses.MoveTokenHandlerPOP;
 using UnityEngine.UI;
