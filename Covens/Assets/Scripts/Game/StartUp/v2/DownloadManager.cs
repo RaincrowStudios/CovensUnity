@@ -144,14 +144,14 @@ public class DownloadManager : MonoBehaviour
         appVersion = assets.apple;
 #endif
 
-        DownloadedAssets.AppVersion = string.Concat(Application.version, ".", appVersion);
-
+        DownloadedAssets.AppVersion = $"{Application.version}.{appVersion}";
         if (Debug.isDebugBuild)
             DownloadedAssets.AppVersion += ".DEV";
 
 #if !PRODUCTION
-        DownloadedAssets.AppVersion += "-STAGING";
+        DownloadedAssets.AppVersion += ".STAGING";
 #endif
+        DownloadedAssets.AppVersion += $" ({Application.buildGUID})";
 
         if (appVersion > int.Parse(Application.version))
         {
