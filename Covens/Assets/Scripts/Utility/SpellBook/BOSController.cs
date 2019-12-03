@@ -50,7 +50,7 @@ public class BOSController : BOSBase
 
         if (!LocationIslandController.isInBattle)
             MapsAPI.Instance.HideMap(false);
-        UIStateManager.Instance.CallWindowChanged(true);
+        //UIStateManager.Instance.CallWindowChanged(true);
 
         //LeanTween.alphaCanvas(CG, 0, .65f);
         //LeanTween.scale(gameObject, Vector3.zero, .65f).setEase(LeanTweenType.easeOutQuint).setOnComplete(() => { Destroy(gameObject); });
@@ -89,7 +89,7 @@ public class BOSController : BOSBase
             })
             .setOnComplete(() =>
             {
-                UIStateManager.Instance.CallWindowChanged(false);
+                //UIStateManager.Instance.CallWindowChanged(false);
                 if (!LocationIslandController.isInBattle)
                     MapsAPI.Instance.HideMap(true);
             })

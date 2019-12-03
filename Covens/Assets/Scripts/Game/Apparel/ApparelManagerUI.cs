@@ -69,7 +69,7 @@ public class ApparelManagerUI : MonoBehaviour
 
         ApparelManager.instance.SetupApparel();
 
-        UIStateManager.Instance.CallWindowChanged(false);
+        //UIStateManager.Instance.CallWindowChanged(false);
         SoundManagerOneShot.Instance.MenuSound();
         container.parent.gameObject.SetActive(true);
         m_Canvas.enabled = true;
@@ -86,7 +86,7 @@ public class ApparelManagerUI : MonoBehaviour
     public void Hide()
     {
         BackButtonListener.RemoveCloseAction();
-        UIStateManager.Instance.CallWindowChanged(true);
+        //UIStateManager.Instance.CallWindowChanged(true);
         SoundManagerOneShot.Instance.MenuSound();
         wardrobeAnim.Play("out");
 

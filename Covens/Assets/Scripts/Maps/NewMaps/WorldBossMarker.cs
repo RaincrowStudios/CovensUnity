@@ -26,4 +26,20 @@ public class WorldBossMarker : CharacterMarker
     {
         //throw new System.NotImplementedException();
     }
+
+    public override void OnDespawn()
+    {
+        //base.OnDespawn();
+        //LeanTween.cancel(m_TweenId);
+        //LeanTween.cancel(m_EnergyRingTweenId);
+
+        IsShowingAvatar = false;
+        IsShowingIcon = false;
+
+        //m_AvatarRenderer.sprite = null;
+        //m_IconRenderer.sprite = null;
+
+        m_Animator.SetBool("avatar", IsShowingAvatar);
+        m_Animator.SetBool("icon", IsShowingIcon);
+    }
 }

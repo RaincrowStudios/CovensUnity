@@ -26,15 +26,16 @@ public static class PickUpCollectibleAPI
         //fx.position = marker.AvatarTransform.position;
 
         //spawn particle on inventory button
-        if (UIStateManager.Instance.DisableButtons.Length >= 2)
-        {
-            Transform inventoryButton = UIStateManager.Instance.DisableButtons[2].transform;
-            Transform uiFx = m_UiCollectFxPool.Spawn(inventoryButton, 5f);
-            uiFx.localPosition = Vector3.zero;
-            uiFx.localScale = Vector3.one;
-            marker.SetAlpha(0, 0.5f);
-            MarkerSpawner.DeleteMarker(instance);
-        }
+        //if (UIStateManager.Instance.DisableButtons.Length >= 2)
+        //{
+        //    Transform inventoryButton = UIStateManager.Instance.DisableButtons[2].transform;
+        //    Transform uiFx = m_UiCollectFxPool.Spawn(inventoryButton, 5f);
+        //    uiFx.localPosition = Vector3.zero;
+        //    uiFx.localScale = Vector3.one;
+        //    marker.SetAlpha(0, 0.5f);
+        //    MarkerSpawner.DeleteMarker(instance);
+        //}
+        Debug.LogError("TODO:relink inventory button");
 
         //send the request
         APIManager.Instance.Post("character/pickup/" + instance, "{}", (response, result) =>

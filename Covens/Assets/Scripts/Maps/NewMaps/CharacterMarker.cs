@@ -70,6 +70,11 @@ public abstract class CharacterMarker : MuskMarker
         }
     }
 
+    public virtual void GetPortrait(System.Action<Sprite> callback)
+    {
+        callback?.Invoke(null);
+    }
+
     public override void EnablePortait()
     {
         if (IsShowingIcon)

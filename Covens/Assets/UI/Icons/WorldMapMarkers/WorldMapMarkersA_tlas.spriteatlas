@@ -37,12 +37,12 @@ SpriteAtlas:
       m_BuildTarget: iPhone
       m_MaxTextureSize: 2048
       m_ResizeAlgorithm: 0
-      m_TextureFormat: 46
+      m_TextureFormat: 33
       m_TextureCompression: 1
       m_CompressionQuality: 50
       m_CrunchedCompression: 0
       m_AllowsAlphaSplitting: 0
-      m_Overridden: 1
+      m_Overridden: 0
       m_AndroidETC2FallbackOverride: 0
       m_ForceMaximumCompressionQuality_BC6H_BC7: 1
     packingSettings:
@@ -59,11 +59,14 @@ SpriteAtlas:
     - {fileID: 102900000, guid: 19fa35c62a9a83e4d97fbd1c66bbce4d, type: 3}
     - {fileID: 102900000, guid: 48be170108e65e2449aa6ca148606929, type: 3}
     - {fileID: 102900000, guid: 48a645cb931888342a472bfd9decbd28, type: 3}
-    totalSpriteSurfaceArea: 90112
+    totalSpriteSurfaceArea: 118784
     bindAsDefault: 1
   m_MasterAtlas: {fileID: 0}
   m_PackedSprites:
+  - {fileID: 21300000, guid: 6880641151fe8e644b6045926864e808, type: 3}
+  - {fileID: 21300000, guid: 492241f1d289f154f81387d04dd899a6, type: 3}
   - {fileID: 21300000, guid: c3934332b61274f4e9c51dab04c52ef9, type: 3}
+  - {fileID: 21300000, guid: 6db65262cfd0d4a4e97ef18ecd1d6d7f, type: 3}
   - {fileID: 21300000, guid: f9d53fe2025b2b64bb85c35fd07ae546, type: 3}
   - {fileID: 21300000, guid: 50e0f943a46dbc3498a9b460b2c588e1, type: 3}
   - {fileID: 21300000, guid: eb03ce44514be2b499eb39cbc5542f01, type: 3}
@@ -78,12 +81,16 @@ SpriteAtlas:
   - {fileID: 21300000, guid: d57a226a311fc574c8e0dac48acca2c2, type: 3}
   - {fileID: 21300000, guid: e960e4aa9e18084489ef7b48650b2bbf, type: 3}
   - {fileID: 21300000, guid: 5155a9cb8912eae4da1fd6f54ad112ca, type: 3}
+  - {fileID: 21300000, guid: 811ff54c7e7a1154eb64e157ea95fc0d, type: 3}
   - {fileID: 21300000, guid: 1d327fcc5c5d5fe4190d06ccc5c5613d, type: 3}
   - {fileID: 21300000, guid: 16ab6d5ebf30eb34c98870239e10b2e2, type: 3}
   - {fileID: 21300000, guid: 1086a1bea06d7e54abf8971c8115956c, type: 3}
   - {fileID: 21300000, guid: b4cb61dec4ed0f94cb7d9b4aee67b9f5, type: 3}
   m_PackedSpriteNamesToIndex:
+  - mannequin_female_portait
+  - boss
   - Female_Oriental 216x216
+  - Treasure
   - Healer
   - Familiar
   - Male_Oriental 216x216
@@ -98,6 +105,7 @@ SpriteAtlas:
   - Forbidden
   - Place of Power
   - TempEnergy
+  - mannequin_male_portrait
   - Female_African 216x216
   - Crafting
   - Female_European 216x216

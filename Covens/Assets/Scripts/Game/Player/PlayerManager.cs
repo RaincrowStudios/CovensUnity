@@ -13,23 +13,12 @@ public class PlayerManager : MonoBehaviour
 {
     public static PlayerManager Instance { get; set; }
     public GameObject markerPrefab;
-    public GameObject physicalMarkerPrefab;
-
-    public Sprite maleBlack;
-    public Sprite maleWhite;
-    public Sprite maleAsian;
-
-    public Sprite femaleWhite;
-    public Sprite femaleAsian;
-    public Sprite femaleBlack;
-
-    public static float reinitTime = 50;
 
     public GameObject AtLocation_UI;
 
-    private static IMarker m_Marker;
+    private IMarker m_Marker;
 
-    public static IMarker marker => LocationIslandController.isInBattle ? LocationPlayerAction.playerMarker : m_Marker;
+    public static IMarker marker => LocationIslandController.isInBattle ? LocationPlayerAction.playerMarker : Instance.m_Marker;
     public static WitchMarker witchMarker => marker as WitchMarker;
 
     public static bool inSpiritForm { get => MarkerManagerAPI.IsSpiritForm; }
@@ -38,15 +27,7 @@ public class PlayerManager : MonoBehaviour
 
     public static string SystemLanguage { get => DictionaryManager.Languages[DictionaryManager.languageIndex]; }
 
-    public float playerScale = 15;
-    public float playerPhysicalScale = 15;
-    public GameObject transFormPrefab;
-    public GameObject AttackRingPrefab;
-    public static GameObject AttackRing;
-    bool connectionFailed = false;
-    Vector2 currentPos;
-
-    public bool SnapMapToPosition = true;
+    private Vector2 m_LastPosition;
 
     GameObject atLocationObject;
 
@@ -94,16 +75,6 @@ public class PlayerManager : MonoBehaviour
 
         foreach (var condition in conditions)
             MarkerSpawner.ApplyStatusEffect(PlayerDataManager.playerData.instance, null, condition);
-    }
-
-    void onMapChangePos()
-    {
-        SnapMapToPosition = false;
-    }
-
-    public void ReSnapMap()
-    {
-        SnapMapToPosition = true;
     }
 
     void SpawnPlayer(float x, float y)
@@ -235,7 +206,7 @@ public class PlayerManager : MonoBehaviour
 
     private void OnStartFlying()
     {
-        currentPos = marker.Coords;
+        m_LastPosition = marker.Coords;
 
         MainUITransition.Instance.EnableSummonButton(false);
         MainUITransition.Instance.EnableShoutButton(false);
@@ -263,7 +234,7 @@ public class PlayerManager : MonoBehaviour
             onFinishFlight?.Invoke();
         };
 
-        if (MapsAPI.Instance.position != currentPos)
+        if (MapsAPI.Instance.position != m_LastPosition)
         {
             MarkerManagerAPI.GetMarkers(false, true, finishFlight);
         }

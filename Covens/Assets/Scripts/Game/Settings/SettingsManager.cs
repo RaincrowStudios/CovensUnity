@@ -310,7 +310,7 @@ public class SettingsManager : MonoBehaviour
             })
             .setOnComplete(() =>
             {
-                UIStateManager.Instance.CallWindowChanged(false);
+                //UIStateManager.Instance.CallWindowChanged(false);
                 MapsAPI.Instance.HideMap(true);
             })
             .uniqueId;
@@ -323,7 +323,7 @@ public class SettingsManager : MonoBehaviour
         OnAudioToggle -= _OnToggleAudio;
         OnBuildingsToggle -= _OnToggleBuilding;
 
-        UIStateManager.Instance.CallWindowChanged(true);
+        //UIStateManager.Instance.CallWindowChanged(true);
         MapsAPI.Instance.HideMap(false);
 
         m_InputRaycast.enabled = false;

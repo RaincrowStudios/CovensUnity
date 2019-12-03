@@ -26,7 +26,7 @@ public class WitchMarker : CharacterMarker
 
     private int m_AvatarColorTweenId;
 
-    public void GetPortrait(System.Action<Sprite> callback)
+    public override void GetPortrait(System.Action<Sprite> callback)
     {
         //if already despawned, return null
         if (Token == null)

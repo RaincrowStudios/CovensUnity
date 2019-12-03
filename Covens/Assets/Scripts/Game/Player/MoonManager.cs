@@ -107,7 +107,7 @@ public class MoonManager : UIAnimationManager
         m_InputRaycaster.enabled = true;
         BackButtonListener.AddCloseAction(Close);
 
-        UIStateManager.Instance.CallWindowChanged(false);
+        //UIStateManager.Instance.CallWindowChanged(false);
         container.transform.GetChild(9).GetComponent<Button>().onClick.AddListener(() =>
         {
             Close();
@@ -164,7 +164,7 @@ public class MoonManager : UIAnimationManager
         StartCoroutine(EnableAlignmentButtonInteractability());
         SoundManagerOneShot.Instance.MenuSound();
         anim.Play("out");
-        UIStateManager.Instance.CallWindowChanged(true);
+        //UIStateManager.Instance.CallWindowChanged(true);
         MapsAPI.Instance.HideMap(false);
         StopCoroutine("CountDown");
         Disable(container, 1);

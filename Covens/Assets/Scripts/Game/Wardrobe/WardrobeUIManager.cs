@@ -55,7 +55,7 @@ public class WardrobeUIManager : MonoBehaviour
 
     public void ShowWardrobe()
     {
-        UIStateManager.Instance.CallWindowChanged(false);
+        //UIStateManager.Instance.CallWindowChanged(false);
         SoundManagerOneShot.Instance.MenuSound();
         wardobeContainer.SetActive(true);
         anim.SetBool("animate", true);
@@ -67,7 +67,7 @@ public class WardrobeUIManager : MonoBehaviour
         anim.SetBool("animate", false);
         Invoke("DisableDelay", 1f);
         SoundManagerOneShot.Instance.MenuSound();
-        UIStateManager.Instance.CallWindowChanged(true);
+        //UIStateManager.Instance.CallWindowChanged(true);
 
     }
 

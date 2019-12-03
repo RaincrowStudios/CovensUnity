@@ -1335,11 +1335,15 @@ MonoBehaviour:
   m_PlaceOfPower2: {fileID: 21300000, guid: e960e4aa9e18084489ef7b48650b2bbf, type: 3}
   m_PlaceOfPower3: {fileID: 21300000, guid: e960e4aa9e18084489ef7b48650b2bbf, type: 3}
   m_PlaceOfPower4: {fileID: 21300000, guid: e960e4aa9e18084489ef7b48650b2bbf, type: 3}
+  m_Boss: {fileID: 21300000, guid: 492241f1d289f154f81387d04dd899a6, type: 3}
+  m_Loot: {fileID: 21300000, guid: 6db65262cfd0d4a4e97ef18ecd1d6d7f, type: 3}
   m_WitchColor: {r: 0.5964026, g: 0.027450992, b: 0.8, a: 0.8901961}
-  m_SpiritColor: {r: 0.8, g: 0.13504854, b: 0.027450992, a: 0.8901961}
+  m_SpiritColor: {r: 0.8679245, g: 0.28401676, b: 0, a: 0.8901961}
   m_CollectableColor: {r: 0.40207815, g: 0.8, b: 0.027450992, a: 0.8901961}
   m_CollectableEnergyColor: {r: 0.02745098, g: 0.5803922, b: 0.8, a: 0.8901961}
   m_PopColor: {r: 0.6117647, g: 0.6117647, b: 0.6117647, a: 0}
+  m_BossColor: {r: 1, g: 0, b: 0, a: 0.9019608}
+  m_LootColor: {r: 1, g: 0.903612, b: 0, a: 0.9019608}
   m_MarkerDetailedThreshold: 0.82
   m_MarkerVisibleThreshoold: 0.58
   m_MinMarkerRange: 7000000
@@ -1348,7 +1352,7 @@ MonoBehaviour:
   m_MaxMarkerCount: 25
   m_MinScale: 6000
   m_MaxScale: 5
-  m_UpdateBatchSize: 200
+  m_UpdateBatchSize: 500
 --- !u!1 &1616046501592548
 GameObject:
   m_ObjectHideFlags: 0
@@ -1418,8 +1422,11 @@ MonoBehaviour:
   m_TrackedObjectsContainer: {fileID: 1190131398276830}
   m_WallMaterial: {fileID: 2100000, guid: 1060ffb5d526b134190513703ed16c2d, type: 2}
   m_RoofMaterial: {fileID: 2100000, guid: ddf7d88eed74b6643ad102f8997ca03b, type: 2}
-  m_WaterMaterial: {fileID: 2100000, guid: 313d2f60b6e1d024fab719af4d6c88d3, type: 2}
+  m_AreaWaterMaterial: {fileID: 2100000, guid: 313d2f60b6e1d024fab719af4d6c88d3, type: 2}
+  m_LineWaterMaterial: {fileID: 2100000, guid: 3137343d8354a8b4a9eaa536e2b5746e, type: 2}
   m_SegmentMaterial: {fileID: 2100000, guid: 220d808c33f95e542859c5aaa7fc34f2, type: 2}
+  m_SegmentBorderMaterial: {fileID: 2100000, guid: 6bb484e1fd800134e8d6a34973108891,
+    type: 2}
   m_MapLayer: 17
   m_MinCamDistance: -800
   m_MaxCamDistance: -13959870
@@ -2184,7 +2191,7 @@ SpriteRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 100
-  m_Sprite: {fileID: 21300000, guid: 8448de2e70e1a324aad0732c99845ae7, type: 3}
+  m_Sprite: {fileID: 21300000, guid: 63a67f83578ab194b80257f780f43750, type: 3}
   m_Color: {r: 0.02745098, g: 0.5803922, b: 0.8, a: 0.56078434}
   m_FlipX: 0
   m_FlipY: 0

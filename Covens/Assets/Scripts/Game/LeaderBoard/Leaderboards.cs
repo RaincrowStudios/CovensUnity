@@ -147,7 +147,7 @@ public class Leaderboards : UIAnimationManager
                 })
                 .setOnComplete(() =>
                 {
-                    UIStateManager.Instance.CallWindowChanged(false);
+                    //UIStateManager.Instance.CallWindowChanged(false);
                     MapsAPI.Instance.HideMap(true);
                 })
                 .uniqueId;
@@ -173,7 +173,7 @@ public class Leaderboards : UIAnimationManager
 
         BackButtonListener.RemoveCloseAction();
 
-        UIStateManager.Instance.CallWindowChanged(true);
+        //UIStateManager.Instance.CallWindowChanged(true);
         MapsAPI.Instance.HideMap(false);
 
         CanvasGroup cg = this.GetComponent<CanvasGroup>();

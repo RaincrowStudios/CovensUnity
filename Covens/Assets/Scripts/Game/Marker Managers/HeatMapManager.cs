@@ -7,7 +7,6 @@ using Newtonsoft.Json;
 
 public class HeatMapManager : MonoBehaviour
 {
-    public static HeatMapManager instance { get; set; }
     public GameObject heatDot;
     HeatPoint[] m_Heatpoints = new HeatPoint[0];
 
@@ -29,7 +28,6 @@ public class HeatMapManager : MonoBehaviour
 
     void Awake()
     {
-        instance = this;
         map = MapsAPI.Instance;
     }
 
@@ -103,7 +101,7 @@ public class HeatMapManager : MonoBehaviour
 
     void updateHeatMaps(bool a, bool b, bool c)
     {
-        float sMultiplier = MapUtils.scale(minScale, maxScale, 0, 1, map.normalizedZoom);
+        float sMultiplier = MapUtils.scale(minScale, maxScale, 0, 1, map.normalizedZoom)/2f;
 
         foreach (var item in m_Heatpoints)
         {
@@ -114,6 +112,7 @@ public class HeatMapManager : MonoBehaviour
                 //scaleDot(item, sMultiplier);
                 float sCount = MapUtils.scale(3, 5, 1, 700, item.count);
                 item.t.localScale = Vector3.one * sMultiplier * sCount;
+                item.t.localEulerAngles = new Vector3(90, 0, 0);
             }
             else
             {

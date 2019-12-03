@@ -1,9 +1,10 @@
-﻿using System.Collections;
+﻿using Raincrow.Maps;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class MapCenterPointerUI : MonoBehaviour
+public class UIMarkerPointer : MonoBehaviour
 {
     [SerializeField] private RectTransform m_CanvasRect;
     [SerializeField] private Vector2 m_HorizontalBorders;
@@ -24,6 +25,8 @@ public class MapCenterPointerUI : MonoBehaviour
     private bool m_Enabled = true;
     private bool m_ShowingPointer = false;
     private bool m_ShowingPhysical = false;
+
+    private CharacterMarker m_Target;
 
     private void Awake()
     {
@@ -98,9 +101,9 @@ public class MapCenterPointerUI : MonoBehaviour
             return;
         }
 
-        if (PlayerManager.witchMarker)
+        if (m_Target)
         {
-            PlayerManager.witchMarker.GetPortrait(spr => m_Portrait.overrideSprite = spr);
+            m_Target.GetPortrait(spr => m_Portrait.overrideSprite = spr);
         }
 
         m_ShowingPointer = true;
@@ -138,20 +141,7 @@ public class MapCenterPointerUI : MonoBehaviour
             .setOnComplete(() => m_PointerTransform.gameObject.SetActive(false))
             .uniqueId;
     }
-
-    //public void EnablePointer(bool enable)
-    //{
-    //    if (m_Enabled == enable)
-    //        return;
-
-    //    m_Enabled = enable;
-
-    //    if (m_Enabled)
-    //        ShowPointer();
-    //    else
-    //        HidePointer();
-    //}
-
+    
     public void ShowPhysicalMarker(bool show)
     {
         if (m_ShowingPhysical == show)
@@ -160,5 +150,10 @@ public class MapCenterPointerUI : MonoBehaviour
 
         LeanTween.cancel(m_PhysCenterTweenId);
         m_PhysCenterTweenId = LeanTween.alphaCanvas(m_PhysicalCenter, show ? 1 : 0, 0.5f).setEaseOutCubic().uniqueId;
+    }
+
+    public void SetTarget(CharacterMarker marker)
+    {
+        m_Target = marker;
     }
 }

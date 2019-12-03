@@ -49,6 +49,19 @@
         public string founder { get; set; }
     }
 
+    public class ChatCovenData
+    {
+        public string name { get; set; }
+        public string dominion { get; set; }
+        public int members { get; set; }
+        public int worldRank { get; set; }
+        public int dominionRank { get; set; }
+        public ulong xp { get; set; }
+        public long alignment { get; set; }
+        public int level { get; set; }
+        public string founder { get; set; }
+    }
+
     [System.Serializable]
     public class ChatMessage
     {

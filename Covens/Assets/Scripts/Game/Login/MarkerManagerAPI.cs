@@ -31,12 +31,13 @@ public class MarkerManagerAPI : MonoBehaviour
     }
 
     public static event System.Action<string> OnChangeDominion;
+    public static event System.Action<List<WitchToken>, List<SpiritToken>, List<CollectableToken>, List<EnergyToken>, List<PopToken>, List<BossToken>, List<LootToken>> OnWillSpawnMarkers;
+
     public static bool IsSpiritForm { get; private set; }
     public static bool IsSpawningTokens { get; private set; }
 
     public static bool IsGarden { get; private set; }
 
-    private static MarkerManagerAPI m_Instance;
     private static int m_MoveTweenId;
     private static Coroutine m_SpawnCoroutine;
 
@@ -44,16 +45,17 @@ public class MarkerManagerAPI : MonoBehaviour
 
     public static int WitchCount { get; private set; }
 
-    private void Awake()
+    private static MarkerManagerAPI m_CoroutineBehavior;
+    private static MarkerManagerAPI Instance
     {
-        if (m_Instance != null)
+        get
         {
-            Destroy(this.gameObject);
-            return;
+            if (m_CoroutineBehavior == null)
+                m_CoroutineBehavior = new GameObject("MarkerManagerAPI").AddComponent<MarkerManagerAPI>();
+            return m_CoroutineBehavior;
         }
-        m_Instance = this;
     }
-
+    
     public static void GetMarkers(float longitude, float latitude, System.Action callback = null, bool animateMap = true, bool showLoading = false, bool loadMap = false)
     {
         double dist = MapsAPI.Instance.DistanceBetweenPointsD(new Vector2(longitude, latitude), GetGPS.coordinates);
@@ -141,7 +143,7 @@ public class MarkerManagerAPI : MonoBehaviour
 
         //stop despawning markers
         if (m_SpawnCoroutine != null)
-            m_Instance.StopCoroutine(m_SpawnCoroutine);
+            Instance.StopCoroutine(m_SpawnCoroutine);
 
         //pre-move the player marker and load the map at the target position
         if (loadMap)
@@ -300,7 +302,7 @@ public class MarkerManagerAPI : MonoBehaviour
         //stop avatar generation
         AvatarSpriteUtil.Instance.ClearQueues();
 
-        m_SpawnCoroutine = m_Instance.StartCoroutine(SpawnMarkersCoroutine(witches, spirits, items, energies, pops, bosses, loot));
+        m_SpawnCoroutine = Instance.StartCoroutine(SpawnMarkersCoroutine(witches, spirits, items, energies, pops, bosses, loot));
     }
 
     private static IEnumerator SpawnMarkersCoroutine(
@@ -313,6 +315,8 @@ public class MarkerManagerAPI : MonoBehaviour
         List<LootToken> loot)
     {
         IsSpawningTokens = true;
+
+        OnWillSpawnMarkers?.Invoke(witches, spirits, items, energies, pops, bosses, loot);
 
         HashSet<IMarker> updatedMarkers = new HashSet<IMarker>();
 
@@ -374,9 +378,7 @@ public class MarkerManagerAPI : MonoBehaviour
             aux = MarkerSpawner.Instance.AddMarker(bosses[i]);
             if (aux != null)
                 updatedMarkers.Add(aux);
-            yield return null;
         }
-
 
         Debug.Log($"spawning loot: {loot?.Count}");
         for (int i = 0; i < loot?.Count; i++)
@@ -384,8 +386,8 @@ public class MarkerManagerAPI : MonoBehaviour
             aux = MarkerSpawner.Instance.AddMarker(loot[i]);
             if (aux != null)
                 updatedMarkers.Add(aux);
-            yield return null;
         }
+        yield return null;
 
         ////////////////////////////////////////remove any other markers
 

@@ -24,9 +24,10 @@ public class CovensMuskMap : MonoBehaviour
     //musk style properties
     [SerializeField] private Material m_WallMaterial;
     [SerializeField] private Material m_RoofMaterial;
-    [SerializeField] private Material m_WaterMaterial;
+    [SerializeField] private Material m_AreaWaterMaterial;
+    [SerializeField] private Material m_LineWaterMaterial;
     [SerializeField] private Material m_SegmentMaterial;
-    //[SerializeField] private Material m_SegmentBorderMaterial;
+    [SerializeField] private Material m_SegmentBorderMaterial;
     [SerializeField] private GameObjectOptions m_MapStyle;
     [SerializeField] private int m_MapLayer;
 
@@ -131,17 +132,18 @@ public class CovensMuskMap : MonoBehaviour
             AreaWaterStyle = new AreaWaterStyle.Builder
             {
                 Fill = true,
-                FillMaterial = new Material(m_WaterMaterial)
+                FillMaterial = new Material(m_AreaWaterMaterial)
             }.Build(),
             LineWaterStyle = new LineWaterStyle.Builder
             {
-                Material = new Material(m_WaterMaterial)
+                Material = new Material(m_LineWaterMaterial)
             }.Build(),
             SegmentStyle = new SegmentStyle.Builder
             {
                 Material = new Material(m_SegmentMaterial),
-                //BorderMaterial = new Material(m_SegmentBorderMaterial),
-                Width = 5,
+                BorderMaterial = m_SegmentBorderMaterial ? new Material(m_SegmentBorderMaterial) : null,
+                Width = 10,
+                BorderWidth = 1,
             }.Build(),
         };
 
@@ -248,9 +250,10 @@ public class CovensMuskMap : MonoBehaviour
             //update segment width
             m_MapStyle.SegmentStyle = new SegmentStyle.Builder
             {
-                //BorderMaterial = m_MapsService.ZoomLevel == 17 ? m_MapStyle.SegmentStyle.BorderMaterial : null,
+                BorderMaterial = m_MapsService.ZoomLevel == 17 ? m_MapStyle.SegmentStyle.BorderMaterial : null,
                 Material = m_MapStyle.SegmentStyle.Material,
                 Width = 10.0f * m_CamDat.segmentWidth,
+                BorderWidth = m_CamDat.segmentWidth
             }.Build();
 
             m_PreviousZoomLevels.Add(oldZoomLv);

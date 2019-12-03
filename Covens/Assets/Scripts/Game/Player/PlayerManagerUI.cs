@@ -5,7 +5,6 @@ using Newtonsoft.Json;
 using System;
 using TMPro;
 
-[RequireComponent(typeof(FlightVisualManager))]
 public class PlayerManagerUI : UIAnimationManager
 {
     public static PlayerManagerUI Instance { get; set; }
@@ -21,7 +20,6 @@ public class PlayerManagerUI : UIAnimationManager
     public GameObject spiritForm;
     public GameObject gardenUI;
     public GameObject coinGlow;
-    FlightVisualManager FVM;
     public GameObject LandFX;
     public CanvasGroup WitchDisplay;
     public TextMeshProUGUI DisplayText;
@@ -59,7 +57,6 @@ public class PlayerManagerUI : UIAnimationManager
             spiritForm.transform.rotation = physicalForm.transform.rotation;
         }
         Instance = this;
-        FVM = GetComponent<FlightVisualManager>();
         physicalForm.SetActive(false);
         spiritForm.SetActive(false);
 

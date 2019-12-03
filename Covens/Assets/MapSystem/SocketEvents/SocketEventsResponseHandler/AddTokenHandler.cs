@@ -15,6 +15,7 @@ namespace Raincrow.GameEventResponses
 
         public static void HandleEvent(Token token)
         {
+            //wait for marker spawning to finish before trying to add this token
             if (MarkerManagerAPI.IsSpawningTokens)
             {
                 LeanTween.value(0, 0, 1f).setOnComplete(() => HandleEvent(token));

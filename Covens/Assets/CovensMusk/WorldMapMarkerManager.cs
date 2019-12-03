@@ -33,6 +33,9 @@ public class WorldMapMarkerManager : MonoBehaviour
         placeOfPower4 = 19,
 
         energy = 20,
+
+        boss = 21,
+        loot = 22,
     }
 
     [SerializeField] private WorldMapMarker m_MarkerPrefab;
@@ -68,12 +71,18 @@ public class WorldMapMarkerManager : MonoBehaviour
     [SerializeField] private Sprite m_PlaceOfPower3;
     [SerializeField] private Sprite m_PlaceOfPower4;
 
+    [Space(2)]
+    [SerializeField] private Sprite m_Boss;
+    [SerializeField] private Sprite m_Loot;
+
     [Header("Colors")]
     [SerializeField] private Color m_WitchColor;
     [SerializeField] private Color m_SpiritColor;
     [SerializeField] private Color m_CollectableColor;
     [SerializeField] private Color m_CollectableEnergyColor;
     [SerializeField] private Color m_PopColor;
+    [SerializeField] private Color m_BossColor;
+    [SerializeField] private Color m_LootColor;
 
     [Header("Settings")]
     [SerializeField] private float m_MarkerDetailedThreshold = 0.7f;
@@ -92,6 +101,7 @@ public class WorldMapMarkerManager : MonoBehaviour
     
     private Sprite[] m_MarkerSpriteMap;
     private Color[] m_MarkerColorMap;
+    private float[] m_MarkerScaleMap;
 
     private List<WorldMapMarker> m_MarkersList = new List<WorldMapMarker>();
     private List<WorldMapMarker> m_DespawnList = new List<WorldMapMarker>();
@@ -154,6 +164,9 @@ public class WorldMapMarkerManager : MonoBehaviour
             m_PlaceOfPower1,
 
             m_CollectableEnergy,
+
+            m_Boss,
+            m_Loot,
         };
 
         m_MarkerColorMap = new Color[]
@@ -183,6 +196,41 @@ public class WorldMapMarkerManager : MonoBehaviour
             m_PopColor,
 
             m_CollectableEnergyColor,
+
+            m_BossColor,
+            m_LootColor,
+        };
+
+        m_MarkerScaleMap = new float[]
+        {
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+
+            1,
+            1,
+            1,
+
+            1,
+            1,
+            1,
+            1,
+
+            1,
+
+            5,
+            2.5f,
         };
     }
 
@@ -342,6 +390,7 @@ public class WorldMapMarkerManager : MonoBehaviour
 
                 item.farRenderer.color = m_MarkerColorMap[markers[i].type];
                 item.nearRenderer.sprite = m_MarkerSpriteMap[markers[i].type];
+                item.farRenderer.transform.localScale = Vector3.one * m_MarkerScaleMap[markers[i].type];
 
                 m_MarkersList.Add(item);
                 ScaleMarker(item);

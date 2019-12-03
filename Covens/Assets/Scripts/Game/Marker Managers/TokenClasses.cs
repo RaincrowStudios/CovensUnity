@@ -129,6 +129,8 @@ public class SpiritToken : CharacterToken
     [JsonProperty("spirit")]
     public string spiritId;
     public string owner;
+    [JsonProperty("worldBossFight")]
+    public bool IsBossSummon;
 }
 
 public class WitchToken : CharacterToken

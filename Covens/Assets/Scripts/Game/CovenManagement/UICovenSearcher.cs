@@ -6,6 +6,7 @@ using Raincrow.Chat.UI;
 using TMPro;
 using System.Linq;
 using Newtonsoft.Json;
+using Raincrow.Chat;
 
 public class UICovenSearcher : MonoBehaviour
 {

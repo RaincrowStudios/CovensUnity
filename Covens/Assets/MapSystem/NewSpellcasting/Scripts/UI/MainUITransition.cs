@@ -22,6 +22,8 @@ public class MainUITransition : MonoBehaviour
         MAPVIEW_SELECT,
         POPVIEW,
         POPVIEW_SELECT,
+        WORLDBOSS,
+        WORLDBOSS_SELECT
     }
 
     [SerializeField] private RectTransform leftBar;
@@ -32,7 +34,6 @@ public class MainUITransition : MonoBehaviour
     [SerializeField] private CanvasGroup[] bars;
     [SerializeField] private RectTransform energy;
     [SerializeField] private RectTransform quickCast;
-    [SerializeField] private MapCenterPointerUI mapPointer;
     
 
     [Header("Buttons")]
@@ -44,6 +45,8 @@ public class MainUITransition : MonoBehaviour
     [SerializeField] private AnimStateSettings m_MapView_Select;
     [SerializeField] private AnimStateSettings m_PopView;
     [SerializeField] private AnimStateSettings m_PopView_Select;
+    [SerializeField] private AnimStateSettings m_Worldboss;
+    [SerializeField] private AnimStateSettings m_Worldboss_Select;
 
     public static MainUITransition Instance { get; set; }
 

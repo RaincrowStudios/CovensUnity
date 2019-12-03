@@ -237,6 +237,10 @@ public class MarkerSpawner : MarkerManager
             pool = m_ToolPool; // Instance.m_ToDespawn.Add((m_ToolPool, marker));
         else if (marker.Type == MarkerType.ENERGY)
             pool = m_EnergyPool; //Instance.m_ToDespawn.Add((m_EnergyPool, marker));
+        else if (marker.Type == MarkerType.BOSS)
+            pool = m_BossPool;
+        else if (marker.Type == MarkerType.LOOT)
+            pool = m_LootPool;
         else if (marker.Type == MarkerType.PLACE_OF_POWER)
         {
             int? degree = (marker.Token as PopToken).lastOwnedBy?.degree;
@@ -281,8 +285,8 @@ public class MarkerSpawner : MarkerManager
     {
         Debug.Log("OnClickMarker " + m.GameObject.name);
 
-        if (!UIStateManager.isMain)
-            return;
+        //if (!UIStateManager.isMain)
+        //    return;
 
         if (PlayerManager.isFlying || PlayerDataManager.playerData.energy <= 0)
         {

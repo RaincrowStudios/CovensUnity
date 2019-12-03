@@ -61,7 +61,7 @@ public class SpiritDeckUIManager : UIAnimationManager
     public void TurnOn()
     {
         SoundManagerOneShot.Instance.MenuSound();
-        UIStateManager.Instance.CallWindowChanged(false);
+        //UIStateManager.Instance.CallWindowChanged(false);
         Show(DeckObject);
         OnClick(currentType.ToString());
     }
@@ -69,7 +69,7 @@ public class SpiritDeckUIManager : UIAnimationManager
     public void TurnOff()
     {
         SoundManagerOneShot.Instance.MenuSound();
-        UIStateManager.Instance.CallWindowChanged(true);
+        //UIStateManager.Instance.CallWindowChanged(true);
         Hide(DeckObject);
     }
 
