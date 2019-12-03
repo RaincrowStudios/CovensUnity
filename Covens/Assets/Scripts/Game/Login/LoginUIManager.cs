@@ -168,21 +168,21 @@ public class LoginUIManager : MonoBehaviour
         m_ForgotPassButton.onClick.AddListener(() => SetScreen(Screen.RESET_A));
         loginButton.onClick.AddListener(OnClickLogin);
         accountName.onEndEdit.AddListener(value => accountPassword.Select());
-        //accountPassword.onEndEdit.AddListener(value => OnClickLogin());
+        accountPassword.onEndEdit.AddListener(value => OnClickLogin());
 
         //age gate
         CheckAge.onClick.AddListener(() => AgeGateCheck());
         dateDay.onEndEdit.AddListener(value => dateMonth.Select());
         dateMonth.onEndEdit.AddListener(value => dateYear.Select());
-        //dateYear.onEndEdit.AddListener(value => AgeGateCheck());
+        dateYear.onEndEdit.AddListener(value => AgeGateCheck());
 
 
 
         //create acc
         m_CreatAccBackButton.onClick.AddListener(() => SetScreen(Screen.WELCOME));
         createAccountButton.onClick.AddListener(OnClickCreateAccount);
-        createAccountName.onEndEdit.AddListener(value => createAccountEmail.Select());
-        createAccountEmail.onEndEdit.AddListener(value => createAccountPassword.Select());
+        //createAccountName.onEndEdit.AddListener(value => createAccountEmail.Select());
+        //createAccountEmail.onEndEdit.AddListener(value => createAccountPassword.Select());
         //createAccountPassword.onEndEdit.AddListener(value => OnClickCreateAccount());
 
         //choose char
