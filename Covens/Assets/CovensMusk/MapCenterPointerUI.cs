@@ -52,7 +52,10 @@ public class MapCenterPointerUI : MonoBehaviour
     private void OnMapUpdate(bool position, bool zoom, bool rotation)
     {
         if (m_Enabled == false)
+        {
+            HidePointer();
             return;
+        }
 
         Vector2 screenPos = MapsAPI.Instance.camera.WorldToScreenPoint(MapsAPI.Instance.GetWorldPosition(PlayerManager.marker.Token.longitude, PlayerManager.marker.Token.latitude));
         Vector2 canvasPos = new Vector2(screenPos.x * (m_CanvasRect.sizeDelta.x / Screen.width), screenPos.y * (m_CanvasRect.sizeDelta.y / Screen.height));
@@ -136,18 +139,18 @@ public class MapCenterPointerUI : MonoBehaviour
             .uniqueId;
     }
 
-    public void EnablePointer(bool enable)
-    {
-        if (m_Enabled == enable)
-            return;
+    //public void EnablePointer(bool enable)
+    //{
+    //    if (m_Enabled == enable)
+    //        return;
 
-        m_Enabled = enable;
+    //    m_Enabled = enable;
 
-        if (m_Enabled)
-            ShowPointer();
-        else
-            HidePointer();
-    }
+    //    if (m_Enabled)
+    //        ShowPointer();
+    //    else
+    //        HidePointer();
+    //}
 
     public void ShowPhysicalMarker(bool show)
     {
