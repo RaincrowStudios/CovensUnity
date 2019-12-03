@@ -21281,6 +21281,7 @@ MonoBehaviour:
   tweenType: 16
   bars:
   - {fileID: 225321934591806360}
+  - {fileID: 225584265147596308}
   energy: {fileID: 224688731810547710}
   quickCast: {fileID: 637390648}
   mapPointer: {fileID: 114796637872850108}

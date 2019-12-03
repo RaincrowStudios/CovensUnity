@@ -60,70 +60,10 @@
 			]
 		},
 		"glow": [
-			{
-				"show": true,
-				"anchorMin": [
-					0.0,
-					0.0
-				],
-				"anchorMax": [
-					0.0,
-					0.0
-				],
-				"position": [
-					141.0,
-					170.0
-				],
-				"scale": 1.0
-			},
-			{
-				"show": true,
-				"anchorMin": [
-					0.0,
-					0.0
-				],
-				"anchorMax": [
-					0.0,
-					0.0
-				],
-				"position": [
-					385.0,
-					170.0
-				],
-				"scale": 1.0
-			},
-			{
-				"show": true,
-				"anchorMin": [
-					0.0,
-					0.0
-				],
-				"anchorMax": [
-					0.0,
-					0.0
-				],
-				"position": [
-					619.0,
-					170.0
-				],
-				"scale": 1.0
-			},
-			{
-				"show": true,
-				"anchorMin": [
-					0.0,
-					0.0
-				],
-				"anchorMax": [
-					0.0,
-					0.0
-				],
-				"position": [
-					863.0,
-					170.0
-				],
-				"scale": 1.0
-			}
+			{"show":true,"anchorMin":[0.0,0.0],"anchorMax":[0.0,0.0],"position":[118.0,170.0],"scale":1.0},
+			{"show":true,"anchorMin":[0.0,0.0],"anchorMax":[0.0,0.0],"position":[351.0,170.0],"scale":1.0},
+			{"show":true,"anchorMin":[0.0,0.0],"anchorMax":[0.0,0.0],"position":[581.0,169.0],"scale":1.0},
+			{"show":true,"anchorMin":[0.0,0.0],"anchorMax":[0.0,0.0],"position":[814.0,167.0],"scale":1.0}
 		]
 	},
 	"energy": {},
