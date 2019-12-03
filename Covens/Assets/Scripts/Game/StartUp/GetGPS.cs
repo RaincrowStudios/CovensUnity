@@ -152,6 +152,8 @@ public class GetGPS : MonoBehaviour
 
     IEnumerator Start()
     {
+        yield return null;
+
 #if !LOCAL_API
         while (Application.internetReachability == NetworkReachability.NotReachable)
         {

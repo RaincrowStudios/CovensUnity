@@ -28,10 +28,12 @@ public class CovensMuskMap : MonoBehaviour
     [SerializeField] private Material m_SegmentMaterial;
     //[SerializeField] private Material m_SegmentBorderMaterial;
     [SerializeField] private GameObjectOptions m_MapStyle;
+    [SerializeField] private int m_MapLayer;
 
     //musk properties
     [SerializeField] private float m_MinCamDistance;
     [SerializeField] private float m_MaxCamDistance;
+
 
     [System.Serializable]
     public class CameraDat
@@ -176,12 +178,9 @@ public class CovensMuskMap : MonoBehaviour
         m_MapsService.Events.ModeledStructureEvents.DidCreate.AddListener(OnDidCreateModeledStructure);
 
         //force layer of spawned objects
-        int mapLayer = 17;
-        m_MapsService.Events.AreaWaterEvents.DidCreate.AddListener(e => MapCameraUtils.SetLayer(e.GameObject.transform, mapLayer));
-        m_MapsService.Events.LineWaterEvents.DidCreate.AddListener(e => MapCameraUtils.SetLayer(e.GameObject.transform, mapLayer));
-        m_MapsService.Events.SegmentEvents.DidCreate.AddListener(e => MapCameraUtils.SetLayer(e.GameObject.transform, mapLayer));
-        m_MapsService.Events.ExtrudedStructureEvents.DidCreate.AddListener(e => MapCameraUtils.SetLayer(e.GameObject.transform, mapLayer));
-        m_MapsService.Events.ModeledStructureEvents.DidCreate.AddListener(e => MapCameraUtils.SetLayer(e.GameObject.transform, mapLayer));
+        m_MapsService.Events.AreaWaterEvents.DidCreate.AddListener(OnDidCreateAreaWater);
+        m_MapsService.Events.LineWaterEvents.DidCreate.AddListener(OnDidCreateWaterSegment);
+        m_MapsService.Events.SegmentEvents.DidCreate.AddListener(e => MapCameraUtils.SetLayer(e.GameObject.transform, m_MapLayer));
 
         //initialize zooom properties based on cameradat settings
         m_MinZoom = m_CameraSettings[0].zoomLv;
@@ -376,6 +375,16 @@ public class CovensMuskMap : MonoBehaviour
 #endif
         Debug.LogError("load map error [" + args.DetailedErrorCode + "] " + args.Message);
     }
+    
+    private void OnWillCreateExtrudedStructure(WillCreateExtrudedStructureArgs e)
+    {
+        e.Cancel = !m_BuildingsEnabled;
+    }
+
+    private void OnWillCreateModeledStructure(WillCreateModeledStructureArgs e)
+    {
+        e.Cancel = !m_BuildingsEnabled;
+    }
 
     private void OnDidCreateExtrudedStructure(DidCreateExtrudedStructureArgs e)
     {
@@ -389,20 +398,23 @@ public class CovensMuskMap : MonoBehaviour
 #if UNITY_EDITOR
         e.GameObject.name = "h(" + height + ") " + e.GameObject.name;
 #endif
-    }
 
-    private void OnWillCreateExtrudedStructure(WillCreateExtrudedStructureArgs e)
-    {
-        e.Cancel = !m_BuildingsEnabled;
-    }
-
-    private void OnWillCreateModeledStructure(WillCreateModeledStructureArgs e)
-    {
-        e.Cancel = !m_BuildingsEnabled;
+        MapCameraUtils.SetLayer(e.GameObject.transform, m_MapLayer);
     }
 
     private void OnDidCreateModeledStructure(DidCreateModeledStructureArgs e)
     {
+        MapCameraUtils.SetLayer(e.GameObject.transform, m_MapLayer);
+    }
+
+    private void OnDidCreateAreaWater(DidCreateAreaWaterArgs e)
+    {
+        MapCameraUtils.SetLayer(e.GameObject.transform, m_MapLayer);
+    }
+
+    private void OnDidCreateWaterSegment(DidCreateLineWaterArgs e)
+    {
+        MapCameraUtils.SetLayer(e.GameObject.transform, m_MapLayer);
     }
 
     private void UpdateBorders()
