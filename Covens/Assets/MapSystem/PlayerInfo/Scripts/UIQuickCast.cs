@@ -14,6 +14,7 @@ public class UIQuickCast : MonoBehaviour
     [SerializeField] private UIQuickcastButton m_ButtonPrefab;
     [SerializeField] private Button m_MoreSpells;
     [SerializeField] private Button m_Button;
+    [SerializeField] private Canvas m_ContainerCanvas;
 
     [Header("Anim")]
     [SerializeField] private RectTransform m_RectTransform;
@@ -97,6 +98,7 @@ public class UIQuickCast : MonoBehaviour
     {
         m_Instance = this;
         m_ButtonPrefab.gameObject.SetActive(false);
+        m_ContainerCanvas.enabled = false;
         m_MoreSpells.onClick.AddListener(OnClickMoreSpells);
 
         _Hide();
@@ -156,10 +158,9 @@ public class UIQuickCast : MonoBehaviour
             aux.Hightlight(false);
             aux.transform.localScale = Vector3.one;
             aux.gameObject.SetActive(true);
-
             m_Buttons.Add(aux);
-            m_MoreSpells.transform.SetAsLastSibling();
         }
+        m_MoreSpells.transform.SetAsLastSibling();
 
         UpdateTarget(target, targetData);
 
@@ -229,6 +230,8 @@ public class UIQuickCast : MonoBehaviour
             {
             })
             .uniqueId;
+
+        m_ContainerCanvas.enabled = true;
     }
 
     private void AnimHide()
@@ -245,6 +248,7 @@ public class UIQuickCast : MonoBehaviour
             })
             .setOnComplete(() =>
             {
+                m_ContainerCanvas.enabled = false;
             })
             .setEaseOutCubic()
             .uniqueId;
