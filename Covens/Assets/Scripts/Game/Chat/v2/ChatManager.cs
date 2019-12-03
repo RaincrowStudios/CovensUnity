@@ -90,8 +90,14 @@ namespace Raincrow.Chat
                 {
                     string chatAddress = CovenConstants.chatAddress;
                     Log("Initializing chat (" + chatAddress + ")");
-                    
-                    SocketManager = new SocketManager(new System.Uri(chatAddress))
+
+                    SocketOptions socketOptions = new SocketOptions()
+                    {
+                        ConnectWith = BestHTTP.SocketIO.Transports.TransportTypes.WebSocket,
+                        AdditionalQueryParams = new PlatformSupport.Collections.ObjectModel.ObservableDictionary<string, string>()
+                    };
+
+                    SocketManager = new SocketManager(new System.Uri(chatAddress), socketOptions)
                     {
                         Encoder = new JsonDotNetEncoder()
                     };

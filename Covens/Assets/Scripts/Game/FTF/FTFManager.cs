@@ -649,6 +649,12 @@ public class FTFManager : MonoBehaviour
         yield return 0;
     }
 
+    private IEnumerator HideQuickcast()
+    {
+        UIQuickCast.Hide();
+        yield return 0;
+    }
+
     private IEnumerator ShowNearbyPops()
     {
         bool screenLoaded = false;

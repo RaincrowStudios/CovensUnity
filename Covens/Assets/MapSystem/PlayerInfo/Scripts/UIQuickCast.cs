@@ -43,6 +43,11 @@ public class UIQuickCast : MonoBehaviour
     {
     }
 
+    public static void Hide()
+    {
+        m_Instance?._Hide();
+    }
+
     public static void UpdateTarget(IMarker marker, CharacterMarkerData details)
     {
         if (m_Instance == null)

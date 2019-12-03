@@ -368,9 +368,8 @@ public class MarkerManagerAPI : MonoBehaviour
             yield return null;
         }
 
-
-        Debug.Log($"spawning bosses: {bosses.Count}");
-        for (int i = 0; i < bosses.Count; i++)
+        Debug.Log($"spawning bosses: {bosses?.Count}");
+        for (int i = 0; i < bosses?.Count; i++)
         {
             aux = MarkerSpawner.Instance.AddMarker(bosses[i]);
             if (aux != null)
@@ -379,8 +378,8 @@ public class MarkerManagerAPI : MonoBehaviour
         }
 
 
-        Debug.Log($"spawning loot: {loot.Count}");
-        for (int i = 0; i < loot.Count; i++)
+        Debug.Log($"spawning loot: {loot?.Count}");
+        for (int i = 0; i < loot?.Count; i++)
         {
             aux = MarkerSpawner.Instance.AddMarker(loot[i]);
             if (aux != null)

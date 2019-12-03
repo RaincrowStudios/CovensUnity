@@ -22,7 +22,7 @@
 //ACT 2. SPIRIT
 
 //open spell book
-{"button":{"show":true,"anchorMin":[0.0,0.5],"anchorMax":[0.0,0.5],"position":[1109.0,-576.0],"size":[277.3,220.1]},"highlight":{"show":true,"anchorMin":[0.0,0.5],"anchorMax":[0.0,0.5],"position":[1135.0,-585.0],"size":[780.5,782.1]},"pointer":{"show":true,"anchorMin":[0.0,0.5],"anchorMax":[0.0,0.5],"position":[1111.0,-586.0]},"onExit":[{"method":"ShowSpellbook"},{"method":"ShowSavannah"}]},
+{"button":{"show":true,"anchorMin":[0.0,0.5],"anchorMax":[0.0,0.5],"position":[1056.4,-576.0],"size":[242.2,220.1]},"highlight":{"show":true,"anchorMin":[0.0,0.5],"anchorMax":[0.0,0.5],"position":[1031.0,-585.0],"size":[780.5,782.1]},"pointer":{"show":true,"anchorMin":[0.0,0.5],"anchorMax":[0.0,0.5],"position":[1045.0,-586.0],"scale":0.985554636},"onExit":[{"method":"ShowSpellbook"},{"method":"ShowSavannah"}]},
 {"timer":0.5},
 //"this is your spellbook"
 {"onEnter":[{"method":"ShowMessage","parameters":["ftf_5"]}],"highlight":{"show":true,"anchorMin":[0.0,0.0],"anchorMax":[1.0,1.0],"position":[301.5,529.0],"size":[904.5,-1061.6]}},
@@ -35,7 +35,7 @@
 //wait for glyph tap
 {"button":{"show":true,"anchorMin":[0.5,0.5],"anchorMax":[0.5,0.5],"position":[-2.0,-514.0],"size":[206.4,220.1]},"highlight":{"show":true,"anchorMin":[0.5,0.5],"anchorMax":[0.5,0.5],"position":[35.0,6.9],"size":[1258.0,2825.6]},"pointer":{"show":true,"anchorMin":[0.5,0.5],"anchorMax":[0.5,0.5],"position":[26.0,-534.0]},"onExit":[{"method":"CloseSpellbook"}]},
 //cast the spell and wait 1.5s
-{"timer":1.5, "onEnter":[{"method":"CastSpell","parameters":["spell_hex","ftf_barghest","-54"]}]},
+{"timer":1.5, "onEnter":[{"method":"CastSpell","parameters":["spell_hex","ftf_barghest","-54"]}],"onExit":[{"method":"HideQuickcast"}]},
 
 //"well done, spirit banished"
 {"onEnter":[{"method":"ShowMessage","parameters":["ftf_8", "true"]}],"onExit":[{"method":"CloseSpiritBanished"},{"method":"CloseSpellResults"}]},

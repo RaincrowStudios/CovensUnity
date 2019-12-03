@@ -315,7 +315,7 @@ public class MarkerSpawner : MarkerManager
         
         if (Data.Type == MarkerType.BOSS)
         {
-            UIGlobalPopup.ShowError(null, "NOT IMPLEMENTED");
+            //UIGlobalPopup.ShowError(null, "NOT IMPLEMENTED");
             return;
         }
 
