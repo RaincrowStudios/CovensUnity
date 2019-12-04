@@ -204,7 +204,7 @@ public class MapCameraUtils : MonoBehaviour
         foreach (var marker in markers)
             SetMaterial(marker, m_MarkerMat_Aux, m_EnergyMatAux, m_FontMat_Aux);
 
-        List<MuskMarker> previousMarkers = m_HighlightedMarkers;
+        List<MuskMarker> previousMarkers = new List<MuskMarker>(m_HighlightedMarkers);
         m_HighlightedMarkers = markers;
 
         //lerp the alpha

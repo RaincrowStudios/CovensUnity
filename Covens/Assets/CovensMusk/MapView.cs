@@ -193,18 +193,25 @@ public class MapView : MonoBehaviour
         UISpiritDiscovered.Instance.Show(data.spirit);
     }
 
-    private void MarkerManagerAPI_OnWillSpawnMarkers(List<WitchToken> wtiches, List<SpiritToken> spirits, List<CollectableToken> collectables, List<EnergyToken> energies, List<PopToken> pops, List<BossToken> bosses, List<LootToken> loot)
+    private void MarkerManagerAPI_OnSpawnMarkers(
+        List<WitchMarker> wtiches,
+        List<SpiritMarker> spirits, 
+        List<CollectableMarker> collectables,
+        List<EnergyMarker> energies,
+        List<LocationMarker> pops,
+        List<WorldBossMarker> bosses, 
+        List<MuskMarker> loot)
     {
         if (InBossArea && bosses?.Count == 0)
         {
-            Debug.LogError("left boss area");
+            Debug.Log("left boss area");
             InBossArea = false;
             OnLeaveBossArea?.Invoke();
         }
 
         if (!InBossArea && bosses?.Count > 0)
         {
-            Debug.LogError("enter boss area");
+            Debug.Log("enter boss area");
             InBossArea = true;
             OnEnterBossArea?.Invoke();
         }
@@ -232,7 +239,7 @@ public class MapView : MonoBehaviour
 
     private void OnEnterPoP()
     {
-        MarkerManagerAPI.OnWillSpawnMarkers -= MarkerManagerAPI_OnWillSpawnMarkers;
+        MarkerManagerAPI.OnSpawnMarkers -= MarkerManagerAPI_OnSpawnMarkers;
 
         OnMapEnergyChange.OnPlayerEnergyChange -= _OnPlayerEnergyUpdated;
         OnMapEnergyChange.OnPlayerDead -= _OnPlayerDead;
@@ -261,7 +268,7 @@ public class MapView : MonoBehaviour
         //make sure no event is subscribed
         OnEnterPoP();
 
-        MarkerManagerAPI.OnWillSpawnMarkers += MarkerManagerAPI_OnWillSpawnMarkers;
+        MarkerManagerAPI.OnSpawnMarkers += MarkerManagerAPI_OnSpawnMarkers;
 
         OnMapEnergyChange.OnPlayerEnergyChange += _OnPlayerEnergyUpdated;
         OnMapEnergyChange.OnPlayerDead += _OnPlayerDead;

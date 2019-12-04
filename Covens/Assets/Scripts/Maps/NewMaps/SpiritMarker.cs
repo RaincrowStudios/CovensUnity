@@ -40,6 +40,8 @@ public class SpiritMarker : CharacterMarker
         else
         {
             m_AvatarRenderer.color = new Color(1, 1, 1, 0);
+            m_EnergyRing.color = spiritToken.IsBossSummon ? new Color(1, 0, 0.2f) : Color.white;
+
             DownloadedAssets.GetSprite(spiritToken.spiritId, (sprite) =>
             {
                 if (m_AvatarRenderer != null && sprite != null)
@@ -51,7 +53,6 @@ public class SpiritMarker : CharacterMarker
                         m_AvatarRenderer.gameObject,
                         Color.white, 1f
                     ).setEaseOutCubic();
-                    m_EnergyRing.color = spiritToken.IsBossSummon ? new Color(1, 0, 0.2f) : Color.white;
                 }
             });
         }

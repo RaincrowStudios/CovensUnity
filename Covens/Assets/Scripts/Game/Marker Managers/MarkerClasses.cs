@@ -240,6 +240,11 @@ public class SpiritMarkerData : CharacterMarkerData
     public virtual int bounty { get; set; }
 }
 
+public class BossMarkerdata : CharacterMarkerData
+{
+    public override MarkerSpawner.MarkerType Type => MarkerSpawner.MarkerType.BOSS;
+}
+
 public struct CovenInfo
 {
     public string coven;

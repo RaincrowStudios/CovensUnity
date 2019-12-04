@@ -612,27 +612,6 @@ public class MarkerSpawner : MonoBehaviour
     public static void HighlightMarkers(List<MuskMarker> targets)
     {
         MapCameraUtils.HighlightMarkers(targets);
-        //m_Highlighting = targets.Count > 0;
-
-        //if (targets == null)
-        //    targets = new List<IMarker>();
-
-        //m_HighlightedMarkers = targets;
-        ////MapsAPI.Instance.EnableBuildingIcons(!highlight);
-
-        //IMarker aux;
-        //foreach (var item in Markers)
-        //{
-        //    aux = item.Value[0];
-        //    if (aux.inMapView && !targets.Contains(aux))
-        //        aux.SetHidden(m_Highlighting);
-        //}
-
-        //foreach (IMarker _marker in targets)
-        //{
-        //    _marker.inMapView = true;
-        //    _marker.SetHidden(false);
-        //}
     }
     
     public static void ApplyStatusEffect(string targetId, string casterId, StatusEffect effect)

@@ -32,6 +32,7 @@ public class MarkerManagerAPI : MonoBehaviour
 
     public static event System.Action<string> OnChangeDominion;
     public static event System.Action<List<WitchToken>, List<SpiritToken>, List<CollectableToken>, List<EnergyToken>, List<PopToken>, List<BossToken>, List<LootToken>> OnWillSpawnMarkers;
+    public static event System.Action<List<WitchMarker>, List<SpiritMarker>, List<CollectableMarker>, List<EnergyMarker>, List<LocationMarker>, List<WorldBossMarker>, List<MuskMarker>> OnSpawnMarkers;
 
     public static bool IsSpiritForm { get; private set; }
     public static bool IsSpawningTokens { get; private set; }
@@ -318,6 +319,14 @@ public class MarkerManagerAPI : MonoBehaviour
 
         OnWillSpawnMarkers?.Invoke(witches, spirits, items, energies, pops, bosses, loot);
 
+        List<WitchMarker> spawnedWitches = new List<WitchMarker>();
+        List<SpiritMarker> spawnedSpirits = new List<SpiritMarker>();
+        List<CollectableMarker> spawnedCollectables = new List<CollectableMarker>();
+        List<EnergyMarker> spawnedEnergies = new List<EnergyMarker>();
+        List<LocationMarker> spawnedPops = new List<LocationMarker>();
+        List<WorldBossMarker> spawnedBosses = new List<WorldBossMarker>();
+        List<MuskMarker> spawnedLoot = new List<MuskMarker>();
+
         HashSet<IMarker> updatedMarkers = new HashSet<IMarker>();
 
         IMarker aux;
@@ -327,7 +336,10 @@ public class MarkerManagerAPI : MonoBehaviour
         {
             aux = MarkerSpawner.Instance.AddMarker(pops[i]);
             if (aux != null)
+            {
                 updatedMarkers.Add(aux);
+                spawnedPops.Add(aux as LocationMarker);
+            }
         }
         yield return null;
         
@@ -336,7 +348,10 @@ public class MarkerManagerAPI : MonoBehaviour
         {
             aux = MarkerSpawner.Instance.AddMarker(bosses[i]);
             if (aux != null)
+            {
                 updatedMarkers.Add(aux);
+                spawnedBosses.Add(aux as WorldBossMarker);
+            }
         }
 
         Debug.Log($"spawning loot: {loot?.Count}");
@@ -344,7 +359,10 @@ public class MarkerManagerAPI : MonoBehaviour
         {
             aux = MarkerSpawner.Instance.AddMarker(loot[i]);
             if (aux != null)
+            {
                 updatedMarkers.Add(aux);
+                spawnedLoot.Add(aux as MuskMarker);
+            }
         }
 
         yield return null;
@@ -354,7 +372,10 @@ public class MarkerManagerAPI : MonoBehaviour
         {
             aux = MarkerSpawner.Instance.AddMarker(items[i]);
             if (aux != null)
+            {
                 updatedMarkers.Add(aux);
+                spawnedCollectables.Add(aux as CollectableMarker);
+            }
         }
         yield return null;
 
@@ -365,9 +386,10 @@ public class MarkerManagerAPI : MonoBehaviour
                 continue;
             aux = MarkerSpawner.Instance.AddMarker(spirits[i]);
             if (aux != null)
+            {
                 updatedMarkers.Add(aux);
-
-            //yield return null;
+                spawnedSpirits.Add(aux as SpiritMarker);
+            }
         }
 
         Debug.Log($"spawning witches: {witches.Count}");
@@ -375,7 +397,10 @@ public class MarkerManagerAPI : MonoBehaviour
         {
             aux = MarkerSpawner.Instance.AddMarker(witches[i]);
             if (aux != null)
+            {
                 updatedMarkers.Add(aux);
+                spawnedWitches.Add(aux as WitchMarker);
+            }
 
             yield return null;
         }
@@ -385,11 +410,23 @@ public class MarkerManagerAPI : MonoBehaviour
         {
             aux = MarkerSpawner.Instance.AddMarker(energies[i]);
             if (aux != null)
+            {
                 updatedMarkers.Add(aux);
+                spawnedEnergies.Add(aux as EnergyMarker);
+            }
             yield return null;
         }
 
         yield return null;
+
+        OnSpawnMarkers?.Invoke(
+            spawnedWitches,
+            spawnedSpirits,
+            spawnedCollectables,
+            spawnedEnergies,
+            spawnedPops,
+            spawnedBosses,
+            spawnedLoot);
 
         ////////////////////////////////////////remove any other markers
 

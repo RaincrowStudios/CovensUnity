@@ -8,8 +8,14 @@ public class BossRankHandler : IGameEventHandler
 
     //public static event System.Action<Token> OnSpiritAddPOP;
 
+
+    public struct EventData
+    {
+
+    }
+
     public void HandleResponse(string eventData)
     {
-        Debug.LogError(eventData);
+
     }
 }

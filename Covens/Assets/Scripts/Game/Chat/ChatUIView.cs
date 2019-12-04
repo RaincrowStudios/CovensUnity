@@ -74,6 +74,9 @@ namespace Raincrow.Chat.UI
                     case MessageType.TEXT:
                         cellView = scroller.GetCellView(_chatMessagePrefab) as UIChatItem;
                         break;
+                    default:
+                        cellView = scroller.GetCellView(_chatMessagePrefab) as UIChatItem;
+                        break;
                 }
             }
 
