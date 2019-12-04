@@ -197,20 +197,19 @@ public class MapCameraUtils : MonoBehaviour
     }
 
     private void _HighlightMarkers(List<MuskMarker> markers)
-    {        
-        //reset previous markers
-        foreach (var marker in m_HighlightedMarkers)
-            SetMaterial(marker, m_MarkerMat, m_EnergyMat, m_FontMat);
+    {
+        LeanTween.cancel(m_HighlightTweenId, true);
 
         //set targeted markers
         foreach (var marker in markers)
             SetMaterial(marker, m_MarkerMat_Aux, m_EnergyMatAux, m_FontMat_Aux);
 
+        List<MuskMarker> previousMarkers = m_HighlightedMarkers;
         m_HighlightedMarkers = markers;
 
         //lerp the alpha
-        LeanTween.cancel(m_HighlightTweenId);
         float target = markers == null || markers.Count == 0 ? 1 : 0.1f;
+
         m_HighlightTweenId = LeanTween.value(m_MarkerMat.GetColor("_Color").a, target, 1f)
             .setEaseOutCubic()
             .setOnUpdate((float t) =>
@@ -219,6 +218,12 @@ public class MapCameraUtils : MonoBehaviour
                 m_EnergyMat?.SetColor("_Color", new Color(t, t, t, 1));
                 m_FontMat.SetColor("_FaceColor", new Color(1, 1, 1, t));
                 m_FontMat.SetColor("_UnderlayColor", new Color(0, 0, 0, t));
+            })
+            .setOnComplete(() =>
+            {
+                //reset previous markers
+                foreach (var marker in previousMarkers)
+                    SetMaterial(marker, m_MarkerMat, m_EnergyMat, m_FontMat);
             })
             .uniqueId;
 

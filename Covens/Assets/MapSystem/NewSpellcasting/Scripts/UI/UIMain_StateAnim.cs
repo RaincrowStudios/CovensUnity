@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class MainUITransition : MonoBehaviour
+public class UIMain_StateAnim : MonoBehaviour
 {
     [System.Serializable]
     public struct AnimStateSettings
@@ -19,12 +19,12 @@ public class MainUITransition : MonoBehaviour
 
     public enum State
     {
-        MAPVIEW,
-        MAPVIEW_SELECT,
-        POPVIEW,
-        POPVIEW_SELECT,
-        WORLDBOSS,
-        WORLDBOSS_SELECT
+        MAP,
+        MAP_SELECT,
+        POP,
+        POP_SELECT,
+        BOSS,
+        BOSS_SELECT
     }
 
     [SerializeField] private RectTransform leftBar;
@@ -49,23 +49,30 @@ public class MainUITransition : MonoBehaviour
     [SerializeField] private AnimStateSettings m_PopView_Select;
     [SerializeField] private AnimStateSettings m_Worldboss;
     [SerializeField] private AnimStateSettings m_Worldboss_Select;
-
-    public static MainUITransition Instance { get; set; }
-
+    
     private int m_TweenId;
+    private bool m_InBossArea;
+    private bool m_InPop;
+    private bool m_TargetSelected;
+    private bool m_BossSelected;
+    private bool m_Flying;
 
     void Awake()
     {
-        Instance = this;
-        LocationIslandController.OnEnterLocation += () =>
-        {
-            SetAnimation(State.POPVIEW);
-        };
+        SetState(State.MAP);
 
-        LocationIslandController.OnExitLocation += () =>
-        {
-            SetAnimation(State.MAPVIEW);
-        };
+        LocationIslandController.OnEnterLocation += OnEnterPop;
+        LocationIslandController.OnExitLocation += OnLeavePop;
+
+        MapView.OnEnterBossArea += OnEnterBossArea;
+        MapView.OnLeaveBossArea += OnLeaveBossArea;
+
+        UISpiritInfo.OnOpen += OnSelectCharacter;
+        UIPlayerInfo.OnOpen += OnSelectCharacter;
+        UISpiritInfo.OnClose += OnUnselectCharacter;
+        UIPlayerInfo.OnClose += OnUnselectCharacter;
+        UIWorldBoss.OnSelectBoss += OnSelectBoss;
+        UIWorldBoss.OnUnselectBoss += OnUnselectBoss;
     }
 
     public void OnLocationClick()
@@ -74,35 +81,109 @@ public class MainUITransition : MonoBehaviour
         Instantiate(k);
     }
 
-    public void EnableSummonButton(bool enable)
+    private void OnEnterPop()
     {
-        m_SummonButton.interactable = enable;
+        m_InPop = true;
+        UpdateUIState();
     }
 
-    public void EnableShoutButton(bool enable)
+    private void OnLeavePop()
     {
-        m_ShoutButton.interactable = enable;
+        m_InPop = false;
+        UpdateUIState();
     }
-    public void EnableLocationButton(bool enable)
+
+    private void OnEnterFlight()
     {
-        //m_LocationButton.interactable = enable;
+        m_Flying = true;
+
+        m_SummonButton.interactable = false;
+        m_ShoutButton.interactable = false;
+    }
+
+    private void OnLeaveFlight()
+    {
+        m_Flying = false;
+
+        m_SummonButton.interactable = true;
+        m_ShoutButton.interactable = true;
+    }
+
+    private void OnEnterBossArea()
+    {
+        m_InBossArea = true;
+        UpdateUIState();
+    }
+
+    private void OnLeaveBossArea()
+    {
+        m_InBossArea = false;
+        UpdateUIState();
+    }
+
+    private void OnSelectCharacter()
+    {
+        m_TargetSelected = true;
+        UpdateUIState();
+    }
+
+    private void OnUnselectCharacter()
+    {
+        m_TargetSelected = false;
+        UpdateUIState();
+    }
+
+    private void OnSelectBoss()
+    {
+        m_BossSelected = true;
+        UpdateUIState();
+    }
+
+    private void OnUnselectBoss()
+    {
+        m_BossSelected = false;
+        UpdateUIState();
+    }
+
+    private void UpdateUIState()
+    {
+        if (m_BossSelected)
+        {
+            SetState(State.BOSS_SELECT);
+        }
+        else if (m_TargetSelected)
+        {
+            if (m_InPop)
+                SetState(State.POP_SELECT);
+            else
+                SetState(State.MAP_SELECT);
+        }
+        else
+        {
+            if (m_InPop)
+                SetState(State.POP);
+            else if (m_InBossArea)
+                SetState(State.BOSS);
+            else
+                SetState(State.MAP);
+        }
     }
 
     public AnimStateSettings GetStateSettings(State state)
     {
         switch (state)
         {
-            case State.MAPVIEW:         return m_MapView;
-            case State.MAPVIEW_SELECT:  return m_MapView_Select;
-            case State.POPVIEW:         return m_PopView;
-            case State.POPVIEW_SELECT:  return m_PopView_Select;
-            case State.WORLDBOSS:       return m_Worldboss;
-            case State.WORLDBOSS_SELECT: return m_Worldboss_Select;
+            case State.MAP:         return m_MapView;
+            case State.MAP_SELECT:  return m_MapView_Select;
+            case State.POP:         return m_PopView;
+            case State.POP_SELECT:  return m_PopView_Select;
+            case State.BOSS:       return m_Worldboss;
+            case State.BOSS_SELECT: return m_Worldboss_Select;
         }
         return m_MapView;
     }
 
-    public void SetAnimation(State state)
+    public void SetState(State state)
     {
         AnimStateSettings target = GetStateSettings(state);
         LeanTween.cancel(m_TweenId);
@@ -156,15 +237,15 @@ public class MainUITransition : MonoBehaviour
     }
 
     [ContextMenu("SetState - Map")]
-    private void Debug_SetMap() => SetState(GetStateSettings(State.MAPVIEW));
+    private void Debug_SetMap() => SetState(GetStateSettings(State.MAP));
 
     [ContextMenu("SetState - MapSelect")]
-    private void Debug_SetMapSelect() => SetState(GetStateSettings(State.MAPVIEW_SELECT));
+    private void Debug_SetMapSelect() => SetState(GetStateSettings(State.MAP_SELECT));
 
     [ContextMenu("SetState - WorldBoss")]
-    private void Debug_SetWorldBoss() => SetState(GetStateSettings(State.WORLDBOSS));
+    private void Debug_SetWorldBoss() => SetState(GetStateSettings(State.BOSS));
 
     [ContextMenu("SetState - WorldBossSelect")]
-    private void Debug_SetWorldBossSelect() => SetState(GetStateSettings(State.WORLDBOSS_SELECT));
+    private void Debug_SetWorldBossSelect() => SetState(GetStateSettings(State.BOSS_SELECT));
 #endif
 }

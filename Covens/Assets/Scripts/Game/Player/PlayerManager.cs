@@ -208,9 +208,6 @@ public class PlayerManager : MonoBehaviour
     {
         m_LastPosition = marker.Coords;
 
-        MainUITransition.Instance.EnableSummonButton(false);
-        MainUITransition.Instance.EnableShoutButton(false);
-        MainUITransition.Instance.EnableLocationButton(false);
         FlightVisuals.Instance.StartFlight();
 
         Debug.Log("TODO: ENABLE FLYSFX");
@@ -227,9 +224,6 @@ public class PlayerManager : MonoBehaviour
         {
             Debug.Log("TODO: DISABLE FLY SFX");
             //FlySFX.Instance.EndFly();
-            MainUITransition.Instance.EnableLocationButton(true);
-            MainUITransition.Instance.EnableSummonButton(true);
-            MainUITransition.Instance.EnableShoutButton(true);
 
             onFinishFlight?.Invoke();
         };

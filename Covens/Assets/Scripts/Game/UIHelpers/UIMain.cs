@@ -61,6 +61,9 @@ public class UIMain : MonoBehaviour
     }
 
     public static UIMain Instance { get; private set; }
+
+    [SerializeField] private UIMain_StateAnim m_StateAnim;
+    [SerializeField] private UIWorldBoss m_WorldBossUI;
     
     [Header("Buttons")]
     [SerializeField] private Button m_WardrobeButton;
@@ -121,6 +124,15 @@ public class UIMain : MonoBehaviour
         
         m_EnergyTextPanel.m_Title.text = LocalizeLookUp.GetText("lt_none");
         m_EnergyTextPanel.m_Content.text = " ";
+        
+        MapView.OnEnterBossArea += OnEnterBossArea;
+        MapView.OnLeaveBossArea += OnLeaveBossArea;
+
+        MarkerSpawner.Instance.OnSelectMarker += (m) =>
+        {
+            if (m.Type == MarkerSpawner.MarkerType.BOSS)
+                m_WorldBossUI.Open(m as WorldBossMarker);
+        };
     }
 
     private void OnClickLeaderboards()
@@ -225,12 +237,12 @@ public class UIMain : MonoBehaviour
         UINearbyLocations.Open();
     }
 
-    ///////////////////////////////////////////
-    
     private void OnClickEnergy()
     {
         m_EnergyTextPanel.Show(!m_EnergyTextPanel.IsOpen);
     }
+
+    ///////////////////////////////////////////
 
     private void OnApplyStatusEffect(string target, string caster, StatusEffect effect)
     {
@@ -270,5 +282,31 @@ public class UIMain : MonoBehaviour
             m_EnergyTextPanel.m_Content.text = " ";
             m_EnergyTextPanel.Show(false);
         }
+    }
+
+    private void OnEnterBossArea()
+    {
+        WorldBossMarker boss = null;
+        foreach(var entry in MarkerSpawner.Markers.Values)
+        {
+            if (entry[0].Type == MarkerSpawner.MarkerType.BOSS)
+            {
+                boss = entry[0] as WorldBossMarker;
+                break;
+            }
+        }
+
+        if (boss == null)
+        {
+            Debug.LogException(new System.NullReferenceException());
+            return;
+        }
+
+        m_WorldBossUI.Setup(boss);
+    }
+
+    private void OnLeaveBossArea()
+    {
+
     }
 }

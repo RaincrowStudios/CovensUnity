@@ -28,26 +28,25 @@ public class PlayerManagerUI : UIAnimationManager
     public Sprite[] LunarPhase;
     public Slider xpSlider;
     public TextMeshProUGUI xpText;
-
-    int elixirCount;
-
+    
     public CanvasGroup curDominion;
 
     public GameObject DeathReason;
     public Text deathDesc;
     public Text deathblessing;
 
-    bool isDay = true;
-    bool cancheck = true;
+    [Space]
+    [SerializeField] private UIMarkerPointer m_PlayerPositionPointer;
 
-    bool firstRun = true;
+    private bool isDay = true;
+    private bool cancheck = true;
+
     private bool m_IsPhysicalForm = true;
-
-    //last daily check
-    double LastDailyTimeStamp;
-
+    
     void Awake()
     {
+        Instance = this;
+
         if (spiritForm == null)
         {
             spiritForm = Instantiate(physicalForm);
@@ -56,19 +55,10 @@ public class PlayerManagerUI : UIAnimationManager
             spiritForm.transform.localScale = physicalForm.transform.localScale;
             spiritForm.transform.rotation = physicalForm.transform.rotation;
         }
-        Instance = this;
+
         physicalForm.SetActive(false);
         spiritForm.SetActive(false);
-
-
-        if (PlayerPrefs.GetString("LastDailyTimeStamp") == string.Empty)
-        {
-            PlayerPrefs.SetString("LastDailyTimeStamp", "0.0");
-            PlayerPrefs.Save();
-        }
-
-        LastDailyTimeStamp = Double.Parse(PlayerPrefs.GetString("LastDailyTimeStamp"));
-
+        
         Raincrow.GameEventResponses.CharacterDeathHandler.OnPlayerDeath += CharacterDeathHandler_OnPlayerDeath;
     }
 
@@ -122,8 +112,15 @@ public class PlayerManagerUI : UIAnimationManager
         while (PlayerDataManager.playerData == null)
             yield return null;
 
+        while (PlayerManager.marker == null)
+            yield return null;
+        
+
         PlayerManager.onFinishFlight += CheckPhysicalForm;
+
         SetupUI();
+
+        m_PlayerPositionPointer.SetTarget(PlayerManager.witchMarker);
     }
 
     // ___________________________________________ Main Player UI ________________________________________________________________________________________________

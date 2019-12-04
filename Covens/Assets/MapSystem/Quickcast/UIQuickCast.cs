@@ -111,37 +111,28 @@ public class UIQuickCast : MonoBehaviour
                 _Show();
         });
 
-        UISpiritInfo.OnOpen += OnSelectSpirit;
-        UISpiritInfo.OnClose += OnUnselectSpirit;
+        UISpiritInfo.OnOpen += OnSelectTarget;
+        UISpiritInfo.OnClose += OnUnselectTarget;
 
-        UIPlayerInfo.OnOpen += OnSelectWitch;
-        UIPlayerInfo.OnClose += OnUnselectWitch;
+        UIPlayerInfo.OnOpen += OnSelectTarget;
+        UIPlayerInfo.OnClose += OnUnselectTarget;
+
+        UIWorldBoss.OnSelectBoss += OnSelectTarget;
+        UIWorldBoss.OnUnselectBoss += OnUnselectTarget;
     }
 
-    private void OnSelectSpirit()
+    private void OnSelectTarget()
     {
         m_Button.interactable = false;
         _Show();
     }
 
-    private void OnUnselectSpirit()
+    private void OnUnselectTarget()
     {
         m_Button.interactable = true;
         UpdateTarget(null, null);
     }
 
-
-    private void OnSelectWitch()
-    {
-        m_Button.interactable = false;
-        _Show();
-    }
-
-    private void OnUnselectWitch()
-    {
-        m_Button.interactable = true;
-        UpdateTarget(null, null);
-    }
 
     private void _Show()
     {
@@ -165,7 +156,7 @@ public class UIQuickCast : MonoBehaviour
         UpdateTarget(target, targetData);
 
         SpellCastHandler.OnPlayerTargeted += _OnPlayerAttacked;
-        MarkerSpawner.OnImmunityChange += _OnImmunityChange;
+        MarkerSpawner.Instance.OnImmunityChange += _OnImmunityChange;
         SpellCastHandler.OnApplyEffect += _OnStatusEffectApplied;
         PlayerConditionManager.OnPlayerExpireStatusEffect += _OnStatusEffectExpired;
         BanishManager.OnBanished += _OnBanished;
@@ -178,7 +169,7 @@ public class UIQuickCast : MonoBehaviour
     private void _Hide()
     {
         SpellCastHandler.OnPlayerTargeted -= _OnPlayerAttacked;
-        MarkerSpawner.OnImmunityChange -= _OnImmunityChange;
+        MarkerSpawner.Instance.OnImmunityChange -= _OnImmunityChange;
         SpellCastHandler.OnApplyEffect -= _OnStatusEffectApplied;
         PlayerConditionManager.OnPlayerExpireStatusEffect -= _OnStatusEffectExpired;
         BanishManager.OnBanished -= _OnBanished;

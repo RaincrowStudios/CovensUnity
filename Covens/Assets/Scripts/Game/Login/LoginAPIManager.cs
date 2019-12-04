@@ -276,11 +276,20 @@ public static class LoginAPIManager
         {
             if (result == 200)
             {
-                PlayerDataManager.playerData = ParsePlayerData(response);
-
-                //TeamManager.GetCoven(null);
-                OnCharacterReceived?.Invoke();
-
+                try
+                {
+                    PlayerDataManager.playerData = ParsePlayerData(response);
+                    //TeamManager.GetCoven(null);
+                    OnCharacterReceived?.Invoke();
+                }
+                catch (System.Exception e)
+                {
+                    loginToken = "";
+                    wssToken = "";
+                    result = 412;
+                    response = e.Message;
+                    Debug.LogException(e);
+                }
             }
             else if (result == 412 && response == "1001")
             {

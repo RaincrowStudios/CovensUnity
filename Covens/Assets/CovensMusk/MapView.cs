@@ -198,12 +198,14 @@ public class MapView : MonoBehaviour
         if (InBossArea && bosses?.Count == 0)
         {
             Debug.LogError("left boss area");
+            InBossArea = false;
             OnLeaveBossArea?.Invoke();
         }
 
         if (!InBossArea && bosses?.Count > 0)
         {
             Debug.LogError("enter boss area");
+            InBossArea = true;
             OnEnterBossArea?.Invoke();
         }
     }

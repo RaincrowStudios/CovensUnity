@@ -26,7 +26,7 @@ namespace Raincrow.GameEventResponses
         {
             PlayerData player = PlayerDataManager.playerData;
 
-            MarkerSpawner.AddImmunity(data.caster, data.target);
+            MarkerSpawner.Instance.AddImmunity(data.caster, data.target);
             OnImmunityChange?.Invoke(data.caster, data.target, true);
             if (data.caster == player.instance)
             {

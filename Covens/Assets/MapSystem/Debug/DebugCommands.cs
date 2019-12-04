@@ -5,7 +5,7 @@ using UnityEngine.UI;
 using TMPro;
 using UnityEngine.Profiling;
 
-public class DebugMoveTo : MonoBehaviour
+public class DebugCommands : MonoBehaviour
 {
     [SerializeField] private Canvas m_Canvas;
     [SerializeField] private GraphicRaycaster m_InputRaycaster;

@@ -293,13 +293,6 @@ namespace Raincrow.Test
                 {
                     UISpiritDiscovered.Instance.Show("spirit_barghest");
                 }
-                //if (GUILayout.Button("spirit banished"))
-                //{
-                //    UISpiritBanished.Instance.Show(new GameEventResponses.SpiritBanishedHandler.SpiritBanishedEvent
-                //    {
-                //        spirit = "spirit_barghest"
-                //    });
-                //}
                 if(GUILayout.Button("summon success"))
                 {
                     UISummonSuccess.Instance.Show("spirit_barghest");
@@ -368,6 +361,11 @@ namespace Raincrow.Test
                 if (GUILayout.Button("explore lore"))
                 {
                     UIQuestLore.Show("lore_" + Random.Range(1, 45));
+                }
+                if(GUILayout.Button("move X to boss"))
+                {
+                    retryCount = 0;
+                    MoveCharacterToBoss(0, 0);
                 }
 
                 if (GUILayout.Button("pt")) DictionaryManager.languageIndex = 1;
@@ -477,106 +475,7 @@ namespace Raincrow.Test
                     EditorPrefs.SetInt("FTFManager.StartFrom", ftfStartingStep);
             }
         }
-
-        private void Chat()
-        {
-            if (m_ChatDebugPlayer == null)
-            {
-                m_ChatDebugPlayer = new Raincrow.Chat.ChatPlayer
-                {
-                    id = "local:7457a139-8e5c-4989-85b3-6c8eeead577a",
-                    name = "lucas 002",
-                    level = 99,
-                    degree = 1,
-                    avatar = 0
-                };
-            }
-
-            //draw chat player editor
-            using (var scroll = new EditorGUILayout.ScrollViewScope(m_ChatPlayerScroll, GUILayout.Height(100)))
-            {
-                m_ChatPlayerScroll = scroll.scrollPosition;
-
-                string debugPlayerString = SerializeObj(m_ChatDebugPlayer);
-
-                EditorGUI.BeginChangeCheck();
-                debugPlayerString = EditorGUILayout.TextArea(debugPlayerString, GUILayout.ExpandHeight(true));
-                if (EditorGUI.EndChangeCheck())
-                    m_ChatDebugPlayer = JsonConvert.DeserializeObject<Raincrow.Chat.ChatPlayer>(debugPlayerString);
-            }
-
-            GUILayout.Space(2);
-
-            EditorGUI.BeginDisabledGroup(EditorApplication.isPlaying == false);
-            {
-                using (new BoxScope())
-                {
-                    //connected info
-                    using (new GUILayout.HorizontalScope())
-                    {
-                        EditorGUI.BeginDisabledGroup(true);
-                        GUILayout.Toggle(Raincrow.Chat.ChatManager.Connected, "Connected");
-                        GUILayout.Toggle(Raincrow.Chat.ChatManager.IsConnected(Raincrow.Chat.ChatCategory.WORLD), "ConnectedToWorld");
-                        EditorGUI.EndDisabledGroup();
-                    }
-
-                    if (GUILayout.Button("Init chat"))
-                    {
-                        Raincrow.Chat.ChatManager.InitChat(m_ChatDebugPlayer);
-                    }
-
-                    if (GUILayout.Button("Show UI"))
-                    {
-                        UIChat uiChat = FindObjectOfType<UIChat>();
-                        uiChat.Show();
-                    }
-                }
-
-                GUILayout.Space(5);
-
-                using (new BoxScope())
-                {
-                    //draw message editor
-                    if (m_ChatDebugMessage == null)
-                        m_ChatDebugMessage = new Raincrow.Chat.ChatMessage();
-                    m_ChatDebugMessage = DrawChatMessage(m_ChatDebugMessage);
-
-                    using (new GUILayout.HorizontalScope())
-                    {
-                        if (GUILayout.Button("Send (World)"))
-                        {
-                            Raincrow.Chat.ChatManager.SendMessage(Raincrow.Chat.ChatCategory.WORLD, m_ChatDebugMessage);
-                        }
-                    }
-                }
-            }
-            EditorGUI.EndDisabledGroup();
-        }
-
-        public Raincrow.Chat.ChatMessage DrawChatMessage(Raincrow.Chat.ChatMessage message)
-        {
-            using (new BoxScope())
-            {
-                var previousType = message.type;
-                message.type = (Raincrow.Chat.MessageType)EditorGUILayout.EnumPopup("Type", message.type);
-
-                if (message.type != previousType)
-                    message.data = new Raincrow.Chat.ChatMessageData();
-
-                if (message.type == Raincrow.Chat.MessageType.TEXT)
-                {
-                    message.data.message = EditorGUILayout.TextField("Message", message.data.message);
-                }
-                else if (message.type == Raincrow.Chat.MessageType.LOCATION)
-                {
-                    message.data.longitude = EditorGUILayout.DoubleField("Longitude", message.data.longitude);
-                    message.data.latitude = EditorGUILayout.DoubleField("Latitude", message.data.latitude);
-                }
-            }
-
-            return message;
-        }
-
+        
         private static string SerializeObj(object obj)
         {
             return JsonConvert.SerializeObject(obj, Formatting.Indented);
@@ -678,6 +577,75 @@ namespace Raincrow.Test
                     }
                 }
             }
+        }
+
+        int retryCount = 0;
+        private void MoveCharacterToBoss(int idx, int count)
+        {
+            if (count > 100)
+            {
+                Debug.Log("max reached");
+                return;
+            }
+            if (retryCount > 50)
+            {
+                Debug.LogError("max fails reached");
+                return;
+            }
+
+            Debug.Log("count " + count);
+
+            Vector2 noise = Random.insideUnitCircle * 0.002f;
+            double latitude = 47.800292 + noise.y;
+            double longitude = 13.041403 + noise.x;
+
+            string user = $"lucas{idx.ToString("D3")}";
+            string password = "password";
+
+            var data = new
+            {
+                physical = true,
+                longitude,
+                latitude,
+            };
+
+            LoginAPIManager.Login(user, password, (result, response) =>
+            {
+                if (result == 200 && response.hasCharacter.HasValue && response.hasCharacter.Value == true)
+                {
+                    LoginAPIManager.GetCharacter((characterResult, characterResponse) =>
+                    {
+                        if (characterResult == 200)
+                        {
+                            APIManager.Instance.Post("character/move", SerializeObj(data), (moveresponse, movereuslt) =>
+                            {
+                                retryCount = 0;
+                                if (movereuslt == 200)
+                                {
+                                    Debug.Log("moved " + user + " to position");
+                                    MoveCharacterToBoss(idx + 1, count + 1);
+                                }
+                                else
+                                {
+                                    MoveCharacterToBoss(idx + 1, count);
+                                }
+                            });
+                        }
+                        else
+                        {
+                            Debug.LogError("failed to get " + user + " character\n" + characterResponse);
+                            retryCount++;
+                            MoveCharacterToBoss(idx + 1, count);
+                        }
+                    });
+                }
+                else
+                {
+                    Debug.LogError("failed to get " + user + " account\n" + response.error);
+                    retryCount++;
+                    MoveCharacterToBoss(idx + 1, count);
+                }
+            });
         }
     }
 

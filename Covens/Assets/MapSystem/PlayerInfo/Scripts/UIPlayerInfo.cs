@@ -175,7 +175,7 @@ public class UIPlayerInfo : UIInfoPanel
 
         if (!LocationIslandController.isInBattle)
         {
-            MainUITransition.Instance.SetAnimation(MainUITransition.State.MAPVIEW_SELECT);
+            //MainUITransition.Instance.SetState(MainUITransition.State.MAPVIEW_SELECT);
             MarkerSpawner.HighlightMarkers(new List<MuskMarker> { PlayerManager.witchMarker, WitchMarker });
 
             MoveTokenHandler.OnTokenMove += _OnMapTokenMove;
@@ -259,7 +259,7 @@ public class UIPlayerInfo : UIInfoPanel
 
         if (!LocationIslandController.isInBattle)
         {
-            MainUITransition.Instance.SetAnimation(MainUITransition.State.MAPVIEW);
+            //MainUITransition.Instance.SetState(MainUITransition.State.MAPVIEW);
             MapsAPI.Instance.allowControl = true;
             MapCameraUtils.FocusOnPosition(previousMapPosition, m_PreviousMapZoom, true);
             MapCameraUtils.SetExtraFOV(0);

@@ -43,7 +43,10 @@ public class MarkerSpawner : MonoBehaviour
     public static Dictionary<string, WorldBossMarker> Bosses = new Dictionary<string, WorldBossMarker>();
 
 
-    public static event System.Action<string, string, bool> OnImmunityChange;
+    public event System.Action<string, string, bool> OnImmunityChange;
+
+    public event System.Action<IMarker> OnSelectMarker;
+    
 
     public static MarkerSpawner Instance { get; set; }
 
@@ -220,7 +223,6 @@ public class MarkerSpawner : MonoBehaviour
 
         var pos = new Vector2(Data.longitude, Data.latitude);
         IMarker marker = MapsAPI.Instance.AddMarker(pos, go);
-        //marker.GameObject.SetActive(false);
         marker.Setup(Data);
         marker.OnClick += OnClickMarker;
 
@@ -345,6 +347,8 @@ public class MarkerSpawner : MonoBehaviour
             return;
         }
 
+        OnSelectMarker?.Invoke(m);
+
         var Data = m.Token;
 
         if (Data.Type == MarkerType.HERB || Data.Type == MarkerType.TOOL || Data.Type == MarkerType.GEM)
@@ -369,12 +373,6 @@ public class MarkerSpawner : MonoBehaviour
             return;
         }
         
-        if (Data.Type == MarkerType.BOSS)
-        {
-            //UIGlobalPopup.ShowError(null, "NOT IMPLEMENTED");
-            return;
-        }
-
         if (Data.Type == MarkerType.LOOT)
         {
             UIGlobalPopup.ShowError(null, "NOT IMPLEMENTED");
@@ -382,17 +380,20 @@ public class MarkerSpawner : MonoBehaviour
         }
 
         //show the basic available info, and waut for the map/select response to fill the details
-        if (Data.Type == MarkerType.WITCH)
+        if (Data.Type == MarkerType.BOSS)
+        {
+            //ui is opened by UIMain listener
+            UIQuickCast.UpdateTarget(m, null);
+        }
+        else if (Data.Type == MarkerType.WITCH)
         {
             //if (!WitchMarker.DisableSpriteGeneration)
             (m as WitchMarker).GenerateAvatar(null, true);
-            UIQuickCast.Open();
             UIQuickCast.UpdateTarget(m, null);
             UIPlayerInfo.Show(m as WitchMarker, Data as WitchToken, UIQuickCast.Close);
         }
         else if (Data.Type == MarkerType.SPIRIT)
         {
-            UIQuickCast.Open();
             UIQuickCast.UpdateTarget(m, null);
             UISpiritInfo.Show(m as SpiritMarker, Data as SpiritToken, UIQuickCast.Close);
         }
@@ -404,9 +405,9 @@ public class MarkerSpawner : MonoBehaviour
     public static void GetMarkerDetails(string id, System.Action<int, string> callback)
     {
         APIManager.Instance.Get(
-                    "character/select/" + id + "?selection=map",
-                    "",
-                    (response, result) => callback(result, response));
+            "character/select/" + id + "?selection=map",
+            "",
+            (response, result) => callback(result, response));
     }
 
     public void GetResponse(IMarker marker, string instance, string response, int code)
@@ -462,6 +463,12 @@ public class MarkerSpawner : MonoBehaviour
                 LoadPOPManager.EnterPOP(instance);
                 break;
 
+            case MarkerType.BOSS:
+
+                //UIQuickCast.UpdateTarget(marker, spirit);
+                Debug.LogError("TODO");
+                break;
+
             default:
                 Debug.LogError("Token selection not implemented for " + marker.Type);
                 break;
@@ -479,7 +486,7 @@ public class MarkerSpawner : MonoBehaviour
         return PlayerDataManager.playerData.immunities.Contains(token.instance);
     }
 
-    public static void AddImmunity(string spellCaster, string spellTarget)
+    public void AddImmunity(string spellCaster, string spellTarget)
     {
         if (spellCaster == PlayerDataManager.playerData.instance)
         {
@@ -493,7 +500,7 @@ public class MarkerSpawner : MonoBehaviour
         OnImmunityChange?.Invoke(spellCaster, spellTarget, true);
     }
 
-    public static void RemoveImmunity(string caster, string target)
+    public void RemoveImmunity(string caster, string target)
     {
         if (target == PlayerDataManager.playerData.instance)
         {

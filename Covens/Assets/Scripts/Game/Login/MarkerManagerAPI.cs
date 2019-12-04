@@ -330,6 +330,24 @@ public class MarkerManagerAPI : MonoBehaviour
                 updatedMarkers.Add(aux);
         }
         yield return null;
+        
+        Debug.Log($"spawning bosses: {bosses?.Count}");
+        for (int i = 0; i < bosses?.Count; i++)
+        {
+            aux = MarkerSpawner.Instance.AddMarker(bosses[i]);
+            if (aux != null)
+                updatedMarkers.Add(aux);
+        }
+
+        Debug.Log($"spawning loot: {loot?.Count}");
+        for (int i = 0; i < loot?.Count; i++)
+        {
+            aux = MarkerSpawner.Instance.AddMarker(loot[i]);
+            if (aux != null)
+                updatedMarkers.Add(aux);
+        }
+
+        yield return null;
 
         Debug.Log($"spawning collectables: {items.Count}");
         for (int i = 0; i < items.Count; i++)
@@ -362,7 +380,6 @@ public class MarkerManagerAPI : MonoBehaviour
             yield return null;
         }
 
-
         Debug.Log($"spawning energy: {energies.Count}");
         for (int i = 0; i < energies.Count; i++)
         {
@@ -372,21 +389,6 @@ public class MarkerManagerAPI : MonoBehaviour
             yield return null;
         }
 
-        Debug.Log($"spawning bosses: {bosses?.Count}");
-        for (int i = 0; i < bosses?.Count; i++)
-        {
-            aux = MarkerSpawner.Instance.AddMarker(bosses[i]);
-            if (aux != null)
-                updatedMarkers.Add(aux);
-        }
-
-        Debug.Log($"spawning loot: {loot?.Count}");
-        for (int i = 0; i < loot?.Count; i++)
-        {
-            aux = MarkerSpawner.Instance.AddMarker(loot[i]);
-            if (aux != null)
-                updatedMarkers.Add(aux);
-        }
         yield return null;
 
         ////////////////////////////////////////remove any other markers

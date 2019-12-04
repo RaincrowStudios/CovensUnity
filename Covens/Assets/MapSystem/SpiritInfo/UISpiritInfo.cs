@@ -180,7 +180,7 @@ public class UISpiritInfo : UIInfoPanel
 
         if (!LocationIslandController.isInBattle)
         {
-            MainUITransition.Instance.SetAnimation(MainUITransition.State.MAPVIEW_SELECT);
+            //MainUITransition.Instance.SetState(MainUITransition.State.MAPVIEW_SELECT);
             MarkerSpawner.HighlightMarkers(new List<MuskMarker> { PlayerManager.witchMarker, SpiritMarker });
             MoveTokenHandler.OnTokenMove += _OnMapTokenMove;
         }
@@ -274,7 +274,7 @@ public class UISpiritInfo : UIInfoPanel
             MapsAPI.Instance.allowControl = true;
             MapCameraUtils.FocusOnPosition(MapsAPI.Instance.mapCenter.position, m_PreviousMapZoom, true);
             MapCameraUtils.SetExtraFOV(0);
-            MainUITransition.Instance.SetAnimation(MainUITransition.State.MAPVIEW);
+            //MainUITransition.Instance.SetState(MainUITransition.State.MAPVIEW);
             MarkerSpawner.HighlightMarkers(new List<MuskMarker> { });
         }
         else

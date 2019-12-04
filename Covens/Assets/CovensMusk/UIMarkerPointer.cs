@@ -22,7 +22,7 @@ public class UIMarkerPointer : MonoBehaviour
     private int m_TweenId;
     private int m_PhysCenterTweenId;
 
-    private bool m_Enabled = true;
+    private bool m_Enabled = false;
     private bool m_ShowingPointer = false;
     private bool m_ShowingPhysical = false;
 
@@ -40,10 +40,12 @@ public class UIMarkerPointer : MonoBehaviour
     {
         while (MapsAPI.Instance.IsInitialized == false)
             yield return null;
-
-        while (PlayerManager.marker == null)
+        
+        while (m_Target == null)
             yield return null;
 
+        m_Enabled = true;
+        
         MapsAPI.Instance.OnCameraUpdate += OnMapUpdate;
     }
 
@@ -60,7 +62,7 @@ public class UIMarkerPointer : MonoBehaviour
             return;
         }
 
-        Vector2 screenPos = MapsAPI.Instance.camera.WorldToScreenPoint(MapsAPI.Instance.GetWorldPosition(PlayerManager.marker.Token.longitude, PlayerManager.marker.Token.latitude));
+        Vector2 screenPos = MapsAPI.Instance.camera.WorldToScreenPoint(MapsAPI.Instance.GetWorldPosition(m_Target.Token.longitude, PlayerManager.marker.Token.latitude));
         Vector2 canvasPos = new Vector2(screenPos.x * (m_CanvasRect.sizeDelta.x / Screen.width), screenPos.y * (m_CanvasRect.sizeDelta.y / Screen.height));
 
         if (canvasPos.x > m_HorizontalBorders.x && canvasPos.x < m_CanvasRect.sizeDelta.x - m_HorizontalBorders.y && canvasPos.y > m_VerticalBorders.x && canvasPos.y < m_CanvasRect.sizeDelta.y - m_VerticalBorders.y)
@@ -86,7 +88,6 @@ public class UIMarkerPointer : MonoBehaviour
             m_CanvasRect.sizeDelta.y - m_VerticalBorders.y
         );
 
-        //Vector3 mapCenter = MapsAPI.Instance.mapCenter.position.normalized;
         m_PhysicalCenter.GetComponent<RectTransform>().anchoredPosition = canvasPos;
         m_PointerTransform.anchoredPosition = canvasPos;
         m_PointerArrow.localRotation = Quaternion.LookRotation(Vector3.forward, m_PointerTransform.localPosition);

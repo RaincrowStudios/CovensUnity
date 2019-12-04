@@ -153,7 +153,7 @@ namespace Raincrow.GameEventResponses
                         //localy remove the immunity so you may attack again
                         if (playerIsTarget && caster.Type == MarkerSpawner.MarkerType.WITCH)
                         {
-                            MarkerSpawner.RemoveImmunity(data.caster.id, data.target.id);
+                            MarkerSpawner.Instance.RemoveImmunity(data.caster.id, data.target.id);
                             (caster as WitchMarker).OnRemoveImmunity();
                         }
                     }
@@ -170,10 +170,7 @@ namespace Raincrow.GameEventResponses
                 onComplete: () =>
                 {
                     onTrailEnd?.Invoke();
-
-                    ////trigger a map_energy_change event for the target
-                    OnMapEnergyChange.ForceEvent(target, targetNewEnergy, data.timestamp);
-
+                    
                     //add status effects to PlayerDataManager.playerData
                     if (data.result.effect != null && string.IsNullOrEmpty(data.result.effect.spell) == false)
                     {
@@ -183,7 +180,7 @@ namespace Raincrow.GameEventResponses
                     //add the immunity if the server said so
                     if (playerIsCaster && data.immunity && !playerIsTarget)
                     {
-                        MarkerSpawner.AddImmunity(data.caster.id, data.target.id);
+                        MarkerSpawner.Instance.AddImmunity(data.caster.id, data.target.id);
                         if (target != null && target is WitchMarker)
                             (target as WitchMarker).OnAddImmunity();
                     }
@@ -194,6 +191,9 @@ namespace Raincrow.GameEventResponses
                     //handle spell/animation
                     if (target != null)
                     {
+                        ////trigger a map_energy_change event for the target
+                        OnMapEnergyChange.ForceEvent(target, targetNewEnergy, data.timestamp);
+
                         if (data.result.isSuccess)
                         {
                             if (m_NonDamagingSpells.Contains(spell.id))
@@ -247,6 +247,10 @@ namespace Raincrow.GameEventResponses
                             else if (caster is SpiritMarker)
                             {
                                 PlayerNotificationManager.Instance.ShowNotification(SpellcastingTextFeedback.CreateSpellFeedback(caster, target, data));
+                            }
+                            else if (caster is WorldBossMarker)
+                            {
+
                             }
                             else
                             {
