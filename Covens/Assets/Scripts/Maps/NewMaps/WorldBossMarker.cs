@@ -28,6 +28,12 @@ public class WorldBossMarker : CharacterMarker
         //throw new System.NotImplementedException();
     }
 
+    public override void OnWillDespawn()
+    {
+        base.OnWillDespawn();
+        Interactable = false;
+    }
+
     public override void OnDespawn()
     {
         //base.OnDespawn();

@@ -166,7 +166,7 @@ public class DebugUtilsSocket
 
     private void DrawCustomEvent()
     {
-        using (new EditorGUI.DisabledGroupScope(SocketClient.Instance == null || !SocketClient.Instance.IsConnected()))
+        using (new EditorGUI.DisabledGroupScope(!Application.isPlaying || SocketClient.Instance == null || !SocketClient.Instance.IsConnected()))
         {
             using (new BoxScope())
             {

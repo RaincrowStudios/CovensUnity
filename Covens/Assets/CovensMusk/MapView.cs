@@ -111,6 +111,9 @@ public class MapView : MonoBehaviour
             marker.GameObject.SetActive(true);
             //marker.SetAlpha(1, 1);
         }
+
+        if (marker.Type == MarkerSpawner.MarkerType.BOSS && !InBossArea)
+            _OnEnterBossArea(marker as WorldBossMarker);
     }
 
     private void _OnMapTokenRemove(IMarker marker)
@@ -126,6 +129,9 @@ public class MapView : MonoBehaviour
         //animate the marken
         //marker.SetAlpha(0, 1);
         MarkerSpawner.DeleteMarker(marker.Token.instance);
+
+        if (marker.Type == MarkerSpawner.MarkerType.BOSS && InBossArea)
+            _OnLeaveBossArea();
     }
 
     private void _OnMapTokenMove(IMarker marker, Vector3 position)
@@ -203,20 +209,24 @@ public class MapView : MonoBehaviour
         List<MuskMarker> loot)
     {
         if (InBossArea && bosses?.Count == 0)
-        {
-            Debug.Log("left boss area");
-            InBossArea = false;
-            OnLeaveBossArea?.Invoke();
-        }
-
-        if (!InBossArea && bosses?.Count > 0)
-        {
-            Debug.Log("enter boss area");
-            InBossArea = true;
-            OnEnterBossArea?.Invoke(bosses[0]);
-        }
+            _OnLeaveBossArea();
+        else if (!InBossArea && bosses?.Count > 0)
+            _OnEnterBossArea(bosses[0]);
     }
 
+    private void _OnEnterBossArea(WorldBossMarker boss)
+    {
+        Debug.Log("enter boss area");
+        InBossArea = true;
+        OnEnterBossArea?.Invoke(boss);
+    }
+
+    private void _OnLeaveBossArea()
+    {
+        Debug.Log("left boss area");
+        InBossArea = false;
+        OnLeaveBossArea?.Invoke();
+    }
 
     private void OnStartFlight()
     {

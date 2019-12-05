@@ -375,7 +375,7 @@ public class MarkerSpawner : MonoBehaviour
         
         if (Data.Type == MarkerType.LOOT)
         {
-            UIGlobalPopup.ShowError(null, "NOT IMPLEMENTED");
+
             return;
         }
 

@@ -47,6 +47,9 @@ public class UIWorldBoss : MonoBehaviour
     {
         BossRankHandler.OnUpdateBossRank -= OnBossRankUpdate;
         m_MarkerPointer.gameObject.SetActive(false);
+
+        if (m_InputBlocker.activeSelf)
+            Close();
     }
 
     private void OnEnterBossArea(WorldBossMarker boss)
@@ -61,11 +64,6 @@ public class UIWorldBoss : MonoBehaviour
         BossRankHandler.OnUpdateBossRank += OnBossRankUpdate;
         m_MarkerPointer.SetTarget(boss);
         m_MarkerPointer.gameObject.SetActive(true);
-    }
-
-    private void OnLeaveBossArea()
-    {
-
     }
 
     private void OnBossRankUpdate(BossRankHandler.EventData data)
