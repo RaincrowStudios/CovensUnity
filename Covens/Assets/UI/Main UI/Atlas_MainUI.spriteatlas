@@ -99,8 +99,15 @@ SpriteAtlas:
     - {fileID: 2800000, guid: 0d485f3539917bd48bbdff6bd13154ab, type: 3}
     - {fileID: 2800000, guid: d9818b740e99d6641ada6addf28aeb0b, type: 3}
     - {fileID: 2800000, guid: 61d144e0eb05e5a428837cc3ce53cbac, type: 3}
-    totalSpriteSurfaceArea: 861704
+    - {fileID: 2800000, guid: c871f77f205712c49af4f1d71529427e, type: 3}
+    - {fileID: 2800000, guid: c1890d467f2b48546828704d4618f4d2, type: 3}
+    - {fileID: 2800000, guid: 1204649718303ef4c8cfdc2710ea2809, type: 3}
+    - {fileID: 2800000, guid: 13be83061a53dc8409c8ffd85f5a202b, type: 3}
+    totalSpriteSurfaceArea: 1469976
     bindAsDefault: 1
+    storedHash:
+      serializedVersion: 2
+      Hash: 4731cf4b38606625778b900131dfca27
   m_MasterAtlas: {fileID: 0}
   m_PackedSprites:
   - {fileID: 21300000, guid: 61d144e0eb05e5a428837cc3ce53cbac, type: 3}
@@ -122,8 +129,11 @@ SpriteAtlas:
   - {fileID: 21300000, guid: 5c7b5725f49ac4e4a8a9790aa561d428, type: 3}
   - {fileID: 21300000, guid: 87c4cc35f91646e41aea2672c3b5c24f, type: 3}
   - {fileID: 21300000, guid: 0d485f3539917bd48bbdff6bd13154ab, type: 3}
+  - {fileID: 21300000, guid: 13be83061a53dc8409c8ffd85f5a202b, type: 3}
+  - {fileID: 21300000, guid: c1890d467f2b48546828704d4618f4d2, type: 3}
   - {fileID: 21300000, guid: d403f65629dd00e4694fa27c241dd74f, type: 3}
   - {fileID: 21300000, guid: 052e2177f5721914496d1b8a20a2d4a0, type: 3}
+  - {fileID: 21300000, guid: 1204649718303ef4c8cfdc2710ea2809, type: 3}
   - {fileID: 21300000, guid: 3738d6e7598c66a4caaf7b8084752cd0, type: 3}
   - {fileID: 21300000, guid: 0b167fe78c17e1d4ba245cd0374d9ce4, type: 3}
   - {fileID: 21300000, guid: 69888b692bdb1a647977a680a0b60967, type: 3}
@@ -136,6 +146,7 @@ SpriteAtlas:
   - {fileID: 21300000, guid: b05d0a6d7309eaa49b8969fd808c1fd5, type: 3}
   - {fileID: 21300000, guid: d2b3539d3595c4040b2ff5e8ab18708a, type: 3}
   - {fileID: 21300000, guid: 110b6f5e248a410438f4fb96b91abce3, type: 3}
+  - {fileID: 21300000, guid: c871f77f205712c49af4f1d71529427e, type: 3}
   m_PackedSpriteNamesToIndex:
   - glow
   - whitebase
@@ -156,8 +167,11 @@ SpriteAtlas:
   - Cog
   - dualGlow
   - megaphoneIcon
+  - RightMainUIDecor_Top_Christmas
+  - LeftMainUIDecor_Christmas
   - fly
   - small button base
+  - RightMainUIDecor_Bottom_Christmas
   - xp_bar
   - Leaderboard Icon
   - xp_bar_fill
@@ -170,5 +184,6 @@ SpriteAtlas:
   - Treasure
   - side ornament
   - box-over
+  - EnergyBarDecor_Christmas
   m_Tag: Atlas_MainUI
   m_IsVariant: 0
