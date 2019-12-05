@@ -653,7 +653,7 @@ namespace Raincrow.Chat.UI
 
 
         [SerializeField] private Image _SelectedGlow;
-        private Dictionary<ChatCategory, TMPro.TextMeshProUGUI> m_HeaderButtons;
+        private Dictionary<ChatCategory, TMPro.TextMeshProUGUI> m_HeaderButtons = new Dictionary<ChatCategory, TextMeshProUGUI>();
 
         /// <summary>
         /// If chat category is null, hide the glow

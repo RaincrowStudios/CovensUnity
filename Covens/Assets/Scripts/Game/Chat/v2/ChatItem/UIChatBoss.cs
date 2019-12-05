@@ -20,7 +20,7 @@ namespace Raincrow.Chat.UI
         {
             base.SetupMessage(message, onRequestChatLoading, onRequestChatClose);
 
-            string spiritId = message.player.name;
+            string spiritId = message.data.name;
             m_Text.text = LocalizeLookUp.GetText(message.data.message);
             m_BossName.text = LocalizeLookUp.GetSpiritName(spiritId);
             m_TimeAgo.text = Utilities.EpochToDateTimeChat(message.timestamp);

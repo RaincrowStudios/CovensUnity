@@ -30,6 +30,7 @@
 
     public class ChatMessageData
     {
+        public string name;
         public string message;
         public double latitude;
         public double longitude;
