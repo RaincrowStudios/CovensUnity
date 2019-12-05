@@ -259,6 +259,7 @@ namespace Raincrow.Maps
 
         }
 
+        [System.Obsolete]
         public void SetAlpha(float vlaue, float time)
         {
 

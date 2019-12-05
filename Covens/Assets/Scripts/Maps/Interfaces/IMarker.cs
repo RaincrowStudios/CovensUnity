@@ -26,6 +26,7 @@ namespace Raincrow.Maps
         void ScaleNamePlate(bool scaleUp, float time = 1);
         //void SetCharacterAlpha(float t, float time = 0, System.Action onComplete = null);
         //void SetTextAlpha(float a);
+        [System.Obsolete("use IMarker.SetHidden instead")]
         void SetAlpha(float a, float time = 0);//, System.Action onComplete = null);
         void SetHidden(bool hidden);
         void InitializePositionPOP();

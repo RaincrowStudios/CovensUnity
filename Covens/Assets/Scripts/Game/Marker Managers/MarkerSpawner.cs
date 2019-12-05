@@ -375,7 +375,7 @@ public class MarkerSpawner : MonoBehaviour
         
         if (Data.Type == MarkerType.LOOT)
         {
-
+            PickUpCollectibleAPI.PickUpLoot(m as LootMarker);
             return;
         }
 

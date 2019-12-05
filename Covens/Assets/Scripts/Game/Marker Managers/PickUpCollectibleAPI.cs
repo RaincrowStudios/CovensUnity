@@ -100,5 +100,32 @@ public static class PickUpCollectibleAPI
             }
         });
     }
+
+    public static void PickUpLoot(LootMarker marker)
+    {
+        marker.Interactable = false;
+        
+        APIManager.Instance.Post("character/pickup/" + marker.Token.instance, "{}", (response, result) =>
+        {
+            if (result == 200)
+            {
+                //do nothing, wait for "collect.loot" event
+            }
+            else
+            {
+                if (result == 412)
+                {
+                    if (response == "7005")
+                    {
+                        //cant open (not eligible ou already opened)
+                    }
+                }
+                else
+                {
+                    //unknown error. allow retry?
+                }
+            }
+        });
+    }
 }
 
