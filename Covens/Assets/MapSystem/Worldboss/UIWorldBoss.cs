@@ -11,6 +11,7 @@ public class UIWorldBoss : MonoBehaviour
     [SerializeField] private Image m_BossPortrait;
     [SerializeField] private Image m_BossEnergyBar;
     [SerializeField] private TextMeshProUGUI m_BossEnergyPercent;
+    [SerializeField] private UIMarkerPointer m_MarkerPointer;
     [Space]
     [SerializeField] private TextMeshProUGUI[] m_DamageRank;
     [Space]
@@ -29,12 +30,12 @@ public class UIWorldBoss : MonoBehaviour
     private void Awake()
     {
         m_InputBlocker.SetActive(false);
+        m_MarkerPointer.gameObject.SetActive(false);
         m_CloseButton.onClick.AddListener(OnClickClose);
 
         MapView.OnEnterBossArea += OnEnterBossArea;
         MapView.OnLeaveBossArea += MapView_OnLeaveBossArea;
-
-
+        
         MarkerSpawner.Instance.OnSelectMarker += (m) =>
         {
             if (m.Type == MarkerSpawner.MarkerType.BOSS)
@@ -45,6 +46,7 @@ public class UIWorldBoss : MonoBehaviour
     private void MapView_OnLeaveBossArea()
     {
         BossRankHandler.OnUpdateBossRank -= OnBossRankUpdate;
+        m_MarkerPointer.gameObject.SetActive(false);
     }
 
     private void OnEnterBossArea(WorldBossMarker boss)
@@ -56,6 +58,8 @@ public class UIWorldBoss : MonoBehaviour
         m_BossEnergyBar.fillAmount = boss.bossToken.energy / (float)boss.bossToken.baseEnergy;
 
         BossRankHandler.OnUpdateBossRank += OnBossRankUpdate;
+        m_MarkerPointer.SetTarget(boss);
+        m_MarkerPointer.gameObject.SetActive(true);
     }
 
     private void OnLeaveBossArea()
@@ -86,12 +90,36 @@ public class UIWorldBoss : MonoBehaviour
 
         if (isTop3)
         {
-            m_PlayerName.text = m_PlayerName.text = "";
+            m_PlayerRank.text = m_PlayerName.text = "";
         }
         else
         {
-            m_PlayerName.text = PlayerDataManager.playerData.name;
-            m_PlayerRank.text = "?th";
+            aux = 0;
+            for (int i = data.rank.Length - 4; i >= 0; i--)
+            {
+                aux++;
+                foreach (string name in data.rank[i].Keys)
+                {
+                    if (string.IsNullOrEmpty(TeamManager.MyCovenId))
+                    {
+                        if (name == PlayerDataManager.playerData.name)
+                        {
+                            m_PlayerName.text = name;//LocalizeLookUp.GetText("cast_you");
+                            m_PlayerRank.text = aux + "th";
+                            return;
+                        }
+                    }
+                    else
+                    {
+                        if (name == TeamManager.MyCovenInfo.name)
+                        {
+                            m_PlayerName.text = name;
+                            m_PlayerRank.text = aux + "th";
+                            return;
+                        }
+                    }
+                }
+            }
         }
     }
 

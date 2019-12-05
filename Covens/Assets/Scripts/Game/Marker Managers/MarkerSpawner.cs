@@ -466,7 +466,6 @@ public class MarkerSpawner : MonoBehaviour
             case MarkerType.BOSS:
 
                 BossMarkerData boss = JsonConvert.DeserializeObject<BossMarkerData>(response);
-                Debug.LogError(JsonConvert.SerializeObject(boss, Formatting.Indented));
                 UIQuickCast.UpdateTarget(marker, boss);
                 break;
 
