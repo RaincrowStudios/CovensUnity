@@ -130,7 +130,7 @@ public abstract class CharacterMarkerData : MarkerData
     public virtual string covenId { get; set; }
     public virtual string coven { get; set; }
 
-    [JsonIgnore]
+    //[JsonIgnore]
     public virtual int baseEnergy { get; set; }
 
     [JsonIgnore]
@@ -240,9 +240,13 @@ public class SpiritMarkerData : CharacterMarkerData
     public virtual int bounty { get; set; }
 }
 
-public class BossMarkerdata : CharacterMarkerData
+public class BossMarkerData : CharacterMarkerData
 {
     public override MarkerSpawner.MarkerType Type => MarkerSpawner.MarkerType.BOSS;
+    public string[] spirits;
+    public float reach; //in meters
+    public string spirit; //spirit_krampus
+    public int currentStage;
 }
 
 public struct CovenInfo

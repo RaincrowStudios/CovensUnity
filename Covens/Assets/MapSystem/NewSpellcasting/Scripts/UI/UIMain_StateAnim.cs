@@ -109,7 +109,7 @@ public class UIMain_StateAnim : MonoBehaviour
         m_ShoutButton.interactable = true;
     }
 
-    private void OnEnterBossArea()
+    private void OnEnterBossArea(WorldBossMarker boss)
     {
         m_InBossArea = true;
         UpdateUIState();

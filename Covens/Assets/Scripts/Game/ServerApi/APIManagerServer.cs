@@ -46,13 +46,13 @@ public class APIManagerServer
                 LoadingOverlay.Show();
             }
 
-            if (www.isHttpError && www.responseCode == 412 && www.downloadHandler.text == "10000")
+            if (www.isHttpError && www.downloadHandler.text == "10000")
             {
                 Raincrow.GameEventResponses.DisconnectPlayerHandler.DisconnectPlayer();
                 yield break;
             }
             //force retry
-            else if (www.isHttpError && www.responseCode == 412 && www.downloadHandler.text == "2016")
+            else if (www.isHttpError && www.downloadHandler.text == "2016")
             {
                 Debug.LogError("2016 - retry");
                 retryCount = 0;

@@ -33,7 +33,7 @@ public class UIWorldBoss : MonoBehaviour
 
     public void Setup(WorldBossMarker boss)
     {
-        m_InputBlocker.SetActive(true);
+        m_Title.text = LocalizeLookUp.GetText("worldboss_title").Replace("{{name}}", LocalizeLookUp.GetSpiritName(boss.bossToken.spiritId));
     }
 
     public void Open(WorldBossMarker boss)
@@ -46,7 +46,6 @@ public class UIWorldBoss : MonoBehaviour
 
         MarkerSpawner.HighlightMarkers(new List<MuskMarker> { PlayerManager.witchMarker, boss });
 
-        m_Title.text = LocalizeLookUp.GetText("worldboss_title").Replace("{{name}}", LocalizeLookUp.GetSpiritName(boss.bossToken.spiritId));
         foreach (var rank in m_DamageRank)
             rank.text = "";
         m_PlayerName.text = "";

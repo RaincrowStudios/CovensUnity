@@ -284,24 +284,8 @@ public class UIMain : MonoBehaviour
         }
     }
 
-    private void OnEnterBossArea()
+    private void OnEnterBossArea(WorldBossMarker boss)
     {
-        WorldBossMarker boss = null;
-        foreach(var entry in MarkerSpawner.Markers.Values)
-        {
-            if (entry[0].Type == MarkerSpawner.MarkerType.BOSS)
-            {
-                boss = entry[0] as WorldBossMarker;
-                break;
-            }
-        }
-
-        if (boss == null)
-        {
-            Debug.LogException(new System.NullReferenceException());
-            return;
-        }
-
         m_WorldBossUI.Setup(boss);
     }
 

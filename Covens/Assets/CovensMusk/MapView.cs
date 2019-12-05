@@ -11,7 +11,7 @@ public class MapView : MonoBehaviour
     public static bool InMapView { get; private set; }
     public static bool InBossArea { get; private set; }
 
-    public static event System.Action OnEnterBossArea;
+    public static event System.Action<WorldBossMarker> OnEnterBossArea;
     public static event System.Action OnLeaveBossArea;
 
     private void Awake()
@@ -213,7 +213,7 @@ public class MapView : MonoBehaviour
         {
             Debug.Log("enter boss area");
             InBossArea = true;
-            OnEnterBossArea?.Invoke();
+            OnEnterBossArea?.Invoke(bosses[0]);
         }
     }
 
