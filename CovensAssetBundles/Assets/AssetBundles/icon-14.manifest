@@ -1,0 +1,57 @@
+ManifestFileVersion: 0
+CRC: 2045979699
+Hashes:
+  AssetFileHash:
+    serializedVersion: 2
+    Hash: ef938abd5e701d4c68039ec35da92468
+  TypeTreeHash:
+    serializedVersion: 2
+    Hash: cb3f6df5cbc4a2990c44c2787bc9553a
+HashAppended: 0
+ClassTypes:
+- Class: 28
+  Script: {instanceID: 0}
+- Class: 213
+  Script: {instanceID: 0}
+Assets:
+- Assets/Sources/icon-14/m_C_W_CZYSWTR.png
+- Assets/Sources/icon-14/m_S_M_MABON.png
+- Assets/Sources/icon-14/f_S_M_YULE.png
+- Assets/Sources/icon-14/m_HA_G_HORNS.png
+- Assets/Sources/icon-14/f_S_M_DAYOFDEAD.png
+- Assets/Sources/icon-14/m_S_M_SAMHAIN.png
+- Assets/Sources/icon-14/m_S_M_PLGDCTR.png
+- Assets/Sources/icon-14/f_HE_W_KNTTHT.png
+- Assets/Sources/icon-14/f_HE_G_WTCHHT.png
+- Assets/Sources/icon-14/m_HE_G_WTCHHT.png
+- Assets/Sources/icon-14/m_S_M_YULE.png
+- Assets/Sources/icon-14/f_C_W_FRSTSWTR.png
+- Assets/Sources/icon-14/f_S_M_SOOTHSAYER.png
+- Assets/Sources/icon-14/f_S_M_NVRMR.png
+- Assets/Sources/icon-14/m_HE_G_PRTYHT.png
+- Assets/Sources/icon-14/m_S_M_NVRMR.png
+- Assets/Sources/icon-14/f_S_M_PLGDCTR.png
+- Assets/Sources/icon-14/m_C_W_CRDGN.png
+- Assets/Sources/icon-14/f_S_M_SAMHAIN.png
+- Assets/Sources/icon-14/f_S_M_HECATE.png
+- Assets/Sources/icon-14/f_C_W_CRDGN.png
+- Assets/Sources/icon-14/m_S_M_SOOTHSAYER.png
+- Assets/Sources/icon-14/f_S_M_MABON.png
+- Assets/Sources/icon-14/m_C_W_RNDRSWTR.png
+- Assets/Sources/icon-14/m_HE_W_KNTTHT.png
+- Assets/Sources/icon-14/f_HE_G_NWYRSHT.png
+- Assets/Sources/icon-14/f_HE_G_PRTYHT.png
+- Assets/Sources/icon-14/f_HE_G_LMBRJN.png
+- Assets/Sources/icon-14/m_S_M_DIWALI.png
+- Assets/Sources/icon-14/m_S_M_HECATE.png
+- Assets/Sources/icon-14/m_HE_G_LMBRJCK.png
+- Assets/Sources/icon-14/f_S_M_DIWALI.png
+- Assets/Sources/icon-14/m_C_G_BMBRJCKT.png
+- Assets/Sources/icon-14/f_C_W_RNDRSWTR.png
+- Assets/Sources/icon-14/f_C_G_BMBRJCKT.png
+- Assets/Sources/icon-14/m_HE_G_NWYRSHT.png
+- Assets/Sources/icon-14/f_HA_G_HORNS.png
+- Assets/Sources/icon-14/m_C_W_FRSTSWTR.png
+- Assets/Sources/icon-14/m_S_M_SLPPYHLLW.png
+- Assets/Sources/icon-14/f_C_W_CZYSWTR.png
+Dependencies: []

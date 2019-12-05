@@ -1,0 +1,78 @@
+ManifestFileVersion: 0
+CRC: 3030000152
+Hashes:
+  AssetFileHash:
+    serializedVersion: 2
+    Hash: 5934c82e8d77e4a97edbb281a76f30d1
+  TypeTreeHash:
+    serializedVersion: 2
+    Hash: cb3f6df5cbc4a2990c44c2787bc9553a
+HashAppended: 0
+ClassTypes:
+- Class: 28
+  Script: {instanceID: 0}
+- Class: 213
+  Script: {instanceID: 0}
+Assets:
+- Assets/Sources/apparel-9/m_S_O_NVRMR_Censer.png
+- Assets/Sources/apparel-9/f_C_G_CRDGN.png
+- Assets/Sources/apparel-9/f_C_S_CZYSWTR.png
+- Assets/Sources/apparel-9/f_HE_G_KNTTHT.png
+- Assets/Sources/apparel-9/m_S_O_YULE_Relaxed.png
+- Assets/Sources/apparel-9/m_HE_G_NWYRSHT.png
+- Assets/Sources/apparel-9/m_S_A_NVRMR_Relaxed.png
+- Assets/Sources/apparel-9/m_S_O_PLGDCTR_Relaxed.png
+- Assets/Sources/apparel-9/m_C_S_CRDGN.png
+- Assets/Sources/apparel-9/m_S_A_NVRMR_Censer.png
+- Assets/Sources/apparel-9/f_C_G_RNDRSWTR.png
+- Assets/Sources/apparel-9/m_S_A_YULE_Censer.png
+- Assets/Sources/apparel-9/f_HE_G_WTCHHT.png
+- Assets/Sources/apparel-9/m_S_A_YULE_Relaxed.png
+- Assets/Sources/apparel-9/m_C_S_FRSTSWTR.png
+- Assets/Sources/apparel-9/m_S_O_NVRMR_Relaxed.png
+- Assets/Sources/apparel-9/m_S_E_PLGDCTR_Censer.png
+- Assets/Sources/apparel-9/m_S_M_PLGDCTR.png
+- Assets/Sources/apparel-9/f_C_S_CRDGN.png
+- Assets/Sources/apparel-9/f_C_W_CZYSWTR.png
+- Assets/Sources/apparel-9/m_C_G_CRDGN.png
+- Assets/Sources/apparel-9/f_HE_S_KNTTHT.png
+- Assets/Sources/apparel-9/m_S_E_NVRMR_Relaxed.png
+- Assets/Sources/apparel-9/m_S_E_YULE_Censer.png
+- Assets/Sources/apparel-9/m_S_O_YULE_Censer.png
+- Assets/Sources/apparel-9/m_C_G_BMBRJCKT.png
+- Assets/Sources/apparel-9/f_C_S_FRSTSWTR.png
+- Assets/Sources/apparel-9/m_S_E_YULE_Relaxed.png
+- Assets/Sources/apparel-9/m_S_E_NVRMR_Censer.png
+- Assets/Sources/apparel-9/m_C_S_RNDRSWTR.png
+- Assets/Sources/apparel-9/f_C_G_FRSTSWTR.png
+- Assets/Sources/apparel-9/m_C_G_RNDRSWTR.png
+- Assets/Sources/apparel-9/f_C_W_RNDRSWTR.png
+- Assets/Sources/apparel-9/f_C_G_BMBRJCKT.png
+- Assets/Sources/apparel-9/f_HE_G_PRTYHT.png
+- Assets/Sources/apparel-9/m_C_W_CZYSWTR.png
+- Assets/Sources/apparel-9/m_S_A_PLGDCTR_Censer.png
+- Assets/Sources/apparel-9/m_C_W_FRSTSWTR.png
+- Assets/Sources/apparel-9/m_HE_W_KNTTHT.png
+- Assets/Sources/apparel-9/m_HE_G_WTCHHT.png
+- Assets/Sources/apparel-9/f_HE_W_KNTTHT.png
+- Assets/Sources/apparel-9/m_HE_S_KNTTHT.png
+- Assets/Sources/apparel-9/f_C_S_RNDRSWTR.png
+- Assets/Sources/apparel-9/m_S_E_PLGDCTR_Relaxed.png
+- Assets/Sources/apparel-9/m_C_G_CZYSWTR.png
+- Assets/Sources/apparel-9/m_C_W_CRDGN.png
+- Assets/Sources/apparel-9/f_HE_G_LMBRJN.png
+- Assets/Sources/apparel-9/m_S_M_YULE.png
+- Assets/Sources/apparel-9/m_S_O_PLGDCTR_Censer.png
+- Assets/Sources/apparel-9/m_HE_G_PRTYHT.png
+- Assets/Sources/apparel-9/m_S_M_NVRMR.png
+- Assets/Sources/apparel-9/m_HE_G_LMBRJCK.png
+- Assets/Sources/apparel-9/f_HE_G_NWYRSHT.png
+- Assets/Sources/apparel-9/f_C_W_CRDGN.png
+- Assets/Sources/apparel-9/m_C_G_FRSTSWTR.png
+- Assets/Sources/apparel-9/m_HE_G_KNTTHT.png
+- Assets/Sources/apparel-9/m_C_S_CZYSWTR.png
+- Assets/Sources/apparel-9/f_C_W_FRSTSWTR.png
+- Assets/Sources/apparel-9/m_C_W_RNDRSWTR.png
+- Assets/Sources/apparel-9/m_S_A_PLGDCTR_Relaxed.png
+- Assets/Sources/apparel-9/f_C_G_CZYSWTR.png
+Dependencies: []
