@@ -4,7 +4,9 @@
     {
         TEXT = 0,
         LOCATION = 1,
-        IMAGE = 2
+        IMAGE = 2,
+        BOSS = 3,
+        NPC = 4,
     }
 
     public enum ChatCategory
@@ -33,20 +35,6 @@
         public double longitude;
         public string language;
         public byte[] image;
-    }
-
-    public class ChatCoven
-    {
-        public string instance { get; set; }
-        public string name { get; set; }
-        public string dominion { get; set; }
-        public int members { get; set; }
-        public int worldRank { get; set; }
-        public int dominionRank { get; set; }
-        public int xp { get; set; }
-        public int alignment { get; set; }
-        public int level { get; set; }
-        public string founder { get; set; }
     }
 
     public class ChatCovenData

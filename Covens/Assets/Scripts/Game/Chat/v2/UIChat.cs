@@ -115,7 +115,8 @@ namespace Raincrow.Chat.UI
 
             if (!ChatManager.Connected)
             {
-                EnableReconnectOverlay(true);
+                //EnableReconnectOverlay(true);
+                ReconnectChat();
             }
             else
             {
@@ -331,6 +332,7 @@ namespace Raincrow.Chat.UI
             ChatManager.OnLeaveChatRequested -= OnLeaveChatRequested;
             ChatManager.OnEnterCovenChat -= OnEnterCovenChat;
         }
+
         private void DownloadedAssets_OnWillUnloadAssets()
         {
             if (_isOpen)
@@ -686,6 +688,8 @@ namespace Raincrow.Chat.UI
         [ContextMenu("Open")]
         private void Debug_Open()
         {
+            if (Application.isPlaying == false)
+                return;
             Show();
         }
 #endif
