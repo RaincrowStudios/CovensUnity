@@ -219,7 +219,7 @@ public class UISpellcastBook : MonoBehaviour//, IEnhancedScrollerDelegate
         SetupTargetEnergy(
             energy,
             m_TargetData.baseEnergy,
-            m_TargetMarker.Type == MarkerSpawner.MarkerType.SPIRIT ? new int?() : (m_TargetMarker as WitchMarker).witchToken.degree);
+            m_TargetMarker.Type == MarkerSpawner.MarkerType.WITCH ? (m_TargetMarker as WitchMarker).witchToken.degree  : new int?());
 
         UpdateCanCast();
     }
@@ -386,15 +386,13 @@ public class UISpellcastBook : MonoBehaviour//, IEnhancedScrollerDelegate
     {
         m_TargetName.text = "";
         m_TargetPortrait.overrideSprite = null;
+        SetupTargetEnergy(data.energy, data.baseEnergy, null);
 
         if (marker.Type == MarkerSpawner.MarkerType.WITCH)
         {
             WitchMarker witch = marker as WitchMarker;
 
-            m_TargetName.text = witch.witchToken.displayName;
-
-            SetupTargetEnergy(data.energy, data.baseEnergy, witch.witchToken.degree);
-
+            m_TargetName.text = witch.witchToken.displayName;            
             witch.GetPortrait(spr =>
             {
                 m_TargetPortrait.overrideSprite = spr;
@@ -405,12 +403,16 @@ public class UISpellcastBook : MonoBehaviour//, IEnhancedScrollerDelegate
             SpiritMarker spirit = marker as SpiritMarker;
 
             m_TargetName.text = spirit.spiritData.Name;
-            SetupTargetEnergy(data.energy, data.baseEnergy, null);
-
             int idx = Mathf.Clamp(spirit.spiritData.tier - 1, 0, 4);
             m_TargetPortrait.overrideSprite = m_TierSprite[idx];
         }
-
+        else if (marker.Type == MarkerSpawner.MarkerType.BOSS)
+        {
+            WorldBossMarker boss = marker as WorldBossMarker;
+            m_TargetName.text = LocalizeLookUp.GetSpiritName(boss.bossToken.spiritId);
+            boss.GetPortrait(spr => m_TargetPortrait.overrideSprite = spr);
+        }
+        
         LeanTween.value(0, 1, 1f).setOnUpdate((float t) =>
         {
             m_NamePanel.sizeDelta = m_TargetName.rectTransform.sizeDelta + new Vector2(13f, 0f);
