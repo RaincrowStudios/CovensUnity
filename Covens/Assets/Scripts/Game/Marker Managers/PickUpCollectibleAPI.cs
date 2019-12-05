@@ -103,6 +103,11 @@ public static class PickUpCollectibleAPI
 
     public static void PickUpLoot(LootMarker marker)
     {
+        if (marker.IsEligible == false)
+        {
+            UIGlobalPopup.ShowError(null,"cant collect");
+            return;
+        }
         marker.Interactable = false;
         
         APIManager.Instance.Post("character/pickup/" + marker.Token.instance, "{}", (response, result) =>
@@ -110,6 +115,7 @@ public static class PickUpCollectibleAPI
             if (result == 200)
             {
                 //do nothing, wait for "collect.loot" event
+                marker.SetOpened();
             }
             else
             {
@@ -118,6 +124,7 @@ public static class PickUpCollectibleAPI
                     if (response == "7005")
                     {
                         //cant open (not eligible ou already opened)
+                        marker.SetOpened();
                     }
                 }
                 else

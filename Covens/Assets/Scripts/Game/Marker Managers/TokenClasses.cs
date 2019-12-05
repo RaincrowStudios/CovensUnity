@@ -164,8 +164,8 @@ public class LootToken : Token
 {
     [JsonIgnore]
     public override string type => "loot";
-    public string[] eligibleCharacters;
-    public string[] eligibleCovens;
+    public List<string> eligibleCharacters;
+    //public string[] eligibleCovens;
     public string name;
 }
 

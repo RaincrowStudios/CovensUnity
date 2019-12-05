@@ -1,4 +1,5 @@
-﻿using Raincrow.Maps;
+﻿using Raincrow.GameEventResponses;
+using Raincrow.Maps;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -6,7 +7,19 @@ using UnityEngine;
 public class LootMarker : MuskMarker
 {
     public LootToken LootToken { get; private set; }
-    public bool IsEligible { get; private set; }
+    public bool IsEligible
+    {
+        get
+        {
+            //if (string.IsNullOrEmpty(TeamManager.MyCovenId))
+                return LootToken.eligibleCharacters.Contains(PlayerDataManager.playerData.instance);
+            //else
+            //    return LootToken.eligibleCovens.Contains(TeamManager.MyCovenId);
+        }
+    }
+
+    [SerializeField] private GameObject m_Eligible;
+    [SerializeField] private GameObject m_NotEligible;
 
     public override void Setup(Token data)
     {
@@ -14,10 +27,27 @@ public class LootMarker : MuskMarker
 
         LootToken = data as LootToken;
 
-        if (string.IsNullOrEmpty(TeamManager.MyCovenId))
-            IsEligible = LootToken.eligibleCharacters.Contains(PlayerDataManager.playerData.instance);
+        if (IsEligible)
+            SetClosed();
         else
-            IsEligible = LootToken.eligibleCovens.Contains(TeamManager.MyCovenId);
+            SetOpened();
     }
 
+    public void OpenChest(CollectLootHandler.EventData data)
+    {
+        LootToken.eligibleCharacters.Remove(PlayerDataManager.playerData.instance);
+        SetOpened();
+    }
+
+    public void SetOpened()
+    {
+        m_NotEligible.SetActive(true);
+        m_Eligible.SetActive(false);
+    }
+
+    public void SetClosed()
+    {
+        m_NotEligible.SetActive(false);
+        m_Eligible.SetActive(true);
+    }
 }
