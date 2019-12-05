@@ -42,10 +42,7 @@ public class ApparelButtonData : MonoBehaviour
         apparelData = data;
         Selected.SetActive(false);
         ConflictCG.alpha = 1;
-        DownloadedAssets.GetSprite(data.iconId, (spr) =>
-        {
-            icon.overrideSprite = spr;
-        }, true);
+        DownloadedAssets.GetSprite(data.iconId, icon, true);
 
         apparelName.text = LocalizeLookUp.GetStoreTitle(data.id);
         if (data.position == "style")
