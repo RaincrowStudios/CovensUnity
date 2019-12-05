@@ -66,8 +66,6 @@ public class UIWorldBoss : MonoBehaviour
     private void OnBossRankUpdate(BossRankHandler.EventData data)
     {
         //update energy
-        Debug.Log(data.energy + " / " + m_BossMarker.bossToken.baseEnergy);
-        Debug.LogError(data.energy + " / " + (float)m_BossMarker.bossToken.baseEnergy);
         float amount = data.energy / (float)m_BossMarker.bossToken.baseEnergy;
         m_BossEnergyBar.fillAmount = amount;
         m_BossEnergyPercent.text = ((int)(amount * 100)) + "%";
