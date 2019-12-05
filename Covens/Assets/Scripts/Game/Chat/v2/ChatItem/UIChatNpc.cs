@@ -21,7 +21,7 @@ namespace Raincrow.Chat.UI
             base.SetupMessage(message, onRequestChatLoading, onRequestChatClose);
 
             m_Text.text = LocalizeLookUp.GetText(message.data.message);
-            m_NpcName.text = LocalizeLookUp.GetText(message.player.name);
+            m_NpcName.text = LocalizeLookUp.GetText(message.data.name);
             m_TimeAgo.text = Utilities.EpochToDateTimeChat(message.timestamp);
             //string npc =
         }
