@@ -30,13 +30,14 @@ public class UIMain_StateAnim : MonoBehaviour
     [SerializeField] private RectTransform leftBar;
     [SerializeField] private RectTransform bottomBar;
     [SerializeField] private GameObject[] scaleObjects;
+    [SerializeField] private CanvasGroup[] seasonalUI;
     [SerializeField] private float time = 1;
     [SerializeField] private LeanTweenType tweenType;
     [SerializeField] private CanvasGroup[] bars;
     [SerializeField] private RectTransform energy;
     [SerializeField] private RectTransform quickCast;
     [SerializeField] private RectTransform worldboss;
-    
+
 
     [Header("Buttons")]
     [SerializeField] private Button m_SummonButton;
@@ -49,7 +50,7 @@ public class UIMain_StateAnim : MonoBehaviour
     [SerializeField] private AnimStateSettings m_PopView_Select;
     [SerializeField] private AnimStateSettings m_Worldboss;
     [SerializeField] private AnimStateSettings m_Worldboss_Select;
-    
+
     private int m_TweenId;
     private bool m_InBossArea;
     private bool m_InPop;
@@ -173,11 +174,11 @@ public class UIMain_StateAnim : MonoBehaviour
     {
         switch (state)
         {
-            case State.MAP:         return m_MapView;
-            case State.MAP_SELECT:  return m_MapView_Select;
-            case State.POP:         return m_PopView;
-            case State.POP_SELECT:  return m_PopView_Select;
-            case State.BOSS:       return m_Worldboss;
+            case State.MAP: return m_MapView;
+            case State.MAP_SELECT: return m_MapView_Select;
+            case State.POP: return m_PopView;
+            case State.POP_SELECT: return m_PopView_Select;
+            case State.BOSS: return m_Worldboss;
             case State.BOSS_SELECT: return m_Worldboss_Select;
         }
         return m_MapView;
@@ -190,7 +191,7 @@ public class UIMain_StateAnim : MonoBehaviour
 
         Vector2 leftbar_pos = leftBar.anchoredPosition;
         Vector2 bottombar_pos = bottomBar.anchoredPosition;
-        Vector2 energy_offMin = energy.offsetMin;;
+        Vector2 energy_offMin = energy.offsetMin; ;
         Vector2 quickcast_pos = quickCast.anchoredPosition;
         Vector2 worldboss_pos = worldboss.anchoredPosition;
 
@@ -214,6 +215,8 @@ public class UIMain_StateAnim : MonoBehaviour
                 float _alpha = Mathf.Lerp(alpha, target.bar_alpha, t);
                 foreach (var item in bars)
                     item.alpha = _alpha;
+                foreach (var item in seasonalUI)
+                    item.alpha = _alpha;
             })
             .uniqueId;
     }
@@ -233,6 +236,8 @@ public class UIMain_StateAnim : MonoBehaviour
 
         float _alpha = target.bar_alpha;
         foreach (var item in bars)
+            item.alpha = _alpha;
+        foreach (var item in seasonalUI)
             item.alpha = _alpha;
     }
 
