@@ -56,6 +56,7 @@ public class UIWorldBoss : MonoBehaviour
         m_Title.text = LocalizeLookUp.GetText("worldboss_title").Replace("{{name}}", LocalizeLookUp.GetSpiritName(boss.bossToken.spiritId));
         boss.GetPortrait(spr => m_BossPortrait.sprite = spr);
         m_BossEnergyBar.fillAmount = boss.bossToken.energy / (float)boss.bossToken.baseEnergy;
+        m_BossEnergyPercent.text = ((int)(m_BossEnergyBar.fillAmount * 100)) + "%";
 
         BossRankHandler.OnUpdateBossRank += OnBossRankUpdate;
         m_MarkerPointer.SetTarget(boss);
