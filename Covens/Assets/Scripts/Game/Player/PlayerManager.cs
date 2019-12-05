@@ -18,7 +18,7 @@ public class PlayerManager : MonoBehaviour
 
     private IMarker m_Marker;
 
-    public static IMarker marker => LocationIslandController.isInBattle ? LocationPlayerAction.playerMarker : Instance.m_Marker;
+    public static IMarker marker => LocationIslandController.isInBattle ? LocationPlayerAction.playerMarker : Instance?.m_Marker;
     public static WitchMarker witchMarker => marker as WitchMarker;
 
     public static bool inSpiritForm { get => MarkerManagerAPI.IsSpiritForm; }

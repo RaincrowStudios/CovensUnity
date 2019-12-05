@@ -208,7 +208,7 @@ public class MapCameraUtils : MonoBehaviour
         m_HighlightedMarkers = markers;
 
         //lerp the alpha
-        float target = markers == null || markers.Count == 0 ? 1 : 0.1f;
+        float target = markers == null || markers.Count == 0 ? 1 : 0.0f;
 
         m_HighlightTweenId = LeanTween.value(m_MarkerMat.GetColor("_Color").a, target, 1f)
             .setEaseOutCubic()

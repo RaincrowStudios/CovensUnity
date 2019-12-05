@@ -63,7 +63,6 @@ public class UIMain : MonoBehaviour
     public static UIMain Instance { get; private set; }
 
     [SerializeField] private UIMain_StateAnim m_StateAnim;
-    [SerializeField] private UIWorldBoss m_WorldBossUI;
     
     [Header("Buttons")]
     [SerializeField] private Button m_WardrobeButton;
@@ -124,15 +123,6 @@ public class UIMain : MonoBehaviour
         
         m_EnergyTextPanel.m_Title.text = LocalizeLookUp.GetText("lt_none");
         m_EnergyTextPanel.m_Content.text = " ";
-        
-        MapView.OnEnterBossArea += OnEnterBossArea;
-        MapView.OnLeaveBossArea += OnLeaveBossArea;
-
-        MarkerSpawner.Instance.OnSelectMarker += (m) =>
-        {
-            if (m.Type == MarkerSpawner.MarkerType.BOSS)
-                m_WorldBossUI.Open(m as WorldBossMarker);
-        };
     }
 
     private void OnClickLeaderboards()
@@ -282,15 +272,5 @@ public class UIMain : MonoBehaviour
             m_EnergyTextPanel.m_Content.text = " ";
             m_EnergyTextPanel.Show(false);
         }
-    }
-
-    private void OnEnterBossArea(WorldBossMarker boss)
-    {
-        m_WorldBossUI.Setup(boss);
-    }
-
-    private void OnLeaveBossArea()
-    {
-
     }
 }

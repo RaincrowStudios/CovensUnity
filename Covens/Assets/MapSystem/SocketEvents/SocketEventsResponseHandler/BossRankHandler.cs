@@ -7,7 +7,7 @@ public class BossRankHandler : IGameEventHandler
 {
     public string EventName => "boss.rank";
 
-    //public static event System.Action<Token> OnSpiritAddPOP;
+    public static event System.Action<EventData> OnUpdateBossRank;
 
 
     public struct EventData
@@ -18,7 +18,7 @@ public class BossRankHandler : IGameEventHandler
             public long total;
         }
         public Dictionary<string, RankItem>[] rank;
-        public ulong energy;
+        public int energy;
         public double timestamp;
     }
 
@@ -26,13 +26,15 @@ public class BossRankHandler : IGameEventHandler
     {
         EventData eventData = JsonConvert.DeserializeObject<EventData>(data);
 
-        string debug = eventData.energy.ToString();
-        foreach(var dict in eventData.rank)
-        {
-            foreach(var pair in dict)
-                debug += "\n\t" + pair.Key + ": " + pair.Value.total;
-        }
+        //string debug = eventData.energy.ToString();
+        //foreach(var dict in eventData.rank)
+        //{
+        //    foreach(var pair in dict)
+        //        debug += "\n\t" + pair.Key + ": " + pair.Value.total;
+        //}
 
-        Debug.LogError(debug);
+        //Debug.LogError(debug);
+
+        OnUpdateBossRank?.Invoke(eventData);
     }
 }
