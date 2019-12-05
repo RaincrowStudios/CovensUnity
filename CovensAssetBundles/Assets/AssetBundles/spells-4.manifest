@@ -1,0 +1,49 @@
+ManifestFileVersion: 0
+CRC: 192631818
+Hashes:
+  AssetFileHash:
+    serializedVersion: 2
+    Hash: 5706a7d2c94885f3d2a8b323a6028ae1
+  TypeTreeHash:
+    serializedVersion: 2
+    Hash: cb3f6df5cbc4a2990c44c2787bc9553a
+HashAppended: 0
+ClassTypes:
+- Class: 28
+  Script: {instanceID: 0}
+- Class: 213
+  Script: {instanceID: 0}
+Assets:
+- Assets/Sources/spells-4/29.png
+- Assets/Sources/spells-4/15.png
+- Assets/Sources/spells-4/26.png
+- Assets/Sources/spells-4/4.png
+- Assets/Sources/spells-4/19.png
+- Assets/Sources/spells-4/27.png
+- Assets/Sources/spells-4/14.png
+- Assets/Sources/spells-4/11.png
+- Assets/Sources/spells-4/1.png
+- Assets/Sources/spells-4/13.png
+- Assets/Sources/spells-4/6.png
+- Assets/Sources/spells-4/28.png
+- Assets/Sources/spells-4/3.png
+- Assets/Sources/spells-4/32.png
+- Assets/Sources/spells-4/16.png
+- Assets/Sources/spells-4/20.png
+- Assets/Sources/spells-4/30.png
+- Assets/Sources/spells-4/9.png
+- Assets/Sources/spells-4/21.png
+- Assets/Sources/spells-4/2.png
+- Assets/Sources/spells-4/12.png
+- Assets/Sources/spells-4/7.png
+- Assets/Sources/spells-4/10.png
+- Assets/Sources/spells-4/17.png
+- Assets/Sources/spells-4/24.png
+- Assets/Sources/spells-4/25.png
+- Assets/Sources/spells-4/23.png
+- Assets/Sources/spells-4/31.png
+- Assets/Sources/spells-4/5.png
+- Assets/Sources/spells-4/8.png
+- Assets/Sources/spells-4/22.png
+- Assets/Sources/spells-4/18.png
+Dependencies: []
