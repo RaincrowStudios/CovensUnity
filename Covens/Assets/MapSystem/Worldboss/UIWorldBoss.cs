@@ -11,8 +11,8 @@ public class UIWorldBoss : MonoBehaviour
     [SerializeField] private UIMarkerPointer m_MarkerPointer;
     [Space]
     [SerializeField] private TextMeshProUGUI m_Title;
-    [SerializeField] private Image m_BossPortrait;
     [SerializeField] private Image m_BossEnergyBar;
+    [SerializeField] private UIConditionList m_ConditionList;
     [SerializeField] private TextMeshProUGUI m_BossEnergyPercent;
     [SerializeField] private TextMeshProUGUI[] m_DamageRank;
     [Space]
@@ -63,7 +63,6 @@ public class UIWorldBoss : MonoBehaviour
         m_BossMarker = boss;
 
         m_Title.text = LocalizeLookUp.GetText("worldboss_title").Replace("{{name}}", LocalizeLookUp.GetSpiritName(boss.bossToken.spiritId));
-        boss.GetPortrait(spr => m_BossPortrait.overrideSprite = spr);
         m_BossEnergyBar.fillAmount = boss.bossToken.energy / (float)boss.bossToken.baseEnergy;
         m_BossEnergyPercent.text = ((int)(m_BossEnergyBar.fillAmount * 100)) + "%";
 
@@ -86,16 +85,16 @@ public class UIWorldBoss : MonoBehaviour
         if (data.caster.id != m_BossMarker.Token.Id)
             return;
 
-        if (data.result.isSuccess)
-        {
-            if (data.spell == "spell_channeling")
-            {
-                PlayerNotificationManager.Instance.ShowNotification(
-                    LocalizeLookUp.GetText("character_channeling")
-                        .Replace("{{character}}", LocalizeLookUp.GetSpiritName(m_BossMarker.bossToken.spiritId)),
-                    m_BossPortrait.overrideSprite);
-            }
-        }
+        //if (data.result.isSuccess)
+        //{
+        //    if (data.spell == "spell_channeling")
+        //    {
+        //        PlayerNotificationManager.Instance.ShowNotification(
+        //            LocalizeLookUp.GetText("character_channeling")
+        //                .Replace("{{character}}", LocalizeLookUp.GetSpiritName(m_BossMarker.bossToken.spiritId)),
+        //            m_BossPortrait.overrideSprite);
+        //    }
+        //}
     }
 
     private void SpellCastHandler_OnSpellCast(SpellCastHandler.SpellCastEventData data)
@@ -105,12 +104,21 @@ public class UIWorldBoss : MonoBehaviour
 
         if (data.result.isSuccess)
         {
+            if (data.spell == "spell_channeling")
+            {
+                PlayerNotificationManager.Instance.ShowNotification(
+                    LocalizeLookUp.GetText("character_channeling")
+                        .Replace("{{character}}", LocalizeLookUp.GetSpiritName(m_BossMarker.bossToken.spiritId)));
+            }
+        }
+
+        if (data.result.isSuccess)
+        {
             if (data.spell == "spell_addledMind")
             {
                 PlayerNotificationManager.Instance.ShowNotification(
                     LocalizeLookUp.GetText("character_interrupted")
-                        .Replace("{{character}}", LocalizeLookUp.GetSpiritName(m_BossMarker.bossToken.spiritId)),
-                    m_BossPortrait.overrideSprite);
+                        .Replace("{{character}}", LocalizeLookUp.GetSpiritName(m_BossMarker.bossToken.spiritId)));
             }
         }
     }
@@ -171,9 +179,35 @@ public class UIWorldBoss : MonoBehaviour
         }
     }
 
+    //private void MarkerSpawner_OnReceiveMarkerData(string arg1, CharacterMarkerData arg2)
+    //{
+
+    //}
+
+    private void _OnStatusEffectApplied(string character, string caster, StatusEffect statusEffect)
+    {
+        if (character != m_BossMarker.Token.instance)
+            return;
+
+        m_ConditionList.AddCondition(statusEffect);
+    }
+
+    private void _OnExpireEffect(string character, StatusEffect effect)
+    {
+        if (character != m_BossMarker.Token.instance)
+            return;
+
+        m_ConditionList.RemoveCondition(effect);
+    }
+
     private void Open(WorldBossMarker boss)
     {
         m_InputBlocker.SetActive(true);
+        //MarkerSpawner.Instance.OnReceiveMarkerData += MarkerSpawner_OnReceiveMarkerData;
+        SpellCastHandler.OnApplyEffect += _OnStatusEffectApplied;
+        SpellCastHandler.OnExpireEffect += _OnExpireEffect;
+
+        m_ConditionList.Setup(boss.bossToken.effects);
 
         Vector3 pos = boss.transform.position + MapsAPI.Instance.mapCenter.forward * 70;
         MapCameraUtils.FocusOnPosition(pos, 1f, false, 1f);
@@ -186,7 +220,11 @@ public class UIWorldBoss : MonoBehaviour
 
     private void Close()
     {
+        //MarkerSpawner.Instance.OnReceiveMarkerData -= MarkerSpawner_OnReceiveMarkerData;
+        SpellCastHandler.OnApplyEffect -= _OnStatusEffectApplied;
+        SpellCastHandler.OnExpireEffect -= _OnExpireEffect;
         m_InputBlocker.SetActive(false);
+
         MapCameraUtils.FocusOnPosition(MapsAPI.Instance.mapCenter.position, 0.99f, true, 1f);
         MapCameraUtils.SetExtraFOV(0);
 

@@ -46,7 +46,7 @@ public class MarkerSpawner : MonoBehaviour
     public event System.Action<string, string, bool> OnImmunityChange;
 
     public event System.Action<IMarker> OnSelectMarker;
-    
+    public event System.Action<string, CharacterMarkerData> OnReceiveMarkerData;
 
     public static MarkerSpawner Instance { get; set; }
 
@@ -430,6 +430,7 @@ public class MarkerSpawner : MonoBehaviour
                 {
                     SelectWitchData_Map witch = JsonConvert.DeserializeObject<SelectWitchData_Map>(response);
                     witch.token = marker.Token as WitchToken;
+                    OnReceiveMarkerData?.Invoke(instance, witch);
 
                     if (witchSelected)
                     {
@@ -447,6 +448,7 @@ public class MarkerSpawner : MonoBehaviour
                 {
                     SelectSpiritData_Map spirit = JsonConvert.DeserializeObject<SelectSpiritData_Map>(response);
                     spirit.token = marker.Token as SpiritToken;
+                    OnReceiveMarkerData?.Invoke(instance, spirit);
 
                     if (spiritSelected)
                     {
@@ -466,6 +468,7 @@ public class MarkerSpawner : MonoBehaviour
             case MarkerType.BOSS:
 
                 BossMarkerData boss = JsonConvert.DeserializeObject<BossMarkerData>(response);
+                OnReceiveMarkerData?.Invoke(instance, boss);
                 UIQuickCast.UpdateTarget(marker, boss);
                 break;
 
