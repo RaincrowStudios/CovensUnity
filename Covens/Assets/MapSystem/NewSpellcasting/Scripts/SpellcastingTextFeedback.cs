@@ -56,11 +56,17 @@ public static class SpellcastingTextFeedback
             targetColor = LocalizeLookUp.GetText("lt_spirit_s");//"spirit";
             targetDegree = "";
         }
-        else
+        else if (target.Type == MarkerSpawner.MarkerType.WITCH)
         {
             targetName = (target.Token as WitchToken).displayName;
             targetColor = Utilities.GetSchool((target.Token as WitchToken).degree).ToUpper();
             targetDegree = Utilities.GetDegree((target.Token as WitchToken).degree).ToUpper();
+        }
+        else
+        {
+            targetName = LocalizeLookUp.GetSpiritName((target.Token as BossToken).spiritId);
+            targetColor = "";
+            targetDegree = "";
         }
 
         if (response.result.isSuccess == false)
@@ -70,9 +76,9 @@ public static class SpellcastingTextFeedback
             if (target == PlayerManager.marker)
             {
                 if (spellData != null)
-                    return LocalizeLookUp.GetText("spell_caster_tried_spell_failed").Replace("{{Color}}", casterColor).Replace("{{Target Name}}", targetName).Replace("{{Spell Name}}", spellData.Name);//"The " + casterColor + " " + targetName + " tried to cast " + spellData.spellName + " on you but failed.";
+                    return LocalizeLookUp.GetText("spell_caster_tried_spell_failed").Replace("{{Color}}", casterColor).Replace("{{Target Name}}", casterName).Replace("{{Spell Name}}", spellData.Name);//"The " + casterColor + " " + targetName + " tried to cast " + spellData.spellName + " on you but failed.";
                 else
-                    return LocalizeLookUp.GetText("spell_caster_tried_failed").Replace("{{Color}}", casterColor).Replace("{{Target Name}}", targetName);//"The " + casterColor + " " + targetName + " tried to cast a spell on you but failed.";
+                    return LocalizeLookUp.GetText("spell_caster_tried_failed").Replace("{{Color}}", casterColor).Replace("{{Target Name}}", casterName);//"The " + casterColor + " " + targetName + " tried to cast a spell on you but failed.";
             }
             else
             {
@@ -104,7 +110,7 @@ public static class SpellcastingTextFeedback
                 str = str.Insert(21, "{1} ");
                 str = str.Replace("{6}", "<color=red>{6}</color>");
             }
-            else if (caster.Type == MarkerSpawner.MarkerType.SPIRIT)
+            else if (caster.Type != MarkerSpawner.MarkerType.WITCH) //== MarkerSpawner.MarkerType.SPIRIT)
             {
                 str = str.Replace("{2}", "{1}");
             }
