@@ -248,10 +248,10 @@ public class DownloadedAssets : MonoBehaviour
         if (!loadedBundles.ContainsKey(type) && assetBundleDirectory.ContainsKey(type))
         {
             loadedBundles[type] = new List<AssetBundle>();
-
+            int loadedCount = 0;
+            
             for (int i = 0; i < assetBundleDirectory[type].Count; i++)
             {
-                int aux = i;
                 string item = assetBundleDirectory[type][i];
                 Log("loading bundle " + item);
 
@@ -259,14 +259,17 @@ public class DownloadedAssets : MonoBehaviour
                 var request = AssetBundle.LoadFromFileAsync(item);
                 request.completed += op => 
                 {
+                    loadedCount += 1;
                     Log("loaded bundle " + item + " in " + (Time.unscaledTime - time) + "s");
 
                     loadedBundles[type].Add(request.assetBundle);
 
                     //all assetbundles for this category were loaded
                     //try load sprite now
-                    if (aux >= assetBundleDirectory[type].Count - 1)
+                    if (loadedCount == assetBundleDirectory[type].Count)
+                    {
                         loadSpriteAction.Invoke();
+                    }
                 };
             }
 

@@ -42,7 +42,7 @@ public class DictionaryManager
             {
                 case "Local": url += "staging/"; break;
                 case "Release": url += "release/"; break;
-                case "Gustavo": url += "staging/"; break;
+                case "Oktagon": url += "staging/"; break;
                 default: url += "staging/"; break;
             }
 #elif PRODUCTION

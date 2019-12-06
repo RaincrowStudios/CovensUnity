@@ -11,11 +11,11 @@ public class DownloadManager : MonoBehaviour
 {
     public struct AssetResponse
     {
-        public string game;// => "130";
-        public string store;// => "121";
-        public string localization;// => "128";
+        public string game;//=> "136";
+        public string store;//=> "125";
+        public string localization;// => "130";
 
-        public List<string> assets;// => new List<string>() { "spirits-3", "spells-2", "apparel-6", "icon-6", "icon-8", "icon-9", "icon-10", "icon-11", "spells-3" };
+        public List<string> assets;//=> new List<string>() { "spirits-4", "spells-4", "apparel-8", "apparel-9", "icon-13", "icon-14" };
         public string version;
         public int android;
         public int apple;
@@ -285,40 +285,40 @@ public class DownloadManager : MonoBehaviour
 
         //figure out which bundles must be downloaded
         List<string> bundlesToDownload = new List<string>();
-        AssetCacheJson cachedAssetKeys;
+        AssetCacheJson cachedAssetKeys = new AssetCacheJson();
 
-        if (PlayerPrefs.HasKey("AssetCacheJson"))
-        {
-            cachedAssetKeys = JsonConvert.DeserializeObject<AssetCacheJson>(PlayerPrefs.GetString("AssetCacheJson"));
+        //if (PlayerPrefs.HasKey("AssetCacheJson"))
+        //{
+            //cachedAssetKeys = JsonConvert.DeserializeObject<AssetCacheJson>(PlayerPrefs.GetString("AssetCacheJson"));
             foreach (string _key in assets.assets)
             {
-                //check if its not in the assetcache
-                if (cachedAssetKeys.bundles.Contains(_key) == false)
-                {
-                    bundlesToDownload.Add(_key);
-                }
-                //check if the file is in the persistendatapath
-                else
-                {
+                ////check if its not in the assetcache
+                //if (cachedAssetKeys.bundles.Contains(_key) == false)
+                //{
+                //    bundlesToDownload.Add(_key);
+                //}
+                ////check if the file is in the persistendatapath
+                //else
+                //{
                     string assetPath = Path.Combine(Application.persistentDataPath, _key + ".unity3d");
                     if (System.IO.File.Exists(assetPath) == false)
                     {
                         bundlesToDownload.Add(_key);
                     }
-                }
+                //}
             }
-        }
-        else
-        {
-            cachedAssetKeys = new AssetCacheJson
-            {
-                bundles = new List<string>()
-            };
-            bundlesToDownload = assets.assets;
-        }
+        //}
+        //else
+        //{
+        //    cachedAssetKeys = new AssetCacheJson
+        //    {
+        //        bundles = new List<string>()
+        //    };
+        //    bundlesToDownload = assets.assets;
+        //}
         
         //download the bundles
-        string assetBaseUrl = DownloadManager.downloadUrl + "assetbundles/";
+        string assetBaseUrl = DownloadManager.downloadUrl + "assetbundles/285/";
         if (Application.platform == RuntimePlatform.IPhonePlayer)
             assetBaseUrl += "ios/";
         else

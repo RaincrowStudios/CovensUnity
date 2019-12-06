@@ -18,7 +18,7 @@ public class SelectServer : EditorWindow
     static int chatServerTabHTTP;
 
 
-    string[] serverType = new string[] { "Release", "Staging", "Local", "Gustavo" };
+    string[] serverType = new string[] { "Release", "Staging", "Local", "Dev" };
 
     [MenuItem("Tools/Server Config")]
     public static void ShowWindow()
@@ -38,7 +38,7 @@ public class SelectServer : EditorWindow
         string p = EditorPrefs.GetString(s);
         if (p == "Release") return 0;
         else if (p == "Staging") return 1;
-        else if (p == "Gustavo") return 3;
+        else if (p == "Dev") return 3;
         else return 2;
     }
     void OnGUI()
@@ -57,7 +57,7 @@ public class SelectServer : EditorWindow
                 EditorPrefs.SetString("game", "Local");
                 break;
             case 3:
-                EditorPrefs.SetString("game", "Gustavo");
+                EditorPrefs.SetString("game", "Dev");
                 break;
         }
         GUILayout.Label(CovenConstants.hostAddress);
@@ -77,7 +77,7 @@ public class SelectServer : EditorWindow
                 EditorPrefs.SetString("ws", "Local");
                 break;
             case 3:
-                EditorPrefs.SetString("ws", "Gustavo");
+                EditorPrefs.SetString("ws", "Dev");
                 break;
         }
         GUILayout.Label(CovenConstants.wssAddress);
@@ -96,7 +96,7 @@ public class SelectServer : EditorWindow
                 EditorPrefs.SetString("map", "Local");
                 break;
             case 3:
-                EditorPrefs.SetString("map", "Gustavo");
+                EditorPrefs.SetString("map", "Dev");
                 break;
         }
         GUILayout.Label(CovenConstants.wsMapServer);
@@ -115,7 +115,7 @@ public class SelectServer : EditorWindow
                 EditorPrefs.SetString("chat", "Local");
                 break;
             case 3:
-                EditorPrefs.SetString("chat", "Gustavo");
+                EditorPrefs.SetString("chat", "Dev");
                 break;
         }
         GUILayout.Label(CovenConstants.chatAddress);

@@ -22,6 +22,11 @@ public static class DownloadAssetBundle
 public class AssetCacheJson
 {
     public List<string> bundles { get; set; }
+
+    public AssetCacheJson()
+    {
+        bundles = new List<string>();
+    }
 }
 
 public struct ConditionData

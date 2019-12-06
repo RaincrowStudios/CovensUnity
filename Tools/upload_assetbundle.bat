@@ -11,7 +11,7 @@ if [%1]==[] goto usage
 SET PROJ_PATH=%CD%\..\
 SET SRC_PATH=%PROJ_PATH%\CovensAssetBundles\AssetBundles\%1
 
-SET DEST_FOLDER=assetbundles
+SET DEST_FOLDER=assetbundles/285
 SET DEST_PATH=gs://raincrow-covens/%DEST_FOLDER%/
 
 xcopy %SRC_PATH% %CD%\%1 /s /q /i /y /EXCLUDE:exclude
