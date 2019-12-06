@@ -36,17 +36,13 @@ public class WorldBossMarker : CharacterMarker
 
     public override void OnDespawn()
     {
-        //base.OnDespawn();
-        //LeanTween.cancel(m_TweenId);
-        //LeanTween.cancel(m_EnergyRingTweenId);
+        //tempfix while art is not loaded from assertbundle
+        Sprite avatar = m_AvatarRenderer.sprite;
+        Sprite icon = m_IconRenderer.sprite;
+               
+        base.OnDespawn();
 
-        IsShowingAvatar = false;
-        IsShowingIcon = false;
-
-        //m_AvatarRenderer.sprite = null;
-        //m_IconRenderer.sprite = null;
-
-        m_Animator.SetBool("avatar", IsShowingAvatar);
-        m_Animator.SetBool("icon", IsShowingIcon);
+        m_AvatarRenderer.sprite = avatar;
+        m_IconRenderer.sprite = icon;
     }
 }

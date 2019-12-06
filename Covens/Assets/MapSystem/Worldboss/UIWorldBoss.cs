@@ -73,6 +73,12 @@ public class UIWorldBoss : MonoBehaviour
 
         m_MarkerPointer.SetTarget(boss);
         m_MarkerPointer.gameObject.SetActive(true);
+
+        //clear UI
+        foreach (var rank in m_DamageRank)
+            rank.text = "";
+        m_PlayerName.text = "";
+        m_PlayerRank.text = "";
     }
 
     private void TickSpellHandler_OnSpellTick(SpellCastHandler.SpellCastEventData data)
