@@ -136,7 +136,7 @@ public class UIWorldBoss : MonoBehaviour
         }
         else
         {
-            aux = 0;
+            aux = 3;
             for (int i = data.rank.Length - 4; i >= 0; i--)
             {
                 aux++;
@@ -174,11 +174,6 @@ public class UIWorldBoss : MonoBehaviour
         MapCameraUtils.SetExtraFOV(-3);
 
         MarkerSpawner.HighlightMarkers(new List<MuskMarker> { PlayerManager.witchMarker, boss });
-
-        foreach (var rank in m_DamageRank)
-            rank.text = "";
-        m_PlayerName.text = "";
-        m_PlayerRank.text = "";
 
         OnSelectBoss?.Invoke();
     }
