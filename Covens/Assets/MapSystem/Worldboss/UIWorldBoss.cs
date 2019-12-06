@@ -4,15 +4,16 @@ using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
 using Raincrow.Maps;
+using Raincrow.GameEventResponses;
 
 public class UIWorldBoss : MonoBehaviour
 {
+    [SerializeField] private UIMarkerPointer m_MarkerPointer;
+    [Space]
     [SerializeField] private TextMeshProUGUI m_Title;
     [SerializeField] private Image m_BossPortrait;
     [SerializeField] private Image m_BossEnergyBar;
     [SerializeField] private TextMeshProUGUI m_BossEnergyPercent;
-    [SerializeField] private UIMarkerPointer m_MarkerPointer;
-    [Space]
     [SerializeField] private TextMeshProUGUI[] m_DamageRank;
     [Space]
     [SerializeField] private TextMeshProUGUI m_PlayerRank;
@@ -20,6 +21,8 @@ public class UIWorldBoss : MonoBehaviour
     [Space]
     [SerializeField] private GameObject m_InputBlocker;
     [SerializeField] private Button m_CloseButton;
+    //[Space]
+    //[SerializeField] private CanvasGroup
 
     private WorldBossMarker m_BossMarker;
 
@@ -33,7 +36,7 @@ public class UIWorldBoss : MonoBehaviour
         m_MarkerPointer.gameObject.SetActive(false);
         m_CloseButton.onClick.AddListener(OnClickClose);
 
-        MapView.OnEnterBossArea += OnEnterBossArea;
+        MapView.OnEnterBossArea += MapView_OnEnterBossArea;
         MapView.OnLeaveBossArea += MapView_OnLeaveBossArea;
         
         MarkerSpawner.Instance.OnSelectMarker += (m) =>
@@ -50,20 +53,60 @@ public class UIWorldBoss : MonoBehaviour
 
         if (m_InputBlocker.activeSelf)
             Close();
+
+        SpellCastHandler.OnSpellCast -= SpellCastHandler_OnSpellCast;
+        TickSpellHandler.OnSpellTick -= TickSpellHandler_OnSpellTick;
     }
 
-    private void OnEnterBossArea(WorldBossMarker boss)
+    private void MapView_OnEnterBossArea(WorldBossMarker boss)
     {
         m_BossMarker = boss;
 
         m_Title.text = LocalizeLookUp.GetText("worldboss_title").Replace("{{name}}", LocalizeLookUp.GetSpiritName(boss.bossToken.spiritId));
-        boss.GetPortrait(spr => m_BossPortrait.sprite = spr);
+        boss.GetPortrait(spr => m_BossPortrait.overrideSprite = spr);
         m_BossEnergyBar.fillAmount = boss.bossToken.energy / (float)boss.bossToken.baseEnergy;
         m_BossEnergyPercent.text = ((int)(m_BossEnergyBar.fillAmount * 100)) + "%";
 
         BossRankHandler.OnUpdateBossRank += OnBossRankUpdate;
+        SpellCastHandler.OnSpellCast += SpellCastHandler_OnSpellCast;
+        TickSpellHandler.OnSpellTick += TickSpellHandler_OnSpellTick;
+
         m_MarkerPointer.SetTarget(boss);
         m_MarkerPointer.gameObject.SetActive(true);
+    }
+
+    private void TickSpellHandler_OnSpellTick(SpellCastHandler.SpellCastEventData data)
+    {
+        if (data.caster.id != m_BossMarker.Token.Id)
+            return;
+
+        if (data.result.isSuccess)
+        {
+            if (data.spell == "spell_channeling")
+            {
+                PlayerNotificationManager.Instance.ShowNotification(
+                    LocalizeLookUp.GetText("character_channeling")
+                        .Replace("{{character}}", LocalizeLookUp.GetSpiritName(m_BossMarker.bossToken.spiritId)),
+                    m_BossPortrait.overrideSprite);
+            }
+        }
+    }
+
+    private void SpellCastHandler_OnSpellCast(SpellCastHandler.SpellCastEventData data)
+    {
+        if (data.caster.id != m_BossMarker.Token.Id)
+            return;
+
+        if (data.result.isSuccess)
+        {
+            if (data.spell == "spell_addledMind")
+            {
+                PlayerNotificationManager.Instance.ShowNotification(
+                    LocalizeLookUp.GetText("character_interrupted")
+                        .Replace("{{character}}", LocalizeLookUp.GetSpiritName(m_BossMarker.bossToken.spiritId)),
+                    m_BossPortrait.overrideSprite);
+            }
+        }
     }
 
     private void OnBossRankUpdate(BossRankHandler.EventData data)

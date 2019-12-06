@@ -9,6 +9,7 @@ namespace Raincrow.GameEventResponses
     {
         public string EventName => "tick.spell";
 
+        public static event System.Action<SpellCastHandler.SpellCastEventData> OnSpellTick;
         public static event System.Action<SpellCastHandler.SpellCastEventData> OnPlayerSpellTick;
         public static event System.Action<SpellCastHandler.SpellCastEventData> OnWillProcessTick;
         
@@ -53,6 +54,8 @@ namespace Raincrow.GameEventResponses
                     else if (SpellCastHandler.m_NonDamagingSpells.Contains(spell.id))
                         SpellcastingFX.SpawnText(target, LocalizeLookUp.GetSpellName(spell.id), 1);
                 }
+
+                OnSpellTick?.Invoke(data);
             }
         }
 
