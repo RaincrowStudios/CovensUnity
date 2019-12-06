@@ -29,11 +29,18 @@ namespace Raincrow.GameEventResponses
         {
             EventData data = JsonConvert.DeserializeObject<EventData>(json);
 
+            string debug = data.silver + " silver\n" + data.gold + " gold\n" + data.xp;
+
             PlayerDataManager.playerData.AddCurrency(data.silver, data.gold);
             CharacterXpHandler.HandleEvent(PlayerDataManager.playerData.xp + data.xp, data.timestamp);
 
-            foreach(var item in data.collectibles)
+            foreach (var item in data.collectibles)
+            {
                 PlayerDataManager.playerData.AddIngredient(item.collectible, item.amount);
+                debug += $"{item.collectible}({item.amount}),";
+            }
+
+            UIGlobalPopup.ShowPopUp(null,  debug);
         }
     }
 }

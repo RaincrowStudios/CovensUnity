@@ -119,6 +119,7 @@ public static class PickUpCollectibleAPI
             }
             else
             {
+                UIGlobalPopup.ShowError(null, APIManager.ParseError(response));
                 if (result == 412)
                 {
                     if (response == "7005")

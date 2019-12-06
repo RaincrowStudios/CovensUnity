@@ -14,22 +14,19 @@ public class GpuInstancingParticles : MonoBehaviour
     public Camera m_targetCamera;
     public MeshRenderer m_maskrender;
 
-    [Header("Colider")]
-    public BoxCollider2D m_Collider;
-    public Vector3 m_CollidersData;
-
-    
-
-    
+    //[Header("Colider")]
+    //public BoxCollider2D m_Collider;
+    //public Vector3 m_CollidersData;
+            
     [Range(1, 20)]
     public int m_physicalUpdate = 10;
     private float m_timedelta = 0;
     private Vector4 m_generatePosOri = Vector4.zero;
 
-    [Header("RT")]
-    [Range(0.25f, 1.0f)]
-    public float m_rtSize = 1.0f;
-    private RenderTexture m_particleRT;
+    //[Header("RT")]
+    //[Range(0.25f, 1.0f)]
+    //public float m_rtSize = 1.0f;
+    //private RenderTexture m_particleRT;
 
     public bool m_drawGizmos = false;
     public Rect m_generateRect = new Rect(0, 1080, 1920, 1080);
@@ -57,12 +54,12 @@ public class GpuInstancingParticles : MonoBehaviour
         m_bufferWithArgs = new ComputeBuffer(1, sizeof(uint) * 5, ComputeBufferType.IndirectArguments);
         m_bufferWithArgs.SetData(m_bufferArgs);
 
-        m_particleRT = new RenderTexture((int)(Screen.width * m_rtSize), (int)(Screen.height * m_rtSize), 0, RenderTextureFormat.ARGB32);
+        //m_particleRT = new RenderTexture((int)(Screen.width * m_rtSize), (int)(Screen.height * m_rtSize), 0, RenderTextureFormat.ARGB32);
 
-        if (m_maskrender != null)
-        {
-            m_maskrender.material.SetTexture("_ParticleRT", m_particleRT);
-        }
+        //if (m_maskrender != null)
+        //{
+        //    m_maskrender.material.SetTexture("_ParticleRT", m_particleRT);
+        //}
 
         m_cbufferParams = new ComputeBuffer(count, sizeof(float) * 4);
         m_cbufferPosition = new ComputeBuffer(count, sizeof(float) * 4);
@@ -104,11 +101,11 @@ public class GpuInstancingParticles : MonoBehaviour
 
     private void ProcessCollider()
     {
-        m_CollidersData = m_Collider.transform.position;
-        m_CollidersData.z = m_Collider.transform.lossyScale.x * 0.5f;
-        m_CollidersData.y += m_Collider.transform.lossyScale.y * 0.5f;
+        //m_CollidersData = m_Collider.transform.position;
+        //m_CollidersData.z = m_Collider.transform.lossyScale.x * 0.5f;
+        //m_CollidersData.y += m_Collider.transform.lossyScale.y * 0.5f;
 
-        m_particleComputeShader.SetVector("_collider", m_CollidersData);
+        //m_particleComputeShader.SetVector("_collider", m_CollidersData);
     }
 
 
@@ -141,10 +138,10 @@ public class GpuInstancingParticles : MonoBehaviour
 
                 m_commandBuffer.Clear();
 
-                m_commandBuffer.ClearRenderTarget(true, true,new Color32(0,0,0,0));
+                m_commandBuffer.ClearRenderTarget(true, false,new Color32(0,0,0,0));
                 m_commandBuffer.DrawMeshInstancedIndirect(mesh, 0, mat, 0, m_bufferWithArgs);
 
-                m_commandBuffer.Blit(new RenderTargetIdentifier(BuiltinRenderTextureType.CameraTarget), m_particleRT);
+                //m_commandBuffer.Blit(new RenderTargetIdentifier(BuiltinRenderTextureType.CameraTarget), m_particleRT);
                 m_targetCamera.RemoveCommandBuffers(cameraevent);
                 m_targetCamera.AddCommandBuffer(cameraevent, m_commandBuffer);
             }
@@ -153,8 +150,8 @@ public class GpuInstancingParticles : MonoBehaviour
 
     private void OnDisable()
     {
-        if (m_particleRT != null)
-            m_particleRT.Release();
+        //if (m_particleRT != null)
+        //    m_particleRT.Release();
 
         if (m_cbufferParams != null) m_cbufferParams.Release();
         if (m_cbufferPosition != null) m_cbufferPosition.Release();
@@ -182,27 +179,27 @@ public class GpuInstancingParticles : MonoBehaviour
     }
 
 
-    private void OnDrawGizmos()
-    {
-        if (m_targetCamera == null) return;
+    //private void OnDrawGizmos()
+    //{
+    //    if (m_targetCamera == null) return;
 
-        Vector2 tarpos = m_targetCamera.transform.position;
-        float x1 = tarpos.x - m_generateRect.width * 0.5f + m_generateRect.x;
-        float x2 = tarpos.x + m_generateRect.width * 0.5f + m_generateRect.x;
+    //    Vector2 tarpos = m_targetCamera.transform.position;
+    //    float x1 = tarpos.x - m_generateRect.width * 0.5f + m_generateRect.x;
+    //    float x2 = tarpos.x + m_generateRect.width * 0.5f + m_generateRect.x;
 
-        float y1 = tarpos.y + m_generateRect.y;
-        float y2 = tarpos.y + m_generateRect.height + m_generateRect.y;
+    //    float y1 = tarpos.y + m_generateRect.y;
+    //    float y2 = tarpos.y + m_generateRect.height + m_generateRect.y;
 
-        Gizmos.DrawLine(new Vector3(x1, y1, 0), new Vector3(x2, y1, 0));
-        Gizmos.DrawLine(new Vector3(x1, y2, 0), new Vector3(x2, y2, 0));
-        Gizmos.DrawLine(new Vector3(x1, y1, 0), new Vector3(x1, y2, 0));
-        Gizmos.DrawLine(new Vector3(x2, y1, 0), new Vector3(x2, y2, 0));
+    //    Gizmos.DrawLine(new Vector3(x1, y1, 0), new Vector3(x2, y1, 0));
+    //    Gizmos.DrawLine(new Vector3(x1, y2, 0), new Vector3(x2, y2, 0));
+    //    Gizmos.DrawLine(new Vector3(x1, y1, 0), new Vector3(x1, y2, 0));
+    //    Gizmos.DrawLine(new Vector3(x2, y1, 0), new Vector3(x2, y2, 0));
 
 
-        Vector3 bline = m_targetCamera.transform.position;
-        bline.z = 0;
-        bline.y -= m_bottomOffset;
+    //    Vector3 bline = m_targetCamera.transform.position;
+    //    bline.z = 0;
+    //    bline.y -= m_bottomOffset;
 
-        Gizmos.DrawLine(bline - new Vector3(m_generateRect.width * 0.5f, 0, 0), bline + new Vector3(m_generateRect.width * 0.5f, 0, 0));
-    }
+    //    Gizmos.DrawLine(bline - new Vector3(m_generateRect.width * 0.5f, 0, 0), bline + new Vector3(m_generateRect.width * 0.5f, 0, 0));
+    //}
 }
