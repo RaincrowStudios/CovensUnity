@@ -9,6 +9,7 @@ public class UIMarkerPointer : MonoBehaviour
     [SerializeField] private RectTransform m_CanvasRect;
     [SerializeField] private Vector2 m_HorizontalBorders;
     [SerializeField] private Vector2 m_VerticalBorders;
+    [SerializeField] private Vector2 m_VerticalFeather;
 
     [Space()]
     [SerializeField] private CanvasGroup m_PointerCavnasGroup;
@@ -62,10 +63,14 @@ public class UIMarkerPointer : MonoBehaviour
             return;
         }
 
-        Vector2 screenPos = MapsAPI.Instance.camera.WorldToScreenPoint(MapsAPI.Instance.GetWorldPosition(m_Target.Token.longitude, PlayerManager.marker.Token.latitude));
+        Vector2 screenPos = MapsAPI.Instance.camera.WorldToScreenPoint(MapsAPI.Instance.GetWorldPosition(m_Target.Token.longitude, m_Target.Token.latitude));
         Vector2 canvasPos = new Vector2(screenPos.x * (m_CanvasRect.sizeDelta.x / Screen.width), screenPos.y * (m_CanvasRect.sizeDelta.y / Screen.height));
 
-        if (canvasPos.x > m_HorizontalBorders.x && canvasPos.x < m_CanvasRect.sizeDelta.x - m_HorizontalBorders.y && canvasPos.y > m_VerticalBorders.x && canvasPos.y < m_CanvasRect.sizeDelta.y - m_VerticalBorders.y)
+        if (
+            canvasPos.x > m_HorizontalBorders.x &&
+            canvasPos.x < m_CanvasRect.sizeDelta.x - m_HorizontalBorders.y &&
+            canvasPos.y > m_VerticalBorders.x + m_VerticalFeather.x &&
+            canvasPos.y < m_CanvasRect.sizeDelta.y - m_VerticalBorders.y - m_VerticalFeather.y)
         {
             HidePointer();
             ShowPhysicalMarker(!MapsAPI.Instance.streetLevel);
