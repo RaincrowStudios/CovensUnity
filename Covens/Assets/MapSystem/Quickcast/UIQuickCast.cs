@@ -29,16 +29,13 @@ public class UIQuickCast : MonoBehaviour
     private List<UIQuickcastButton> m_Buttons = new List<UIQuickcastButton>();
     private static IMarker m_Target;
     private static CharacterMarkerData m_TargetData;
-
-    private int m_AnimTweenId;
-
+    
     public static bool IsOpen { get; private set; }
     public static IMarker target => m_Target != null ? m_Target : PlayerManager.marker;
     public static CharacterMarkerData targetData => m_TargetData != null ? m_TargetData : PlayerDataManager.playerData;
 
-    public static void Open(System.Action onLoaded = null)
-    {
-    }
+    private int m_AnimTweenId;
+    private bool m_WasOpen = false;
 
     public static void Close()
     {
@@ -131,11 +128,16 @@ public class UIQuickCast : MonoBehaviour
     {
         m_Button.interactable = true;
         UpdateTarget(null, null);
+
+        if (m_WasOpen == false)
+            _Hide();
     }
 
 
     private void _Show()
     {
+        m_WasOpen = IsOpen;
+
         if (IsOpen)
             return;
 
