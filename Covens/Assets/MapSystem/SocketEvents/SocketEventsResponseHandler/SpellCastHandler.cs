@@ -244,17 +244,9 @@ namespace Raincrow.GameEventResponses
                                     PlayerNotificationManager.Instance.ShowNotification(SpellcastingTextFeedback.CreateSpellFeedback(caster, target, data), spr);
                                 });
                             }
-                            else if (caster is SpiritMarker)
+                            else// if (caster is SpiritMarker)
                             {
                                 PlayerNotificationManager.Instance.ShowNotification(SpellcastingTextFeedback.CreateSpellFeedback(caster, target, data));
-                            }
-                            else if (caster is WorldBossMarker)
-                            {
-
-                            }
-                            else
-                            {
-                                Debug.LogError("something went wrong");
                             }
                         }
                         else

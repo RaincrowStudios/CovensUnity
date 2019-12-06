@@ -33,11 +33,17 @@ public static class SpellcastingTextFeedback
             casterColor = "spirit";
             casterDegree = "";
         }
-        else
+        else if (caster.Type == MarkerSpawner.MarkerType.WITCH)
         {
             casterName = (caster.Token as WitchToken).displayName;
             casterColor = Utilities.GetSchool((caster.Token as CharacterToken).degree).ToUpper();
             casterDegree = Utilities.GetDegree((caster.Token as CharacterToken).degree);
+        }
+        else
+        {
+            casterName = LocalizeLookUp.GetSpiritName((caster.Token as BossToken).spiritId);
+            casterColor = "";
+            casterDegree = "";
         }
 
         if (target == PlayerManager.marker)
