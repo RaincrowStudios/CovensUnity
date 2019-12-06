@@ -93,7 +93,7 @@ public class UIConditionInfo : MonoBehaviour
         //setup position
         if (oldCanvas)
         {
-            throw new System.NotImplementedException();
+            //throw new System.NotImplementedException();
             //m_Canvas.renderMode = RenderMode.ScreenSpaceCamera;
             //m_Canvas.worldCamera = UIMain_StateAnim.Instance.GetComponent<Canvas>().worldCamera;
         }

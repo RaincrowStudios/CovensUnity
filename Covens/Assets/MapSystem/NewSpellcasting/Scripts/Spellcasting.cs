@@ -220,8 +220,24 @@ public class Spellcasting
     {
         Debug.Log("[CastSpell]\nspell: " + (spell != null ? spell.Name : "null") + "\ntarget: " + (target != null ? target.GameObject.name : "null"));
 
-        string targetId = target == PlayerManager.marker ? PlayerDataManager.playerData.instance : target.Token.instance;
         string actionId = "cast." + Time.unscaledTime.ToString("N2");
+
+        //show fail
+        if (target == null)
+        {
+            UIWaitingCastResult.Instance.Show(
+                actionId, 
+                target, 
+                spell, 
+                ingredients,
+                (result) => onContinue?.Invoke(result),
+                () => onClose?.Invoke()
+            );
+            UIWaitingCastResult.Instance.ShowResults(spell, new SpellCastHandler.Result{});
+            return;
+        }
+
+        string targetId = target == PlayerManager.marker ? PlayerDataManager.playerData.instance : target.Token.instance;
 
         List<spellIngredientsData> toRemove = new List<spellIngredientsData>();
         List<spellIngredientsData> auxIngr = new List<spellIngredientsData>();

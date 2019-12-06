@@ -43,6 +43,7 @@ public abstract class CharacterMarker : MuskMarker
     private Transform m_HexFX;
     private Transform m_SealFX;
     private Transform m_CovenBuffFX;
+    private Transform m_ChannelingFX;
 
     protected abstract void SetupIcon();
     protected abstract void SetupAvatar();
@@ -159,6 +160,25 @@ public abstract class CharacterMarker : MuskMarker
             m_CovenBuffFX = fx = StatusEffectFX.SpawnCovenBuff(effect);
         }
 
+        if (effect.HasStatus(SpellData.CHANNELING_STATUS) && m_ChannelingFX == null)
+        {
+            fx = m_ChannelingFX = SpellChanneling.SpawnFX(this, characterToken);
+
+            ParticleSystem[] particles = m_ChannelingFX.GetComponentsInChildren<ParticleSystem>();
+            particles[0].Play();
+            particles[1].Play();
+        }
+
+        if (effect.HasStatus(SpellData.CHANNELED_STATUS))
+        {
+            if (m_ChannelingFX == null)
+                fx = m_ChannelingFX = SpellChanneling.SpawnFX(this, characterToken);
+
+            ParticleSystem[] particles = m_ChannelingFX.GetComponentsInChildren<ParticleSystem>();
+            particles[0].Stop();
+            particles[1].Stop();
+        }
+
         if (fx)
         {
             fx.SetParent(m_AvatarGroup);
@@ -171,7 +191,21 @@ public abstract class CharacterMarker : MuskMarker
     {
         base.OnExpireStatusEffect(effect);
 
-        if (effect.spell == "spell_hex")
+        DespawnFX(effect.spell);
+        
+        //if (effect.HasStatus(SpellData.CHANNELING_STATUS) || effect.HasStatus(SpellData.CHANNELED_STATUS))
+        //{
+        //    if (m_ChannelingFX != null)
+        //    {
+        //        SpellChanneling.DespawnFX(m_ChannelingFX);
+        //        m_ChannelingFX = null;
+        //    }
+        //}
+    }
+
+    private void DespawnFX(string id)
+    {
+        if (id == "spell_hex")
         {
             if (m_HexFX)
             {
@@ -179,7 +213,7 @@ public abstract class CharacterMarker : MuskMarker
                 m_HexFX = null;
             }
         }
-        else if (effect.spell == "spell_seal")
+        else if (id == "spell_seal")
         {
             if (m_SealFX)
             {
@@ -187,10 +221,21 @@ public abstract class CharacterMarker : MuskMarker
                 m_SealFX = null;
             }
         }
-        else if (effect.spell == "spell_covenBuff")
+        else if (id == "spell_covenBuff")
         {
             if (m_CovenBuffFX)
+            {
                 StatusEffectFX.DespawnCovenBuff(m_CovenBuffFX);
+                m_CovenBuffFX = null;
+            }
+        }
+        else if (id == "spell_channeling")
+        {
+            if (m_ChannelingFX != null)
+            {
+                SpellChanneling.DespawnFX(m_ChannelingFX);
+                m_ChannelingFX = null;
+            }
         }
     }
     

@@ -21,9 +21,7 @@ public class WitchMarker : CharacterMarker
     public WitchToken witchToken;
 
     public override string Name => witchToken.displayName;
-
-    private Transform m_ChannelingFX;
-
+    
     private int m_AvatarColorTweenId;
 
     public override void GetPortrait(System.Action<Sprite> callback)
@@ -272,12 +270,6 @@ public class WitchMarker : CharacterMarker
             DestroyGeneratedPortrait();
         }
 
-        if (m_ChannelingFX != null)
-        {
-            SpellChanneling.DespawnFX(m_ChannelingFX);
-            m_ChannelingFX = null;
-        }
-
         base.OnDespawn();
     }
 
@@ -305,51 +297,18 @@ public class WitchMarker : CharacterMarker
         UpdateAnimationState();
     }
 
-    public override void OnApplyStatusEffect(StatusEffect effect)
-    {
-        base.OnApplyStatusEffect(effect);
+    //public override void OnApplyStatusEffect(StatusEffect effect)
+    //{
+    //    base.OnApplyStatusEffect(effect);
 
-        if (effect.HasStatus(SpellData.CHANNELING_STATUS) && m_ChannelingFX == null)
-        {
-            m_ChannelingFX = SpellChanneling.SpawnFX(this, witchToken);
-            m_ChannelingFX.SetParent(AvatarTransform);
-            m_ChannelingFX.localPosition = Vector3.zero;
-            m_ChannelingFX.localScale = Vector3.one;
+        
+    //}
 
-            ParticleSystem[] particles = m_ChannelingFX.GetComponentsInChildren<ParticleSystem>();
-            particles[0].Play();
-            particles[1].Play();
-        }
+    //public override void OnExpireStatusEffect(StatusEffect effect)
+    //{
+    //    base.OnExpireStatusEffect(effect);
 
-        if (effect.HasStatus(SpellData.CHANNELED_STATUS))
-        {
-            if (m_ChannelingFX == null)
-            {
-                m_ChannelingFX = SpellChanneling.SpawnFX(this, witchToken);
-                m_ChannelingFX.SetParent(m_AvatarGroup);
-                m_ChannelingFX.localPosition = Vector3.zero;
-                m_ChannelingFX.localScale = Vector3.one;
-            }
-
-            ParticleSystem[] particles = m_ChannelingFX.GetComponentsInChildren<ParticleSystem>();
-            particles[0].Stop();
-            particles[1].Stop();
-        }
-    }
-
-    public override void OnExpireStatusEffect(StatusEffect effect)
-    {
-        base.OnExpireStatusEffect(effect);
-
-        if (effect.HasStatus(SpellData.CHANNELING_STATUS) || effect.HasStatus(SpellData.CHANNELED_STATUS))
-        {
-            if (m_ChannelingFX != null)
-            {
-                SpellChanneling.DespawnFX(m_ChannelingFX);
-                m_ChannelingFX = null;
-            }
-        }
-    }
+    //}
 
     public override void OnEnterMapView()
     {

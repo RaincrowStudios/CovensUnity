@@ -10,9 +10,6 @@ public static class SpellChanneling
     private static SimplePool<Transform> m_ShadowFx = new SimplePool<Transform>("SpellFX/Channeling/ChannelingShadow");
     private static SimplePool<Transform> m_GreyFx = new SimplePool<Transform>("SpellFX/Channeling/ChannelingGrey");
     private static SimplePool<Transform> m_WhiteFx = new SimplePool<Transform>("SpellFX/Channeling/ChannelingWhite");
-    //private const string m_ShadowFxPath = "SpellFX/Channeling/ChannelingShadow";
-    //private const string m_GreyFxPath = "SpellFX/Channeling/ChannelingGrey";
-    //private const string m_WhiteFxPath = "SpellFX/Channeling/ChannelingWhite";
 
     private static Dictionary<IMarker, Transform> m_SpawnedFX = new Dictionary<IMarker, Transform>();
 
@@ -35,22 +32,18 @@ public static class SpellChanneling
             UIChanneling.Instance.SetInteractable(true);
             return;
         }
-        
+
+       m_StartActionId = "channel.start." + Time.unscaledTime.ToString("N2");
+
         APIManager.Instance.Post(
             "character/cast/" + target.Token.Id,
-            $"{{\"spell\":\"spell_channeling\"}}",
+            $"{{\"spell\":\"spell_channeling\",\"actionId\":\"{m_StartActionId}\"}}",
             (response, result) =>
             {
                 if (result == 200)
                 {
-                    SpellCastHandler.SpellCastEventData data = JsonConvert.DeserializeObject<SpellCastHandler.SpellCastEventData>(response);
-
-                    OnMapEnergyChange.ForceEvent(target, data.target.energy, data.timestamp);
-
-                    if (data.result.effect != null && string.IsNullOrEmpty(data.result.effect.spell) == false)
-                        MarkerSpawner.ApplyStatusEffect(target.Token.Id, PlayerDataManager.playerData.instance, data.result.effect);
-
                     UIChanneling.Instance.SetInteractable(true);
+                    //cast.spell socket event will do the rest
                 }
                 else
                 {
@@ -70,41 +63,41 @@ public static class SpellChanneling
             return;
         }
 
+        m_StopActionId = "channel.sto." + Time.unscaledTime.ToString("N2");
+        SpellCastHandler.OnPlayerCast += OnCastSpell;
+
         APIManager.Instance.Post(
             "character/cast/" + Target.Token.Id,
-            $"{{\"spell\":\"spell_channeling\"}}",
+            $"{{\"spell\":\"spell_channeling\",\"actionId\":\"{m_StopActionId}\"}}",
             (response, result) =>
             {
                 if (IsChanneling)
                 {
                     if (result == 200)
                     {
-                        SpellCastHandler.SpellCastEventData data = JsonConvert.DeserializeObject<SpellCastHandler.SpellCastEventData>(response);
-
-                        ////remove the channeling status
-                        //for (int i = PlayerDataManager.playerData.effects.Count - 1; i >= 0 ; i--)
-                        //{
-                        //    if (PlayerDataManager.playerData.effects[i].spell == "spell_channeling")
-                        //        PlayerDataManager.playerData.effects.RemoveAt(i);
-                        //}
-
-                        //add cooldown
-                        CooldownManager.AddCooldown("spell_channeling", data.timestamp, data.cooldown);
-
-                        //add the new status effect
-                        PlayerConditionManager.ExpireEffect("spell_channeling");
-                        MarkerSpawner.ApplyStatusEffect(Target.Token.Id, PlayerDataManager.playerData.instance, data.result.effect);
-                        
-                        UIChanneling.Instance.ShowResults(data.result, null);
+                        //wait for cast.spell socket event
                     }
                     else
                     {
+                        SpellCastHandler.OnPlayerCast -= OnCastSpell;
                         UIChanneling.Instance.ShowResults(new SpellCastHandler.Result(), APIManager.ParseError(response));
                     }
                 }
 
-                TickSpellHandler.OnPlayerSpellTick -= OnSpellTick;
+                TickSpellHandler.OnPlayerSpellTick -= OnCastSpell;
             });
+    }
+
+    public static string m_StartActionId;
+    public static string m_StopActionId;
+
+    private static void OnCastSpell(SpellCastHandler.SpellCastEventData data)
+    {
+        if (data.actionId != m_StopActionId)
+            return;
+
+        SpellCastHandler.OnPlayerCast -= OnCastSpell;
+        UIChanneling.Instance.ShowResults(data.result, null);
     }
 
     private static void OnSpellTick(SpellCastHandler.SpellCastEventData data)
@@ -114,8 +107,6 @@ public static class SpellChanneling
             UIChanneling.Instance.OnTickChanneling(data);
             if (IsChanneled)
             {
-                //DespawnPlayerFX(data.result.effect);
-                //StopChanneling(null);
                 UIChanneling.Instance.ShowResults(data.result, null);
             }
         }
