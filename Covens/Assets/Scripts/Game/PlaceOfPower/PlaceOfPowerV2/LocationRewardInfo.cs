@@ -41,8 +41,6 @@ public class LocationRewardInfo : UIInfoPanel
         xp.text = LocalizeLookUp.GetText("spell_xp").Replace("{{Number}}", data.xp.ToString());// + " " + LocalizeLookUp.GetText("");
         continueBtn.onClick.RemoveAllListeners();
         continueBtn.onClick.AddListener(() => { onContinue(); base.Close(); });
-        continueBtn.interactable = false;
-        LeanTween.value(0, 0, 0f).setDelay(2f).setOnStart(() => continueBtn.interactable = true);
         base.Show();
     }
 }

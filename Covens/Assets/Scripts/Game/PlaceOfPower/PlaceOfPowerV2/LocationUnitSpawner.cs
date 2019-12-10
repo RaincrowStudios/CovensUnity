@@ -314,7 +314,8 @@ public class LocationUnitSpawner : MonoBehaviour
             LeanTween.scale(go, Vector3.zero, .4f).setOnComplete(() =>
           {
               m_DeathFXPool.Despawn(go.transform);
-                marker.OnDespawn();
+              if (marker.Token.Id != PlayerDataManager.playerData.instance)
+                  marker.OnDespawn();
               if (marker.Type == MarkerType.WITCH) m_WitchPool.Despawn(marker.GameObject.transform);
               else if (marker.Type == MarkerType.SPIRIT) m_SpiritPool.Despawn(marker.GameObject.transform);
               else throw new NotImplementedException("Unhandled Marker Type: " + marker.Type);
@@ -356,11 +357,11 @@ public class LocationUnitSpawner : MonoBehaviour
     {
         foreach (var item in Markers)
         {
-            if (item.Value.Type == MarkerType.WITCH)
-                m_WitchPool.Despawn(item.Value.GameObject.transform);
-            else if (item.Value.Type == MarkerType.SPIRIT)
-                m_SpiritPool.Despawn(item.Value.GameObject.transform);
-            item.Value.OnDespawn();
+            if (item.Value.Type == MarkerType.WITCH) m_WitchPool.Despawn(item.Value.GameObject.transform);
+            else if (item.Value.Type == MarkerType.SPIRIT) m_SpiritPool.Despawn(item.Value.GameObject.transform);
+
+            if (item.Value.Token.Id != PlayerDataManager.playerData.instance)
+                item.Value.OnDespawn();
         }
         Markers.Clear();
     }
@@ -487,7 +488,7 @@ public class LocationUnitSpawner : MonoBehaviour
 
     private async static void ShowFlightFX()
     {
-        var SelectionRing = LocationPlayerAction.playerMarker.GameObject.transform.GetChild(0).GetChild(5);
+        var SelectionRing = LocationPlayerAction.playerMarker.GameObject.transform.GetChild(0).GetChild(4);
         LeanTween.scale(SelectionRing.gameObject, Vector3.zero, .6f).setEase(LeanTweenType.easeInOutQuad);
         await Task.Delay(600);
         LeanTween.scale(SelectionRing.gameObject, Vector3.one * 1.5f, .6f).setEase(LeanTweenType.easeInOutQuad);
@@ -504,7 +505,7 @@ public class LocationUnitSpawner : MonoBehaviour
     private static void SetSelfDegreeRing()
     {
         var selfToken = LocationPlayerAction.playerWitchToken;
-        var SelectionRing = LocationPlayerAction.playerMarker.GameObject.transform.GetChild(0).GetChild(5);
+        var SelectionRing = LocationPlayerAction.playerMarker.GameObject.transform.GetChild(0).GetChild(4);
         foreach (Transform item in SelectionRing)
         {
             item.gameObject.SetActive(false);

@@ -18,7 +18,12 @@ public static class SpellcastingFX
     //banish
     private static SimplePool<Transform> m_BanishGlyph = new SimplePool<Transform>("SpellFX/SpellGlyph_Banish");
     private static SimplePool<Transform> m_BanishAura = new SimplePool<Transform>("SpellFX/HitFX_Aura_White");
-    
+
+
+    //
+    private static List<int> m_TextTweenIds = new List<int>();
+    private static bool m_PauseTween;
+
     public static void SpawnBanish(IMarker target)
     {
         Transform glyph = m_BanishGlyph.Spawn();
@@ -81,6 +86,8 @@ public static class SpellcastingFX
 
     public static void SpawnText(IMarker target, string text, float scale)
     {
+        if (m_PauseTween) return;
+        m_TextTweenIds.Clear();
         TextMeshPro textObj = m_TextPopupPool.Spawn(null, 3f).GetComponent<TextMeshPro>();
         textObj.text = text;
         textObj.fontSize = 45 * scale;
@@ -94,11 +101,34 @@ public static class SpellcastingFX
         textObj.transform.position = new Vector3(target.AvatarTransform.position.x, target.AvatarTransform.position.y + 42, target.AvatarTransform.position.z);
         var RandomSpacing = new Vector3(Random.Range(-7, 7), Random.Range(20, 24), 0);
         textObj.transform.Translate(RandomSpacing);
-        LeanTween.moveLocalY(textObj.gameObject, textObj.transform.localPosition.y + Random.Range(8, 11), 2f).setEaseOutCubic();
-        LeanTween.value(1f, 0f, 2f).setOnUpdate((float a) =>
+        m_TextTweenIds.Add(LeanTween.moveLocalY(textObj.gameObject, textObj.transform.localPosition.y + Random.Range(8, 11), 2f).setEaseOutCubic().id);
+        m_TextTweenIds.Add(LeanTween.value(1f, 0f, 2f).setOnUpdate((float a) =>
         {
             if (textObj != null)
                 textObj.alpha = a;
-        });
+        }).id);
+    }
+
+    public static void StopTweening()
+    {
+        try
+        {
+            m_TextPopupPool.DespawnAll();
+        }
+        catch (System.Exception)
+        {
+
+        }
+        m_PauseTween = true;
+        foreach (var item in m_TextTweenIds)
+        {
+            LeanTween.cancel(item);
+        }
+        m_TextTweenIds.Clear();
+    }
+
+    public static void ResumeTweening()
+    {
+        m_PauseTween = false;
     }
 }
