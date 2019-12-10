@@ -16,33 +16,29 @@ public class WorldBossMarker : CharacterMarker
         base.Setup(data);
 
         m_DisplayName.text = LocalizeLookUp.GetSpiritName(bossToken.spiritId);
+
+        Interactable = true;
     }
 
     protected override void SetupAvatar()
     {
-        //throw new System.NotImplementedException();
+        if (m_AvatarRenderer.sprite != null)
+            return;
+
+        DownloadedAssets.GetSprite(bossToken.spiritId, spr => m_AvatarRenderer.sprite = spr);
     }
 
     protected override void SetupIcon()
     {
-        //throw new System.NotImplementedException();
+        if (m_IconRenderer.sprite != null)
+            return;
+
+        DownloadedAssets.GetSprite(bossToken.spiritId + "_portrait", spr => m_IconRenderer.sprite = spr);
     }
 
     public override void OnWillDespawn()
     {
         base.OnWillDespawn();
         Interactable = false;
-    }
-
-    public override void OnDespawn()
-    {
-        //tempfix while art is not loaded from assertbundle
-        Sprite avatar = m_AvatarRenderer.sprite;
-        Sprite icon = m_IconRenderer.sprite;
-               
-        base.OnDespawn();
-
-        m_AvatarRenderer.sprite = avatar;
-        m_IconRenderer.sprite = icon;
     }
 }

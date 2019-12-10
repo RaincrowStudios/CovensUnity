@@ -11,6 +11,7 @@ public class UIWorldBoss : MonoBehaviour
     [SerializeField] private UIMarkerPointer m_MarkerPointer;
     [Space]
     [SerializeField] private TextMeshProUGUI m_Title;
+    [SerializeField] private Image m_Portrait;
     [SerializeField] private Image m_BossEnergyBar;
     [SerializeField] private UIConditionList m_ConditionList;
     [SerializeField] private TextMeshProUGUI m_BossEnergyPercent;
@@ -61,9 +62,12 @@ public class UIWorldBoss : MonoBehaviour
 
     private void MapView_OnEnterBossArea(WorldBossMarker boss)
     {
+        string spiritId = boss.bossToken.spiritId;
         m_BossMarker = boss;
 
-        m_Title.text = LocalizeLookUp.GetSpiritName(boss.bossToken.spiritId);
+        DownloadedAssets.GetSprite(spiritId + "_portrait", m_Portrait);
+
+        m_Title.text = LocalizeLookUp.GetSpiritName(spiritId);
         m_BossEnergyBar.fillAmount = boss.bossToken.energy / (float)boss.bossToken.baseEnergy;
         m_BossEnergyPercent.text = ((int)(m_BossEnergyBar.fillAmount * 100)) + "%";
 
@@ -216,7 +220,7 @@ public class UIWorldBoss : MonoBehaviour
 
         m_ConditionList.Setup(boss.bossToken.effects);
 
-        Vector3 pos = boss.transform.position + MapsAPI.Instance.mapCenter.forward * 70;
+        Vector3 pos = boss.transform.position + MapsAPI.Instance.mapCenter.forward * 115;
         MapCameraUtils.FocusOnPosition(pos, 1f, false, 1f);
         MapCameraUtils.SetExtraFOV(-3);
 

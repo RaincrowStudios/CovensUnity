@@ -6,6 +6,7 @@ using Raincrow.Chat.UI;
 using UnityEditor.Callbacks;
 using Raincrow.FTF;
 using Raincrow.Store;
+using System.IO;
 
 namespace Raincrow.Test
 {
@@ -342,6 +343,10 @@ namespace Raincrow.Test
                 if (GUILayout.Button("persistentDataPath"))
                 {
                     EditorUtility.RevealInFinder(Application.persistentDataPath);
+                }
+                if (GUILayout.Button("delete downloads"))
+                {
+                    Directory.Delete(Application.persistentDataPath, true);
                 }
                 if (GUILayout.Button("?"))
                 {

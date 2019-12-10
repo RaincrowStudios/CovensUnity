@@ -15,7 +15,7 @@ public class DownloadManager : MonoBehaviour
         public string store;// => "125";
         public string localization;// => "130";
 
-        public List<string> assets;// => new List<string>() { "spirits-4", "spells-4", "apparel-8", "apparel-9", "icon-13", "icon-14" };
+        public List<string> assets;// => new List<string>() { "spirits-4", "spirits-5", "spells-4", "apparel-8", "apparel-9", "icon-13", "icon-14" };
         public string version;
         public int android;
         public int apple;
