@@ -103,7 +103,7 @@ SpriteAtlas:
     - {fileID: 2800000, guid: c1890d467f2b48546828704d4618f4d2, type: 3}
     - {fileID: 2800000, guid: 1204649718303ef4c8cfdc2710ea2809, type: 3}
     - {fileID: 2800000, guid: 13be83061a53dc8409c8ffd85f5a202b, type: 3}
-    totalSpriteSurfaceArea: 1395464
+    totalSpriteSurfaceArea: 1469976
     bindAsDefault: 1
   m_MasterAtlas: {fileID: 0}
   m_PackedSprites:

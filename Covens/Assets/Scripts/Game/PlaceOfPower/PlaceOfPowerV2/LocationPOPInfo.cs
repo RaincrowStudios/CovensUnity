@@ -73,6 +73,9 @@ public class LocationPOPInfo : UIInfoPanel
 
     public void Show(LocationViewData data)
     {
+        if (isShowing)
+            return;
+
         BackButtonListener.AddCloseAction(Close);
         m_FTFEnter.SetActive(false);
         StartCoroutine(DownloadThumb(data.name));

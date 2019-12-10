@@ -17,24 +17,13 @@ public class LocationIslandController : MonoBehaviour
     public static event System.Action OnEnterLocation;
     public static event System.Action OnExitLocation;
 
-
-
-    private static bool m_IsInBattle = false;
-
     private Vector2 m_MouseDownPosition;
 
     public static string popName = "";
 
     public static bool isGuardianActive { get; private set; }
 
-    public static bool isInBattle
-    {
-        get
-        {
-            return m_IsInBattle;
-        }
-        private set { m_IsInBattle = value; }
-    }
+    public static bool isInBattle { get; set; } = false;
     public static LocationData locationData => m_LocationData;
 
     private static LocationData m_LocationData;
@@ -136,18 +125,16 @@ public class LocationIslandController : MonoBehaviour
 
     public static void BattleStopPOP()
     {
-        SpellcastingFX.StopTweening();
         OnExitLocation?.Invoke();
         MoveTokenHandlerPOP.OnMarkerMovePOP -= instance.locationUnitSpawner.MoveMarker;
         AddSpiritHandlerPOP.OnSpiritAddPOP -= instance.locationUnitSpawner.AddMarker;
         instance.popCameraController.onUpdate -= UpdateMarkers;
         LocationBattleStart.OnLocationBattleStart -= instance.BattleBeginPOP;
         LocationBattleEnd.OnLocationBattleEnd -= BattleStopPOP;
-        ExpireAstralHandler.OnExpireAstral -= LocationUnitSpawner.DisableCloaking;
         RespawnSpiritPOP.OnSpiritRewspawn -= instance.AddGuardianSpirit;
         OnMapEnergyChange.OnEnergyChange -= HandleEnergyZero;
         instance.locationUnitSpawner.DespawnMarkers();
-        isInBattle = false;
+        //isInBattle = false;
         PlayerManager.marker.GameObject.SetActive(false);
         PlayerDataManager.playerData.insidePlaceOfPower = false;
     }
@@ -216,9 +203,9 @@ public class LocationIslandController : MonoBehaviour
                 LoadPOPManager.LoadScene(() =>
                   {
                       LoadingOverlay.Hide();
-                      ExpireAstralHandler.OnExpireAstral += LocationUnitSpawner.DisableCloaking;
-                      OnMapEnergyChange.OnPlayerDead += LoadPOPManager.UnloadScene;
-                      OnMapEnergyChange.OnMarkerEnergyChange += LocationUnitSpawner.OnEnergyChange;
+                      //ExpireAstralHandler.OnExpireAstral += LocationUnitSpawner.DisableCloaking;
+                      //OnMapEnergyChange.OnPlayerDead += LoadPOPManager.UnloadScene;
+                      //OnMapEnergyChange.OnMarkerEnergyChange += LocationUnitSpawner.OnEnergyChange;
                       LocationBattleEnd.OnLocationBattleEnd += BattleStopPOP;
                       RespawnSpiritPOP.OnSpiritRewspawn += instance.AddGuardianSpirit;
                       RewardHandlerPOP.LocationReward += OnReward;
@@ -251,77 +238,62 @@ public class LocationIslandController : MonoBehaviour
 
     private static void OnReward(RewardHandlerPOP.RewardPOPData rewardData)
     {
+        LocationIslandController.isInBattle = false;
         PlayerDataManager.playerData.xp += (ulong)rewardData.xp;
         PlayerDataManager.playerData.gold += rewardData.gold;
         PlayerManagerUI.Instance.UpdateDrachs();
         PlayerManagerUI.Instance.setupXP();
         LocationRewardInfo.Instance.Setup(popName, rewardData, () =>
         {
-            PlayerDataManager.playerData.insidePlaceOfPower = false;
-            LoadPOPManager.UnloadSceneReward();
+            //LoadPOPManager.UnloadSceneReward();
+            LoadPOPManager.UnloadScene();
         });
         RewardHandlerPOP.LocationReward -= OnReward;
     }
 
     public static void EnterPOP(string id, System.Action<LocationData> OnComplete)
     {
-        APIManager.Instance.Put($"place-of-power/enter/{id}", "{}", async (response, result) =>
-          {
-              Debug.Log(result);
-              Debug.Log(response);
-              AddWitchHandlerPOP.OnWitchAddPOP += WitchJoined;
-              RemoveTokenHandlerPOP.OnRemoveTokenPOP += WitchRemoved;
-              preInitializedSpirit = null;
-              if (result == 200)
-              {
-                  MarkerSpawner.ClearImmunities();
-                  LocationBattleStart.OnLocationBattleStart += (s) =>
-                  {
-                      Debug.Log("BATTLE STARTING");
-                      preInitializedSpirit = s;
-                  };
-                  m_LocationData = LocationSlotParser.HandleResponse(response);
-                  OnComplete(locationData);
-                  await Task.Delay(2200);
-                  LoadPOPManager.LoadScene(() =>
-                  {
+        APIManager.Instance.Put($"place-of-power/enter/{id}", "{}", /*async*/ (response, result) =>
+        {
+            Debug.Log(result);
+            Debug.Log(response);
+            AddWitchHandlerPOP.OnWitchAddPOP += WitchJoined;
+            RemoveTokenHandlerPOP.OnRemoveTokenPOP += WitchRemoved;
+            preInitializedSpirit = null;
+            if (result == 200)
+            {
+                MarkerSpawner.ClearImmunities();
+                LocationBattleStart.OnLocationBattleStart += (s) =>
+                {
+                    Debug.Log("BATTLE STARTING");
+                    preInitializedSpirit = s;
+                };
+                m_LocationData = LocationSlotParser.HandleResponse(response);
+                OnComplete(locationData);
+                //await Task.Delay(2200);
+                LoadPOPManager.LoadScene(() =>
+                {
+                    RespawnSpiritPOP.OnSpiritRewspawn += instance.AddGuardianSpirit;
+                    //ExpireAstralHandler.OnExpireAstral += LocationUnitSpawner.DisableCloaking;
+                    RewardHandlerPOP.LocationReward += OnReward;
+                    OnMapEnergyChange.OnEnergyChange += HandleEnergyZero;
+                    LocationBattleEnd.OnLocationBattleEnd += BattleStopPOP;
 
-                      RespawnSpiritPOP.OnSpiritRewspawn += instance.AddGuardianSpirit;
-                      ExpireAstralHandler.OnExpireAstral += LocationUnitSpawner.DisableCloaking;
-                      OnMapEnergyChange.OnPlayerDead += LoadPOPManager.UnloadScene;
-                      OnMapEnergyChange.OnMarkerEnergyChange += LocationUnitSpawner.OnEnergyChange;
-                      LocationBattleEnd.OnLocationBattleEnd += BattleStopPOP;
-                      RewardHandlerPOP.LocationReward += OnReward;
-                      OnMapEnergyChange.OnEnergyChange += HandleEnergyZero;
+                    if (preInitializedSpirit != null)
+                    {
+                        Debug.Log("PRE INTIALIZED");
+                        instance.BattleBeginPOP(preInitializedSpirit);
+                    }
+                    LocationBattleStart.OnLocationBattleStart += instance.BattleBeginPOP;
 
-                      if (preInitializedSpirit != null)
-                      {
-                          Debug.Log("PRE INTIALIZED");
-                          instance.BattleBeginPOP(preInitializedSpirit);
-                      }
-                      LocationBattleStart.OnLocationBattleStart += instance.BattleBeginPOP;
-
-
-                  });
-              }
-              else
-              {
-                  OnComplete(null);
-              }
-          });
+                });
+            }
+            else
+            {
+                OnComplete(null);
+            }
+        });
     }
-
-    // public static void ExitPOP(System.Action OnComplete)
-    // {
-    //     AddWitchHandlerPOP.OnWitchAddPOP -= WitchJoined;
-    //     RemoveTokenHandlerPOP.OnRemoveTokenPOP -= WitchRemoved;
-    //     isInBattle = false;
-    //     OnComplete?.Invoke();
-    // APIManager.Instance.Put($"place-of-power/leave", "{}", (response, result) =>
-    //   {
-
-    //   });
-    // }
 
     private void CreateIslands(LocationData locationData)
     {

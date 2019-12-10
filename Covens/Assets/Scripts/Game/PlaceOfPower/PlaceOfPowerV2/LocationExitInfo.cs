@@ -5,9 +5,12 @@ using UnityEngine.UI;
 
 public class LocationExitInfo : UIInfoPanel
 {
-    private static LocationExitInfo m_Instance;
     [SerializeField] private Button m_CloseBtn;
     [SerializeField] private Image m_LocationIcon;
+
+    private System.Action m_OnClose;
+
+    private static LocationExitInfo m_Instance;
 
     public static LocationExitInfo Instance
     {
@@ -36,8 +39,15 @@ public class LocationExitInfo : UIInfoPanel
         m_CloseBtn.onClick.AddListener(Close);
     }
 
-    public void ShowUI()
+    public override void Close()
     {
+        base.Close();
+        m_OnClose?.Invoke();
+    }
+
+    public void ShowUI(System.Action onClose)
+    {
+        m_OnClose = onClose;
         base.Show();
         if (m_LocationIcon.sprite == null)
         {
@@ -48,6 +58,9 @@ public class LocationExitInfo : UIInfoPanel
         {
             StartCoroutine(DownloadThumb());
         }
+
+        m_CloseBtn.interactable = false;
+        LeanTween.value(0, 0, 0).setDelay(2f).setOnComplete(() => m_CloseBtn.interactable = true);
     }
 
     IEnumerator DownloadThumb()

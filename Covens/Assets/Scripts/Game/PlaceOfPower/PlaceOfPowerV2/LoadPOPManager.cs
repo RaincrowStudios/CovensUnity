@@ -10,35 +10,12 @@ public class LoadPOPManager : MonoBehaviour
     private static LoadPOPManager Instance { get; set; }
     private IMaps map;
     public GameObject[] MainUIDisable;
-    bool isViewVisible = false;
-    static bool sceneLoaded = false;
-    private static int previousEnergy = 0;
-    private static string previousState = "";
+    private static int m_UnloadTweenId;
+
     void Awake()
     {
         Instance = this;
         Debug.Log("LOADING POP MANAGER");
-    }
-    void OnGUI()
-    {
-        // if (!isViewVisible && GUI.Button(new Rect(320, 10, 80, 40), "View POP"))
-        // {
-        //     NewMethod();
-        // }
-
-
-
-        // if (sceneLoaded && !LocationIslandController.isInBattle && GUI.Button(new Rect(365, 10, 160, 40), "Start POP Battle"))
-        // {
-        //     if (map == null)
-        //     {
-        //         map = MapsAPI.Instance;
-        //     }
-        //     APIManager.Instance.Post("place-of-power/start/5d56ebd18aca90617dc3b5fa", "{}", (response, result) =>
-        //      {
-        //          Debug.Log(response);
-        //      });
-        // }
     }
 
     public static void EnterPOP(string id, System.Action onLoad = null)
@@ -59,7 +36,6 @@ public class LoadPOPManager : MonoBehaviour
                   var popInfo = LocationPOPInfo.Instance;
                   var data = JsonConvert.DeserializeObject<LocationViewData>(response);
                   popInfo.Show(data);
-                  Instance.isViewVisible = true;
               }
               else
               {
@@ -73,9 +49,7 @@ public class LoadPOPManager : MonoBehaviour
     public static void LoadScene(System.Action onComplete)
     {
         Debug.Log("LOADING POP SCENE");
-
-        previousEnergy = PlayerDataManager.playerData.energy;
-        previousState = PlayerDataManager.playerData.state;
+        LeanTween.cancel(m_UnloadTweenId);
 
         foreach (var item in Instance.MainUIDisable)
         {
@@ -85,85 +59,66 @@ public class LoadPOPManager : MonoBehaviour
         {
             Instance.map = MapsAPI.Instance;
         }
+
         Instance.map.HideMap(true);
         SceneManager.LoadSceneAsync(SceneManager.Scene.PLACE_OF_POWER, UnityEngine.SceneManagement.LoadSceneMode.Additive, null, () =>
         {
-            sceneLoaded = true;
+            RemoveTokenHandlerPOP.OnRemoveTokenPOP += OnPlayerDead;
+            OnMapEnergyChange.OnMarkerEnergyChange += LocationUnitSpawner.OnEnergyChange;
+            ExpireAstralHandler.OnExpireAstral += LocationUnitSpawner.DisableCloaking;
             onComplete();
         });
-        OnMapEnergyChange.OnPlayerDead += LoadPOPManager.UnloadScene;
-        OnMapEnergyChange.OnMarkerEnergyChange += LocationUnitSpawner.OnEnergyChange;
+    }
+
+    private static async void OnPlayerDead(RemoveTokenHandlerPOP.RemoveEventData data)
+    {
+        await System.Threading.Tasks.Task.Delay(1000);
+
+        if (PlayerDataManager.playerData.instance != data.instance)
+            return;
+
+        LocationExitInfo.Instance.ShowUI(UnloadScene);
     }
 
     public static void UnloadScene()
     {
-        HandleUnload();
-        SceneManager.UnloadScene(SceneManager.Scene.PLACE_OF_POWER, null, () =>
-        {
-            sceneLoaded = false;
-            var t = LocationExitInfo.Instance;
-            OnMapEnergyChange.ForceEvent(PlayerManager.marker, (int)(PlayerDataManager.playerData.baseEnergy * .25f));
-            PlayerManagerUI.Instance.UpdateEnergy();
-            SpellcastingFX.ResumeTweening();
-            if (UIQuickCast.IsOpen)
-                UIQuickCast.Close();
-            t.ShowUI();
-            LoginAPIManager.GetCharacter((s, r) =>
-          {
-              LoadingOverlay.Hide();
-          });
+        PlayerDataManager.playerData.insidePlaceOfPower = false;
+        LocationIslandController.isInBattle = false;
 
-        });
-        OnMapEnergyChange.OnPlayerDead -= LoadPOPManager.UnloadScene;
+        RemoveTokenHandlerPOP.OnRemoveTokenPOP -= OnPlayerDead;
         OnMapEnergyChange.OnMarkerEnergyChange -= LocationUnitSpawner.OnEnergyChange;
-    }
+        ExpireAstralHandler.OnExpireAstral -= LocationUnitSpawner.DisableCloaking;
 
-    private static void HandleUnload()
-    {
-        LoadingOverlay.Show("Loading Map...");
         foreach (var item in Instance.MainUIDisable)
-        {
             item.SetActive(true);
-        }
         if (UIWaitingCastResult.isOpen)
             UIWaitingCastResult.Instance.Close();
-        if (UIPlayerInfo.IsShowing)
-            UIPlayerInfo.SetVisibility(false);
-        if (UISpiritInfo.IsShowing)
-            UISpiritInfo.SetVisibility(false);
-        Instance.map.HideMap(false);
+        //if (UIPlayerInfo.IsShowing)
+        //    UIPlayerInfo.SetVisibility(false);
+        //if (UISpiritInfo.IsShowing)
+        //    UISpiritInfo.SetVisibility(false);
         LocationIslandController.BattleStopPOP();
         LocationUnitSpawner.UnloadScene();
-        MarkerManagerAPI.GetMarkers();
 
-    }
+        Instance.map.HideMap(false);
 
-    public static void UnloadSceneReward()
-    {
-        HandleUnload();
+        LoadingOverlay.Show("Loading Map...");
         SceneManager.UnloadScene(SceneManager.Scene.PLACE_OF_POWER, null, () =>
         {
+            if (UIQuickCast.IsOpen)
+                UIQuickCast.Close();
+
             LoginAPIManager.GetCharacter((s, r) =>
             {
-                LoadingOverlay.Hide();
-
+                PlayerManager.witchMarker.UpdateEnergy(0);
+                PlayerManagerUI.Instance.UpdateEnergy();
+                MarkerManagerAPI.GetMarkers(true, true, () => LoadingOverlay.Hide(), true);
             });
-            sceneLoaded = false;
-            UIQuickCast.Close();
-            OnMapEnergyChange.OnPlayerDead -= LoadPOPManager.UnloadScene;
-            OnMapEnergyChange.OnMarkerEnergyChange -= LocationUnitSpawner.OnEnergyChange;
-        });
+        });        
     }
 
     public static void HandleQuickCastOpen(System.Action OnOpen)
     {
-        //UIQuickCast.Open(() =>
-        //{
-        //    if (LocationIslandController.isInBattle)
-        //    {
-        //        OnOpen();
-        //    }
-        //});
         OnOpen?.Invoke();
     }
 }

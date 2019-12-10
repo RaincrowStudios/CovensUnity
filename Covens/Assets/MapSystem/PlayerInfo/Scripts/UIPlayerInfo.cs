@@ -187,6 +187,7 @@ public class UIPlayerInfo : UIInfoPanel
         BanishManager.OnBanished += Abort;
         OnMapEnergyChange.OnEnergyChange += _OnEnergyChange;
         OnMapEnergyChange.OnPlayerDead += _OnCharacterDead;
+        LocationIslandController.OnExitLocation += Abort;
 
         if (WitchMarkerDetails != null)
             _SetupDetails(WitchMarkerDetails);
@@ -256,6 +257,7 @@ public class UIPlayerInfo : UIInfoPanel
         BanishManager.OnBanished -= Abort;
         OnMapEnergyChange.OnEnergyChange -= _OnEnergyChange;
         OnMapEnergyChange.OnPlayerDead -= _OnCharacterDead;
+        LocationIslandController.OnExitLocation -= Abort;
 
         if (!LocationIslandController.isInBattle)
         {

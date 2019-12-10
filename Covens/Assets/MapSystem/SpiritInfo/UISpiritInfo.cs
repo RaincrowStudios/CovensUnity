@@ -177,6 +177,7 @@ public class UISpiritInfo : UIInfoPanel
         RemoveTokenHandler.OnTokenRemove += _OnMapTokenRemove;
         ExpireSpiritHandler.OnSpiritExpire += _OnMapTokenRemove;
         BanishManager.OnBanished += Abort;
+        LocationIslandController.OnExitLocation += Abort;
 
         if (!LocationIslandController.isInBattle)
         {
@@ -265,6 +266,7 @@ public class UISpiritInfo : UIInfoPanel
         SpellCastHandler.OnExpireEffect -= _OnExpireEffect;
         RemoveTokenHandler.OnTokenRemove -= _OnMapTokenRemove;
         ExpireSpiritHandler.OnSpiritExpire -= _OnMapTokenRemove;
+        LocationIslandController.OnExitLocation -= Abort;
 
         if (!LocationIslandController.isInBattle)
         {
