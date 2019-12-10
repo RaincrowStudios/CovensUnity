@@ -18,6 +18,7 @@ public class UIWorldBoss : MonoBehaviour
     [Space]
     [SerializeField] private TextMeshProUGUI m_PlayerRank;
     [SerializeField] private TextMeshProUGUI m_PlayerName;
+    [SerializeField] private TextMeshProUGUI m_PlayerSpace;
     [Space]
     [SerializeField] private GameObject m_InputBlocker;
     [SerializeField] private Button m_CloseButton;
@@ -38,7 +39,7 @@ public class UIWorldBoss : MonoBehaviour
 
         MapView.OnEnterBossArea += MapView_OnEnterBossArea;
         MapView.OnLeaveBossArea += MapView_OnLeaveBossArea;
-        
+
         MarkerSpawner.Instance.OnSelectMarker += (m) =>
         {
             if (m.Type == MarkerSpawner.MarkerType.BOSS)
@@ -62,7 +63,7 @@ public class UIWorldBoss : MonoBehaviour
     {
         m_BossMarker = boss;
 
-        m_Title.text = LocalizeLookUp.GetText("worldboss_title").Replace("{{name}}", LocalizeLookUp.GetSpiritName(boss.bossToken.spiritId));
+        m_Title.text = LocalizeLookUp.GetSpiritName(boss.bossToken.spiritId);
         m_BossEnergyBar.fillAmount = boss.bossToken.energy / (float)boss.bossToken.baseEnergy;
         m_BossEnergyPercent.text = ((int)(m_BossEnergyBar.fillAmount * 100)) + "%";
 
@@ -78,6 +79,7 @@ public class UIWorldBoss : MonoBehaviour
             rank.text = "";
         m_PlayerName.text = "";
         m_PlayerRank.text = "";
+        m_PlayerSpace.text = "";
     }
 
     private void TickSpellHandler_OnSpellTick(SpellCastHandler.SpellCastEventData data)
@@ -137,16 +139,19 @@ public class UIWorldBoss : MonoBehaviour
         {
             foreach (string name in data.rank[i].Keys)
             {
-                m_DamageRank[aux].text = $"{name} ({-data.rank[i][name].total})";
+                m_DamageRank[aux].text = name;//$"{name} ({-data.rank[i][name].total})";
                 if (name == PlayerDataManager.playerData.name)
+                {
                     isTop3 = true;
+                    m_DamageRank[aux].text = string.Concat(m_DamageRank[aux].text, " (", LocalizeLookUp.GetText("cast_you"), ")");
+                }
             }
             aux++;
         }
 
         if (isTop3)
         {
-            m_PlayerRank.text = m_PlayerName.text = "";
+            m_PlayerRank.text = m_PlayerName.text = m_PlayerSpace.text = "";
         }
         else
         {
@@ -160,8 +165,9 @@ public class UIWorldBoss : MonoBehaviour
                     {
                         if (name == PlayerDataManager.playerData.name)
                         {
-                            m_PlayerName.text = name;//LocalizeLookUp.GetText("cast_you");
+                            m_PlayerName.text = string.Concat(name, " (", LocalizeLookUp.GetText("cast_you"), ")");
                             m_PlayerRank.text = aux + "th";
+                            m_PlayerSpace.text = "...";
                             return;
                         }
                     }
@@ -169,8 +175,9 @@ public class UIWorldBoss : MonoBehaviour
                     {
                         if (name == TeamManager.MyCovenInfo.name)
                         {
-                            m_PlayerName.text = name;
+                            m_PlayerName.text = string.Concat(name, " (", LocalizeLookUp.GetText("cast_you"), ")");
                             m_PlayerRank.text = aux + "th";
+                            m_PlayerSpace.text = "...";
                             return;
                         }
                     }
@@ -236,5 +243,5 @@ public class UIWorldBoss : MonoBehaviour
     private void OnClickClose()
     {
         Close();
-    } 
+    }
 }
