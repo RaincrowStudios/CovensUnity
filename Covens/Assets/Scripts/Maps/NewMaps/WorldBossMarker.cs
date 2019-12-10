@@ -1,4 +1,5 @@
 ﻿using Raincrow.Maps;
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -40,5 +41,20 @@ public class WorldBossMarker : CharacterMarker
     {
         base.OnWillDespawn();
         Interactable = false;
+    }
+
+    public override void GetPortrait(Action<Sprite> callback)
+    {
+        if (m_IconRenderer.sprite != null)
+        {
+            callback?.Invoke(m_IconRenderer.sprite);
+            return;
+        }
+
+        DownloadedAssets.GetSprite(bossToken.spiritId + "_portrait", spr =>
+        {
+            m_IconRenderer.sprite = spr;
+            callback?.Invoke(m_IconRenderer.sprite);
+        });
     }
 }

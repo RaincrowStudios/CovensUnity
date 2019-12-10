@@ -6,7 +6,10 @@ using UnityEngine;
 
 public class LootMarker : MuskMarker
 {
+    [SerializeField] private ParticleSystem m_Particles;
+
     public LootToken LootToken { get; private set; }
+
     public bool IsEligible
     {
         get
@@ -17,9 +20,6 @@ public class LootMarker : MuskMarker
             //    return LootToken.eligibleCovens.Contains(TeamManager.MyCovenId);
         }
     }
-
-    [SerializeField] private GameObject m_Eligible;
-    [SerializeField] private GameObject m_NotEligible;
 
     public override void Setup(Token data)
     {
@@ -41,13 +41,11 @@ public class LootMarker : MuskMarker
 
     public void SetOpened()
     {
-        m_NotEligible.SetActive(true);
-        m_Eligible.SetActive(false);
+        m_Particles.Stop();
     }
 
     public void SetClosed()
     {
-        m_NotEligible.SetActive(false);
-        m_Eligible.SetActive(true);
+        m_Particles.Play();
     }
 }
