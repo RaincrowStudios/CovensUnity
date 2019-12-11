@@ -22,6 +22,9 @@ namespace Raincrow.GameEventResponses
             public int gold;
             public ulong xp;
             public Collectible[] collectibles;
+            public string[] cosmetics;
+            public string bossId;
+            public string type;
             public double timestamp;
         }
 
@@ -29,18 +32,37 @@ namespace Raincrow.GameEventResponses
         {
             EventData data = JsonConvert.DeserializeObject<EventData>(json);
 
-            string debug = data.silver + " silver\n" + data.gold + " gold\n" + data.xp;
-
             PlayerDataManager.playerData.AddCurrency(data.silver, data.gold);
             CharacterXpHandler.HandleEvent(PlayerDataManager.playerData.xp + data.xp, data.timestamp);
 
-            foreach (var item in data.collectibles)
+            if (data.collectibles != null)
             {
-                PlayerDataManager.playerData.AddIngredient(item.collectible, item.amount);
-                debug += $"{item.collectible}({item.amount}),";
+                foreach (var item in data.collectibles)
+                        PlayerDataManager.playerData.AddIngredient(item.collectible, item.amount);
             }
 
-            UIGlobalPopup.ShowPopUp(null,  debug);
+            if (data.cosmetics != null)
+            {
+                foreach (var item in data.cosmetics)
+                {
+                    bool owned = false;
+                    foreach (var cosmetic in PlayerDataManager.playerData.inventory.cosmetics)
+                    {
+                        if (cosmetic.id == item)
+                        {
+                            owned = true;
+                            break;
+                        }
+                    }
+
+                    if (!owned)
+                    {
+                        PlayerDataManager.playerData.inventory.cosmetics.Add(DownloadedAssets.GetCosmetic(item));
+                    }
+                }
+            }
+
+            UILootRewards.Instantiate().Show(data);
         }
     }
 }
