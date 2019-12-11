@@ -32,7 +32,7 @@ namespace Raincrow.Chat.UI
             {
                 TextGenerator textGen = new TextGenerator();
                 TextGenerationSettings generationSettings = m_Text.GetGenerationSettings(m_Text.rectTransform.rect.size);
-                return textGen.GetPreferredHeight(LocalizeLookUp.GetText(message.data.message), generationSettings);
+                return textGen.GetPreferredHeight(LocalizeLookUp.GetText(message.data.message), generationSettings) + 60;
             }
             return 0;
         }

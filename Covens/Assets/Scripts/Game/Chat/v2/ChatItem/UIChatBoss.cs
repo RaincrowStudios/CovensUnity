@@ -25,7 +25,7 @@ namespace Raincrow.Chat.UI
             m_BossName.text = LocalizeLookUp.GetSpiritName(spiritId);
             m_TimeAgo.text = Utilities.EpochToDateTimeChat(message.timestamp);
 
-            DownloadedAssets.GetSprite(spiritId, m_Portrait, true);
+            DownloadedAssets.GetSprite(spiritId + "_portrait", m_Portrait, true);
         }
 
         public float GetHeight(ChatMessage message)
@@ -34,7 +34,7 @@ namespace Raincrow.Chat.UI
             {
                 TextGenerator textGen = new TextGenerator();
                 TextGenerationSettings generationSettings = m_Text.GetGenerationSettings(m_Text.rectTransform.rect.size);
-                return textGen.GetPreferredHeight(LocalizeLookUp.GetText(message.data.message), generationSettings);
+                return textGen.GetPreferredHeight(LocalizeLookUp.GetText(message.data.message), generationSettings) + 60;
             }
             return 0;
         }
