@@ -13,10 +13,10 @@ namespace Raincrow.Chat.UI
 
         [Header("Chat item Prefabs")]
         [SerializeField] private UIChatMessage _chatMessagePrefab;
-        [SerializeField] private UIChatLocation _chatLocationPrefab;
+        [SerializeField] private UIChatPlayerLocation _chatLocationPrefab;
         [SerializeField] private UIChatHelp _chatHelpPlayerPrefab;
         [SerializeField] private UIChatHelp _chatHelpCrowPrefab;
-        [SerializeField] private UIChatImage _chatImagePrefab;
+        [SerializeField] private UIChatPlayerImage _chatImagePrefab;
         [SerializeField] private UIChatNpc _chatNpcPrefab;
         [SerializeField] private UIChatBoss _chatBossPrefab;
 
@@ -39,6 +39,7 @@ namespace Raincrow.Chat.UI
             m_onRequestChatClose = onRequestChatClose;
             scroller.ReloadData(1f);
         }
+
         public void Refresh()
         {
             scroller.ReloadData(1f);
@@ -77,13 +78,13 @@ namespace Raincrow.Chat.UI
                         cellView = scroller.GetCellView(_chatMessagePrefab) as UIChatItem;
                         break;
 
-                    case MessageType.BOSS:
-                        cellView = scroller.GetCellView(_chatBossPrefab) as UIChatItem;
-                        break;
+                    //case MessageType.BOSS:
+                    //    cellView = scroller.GetCellView(_chatBossPrefab) as UIChatItem;
+                    //    break;
 
-                    case MessageType.NPC:
-                        cellView = scroller.GetCellView(_chatNpcPrefab) as UIChatItem;
-                        break;
+                    //case MessageType.NPC:
+                    //    cellView = scroller.GetCellView(_chatNpcPrefab) as UIChatItem;
+                    //    break;
 
                     default:
                         cellView = scroller.GetCellView(_chatMessagePrefab) as UIChatItem;
@@ -100,34 +101,43 @@ namespace Raincrow.Chat.UI
         {
             return GetTemplateHeight(m_pChatMessages[dataIndex]);
         }
+
         float GetTemplateHeight(ChatMessage pItem)
         {
             if (pItem.height == 0)
             {
-                float fHeight = 0;
+                UIChatMessage prefab = null;
+
                 if (m_pCategory == ChatCategory.SUPPORT)
                 {
-                    if (pItem.player.name == ChatManager.Player.name)
-                        fHeight = ((RectTransform)_chatHelpPlayerPrefab.transform).sizeDelta.y;
-                    else
-                        fHeight = ((RectTransform)_chatHelpCrowPrefab.transform).sizeDelta.y;
+                    prefab = _chatHelpPlayerPrefab as UIChatMessage;
                 }
-                switch (pItem.type)
+                else
                 {
-                    case MessageType.IMAGE:
-                        fHeight = ((RectTransform)_chatImagePrefab.transform).sizeDelta.y;
-                        break;
-                    case MessageType.LOCATION:
-                        fHeight = ((RectTransform)_chatLocationPrefab.transform).sizeDelta.y;
-                        break;
+                    switch (pItem.type)
+                    {
+                        case MessageType.IMAGE:
+                            prefab = _chatImagePrefab as UIChatMessage;
+                            break;
+                        case MessageType.LOCATION:
+                            prefab = _chatLocationPrefab as UIChatMessage;
+                            break;
+                        case MessageType.BOSS:
+                            prefab = _chatBossPrefab as UIChatMessage;
+                            break;
+                        case MessageType.NPC:
+                            prefab = _chatNpcPrefab as UIChatMessage;
+                            break;
+                        case MessageType.TEXT:
+                            prefab = _chatMessagePrefab as UIChatMessage;
+                            break;
+                    }
                 }
-                if (fHeight == 0)
-                {
-                    fHeight = ((RectTransform)_chatMessagePrefab.transform).sizeDelta.y;
-                }
-                UIChatMessage pPrefab = _chatMessagePrefab as UIChatMessage;
-                float fHeightText = pPrefab.GetHeight(pItem);
-                pItem.height = Mathf.Max(150f, fHeight, fHeightText);
+
+                if (prefab != null)
+                    pItem.height = prefab.GetHeight(pItem);
+                else
+                    pItem.height = 150;
             }
             return pItem.height;
         }

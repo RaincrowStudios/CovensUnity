@@ -5,20 +5,21 @@ using UnityEngine.UI;
 
 namespace Raincrow.Chat.UI
 {
-    public class UIChatHelp : UIChatItem
+    public class UIChatHelp : UIChatMessage
     {        
-        [SerializeField] private Text text;
         [SerializeField] private Image image;
         [SerializeField] private Button imageButton;
-        [SerializeField] private LayoutElement layoutElement;
-        [SerializeField] private float toggleImageScale = 0.65f;
-        [SerializeField] private float preferredHeight = 1080;
+        //[SerializeField] private LayoutElement layoutElement;
+        //[SerializeField] private float toggleImageScale = 0.65f;
+        //[SerializeField] private float preferredHeight = 1080;
         [SerializeField] private TextMeshProUGUI timestamp;
 
         private bool useSmallImageSize = true;
+        private Sprite _generatedSprite = null;
 
-        protected virtual void OnEnable()
+        protected override void Awake()
         {
+            base.Awake();
             imageButton.onClick.AddListener(ToggleImageSize);
         }
 
@@ -27,21 +28,19 @@ namespace Raincrow.Chat.UI
             imageButton.onClick.RemoveListener(ToggleImageSize);
         }
 
-        public override void SetupMessage(ChatMessage message,
-                                          UnityAction<bool> onRequestChatLoading = null,
-                                          UnityAction onRequestChatClose = null)
+        public override void SetContent(ChatMessage message)
         {
-            base.SetupMessage(message, onRequestChatLoading, onRequestChatClose);            
+            DestroyGeneratedImage();
 
             string messageText = message.data.message;
             if (!string.IsNullOrEmpty(messageText))
             {
-                text.text = messageText;
-                text.gameObject.SetActive(true);
+                _text.text = messageText;
+                _text.gameObject.SetActive(true);
             }            
             else
             {
-                text.gameObject.SetActive(false);
+                _text.gameObject.SetActive(false);
             }
 
             byte[] imageBytes = message.data.image;
@@ -53,12 +52,12 @@ namespace Raincrow.Chat.UI
 
                 Rect imageRect = new Rect(0, 0, texture.width, texture.height);
 
-                image.overrideSprite = Sprite.Create(texture, imageRect, new Vector2(0.5f, 0.5f));                
+                _generatedSprite = image.overrideSprite = Sprite.Create(texture, imageRect, new Vector2(0.5f, 0.5f));                
 
-                layoutElement.preferredHeight = preferredHeight * toggleImageScale;
-                float widthRatio = layoutElement.preferredHeight / texture.height;
-                float preferredWidth = texture.width * widthRatio;
-                layoutElement.preferredWidth = preferredWidth;
+                //layoutElement.preferredHeight = preferredHeight * toggleImageScale;
+                //float widthRatio = layoutElement.preferredHeight / texture.height;
+                //float preferredWidth = texture.width * widthRatio;
+                //layoutElement.preferredWidth = preferredWidth;
 
                 SetImageSize(true);
                 image.gameObject.SetActive(true);
@@ -82,20 +81,46 @@ namespace Raincrow.Chat.UI
 
             if (useSmallImageSize)
             {
-                Texture2D texture = image.overrideSprite.texture;
-                layoutElement.preferredHeight = preferredHeight * toggleImageScale;
-                float widthRatio = layoutElement.preferredHeight / texture.height;
-                float preferredWidth = texture.width * widthRatio;
-                layoutElement.preferredWidth = preferredWidth;
+                //Texture2D texture = image.overrideSprite.texture;
+                //layoutElement.preferredHeight = preferredHeight * toggleImageScale;
+                //float widthRatio = layoutElement.preferredHeight / texture.height;
+                //float preferredWidth = texture.width * widthRatio;
+                //layoutElement.preferredWidth = preferredWidth;
             }
             else
             {
-                Texture2D texture = image.overrideSprite.texture;
-                layoutElement.preferredHeight = preferredHeight;
-                float widthRatio = layoutElement.preferredHeight / texture.height;
-                float preferredWidth = texture.width * widthRatio;
-                layoutElement.preferredWidth = preferredWidth;
+                //Texture2D texture = image.overrideSprite.texture;
+                //layoutElement.preferredHeight = preferredHeight;
+                //float widthRatio = layoutElement.preferredHeight / texture.height;
+                //float preferredWidth = texture.width * widthRatio;
+                //layoutElement.preferredWidth = preferredWidth;
             }
+        }
+
+        public override void OnClickIcon()
+        {
+
+        }
+
+        private void DestroyGeneratedImage()
+        {
+            if (_generatedSprite == null)
+                return;
+
+            Destroy(_generatedSprite.texture);
+            Destroy(_generatedSprite);
+        }
+
+        public override float GetHeight(ChatMessage message)
+        {
+            float height = 0;
+            if (message.data.image?.Length > 0)
+                height += 850;
+
+            if (!string.IsNullOrWhiteSpace(message.data.message))
+                return height + base.GetHeight(message);
+            else
+                return height + m_Spacing;
         }
     }
 }

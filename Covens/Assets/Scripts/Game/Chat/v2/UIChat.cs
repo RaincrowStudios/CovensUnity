@@ -210,7 +210,7 @@ namespace Raincrow.Chat.UI
             {
                 for (var i = 0; i < _chatUIView.scroller.ActiveCellViews.Count; i++)
                 {
-                    var pItem = _chatUIView.scroller.ActiveCellViews[i] as UIChatAvatarItem;
+                    var pItem = _chatUIView.scroller.ActiveCellViews[i] as UIChatMessage;
                     if (pItem != null)
                     {
                         pItem.RefreshTimeAgo();

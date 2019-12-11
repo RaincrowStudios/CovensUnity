@@ -7,34 +7,34 @@ using TMPro;
 
 namespace Raincrow.Chat.UI
 {
-    public class UIChatNpc : UIChatItem
+    public class UIChatNpc : UIChatMessage
     {
         [SerializeField] private Image m_Portrait;
         [SerializeField] private TextMeshProUGUI m_NpcName;
         [SerializeField] private TextMeshProUGUI m_TimeAgo;
         [SerializeField] private Text m_Text;
 
-        public override void SetupMessage(ChatMessage message,
-            UnityAction<bool> onRequestChatLoading = null,
-            UnityAction onRequestChatClose = null)
-        {
-            base.SetupMessage(message, onRequestChatLoading, onRequestChatClose);
+        protected override float m_HeaderHeight => 70;
 
-            m_Text.text = LocalizeLookUp.GetText(message.data.message);
-            m_NpcName.text = LocalizeLookUp.GetText(message.data.name);
-            m_TimeAgo.text = Utilities.EpochToDateTimeChat(message.timestamp);
-            //string npc =
+        public override void OnClickIcon()
+        {
         }
 
-        public float GetHeight(ChatMessage message)
+        public override void SetContent(ChatMessage message)
         {
-            if (message.data != null && message.data.message != null)
-            {
-                TextGenerator textGen = new TextGenerator();
-                TextGenerationSettings generationSettings = m_Text.GetGenerationSettings(m_Text.rectTransform.rect.size);
-                return textGen.GetPreferredHeight(LocalizeLookUp.GetText(message.data.message), generationSettings) + 60;
-            }
-            return 0;
+            _text.text = LocalizeLookUp.GetText(message.data.message);
+        }
+
+        public override void SetIcon(ChatMessage message)
+        {
+            base.SetIcon(message);
+            //DownloadedAssets.GetSprite(message.data.name + "_portrait", m_Portrait, true);
+        }
+
+        public override void SetHeader(ChatMessage message)
+        {
+            _name.text = LocalizeLookUp.GetText(message.data.name);
+            _timeAgo.text = Utilities.EpochToDateTimeChat(message.timestamp);
         }
     }
 }

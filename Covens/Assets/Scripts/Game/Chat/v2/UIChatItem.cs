@@ -3,17 +3,19 @@ using Raincrow.Chat;
 using UnityEngine.Events;
 using UnityEngine.UI;
 using EnhancedUI.EnhancedScroller;
+using TMPro;
 
 namespace Raincrow.Chat.UI
 {
     public abstract class UIChatItem : EnhancedScrollerCellView
     {
+
         public UnityEvent OnRequestChatClose { get; private set; }
         public UnityEvent<bool> OnRequestChatLoading { get; private set; }
 
-        public virtual void SetupMessage(ChatMessage message,
-                                         UnityAction<bool> onRequestChatLoading = null,
-                                         UnityAction onRequestChatClose = null)
+        protected virtual void Awake() { }
+
+        public void SetupMessage(ChatMessage message, UnityAction<bool> onRequestChatLoading = null, UnityAction onRequestChatClose = null)
         {
             OnRequestChatClose = new UnityEvent();
 
@@ -28,6 +30,10 @@ namespace Raincrow.Chat.UI
                 OnRequestChatLoading.AddListener(onRequestChatLoading);
             }
             cellIdentifier = message.type.ToString();
+
+            SetContent(message);
+            SetIcon(message);
+            SetHeader(message);
         }
 
         public virtual void Despawn()
@@ -37,5 +43,10 @@ namespace Raincrow.Chat.UI
         }
 
         public class RequestChatLoadingEvent : UnityEvent<bool> { }
+        public abstract void SetIcon(ChatMessage message);
+        public abstract void SetContent(ChatMessage message);
+        public abstract void SetHeader(ChatMessage message);
+        //public abstract float GetHeight(ChatMessage message);
+        public abstract void OnClickIcon();
     }
 }
