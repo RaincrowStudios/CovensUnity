@@ -7383,8 +7383,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: -4.2998047, y: 28.642517}
-  m_SizeDelta: {x: -9.600342, y: -392.7}
+  m_AnchoredPosition: {x: -4.2998047, y: -12.503723}
+  m_SizeDelta: {x: -9.600342, y: -474.99252}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &2575396317467706948
 CanvasRenderer:
@@ -15666,22 +15666,17 @@ PrefabInstance:
       propertyPath: m_Pivot.y
       value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: 6838807785290751672, guid: d7664bf51e6967f40a08a565f6caba6d,
-        type: 3}
-      propertyPath: m_AnchoredPosition.y
-      value: -0.000061035156
-      objectReference: {fileID: 0}
     - target: {fileID: 2696499690451188226, guid: d7664bf51e6967f40a08a565f6caba6d,
         type: 3}
       propertyPath: m_IsActive
       value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: 8863671916786048252, guid: d7664bf51e6967f40a08a565f6caba6d,
+    - target: {fileID: 8867431536976476184, guid: d7664bf51e6967f40a08a565f6caba6d,
         type: 3}
       propertyPath: m_textInfo.lineCount
       value: 1
       objectReference: {fileID: 0}
-    - target: {fileID: 8867431536976476184, guid: d7664bf51e6967f40a08a565f6caba6d,
+    - target: {fileID: 8863671916786048252, guid: d7664bf51e6967f40a08a565f6caba6d,
         type: 3}
       propertyPath: m_textInfo.lineCount
       value: 1
@@ -15690,6 +15685,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Enabled
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6838807785290751672, guid: d7664bf51e6967f40a08a565f6caba6d,
+        type: 3}
+      propertyPath: m_AnchoredPosition.y
+      value: -0.000061035156
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: d7664bf51e6967f40a08a565f6caba6d, type: 3}
