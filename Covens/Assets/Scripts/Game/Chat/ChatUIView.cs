@@ -78,13 +78,13 @@ namespace Raincrow.Chat.UI
                         cellView = scroller.GetCellView(_chatMessagePrefab) as UIChatItem;
                         break;
 
-                    //case MessageType.BOSS:
-                    //    cellView = scroller.GetCellView(_chatBossPrefab) as UIChatItem;
-                    //    break;
+                    case MessageType.BOSS:
+                        cellView = scroller.GetCellView(_chatBossPrefab) as UIChatItem;
+                        break;
 
-                    //case MessageType.NPC:
-                    //    cellView = scroller.GetCellView(_chatNpcPrefab) as UIChatItem;
-                    //    break;
+                    case MessageType.NPC:
+                        cellView = scroller.GetCellView(_chatNpcPrefab) as UIChatItem;
+                        break;
 
                     default:
                         cellView = scroller.GetCellView(_chatMessagePrefab) as UIChatItem;
