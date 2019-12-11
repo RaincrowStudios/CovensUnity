@@ -55,8 +55,9 @@ public class UILootRewards : MonoBehaviour
         LeanTween.alphaCanvas(m_CanvasGroup, 1, 0.5f).setEaseOutCubic();
 
         //m_Portrait.
-        m_BossName.text = "Boss Name - TODO";
-        m_ChestTier.text = "Chest Tier - TODO";
+        DownloadedAssets.GetSprite(data.bossId + "_portrait", m_Portrait);
+        m_BossName.text = LocalizeLookUp.GetSpiritName(data.bossId);
+        m_ChestTier.text = LocalizeLookUp.GetText(data.type);
 
         StartCoroutine(ShowRewards(data));
     }
