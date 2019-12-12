@@ -3,7 +3,7 @@ guid: 33fb44b1f717ebb44a6ecd2e81cd4d58
 TrueTypeFontImporter:
   externalObjects: {}
   serializedVersion: 4
-  fontSize: 500
+  fontSize: 24
   forceTextureCase: -2
   characterSpacing: 0
   characterPadding: 1
@@ -11,7 +11,8 @@ TrueTypeFontImporter:
   fontName: Adobe Garamond Pro
   fontNames:
   - Adobe Garamond Pro
-  fallbackFontReferences: []
+  fallbackFontReferences:
+  - {fileID: 12800000, guid: 00b2db2045f812846840f18e420b4b90, type: 3}
   customCharacters: 
   fontRenderingMode: 0
   ascentCalculationMode: 1

@@ -57,25 +57,56 @@ public class NewsScroll : MonoBehaviour
 
     private void OnReceiveMessage(ChatCategory category, ChatMessage message)
     {
-        string msg = "(";
+        string channel;
         switch (category)
         {
-            case ChatCategory.COVEN: msg += PlayerDataManager.playerData.covenInfo.name; break;
-            case ChatCategory.WORLD: msg += LocalizeLookUp.GetText("chat_world"); break;
-            case ChatCategory.DOMINION: msg += PlayerDataManager.playerData.dominion; break;
-            case ChatCategory.NEWS: msg += LocalizeLookUp.GetText("chat_news"); break;
+            case ChatCategory.COVEN:    channel = PlayerDataManager.playerData.covenInfo.name;  break;
+            case ChatCategory.WORLD:    channel = LocalizeLookUp.GetText("chat_world");         break;
+            case ChatCategory.DOMINION: channel = PlayerDataManager.playerData.dominion;        break;
+            case ChatCategory.NEWS:     channel = LocalizeLookUp.GetText("chat_news");          break;
+            case ChatCategory.SUPPORT:  channel = LocalizeLookUp.GetText("generic_helpcrow");   break;
+            default:                    channel = null; break;
         }
-        msg += ") " + message.player.name + ": ";
 
-        switch(message.type)
+        string name;
+        switch (message.type)
         {
-            case MessageType.TEXT: msg += message.data.message; break;
-            case MessageType.LOCATION: msg += LocalizeLookUp.GetText("chat_share_location"); break;
-            case MessageType.IMAGE: msg += LocalizeLookUp.GetText("chat_share_image"); break;
+            case MessageType.TEXT:
+            case MessageType.LOCATION:
+            case MessageType.IMAGE:
+                name = message.player.name;
+                break;
+            case MessageType.BOSS:
+            case MessageType.NPC:
+                name = LocalizeLookUp.GetText(message.data.name + "_name");
+                break;
+            default: name = null;
+                break;
         }
+
+        string content;
+        switch (message.type)
+        {
+            case MessageType.TEXT:      content = message.data.message; break;
+            case MessageType.LOCATION:  content = LocalizeLookUp.GetText("chat_share_location"); break;
+            case MessageType.IMAGE:     content = LocalizeLookUp.GetText("chat_share_image"); break;
+            case MessageType.BOSS:
+            case MessageType.NPC:       content = Raincrow.Chat.UI.UIChatNpc.GetLocalizedMessage(message); break;
+            default:                    content = null; break;
+        }
+
+        string msg = "";
+
+        if (channel != null)
+            msg += $"[{channel}] ";
+
+        if (name != null)
+            msg += $"{name}: ";
+
+        if (content != null)
+            msg += content;
 
         ShowText(msg, true);
-
         UpdateNewMsgCount();
     }
 

@@ -25,16 +25,7 @@ namespace Raincrow.Chat.UI
         public override void SetupProperties(ChatMessage message)
         {
             base.SetupProperties(message);
-            _message = LocalizeLookUp.GetText(message.data.message);
-            if (string.IsNullOrEmpty(message.data.previousMessage) == false)
-                _message = _message.Replace("{{previousMessage}}", LocalizeLookUp.GetText(message.data.previousMessage));
-            if (message.data.respawnAt != 0)
-            {
-                var respawnTime = Utilities.FromJavaTime(message.data.respawnAt);
-                var messageTime = Utilities.FromJavaTime(message.timestamp);
-                var timespan = respawnTime - messageTime;
-                _message = _message.Replace("{{respawnAt}}", Utilities.GetTimeRemaingString(timespan));
-            }
+            _message = GetLocalizedMessage(message);
         }
 
         public override void SetContent(ChatMessage message)
@@ -59,7 +50,25 @@ namespace Raincrow.Chat.UI
             SetupProperties(message);
             TextGenerator textGen = new TextGenerator();
             TextGenerationSettings generationSettings = _text.GetGenerationSettings(_text.rectTransform.rect.size);
-            return textGen.GetPreferredHeight(_message, generationSettings)*2 + m_HeaderHeight;
+            return textGen.GetPreferredHeight(_message, generationSettings) * (1/transform.lossyScale.y) + m_HeaderHeight;
+        }
+
+        public static string GetLocalizedMessage(ChatMessage message)
+        {
+            string msg = LocalizeLookUp.GetText(message.data.message);
+
+            if (string.IsNullOrEmpty(message.data.previousMessage) == false)
+                msg = msg.Replace("{{previousMessage}}", LocalizeLookUp.GetText(message.data.previousMessage));
+
+            if (message.data.respawnAt != 0)
+            {
+                var respawnTime = Utilities.FromJavaTime(message.data.respawnAt);
+                var messageTime = Utilities.FromJavaTime(message.timestamp);
+                var timespan = respawnTime - messageTime;
+                msg = msg.Replace("{{respawnAt}}", Utilities.GetTimeRemaingString(timespan));
+            }
+
+            return msg;
         }
     }
 }

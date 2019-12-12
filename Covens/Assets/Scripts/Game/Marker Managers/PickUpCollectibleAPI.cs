@@ -108,14 +108,15 @@ public static class PickUpCollectibleAPI
             UIGlobalPopup.ShowError(null,"cant collect");
             return;
         }
+
         marker.Interactable = false;
-        
+        marker.SetOpened();
+
         APIManager.Instance.Post("character/pickup/" + marker.Token.instance, "{}", (response, result) =>
         {
             if (result == 200)
             {
                 //do nothing, wait for "collect.loot" event
-                marker.SetOpened();
             }
             else
             {
@@ -125,12 +126,13 @@ public static class PickUpCollectibleAPI
                     if (response == "7005")
                     {
                         //cant open (not eligible ou already opened)
-                        marker.SetOpened();
                     }
                 }
                 else
                 {
-                    //unknown error. allow retry?
+                    //unknown error. allow retry
+                    marker.Interactable = true;
+                    marker.SetClosed();
                 }
             }
         });

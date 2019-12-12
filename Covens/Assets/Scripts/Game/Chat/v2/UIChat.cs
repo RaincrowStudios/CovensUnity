@@ -58,13 +58,7 @@ namespace Raincrow.Chat.UI
 
         [Header("Searcher")]
         [SerializeField] private UICovenSearcher m_CovenSearcher;
-
-        private SimplePool<UIChatItem> _chatMessagePool;
-        private SimplePool<UIChatItem> _chatLocationPool;
-        private SimplePool<UIChatItem> _chatHelpPlayerPool;
-        private SimplePool<UIChatItem> _chatHelpCrowPool;
-        private SimplePool<UIChatItem> _chatImagePool;
-
+        
         private ChatCategory _currentCategory = ChatCategory.WORLD;
         private int _loadingTweenId;
         private double _updateTimestampIntervalSeconds = 1.0;
