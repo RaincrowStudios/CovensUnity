@@ -46,6 +46,8 @@ public class UILootRewards : MonoBehaviour
 
         m_Continue.onClick.AddListener(OnClickContinue);
         m_Scroll.onValueChanged.AddListener(OnScroll);
+
+        m_Scroll.horizontalNormalizedPosition = 0.5f;
     }
 
     public void Show(CollectLootHandler.EventData data)
@@ -142,9 +144,11 @@ public class UILootRewards : MonoBehaviour
 
     private void OnScroll(Vector2 data)
     {
-        float pos = -m_Scroll.content.anchoredPosition.x;
+        float width = m_ContainerRectTransform.sizeDelta.x;
+        float pos = -m_Scroll.content.anchoredPosition.x + width/2f;
         float left = m_ItemContainer.padding.left + 345;
-        float right = m_ItemContainer.padding.left + (345 + m_ItemContainer.spacing) * (m_ItemContainer.transform.childCount - 1) - m_ItemContainer.padding.right - left;
+        float right = width - m_ItemContainer.padding.right - 345;//m_ItemContainer.padding.left + (345 + m_ItemContainer.spacing) * (m_ItemContainer.transform.childCount - 1) - m_ItemContainer.padding.right - left;
+
         m_LeftArrow.SetActive(pos > left);
         m_RightArrow.SetActive(pos < right);
     }
