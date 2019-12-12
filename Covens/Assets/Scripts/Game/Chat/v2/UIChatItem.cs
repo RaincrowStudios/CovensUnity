@@ -31,6 +31,7 @@ namespace Raincrow.Chat.UI
             }
             cellIdentifier = message.type.ToString();
 
+            SetupProperties(message);
             SetContent(message);
             SetIcon(message);
             SetHeader(message);
@@ -43,6 +44,7 @@ namespace Raincrow.Chat.UI
         }
 
         public class RequestChatLoadingEvent : UnityEvent<bool> { }
+        public abstract void SetupProperties(ChatMessage message);
         public abstract void SetIcon(ChatMessage message);
         public abstract void SetContent(ChatMessage message);
         public abstract void SetHeader(ChatMessage message);

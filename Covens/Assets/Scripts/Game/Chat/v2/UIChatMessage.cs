@@ -28,23 +28,26 @@ namespace Raincrow.Chat.UI
             base.Awake();
             _iconButton?.onClick.AddListener(OnClickIcon);
         }
-        
-        public override void SetContent(ChatMessage message)
+
+        public override void SetupProperties(ChatMessage message)
         {
             _timestamp = message.timestamp;
+        }
+
+        public override void SetContent(ChatMessage message)
+        {
             _text.text = message.data.message;
         }
 
         public override void SetHeader(ChatMessage message)
         {
-            _timestamp = message.timestamp;
             _name.text = message.player.name;
             _timeAgo.text = Utilities.EpochToDateTimeChat(message.timestamp);
         }
 
         public override void SetIcon(ChatMessage message)
         {
-            _timestamp = message.timestamp;
+
         }
         
         public void RefreshTimeAgo()

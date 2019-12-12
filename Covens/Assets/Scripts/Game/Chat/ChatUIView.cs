@@ -18,7 +18,6 @@ namespace Raincrow.Chat.UI
         [SerializeField] private UIChatHelp _chatHelpCrowPrefab;
         [SerializeField] private UIChatPlayerImage _chatImagePrefab;
         [SerializeField] private UIChatNpc _chatNpcPrefab;
-        [SerializeField] private UIChatBoss _chatBossPrefab;
 
 
         private List<ChatMessage> m_pChatMessages = new List<ChatMessage>();
@@ -79,9 +78,6 @@ namespace Raincrow.Chat.UI
                         break;
 
                     case MessageType.BOSS:
-                        cellView = scroller.GetCellView(_chatBossPrefab) as UIChatItem;
-                        break;
-
                     case MessageType.NPC:
                         cellView = scroller.GetCellView(_chatNpcPrefab) as UIChatItem;
                         break;
@@ -123,8 +119,6 @@ namespace Raincrow.Chat.UI
                             prefab = _chatLocationPrefab as UIChatMessage;
                             break;
                         case MessageType.BOSS:
-                            prefab = _chatBossPrefab as UIChatMessage;
-                            break;
                         case MessageType.NPC:
                             prefab = _chatNpcPrefab as UIChatMessage;
                             break;

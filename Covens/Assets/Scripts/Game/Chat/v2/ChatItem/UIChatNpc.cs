@@ -28,12 +28,12 @@ namespace Raincrow.Chat.UI
         public override void SetIcon(ChatMessage message)
         {
             base.SetIcon(message);
-            //DownloadedAssets.GetSprite(message.data.name + "_portrait", m_Portrait, true);
+            DownloadedAssets.GetSprite(message.data.name + "_portrait", m_Portrait, true);
         }
 
         public override void SetHeader(ChatMessage message)
         {
-            _name.text = LocalizeLookUp.GetText(message.data.name);
+            _name.text = LocalizeLookUp.GetText(message.data.name + "_name");
             _timeAgo.text = Utilities.EpochToDateTimeChat(message.timestamp);
         }
 

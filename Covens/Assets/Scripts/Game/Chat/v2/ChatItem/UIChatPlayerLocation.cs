@@ -21,10 +21,16 @@ namespace Raincrow.Chat.UI
             _flyToButton.onClick.AddListener(OnClickFly);
         }
 
-        public override void SetContent(ChatMessage message)
+        public override void SetupProperties(ChatMessage message)
         {
+            base.SetupProperties(message);
+
             _longitude = message.data.longitude;
             _latitude = message.data.latitude;
+        }
+
+        public override void SetContent(ChatMessage message)
+        {
         }
 
         public void OnClickFly()

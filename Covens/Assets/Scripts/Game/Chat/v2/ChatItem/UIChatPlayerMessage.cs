@@ -21,10 +21,14 @@ namespace Raincrow.Chat.UI
             _iconButton.onClick.AddListener(OnClickIcon);
         }
 
+        public override void SetupProperties(ChatMessage message)
+        {
+            base.SetupProperties(message);
+            _chatPlayer = message.player;
+        }
+
         public override void SetIcon(ChatMessage message)
         {
-            _chatPlayer = message.player;
-
             if (_chatPlayer.avatar >= 0 && _chatPlayer.avatar < _avatars.Length)
                 _icon.overrideSprite = _avatars[_chatPlayer.avatar];
             else
@@ -33,13 +37,11 @@ namespace Raincrow.Chat.UI
 
         public override void SetContent(ChatMessage message)
         {
-            _chatPlayer = message.player;
             base.SetContent(message);
         }
 
         public override void SetHeader(ChatMessage message)
         {
-            _chatPlayer = message.player;
             _name.text = string.Concat(_chatPlayer, " (", LocalizeLookUp.GetText("cast_level"), " ", _chatPlayer.level, ")");
             _degree.text = Utilities.WitchTypeControlSmallCaps(_chatPlayer.degree);
             base.SetHeader(message);
