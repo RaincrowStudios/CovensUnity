@@ -233,6 +233,11 @@ public class Utilities : MonoBehaviour
         dtDateTime = dtDateTime.AddMilliseconds(javaTimeStamp).ToUniversalTime();
         var timeSpan = dtDateTime.Subtract(DateTime.UtcNow);
 
+        return GetTimeRemaingString(timeSpan);
+    }
+
+    public static string GetTimeRemaingString(TimeSpan timeSpan)
+    {
         string stamp = "";
         if (timeSpan.Days > 0)
         {

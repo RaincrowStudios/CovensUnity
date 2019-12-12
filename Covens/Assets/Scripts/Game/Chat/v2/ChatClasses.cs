@@ -36,6 +36,9 @@
         public double longitude;
         public string language;
         public byte[] image;
+
+        public string previousMessage;
+        public double respawnAt;
     }
 
     public class ChatCovenData

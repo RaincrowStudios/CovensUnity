@@ -16,13 +16,30 @@ namespace Raincrow.Chat.UI
 
         protected override float m_HeaderHeight => 70;
 
+        private string _message;
+
         public override void OnClickIcon()
         {
         }
 
+        public override void SetupProperties(ChatMessage message)
+        {
+            base.SetupProperties(message);
+            _message = LocalizeLookUp.GetText(message.data.message);
+            if (string.IsNullOrEmpty(message.data.previousMessage) == false)
+                _message = _message.Replace("{{previousMessage}}", LocalizeLookUp.GetText(message.data.previousMessage));
+            if (message.data.respawnAt != 0)
+            {
+                var respawnTime = Utilities.FromJavaTime(message.data.respawnAt);
+                var messageTime = Utilities.FromJavaTime(message.timestamp);
+                var timespan = respawnTime - messageTime;
+                _message = _message.Replace("{{respawnAt}}", Utilities.GetTimeRemaingString(timespan));
+            }
+        }
+
         public override void SetContent(ChatMessage message)
         {
-            _text.text = LocalizeLookUp.GetText(message.data.message);
+            _text.text = _message;
         }
 
         public override void SetIcon(ChatMessage message)
