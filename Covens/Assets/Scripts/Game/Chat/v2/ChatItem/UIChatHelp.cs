@@ -117,10 +117,10 @@ namespace Raincrow.Chat.UI
             int characterCount = 0;
             if (message.data != null && message.data.message != null)
                 characterCount = message.data.message.Length;
-            if (characterCount >= 89)
-                return 2400f;
+            if (characterCount >= 76)
+                return 2000;
             else
-                return Mathf.Max(300f, 2400 * characterCount / 89f);
+                return Mathf.Max(300f, 2000 * characterCount / 76);
         }
 
         public override float GetHeight(ChatMessage message)
@@ -134,8 +134,8 @@ namespace Raincrow.Chat.UI
                 int characterCount = 0;
                 if (message.data != null && message.data.message != null)
                     characterCount = message.data.message.Length;
-                int lineCount = Mathf.CeilToInt(characterCount / 89f);
-                return lineCount * 48 + m_Spacing + m_HeaderHeight;
+                int lineCount = Mathf.CeilToInt(characterCount / 76f);
+                return lineCount * 48 + m_HeaderHeight + 50;
             }
         }
     }

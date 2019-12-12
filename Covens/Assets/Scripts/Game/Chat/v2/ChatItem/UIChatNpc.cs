@@ -56,9 +56,10 @@ namespace Raincrow.Chat.UI
 
         public override float GetHeight(ChatMessage message)
         {
+            SetupProperties(message);
             TextGenerator textGen = new TextGenerator();
             TextGenerationSettings generationSettings = _text.GetGenerationSettings(_text.rectTransform.rect.size);
-            return textGen.GetPreferredHeight(LocalizeLookUp.GetText(message.data.message), generationSettings) + m_HeaderHeight + m_Spacing;
+            return textGen.GetPreferredHeight(_message, generationSettings)*2 + m_HeaderHeight;
         }
     }
 }

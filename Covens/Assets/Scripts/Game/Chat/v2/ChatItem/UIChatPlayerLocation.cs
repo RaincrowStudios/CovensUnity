@@ -44,7 +44,7 @@ namespace Raincrow.Chat.UI
 
         public override float GetHeight(ChatMessage message)
         {
-            return 150 + m_Spacing;
+            return 150;
         }
     }
 }

@@ -21,7 +21,6 @@ namespace Raincrow.Chat.UI
         private RectTransform m_RectTransform;
 
         protected virtual float m_HeaderHeight => 50;
-        protected virtual float m_Spacing => 50;
 
         protected override void Awake()
         {
@@ -61,7 +60,7 @@ namespace Raincrow.Chat.UI
             {
                 TextGenerator textGen = new TextGenerator();
                 TextGenerationSettings generationSettings = _text.GetGenerationSettings(_text.rectTransform.rect.size);
-                return textGen.GetPreferredHeight(message.data.message, generationSettings) + m_HeaderHeight + m_Spacing;
+                return textGen.GetPreferredHeight(message.data.message, generationSettings)*2 + m_HeaderHeight;
             }
             return 0;
         }

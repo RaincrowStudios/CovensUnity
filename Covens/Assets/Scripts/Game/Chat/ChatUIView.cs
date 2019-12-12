@@ -28,6 +28,7 @@ namespace Raincrow.Chat.UI
         private void Awake()
         {
             scroller.Delegate = this;
+            scroller.spacing = 45;
         }
 
         public void SetupData(List<ChatMessage> pMessages, ChatCategory eCategory, UnityAction<bool> onRequestChatLoading = null, UnityAction onRequestChatClose = null)
@@ -129,7 +130,7 @@ namespace Raincrow.Chat.UI
                 }
 
                 if (prefab != null)
-                    pItem.height = prefab.GetHeight(pItem);
+                    pItem.height = Mathf.Max(prefab.GetHeight(pItem), 150);
                 else
                     pItem.height = 150;
             }
