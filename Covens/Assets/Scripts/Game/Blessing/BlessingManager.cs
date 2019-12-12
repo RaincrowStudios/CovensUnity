@@ -28,7 +28,7 @@ public static class BlessingManager
     public static void CheckDailyBlessing()
     {
         System.DateTime lastBlessingDate = Utilities.FromJavaTime(LastBlessing);
-        System.DateTime nextBlessingDate = lastBlessingDate.AddHours(24);
+        System.DateTime nextBlessingDate = lastBlessingDate.AddHours(21);
         System.TimeSpan nextBlessing = nextBlessingDate - System.DateTime.UtcNow;
                 
         if (nextBlessing.TotalSeconds > 0)

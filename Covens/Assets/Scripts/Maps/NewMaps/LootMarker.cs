@@ -42,10 +42,12 @@ public class LootMarker : MuskMarker
     public void SetOpened()
     {
         m_Particles.Stop();
+        m_Animator.SetBool("hidden", true);
     }
 
     public void SetClosed()
     {
         m_Particles.Play();
+        m_Animator.SetBool("hidden", false);
     }
 }
