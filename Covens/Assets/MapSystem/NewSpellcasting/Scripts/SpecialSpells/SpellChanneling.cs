@@ -7,6 +7,7 @@ using UnityEngine;
 
 public static class SpellChanneling
 {
+    private static SimplePool<Transform> m_BossFx = new SimplePool<Transform>("SpellFX/Channeling/ChannelingBoss");
     private static SimplePool<Transform> m_ShadowFx = new SimplePool<Transform>("SpellFX/Channeling/ChannelingShadow");
     private static SimplePool<Transform> m_GreyFx = new SimplePool<Transform>("SpellFX/Channeling/ChannelingGrey");
     private static SimplePool<Transform> m_WhiteFx = new SimplePool<Transform>("SpellFX/Channeling/ChannelingWhite");
@@ -116,12 +117,14 @@ public static class SpellChanneling
     {
         int degree = token.degree;
 
+        if (token.Type == MarkerSpawner.MarkerType.BOSS)
+            return m_BossFx.Spawn();
         if (degree > 0)
             return m_WhiteFx.Spawn();
-        else if (degree < 0)
+        if (degree < 0)
             return m_ShadowFx.Spawn();
-        else
-            return m_GreyFx.Spawn();
+        
+        return m_GreyFx.Spawn();
     }
 
     public static void DespawnFX(Transform fx)
