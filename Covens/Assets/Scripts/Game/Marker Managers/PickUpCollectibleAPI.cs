@@ -125,8 +125,8 @@ public static class PickUpCollectibleAPI
             {
                 //remove from eligible list
                 marker.LootToken.eligibleCharacters.Remove(PlayerDataManager.playerData.instance);
-                //set half opacity and disable interaction
-                marker.SetDisable(true);
+                //hide marker
+                marker.SetDespawn();
             }
             else
             {
@@ -136,7 +136,8 @@ public static class PickUpCollectibleAPI
                 {
                     //if (response == "7005") { /*cant open (not eligible ou already opened)*/ }
 
-                    marker.SetDisable(true);
+                    //hide marker
+                    marker.SetDespawn();
                 }
                 else
                 {

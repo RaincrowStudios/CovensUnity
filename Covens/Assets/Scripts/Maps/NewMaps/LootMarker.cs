@@ -51,4 +51,9 @@ public class LootMarker : MuskMarker
         Interactable = !value;
         m_Animator.SetBool("disabled", value);
     }
+
+    public void SetDespawn()
+    {
+        m_Animator.SetTrigger("despawn", true);
+    }
 }
