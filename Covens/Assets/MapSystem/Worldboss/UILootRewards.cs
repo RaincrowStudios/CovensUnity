@@ -93,10 +93,14 @@ public class UILootRewards : MonoBehaviour
             Instantiate(m_ItemPrefab, m_ItemContainer.transform).SetupIngredients(total);
         }
 
+        char gender = PlayerDataManager.playerData.male ? 'm' : 'f';
         if (data.cosmetics != null)
         {
             foreach (string id in data.cosmetics)
             {
+                if (DownloadedAssets.GetCosmetic(id).gender[0] != gender)
+                    continue;
+
                 yield return WaitOrTap(delay);
                 Instantiate(m_ItemPrefab, m_ItemContainer.transform).SetupCosmetic(id);
             }
