@@ -13,19 +13,29 @@ namespace Raincrow.Chat.UI
         [SerializeField] private TextMeshProUGUI m_NpcName;
         [SerializeField] private TextMeshProUGUI m_TimeAgo;
         [SerializeField] private Text m_Text;
+        [SerializeField] private Button m_FlyTo;
 
         protected override float m_HeaderHeight => 70;
 
         private string _message;
+        private double? _longitude;
+        private double? _latitude;
 
-        public override void OnClickIcon()
+        protected override void Awake()
         {
+            base.Awake();
+            m_FlyTo.onClick.AddListener(OnClickFlyTo);
         }
 
         public override void SetupProperties(ChatMessage message)
         {
             base.SetupProperties(message);
+
             _message = GetLocalizedMessage(message);
+            _longitude = message.data.longitude;
+            _latitude = message.data.latitude;
+
+            m_FlyTo.gameObject.SetActive(_longitude.HasValue && _latitude.HasValue);
         }
 
         public override void SetContent(ChatMessage message)
@@ -35,7 +45,6 @@ namespace Raincrow.Chat.UI
 
         public override void SetIcon(ChatMessage message)
         {
-            base.SetIcon(message);
             DownloadedAssets.GetSprite(message.data.name + "_portrait", m_Portrait, true);
         }
 
@@ -69,6 +78,20 @@ namespace Raincrow.Chat.UI
             }
 
             return msg;
+        }
+
+        public override void OnClickIcon()
+        {
+        }
+
+        private void OnClickFlyTo()
+        {
+            if (!_longitude.HasValue || !_latitude.HasValue)
+                return;
+
+            OnRequestChatClose?.Invoke();
+
+            PlayerManager.Instance.FlyTo(_longitude.Value, _latitude.Value, 0.0003f * 3, 0.0006f * 3);
         }
     }
 }

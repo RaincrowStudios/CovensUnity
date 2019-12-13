@@ -32,8 +32,8 @@
     {
         public string name;
         public string message;
-        public double latitude;
-        public double longitude;
+        public double? latitude;
+        public double? longitude;
         public string language;
         public byte[] image;
 

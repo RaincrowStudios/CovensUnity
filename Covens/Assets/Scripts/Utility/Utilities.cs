@@ -138,21 +138,20 @@ public class Utilities : MonoBehaviour
     public static string WitchTypeControlSmallCaps(int lp)
     {
         string degree = GetDegree(lp);
-        string witchType = string.Empty;
-        if (lp < 0)
-        {
-            witchType = string.Concat(degree, " ", LocalizeLookUp.GetText("card_witch_shadow")); //" Shadow Witch";
-        }
-        else if (lp > 0)
-        {
-            witchType = string.Concat(witchType, " ", LocalizeLookUp.GetText("card_witch_white")); //" White Witch";
-        }
-        else
-        {
-            witchType = LocalizeLookUp.GetText("card_witch_grey"); //"Grey Witch";
-        }
 
-        return witchType;
+        if (!string.IsNullOrEmpty(degree))
+            degree += " ";
+        
+        string witchType = string.Empty;
+
+        if (lp < 0)
+            witchType = LocalizeLookUp.GetText("card_witch_shadow"); //"Shadow Witch";
+        else if (lp > 0)
+            witchType = LocalizeLookUp.GetText("card_witch_white"); //"White Witch";
+        else
+            witchType = LocalizeLookUp.GetText("card_witch_grey"); //"Grey Witch";
+
+        return degree + witchType;
     }
 
     public static GameObject InstantiateObject(GameObject prefab, Transform parent, float scale = 1)
