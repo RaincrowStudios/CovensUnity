@@ -132,5 +132,6 @@ public static class SpellChanneling
         m_WhiteFx.Despawn(fx);
         m_ShadowFx.Despawn(fx);
         m_GreyFx.Despawn(fx);
+        m_BossFx.Despawn(fx);
     }
 }

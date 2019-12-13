@@ -160,9 +160,10 @@ public abstract class CharacterMarker : MuskMarker
             m_CovenBuffFX = fx = StatusEffectFX.SpawnCovenBuff(effect);
         }
 
-        if (effect.HasStatus(SpellData.CHANNELING_STATUS) && m_ChannelingFX == null)
+        if (effect.HasStatus(SpellData.CHANNELING_STATUS))
         {
-            fx = m_ChannelingFX = SpellChanneling.SpawnFX(this, characterToken);
+            if (m_ChannelingFX == null)
+                fx = m_ChannelingFX = SpellChanneling.SpawnFX(this, characterToken);
 
             ParticleSystem[] particles = m_ChannelingFX.GetComponentsInChildren<ParticleSystem>();
             particles[0].Play();

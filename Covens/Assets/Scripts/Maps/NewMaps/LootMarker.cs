@@ -54,6 +54,7 @@ public class LootMarker : MuskMarker
 
     public void SetDespawn()
     {
+        m_Particles.Stop();
         m_Animator.SetTrigger("despawn");
     }
 }
