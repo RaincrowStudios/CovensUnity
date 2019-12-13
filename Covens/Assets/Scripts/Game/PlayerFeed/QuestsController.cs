@@ -12,7 +12,6 @@ public static class QuestsController
         {
             public int amount;
             public string country;
-            public int? degree;
             public string ingredient;
             public string relation;
             public string spell;

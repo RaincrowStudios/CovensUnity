@@ -82,8 +82,6 @@ public static class PickUpCollectibleAPI
         }
 
         MarkerSpawner.DeleteMarker(marker.Token.Id);
-        marker.Interactable = false;
-        marker.SetAlpha(0, 0.5f);
         Token token = marker.Token;
         SoundManagerOneShot.Instance.PlayEnergyCollect();
         //LeanTween.scale(marker.GameObject, Vector3.zero, .3f).setOnComplete(() => MarkerSpawner.DeleteMarker(token.instance));

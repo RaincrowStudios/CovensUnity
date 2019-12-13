@@ -121,8 +121,6 @@ public class QuestLogUI : UIAnimationManager
 
         if (FirstTapManager.IsFirstTime("daily"))
             FirstTapManager.Show("daily", null);
-
-
     }
 
     [ContextMenu("Hide")]
@@ -388,13 +386,21 @@ public class QuestLogUI : UIAnimationManager
         var gather = QuestsController.Quests.gather;
         var progress = PlayerDataManager.playerData.quest.gather;
 
+        string type = gather.type;
+        switch (gather.type)
+        {
+            case "gem": type = LocalizeLookUp.GetText("ingredient_gems"); break;
+            case "herb": type = LocalizeLookUp.GetText("ingredient_botanicals"); break;
+            case "tool": type = LocalizeLookUp.GetText("ingredient_tools"); break;
+        }
+
         Desc.text =
             LocalizeLookUp.GetText("collect") + " " +
             gather.amount + " " +
-            (gather.type == LocalizeLookUp.GetText("daily_herb") ? LocalizeLookUp.GetText("ingredient_botanicals") : gather.type);
+            $"<color=#4FD5FF>{type}</color>";
 
         if (string.IsNullOrEmpty(gather.country) == false)
-            Desc.text += " " + LocalizeLookUp.GetText("daily_in_location").Replace("{{location}}", LocalizeLookUp.GetCountryName(gather.country));
+            Desc.text += " " + LocalizeLookUp.GetText("daily_in_location").Replace("{{location}}", $"<color=#4FD5FF>{LocalizeLookUp.GetCountryName(gather.country)}</color>");
 
         title.text = LocalizeLookUp.GetText("daily_gather");//"Gather";
         completeText.text = "( " + progress.count + "/" + gather.amount.ToString() + " )";
@@ -413,53 +419,76 @@ public class QuestLogUI : UIAnimationManager
         var spellcraft = QuestsController.Quests.spellcraft;
         var progress = PlayerDataManager.playerData.quest.spell;
 
-        Desc.text = LocalizeLookUp.GetText("daily_casting_upon");
+        string description;
         if (string.IsNullOrEmpty(spellcraft.type) == false)
         {
-            if (string.IsNullOrEmpty(spellcraft.relation) == false)
+            string descKey;
+            string typeKey;
+
+            switch (spellcraft.relation)
             {
-                if (spellcraft.relation == "ally")
-                {
-                    Desc.text = LocalizeLookUp.GetText("daily_casting_upon_ally") + " " + spellcraft.type;
-                }
-                else if (spellcraft.relation == "enemy")
-                {
-                    Desc.text = LocalizeLookUp.GetText("daily_casting_upon_enemy") + " " + spellcraft.type;
-                }
-                else if (spellcraft.relation == "coven")
-                {
-                    Desc.text = LocalizeLookUp.GetText("daily_casting_upon_coven").Replace("{{type}}", " " + spellcraft.type);
-                }
-                else if (spellcraft.relation == "own")
-                {
-                    Desc.text = LocalizeLookUp.GetText("daily_casting_upon_own") + " " + spellcraft.type;
-                }
-                else if (spellcraft.relation == "higher")
-                {
-                    Desc.text = LocalizeLookUp.GetText("daily_casting_upon_higher") + " " + spellcraft.type;
-                }
-                else if (spellcraft.relation == "lower")
-                {
-                    Desc.text = LocalizeLookUp.GetText("daily_casting_upon_lower") + " " + spellcraft.type;
-                }
+                case "ally":
+                    descKey = "daily_casting_upon_ally"; //Cast {{Spell Name}} {{amount}} times on an ally
+                    break;
+                case "enemy":
+                    descKey = "daily_casting_upon_enemy"; //Cast {{Spell Name}} {{amount}} times on an enemy
+                    break;
+                case "coven":
+                    descKey = "daily_casting_upon_coven"; //Cast {{Spell Name}} {{amount}} times on an {{type}} of your coven
+                    break;
+                case "own":
+                    descKey = "daily_casting_upon_own"; //Cast {{Spell Name}} {{amount}} times on your own
+                    break;
+                case "higher":
+                    descKey = "daily_casting_upon_higher"; //Cast {{Spell Name}} {{amount}} times on a higher level
+                    break;
+                case "lower":
+                    descKey = "daily_casting_upon_lower"; //Cast {{Spell Name}} {{amount}} times on a lower level
+                    break;
+                default:
+                    descKey = "daily_casting_on_a"; //Cast {{Spell Name}} {{amount}} times on a {{type}}
+                    break;
             }
-            else
+
+            switch(spellcraft.type)
             {
-                Desc.text = LocalizeLookUp.GetText("daily_casting_on_a").Replace("{{type}}", " " + spellcraft.type).Replace("{{amount}}", spellcraft.amount.ToString());
+                case "spirit":
+                    typeKey = "lt_spirit_s";
+                    break;
+                case "character":
+                    typeKey = "generic_witch";
+                    break;
+                default:
+                    typeKey = null;
+                    break;
             }
+
+            description = LocalizeLookUp.GetText(descKey);
+            if (typeKey != null)
+                description = description.Replace("{{type}}", $"<color=#4FD5FF>{LocalizeLookUp.GetText(typeKey)}</color>");
+        }
+        else
+        {
+            description = LocalizeLookUp.GetText("daily_casting_upon"); //Cast {{Spell Name}} {{amount}} times
         }
 
         if (string.IsNullOrEmpty(spellcraft.country) == false)
         {
-            Desc.text += " " + LocalizeLookUp.GetText("daily_casting_location").Replace("{{Location}}", " " + LocalizeLookUp.GetCountryName(spellcraft.country));
+            description += " " + LocalizeLookUp.GetText("daily_casting_location")
+                .Replace("{{Location}}", $"<color=#4FD5FF>{LocalizeLookUp.GetCountryName(spellcraft.country)}</color>");
         }
+
         if (string.IsNullOrEmpty(spellcraft.ingredient) == false)
         {
-            Desc.text += " " + LocalizeLookUp.GetText("daily_casting_using").Replace("{{ingredient}}", " " + spellcraft.ingredient);
+            description += " " + LocalizeLookUp.GetText("daily_casting_using")
+                .Replace("{{ingredient}}", $"<color=#4FD5FF>{LocalizeLookUp.GetText("generic_" + spellcraft.ingredient)}</color>");
         }
-        Desc.text = Desc.text.Replace("{{Spell Name}}", LocalizeLookUp.GetSpellName(spellcraft.spell)).Replace("{{amount}}", spellcraft.amount.ToString());
 
-        Desc.text += ".";
+        Desc.text = description
+            .Replace("{{Spell Name}}", $"<color=#4FD5FF>{LocalizeLookUp.GetSpellName(spellcraft.spell)}</color>")
+            .Replace("{{amount}}", spellcraft.amount.ToString())
+            + ".";
+
         title.text = LocalizeLookUp.GetText("daily_spell");//"Spellcraft";
         completeText.text = "( " + progress.count + "/" + spellcraft.amount.ToString() + " )";
         descAnim.Play("up");
