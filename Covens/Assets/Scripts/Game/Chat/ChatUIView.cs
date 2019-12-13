@@ -130,7 +130,6 @@ namespace Raincrow.Chat.UI
 
                 if (prefab != null)
                 {
-                    Debug.LogError(prefab.GetHeight(pItem) + "\n" + pItem.data.message);
                     pItem.height = Mathf.Max(prefab.GetHeight(pItem), 150);
                 }
                 else
