@@ -369,7 +369,7 @@ public class MarkerSpawner : MonoBehaviour
                 FirstTapManager.Show("energy", () => OnClickMarker(m));
                 return;
             }
-            PickUpCollectibleAPI.CollectEnergy(m);
+            PickUpCollectibleAPI.CollectEnergy(m as EnergyMarker);
             return;
         }
         

@@ -37,9 +37,13 @@ public static class PickUpCollectibleAPI
         //}
         Debug.LogError("TODO:relink inventory button");
 
+        marker.SetLoading(true);
+
         //send the request
         APIManager.Instance.Post("character/pickup/" + instance, "{}", (response, result) =>
         {
+            marker.SetLoading(false);
+
             if (result == 200)
             {
                 //add the item to the player's inventory
@@ -69,7 +73,7 @@ public static class PickUpCollectibleAPI
         });
     }
 
-    public static void CollectEnergy(IMarker marker)
+    public static void CollectEnergy(EnergyMarker marker)
     {
         if (PlayerDataManager.playerData.energy >= PlayerDataManager.playerData.maxEnergy)
         {
@@ -105,34 +109,39 @@ public static class PickUpCollectibleAPI
     {
         if (marker.IsEligible == false)
         {
-            UIGlobalPopup.ShowError(null,"cant collect");
             return;
         }
 
+        //disable interaction and animate
         marker.Interactable = false;
-        marker.SetOpened();
+        marker.SetLoading(true);
 
         APIManager.Instance.Post("character/pickup/" + marker.Token.instance, "{}", (response, result) =>
         {
+            //stop animating
+            marker.SetLoading(false);
+            
             if (result == 200)
             {
-                //do nothing, wait for "collect.loot" event
+                //remove from eligible list
+                marker.LootToken.eligibleCharacters.Remove(PlayerDataManager.playerData.instance);
+                //set half opacity and disable interaction
+                marker.SetDisable(true);
             }
             else
             {
                 UIGlobalPopup.ShowError(null, APIManager.ParseError(response));
+
                 if (result == 412)
                 {
-                    if (response == "7005")
-                    {
-                        //cant open (not eligible ou already opened)
-                    }
+                    //if (response == "7005") { /*cant open (not eligible ou already opened)*/ }
+
+                    marker.SetDisable(true);
                 }
                 else
                 {
                     //unknown error. allow retry
-                    marker.Interactable = true;
-                    marker.SetClosed();
+                    marker.SetDisable(false);
                 }
             }
         });

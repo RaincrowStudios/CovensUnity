@@ -27,27 +27,28 @@ public class LootMarker : MuskMarker
 
         LootToken = data as LootToken;
 
-        if (IsEligible)
-            SetClosed();
-        else
-            SetOpened();
+        SetDisable(!IsEligible);
     }
 
     public void OpenChest(CollectLootHandler.EventData data)
     {
         LootToken.eligibleCharacters.Remove(PlayerDataManager.playerData.instance);
-        SetOpened();
+        SetDisable(true);
     }
 
-    public void SetOpened()
+    public void SetLoading(bool value)
     {
-        m_Particles.Stop();
-        m_Animator.SetBool("hidden", true);
+        m_Animator.SetBool("loading", value);
     }
 
-    public void SetClosed()
+    public void SetDisable(bool value)
     {
-        m_Particles.Play();
-        m_Animator.SetBool("hidden", false);
+        if (value)
+            m_Particles.Stop();
+        else
+            m_Particles.Play();
+
+        Interactable = !value;
+        m_Animator.SetBool("disabled", value);
     }
 }

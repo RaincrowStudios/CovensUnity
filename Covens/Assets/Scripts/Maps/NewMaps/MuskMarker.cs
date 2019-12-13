@@ -259,10 +259,10 @@ namespace Raincrow.Maps
 
         }
 
-        [System.Obsolete]
+        [System.Obsolete("use IMarker.SetHidden instead")]
         public void SetAlpha(float vlaue, float time)
         {
-
+            SetHidden(vlaue < 1);
         }
 
         public virtual void OnEnterMapView()

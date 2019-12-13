@@ -78,14 +78,16 @@ public class GameStartup : MonoBehaviour
 
         //Setting up AppsFlyerStuff
         AppsFlyer.setAppsFlyerKey("Wdx4jw7TTNEEJYUh5UnaDB");
-#if UNITY_IOS
+        AppsFlyer.setAppID("com.raincrow.covens");
+
+#if UNITY_EDITOR
+        Debug.Log("PUSH NOTIFICATION DISABLED ON EDITOR");
+#elif UNITY_IOS
         {
-            AppsFlyer.setAppID("com.raincrow.covens");
             AppsFlyer.trackAppLaunch();
         }
 #elif UNITY_ANDROID
         {
-            AppsFlyer.setAppID("com.raincrow.covens");
             AppsFlyer.init("Wdx4jw7TTNEEJYUh5UnaDB", "AppsFlyerTrackerCallbacks");
         }
 #endif

@@ -63,6 +63,8 @@ public class UIStoreItem : MonoBehaviour
         rectTransform.pivot = new Vector2(1, 0.5f);
         rectTransform.anchoredPosition = new Vector2(182.9999f, 219f);
         rectTransform.sizeDelta = new Vector2(251f, 364.5f);
+
+        m_ItemIcon.preserveAspect = true;
     }
 
     private void SetIconLayout_IngredientBundle()
@@ -71,6 +73,8 @@ public class UIStoreItem : MonoBehaviour
         rectTransform.pivot = new Vector2(1, 0f);
         rectTransform.anchoredPosition = new Vector2(229.3f, 38);
         rectTransform.sizeDelta = new Vector2(346.8f, 338.4f);
+
+        m_ItemIcon.preserveAspect = true;
     }
 
     private void SetIconLayout_CurrencyBundle()
@@ -79,14 +83,18 @@ public class UIStoreItem : MonoBehaviour
         rectTransform.pivot = new Vector2(0.5f, 0f);
         rectTransform.sizeDelta = new Vector2(385f, 372.5f);
         rectTransform.anchoredPosition = new Vector2(143.3996f, 28f);
+
+        m_ItemIcon.preserveAspect = true;
     }
 
     private void SetIconLayout_Full()
     {
         RectTransform rectTransform = m_ItemIcon.rectTransform;
         rectTransform.pivot = new Vector2(0.5f, 0f);
-        rectTransform.sizeDelta = new Vector2(546.7f, 339.5f);
-        rectTransform.anchoredPosition = new Vector2(279.55f, 16);
+        rectTransform.sizeDelta = new Vector2(546.7f, 391.5f);
+        rectTransform.anchoredPosition = new Vector2(276.2f, 16);
+
+        m_ItemIcon.preserveAspect = false;
     }
 
     public void Setup(StoreItem item, object data)
