@@ -15,9 +15,11 @@ public class BOSCharacter : BOSBase
     [SerializeField] private TextMeshProUGUI power;
     [SerializeField] private TextMeshProUGUI resilience;
     [SerializeField] private TextMeshProUGUI favoriteSpell;
-    [SerializeField] private TextMeshProUGUI nemesis;
-    [SerializeField] private TextMeshProUGUI benefactor;
+    //[SerializeField] private TextMeshProUGUI nemesis;
+    //[SerializeField] private TextMeshProUGUI benefactor;
     [SerializeField] private TextMeshProUGUI pathText;
+    [SerializeField] private TextMeshProUGUI degree;
+
     [SerializeField] private Sprite[] pathSprites;
     [SerializeField] private Image pathImage;
     public static BOSCharacter Instance { get; set; }
@@ -41,8 +43,12 @@ public class BOSCharacter : BOSBase
         resilience.text = LocalizeLookUp.GetText("generic_resilience") + ": " + PlayerDataManager.playerData.GetResilience(PlayerDataManager.playerData.effects);
         favoriteSpell.text = LocalizeLookUp.GetText("spell_favorite") + " " + (string.IsNullOrEmpty(pData.favoriteSpell) ? LocalizeLookUp.GetText("lt_none") : LocalizeLookUp.GetSpellName(pData.favoriteSpell));
 
-        nemesis.text = LocalizeLookUp.GetText("generic_nemesis") + ": " + (string.IsNullOrEmpty(pData.nemesis) ? LocalizeLookUp.GetText("lt_none") : pData.nemesis);
-        benefactor.text = LocalizeLookUp.GetText("generic_benefactor") + ": " + (string.IsNullOrEmpty(pData.benefactor) ? LocalizeLookUp.GetText("lt_none") : pData.benefactor);
+        //nemesis.text = LocalizeLookUp.GetText("generic_nemesis") + ": " + (string.IsNullOrEmpty(pData.nemesis) ? LocalizeLookUp.GetText("lt_none") : pData.nemesis);
+        //benefactor.text = LocalizeLookUp.GetText("generic_benefactor") + ": " + (string.IsNullOrEmpty(pData.benefactor) ? LocalizeLookUp.GetText("lt_none") : pData.benefactor);
+
+        degree.text = Utilities.GetDegree(pData.degree);
+
+
 
         if (pData.degree > 0)
         {
