@@ -5,12 +5,10 @@ using UnityEngine.UI;
 using TMPro;
 using Raincrow.GameEventResponses;
 
-[RequireComponent(typeof(RectTransform), typeof(CanvasGroup), typeof(GraphicRaycaster))]
-public class UILootRewards : MonoBehaviour
+[RequireComponent(typeof(RectTransform), typeof(CanvasGroup), typeof(Canvas))]
+public class UIRewardsPopup : MonoBehaviour
 {
-    [SerializeField] private Image m_Portrait;
-    [SerializeField] private TextMeshProUGUI m_BossName;
-    [SerializeField] private TextMeshProUGUI m_ChestTier;
+    [Header("UIRewardsPopup")]
     [SerializeField] private Button m_Continue;
     [Space]
     [SerializeField] private GameObject m_LeftArrow;
@@ -18,21 +16,18 @@ public class UILootRewards : MonoBehaviour
     [Space]
     [SerializeField] private ScrollRect m_Scroll;
     [SerializeField] private HorizontalLayoutGroup m_ItemContainer;
-    [SerializeField] private UILootRewardItem m_ItemPrefab;
+    [SerializeField] private UIRewardsPopupItem m_ItemPrefab;
 
+    private Canvas m_Canvas;
     private CanvasGroup m_CanvasGroup;
     private GraphicRaycaster m_InputRaycaster;
     private RectTransform m_RectTransform;
     private RectTransform m_ContainerRectTransform;
-
-    public static UILootRewards Instantiate()
-    {
-        return Instantiate(Resources.Load<UILootRewards>("LootRewardsPopup"));
-    }
-
+        
     private void Awake()
     {
         m_CanvasGroup = this.GetComponent<CanvasGroup>();
+        m_Canvas = this.GetComponent<Canvas>();
         m_InputRaycaster = this.GetComponent<GraphicRaycaster>();
         m_RectTransform = this.GetComponent<RectTransform>();
         m_ContainerRectTransform = m_ItemContainer.GetComponent<RectTransform>();
@@ -42,7 +37,8 @@ public class UILootRewards : MonoBehaviour
         m_RightArrow.SetActive(false);
         m_ItemPrefab.gameObject.SetActive(false);
         m_ItemPrefab.transform.SetParent(this.transform);
-        m_InputRaycaster.enabled = true;
+        m_InputRaycaster.enabled = false;
+        m_Canvas.enabled = false;
 
         m_Continue.onClick.AddListener(OnClickContinue);
         m_Scroll.onValueChanged.AddListener(OnScroll);
@@ -50,59 +46,58 @@ public class UILootRewards : MonoBehaviour
         m_Scroll.horizontalNormalizedPosition = 0.5f;
     }
 
-    public void Show(CollectLootHandler.EventData data)
+    public virtual void Show(CollectibleData[] ingredients, string[] cosmetics, int gold, int silver, ulong xp, int power, int resilience)
     {
         m_Continue.interactable = false;
-        LeanTween.value(0, 0, 0).setDelay(0.5f).setOnStart(() => m_Continue.interactable = true);
+        m_Canvas.enabled = true;
+        m_InputRaycaster.enabled = true;
+
+        LeanTween.value(0, 0, 0).setDelay(1f).setOnStart(() => m_Continue.interactable = true);
         LeanTween.alphaCanvas(m_CanvasGroup, 1, 0.5f).setEaseOutCubic();
-
-        //m_Portrait.
-        DownloadedAssets.GetSprite(data.bossId + "_portrait", m_Portrait);
-        m_BossName.text = LocalizeLookUp.GetSpiritName(data.bossId);
-        m_ChestTier.text = LocalizeLookUp.GetText(data.type);
-
-        StartCoroutine(ShowRewards(data));
+        
+        StartCoroutine(ShowRewards(ingredients, cosmetics, gold, silver, xp, power, resilience));
     }
 
-    private IEnumerator ShowRewards(CollectLootHandler.EventData data)
+    private IEnumerator ShowRewards(CollectibleData[] ingredients, string[] cosmetics, int gold, int silver, ulong xp, int power, int resilience)
     {
-        float delay = 1f;
-        if (data.xp > 0)
+        float delay = 0.5f;
+        if (xp > 0)
         {
-            Instantiate(m_ItemPrefab, m_ItemContainer.transform).SetupExp(data.xp);
+            Instantiate(m_ItemPrefab, m_ItemContainer.transform).SetupExp(xp);
+            yield return WaitOrTap(delay);
         }
 
-        if (data.silver > 0)
+        if (silver > 0)
         {
+            Instantiate(m_ItemPrefab, m_ItemContainer.transform).SetupSilver(silver);
             yield return WaitOrTap(delay);
-            Instantiate(m_ItemPrefab, m_ItemContainer.transform).SetupSilver(data.silver);
         }
 
-        if (data.gold > 0)
+        if (gold > 0)
         {
+            Instantiate(m_ItemPrefab, m_ItemContainer.transform).SetupGold(gold);
             yield return WaitOrTap(delay);
-            Instantiate(m_ItemPrefab, m_ItemContainer.transform).SetupGold(data.gold);
         }
 
-        if (data.collectibles?.Length > 0)
+        if (ingredients?.Length > 0)
         {
-            yield return WaitOrTap(delay);
             int total = 0;
-            foreach (var ingredient in data.collectibles)
+            foreach (var ingredient in ingredients)
                 total += ingredient.amount;
             Instantiate(m_ItemPrefab, m_ItemContainer.transform).SetupIngredients(total);
+            yield return WaitOrTap(delay);
         }
 
         char gender = PlayerDataManager.playerData.male ? 'm' : 'f';
-        if (data.cosmetics != null)
+        if (cosmetics != null)
         {
-            foreach (string id in data.cosmetics)
+            foreach (string id in cosmetics)
             {
                 if (DownloadedAssets.GetCosmetic(id).gender[0] != gender)
                     continue;
 
-                yield return WaitOrTap(delay);
                 Instantiate(m_ItemPrefab, m_ItemContainer.transform).SetupCosmetic(id);
+                yield return WaitOrTap(delay);
             }
         }
     }
@@ -137,8 +132,17 @@ public class UILootRewards : MonoBehaviour
     public void Close()
     {
         StopAllCoroutines();
+
         m_InputRaycaster.enabled = false;
-        LeanTween.alphaCanvas(m_CanvasGroup, 0, 1f).setEaseOutCubic().setOnComplete(() => Destroy(this.gameObject));
+
+        LeanTween.alphaCanvas(m_CanvasGroup, 0, .5f)
+            .setEaseOutCubic()
+            .setOnComplete(() =>
+            {
+                m_Canvas.enabled = false;
+                OnClose();
+                Destroy(this.gameObject);
+            });
     }
 
     private void OnClickContinue()
@@ -156,4 +160,6 @@ public class UILootRewards : MonoBehaviour
         m_LeftArrow.SetActive(pos > left);
         m_RightArrow.SetActive(pos < right);
     }
+
+    protected virtual void OnClose(){ }
 }

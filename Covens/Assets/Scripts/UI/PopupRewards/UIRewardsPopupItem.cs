@@ -4,7 +4,7 @@ using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
 
-public class UILootRewardItem : MonoBehaviour
+public class UIRewardsPopupItem : MonoBehaviour
 {
     [SerializeField] private Image m_Art;
     [SerializeField] private TextMeshProUGUI m_Title;

@@ -11,17 +11,10 @@ namespace Raincrow.GameEventResponses
 
         public struct EventData
         {
-            public struct Collectible
-            {
-                public int amount;
-                public string collectible;
-                public string type;
-            }
-
             public int silver;
             public int gold;
             public ulong xp;
-            public Collectible[] collectibles;
+            public CollectibleData[] collectibles;
             public string[] cosmetics;
             public string bossId;
             public string type;
@@ -38,31 +31,16 @@ namespace Raincrow.GameEventResponses
             if (data.collectibles != null)
             {
                 foreach (var item in data.collectibles)
-                        PlayerDataManager.playerData.AddIngredient(item.collectible, item.amount);
+                        PlayerDataManager.playerData.AddIngredient(item.id, item.amount);
             }
 
             if (data.cosmetics != null)
             {
                 foreach (var item in data.cosmetics)
-                {
-                    bool owned = false;
-                    foreach (var cosmetic in PlayerDataManager.playerData.inventory.cosmetics)
-                    {
-                        if (cosmetic.id == item)
-                        {
-                            owned = true;
-                            break;
-                        }
-                    }
-
-                    if (!owned)
-                    {
-                        PlayerDataManager.playerData.inventory.cosmetics.Add(DownloadedAssets.GetCosmetic(item));
-                    }
-                }
+                    PlayerDataManager.playerData.inventory.AddCosmetic(item);
             }
 
-            UILootRewards.Instantiate().Show(data);
+            UILootRewardsPopup.Instantiate().Show(data);
         }
     }
 }

@@ -317,7 +317,6 @@ public class WSData
 
     public string instance { get; set; }
 
-    public Condition condition { get; set; }
     // map commands
     public string caster { get; set; }
 
@@ -428,9 +427,7 @@ public class WSData
     public int targetEnergy { get; set; }
 
     public string targetStatus { get; set; }
-
-    public InteractionType iType;
-
+    
     public string member { get; set; }
 
     public string coven { get; set; }

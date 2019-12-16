@@ -9,21 +9,6 @@ public enum IngredientType
     gem, tool, herb, none
 }
 
-//public class Result
-//{
-//    public int total { get; set; }
-//    public int xpGain { get; set; }
-//    public bool critical { get; set; }
-//    public bool reflected { get; set; }
-//    public string effect { get; set; }
-//    public int resilienceChanged { get; set; }
-//    public int newResilience { get; set; }
-//    public int newPower { get; set; }
-//    public int powerChanged { get; set; }
-//    public int successChance { get; set; }
-//    public int selfEnergy { get; set; }
-//}
-
 public class LocationBuff
 {
     public string id { get; set; }
@@ -60,34 +45,7 @@ public struct DailyRewards
     public StatusEffect effect;
 }
 
-public class Condition
-{
-    public string bearer { get; set; }
-    public string instance { get; set; }
-    public double expiresOn { get; set; }
-    public string baseSpell { get; set; }
-    public string status { get; set; }
-    public int stacked { get; set; }
-    public bool constant { get; set; }
-}
-
-public class InventoryData
-{
-    public Dictionary<string, int> herbs { get; set; }
-    public Dictionary<string, int> tool { get; set; }
-    public Dictionary<string, int> gems { get; set; }
-}
-
 #region Login
-
-public class PlayerCharacterCreateAPI
-{
-    public string displayName { get; set; }
-    public bool male { get; set; }
-    public double longitude { get; set; }
-    public double latitude { get; set; }
-    public string characterSelection { get; set; }
-}
 
 [Serializable]
 public class PlayerLoginAPI
@@ -113,6 +71,27 @@ public class Inventory
 {
     public List<CosmeticData> cosmetics { get; set; }
     public List<Item> consumables { get; set; }
+    
+    public void AddCosmetic(string id)
+    {
+        var data = DownloadedAssets.GetCosmetic(id);
+
+        if (data == null)
+            return;
+
+        bool owned = false;
+        foreach (var cosmetic in PlayerDataManager.playerData.inventory.cosmetics)
+        {
+            if (cosmetic.id == id)
+            {
+                owned = true;
+                break;
+            }
+        }
+
+        if (!owned)
+            cosmetics.Add(data);
+    }
 }
 
 public class Item
@@ -132,6 +111,14 @@ public struct CollectableItem
         this.id = id;
         this.count = count;
     }
+}
+
+public struct CollectibleData
+{
+    public int amount;
+    [JsonProperty("collectible")]
+    public string id;
+    public string type;
 }
 
 public struct ConsumableItem
@@ -155,22 +142,6 @@ public class KytelerItem
     public string ownerName;
 }
 
-[Serializable]
-public class Account
-{
-    public string username { get; set; }
-    public bool ftf { get; set; }
-    public string email { get; set; }
-    public bool character { get; set; }
-}
-
-public class ExploreLore
-{
-    public string id { get; set; }
-    public float latitude { get; set; }
-    public float longitude { get; set; }
-}
-
 public struct GardenData
 {
     public float latitude;
@@ -189,44 +160,7 @@ public struct MoonData
     public bool alwaysDown { get; set; }
 }
 
-[Serializable]
-public class PlayerResetCallback
-{
-    public string email { get; set; }
-}
-
-[SerializeField]
-public class PlayerPasswordCallback
-{
-    public string token { get; set; }
-}
-
-[SerializeField]
-public class PlayerResetAPI
-{
-    public string username { get; set; }
-    public string code { get; set; }
-    public string token { get; set; }
-    public string password { get; set; }
-}
-
 #endregion
-
-public class MarkerAPI
-{
-    public markerLocation location { get; set; }
-    public List<Token> tokens { get; set; }
-}
-
-public class markerLocation
-{
-    public int music { get; set; }
-    public string dominion { get; set; }
-    public string garden { get; set; }
-    public double latitude { get; set; }
-    public double longitude { get; set; }
-    public int zone { get; set; }
-}
 
 public class SpellData
 {
@@ -308,13 +242,6 @@ public class Equipped
     public string skinChes { get; set; }
 }
 
-public class SpellTargetData
-{
-    public string spell { get; set; }
-    public string target { get; set; }
-    public List<spellIngredientsData> ingredients { get; set; }
-}
-
 public class spellIngredientsData
 {
     public spellIngredientsData()
@@ -331,30 +258,6 @@ public class spellIngredientsData
     public string collectible { get; set; }
     public int count { get; set; }
 }
-
-
-public class AttackData
-{
-    public bool success { get; set; }
-    public bool crit { get; set; }
-    public bool resist { get; set; }
-    public int damage { get; set; }
-    public int currentEnergy { get; set; }
-    public int amountResisted { get; set; }
-    public int xp { get; set; }
-    public InteractionType type;
-}
-
-public enum InteractionType
-{
-    AttackCrit, AttackNormal, AttackResist, AttackFail, TargetEscape, TargetDied, Hit, Resist, Death, TargetImmune, TargetSilenced, TargetProtected
-}
-
-public enum CurrentView
-{
-    MapView, IsoView, TransitionView
-}
-
 
 
 public struct SpiritInstance
@@ -388,35 +291,7 @@ public struct SpiritInstance
     public int zone;                        // ?
 }
 
-public class LastAttackedBy
-{
-    public string instance { get; set; }
-    public string type { get; set; }
-}
-
-public class Gathered
-{
-    public string id { get; set; }
-    public string type { get; set; }
-    public int count { get; set; }
-
-}
-
 #region coven
-// requests
-public class CovenRequest_Ally
-{
-    public string covenName { get; set; }
-    public string coven { get; set; }
-}
-public class CovenRequest_DisplayByName
-{
-    public string covenName { get; set; }
-}
-public class CovenRequest_DisplayById
-{
-    public string covenInstance { get; set; }
-}
 public class CovenRequest_Invite
 {
     public string invited { get; set; }
@@ -500,8 +375,6 @@ public class CovenData
     public List<CovenOverview> allies { get; set; }
     public List<CovenOverview> alliedCovens { get; set; }
 }
-
-
 public class CovenMember
 {
     public string player { get; set; }
@@ -515,8 +388,6 @@ public class CovenMember
     public int level { get; set; }
     public string degree { get; set; }
 }
-
-
 public class CovenOverview
 {
     public string covenName { get; set; }
@@ -560,9 +431,7 @@ public class MemberOverview
     public string inviteToken;
 }
 
-
 #endregion
-
 
 #region Inventory
 
@@ -581,53 +450,7 @@ public class Inventory_Equip
 
 #endregion
 
-public class TargetMarkerDetailData
-{
-    public string target { get; set; }
-}
-
 #region shop
-
-public enum EnumCurrency
-{
-    None,
-    Gold,
-    Silver,
-    IAP,
-}
-
-public class Shop_Purchase
-{
-    public string purchaseItem { get; set; }
-    public int amount { get; set; }
-    public string currency { get; set; }
-}
-public class Shop_PurchaseSilver
-{
-    public string id { get; set; }
-}
-
-
-
-
-public partial class Shop_DisplayResponse
-{
-    public List<ShopBundle> items { get; set; }
-}
-public partial class ShopBundle
-{
-    public string Id { get; set; }
-    public string DisplayName { get; set; }
-    public string Type { get; set; }
-    public List<Content> Contents { get; set; }
-    public long SilverCost { get; set; }
-    public long GoldCost { get; set; }
-}
-public partial class Content
-{
-    public string Id { get; set; }
-    public long Count { get; set; }
-}
 
 public struct ItemData
 {
