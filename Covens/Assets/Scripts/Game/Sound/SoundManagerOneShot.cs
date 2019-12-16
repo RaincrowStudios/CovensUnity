@@ -80,6 +80,7 @@ public class SoundManagerOneShot : MonoBehaviour
     AudioSource ASBG;
 
     AudioSource AS;
+
     void Awake()
     {
         if(m_Instance != null)
@@ -96,6 +97,72 @@ public class SoundManagerOneShot : MonoBehaviour
     {
         //ASBG = SocketClient.Instance.GetComponent<AudioSource>();
         ASBG = this.GetComponent<AudioSource>();
+
+        DownloadedAssets.OnWillUnloadAssets += DownloadedAssets_OnWillUnloadAssets;
+    }
+
+    private void DownloadedAssets_OnWillUnloadAssets()
+    {
+        returnToPhysical.UnloadAudioData();
+
+        witchImmune.UnloadAudioData();
+        spiritForm.UnloadAudioData();
+        witchDead.UnloadAudioData();
+        summonFamiliar.UnloadAudioData();
+
+        whisper.UnloadAudioData();
+        itemAdded.UnloadAudioData();
+        Error.UnloadAudioData();
+        buttonTap.UnloadAudioData();
+        collectSound.UnloadAudioData();
+        LandFX.UnloadAudioData();
+
+        LevelChange.UnloadAudioData();
+
+        EnYaSa.UnloadAudioData();
+        flightButtonPress.UnloadAudioData();
+        wooshShort.UnloadAudioData();
+
+        loginButtonPress.UnloadAudioData();
+
+        BigDrum.UnloadAudioData();
+
+        AHSAWhisper.UnloadAudioData();
+
+        summonRiser.UnloadAudioData();
+        landingSound.UnloadAudioData();
+
+        barghestSound.UnloadAudioData();
+        fowlerSound.UnloadAudioData();
+        spiritFoundSound.UnloadAudioData();
+        brigidLaugh.UnloadAudioData();
+        makeYourOffering.UnloadAudioData();
+
+        welcomeWitch.UnloadAudioData();
+
+        claimRewards.UnloadAudioData();
+        flySoundStart.UnloadAudioData();
+
+        Cloaking.UnloadAudioData();
+
+        PostEffect2.UnloadAudioData();
+
+        //foreach (var clip in soundsBG)
+        //    clip.UnloadAudioData();
+        foreach (var clip in spellbookSpiritSelected)
+            clip?.UnloadAudioData();
+        foreach (var clip in darknessSounds)
+            clip?.UnloadAudioData();
+        foreach (var clip in WhiteAlign)
+            clip?.UnloadAudioData();
+        foreach (var clip in ShadowAlign)
+            clip?.UnloadAudioData();
+        foreach (var clip in menuSounds)
+            clip?.UnloadAudioData();
+        foreach (var clip in critSounds)
+            clip?.UnloadAudioData();
+        foreach (var clip in AllWhisperSounds)
+            clip?.UnloadAudioData();
     }
 
     public void SetBGTrack(int i)
@@ -105,6 +172,7 @@ public class SoundManagerOneShot : MonoBehaviour
         ASBG.volume = 0.7f;
         BGnum = i;
     }
+
     public void FadeOutBGTrack()
     {
         LeanTween.value(0.7f, 0.05f, 1f).setOnUpdate((float v) =>
