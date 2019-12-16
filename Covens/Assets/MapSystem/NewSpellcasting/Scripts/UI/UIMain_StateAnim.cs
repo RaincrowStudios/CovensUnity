@@ -15,6 +15,7 @@ public class UIMain_StateAnim : MonoBehaviour
         public Vector2 worldboss_pos;
         public float obj_scale;
         public float bar_alpha;
+        public float worldboss_alpha;
     }
 
     public enum State
@@ -36,7 +37,9 @@ public class UIMain_StateAnim : MonoBehaviour
     [SerializeField] private CanvasGroup[] bars;
     [SerializeField] private RectTransform energy;
     [SerializeField] private RectTransform quickCast;
+    [Space]
     [SerializeField] private RectTransform worldboss;
+    [SerializeField] private CanvasGroup worldbossCG;
 
 
     [Header("Buttons")]
@@ -200,6 +203,14 @@ public class UIMain_StateAnim : MonoBehaviour
 
         m_TweenId = LeanTween.value(0, 1, 1)
             .setEaseOutCubic()
+            .setOnStart(() =>
+            {
+                worldbossCG.gameObject.SetActive(target.worldboss_alpha > 0);
+                foreach (var item in bars)
+                    item.gameObject.SetActive(target.bar_alpha > 0);
+                foreach (var item in seasonalUI)
+                    item.gameObject.SetActive(target.bar_alpha > 0);
+            })
             .setOnUpdate((float t) =>
             {
                 leftBar.anchoredPosition = Vector2.Lerp(leftbar_pos, target.leftBar_pos, t);
@@ -211,12 +222,22 @@ public class UIMain_StateAnim : MonoBehaviour
                 float _scale = Mathf.Lerp(scale, target.obj_scale, t);
                 foreach (var item in scaleObjects)
                     item.transform.localScale = new Vector3(_scale, _scale, _scale);
+                
+                worldbossCG.alpha = Mathf.Lerp(alpha, target.worldboss_alpha, t);
 
                 float _alpha = Mathf.Lerp(alpha, target.bar_alpha, t);
                 foreach (var item in bars)
                     item.alpha = _alpha;
                 foreach (var item in seasonalUI)
                     item.alpha = _alpha;
+            })
+            .setOnComplete(() =>
+            {
+                worldbossCG.gameObject.SetActive(worldbossCG.alpha > 0);
+                foreach (var item in bars)
+                    item.gameObject.SetActive(item.alpha > 0);
+                foreach (var item in seasonalUI)
+                    item.gameObject.SetActive(item.alpha > 0);
             })
             .uniqueId;
     }
@@ -229,6 +250,7 @@ public class UIMain_StateAnim : MonoBehaviour
         energy.offsetMin = target.energy_offMin;
         quickCast.anchoredPosition = target.quickcast_pos;
         worldboss.anchoredPosition = target.worldboss_pos;
+        worldbossCG.alpha = target.worldboss_alpha;
 
         float _scale = target.obj_scale;
         foreach (var item in scaleObjects)

@@ -23,8 +23,6 @@ public class UIWorldBoss : MonoBehaviour
     [Space]
     [SerializeField] private GameObject m_InputBlocker;
     [SerializeField] private Button m_CloseButton;
-    //[Space]
-    //[SerializeField] private CanvasGroup
 
     private WorldBossMarker m_BossMarker;
 

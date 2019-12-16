@@ -402,7 +402,7 @@ public class MarkerManagerAPI : MonoBehaviour
                 spawnedWitches.Add(aux as WitchMarker);
             }
 
-            yield return null;
+            //yield return null;
         }
 
         Debug.Log($"spawning energy: {energies.Count}");
@@ -414,7 +414,7 @@ public class MarkerManagerAPI : MonoBehaviour
                 updatedMarkers.Add(aux);
                 spawnedEnergies.Add(aux as EnergyMarker);
             }
-            yield return null;
+            //yield return null;
         }
 
         yield return null;

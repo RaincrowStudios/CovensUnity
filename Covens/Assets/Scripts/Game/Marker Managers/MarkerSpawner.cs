@@ -123,10 +123,10 @@ public class MarkerSpawner : MonoBehaviour
         m_HerbPool = new SimplePool<Transform>(herb.transform, 10);
         m_GemPool = new SimplePool<Transform>(gem.transform, 10);
         m_ToolPool = new SimplePool<Transform>(tool.transform, 10);
-        m_EnergyPool = new SimplePool<Transform>(energyIcon.transform, 10);
-        m_PopPool = new SimplePool<Transform>(unclaimedLoc.transform, 10);
-        m_BossPool = new SimplePool<Transform>(m_WorldBossPrefab.transform, 1);
-        m_LootPool = new SimplePool<Transform>(m_LootPrefab.transform, 1);
+        m_EnergyPool = new SimplePool<Transform>(energyIcon.transform, 5);
+        m_PopPool = new SimplePool<Transform>(unclaimedLoc.transform, 0);
+        m_BossPool = new SimplePool<Transform>(m_WorldBossPrefab.transform, 0);
+        m_LootPool = new SimplePool<Transform>(m_LootPrefab.transform, 0);
 
 
         //init the map/markers variables
