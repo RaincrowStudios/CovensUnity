@@ -12,6 +12,8 @@ namespace Raincrow.GameEventResponses
             public string instance;
             public int level;
             public int silver;
+            public int power;
+            public int resilience;
             public double timestamp;
         }
 
@@ -38,6 +40,8 @@ namespace Raincrow.GameEventResponses
                 //update level
                 player.level = data.level;
                 player.silver += data.silver;
+                player.basePower += data.power;
+                player.baseResilience += data.resilience;
                 if (player.energy < player.baseEnergy)
                     OnMapEnergyChange.ForceEvent(PlayerManager.marker, player.baseEnergy, data.timestamp);
                 PlayerDataManager.playerData.UpdateSpells();
