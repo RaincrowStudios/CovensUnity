@@ -25,7 +25,7 @@ public class UICovenSearcher : MonoBehaviour
 
         public IEnumerable<ChatCovenData> GetCovens()
         {
-            IEnumerable<ChatCovenData> covensToRetrieve = _covens.OrderBy((coven1) => coven1.worldRank);
+            IEnumerable<ChatCovenData> covensToRetrieve = _covens;//.OrderBy((coven1) => coven1.worldRank);
 
             if (!string.IsNullOrWhiteSpace(_searchQuery))
             {
@@ -40,6 +40,7 @@ public class UICovenSearcher : MonoBehaviour
 
     [SerializeField] private CanvasGroup m_CanvasGroup;
     [SerializeField] private RectTransform m_Window;
+    [SerializeField] private ScrollRect m_ScrollView;
 
     [Header("Header")]
     [SerializeField] private Button m_CloseButton;
@@ -57,16 +58,16 @@ public class UICovenSearcher : MonoBehaviour
     [SerializeField] private TMP_InputField m_SearchField;
 
     private SimplePool<UIChatCoven> m_ItemPool;
-    private List<ChatCovenData> m_RecentCovens = new List<ChatCovenData>();
-    private List<ChatCovenData> m_TopCovens = new List<ChatCovenData>();
+    private static List<ChatCovenData> m_RecentCovens = new List<ChatCovenData>();
+    private static List<ChatCovenData> m_TopCovens = new List<ChatCovenData>();
     private Coroutine m_ShowCovensCoroutine;
 
     private int m_MaxCovensAvailable = 20;
     private float m_RequestCovensCooldown = 300;
     private bool m_RecentTab = true;
 
-    private float m_LastTopCovensRequestTime = Mathf.NegativeInfinity;
-    private float m_LastRecentCovensRequestTime = Mathf.NegativeInfinity;
+    private static float m_LastTopCovensRequestTime = Mathf.NegativeInfinity;
+    private static float m_LastRecentCovensRequestTime = Mathf.NegativeInfinity;
     private int m_TweenId;
     private int m_ContainerTweenId;
 
@@ -99,6 +100,7 @@ public class UICovenSearcher : MonoBehaviour
             m_HighlightObj.SetParent(m_RecentCovensButton.transform);
             m_HighlightObj.localPosition = Vector3.zero;
             //m_HighlightObj.transform.localPosition = m_RecentCovensButton.transform.localPosition;
+            m_ScrollView.verticalNormalizedPosition = 0;
         });
 
         m_TopCovensButton.onClick.AddListener(() =>
@@ -111,6 +113,7 @@ public class UICovenSearcher : MonoBehaviour
             m_HighlightObj.SetParent(m_TopCovensButton.transform);
             m_HighlightObj.localPosition = Vector3.zero;
             //m_HighlightObj.transform.localPosition = m_TopCovensButton.transform.localPosition;
+            m_ScrollView.verticalNormalizedPosition = 0;
         });
 
         m_CloseButton.onClick.AddListener(OnClickClose);
@@ -211,7 +214,7 @@ public class UICovenSearcher : MonoBehaviour
 
         //request new list
         m_LoadingOverlay.SetActive(true);
-        APIManager.Instance.Get("coven?recent=" + recentCovens, (string payload, int response) =>
+        APIManager.Instance.Get("coven?recent=" + recentCovens.ToString().ToLowerInvariant(), (string payload, int response) =>
         {
             if (recentCovens)
                 m_LastRecentCovensRequestTime = Time.realtimeSinceStartup;
@@ -248,8 +251,7 @@ public class UICovenSearcher : MonoBehaviour
         LeanTween.cancel(m_ContainerTweenId);
         m_ContainerTweenId = LeanTween.alphaCanvas(m_ContainerCanvasGroup, 0, m_ContainerCanvasGroup.alpha / 5f).uniqueId;
         m_ContainerCanvasGroup.interactable = false;
-
-
+        
         yield return new WaitForSeconds(m_ContainerCanvasGroup.alpha / 5f);
 
         m_LoadingOverlay.SetActive(true);
@@ -259,7 +261,7 @@ public class UICovenSearcher : MonoBehaviour
 
         //prepare the ui
         List<UIChatCoven> items = new List<UIChatCoven>();
-        for (int i = 0; i < chatCovenDatas.Count(); i++)
+        for (int i = chatCovenDatas.Count() - 1; i >= 0; i--)
         {
             ChatCovenData data = chatCovenDatas.ElementAt(i);
             UIChatCoven uiChatCoven = m_ItemPool.Spawn();
@@ -267,7 +269,7 @@ public class UICovenSearcher : MonoBehaviour
             uiChatCoven.transform.SetParent(m_Container.transform);
             uiChatCoven.transform.localScale = Vector3.one;
             uiChatCoven.SetupCoven(
-                data, 
+                data,
                 () =>
                 {
                     //Close();
