@@ -414,7 +414,9 @@ public class MarkerManagerAPI : MonoBehaviour
                 updatedMarkers.Add(aux);
                 spawnedEnergies.Add(aux as EnergyMarker);
             }
-            //yield return null;
+
+            if (i % 10 == 0)
+                yield return null;
         }
 
         yield return null;

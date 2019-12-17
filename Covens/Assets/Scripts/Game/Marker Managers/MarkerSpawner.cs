@@ -127,8 +127,10 @@ public class MarkerSpawner : MonoBehaviour
         m_PopPool = new SimplePool<Transform>(unclaimedLoc.transform, 0);
         m_BossPool = new SimplePool<Transform>(m_WorldBossPrefab.transform, 0);
         m_LootPool = new SimplePool<Transform>(m_LootPrefab.transform, 0);
+    }
 
-
+    private void Start()
+    {
         //init the map/markers variables
         UpdateMarkerProperties();
         MapsAPI.Instance.OnCameraUpdate += (a, b, c) => UpdateMarkerProperties();

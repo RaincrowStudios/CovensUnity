@@ -101,6 +101,8 @@ public class CovensMuskMap : MonoBehaviour
 
     private int m_BuildingScaleTweenId;
 
+    public bool originInitialized => m_OriginInitialized;
+
     private void Awake()
     {
         Camera[] cams = GetComponentsInChildren<Camera>();
@@ -109,7 +111,7 @@ public class CovensMuskMap : MonoBehaviour
 
         //MapsAPI.Instance.InstantiateMap();
 
-        DontDestroyOnLoad(this.gameObject);
+        //DontDestroyOnLoad(this.gameObject);
         //Instance = this;
 
         //initialize map style
@@ -254,10 +256,10 @@ public class CovensMuskMap : MonoBehaviour
             //update segment width
             m_MapStyle.SegmentStyle = new SegmentStyle.Builder
             {
-                BorderMaterial = m_MapsService.ZoomLevel == 17 ? m_MapStyle.SegmentStyle.BorderMaterial : null,
+                BorderMaterial = m_MapStyle.SegmentStyle.BorderMaterial,
                 Material = m_MapStyle.SegmentStyle.Material,
                 Width = 10.0f * m_CamDat.segmentWidth,
-                BorderWidth = m_CamDat.segmentWidth
+                BorderWidth = m_MapsService.ZoomLevel >= 15 ? m_CamDat.segmentWidth : 0
             }.Build();
 
             m_PreviousZoomLevels.Add(oldZoomLv);

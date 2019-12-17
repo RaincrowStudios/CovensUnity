@@ -38,7 +38,10 @@ public class UIWorldBoss : MonoBehaviour
 
         MapView.OnEnterBossArea += MapView_OnEnterBossArea;
         MapView.OnLeaveBossArea += MapView_OnLeaveBossArea;
+    }
 
+    private void Start()
+    {
         MarkerSpawner.Instance.OnSelectMarker += (m) =>
         {
             if (m.Type == MarkerSpawner.MarkerType.BOSS)

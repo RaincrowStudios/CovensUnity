@@ -12,7 +12,8 @@ namespace Raincrow.Maps
         private BuildingIconManager m_Icons;
         private GeoToKmHelper m_ScaleHelper;
 
-        public bool IsInitialized { get; private set; }
+        private bool m_IsInitialized;
+        public bool IsInitialized => m_IsInitialized && m_Map.originInitialized;
 
         public void InstantiateMap()
         {
@@ -52,7 +53,7 @@ namespace Raincrow.Maps
             };
             //m_CamController.lockControls = () => (PlaceOfPower.IsInsideLocation);
 
-            IsInitialized = true;
+            m_IsInitialized = true;
         }
 
         private HashSet<MuskMarker> m_Markers = new HashSet<MuskMarker>();

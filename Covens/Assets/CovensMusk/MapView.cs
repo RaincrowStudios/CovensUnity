@@ -29,6 +29,9 @@ public class MapView : MonoBehaviour
         while (PlayerDataManager.playerData == null)
             yield return null;
 
+        while (PlayerManager.marker == null)
+            yield return null;
+
         OnLeavePoP();
 
         LocationIslandController.OnEnterLocation += OnEnterPoP;

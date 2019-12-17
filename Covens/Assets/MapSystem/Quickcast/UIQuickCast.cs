@@ -97,9 +97,7 @@ public class UIQuickCast : MonoBehaviour
         m_ButtonPrefab.gameObject.SetActive(false);
         m_ContainerCanvas.enabled = false;
         m_MoreSpells.onClick.AddListener(OnClickMoreSpells);
-
-        _Hide();
-
+        
         m_Button.onClick.AddListener(() =>
         {
             if (IsOpen)
@@ -116,6 +114,11 @@ public class UIQuickCast : MonoBehaviour
 
         UIWorldBoss.OnSelectBoss += OnSelectTarget;
         UIWorldBoss.OnUnselectBoss += OnUnselectTarget;
+    }
+
+    private void Start()
+    {
+        _Hide();
     }
 
     private void OnSelectTarget()
