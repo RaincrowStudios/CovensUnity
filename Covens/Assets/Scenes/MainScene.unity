@@ -81835,22 +81835,22 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   MainUIDisable:
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
+  - {fileID: 128491844}
+  - {fileID: 1384462948}
+  - {fileID: 1541340532}
+  - {fileID: 1806343017}
+  - {fileID: 176679216}
+  - {fileID: 1381000410}
+  - {fileID: 657667938}
+  - {fileID: 351254992}
+  - {fileID: 297854821}
+  - {fileID: 1413904587}
+  - {fileID: 2051011014}
+  - {fileID: 1125411406}
+  - {fileID: 128491844}
+  - {fileID: 813256687}
+  - {fileID: 176679216}
+  - {fileID: 190094457}
 --- !u!114 &1577308299
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -81865,11 +81865,11 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   gardenPrefab: {fileID: 1709697841854078, guid: 2ded7a2298755b940bc7295c0d748c19,
     type: 3}
-  gardenCanvas: {fileID: 0}
+  gardenCanvas: {fileID: 306241836}
   lorePrefab: {fileID: 1936435424351640, guid: 0f85990332b2f4442919f79efc9fdefa, type: 3}
-  title: {fileID: 0}
-  img: {fileID: 0}
-  desc: {fileID: 0}
+  title: {fileID: 34906786}
+  img: {fileID: 928995682}
+  desc: {fileID: 2108032964}
   loreScale: 0.75
   minLoreZoom: 0.25
   gardenScale: 8
