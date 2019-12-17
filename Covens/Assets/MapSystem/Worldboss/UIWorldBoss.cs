@@ -219,7 +219,7 @@ public class UIWorldBoss : MonoBehaviour
 
         m_ConditionList.Setup(boss.bossToken.effects);
 
-        Vector3 pos = boss.transform.position + MapsAPI.Instance.mapCenter.forward * 70;
+        Vector3 pos = boss.transform.position + MapsAPI.Instance.mapCenter.forward * 100;
         MapCameraUtils.FocusOnPosition(pos, 1f, false, 1f);
         MapCameraUtils.SetExtraFOV(-3);
 
