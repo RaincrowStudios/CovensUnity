@@ -144,7 +144,7 @@ public class UIWorldBoss : MonoBehaviour
             foreach (string name in data.rank[i].Keys)
             {
                 m_DamageRank[i].text = name;//$"{name} ({-data.rank[i][name].total})";
-                if (name == PlayerDataManager.playerData.name)
+                if (name == PlayerDataManager.playerData.name || name == TeamManager.MyCovenInfo.name)
                 {
                     isTop3 = true;
                     m_DamageRank[i].text = string.Concat(m_DamageRank[i].text, " (", LocalizeLookUp.GetText("cast_you"), ")");
