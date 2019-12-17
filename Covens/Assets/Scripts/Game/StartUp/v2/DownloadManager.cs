@@ -287,35 +287,35 @@ public class DownloadManager : MonoBehaviour
         List<string> bundlesToDownload = new List<string>();
         AssetCacheJson cachedAssetKeys = new AssetCacheJson();
 
-        //if (PlayerPrefs.HasKey("AssetCacheJson"))
-        //{
+        if (PlayerPrefs.HasKey("AssetCacheJson"))
+        {
             //cachedAssetKeys = JsonConvert.DeserializeObject<AssetCacheJson>(PlayerPrefs.GetString("AssetCacheJson"));
             foreach (string _key in assets.assets)
             {
-                ////check if its not in the assetcache
-                //if (cachedAssetKeys.bundles.Contains(_key) == false)
-                //{
-                //    bundlesToDownload.Add(_key);
-                //}
-                ////check if the file is in the persistendatapath
-                //else
-                //{
+                //check if its not in the assetcache
+                if (cachedAssetKeys.bundles.Contains(_key) == false)
+                {
+                    bundlesToDownload.Add(_key);
+                }
+                //check if the file is in the persistendatapath
+                else
+                {
                     string assetPath = Path.Combine(Application.persistentDataPath, _key + ".unity3d");
                     if (System.IO.File.Exists(assetPath) == false)
                     {
                         bundlesToDownload.Add(_key);
                     }
-                //}
+                }
             }
-        //}
-        //else
-        //{
-        //    cachedAssetKeys = new AssetCacheJson
-        //    {
-        //        bundles = new List<string>()
-        //    };
-        //    bundlesToDownload = assets.assets;
-        //}
+        }
+        else
+        {
+            cachedAssetKeys = new AssetCacheJson
+            {
+                bundles = new List<string>()
+            };
+            bundlesToDownload = assets.assets;
+        }
         
         //download the bundles
         string assetBaseUrl = DownloadManager.downloadUrl + "assetbundles/285/";
