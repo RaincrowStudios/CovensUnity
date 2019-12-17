@@ -191,7 +191,11 @@ public class CovensMuskMap : MonoBehaviour
         m_Zoom = 1;
         m_MapsService.ZoomLevel = 17;
 
-        m_BuildingsEnabled = Application.isEditor;
+#if !PRODUCTION
+        m_BuildingsEnabled = true;
+#else
+        m_BuildingsEnabled = false;
+#endif
     }
 
     private void Start()
@@ -391,6 +395,10 @@ public class CovensMuskMap : MonoBehaviour
 
     private void OnDidCreateExtrudedStructure(DidCreateExtrudedStructureArgs e)
     {
+        var renderer = e.GameObject.GetComponent<MeshRenderer>();
+        renderer.shadowCastingMode = UnityEngine.Rendering.ShadowCastingMode.Off;
+        renderer.receiveShadows = false;
+
         float height = e.MapFeature.Shape.BoundingBox.size.y;
 
         if (height > 50)
