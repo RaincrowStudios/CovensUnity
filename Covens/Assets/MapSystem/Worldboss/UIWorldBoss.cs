@@ -91,6 +91,9 @@ public class UIWorldBoss : MonoBehaviour
 
     private void InterruptSpellHandler_OnInterrupt(InterruptSpellHandler.EventData obj)
     {
+        if (obj.targetId != m_BossMarker.bossToken.Id)
+            return;
+
         PlayerNotificationManager.Instance.ShowNotification(
             LocalizeLookUp.GetText("character_interrupted")
                 .Replace("{{character}}", LocalizeLookUp.GetSpiritName(m_BossMarker.bossToken.spiritId)));
