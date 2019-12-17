@@ -138,20 +138,18 @@ public class UIWorldBoss : MonoBehaviour
         m_BossEnergyPercent.text = ((int)(amount * 100)) + "%";
 
         //update rank
-        int aux = 0;
         bool isTop3 = false;
-        for (int i = data.rank.Length - 1; i >= 0 && i >= data.rank.Length - 3; i--)
+        for (int i = 0; i < m_DamageRank.Length; i++)
         {
             foreach (string name in data.rank[i].Keys)
             {
-                m_DamageRank[aux].text = name;//$"{name} ({-data.rank[i][name].total})";
+                m_DamageRank[i].text = name;//$"{name} ({-data.rank[i][name].total})";
                 if (name == PlayerDataManager.playerData.name)
                 {
                     isTop3 = true;
-                    m_DamageRank[aux].text = string.Concat(m_DamageRank[aux].text, " (", LocalizeLookUp.GetText("cast_you"), ")");
+                    m_DamageRank[i].text = string.Concat(m_DamageRank[i].text, " (", LocalizeLookUp.GetText("cast_you"), ")");
                 }
             }
-            aux++;
         }
 
         if (isTop3)
@@ -160,10 +158,8 @@ public class UIWorldBoss : MonoBehaviour
         }
         else
         {
-            aux = 3;
-            for (int i = data.rank.Length - 4; i >= 0; i--)
+            for (int i = 3; i < m_DamageRank.Length; i++)
             {
-                aux++;
                 foreach (string name in data.rank[i].Keys)
                 {
                     if (string.IsNullOrEmpty(TeamManager.MyCovenId))
@@ -171,7 +167,7 @@ public class UIWorldBoss : MonoBehaviour
                         if (name == PlayerDataManager.playerData.name)
                         {
                             m_PlayerName.text = string.Concat(name, " (", LocalizeLookUp.GetText("cast_you"), ")");
-                            m_PlayerRank.text = aux + "th";
+                            m_PlayerRank.text = (i+1) + "th";
                             m_PlayerSpace.text = "...";
                             return;
                         }
@@ -181,7 +177,7 @@ public class UIWorldBoss : MonoBehaviour
                         if (name == TeamManager.MyCovenInfo.name)
                         {
                             m_PlayerName.text = string.Concat(name, " (", LocalizeLookUp.GetText("cast_you"), ")");
-                            m_PlayerRank.text = aux + "th";
+                            m_PlayerRank.text = (i+1) + "th";
                             m_PlayerSpace.text = "...";
                             return;
                         }
