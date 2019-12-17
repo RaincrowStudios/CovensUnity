@@ -12693,7 +12693,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ff7cd455bac0ecc4da35004b70a18b84, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_CanvasRect: {fileID: 594601415}
+  m_CanvasRect: {fileID: 1310174782}
   m_HorizontalBorders: {x: 320, y: 84}
   m_VerticalBorders: {x: 200, y: 150}
   m_VerticalFeather: {x: -500, y: 50}
