@@ -51,14 +51,15 @@ public class UIWorldBoss : MonoBehaviour
 
     private void MapView_OnLeaveBossArea()
     {
-        BossRankHandler.OnUpdateBossRank -= OnBossRankUpdate;
         m_MarkerPointer.gameObject.SetActive(false);
 
         if (m_InputBlocker.activeSelf)
             Close();
 
+        BossRankHandler.OnUpdateBossRank -= OnBossRankUpdate;
         SpellCastHandler.OnSpellCast -= SpellCastHandler_OnSpellCast;
         TickSpellHandler.OnSpellTick -= TickSpellHandler_OnSpellTick;
+        InterruptSpellHandler.OnInterrupt -= InterruptSpellHandler_OnInterrupt;
     }
 
     private void MapView_OnEnterBossArea(WorldBossMarker boss)
@@ -75,6 +76,7 @@ public class UIWorldBoss : MonoBehaviour
         BossRankHandler.OnUpdateBossRank += OnBossRankUpdate;
         SpellCastHandler.OnSpellCast += SpellCastHandler_OnSpellCast;
         TickSpellHandler.OnSpellTick += TickSpellHandler_OnSpellTick;
+        InterruptSpellHandler.OnInterrupt += InterruptSpellHandler_OnInterrupt;
 
         m_MarkerPointer.SetTarget(boss);
         m_MarkerPointer.gameObject.SetActive(true);
@@ -85,6 +87,13 @@ public class UIWorldBoss : MonoBehaviour
         m_PlayerName.text = "";
         m_PlayerRank.text = "";
         m_PlayerSpace.text = "";
+    }
+
+    private void InterruptSpellHandler_OnInterrupt(InterruptSpellHandler.EventData obj)
+    {
+        PlayerNotificationManager.Instance.ShowNotification(
+            LocalizeLookUp.GetText("character_interrupted")
+                .Replace("{{character}}", LocalizeLookUp.GetSpiritName(m_BossMarker.bossToken.spiritId)));
     }
 
     private void TickSpellHandler_OnSpellTick(SpellCastHandler.SpellCastEventData data)
@@ -115,16 +124,6 @@ public class UIWorldBoss : MonoBehaviour
             {
                 PlayerNotificationManager.Instance.ShowNotification(
                     LocalizeLookUp.GetText("character_channeling")
-                        .Replace("{{character}}", LocalizeLookUp.GetSpiritName(m_BossMarker.bossToken.spiritId)));
-            }
-        }
-
-        if (data.result.isSuccess)
-        {
-            if (data.spell == "spell_addledMind")
-            {
-                PlayerNotificationManager.Instance.ShowNotification(
-                    LocalizeLookUp.GetText("character_interrupted")
                         .Replace("{{character}}", LocalizeLookUp.GetSpiritName(m_BossMarker.bossToken.spiritId)));
             }
         }
