@@ -92,6 +92,7 @@ public class UIStoreContainer : MonoBehaviour
     {
         if (m_Category == UIStore.Screen.CURRENCY)
             return;
+
         m_Category = UIStore.Screen.CURRENCY;
 
         List<object> bundles = new List<object>();

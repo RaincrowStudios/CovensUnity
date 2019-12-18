@@ -73,7 +73,7 @@ public class IAPSilver : MonoBehaviour, IStoreListener
     }
 
 
-    private bool IsInitialized()
+    public bool IsInitialized()
     {
         return m_StoreController != null && m_StoreExtensionProvider != null;
     }

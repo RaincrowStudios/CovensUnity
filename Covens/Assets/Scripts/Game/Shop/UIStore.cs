@@ -223,6 +223,27 @@ public class UIStore : MonoBehaviour
     {
         if (screen == m_CurrentScreen)
             return;
+        
+        if (screen == Screen.CURRENCY)
+        {
+            if (IAPSilver.instance.IsInitialized() == false)
+            {
+                UIGlobalPopup.ShowError(
+                    null,
+                    LocalizeLookUp.GetText("asset_error").Replace("{{asset}}", LocalizeLookUp.GetText("store_currency"))
+                );
+                return;
+            }
+
+            if (Application.isEditor)
+            {
+                UIGlobalPopup.ShowError(
+                    null,
+                    "IAP doesnt work on editor"
+                );
+                return;
+            }
+        }
 
         LeanTween.cancel(m_ScreenTweenId);
         CanvasGroup toShow = null;
