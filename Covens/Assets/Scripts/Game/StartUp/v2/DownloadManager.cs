@@ -289,7 +289,7 @@ public class DownloadManager : MonoBehaviour
 
         if (PlayerPrefs.HasKey("AssetCacheJson"))
         {
-            //cachedAssetKeys = JsonConvert.DeserializeObject<AssetCacheJson>(PlayerPrefs.GetString("AssetCacheJson"));
+            cachedAssetKeys = JsonConvert.DeserializeObject<AssetCacheJson>(PlayerPrefs.GetString("AssetCacheJson"));
             foreach (string _key in assets.assets)
             {
                 //check if its not in the assetcache
