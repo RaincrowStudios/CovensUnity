@@ -37,11 +37,17 @@ public class PlayerManagerUI : UIAnimationManager
 
     [Space]
     [SerializeField] private UIMarkerPointer m_PlayerPositionPointer;
-
+    //[SerializeField] private GameObject m_SilverGlimmer;
+    //[SerializeField] private GameObject m_GoldGlimmer;
+ 
     private bool isDay = true;
     private bool cancheck = true;
 
     private bool m_IsPhysicalForm = true;
+    private float m_LastSilverValue;
+    private float m_LastGoldValue;
+
+    private int m_CurrenciesTweenId;
     
     void Awake()
     {
@@ -118,23 +124,20 @@ public class PlayerManagerUI : UIAnimationManager
 
         PlayerManager.onFinishFlight += CheckPhysicalForm;
 
-        SetupUI();
-
         m_PlayerPositionPointer.SetTarget(PlayerManager.witchMarker);
+
+        m_LastGoldValue = PlayerDataManager.playerData.gold;
+        m_LastSilverValue = PlayerDataManager.playerData.silver;
+
+        Level.text = PlayerDataManager.playerData.level.ToString();        
+        SetupAlignmentPhase();
+        setupXP();
+        SetupEnergy();
+        UpdateDrachs();
     }
 
     // ___________________________________________ Main Player UI ________________________________________________________________________________________________
 
-    private void SetupUI()
-    {
-        Level.text = PlayerDataManager.playerData.level.ToString();
-
-        SetupEnergy();
-        UpdateDrachs();
-
-        SetupAlignmentPhase();
-        setupXP();
-    }
     public void SetupWitchDisplayText(int number)
     {
         if (number != 0)
@@ -315,43 +318,31 @@ public class PlayerManagerUI : UIAnimationManager
 
     public void UpdateDrachs(bool updateStore = true)
     {
-        Debug.Log("Update Drachs");
-        try
-        {
-            //Lerping between old gold # and new gold #
-            var g = goldDrachs.text;
-            var d = PlayerDataManager.playerData.gold.ToString();
-            var g2 = float.Parse(g);
-            var d2 = float.Parse(d);
-            if (g2 < d2)
-            {
-                goldDrachs.transform.parent.transform.parent.GetChild(0).GetChild(0).gameObject.SetActive(true); //activating glimmer fx
-            }
-            LeanTween.value(g2, d2, 1f).setOnUpdate((float i) =>
-            {
-                i = (int)i;
-                goldDrachs.text = i.ToString();
-            });
-            //Lerping between old silver # and new silver #
-            var p = silverDrachs.text;
-            var s = PlayerDataManager.playerData.silver.ToString();
-            var p2 = float.Parse(p);
-            var s2 = float.Parse(s);
-            if (p2 < s2)
-            {
-                goldDrachs.transform.parent.transform.parent.GetChild(0).GetChild(0).gameObject.SetActive(true); //activating glimmer fx
-            }
+        LeanTween.cancel(m_CurrenciesTweenId);
 
-            LeanTween.value(p2, s2, 1f).setOnUpdate((float i) =>
-            {
-                i = (int)i;
-                silverDrachs.text = i.ToString();
-            });
+        float goldStart = m_LastGoldValue;
+        float silverStart = m_LastSilverValue;
+        float goldTarget = PlayerDataManager.playerData.gold;
+        float silverTarget = PlayerDataManager.playerData.silver;
 
-        }
-        catch
-        {
-        }
+        m_CurrenciesTweenId = LeanTween.value(0, 1, 1)
+            .setEaseOutCubic()
+            .setOnUpdate((float t) =>
+            {
+                m_LastSilverValue = Mathf.Lerp(silverStart, silverTarget, t);
+                m_LastGoldValue = Mathf.Lerp(goldStart, goldTarget, t);
+                silverDrachs.text = ((int)m_LastSilverValue).ToString();
+                goldDrachs.text = ((int)m_LastGoldValue).ToString();
+            })
+            .setOnComplete(() =>
+            {
+                m_LastGoldValue = PlayerDataManager.playerData.gold;
+                m_LastSilverValue = PlayerDataManager.playerData.silver;
+
+                silverDrachs.text = ((int)m_LastSilverValue).ToString();
+                goldDrachs.text = ((int)m_LastGoldValue).ToString();
+            })
+            .uniqueId;
     }
 
     public void UpdateEnergy()
