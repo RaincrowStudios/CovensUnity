@@ -53,6 +53,12 @@ public class PlayerManager : MonoBehaviour
 
         MapsAPI.Instance.OnEnterStreetLevel += OnFinishFlying;
         MapsAPI.Instance.OnExitStreetLevel += OnStartFlying;
+
+        LocationIslandController.OnExitLocation += () =>
+        {
+            Debug.LogError("tempfix: platyer's avatar unloading after leaving pop");
+            marker.EnableAvatar();
+        };
     }
 
     private void CreatePlayerStart()
