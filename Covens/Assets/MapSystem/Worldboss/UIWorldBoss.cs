@@ -141,7 +141,7 @@ public class UIWorldBoss : MonoBehaviour
 
         //update rank
         bool isTop3 = false;
-        for (int i = 0; i < m_DamageRank.Length; i++)
+        for (int i = 0; i < m_DamageRank.Length && i < data.rank.Length; i++)
         {
             foreach (string name in data.rank[i].Keys)
             {
