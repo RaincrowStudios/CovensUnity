@@ -114,8 +114,10 @@ public static class PickUpCollectibleAPI
         marker.Interactable = false;
         marker.SetLoading(true);
 
+        LoadingOverlay.Show();
         APIManager.Instance.Post("character/pickup/" + marker.Token.instance, "{}", (response, result) =>
         {
+            LoadingOverlay.Hide();
             //stop animating
             marker.SetLoading(false);
             
@@ -124,7 +126,8 @@ public static class PickUpCollectibleAPI
                 //remove from eligible list
                 marker.LootToken.eligibleCharacters.Remove(PlayerDataManager.playerData.instance);
                 //hide marker
-                marker.SetDespawn();
+                //marker.SetDespawn();
+                marker.SetDisable(true);
             }
             else
             {
@@ -135,7 +138,8 @@ public static class PickUpCollectibleAPI
                     //if (response == "7005") { /*cant open (not eligible ou already opened)*/ }
 
                     //hide marker
-                    marker.SetDespawn();
+                    //marker.SetDespawn();
+                    marker.SetDisable(true);
                 }
                 else
                 {

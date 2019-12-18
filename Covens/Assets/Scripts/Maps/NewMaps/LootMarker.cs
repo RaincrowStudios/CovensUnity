@@ -52,9 +52,9 @@ public class LootMarker : MuskMarker
         m_Animator.SetBool("disabled", value);
     }
 
-    public void SetDespawn()
-    {
-        m_Particles.Stop();
-        m_Animator.SetTrigger("despawn");
-    }
+    //public void SetDespawn()
+    //{
+    //    m_Particles.Stop();
+    //    m_Animator.SetTrigger("despawn");
+    //}
 }
