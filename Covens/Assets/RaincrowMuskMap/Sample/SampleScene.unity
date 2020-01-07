@@ -252,6 +252,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9aeaaa2989102854d86d21cdd16455fa, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  m_TargetCamera: {fileID: 1272536961}
+  m_FieldOfView: 0
 --- !u!20 &91646569
 Camera:
   m_ObjectHideFlags: 0
@@ -366,7 +368,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 295170460}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 1fc98219a83dff145947365dc914d06e, type: 3}
+  m_Script: {fileID: 11500000, guid: 6c5c264650d7f6b49889ab1fd309f680, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   TapThreshold: 0.2
@@ -382,7 +384,7 @@ MonoBehaviour:
   PinchTwistKey: 306
   MovePivotKey: 308
   MultiDragKey: 308
-  FingerTexture: {fileID: 2800000, guid: 25c48be3a87ea0f489a6d41c9c9a2194, type: 3}
+  FingerTexture: {fileID: 2800000, guid: f95ce249b3dbba94c8b92dcddcd9f346, type: 3}
 --- !u!1 &296535930
 GameObject:
   m_ObjectHideFlags: 0
@@ -649,6 +651,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9aeaaa2989102854d86d21cdd16455fa, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  m_TargetCamera: {fileID: 1272536961}
+  m_FieldOfView: 0
 --- !u!20 &1226121322
 Camera:
   m_ObjectHideFlags: 0
@@ -793,7 +797,6 @@ GameObject:
   m_Component:
   - component: {fileID: 1272536958}
   - component: {fileID: 1272536961}
-  - component: {fileID: 1272536960}
   - component: {fileID: 1272536959}
   m_Layer: 17
   m_Name: MapCamera
@@ -833,18 +836,6 @@ MonoBehaviour:
   m_Material: {fileID: 2100000, guid: 2c88e32f848dd494b9d54ebcb1e6eaf3, type: 2}
   m_Maps: {fileID: 65781931}
   m_Controller: {fileID: 1837878650}
---- !u!114 &1272536960
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1272536957}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 82104385c1731a14f915290dbf7d53df, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!20 &1272536961
 Camera:
   m_ObjectHideFlags: 0
@@ -994,7 +985,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ccf991b442896fb48b71c397abce0eb6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_Map: {fileID: 65781931}
   m_OneKm: {fileID: 1026254047}
   m_ReferencePoint: {fileID: 1708546265}
   m_Distance_x: 0
@@ -1057,6 +1047,8 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
+    m_TypeName: UnityEngine.UI.MaskableGraphic+CullStateChangedEvent, UnityEngine.UI,
+      Version=1.0.0.0, Culture=neutral, PublicKeyToken=null
   m_text: Sample text
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 0}
@@ -1261,6 +1253,8 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
+    m_TypeName: UnityEngine.UI.MaskableGraphic+CullStateChangedEvent, UnityEngine.UI,
+      Version=1.0.0.0, Culture=neutral, PublicKeyToken=null
   m_text: Sample text Sample text Sample text
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 0}
@@ -1477,58 +1471,90 @@ MonoBehaviour:
       WillCreate:
         m_PersistentCalls:
           m_Calls: []
+        m_TypeName: Google.Maps.Event.WillCreateExtrudedStructureEvent, Google.Maps,
+          Version=1.0.948.0, Culture=neutral, PublicKeyToken=null
       DidCreate:
         m_PersistentCalls:
           m_Calls: []
+        m_TypeName: Google.Maps.Event.DidCreateExtrudedStructureEvent, Google.Maps,
+          Version=1.0.948.0, Culture=neutral, PublicKeyToken=null
     _ModeledStructureEvents:
       WillCreate:
         m_PersistentCalls:
           m_Calls: []
+        m_TypeName: Google.Maps.Event.WillCreateModeledStructureEvent, Google.Maps,
+          Version=1.0.948.0, Culture=neutral, PublicKeyToken=null
       DidCreate:
         m_PersistentCalls:
           m_Calls: []
+        m_TypeName: Google.Maps.Event.DidCreateModeledStructureEvent, Google.Maps,
+          Version=1.0.948.0, Culture=neutral, PublicKeyToken=null
     _SegmentEvents:
       WillCreate:
         m_PersistentCalls:
           m_Calls: []
+        m_TypeName: Google.Maps.Event.WillCreateSegmentEvent, Google.Maps, Version=1.0.948.0,
+          Culture=neutral, PublicKeyToken=null
       DidCreate:
         m_PersistentCalls:
           m_Calls: []
+        m_TypeName: Google.Maps.Event.DidCreateSegmentEvent, Google.Maps, Version=1.0.948.0,
+          Culture=neutral, PublicKeyToken=null
     _RegionEvents:
       WillCreate:
         m_PersistentCalls:
           m_Calls: []
+        m_TypeName: Google.Maps.Event.WillCreateRegionEvent, Google.Maps, Version=1.0.948.0,
+          Culture=neutral, PublicKeyToken=null
       DidCreate:
         m_PersistentCalls:
           m_Calls: []
+        m_TypeName: Google.Maps.Event.DidCreateRegionEvent, Google.Maps, Version=1.0.948.0,
+          Culture=neutral, PublicKeyToken=null
     _AreaWaterEvents:
       WillCreate:
         m_PersistentCalls:
           m_Calls: []
+        m_TypeName: Google.Maps.Event.WillCreateAreaWaterEvent, Google.Maps, Version=1.0.948.0,
+          Culture=neutral, PublicKeyToken=null
       DidCreate:
         m_PersistentCalls:
           m_Calls: []
+        m_TypeName: Google.Maps.Event.DidCreateAreaWaterEvent, Google.Maps, Version=1.0.948.0,
+          Culture=neutral, PublicKeyToken=null
     _LineWaterEvents:
       WillCreate:
         m_PersistentCalls:
           m_Calls: []
+        m_TypeName: Google.Maps.Event.WillCreateLineWaterEvent, Google.Maps, Version=1.0.948.0,
+          Culture=neutral, PublicKeyToken=null
       DidCreate:
         m_PersistentCalls:
           m_Calls: []
+        m_TypeName: Google.Maps.Event.DidCreateLineWaterEvent, Google.Maps, Version=1.0.948.0,
+          Culture=neutral, PublicKeyToken=null
     _RoadLatticeEvents:
       DidModify:
         m_PersistentCalls:
           m_Calls: []
+        m_TypeName: Google.Maps.Event.DidModifyRoadLatticeEvent, Google.Maps, Version=1.0.948.0,
+          Culture=neutral, PublicKeyToken=null
     _MapEvents:
       Loaded:
         m_PersistentCalls:
           m_Calls: []
+        m_TypeName: Google.Maps.Event.MapLoadedEvent, Google.Maps, Version=1.0.948.0,
+          Culture=neutral, PublicKeyToken=null
       LoadError:
         m_PersistentCalls:
           m_Calls: []
+        m_TypeName: Google.Maps.Event.MapLoadErrorEvent, Google.Maps, Version=1.0.948.0,
+          Culture=neutral, PublicKeyToken=null
       Progress:
         m_PersistentCalls:
           m_Calls: []
+        m_TypeName: Google.Maps.Event.MapLoadProgressEvent, Google.Maps, Version=1.0.948.0,
+          Culture=neutral, PublicKeyToken=null
   EnableModeledStructures: 0
   EnablePoliticalFeatures: 0
   EnablePrivateRoads: 0
@@ -1624,6 +1650,8 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
+    m_TypeName: UnityEngine.UI.MaskableGraphic+CullStateChangedEvent, UnityEngine.UI,
+      Version=1.0.0.0, Culture=neutral, PublicKeyToken=null
   m_Texture: {fileID: 0}
   m_UVRect:
     serializedVersion: 2
