@@ -14,6 +14,7 @@ namespace Raincrow.Maps
 
         private bool m_IsInitialized;
         public bool IsInitialized => m_IsInitialized && m_Map.originInitialized;
+        public bool OriginInitialized => m_Map.originInitialized;
 
         public void InstantiateMap()
         {
@@ -234,6 +235,11 @@ namespace Raincrow.Maps
         {
             get { return m_Map.onMoveFloatingOrigin; }
             set { m_Map.onMoveFloatingOrigin = value; }
+        }
+
+        public void InitOrigin(double longitude, double latitude)
+        {
+            m_Map.InitOrigin(longitude, latitude);
         }
 
         public void InitMap(double longitude, double latitude, float zoom, System.Action callback, bool animate)

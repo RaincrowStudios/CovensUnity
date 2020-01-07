@@ -1,0 +1,733 @@
+﻿using Lean.Touch;
+//using Mapbox.Unity.Map;
+using System.Collections;
+using System.Collections.Generic;
+using UnityEngine;
+
+namespace Raincrow.Maps
+{
+    public class MapCameraController : MonoBehaviour
+    {
+        public delegate bool BooleanDelegate();
+        public delegate float FloatDelegate();
+
+        [SerializeField] private Camera m_Camera;
+        [SerializeField] private Camera m_StreetCamera;
+        [SerializeField] private Camera m_FlyingCamera;
+        [SerializeField] private CovensMuskMap m_MuskMapWrapper;
+        [SerializeField] private Transform m_CenterPoint;
+        [SerializeField] private Transform m_AnglePivot;
+
+        [Header("Settings")]
+        [SerializeField] private float m_MinFOV = 13f;
+        [SerializeField] private float m_MaxFOV = 30f;
+        [SerializeField] private float m_MinAngle = 30f;
+        [SerializeField] private float m_MaxAngle = 50f;
+        [SerializeField] private float m_DragInertia = 10f;
+        //[SerializeField] private float m_StreetLevelThreshold = 16f;
+
+        [Header("LeanTouch")]
+        [SerializeField] private LeanScreenDepth m_ScreenDepth;
+        [SerializeField] private float m_DragSensivity = 1f;
+        [SerializeField] private float m_ZoomSensivity = 0.1f;
+        [SerializeField] private float m_RotateSensivity = 1f;
+        [SerializeField] private float m_DistanceFromGround = 400f;
+        [SerializeField] public float MaxDistanceFromCenter = 0;
+
+        [Header("Transition")]
+        [SerializeField] private float m_TransitionTime = 1f;
+        [SerializeField] private LeanTweenType m_TweenType;
+        [SerializeField] private float m_CameraRot = 25f;
+        [SerializeField] private float m_MinVig = .9f;
+        [SerializeField] private float m_MaxVig = .55f;
+        [SerializeField] private float m_MinVSoft = .2f;
+        [SerializeField] private float m_MaxVSoft = .44f;
+        [SerializeField] private float m_FXTimeIn = .5f;
+        [SerializeField] private float m_FXTimeOut = 1f;
+
+        [Header("FlyOut")]
+        [SerializeField] private float m_FlyOutTime = 1f;
+        [SerializeField] public AnimationCurve m_FlyOutCurve;
+
+
+
+        public static float screenAdjust { get { return 720f / Screen.height; } }
+        //public static MapCameraController Instance { get; private set; }
+
+        private Vector2 m_LastDragPosition;
+        private LeanFinger m_LastDragFinger;
+        public System.Action onUserPan;
+        private System.Action m_OnUserPinch;
+        private System.Action m_OnUserTwist;
+
+        public new Camera camera { get { return m_Camera; } }
+
+        public bool controlEnabled { get; private set; }
+        public bool zoomEnabled { get; private set; }
+        public bool panEnabled { get; set; }
+        public bool twistEnabled { get; private set; }
+
+        public float maxFOV { get { return m_MaxFOV; } }
+        public float minFOV { get { return m_MinFOV; } }
+        public float minAngle { get { return m_MinAngle; } }
+        public float maxAngle { get { return m_MaxAngle; } }
+        public float fov { get { return m_Camera.fieldOfView; } }
+
+        public bool streetLevel { get { return m_StreetLevel; } }
+        public float streetLevelNormalizedZoom { get; private set; }
+
+        public Transform CenterPoint { get { return m_CenterPoint; } }
+        public Transform RotationPivot { get { return m_AnglePivot; } }
+        public float ExtraFOV { get; set; }
+
+        public System.Action onChangeZoom;
+        public System.Action onChangePosition;
+        public System.Action onChangeRotation;
+        public System.Action<bool, bool, bool> onUpdate;  //pos //zoom //rotation
+        public System.Action onEnterStreetLevel;
+        public System.Action onExitStreetLevel;
+
+        public BooleanDelegate disablePanning = () => false;
+        public BooleanDelegate lockControls = () => false;
+        public FloatDelegate minZoomOverride = () => 0;
+
+        private bool m_PositionChanged;
+        private bool m_ZoomChanged;
+        private bool m_RotationChanged;
+
+        private bool m_StreetLevel = true;
+
+        private Vector3 m_PositionDelta;
+
+        private float m_TargetZoom = 1f;
+
+        private float m_CurrentTwist;
+        private float m_TargetTwist;
+
+        private bool m_LerpZoom;
+        private bool m_LerpAngle;
+        private bool m_LerpTwist;
+        private float m_ExtraFOV;
+
+        private int m_MoveTweenId;
+        private int m_ZoomTweenId;
+        private int m_TwistTweenId;
+        private int m_CamRotationTweenId;
+        private int m_FlyButtonTweenId;
+        private int m_ElasticTweenId;
+
+        private int m_LandFxTweenId;
+        private int m_LandTweenId;
+        private int m_POPFxTweenId;
+
+        private void Awake()
+        {
+            //Instance = this;
+            LeanTouch.OnFingerUp += OnFingerUp;
+            controlEnabled = true;
+            panEnabled = true;
+            zoomEnabled = true;
+            twistEnabled = true;
+        }
+
+        public void OnLandZoomIn(Material material)
+        {
+            LeanTween.cancel(m_TwistTweenId, true);
+            LeanTween.cancel(m_ZoomTweenId, true);
+            LeanTween.cancel(m_MoveTweenId, true);
+            LeanTween.cancel(m_FlyButtonTweenId, true);
+            LeanTween.cancel(m_ElasticTweenId);
+
+            LeanTween.cancel(m_LandTweenId, true);
+            LeanTween.cancel(m_LandFxTweenId, true);
+
+            EnableControl(false);
+            float _LuminosityAmount_Start = 0;
+            float _LuminosityAmount_End = 0.4f;
+            float cameraDistance_Start = m_Camera.transform.localPosition.z;
+            float cameraDistance_End = -800;
+            //float cameraAngle_Start = m_AnglePivot.localEulerAngles.x;
+            //float cameraAngle_End = m_AnglePivot.localEulerAngles.x;
+            float rotation_Start = m_CenterPoint.localEulerAngles.y;
+            float rotation_End = m_CameraRot;
+            float normZoom_Start = m_MuskMapWrapper.normalizedZoom;
+            float normZoom_End = 1f;
+
+            System.Action<float> fxTween = t =>
+            {
+                material.SetFloat("_LuminosityAmount", Mathf.Lerp(_LuminosityAmount_Start, _LuminosityAmount_End, t));
+                material.SetFloat("_VRadius", Mathf.Lerp(m_MinVig, m_MaxVig, t));
+                material.SetFloat("_VSoft", Mathf.Lerp(m_MinVSoft, m_MaxVSoft, t));
+            };
+
+            m_LandFxTweenId = LeanTween.value(0, 1, m_FXTimeIn)
+                .setEase(m_TweenType)
+                .setOnUpdate(fxTween)
+                .setOnComplete(() =>
+                {
+                    m_LandFxTweenId = LeanTween.value(1, 0, m_FXTimeOut)
+                    .setEase(m_TweenType)
+                    .setOnUpdate(fxTween)
+                    .uniqueId;
+                })
+                .uniqueId;
+
+            m_LandTweenId = LeanTween.value(0, 1, m_TransitionTime)
+                .setEase(m_TweenType)
+                .setOnUpdate((float t) =>
+                {
+                    m_Camera.transform.localPosition = new Vector3(0, 0, Mathf.Lerp(cameraDistance_Start, cameraDistance_End, t));
+
+                    m_CenterPoint.localEulerAngles = new Vector3(0, Mathf.Lerp(rotation_Start, rotation_End, t), 0);
+                    m_CurrentTwist = m_TargetTwist = m_CenterPoint.localEulerAngles.y;
+
+                    m_TargetZoom = Mathf.Lerp(normZoom_Start, normZoom_End, t);
+                    m_MuskMapWrapper.SetZoom(m_TargetZoom);
+
+                    onChangeRotation?.Invoke();
+                    onChangeZoom?.Invoke();
+                    onUpdate?.Invoke(false, true, true);
+                })
+                .setOnComplete(() =>
+                {
+                    EnableControl(true);
+                    onUpdate?.Invoke(false, true, true);
+                })
+                .uniqueId;
+        }
+
+        public void OnFlyButton(System.Action onComplete)
+        {
+            LeanTween.cancel(m_LandTweenId, true);
+            LeanTween.cancel(m_LandFxTweenId, true);
+            LeanTween.cancel(m_FlyButtonTweenId, true);
+
+            EnableControl(false);
+
+            m_FlyButtonTweenId = LeanTween.value(m_MuskMapWrapper.normalizedZoom, .5f, m_FlyOutTime).setOnUpdate((float v) =>
+            {
+                m_TargetZoom = v;
+                m_MuskMapWrapper.SetZoom(v);
+                onChangeZoom?.Invoke();
+                onUpdate?.Invoke(false, true, false);
+                m_MuskMapWrapper.refreshMap = true;
+            }).setEase(m_FlyOutCurve).setOnComplete(() => { controlEnabled = true; onComplete?.Invoke(); }).uniqueId;
+        }
+
+        public void OnLandButton(System.Action onComplete = null)
+        {
+            LeanTween.cancel(m_LandTweenId, true);
+            LeanTween.cancel(m_LandFxTweenId, true);
+            LeanTween.cancel(m_FlyButtonTweenId, true);
+
+            EnableControl(false);
+
+            m_FlyButtonTweenId = LeanTween.value(m_MuskMapWrapper.normalizedZoom, 1f, m_FlyOutTime).setOnUpdate((float v) =>
+            {
+                m_TargetZoom = v;
+                m_MuskMapWrapper.SetZoom(v);
+                onChangeZoom?.Invoke();
+                onUpdate?.Invoke(false, true, false);
+                m_MuskMapWrapper.refreshMap = true;
+            })
+            .setEase(m_FlyOutCurve)
+            .setOnComplete(onComplete)
+            .uniqueId;
+        }
+
+        private void Update()
+        {
+            m_PositionChanged = m_ZoomChanged = m_RotationChanged = false;
+
+            if (m_Camera.isActiveAndEnabled && controlEnabled && !lockControls())
+            {
+                HandlePan();
+                HandlePinch();
+                HandleTwist();
+            }
+
+            streetLevelNormalizedZoom = Mathf.Clamp((1 - m_MuskMapWrapper.normalizedZoom) / 0.1f, 0, 1);
+            //streetLevel == m_MuskMapWrapper.zoom
+            //streetLevelNormalizedZoom = Mathf.Clamp((m_MuskMapWrapper.maxZoom - m_MuskMapWrapper.zoom) / (m_MuskMapWrapper.maxZoom - m_StreetLevelThreshold), 0, 1);
+            bool _streetLevel = m_MuskMapWrapper.muskZoom == 17;//>= m_StreetLevelThreshold;
+
+            if (m_StreetLevel != _streetLevel)
+            {
+                m_StreetLevel = _streetLevel;
+
+                if (_streetLevel)
+                {
+                    m_PositionDelta = Vector3.zero;
+                    m_Camera.farClipPlane = 10000;
+
+                    double lng, lat;
+                    m_MuskMapWrapper.GetCoordinates(out lng, out lat);
+                    m_MuskMapWrapper.SetPosition(lng, lat);
+                }
+                else
+                {
+                    m_Camera.farClipPlane = 1e+15f;
+                    m_TargetTwist = 360 * Mathf.RoundToInt(m_TargetTwist / 360);
+                }
+
+                if (_streetLevel)
+                {
+                    m_FlyingCamera.enabled = false;
+                    m_StreetCamera.enabled = true;
+                    onEnterStreetLevel?.Invoke();
+                }
+                else
+                {
+                    m_FlyingCamera.enabled = true;
+                    m_StreetCamera.enabled = false;
+                    onExitStreetLevel?.Invoke();
+
+                    LeanTween.cancel(m_ElasticTweenId);
+
+                    float amount = 0.05f;
+                    float lastValue = 0;
+                    float delta = 0;
+                    m_ElasticTweenId = LeanTween.value(0, amount, 0.2f)
+                        .setEaseOutCubic()
+                        .setOnUpdate((float t) =>
+                        {
+                            delta = t - lastValue;
+                            lastValue = t;
+                            m_TargetZoom -= delta;
+                        })
+                        .setOnComplete(() =>
+                        {
+                            lastValue = 0;
+                            m_ElasticTweenId = LeanTween.value(0, amount, 1f)
+                                .setEaseOutCubic()
+                                .setOnUpdate((float t) =>
+                                {
+                                    delta = t - lastValue;
+                                    lastValue = t;
+                                    m_TargetZoom += delta;
+                                })
+                                .uniqueId;
+                        })
+                        .uniqueId;
+                }
+            }
+
+            //elastic effect when getting close to flying
+            if (_streetLevel && streetLevelNormalizedZoom > 0.85f)
+            {
+#if UNITY_EDITOR
+                m_TargetZoom = Mathf.Clamp(m_TargetZoom + Time.deltaTime * (Input.GetMouseButton(0) ? 0.1f : 0.2f), 0.8f, 1f);
+#else
+            m_TargetZoom = Mathf.Clamp(m_TargetZoom + Time.deltaTime * (Input.touchCount > 0 ? 0.1f : 0.2f), 0.8f, 1f);
+#endif
+            }
+
+            //position innertia
+            if (m_PositionDelta.magnitude > 1)
+            {
+                Vector3 newDelta = Vector3.Lerp(m_PositionDelta, Vector3.zero, Time.deltaTime * 10 / m_DragInertia);
+                m_CenterPoint.position = ClampPosition(m_CenterPoint.position + (m_PositionDelta - newDelta));
+                m_PositionDelta = newDelta;
+                m_PositionChanged = true;
+            }
+
+            //zoom
+            if (m_TargetZoom != m_MuskMapWrapper.normalizedZoom)
+            {
+                float zoom = Mathf.Approximately(m_TargetZoom, m_MuskMapWrapper.normalizedZoom) ? m_TargetZoom : Mathf.Lerp(m_MuskMapWrapper.normalizedZoom, m_TargetZoom, Time.deltaTime * 5);
+                m_MuskMapWrapper.SetZoom(zoom);
+                m_ZoomChanged = true;
+            }
+
+            //rotation
+            if (m_CurrentTwist != m_TargetTwist)
+            {
+                m_CurrentTwist = Mathf.Approximately(m_CurrentTwist, m_TargetTwist) ? m_TargetTwist : Mathf.Lerp(m_CurrentTwist, m_TargetTwist, Time.deltaTime * 5);
+                m_CenterPoint.eulerAngles = new Vector3(0, m_CurrentTwist, 0);
+                m_RotationChanged = true;
+            }
+
+            m_ExtraFOV = Mathf.Lerp(m_ExtraFOV, ExtraFOV, Time.deltaTime * 5);
+            m_Camera.fieldOfView = Mathf.Lerp(m_MinFOV, m_MaxFOV, streetLevelNormalizedZoom) + m_ExtraFOV;
+            m_AnglePivot.localEulerAngles = new Vector3(Mathf.Lerp(m_MinAngle, m_MaxAngle, streetLevelNormalizedZoom), 0, 0);
+
+
+            if (m_PositionChanged)
+                onChangePosition?.Invoke();
+            if (m_ZoomChanged)
+                onChangeZoom?.Invoke();
+            if (m_RotationChanged)
+                onChangeRotation?.Invoke();
+
+            if (m_PositionChanged || m_ZoomChanged || m_RotationChanged)
+            {
+                m_MuskMapWrapper.refreshMap = true;
+                onUpdate?.Invoke(m_PositionChanged, m_ZoomChanged, m_RotationChanged);
+            }
+        }
+
+        private void OnFingerUp(LeanFinger finger)
+        {
+            if (!m_Camera.isActiveAndEnabled)
+                return;
+
+            if (!controlEnabled)
+                return;
+
+            if (!panEnabled)
+                return;
+
+            if (lockControls())
+                return;
+
+            if (disablePanning())
+                return;
+
+#if !UNITY_EDITOR
+        if (m_LastDragFinger != finger)
+            return;
+#endif
+
+            var fingers = LeanSelectable.GetFingers(true, true);
+            if (fingers.Count == 1)
+            {
+                var screenPoint = LeanGesture.GetScreenCenter(fingers);
+
+                Vector2 delta = (screenPoint - m_LastDragPosition)
+                    * m_DragSensivity
+                    * (720f / Screen.height)
+                    * (fov / m_MinFOV)
+                    * m_DragInertia
+                    * (Mathf.Abs(m_Camera.transform.localPosition.z) / m_DistanceFromGround)
+                    * m_MuskMapWrapper.cameraDat.panSensivity;
+
+                if (delta.magnitude > 10)
+                {
+                    Vector3 worldDelta = -m_CenterPoint.forward * delta.y * (m_MaxAngle / m_AnglePivot.eulerAngles.x) - m_CenterPoint.right * delta.x;
+                    m_PositionDelta = worldDelta;
+                }
+            }
+        }
+
+        private void HandlePan()
+        {
+            if (!panEnabled)
+                return;
+
+            if (disablePanning())
+                return;
+
+            var fingers = LeanSelectable.GetFingers(true, true, 1);
+            if (fingers.Count != 1)
+                return;
+
+            m_LastDragFinger = fingers[0];
+            var lastScreenPoint = m_LastDragPosition = LeanGesture.GetLastScreenCenter(fingers);
+            var screenPoint = LeanGesture.GetScreenCenter(fingers);
+
+            Vector2 delta = (screenPoint - lastScreenPoint)
+                * m_DragSensivity
+                * (720f / Screen.height)
+                * (fov / m_MinFOV)
+                * (Mathf.Abs(m_Camera.transform.localPosition.z) / m_DistanceFromGround)
+                * m_MuskMapWrapper.cameraDat.panSensivity;
+
+            if (delta.magnitude > 1)
+            {
+                m_PositionDelta = Vector3.zero;
+                Vector3 worldDelta = -m_CenterPoint.forward * delta.y * (m_MaxAngle / m_AnglePivot.eulerAngles.x) - m_CenterPoint.right * delta.x;
+                m_CenterPoint.position = ClampPosition(m_CenterPoint.position + worldDelta);
+
+                m_PositionChanged = true;
+                onUserPan?.Invoke();
+                m_MuskMapWrapper.refreshMap = true;
+            }
+        }
+
+        private void HandlePinch()
+        {
+            if (!zoomEnabled)
+                return;
+
+            // Get the fingers we want to use
+            var fingers = LeanSelectable.GetFingers(true, true, 2);
+
+#if !UNITY_EDITOR
+        if (fingers.Count != 2)
+            return;
+#else
+            if (UnityEngine.EventSystems.EventSystem.current.IsPointerOverGameObject())
+                return;
+            if (Input.GetAxis("Mouse ScrollWheel") == 0 && fingers.Count != 2)
+                return;
+#endif
+
+            m_LastDragFinger = null;
+
+            var pinchScale = LeanGesture.GetPinchScale(fingers, -0.2f);
+            float zoomAmount = (m_TargetZoom * pinchScale - m_TargetZoom) * m_MuskMapWrapper.cameraDat.zoomSensivity * m_ZoomSensivity;
+            float zoom = Mathf.Clamp(m_TargetZoom + zoomAmount, minZoomOverride(), 1);
+
+            if (zoom != m_TargetZoom)
+            {
+                m_TargetZoom = zoom;
+                //m_MuskMapWrapper.SetZoom(zoom);
+                //m_ZoomChanged = true;
+                m_OnUserPinch?.Invoke();
+            }
+        }
+
+        private void HandleTwist()
+        {
+            if (!twistEnabled)
+                return;
+
+            var fingers = LeanSelectable.GetFingers(true, true, 2);
+
+            if (fingers.Count != 2)
+                return;
+
+            if (!streetLevel)
+                return;
+
+            float newValue = m_TargetTwist + LeanGesture.GetTwistDegrees(fingers) * m_RotateSensivity;
+            if (m_TargetTwist != newValue)
+            {
+                m_TargetTwist = newValue;
+                m_OnUserTwist?.Invoke();
+            }
+        }
+
+        public Vector3 ClampPosition(Vector3 position)
+        {
+            if (m_StreetLevel)
+            {
+                Vector3 dir = (position - m_MuskMapWrapper.transform.position);
+                if (MaxDistanceFromCenter > 0 && dir.magnitude > MaxDistanceFromCenter)
+                    position = m_MuskMapWrapper.transform.position + dir.normalized * MaxDistanceFromCenter;
+            }
+            else
+            {
+                double lng, lat;
+                m_MuskMapWrapper.GetCoordinates(out lng, out lat);
+                Rect bounds = new Rect(position.x - 1, position.z - 1, position.x + 1, position.z + 1);
+
+                if (lng < -150)
+                    bounds.x = m_MuskMapWrapper.topLeftBorder.x;
+                else if (lng > 150)
+                    bounds.width = m_MuskMapWrapper.botRightBorder.x;
+                if (lat < -60)
+                    bounds.y = m_MuskMapWrapper.botRightBorder.z;
+                else if (lat > 60)
+                    bounds.height = m_MuskMapWrapper.topLeftBorder.z;
+
+                //Debug.Log(lng + ", " + lat);
+
+                position.x = Mathf.Clamp(position.x, bounds.x, bounds.width);
+                position.z = Mathf.Clamp(position.z, bounds.y, bounds.height);
+            }
+
+            return position;
+        }
+
+
+        public void EnableControl(bool enable)
+        {
+            if (enable)
+            {
+
+            }
+            else
+            {
+                m_PositionDelta = Vector3.zero; //stops inertia
+            }
+            controlEnabled = enable;
+        }
+
+        public void EnableZoom(bool enable)
+        {
+            zoomEnabled = enable;
+        }
+
+        public void EnableTwist(bool enable)
+        {
+            twistEnabled = enable;
+        }
+
+        public void SetZoomRecall(float zoom)
+        {
+            m_StreetLevel = zoom >= .9f;
+            m_TargetZoom = 0.9f;
+            m_MuskMapWrapper.SetZoom(.9f);
+            onChangeZoom?.Invoke();
+            onUpdate?.Invoke(false, true, false);
+            m_MuskMapWrapper.refreshMap = true;
+        }
+
+        public void AnimatePosition(Vector3 pos, float time, bool allowCancel)
+        {
+            LeanTween.cancel(m_MoveTweenId, true);
+
+            System.Action cancelAction = () => { };
+            if (allowCancel)
+                cancelAction = () => LeanTween.cancel(m_MoveTweenId, true);
+            onUserPan += cancelAction;
+
+            m_MoveTweenId = LeanTween.move(m_CenterPoint.gameObject, pos, time)
+                .setEaseOutCubic()
+                .setOnUpdate((float t) =>
+                {
+                    onChangePosition?.Invoke();
+                    onUpdate?.Invoke(true, false, false);
+                    m_MuskMapWrapper.refreshMap = true;
+                })
+                .setOnComplete(() =>
+                {
+                    onUserPan -= cancelAction;
+                })
+                .uniqueId;
+        }
+
+        public void AnimatePosition(Vector2 targetCoords, float time, bool allowCancel)
+        {
+            LeanTween.cancel(m_MoveTweenId, true);
+
+            System.Action cancelAction = () => { };
+            if (allowCancel)
+                cancelAction = () => LeanTween.cancel(m_MoveTweenId, true);
+            onUserPan += cancelAction;
+
+            double lng, lat;
+            m_MuskMapWrapper.GetCoordinates(out lng, out lat);
+            Vector2 startCoords = new Vector2((float)lng, (float)lat);
+            Vector3 targetPos;
+            Vector2 coords;
+
+            m_MoveTweenId = LeanTween.value(0, 1, time)
+                .setEaseOutCubic()
+                .setOnUpdate((float t) =>
+                {
+                    coords = Vector2.Lerp(startCoords, targetCoords, t);
+                    targetPos = m_MuskMapWrapper.GetWorldPosition(coords.x, coords.y);
+                    m_CenterPoint.transform.position = targetPos;
+
+                    onChangePosition?.Invoke();
+                    onUpdate?.Invoke(true, false, false);
+                    m_MuskMapWrapper.refreshMap = true;
+                })
+                .setOnComplete(() =>
+                {
+                    onUserPan -= cancelAction;
+                })
+                .uniqueId;
+        }
+
+        public void AnimateZoom(float normalizedZoom, float time, bool allowCancel, AnimationCurve animCurve = null)
+        {
+            LeanTween.cancel(m_ZoomTweenId, true);
+            LeanTween.cancel(m_ElasticTweenId);
+
+            System.Action cancelAction = () => { };
+            if (allowCancel)
+                cancelAction = () => LeanTween.cancel(m_ZoomTweenId, true);
+            m_OnUserPinch += cancelAction;
+
+            normalizedZoom = Mathf.Clamp(normalizedZoom, minZoomOverride(), 1.1f);
+
+            System.Action<float> updateAction = (t) =>
+            {
+                m_TargetZoom = t;
+                m_MuskMapWrapper.SetZoom(t);
+                onChangeZoom?.Invoke();
+                onUpdate?.Invoke(false, true, false);
+            };
+            System.Action completeAction = () => m_OnUserPinch -= cancelAction;
+
+            if (animCurve == null)
+            {
+                m_ZoomTweenId = LeanTween.value(this.m_MuskMapWrapper.normalizedZoom, normalizedZoom, time)
+                   .setEaseOutCubic()
+                   .setOnUpdate(updateAction)
+                   .setOnComplete(completeAction)
+                   .uniqueId;
+            }
+            else
+            {
+                m_ZoomTweenId = LeanTween.value(this.m_MuskMapWrapper.normalizedZoom, normalizedZoom, time)
+                   .setOnUpdate(updateAction)
+                   .setOnComplete(completeAction)
+                   .setEase(animCurve)
+                   .uniqueId;
+            }
+        }
+
+        public void AnimateRotation(float targetAngle, float time, bool allowCancel, System.Action onComplete)
+        {
+            LeanTween.cancel(m_TwistTweenId, true);
+
+            System.Action cancelAction = () => { };
+            if (allowCancel) cancelAction = () => LeanTween.cancel(m_TwistTweenId, true);
+            m_OnUserTwist += cancelAction;
+
+            Quaternion currentRotation;
+            Quaternion startRotation = m_CenterPoint.rotation;
+            Quaternion targetRotation = Quaternion.Euler(0, targetAngle, 0);
+            float lastAngle = m_CenterPoint.eulerAngles.y;
+            float deltaAngle;
+
+            m_TwistTweenId = LeanTween.value(0, 1, time)
+                .setEaseOutCubic()
+                .setOnUpdate((float t) =>
+                {
+                //update actual object rotation
+                currentRotation = Quaternion.Lerp(startRotation, targetRotation, t);
+                    m_CenterPoint.rotation = currentRotation;
+
+                //update stored angle
+                deltaAngle = m_CenterPoint.eulerAngles.y - lastAngle;
+                    m_CurrentTwist = m_TargetTwist = m_TargetTwist + deltaAngle;
+                    lastAngle = m_CenterPoint.eulerAngles.y;
+
+                //trigger events
+                onChangeRotation?.Invoke();
+                    onUpdate?.Invoke(false, false, true); ;
+                })
+                .setOnComplete(() =>
+                {
+                    m_OnUserTwist -= cancelAction;
+                    onComplete?.Invoke();
+                })
+                .uniqueId;
+        }
+
+        public void AnimateCamRotation(Vector3 targetEuler, float time, System.Action onComplete)
+        {
+            Quaternion currentRotation;
+            Quaternion startRotation = m_Camera.transform.localRotation;
+            Quaternion targetRotation = Quaternion.Euler(targetEuler);
+
+            LeanTween.cancel(m_CamRotationTweenId, true);
+            m_CamRotationTweenId = LeanTween.value(0, 1, time)
+                .setEaseOutCubic()
+                .setOnUpdate((float t) =>
+                {
+                    currentRotation = Quaternion.Lerp(startRotation, targetRotation, t);
+                    m_Camera.transform.localRotation = currentRotation;
+
+                    onChangeRotation?.Invoke();
+                    onUpdate?.Invoke(false, false, true); ;
+                })
+                .setOnComplete(onComplete)
+                .uniqueId;
+        }
+
+
+        private void OnDrawGizmosSelected()
+        {
+            if (m_StreetLevel && MaxDistanceFromCenter > 0)
+            {
+                Gizmos.DrawWireSphere(m_MuskMapWrapper.transform.position, MaxDistanceFromCenter);
+            }
+        }
+    }
+}

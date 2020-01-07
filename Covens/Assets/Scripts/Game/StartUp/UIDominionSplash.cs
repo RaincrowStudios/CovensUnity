@@ -86,7 +86,9 @@ public class UIDominionSplash : MonoBehaviour
         {
             m_TopCoven.gameObject.SetActive(false);
         }
-        m_TimerTweenId = LeanTween.value(0f, 0f, 0).setDelay(time).setOnStart(Close).uniqueId;
+
+        Debug.LogError(time);
+        m_TimerTweenId = LeanTween.value(0f, 0f, time).setOnComplete(Close).uniqueId;
     }
 
     private void Close()

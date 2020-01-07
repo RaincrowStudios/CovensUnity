@@ -9,6 +9,7 @@ namespace Raincrow.Maps
         void InstantiateMap();
 
         bool IsInitialized { get; }
+        bool OriginInitialized { get; }
 
         Camera camera { get; }
         Transform mapCenter { get; }
@@ -60,6 +61,7 @@ namespace Raincrow.Maps
         double DistanceBetweenPointsD(Vector2 point1, Vector2 point2);
         float OneKmInWorldspace { get; }
 
+        void InitOrigin(double longitude, double latitude);
         void InitMap(double longitude, double latitude, float zoom, System.Action callback, bool animate);
 
         void HideMap(bool hide);
