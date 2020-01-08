@@ -97,9 +97,6 @@ public static class SpellcastingFX
         textObj.transform.localScale = target.AvatarTransform.lossyScale;
         textObj.transform.rotation = target.AvatarRenderer.transform.rotation;
 
-        if (LocationIslandController.isInBattle)
-            textObj.transform.Translate(Random.Range(-7, -25), 61, 0);
-
         //animate the text
         textObj.transform.position = new Vector3(target.AvatarTransform.position.x, target.AvatarTransform.position.y, target.AvatarTransform.position.z) + target.AvatarTransform.up * 20;
         var RandomSpacing = new Vector3(Random.Range(-7, 7), Random.Range(20, 24), 0);

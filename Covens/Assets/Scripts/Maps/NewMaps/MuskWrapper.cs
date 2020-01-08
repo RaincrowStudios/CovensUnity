@@ -295,14 +295,7 @@ namespace Raincrow.Maps
         public void OnPhysicalPositionChange()
         {
             Vector2 physPosition = GetGPS.coordinates;
-
-            //dont udpate if the player is inside PoP
-            if (LocationIslandController.isInBattle)
-            {
-                m_LastGPS = physPosition;
-                return;
-            }
-
+            
             //dont update if the player is flying
             if (!streetLevel)
             {
@@ -311,7 +304,9 @@ namespace Raincrow.Maps
             }
 
             if (PlayerManager.marker == null)
+            {
                 return;
+            }
 
             //the player was in spirit form
             if (MapsAPI.Instance.DistanceBetweenPointsD(PlayerManager.marker.Coords, m_LastGPS) > 0.05f)

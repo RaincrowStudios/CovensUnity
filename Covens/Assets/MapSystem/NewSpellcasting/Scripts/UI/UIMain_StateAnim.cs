@@ -65,8 +65,8 @@ public class UIMain_StateAnim : MonoBehaviour
     {
         SetState(State.MAP);
 
-        LocationIslandController.OnEnterLocation += OnEnterPop;
-        LocationIslandController.OnExitLocation += OnLeavePop;
+        //LocationIslandController.OnEnterLocation += OnEnterPop;
+        //LocationIslandController.OnExitLocation += OnLeavePop;
 
         MapView.OnEnterBossArea += OnEnterBossArea;
         MapView.OnLeaveBossArea += OnLeaveBossArea;

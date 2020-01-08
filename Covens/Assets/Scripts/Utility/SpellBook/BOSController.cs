@@ -48,8 +48,7 @@ public class BOSController : BOSBase
     {
         BackButtonListener.RemoveCloseAction();
 
-        if (!LocationIslandController.isInBattle)
-            MapsAPI.Instance.HideMap(false);
+        MapsAPI.Instance.HideMap(false);
         //UIStateManager.Instance.CallWindowChanged(true);
 
         //LeanTween.alphaCanvas(CG, 0, .65f);
@@ -73,12 +72,6 @@ public class BOSController : BOSBase
     {
         CG = GetComponent<CanvasGroup>();
         CG.alpha = 0;
-        //LeanTween.alphaCanvas(CG, 1, .8f).setOnComplete(() =>
-        //{
-        //    UIStateManager.Instance.CallWindowChanged(false);
-        //    if (!LocationIslandController.isInBattle)
-        //        MapsAPI.Instance.HideMap(true);
-        //});
         OnClickRibbon(0);
         
         LeanTween.cancel(m_TweenId);
@@ -89,9 +82,7 @@ public class BOSController : BOSBase
             })
             .setOnComplete(() =>
             {
-                //UIStateManager.Instance.CallWindowChanged(false);
-                if (!LocationIslandController.isInBattle)
-                    MapsAPI.Instance.HideMap(true);
+                MapsAPI.Instance.HideMap(true);
             })
             .uniqueId;
 

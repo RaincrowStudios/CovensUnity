@@ -173,13 +173,8 @@ public class UIPlayerInfo : UIInfoPanel
             m_FemaleView.gameObject.SetActive(true);
         }
 
-        if (!LocationIslandController.isInBattle)
-        {
-            //MainUITransition.Instance.SetState(MainUITransition.State.MAPVIEW_SELECT);
-            MarkerSpawner.HighlightMarkers(new List<MuskMarker> { PlayerManager.witchMarker, WitchMarker });
-
-            MoveTokenHandler.OnTokenMove += _OnMapTokenMove;
-        }
+        MarkerSpawner.HighlightMarkers(new List<MuskMarker> { PlayerManager.witchMarker, WitchMarker });
+        MoveTokenHandler.OnTokenMove += _OnMapTokenMove;
 
         RemoveTokenHandler.OnTokenRemove += _OnMapTokenRemove;
         SpellCastHandler.OnApplyEffect += _OnStatusEffectApplied;
@@ -212,20 +207,17 @@ public class UIPlayerInfo : UIInfoPanel
     {
         base.ReOpen();
 
-        if (!LocationIslandController.isInBattle)
-        {
-            MapsAPI.Instance.allowControl = false;
+        MapsAPI.Instance.allowControl = false;
 
-            IMarker marker = MarkerSpawner.GetMarker(WitchToken.instance);
-            if (marker != null)
-            {
-                MapCameraUtils.FocusOnMarker(marker.GameObject.transform.position);
-                MapCameraUtils.SetExtraFOV(-3);
-            }
-            else
-            {
-                Close();
-            }
+        IMarker marker = MarkerSpawner.GetMarker(WitchToken.instance);
+        if (marker != null)
+        {
+            MapCameraUtils.FocusOnMarker(marker.GameObject.transform.position);
+            MapCameraUtils.SetExtraFOV(-3);
+        }
+        else
+        {
+            Close();
         }
     }
 
@@ -257,18 +249,11 @@ public class UIPlayerInfo : UIInfoPanel
         OnMapEnergyChange.OnEnergyChange -= _OnEnergyChange;
         OnMapEnergyChange.OnPlayerDead -= _OnCharacterDead;
 
-        if (!LocationIslandController.isInBattle)
-        {
-            //MainUITransition.Instance.SetState(MainUITransition.State.MAPVIEW);
-            MapsAPI.Instance.allowControl = true;
-            MapCameraUtils.FocusOnPosition(previousMapPosition, m_PreviousMapZoom, true);
-            MapCameraUtils.SetExtraFOV(0);
-            MarkerSpawner.HighlightMarkers(new List<MuskMarker> { });
-        }
-        else
-        {
-            LocationUnitSpawner.EnableMarkers();
-        }
+        //MainUITransition.Instance.SetState(MainUITransition.State.MAPVIEW);
+        MapsAPI.Instance.allowControl = true;
+        MapCameraUtils.FocusOnPosition(previousMapPosition, m_PreviousMapZoom, true);
+        MapCameraUtils.SetExtraFOV(0);
+        MarkerSpawner.HighlightMarkers(new List<MuskMarker> { });
 
         if (UISpellcastBook.IsOpen)
             UISpellcastBook.Close();

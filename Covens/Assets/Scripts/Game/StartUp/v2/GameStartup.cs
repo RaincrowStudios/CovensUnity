@@ -354,13 +354,12 @@ public class GameStartup : MonoBehaviour
             SocketClient.Instance.InitiateSocketConnection();
             ChatManager.InitChat();
 
-            if (PlayerDataManager.playerData.insidePlaceOfPower && PlayerDataManager.playerData.placeOfPower != "")
-            {
-                LocationIslandController.ResumeBattle(PlayerDataManager.playerData.placeOfPower);
-            }
-            else
-            {
-
+            //if (PlayerDataManager.playerData.insidePlaceOfPower && PlayerDataManager.playerData.placeOfPower != "")
+            //{
+            //    LocationIslandController.ResumeBattle(PlayerDataManager.playerData.placeOfPower);
+            //}
+            //else
+            //{
                 UIDominionSplash.Instance.Show(() =>
                 {
                     if (Raincrow.FTF.FirstTapManager.IsFirstTime("nextpoplaunch"))
@@ -374,8 +373,7 @@ public class GameStartup : MonoBehaviour
 
                     ReviewPopupController.Init();
                 });
-
-            }
+            //}
         }
     }
 

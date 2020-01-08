@@ -18,11 +18,12 @@ public class OnLocationOpen : IGameEventHandler
 
     public void HandleResponse(string eventData)
     {
-        var data = JsonConvert.DeserializeObject<OpenData>(eventData);
+        Debug.LogError("todo: " + EventName);
+        //var data = JsonConvert.DeserializeObject<OpenData>(eventData);
 
-        if (MarkerSpawner.Markers.ContainsKey(data.id) && BackButtonListener.ActionCount == 0 && !LocationIslandController.isInBattle)
-        {
-            LoadPOPManager.EnterPOP(data.id);
-        }
+        //if (MarkerSpawner.Markers.ContainsKey(data.id) && BackButtonListener.ActionCount == 0 && !LocationIslandController.isInBattle)
+        //{
+        //    LoadPOPManager.EnterPOP(data.id);
+        //}
     }
 }

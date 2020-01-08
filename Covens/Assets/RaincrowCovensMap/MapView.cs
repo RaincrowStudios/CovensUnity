@@ -32,8 +32,8 @@ public class MapView : MonoBehaviour
         
         OnLeavePoP();
 
-        LocationIslandController.OnEnterLocation += OnEnterPoP;
-        LocationIslandController.OnExitLocation += OnLeavePoP;
+        //LocationIslandController.OnEnterLocation += OnEnterPoP;
+        //LocationIslandController.OnExitLocation += OnLeavePoP;
 
         SpiritDicoveredHandler.OnSpiritDiscovered += _OnSpiritDiscovered;
         SpiritBanishedHandler.OnSpiritBanished += _OnSpiritBanished;

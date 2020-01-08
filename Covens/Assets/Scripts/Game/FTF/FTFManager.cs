@@ -865,23 +865,23 @@ public class FTFManager : MonoBehaviour
 
     private IEnumerator SelectNearbyPoP()
     {
-        if (UINearbyLocations.CachedLocations.Count > 0)
-        {
-            bool done = false;
-            LoadPOPManager.EnterPOP(UINearbyLocations.CachedLocations[0].id, () => done = true);
+        //if (UINearbyLocations.CachedLocations.Count > 0)
+        //{
+        //    bool done = false;
+        //    LoadPOPManager.EnterPOP(UINearbyLocations.CachedLocations[0].id, () => done = true);
 
-            while (!done)
-                yield return 0;
+        //    while (!done)
+        //        yield return 0;
 
-            LocationPOPInfo.Instance.FTFOpen();
-        }
+        //    LocationPOPInfo.Instance.FTFOpen();
+        //}
         yield return 0;
     }
 
     private IEnumerator ClosePoPSelectedUI()
     {
-        if (LocationPOPInfo.isShowing)
-            LocationPOPInfo.Instance.Close();
+        //if (LocationPOPInfo.isShowing)
+        //    LocationPOPInfo.Instance.Close();
         yield return 0;
     }
 

@@ -66,7 +66,7 @@ public class MarkerManagerAPI : MonoBehaviour
         if (wasPhysical && !isPhysical)
             GetGPS.SetNoise();
 
-        if (PlayerDataManager.IsFTF || LocationIslandController.isInBattle)
+        if (PlayerDataManager.IsFTF)
         {
             return;
         }

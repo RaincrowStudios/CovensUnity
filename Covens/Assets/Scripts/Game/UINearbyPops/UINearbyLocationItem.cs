@@ -67,8 +67,7 @@ public class UINearbyLocationItem : MonoBehaviour
 
     private void ShowPop()
     {
-        Debug.Log("SHOW POP INFO");
-        LoadPOPManager.EnterPOP(m_Data.id);
+        Debug.LogError("SHOW POP INFO");
     }
 
     private void OnDisable()

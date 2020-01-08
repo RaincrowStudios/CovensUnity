@@ -10,10 +10,11 @@ public class AddSpiritHandlerPOP : IGameEventHandler
 
     public void HandleResponse(string eventData)
     {
-        var spiritToken = JsonConvert.DeserializeObject<LocationSpiritToken>(eventData);
-        spiritToken.spirit.position = spiritToken.position;
-        spiritToken.spirit.island = spiritToken.island;
-        OnSpiritAddPOP?.Invoke(spiritToken.spirit);
+        Debug.LogError("todo: " + EventName);
+        //var spiritToken = JsonConvert.DeserializeObject<LocationSpiritToken>(eventData);
+        //spiritToken.spirit.position = spiritToken.position;
+        //spiritToken.spirit.island = spiritToken.island;
+        //OnSpiritAddPOP?.Invoke(spiritToken.spirit);
     }
 
     public static void RaiseEvent(SpiritToken spirit)

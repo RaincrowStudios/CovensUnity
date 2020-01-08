@@ -94,31 +94,7 @@ namespace Raincrow.GameEventResponses
         {
             //OnCharacterDeath.CheckSpellDeath(data);
             OnWillProcessSpell?.Invoke(data);
-
-            if (LocationIslandController.isInBattle)
-            {
-                if (data.caster.Type == MarkerSpawner.MarkerType.WITCH)
-                {
-                    if (data.target.Type == MarkerSpawner.MarkerType.SPIRIT && data.target.id == LocationUnitSpawner.guardianInstance)
-                    {
-                        LocationIslandController.ActivateSpiritConnection(data.caster.id);
-                    }
-
-                    if (PlayerDataManager.playerData.instance != data.caster.id)
-                    {
-                        if (data.spell == "spell_astral")
-                        {
-                            LocationUnitSpawner.EnableCloaking(data.target.id);
-                        }
-                    }
-
-                }
-                if (data.target.energy == 0)
-                {
-                    LocationUnitSpawner.ShowDeathNotification(data);
-                }
-            }
-
+            
             PlayerData player = PlayerDataManager.playerData;
             SpellData spell = DownloadedAssets.GetSpell(data.spell);
             bool playerIsCaster = data.caster.id == player.instance;

@@ -300,10 +300,6 @@ public class UIWaitingCastResult : UIInfoPanel
 
     public void DegreeSetup()
     {
-        if (LocationIslandController.isInBattle)
-        {
-            return;
-        }
         var initialFill = BarFillSlider.value;
         if (CurrentDegree == null || NextDegree == null)
         {

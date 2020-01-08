@@ -240,22 +240,12 @@ public class MarkerSpawner : MonoBehaviour
         if (string.IsNullOrEmpty(instance))
             return null;
 
-        if (!LocationIslandController.isInBattle)
-        {
-            if (PlayerDataManager.playerData.instance == instance)
-                return PlayerManager.witchMarker;
+        if (PlayerDataManager.playerData.instance == instance)
+            return PlayerManager.witchMarker;
 
-            if (Markers.ContainsKey(instance))
-                return Markers[instance][0];
-        }
-        else
-        {
-            if (PlayerDataManager.playerData.instance == instance)
-                return LocationPlayerAction.playerMarker;
+        if (Markers.ContainsKey(instance))
+            return Markers[instance][0];
 
-            if (LocationUnitSpawner.Markers.ContainsKey(instance))
-                return LocationUnitSpawner.Markers[instance];
-        }
         return null;
     }
 
@@ -464,7 +454,7 @@ public class MarkerSpawner : MonoBehaviour
                 break;
 
             case MarkerType.PLACE_OF_POWER:
-                LoadPOPManager.EnterPOP(instance);
+                Debug.LogError("place of power:\n" + response);
                 break;
 
             case MarkerType.BOSS:
@@ -669,7 +659,7 @@ public class MarkerSpawner : MonoBehaviour
     {
         bool inputUp = false;
         bool inputDown = false;
-        if (LocationIslandController.isInBattle) return;
+
         if (Application.isEditor)
         {
             inputDown = Input.GetMouseButtonDown(0);

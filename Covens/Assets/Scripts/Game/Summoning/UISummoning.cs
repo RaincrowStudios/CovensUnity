@@ -180,9 +180,6 @@ public class UISummoning : MonoBehaviour
             {
                 SpiritData data = DownloadedAssets.GetSpirit(item.spirit);
 
-                if (LocationIslandController.isInBattle && data.type == "forbidden")
-                    continue;
-
                 if (data.tier == i + 1)
                     m_SpiritsByTier[i].Add(data);
             }

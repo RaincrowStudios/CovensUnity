@@ -178,12 +178,9 @@ public class UISpiritInfo : UIInfoPanel
         ExpireSpiritHandler.OnSpiritExpire += _OnMapTokenRemove;
         BanishManager.OnBanished += Abort;
 
-        if (!LocationIslandController.isInBattle)
-        {
-            //MainUITransition.Instance.SetState(MainUITransition.State.MAPVIEW_SELECT);
-            MarkerSpawner.HighlightMarkers(new List<MuskMarker> { PlayerManager.witchMarker, SpiritMarker });
-            MoveTokenHandler.OnTokenMove += _OnMapTokenMove;
-        }
+        //MainUITransition.Instance.SetState(MainUITransition.State.MAPVIEW_SELECT);
+        MarkerSpawner.HighlightMarkers(new List<MuskMarker> { PlayerManager.witchMarker, SpiritMarker });
+        MoveTokenHandler.OnTokenMove += _OnMapTokenMove;
 
         if (SpiritMarkerDetails != null)
             _SetupDetails(SpiritMarkerDetails);
@@ -222,23 +219,16 @@ public class UISpiritInfo : UIInfoPanel
 
         IMarker spirit = MarkerSpawner.GetMarker(SpiritToken.instance);
 
-        if (!LocationIslandController.isInBattle)
+        MapsAPI.Instance.allowControl = false;
+        //if the spirit was destroyed, close the ui
+        if (spirit != null)
         {
-            MapsAPI.Instance.allowControl = false;
-            //if the spirit was destroyed, close the ui
-            if (spirit != null)
-            {
-                MapCameraUtils.FocusOnMarker(spirit.GameObject.transform.position);
-                MapCameraUtils.SetExtraFOV(-3);
-            }
-            else
-            {
-                Close();
-            }
+            MapCameraUtils.FocusOnMarker(spirit.GameObject.transform.position);
+            MapCameraUtils.SetExtraFOV(-3);
         }
         else
         {
-            if (spirit == null) Close();
+            Close();
         }
     }
 
@@ -266,21 +256,14 @@ public class UISpiritInfo : UIInfoPanel
         RemoveTokenHandler.OnTokenRemove -= _OnMapTokenRemove;
         ExpireSpiritHandler.OnSpiritExpire -= _OnMapTokenRemove;
 
-        if (!LocationIslandController.isInBattle)
-        {
-            MoveTokenHandler.OnTokenMove -= _OnMapTokenMove;
-            BanishManager.OnBanished -= Abort;
+        MoveTokenHandler.OnTokenMove -= _OnMapTokenMove;
+        BanishManager.OnBanished -= Abort;
 
-            MapsAPI.Instance.allowControl = true;
-            MapCameraUtils.FocusOnPosition(MapsAPI.Instance.mapCenter.position, m_PreviousMapZoom, true);
-            MapCameraUtils.SetExtraFOV(0);
-            //MainUITransition.Instance.SetState(MainUITransition.State.MAPVIEW);
-            MarkerSpawner.HighlightMarkers(new List<MuskMarker> { });
-        }
-        else
-        {
-            LocationUnitSpawner.EnableMarkers();
-        }
+        MapsAPI.Instance.allowControl = true;
+        MapCameraUtils.FocusOnPosition(MapsAPI.Instance.mapCenter.position, m_PreviousMapZoom, true);
+        MapCameraUtils.SetExtraFOV(0);
+        //MainUITransition.Instance.SetState(MainUITransition.State.MAPVIEW);
+        MarkerSpawner.HighlightMarkers(new List<MuskMarker> { });
 
         if (UISpellcastBook.IsOpen)
             UISpellcastBook.Close();
@@ -301,8 +284,8 @@ public class UISpiritInfo : UIInfoPanel
             Debug.Log(SpiritMarkerDetails.owner + " owner");
             m_Desc.text = "";
             m_Tier.text = LocalizeLookUp.GetText("ftf_wild_spirit") + "\n";
-            if (!LocationIslandController.isInBattle)
-            { m_Desc.text = LocalizeLookUp.GetText("cast_spirit_knowledge"); }// "Defeating this spirit will give you the power to summon it.";
+            m_Desc.text = LocalizeLookUp.GetText("cast_spirit_knowledge");
+
             if (m_SpiritData.tier == 1)
                 m_NewTier.text = LocalizeLookUp.GetText("cast_spirit_lesser");
             else if (m_SpiritData.tier == 2)

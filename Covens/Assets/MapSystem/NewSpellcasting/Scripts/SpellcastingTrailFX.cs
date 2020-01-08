@@ -61,7 +61,7 @@ public class SpellcastingTrailFX : MonoBehaviour
         Vector3 offset = target.up * 40;
         float distance = Vector3.Distance(caster.position, target.position);
         float projectileSpeed = 900f;
-        float trailTime = LocationIslandController.isInBattle ? distance / projectileSpeed : 0.25f;
+        float trailTime = 0.25f;
 
         Vector3 startPosition = caster.position + offset;
         Vector3 targetPosition = target.position + offset;
@@ -79,31 +79,20 @@ public class SpellcastingTrailFX : MonoBehaviour
         LeanTween.value(0, 1, 0.25f)
             .setOnComplete(() =>
             {
+                //calculate path
                 LTBezierPath path;
-                if (!LocationIslandController.isInBattle)
-                {
-                    Vector3 endcontrol = (startPosition - targetPosition) * Random.Range(0.3f, 0.5f);
-                    Vector3 startcontrol = (targetPosition - startPosition) * Random.Range(0.3f, 0.5f);
+                Vector3 endcontrol = (startPosition - targetPosition) * Random.Range(0.3f, 0.5f);
+                Vector3 startcontrol = (targetPosition - startPosition) * Random.Range(0.3f, 0.5f);
 
-                    startcontrol = Quaternion.Euler(0, Random.Range(-100,100), Random.Range(-100, 100)) * startcontrol;
-                    endcontrol = Quaternion.Euler(0, Random.Range(-45, 45), Random.Range(-45, 45)) * endcontrol;
+                startcontrol = Quaternion.Euler(0, Random.Range(-100,100), Random.Range(-100, 100)) * startcontrol;
+                endcontrol = Quaternion.Euler(0, Random.Range(-45, 45), Random.Range(-45, 45)) * endcontrol;
                     
-                    path = new LTBezierPath(new Vector3[] {
-                        startPosition, //start point
-                        targetPosition + endcontrol,
-                        startPosition + startcontrol,
-                        targetPosition
-                   });
-                }
-                else
-                {
-                    path = new LTBezierPath(new Vector3[] {
-                        startPosition, //start point
-                        targetPosition + new Vector3(Random.Range(-100,100),Random.Range(-35,35),Random.Range(-100,100)),
-                        startPosition + new Vector3(Random.Range(-100,100),Random.Range(-35,35),Random.Range(-100,100)),
-                        targetPosition
-                   });
-                }
+                path = new LTBezierPath(new Vector3[] {
+                    startPosition, //start point
+                    targetPosition + endcontrol,
+                    startPosition + startcontrol,
+                    targetPosition
+                });
 
                 //spawn the trail
                 Transform trail = trailFxPool.Spawn(caster.position + offset, trailTime + 5f);
