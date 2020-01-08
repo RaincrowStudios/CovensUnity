@@ -185,7 +185,7 @@ namespace Raincrow.Maps
             //force layer of spawned objects
             m_MapsService.Events.AreaWaterEvents.DidCreate.AddListener(OnDidCreateAreaWater);
             m_MapsService.Events.LineWaterEvents.DidCreate.AddListener(OnDidCreateWaterSegment);
-            m_MapsService.Events.SegmentEvents.DidCreate.AddListener(e => MapCameraUtils.SetLayer(e.GameObject.transform, m_MapLayer));
+            m_MapsService.Events.SegmentEvents.DidCreate.AddListener(e => Utilities.SetLayer(e.GameObject.transform, m_MapLayer));
 
             //initialize zooom properties based on cameradat settings
             m_MinZoom = m_CameraSettings[0].zoomLv;
@@ -421,22 +421,22 @@ namespace Raincrow.Maps
             e.GameObject.name = "h(" + height + ") " + e.GameObject.name;
 #endif
 
-            MapCameraUtils.SetLayer(e.GameObject.transform, m_MapLayer);
+            Utilities.SetLayer(e.GameObject.transform, m_MapLayer);
         }
 
         private void OnDidCreateModeledStructure(DidCreateModeledStructureArgs e)
         {
-            MapCameraUtils.SetLayer(e.GameObject.transform, m_MapLayer);
+            Utilities.SetLayer(e.GameObject.transform, m_MapLayer);
         }
 
         private void OnDidCreateAreaWater(DidCreateAreaWaterArgs e)
         {
-            MapCameraUtils.SetLayer(e.GameObject.transform, m_MapLayer);
+            Utilities.SetLayer(e.GameObject.transform, m_MapLayer);
         }
 
         private void OnDidCreateWaterSegment(DidCreateLineWaterArgs e)
         {
-            MapCameraUtils.SetLayer(e.GameObject.transform, m_MapLayer);
+            Utilities.SetLayer(e.GameObject.transform, m_MapLayer);
         }
 
         private void UpdateBorders()

@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-[RequireComponent(typeof(Camera)), ExecuteInEditMode]
+[RequireComponent(typeof(Camera))]
 public class SyncCameraProperties : MonoBehaviour
 {
     [SerializeField] private Camera m_TargetCamera;

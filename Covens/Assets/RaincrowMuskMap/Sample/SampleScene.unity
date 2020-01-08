@@ -130,7 +130,6 @@ GameObject:
   m_Component:
   - component: {fileID: 65781932}
   - component: {fileID: 65781931}
-  - component: {fileID: 65781930}
   m_Layer: 17
   m_Name: CovensMuskMap
   m_TagString: Untagged
@@ -138,21 +137,6 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!114 &65781930
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 65781929}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: c50f798fdb248a84284b2bb3446c6b54, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  m_Controller: {fileID: 1837878650}
-  m_Map: {fileID: 65781931}
-  m_TargetFocusOffset: {x: 35, y: 58}
 --- !u!114 &65781931
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -253,7 +237,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_TargetCamera: {fileID: 1272536961}
-  m_FieldOfView: 0
+  m_FieldOfView: 1
 --- !u!20 &91646569
 Camera:
   m_ObjectHideFlags: 0
@@ -652,7 +636,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_TargetCamera: {fileID: 1272536961}
-  m_FieldOfView: 0
+  m_FieldOfView: 1
 --- !u!20 &1226121322
 Camera:
   m_ObjectHideFlags: 0
@@ -985,8 +969,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ccf991b442896fb48b71c397abce0eb6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_OneKm: {fileID: 1026254047}
-  m_ReferencePoint: {fileID: 1708546265}
+  m_OneKm: {fileID: 0}
+  m_ReferencePoint: {fileID: 0}
   m_Distance_x: 0
   m_Distance_y: 0
   m_DistanceD: 0
