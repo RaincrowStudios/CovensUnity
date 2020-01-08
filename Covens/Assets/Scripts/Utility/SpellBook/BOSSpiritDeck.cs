@@ -53,6 +53,9 @@ public class BOSSpiritDeck : BOSBase
         }
 
         foreach (Transform item in transform.GetChild(0))
+            item.localScale = Vector3.zero;
+
+        foreach (Transform item in transform.GetChild(0))
         {
             int zone = item.GetSiblingIndex();
 
@@ -87,7 +90,6 @@ public class BOSSpiritDeck : BOSBase
                     BOSController.Instance.AssignCloseListner(BOSSpirit.instance.ShowSpiritDeck);
                 });
             });
-            item.localScale = Vector3.zero;
             LeanTween.scale(item.gameObject, Vector3.one, .45f).setEase(LeanTweenType.easeInOutQuad);
             yield return new WaitForSeconds(.08f);
 
