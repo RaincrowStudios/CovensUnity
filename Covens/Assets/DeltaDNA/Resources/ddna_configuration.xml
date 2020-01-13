@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-16"?>
+<configuration xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <environment_key_dev> ea76c7e0-83f8-4bec-8b06-9bbb2727f7d5 </environment_key_dev>
+  <environment_key_live> df2ce6c4-800a-4185-8e89-acd49a7d41b4 </environment_key_live>
+  <environment_key>0</environment_key>
+  <collect_url>https://collect16242cvnsb.deltadna.net/collect/api</collect_url>
+  <engage_url>https://engage16242cvnsb.deltadna.net</engage_url>
+  <hash_secret />
+  <client_version />
+  <use_application_version>true</use_application_version>
+</configuration>
