@@ -39,10 +39,8 @@ public class MarkerSpawner : MonoBehaviour
 
     public static Dictionary<string, List<IMarker>> Markers = new Dictionary<string, List<IMarker>>();
 
-    //public static Dictionary<string, IMarker> Witches = new Dictionary<string, IMarker>();
     public static Dictionary<string, WorldBossMarker> Bosses = new Dictionary<string, WorldBossMarker>();
-
-
+    
     public event System.Action<string, string, bool> OnImmunityChange;
 
     public event System.Action<IMarker> OnSelectMarker;
@@ -204,8 +202,10 @@ public class MarkerSpawner : MonoBehaviour
         }
         else if (Data.Type == MarkerType.PLACE_OF_POWER)
         {
-            go = m_PopPool.Spawn().gameObject;
-            go.name = $"[PlaceOfPower] {Data.instance}";
+            Debug.Log("pop disabled");
+            return null;
+            //go = m_PopPool.Spawn().gameObject;
+            //go.name = $"[PlaceOfPower] {Data.instance}";
         }
         else if (Data.Type == MarkerType.BOSS)
         {
