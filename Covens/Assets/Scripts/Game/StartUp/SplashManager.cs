@@ -235,6 +235,10 @@ public class SplashManager : MonoBehaviour
 
     private IEnumerator CovenLogoCoroutine(System.Action onComplete)
     {
+#if (UNITY_EDITOR_LINUX || UNITY_STANDALONE_LINUX)
+        onComplete?.Invoke();
+        yield break;
+#endif
         VideoPlayback.gameObject.SetActive(true);
         VideoPlayback.Load("Splash.mp4");
         //if (!VideoPlayback.m_bAutoPlay)

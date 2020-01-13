@@ -100,26 +100,29 @@ public class MediaPlayerCtrl : MonoBehaviour
 #endif
 
 
-#if (UNITY_STANDALONE_WIN || UNITY_EDITOR_WIN || UNITY_EDITOR_LINUX) && !UNITY_EDITOR_OSX
+#if (UNITY_EDITOR_LINUX || UNITY_STANDALONE_LINUX)
+    private static int SetTexture() { return 0; }
+    private static void ReleaseTexture(int iID) { }
+    private static void SetTextureFromUnity(int iID, System.IntPtr texture, System.IntPtr textureY, System.IntPtr textureU, System.IntPtr textureV, int w, int h, byte[] data) { }
+    private static IntPtr GetRenderEventFunc() { return new IntPtr(); }
+#endif
 
-    [DllImport ("EasyMovieTexture")]
-	private static extern int SetTexture();
+#if (UNITY_STANDALONE_WIN || UNITY_EDITOR_WIN) && !UNITY_EDITOR_OSX
+    [DllImport("EasyMovieTexture")]
+    private static extern int SetTexture();
 
-	[DllImport ("EasyMovieTexture")]
-	private static extern void ReleaseTexture(int iID);
+    [DllImport("EasyMovieTexture")]
+    private static extern void ReleaseTexture(int iID);
 
-	[DllImport ("EasyMovieTexture")]
-	private static extern void SetTextureFromUnity(int iID,System.IntPtr texture,System.IntPtr textureY,System.IntPtr textureU,System.IntPtr textureV, int w, int h,byte[] data);
-
-
-	[DllImport("EasyMovieTexture")]
-	private static extern IntPtr GetRenderEventFunc();
+    [DllImport("EasyMovieTexture")]
+    private static extern void SetTextureFromUnity(int iID, System.IntPtr texture, System.IntPtr textureY, System.IntPtr textureU, System.IntPtr textureV, int w, int h, byte[] data);
 
 
+    [DllImport("EasyMovieTexture")]
+    private static extern IntPtr GetRenderEventFunc();
+#endif
 
-	#endif
-
-	#if (UNITY_STANDALONE_OSX || UNITY_EDITOR_OSX )
+#if (UNITY_STANDALONE_OSX || UNITY_EDITOR_OSX)
 	[DllImport ("EasyMovieTextureRender")]
 	private static extern int SetTexture();
 
@@ -133,13 +136,13 @@ public class MediaPlayerCtrl : MonoBehaviour
 	private static extern IntPtr GetRenderEventFunc();
 
 
-	#endif
+#endif
 
 
 
 
 
-	private int m_iAndroidMgrID;
+    private int m_iAndroidMgrID;
 	private bool m_bIsFirstFrameReady;
 
 
@@ -195,11 +198,11 @@ public class MediaPlayerCtrl : MonoBehaviour
 
 
 
-	#if !UNITY_WEBPLAYER && !UNITY_WEBGL && !UNITY_WP8 && !UNITY_WP8_1
+#if !UNITY_WEBPLAYER && !UNITY_WEBGL && !UNITY_WP8 && !UNITY_WP8_1
 
 	static MediaPlayerCtrl()
 	{
-	#if UNITY_EDITOR
+#if UNITY_EDITOR
 		String currentPath = Environment.GetEnvironmentVariable ("PATH", EnvironmentVariableTarget.Process);
 
 		String dllPath = Environment.CurrentDirectory + Path.DirectorySeparatorChar + "Assets" + Path.DirectorySeparatorChar + "Plugins";
@@ -220,7 +223,7 @@ public class MediaPlayerCtrl : MonoBehaviour
 			Environment.SetEnvironmentVariable ("PATH", currentPath + Path.PathSeparator + dllPath, EnvironmentVariableTarget.Process);
 		}
 
-	#endif
+#endif
 	}
 
 	void Awake()
@@ -524,7 +527,7 @@ public class MediaPlayerCtrl : MonoBehaviour
 				}
 
 
-	#if UNITY_ANDROID || UNITY_EDITOR || UNITY_STANDALONE
+#if UNITY_ANDROID || UNITY_EDITOR || UNITY_STANDALONE
 
 #if UNITY_EDITOR || UNITY_STANDALONE
 				if(m_bPC_FastMode == true)
@@ -588,12 +591,12 @@ public class MediaPlayerCtrl : MonoBehaviour
 #endif
 
 
-	#if UNITY_5_2 || UNITY_5_3_OR_NEWER
+#if UNITY_5_2 || UNITY_5_3_OR_NEWER
 				Call_SetUnityTexture((int)m_texPtr);
-	#else
+#else
 	Call_SetUnityTexture (m_VideoTexture.GetNativeTextureID ());
-	#endif
-	#endif
+#endif
+#endif
 				Call_SetWindowSize ();
 				m_bCheckFBO = true;
 				if (OnResize != null)
