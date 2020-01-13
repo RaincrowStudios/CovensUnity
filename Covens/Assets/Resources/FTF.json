@@ -44,32 +44,9 @@
 
 
 // //ACT 3. PLACE OF POWER
-
-//focus on player, wait 1s, spawn pop
-{"timer":0.1,"onEnter":[{"method":"MoveCamera","parameters":["0","0","0.98"]}], "onExit":[{"method":"SpawnPop","parameters":["{\"_id\":\"ftf_pop\",\"tier\":1, \"longitude\":0.0004, \"latitude\":-0.0005}"]}]},
-//focus on pop
-{"timer":0.1,"onEnter":[{"method":"MoveCamera","parameters":["0.0004","-0.0005","0.99"]}]},
-//"this is a place of power"
-{"onEnter":[{"method":"ShowMessage","parameters":["ftf_10"]},{"method":"ShowSavannah"}], "onExit":[{"method":"HideSavannah"}]},
-//highlight pop and show pop ui on click
-{"onExit":[{"method":"SelectNearbyPoP"}], "button":{"show":true,"anchorMin":[0.5,0.5],"anchorMax":[0.5,0.5],"position":[12.0,10.9],"size":[277.300049,241.9]},"highlight":{"show":true,"anchorMin":[0.5,0.5],"anchorMax":[0.5,0.5],"position":[0.0,-12.0],"size":[1258.0,1008.7]},"pointer":{"show":true,"anchorMin":[0.5,0.5],"anchorMax":[0.5,0.5],"position":[6.0,23.0]}},
-{"timer":0.5},
-//lets spectate this 
-{"button":{"show":true,"anchorMin":[0.5,0.0],"anchorMax":[0.5,0.0],"position":[0.0,109.700012],"size":[952.3,219.4]},"highlight":{"show":true,"anchorMin":[0.5,0.0],"anchorMax":[0.5,0.0],"position":[26.0,95.0],"size":[1873.5,563.0]},"pointer":{"show":true,"anchorMin":[0.5,0.0],"anchorMax":[0.5,0.0],"position":[29.0,107.999969],"scale":1.2},"onEnter":[{"method":"ShowMessage","parameters":["ftf_11","true"]}],"onExit":[{"method":"ClosePoPSelectedUI"}]},
-//open pop scene
-{"timer":1,"onEnter":[{"method":"OpenFTFPoP"}]},
-
-
 // //ACT 3.d NEARBY POPS
-
-//pops just like this are spread, highlight nearby pops
-{"button":{"show":true,"anchorMin":[1.0,1.0],"anchorMax":[1.0,1.0],"position":[-132.0,-128.0],"size":[241.2,219.4]},"highlight":{"show":true,"anchorMin":[1.0,1.0],"anchorMax":[1.0,1.0],"position":[-101.0,-138.0],"size":[523.4,536.0]},"pointer":{"show":true,"anchorMin":[1.0,1.0],"anchorMax":[1.0,1.0],"position":[-130.0,-121.0],"scale":-0.992413},"onEnter":[{"method":"ShowMessage","parameters":["ftf_14"]}]},
-//open nearby pops
-{"onEnter":[{"method":"ShowNearbyPops"},{"method":"ShowMessage","parameters":["ftf_15"]}]},
 //close nearby pops, focus back on player
-{"timer":0.5, "onEnter":[{"method":"CloseNearbyPops"},{"method":"MoveCamera","parameters":["0.0","0.0","0.98"]}]},
-
-{"timer":0.5,"onEnter":[{"method":"SocketEvent","parameters":["remove.token","{\"_id\":\"ftf_pop\"}"]}]},
+{"timer":0.5, "onEnter":[{"method":"MoveCamera","parameters":["0.0","0.0","0.98"]}]},
 
 //FLY BUTTON
 
