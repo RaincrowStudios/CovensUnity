@@ -18,7 +18,6 @@ namespace Raincrow.Chat.UI
         protected override void Awake()
         {
             base.Awake();
-            _iconButton.onClick.AddListener(OnClickIcon);
         }
 
         public override void SetupProperties(ChatMessage message)
