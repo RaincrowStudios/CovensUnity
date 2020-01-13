@@ -100,7 +100,7 @@ public class MediaPlayerCtrl : MonoBehaviour
 #endif
 
 
-#if (UNITY_STANDALONE_WIN || UNITY_EDITOR_WIN) && !UNITY_EDITOR_OSX
+#if (UNITY_STANDALONE_WIN || UNITY_EDITOR_WIN || UNITY_EDITOR_LINUX) && !UNITY_EDITOR_OSX
 
     [DllImport ("EasyMovieTexture")]
 	private static extern int SetTexture();
