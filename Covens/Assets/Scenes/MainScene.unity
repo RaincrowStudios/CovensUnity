@@ -4389,7 +4389,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &190094458
 RectTransform:
   m_ObjectHideFlags: 0
@@ -30800,7 +30800,7 @@ RectTransform:
   m_GameObject: {fileID: 657667938}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_LocalScale: {x: 1.15, y: 1.15, z: 1}
   m_Children:
   - {fileID: 1501551735}
   - {fileID: 241360312}
@@ -30809,7 +30809,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 1, y: 1}
   m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: -334.99976, y: -99}
+  m_AnchoredPosition: {x: -117, y: -119}
   m_SizeDelta: {x: 173, y: 173}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!225 &657667940
@@ -67114,8 +67114,6 @@ MonoBehaviour:
   deathDesc: {fileID: 451793183}
   deathblessing: {fileID: 57758423}
   m_PlayerPositionPointer: {fileID: 482210219}
-  m_SilverGlimmer: {fileID: 0}
-  m_GoldGlimmer: {fileID: 0}
 --- !u!1 &1317136731
 GameObject:
   m_ObjectHideFlags: 0
@@ -68097,7 +68095,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 1, y: 1}
   m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: -527, y: -99}
+  m_AnchoredPosition: {x: -329.00024, y: -99}
   m_SizeDelta: {x: 172.99, y: 172.99}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1381000412
