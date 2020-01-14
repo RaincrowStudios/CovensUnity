@@ -5,6 +5,7 @@ public class CovenConstants : MonoBehaviour
 {
     public const string TERMS_OF_SERVICE_URL = "https://www.raincrowstudios.com/terms-of-service";
     public const string PRIVACY_POLICY_URL = "https://www.raincrowstudios.com/privacy";
+    public const string WIKI_URL = "https://covens.gamepedia.com/Covens_Wiki";
 
     public const string GOOGLE_TERMS_OF_SERVICE_URL = "https://cloud.google.com/maps-platform/terms/";
     public const string GOOGLE_PRIVACY_POLICY_URL = "https://policies.google.com/privacy";

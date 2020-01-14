@@ -15,6 +15,7 @@ public class HelpManager : MonoBehaviour
     [SerializeField] private RectTransform m_MainRect;
     [SerializeField] private Button m_CloseBtn;
     [SerializeField] private Button m_EmailBtn;
+    [SerializeField] private Button m_WikiBtn;
     [SerializeField] private Canvas m_Canvas;
     [SerializeField] private TextMeshProUGUI m_msg;
     [SerializeField] private TextMeshProUGUI m_CloseTxt;
@@ -28,6 +29,7 @@ public class HelpManager : MonoBehaviour
         m_Instance = this;
         m_CloseBtn.onClick.AddListener(Close);
         m_EmailBtn.onClick.AddListener(SendEmail);
+        m_WikiBtn.onClick.AddListener(ShowWiki);
 
         if (Application.systemLanguage == SystemLanguage.English)
         {
@@ -110,7 +112,6 @@ public class HelpManager : MonoBehaviour
 
     private void _Close()
     {
-
         m_Canvas.enabled = false;
         m_InputRaycaster.enabled = false;
         m_CanvasGroup.alpha = 0;
@@ -123,8 +124,13 @@ public class HelpManager : MonoBehaviour
         string subject = MyEscapeURL("Covens Help");
         string body = MyEscapeURL($"Version: {Application.version} \n Platform: {Application.platform} \n\n\n ***Your Message*** +\n\n\n ***Screenshot***\n\n\n");
         Application.OpenURL("mailto:" + email + "?subject=" + subject + "&body=" + body);
-
     }
+
+    public void ShowWiki()
+    {
+        Application.OpenURL(CovenConstants.WIKI_URL);
+    }
+
     private string MyEscapeURL(string url)
     {
         return WWW.EscapeURL(url).Replace("+", "%20");
