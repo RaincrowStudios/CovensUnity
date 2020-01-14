@@ -52,8 +52,8 @@ public class BOSSpiritDeck : BOSBase
             knownSpiritsDict[entry.spirit] = entry;
         }
 
-        foreach (Transform item in transform.GetChild(0))
-            item.localScale = Vector3.zero;
+        //foreach (Transform item in transform.GetChild(0))
+        //    item.localScale = new Vector3(0, 0, 1);
 
         foreach (Transform item in transform.GetChild(0))
         {
@@ -90,9 +90,10 @@ public class BOSSpiritDeck : BOSBase
                     BOSController.Instance.AssignCloseListner(BOSSpirit.instance.ShowSpiritDeck);
                 });
             });
-            LeanTween.scale(item.gameObject, Vector3.one, .45f).setEase(LeanTweenType.easeInOutQuad);
-            yield return new WaitForSeconds(.08f);
+            //LeanTween.scale(item.gameObject, Vector3.one, .45f).setEase(LeanTweenType.easeInOutQuad);
+            //yield return new WaitForSeconds(.08f);
 
         }
+        yield return 0;
     }
 }
