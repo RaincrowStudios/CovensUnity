@@ -41,7 +41,7 @@ namespace Raincrow.Chat.UI
         public override void SetHeader(ChatMessage message)
         {
             _name.text = message.player.name;
-            _timeAgo.text = Utilities.EpochToDateTimeChat(message.timestamp);
+            RefreshTimeAgo();
         }
 
         public override void SetIcon(ChatMessage message)
@@ -51,7 +51,10 @@ namespace Raincrow.Chat.UI
         
         public void RefreshTimeAgo()
         {
-            _timeAgo.text = Utilities.EpochToDateTimeChat(_timestamp);
+            if (_timestamp == 0)
+                _timeAgo.text = "";
+            else
+                _timeAgo.text = Utilities.EpochToDateTimeChat(_timestamp);
         }
 
         public virtual float GetHeight(ChatMessage message)

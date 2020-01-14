@@ -25,6 +25,7 @@ public class SettingsManager : MonoBehaviour
     [SerializeField] private TextMeshProUGUI m_AppVersion;
     [SerializeField] private Button m_HelpCrowButton;
     [SerializeField] private Button m_WitchSchoolButton;
+    [SerializeField] private Button m_WikiButton;
 
     public Button[] buildingsOnOff = new Button[2];
     public Button[] soundOnOff = new Button[2];
@@ -185,6 +186,8 @@ public class SettingsManager : MonoBehaviour
             this.Hide();
         });
 
+        m_WikiButton.onClick.AddListener(ShowWiki);
+
         ToggleSound(AudioEnabled);
         EnableDisableBuildings(BuildingsEnabled);
 
@@ -286,6 +289,11 @@ public class SettingsManager : MonoBehaviour
     public void ChangeSoundLevel(float value)
     {
         AudioListener.volume = value;
+    }
+
+    public void ShowWiki()
+    {
+        Application.OpenURL(CovenConstants.WIKI_URL);
     }
 
     public void Show()

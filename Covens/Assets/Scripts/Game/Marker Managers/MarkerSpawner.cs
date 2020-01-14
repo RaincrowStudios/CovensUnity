@@ -202,10 +202,8 @@ public class MarkerSpawner : MonoBehaviour
         }
         else if (Data.Type == MarkerType.PLACE_OF_POWER)
         {
-            Debug.Log("pop disabled");
-            return null;
-            //go = m_PopPool.Spawn().gameObject;
-            //go.name = $"[PlaceOfPower] {Data.instance}";
+            go = m_PopPool.Spawn().gameObject;
+            go.name = $"[PlaceOfPower] {Data.instance}";
         }
         else if (Data.Type == MarkerType.BOSS)
         {
@@ -368,6 +366,12 @@ public class MarkerSpawner : MonoBehaviour
         if (Data.Type == MarkerType.LOOT)
         {
             PickUpCollectibleAPI.PickUpLoot(m as LootMarker);
+            return;
+        }
+
+        if (Data.Type == MarkerType.PLACE_OF_POWER)
+        {
+            UIGlobalPopup.ShowPopUp(null, LocalizeLookUp.GetText("coming_soon"));
             return;
         }
 

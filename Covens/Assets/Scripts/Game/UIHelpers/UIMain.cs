@@ -224,7 +224,8 @@ public class UIMain : MonoBehaviour
 
     private void OnClickNearbyPops()
     {
-        UINearbyLocations.Open();
+        UIGlobalPopup.ShowPopUp(null, LocalizeLookUp.GetText("coming_soon"));
+        //UINearbyLocations.Open();
     }
 
     private void OnClickEnergy()
