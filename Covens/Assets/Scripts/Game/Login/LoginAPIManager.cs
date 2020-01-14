@@ -158,10 +158,9 @@ public static class LoginAPIManager
             plat = "android";
         else if (Application.platform == RuntimePlatform.IPhonePlayer)
             plat = "ios";
-        else if (Application.platform == RuntimePlatform.LinuxEditor)
-            plat = "windowseditor";
-        else
-            plat = Application.platform.ToString().ToLower();
+#if UNITY_EDITOR
+        plat = "windowseditor";
+#endif
 
         var data = new
         {
