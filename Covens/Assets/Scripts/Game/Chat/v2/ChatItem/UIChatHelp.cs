@@ -33,7 +33,10 @@ namespace Raincrow.Chat.UI
 
         public override void SetHeader(ChatMessage message)
         {
-            _timeAgo.text = Utilities.EpochToDateTimeChat(message.timestamp);
+            if (message.timestamp == 0)
+                _timeAgo.text = "";
+            else
+                _timeAgo.text = Utilities.EpochToDateTimeChat(message.timestamp);
         }
 
         public override void SetIcon(ChatMessage message)
@@ -77,8 +80,6 @@ namespace Raincrow.Chat.UI
             {
                 image.gameObject.SetActive(false);
             }
-
-            timestamp.text = Utilities.EpochToDateTimeChat(message.timestamp);
         }
 
         private void ToggleImageSize()

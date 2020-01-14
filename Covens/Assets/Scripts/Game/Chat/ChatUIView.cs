@@ -32,6 +32,18 @@ namespace Raincrow.Chat.UI
 
         public void SetupData(List<ChatMessage> pMessages, ChatCategory eCategory, UnityAction<bool> onRequestChatLoading = null, UnityAction onRequestChatClose = null)
         {
+            if (eCategory == ChatCategory.SUPPORT)
+            {
+                pMessages.Insert(0, new ChatMessage
+                {
+                    data = new ChatMessageData
+                    {
+                        message = LocalizeLookUp.GetText("help_call_crows_confirm")
+                    },
+                    timestamp = (long)Utilities.GetUnixTimestamp(System.DateTime.UtcNow)
+                });
+            }
+
             m_pChatMessages = pMessages;
             m_pCategory = eCategory;
             m_onRequestChatLoading = onRequestChatLoading;
