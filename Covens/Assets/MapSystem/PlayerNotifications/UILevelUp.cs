@@ -46,8 +46,7 @@ public class UILevelUp : MonoBehaviour
         SoundManagerOneShot.Instance.PlayLevel();
         SoundManagerOneShot.Instance.IngredientAdded();
 
-        m_CloseButton.interactable = false;
-        LeanTween.value(0, 0, 0).setDelay(0.25f).setOnStart(() => { m_CloseButton.interactable = true; });
+        LeanTween.value(0, 0, 0).setDelay(1f).setOnComplete(() => m_CloseButton.interactable = true);
 
         LeanTween.alphaCanvas(m_CanvasGroup, 1, 0.7f)
             .setEaseOutCubic();

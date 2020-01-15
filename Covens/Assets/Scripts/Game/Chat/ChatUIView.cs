@@ -32,7 +32,7 @@ namespace Raincrow.Chat.UI
 
         public void SetupData(List<ChatMessage> pMessages, ChatCategory eCategory, UnityAction<bool> onRequestChatLoading = null, UnityAction onRequestChatClose = null)
         {
-            if (eCategory == ChatCategory.SUPPORT)
+            if (eCategory == ChatCategory.SUPPORT && pMessages.Count == 0)
             {
                 pMessages.Insert(0, new ChatMessage
                 {

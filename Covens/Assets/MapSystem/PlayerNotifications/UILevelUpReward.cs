@@ -26,6 +26,8 @@ public class UILevelUpReward : MonoBehaviour
         m_Subtitle.text = LocalizeLookUp.GetText("store_bought_drachs_upper").Replace("{{Number}}", amount.ToString());
         m_Art.overrideSprite = m_SilverDrachsArt;
         //Show();
+
+        //DownloadedAssets.GetSprite("silver1", m_Art, true);
     }
 
     public void SetupSpell(string id)

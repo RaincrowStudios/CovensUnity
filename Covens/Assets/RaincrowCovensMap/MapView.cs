@@ -19,11 +19,12 @@ public class MapView : MonoBehaviour
         m_Instance = this;
 
         MapsAPI.Instance.InstantiateMap();
-        MapsAPI.Instance.InitOrigin(PlayerDataManager.playerData.longitude, PlayerDataManager.playerData.latitude);
     }
 
     private IEnumerator Start()
     {
+        MapsAPI.Instance.InitOrigin(PlayerDataManager.playerData.longitude, PlayerDataManager.playerData.latitude);
+
         while (MapsAPI.Instance.IsInitialized == false)
             yield return null;
 

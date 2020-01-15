@@ -76,6 +76,6 @@ public class UIBundleButton : MonoBehaviour
             return;
         }
         m_Text.text = Utilities.GetTimeLeftString(timestamp);
-        m_TimerTweenId = LeanTween.value(0, 0, 0).setDelay(1).setOnStart(() => UpdateTimer(timestamp)).uniqueId;
+        m_TimerTweenId = LeanTween.value(0, 0, 0).setDelay(1).setOnComplete(() => UpdateTimer(timestamp)).uniqueId;
     }
 }

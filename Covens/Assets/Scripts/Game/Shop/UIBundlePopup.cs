@@ -189,7 +189,7 @@ public class UIBundlePopup : MonoBehaviour
             m_Canvas.enabled = false;
             m_PackArt.overrideSprite = null;
 
-            m_TweenId = LeanTween.value(0, 0, 0f).setDelay(20).setOnStart(() =>
+            m_TweenId = LeanTween.value(0, 0, 0f).setDelay(20).setOnComplete(() =>
             {
                 SceneManager.UnloadScene(SceneManager.Scene.STORE_BUNDLE, null, null);
             }).uniqueId;
@@ -219,7 +219,7 @@ public class UIBundlePopup : MonoBehaviour
 
         m_ExpireText.text = LocalizeLookUp.GetText("spirit_deck_expire").Replace("{{time}}", "<color=#E38E05>" + m_ExpireText.text + "</color>");
 
-        m_TimerTweenId = LeanTween.value(0, 0, 0).setDelay(1).setOnStart(() => UpdateTimer(timestamp)).uniqueId;
+        m_TimerTweenId = LeanTween.value(0, 0, 0).setDelay(1).setOnComplete(() => UpdateTimer(timestamp)).uniqueId;
     }
 
     private void OnClickClose()

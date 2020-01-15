@@ -172,7 +172,7 @@ public class UIWaitingCastResult : UIInfoPanel
         //activate loading group after few moments
         m_DelayTweenId = LeanTween.value(0, 0, 0)
             .setDelay(0.3f)
-            .setOnStart(() =>
+            .setOnComplete(() =>
             {
                 m_LoadingGroup.gameObject.SetActive(true);
                 m_LoadingTweenId = LeanTween.alphaCanvas(m_LoadingGroup, 1f, 0.5f).setEaseOutCubic().uniqueId;
@@ -238,7 +238,7 @@ public class UIWaitingCastResult : UIInfoPanel
 
         //only enable continue after few moments
         //m_ResultGroup.interactable = false;
-        //m_ButtonTweenId = LeanTween.value(0, 0, 0).setDelay(0.2f).setOnStart(() =>
+        //m_ButtonTweenId = LeanTween.value(0, 0, 0).setDelay(0.2f).setOnComplete(() =>
         //    {
         m_ResultGroup.interactable = true;
         //}).uniqueId;

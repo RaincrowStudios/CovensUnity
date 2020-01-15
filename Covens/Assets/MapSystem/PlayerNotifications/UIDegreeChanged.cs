@@ -41,7 +41,7 @@ public class UIDegreeChanged : MonoBehaviour
         m_Content.SetActive(true);
 
         m_CloseButton.interactable = false;
-        LeanTween.value(0, 0, 0).setDelay(0.1f).setOnStart(() => { m_CloseButton.interactable = true; });
+        LeanTween.value(0, 0, 0).setDelay(1f).setOnComplete(() => { m_CloseButton.interactable = true; });
 
         if (oldDegree < newDegree)
             SoundManagerOneShot.Instance.PlayWhite();

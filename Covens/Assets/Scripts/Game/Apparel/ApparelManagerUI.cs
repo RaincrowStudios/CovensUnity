@@ -80,7 +80,7 @@ public class ApparelManagerUI : MonoBehaviour
         BackButtonListener.AddCloseAction(Hide);
 
         LeanTween.cancel(m_TweenId);
-        m_TweenId = LeanTween.value(0, 0, 0).setDelay(1f).setOnStart(() => MapsAPI.Instance.HideMap(true)).uniqueId;
+        m_TweenId = LeanTween.value(0, 0, 0).setDelay(1f).setOnComplete(() => MapsAPI.Instance.HideMap(true)).uniqueId;
     }
 
     public void Hide()

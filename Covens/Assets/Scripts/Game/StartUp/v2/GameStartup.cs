@@ -63,7 +63,7 @@ public class GameStartup : MonoBehaviour
 
     void Awake()
     {
-        LeanTween.init(1000);
+        LeanTween.init(2000);
         Application.targetFrameRate = 30;
         Screen.sleepTimeout = SleepTimeout.NeverSleep;
 

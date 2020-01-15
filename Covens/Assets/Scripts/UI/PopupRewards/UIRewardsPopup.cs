@@ -52,7 +52,7 @@ public class UIRewardsPopup : MonoBehaviour
         m_Canvas.enabled = true;
         m_InputRaycaster.enabled = true;
 
-        LeanTween.value(0, 0, 0).setDelay(1f).setOnStart(() => m_Continue.interactable = true);
+        LeanTween.value(0, 0, 0).setDelay(1f).setOnComplete(() => m_Continue.interactable = true);
         LeanTween.alphaCanvas(m_CanvasGroup, 1, 0.5f).setEaseOutCubic();
         
         StartCoroutine(ShowRewards(ingredients, cosmetics, gold, silver, xp, power, resilience));
