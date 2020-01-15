@@ -147,7 +147,12 @@ public class FTFManager : MonoBehaviour
 
         MapsAPI.Instance.InitMap(PlayerDataManager.playerData.longitude, PlayerDataManager.playerData.latitude, 1, null, false);
     }
-    
+
+    private void Start()
+    {
+        SoundManagerOneShot.Instance.SetBGTrack(0);
+    }
+
     [ContextMenu("Start FTF")]
     private void _StartFTF()
     {
@@ -815,6 +820,10 @@ public class FTFManager : MonoBehaviour
         latitude += PlayerDataManager.playerData.latitude;
 
         m_FXSpawner.Spawn(id, longitude, latitude);
+
+        yield return new WaitForSeconds(1f);
+        SoundManagerOneShot.Instance.PlaySpellFX();
+
         yield return 0;
     }
 
