@@ -150,7 +150,7 @@ public static class QuestsController
         LeanTween.cancel(m_DailyResetTweenId);
         m_DailyResetTweenId = LeanTween.value(0, 0, 0)
             .setDelay((float)expireDate.TotalSeconds)
-            .setOnStart(() => 
+            .setOnComplete(() => 
             {
                 GetQuests((error) =>
                 {

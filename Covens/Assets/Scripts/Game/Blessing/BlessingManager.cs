@@ -76,7 +76,7 @@ public static class BlessingManager
     {
         Debug.Log("next blessing check in " + totalSeconds + " seconds");
         LeanTween.cancel(m_TimerId);
-        m_TimerId = LeanTween.value(0, 0, 0).setDelay(totalSeconds).setOnStart(CheckDailyBlessing).uniqueId;
+        m_TimerId = LeanTween.value(0, 0, 0).setDelay(totalSeconds).setOnComplete(CheckDailyBlessing).uniqueId;
     }
 
     public static System.TimeSpan TimeUntilNextBlessing()
