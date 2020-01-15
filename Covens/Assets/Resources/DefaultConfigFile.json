@@ -1,0 +1,16 @@
+{    
+    "Entries": [
+        {
+            "Key": "test1",
+            "Value": "test"
+        },
+		{
+            "Key": "test2",
+            "Value": "test"
+        },
+		{
+            "Key": "test3",
+            "Value": "test"
+        }
+    ]
+}
