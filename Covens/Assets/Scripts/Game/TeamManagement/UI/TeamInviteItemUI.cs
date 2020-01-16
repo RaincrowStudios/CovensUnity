@@ -138,7 +138,7 @@ public class TeamInviteItemUI : MonoBehaviour
                         LoadingOverlay.Hide();
                         if (string.IsNullOrEmpty(error))
                         {
-                            UIGlobalPopup.ShowPopUp(onAccept, LocalizeLookUp.GetText("coven_member_new").Replace("{{Coven Name}}", TeamManager.MyCovenData.Name));
+                            UIGlobalPopup.ShowPopUp(onAccept, LocalizeLookUp.GetText("coven_request_accept").Replace("{{name}}", data.Name).Replace("{{coven}}", TeamManager.MyCovenData.Name));
                         }
                         else
                         {
@@ -163,7 +163,7 @@ public class TeamInviteItemUI : MonoBehaviour
                         LoadingOverlay.Hide();
                         if (string.IsNullOrEmpty(error))
                         {
-                            UIGlobalPopup.ShowPopUp(onReject, LocalizeLookUp.GetText("coven_request_reject_success"));
+                            UIGlobalPopup.ShowPopUp(onReject, LocalizeLookUp.GetText("coven_request_reject_success").Replace("{{name}}", data.Name));
                         }
                         else
                         {
@@ -172,7 +172,7 @@ public class TeamInviteItemUI : MonoBehaviour
                     });
                 },
                 cancelAction: () => { },
-                LocalizeLookUp.GetText("coven_request_reject"));
+                LocalizeLookUp.GetText("coven_request_reject").Replace("{{name}}", data.Name));
         };
     }
 
