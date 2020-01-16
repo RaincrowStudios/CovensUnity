@@ -1,5 +1,7 @@
 ﻿using BestHTTP;
 using Newtonsoft.Json;
+using Oktagon.Analytics;
+using Raincrow.Analytics;
 using Raincrow.Store;
 using System.Collections;
 using System.Collections.Generic;
@@ -127,6 +129,8 @@ public class DownloadManager : MonoBehaviour
 
     private static IEnumerator StartDownloads(AssetResponse assets, System.Action dictionariesDownloaded, System.Action bundlesDownloaded)
     {
+        OktAnalyticsManager.PushEvent(CovensAnalyticsEvents.BeginLoading);
+
         //check if server is under maintenance
         if (assets.maintenance)
         {
@@ -157,8 +161,8 @@ public class DownloadManager : MonoBehaviour
         {
             OnVersionOutdated?.Invoke();
             yield break;
-        }
-        
+        }        
+
         //download game the dictionary
         OnDictionaryDownloadStart?.Invoke();
 
@@ -389,6 +393,8 @@ public class DownloadManager : MonoBehaviour
 
         OnDownloadsComplete?.Invoke();
         bundlesDownloaded?.Invoke();
+
+        OktAnalyticsManager.PushEvent(CovensAnalyticsEvents.EndLoading);
     }
 
     public static bool DeserializeLocalisationDictionary(string json, System.Action onError)

@@ -181,6 +181,8 @@ public static class LoginAPIManager
             {
                 if (result == 200)
                 {
+                    OktAnalyticsManager.PushEvent(CovensAnalyticsEvents.LoginSuccess);
+
                     StoredUserName = username;
                     StoredUserPassword = password;
 
