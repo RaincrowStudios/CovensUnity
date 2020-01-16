@@ -49,5 +49,20 @@ namespace Oktagon.Analytics
                 analytics.Initialize(configFileReader);
             }
         }
+
+        public void PushEvent(string eventName, Dictionary<string, object> eventParams)
+        {
+            foreach (var analyticsService in _analyticsServices)
+            {
+                if (analyticsService.Initialized)
+                {
+                    analyticsService.PushEvent(eventName, eventParams);
+                }                
+                else
+                {
+                    Debug.LogWarningFormat("[OktAnalyticsManager]: Could not push event [{0}] on service [{1}]!", eventName, analyticsService.GetName());
+                }
+            }
+        }
     }
 }
