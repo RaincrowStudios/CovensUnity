@@ -1,7 +1,7 @@
-﻿using Raincrow;
+﻿using Oktagon.Analytics;
+using Raincrow;
 using Raincrow.Chat;
 using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.CrashReportHandler;
 
@@ -383,5 +383,5 @@ public class GameStartup : MonoBehaviour
 
         SocketClient.Instance.InitiateSocketConnection();
         ChatManager.InitChat();
-    }
+    }    
 }

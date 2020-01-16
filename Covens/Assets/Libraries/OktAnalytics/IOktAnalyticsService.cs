@@ -7,7 +7,7 @@ namespace Oktagon.Analytics
     {
         bool Initialized { get; }
         void Initialize(IOktConfigFileReader configFileReader);
-        void PushEvent(string eventName, Dictionary<string, object> eventParams);
+        void PushEvent(string eventName, Dictionary<string, object> eventParams = null);
         string GetName();
     }
 }

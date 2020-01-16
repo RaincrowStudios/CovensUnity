@@ -1,6 +1,5 @@
 ﻿using Oktagon.Utils;
 using System.Collections.Generic;
-using Unity.Collections;
 using UnityEngine;
 
 namespace Oktagon.Analytics
@@ -17,52 +16,75 @@ namespace Oktagon.Analytics
         /// <summary>
         /// A list with all the analytics services of our game.
         /// </summary>
-        private List<IOktAnalyticsService> _analyticsServices = new List<IOktAnalyticsService>();
+        private List<IOktAnalyticsService> _analyticsServices = new List<IOktAnalyticsService>();        
+               
 
-
-        /// <summary>
-        /// Public access to the OktAnalyticsManager.
-        /// </summary>
-        public static OktAnalyticsManager GetInstance()
+        public static void Initialize()
         {
-            return _instance;
-        }                
-
-        protected virtual void OnEnable()
-        {
-            Initialize();
-        }
-
-        public void Initialize()
-        {
-            _instance = this;
-
-            TextAsset defaultConfigTextAsset = Resources.Load<TextAsset>(DefaultConfigPath);
-            IOktConfigFileReader configFileReader = GetComponent<IOktConfigFileReader>();
-            configFileReader.SetConfig(defaultConfigTextAsset.text);
-
-            _analyticsServices.Clear();
-            _analyticsServices.AddRange(GetComponentsInChildren<IOktAnalyticsService>());
-
-            foreach (IOktAnalyticsService analytics in _analyticsServices)
+            if (_instance == null)
             {
-                analytics.Initialize(configFileReader);
+                Debug.Log("[OktAnalyticsManager]: Finding an Analytics Manager instance!");
+                _instance = FindObjectOfType<OktAnalyticsManager>();                
+            }
+
+            if (_instance != null)
+            {
+                DontDestroyOnLoad(_instance);
+
+                TextAsset defaultConfigTextAsset = Resources.Load<TextAsset>(DefaultConfigPath);
+                IOktConfigFileReader configFileReader = _instance.GetComponent<IOktConfigFileReader>();
+                configFileReader.SetConfig(defaultConfigTextAsset.text);
+
+                _instance._analyticsServices.Clear();
+                _instance._analyticsServices.AddRange(_instance.GetComponentsInChildren<IOktAnalyticsService>());
+
+                foreach (IOktAnalyticsService analytics in _instance._analyticsServices)
+                {
+                    analytics.Initialize(configFileReader);
+                }
+            } 
+            else
+            {
+                Debug.LogWarning("[OktAnalyticsManager]: Analytics Manager does not have an instance!");
             }
         }
 
-        public void PushEvent(string eventName, Dictionary<string, object> eventParams)
+        public static bool IsInitialized()
         {
-            foreach (var analyticsService in _analyticsServices)
+            if (_instance != null)
             {
-                if (analyticsService.Initialized)
+                foreach (var analyticsService in _instance._analyticsServices)
                 {
-                    analyticsService.PushEvent(eventName, eventParams);
+                    if (analyticsService.Initialized)
+                    {
+                        return true;
+                    }
                 }                
-                else
+            }
+
+            return false;
+        }
+
+        public static void PushEvent(string eventName, Dictionary<string, object> eventParams = null)
+        {
+            if (_instance != null)
+            {
+                foreach (var analyticsService in _instance._analyticsServices)
                 {
-                    Debug.LogWarningFormat("[OktAnalyticsManager]: Could not push event [{0}] on service [{1}]!", eventName, analyticsService.GetName());
+                    if (analyticsService.Initialized)
+                    {
+                        analyticsService.PushEvent(eventName, eventParams);
+                    }
+                    else
+                    {
+                        Debug.LogWarningFormat("[OktAnalyticsManager]: Could not push event [{0}] on service [{1}]!", eventName, analyticsService.GetName());
+                    }
                 }
             }
-        }
+            else
+            {
+                Debug.LogWarning("[OktAnalyticsManager]: Analytics Manager does not have an instance!");
+            }
+        }        
     }
 }

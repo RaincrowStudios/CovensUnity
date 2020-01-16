@@ -7603,6 +7603,7 @@ GameObject:
   - component: {fileID: 1829203929}
   - component: {fileID: 1829203928}
   - component: {fileID: 1829203930}
+  - component: {fileID: 1829203931}
   m_Layer: 0
   m_Name: AnalyticsManager
   m_TagString: Untagged
@@ -7622,28 +7623,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a47d4fe50bcfe654f80848d324c64385, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _oktConfigFile:
-    entries:
-    - _key: 
-      _value: 
-    - _key: 
-      _value: 
-    - _key: aaaaaaaaaaaaa
-      _value: 
-    - _key: 
-      _value: 
-    - _key: 
-      _value: 
-    - _key: 
-      _value: 
-    - _key: 
-      _value: 
-    - _key: 
-      _value: 
-    - _key: 
-      _value: 
-    - _key: 
-      _value: 
 --- !u!4 &1829203929
 Transform:
   m_ObjectHideFlags: 0
@@ -7669,6 +7648,18 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 2c2836d861306ca41b1a7175e0a86dc3, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &1829203931
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1829203927}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 88ae4cb0404c12f45ad4102104f36328, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
 --- !u!1 &1871776295

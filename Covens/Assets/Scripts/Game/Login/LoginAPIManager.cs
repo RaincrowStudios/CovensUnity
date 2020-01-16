@@ -1,4 +1,6 @@
 ﻿using Newtonsoft.Json;
+using Oktagon.Analytics;
+using Raincrow.Analytics;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -219,6 +221,9 @@ public static class LoginAPIManager
             {
                 if (result == 200)
                 {
+                    // new player 
+                    OktAnalyticsManager.PushEvent(CovensAnalyticsEvents.NewPlayer);
+
                     Login(username, password, callback);
                 }
                 else
