@@ -27,17 +27,17 @@ using System.IO;
 // https://unity3d.com/unity/whats-new/unity-5.4.0 (525606)
 public sealed class EnableNotificationsPostProcessBuild {
     
-    [PostProcessBuild(1)]
-    public static void OnPostProcessBuild(BuildTarget buildTarget, string path)
-    {
-        #if (UNITY_IOS && UNITY_5_4_OR_NEWER)
-        string preprocessor = path + "/Classes/Preprocessor.h";
-        File.WriteAllText(
-            preprocessor,
-            File.ReadAllText(preprocessor)
-                .Replace(
-                    "UNITY_USES_REMOTE_NOTIFICATIONS 0",
-                    "UNITY_USES_REMOTE_NOTIFICATIONS 1"));
-        #endif
-    }
+    //[PostProcessBuild(1)]
+    //public static void OnPostProcessBuild(BuildTarget buildTarget, string path)
+    //{
+    //    #if (UNITY_IOS && UNITY_5_4_OR_NEWER)
+    //    string preprocessor = path + "/Classes/Preprocessor.h";
+    //    File.WriteAllText(
+    //        preprocessor,
+    //        File.ReadAllText(preprocessor)
+    //            .Replace(
+    //                "UNITY_USES_REMOTE_NOTIFICATIONS 0",
+    //                "UNITY_USES_REMOTE_NOTIFICATIONS 1"));
+    //    #endif
+    //}
 }
