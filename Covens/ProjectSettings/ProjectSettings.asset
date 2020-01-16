@@ -744,7 +744,7 @@ PlayerSettings:
   webGLWasmStreaming: 0
   scriptingDefineSymbols:
     1: 
-    4: 
+    4: DDNA_IOS_PUSH_NOTIFICATIONS_REMOVED
     7: 
     13: CROSS_PLATFORM_INPUT
     14: CROSS_PLATFORM_INPUT;MOBILE_INPUT
