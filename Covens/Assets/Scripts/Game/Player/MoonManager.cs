@@ -56,6 +56,16 @@ public class MoonManager : UIAnimationManager
         m_InputRaycaster.enabled = false;
 
         DownloadedAssets.OnWillUnloadAssets += DownloadedAssets_OnWillUnloadAssets;
+
+        moonAge = MoonAge(DateTime.Today.Day, DateTime.Today.Month, DateTime.Today.Year);
+        moonAge = Mathf.Clamp(moonAge, 0, 28);
+
+        alignmentButton = PlayerManagerUI.Instance.LunarPhaseHolder.transform.GetChild(0).GetComponent<Button>();
+        dailytext = container.transform.GetChild(11).GetChild(2).GetComponent<TextMeshProUGUI>();
+        alignmentButton.onClick.AddListener(() =>
+        {
+            alignmentButton.enabled = false;
+        });
     }
 
     private void DownloadedAssets_OnWillUnloadAssets()
@@ -68,18 +78,6 @@ public class MoonManager : UIAnimationManager
 
         DownloadedAssets.OnWillUnloadAssets -= DownloadedAssets_OnWillUnloadAssets;
         SceneManager.UnloadScene(SceneManager.Scene.MOONPHASE, null, null);
-    }
-
-    void Start()
-    {
-        moonAge = MoonAge(DateTime.Today.Day, DateTime.Today.Month, DateTime.Today.Year);
-        moonAge = Mathf.Clamp(moonAge, 0, 28);
-        alignmentButton = PlayerManagerUI.Instance.LunarPhaseHolder.transform.GetChild(0).GetComponent<Button>();
-        dailytext = container.transform.GetChild(11).GetChild(2).GetComponent<TextMeshProUGUI>();
-        alignmentButton.onClick.AddListener(() =>
-        {
-            alignmentButton.enabled = false;
-        });
     }
 
     public static void Open()
