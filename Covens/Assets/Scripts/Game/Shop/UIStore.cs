@@ -230,7 +230,7 @@ public class UIStore : MonoBehaviour
             {
                 UIGlobalPopup.ShowError(
                     null,
-                    LocalizeLookUp.GetText("asset_error").Replace("{{asset}}", LocalizeLookUp.GetText("store_currency"))
+                    LocalizeLookUp.GetText("store_init_error")
                 );
                 return;
             }
