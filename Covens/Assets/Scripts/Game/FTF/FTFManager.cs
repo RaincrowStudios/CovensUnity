@@ -9,6 +9,8 @@ using Raincrow.GameEventResponses;
 using Raincrow.Maps;
 using System.Text.RegularExpressions;
 using Raincrow.Store;
+using Oktagon.Analytics;
+using Raincrow.Analytics;
 
 public class FTFManager : MonoBehaviour
 {
@@ -34,7 +36,8 @@ public class FTFManager : MonoBehaviour
     [SerializeField] private Button m_OpenWitchSchool;
     [SerializeField] private Button m_SkipWitchSchool;
     
-    private static FTFManager m_Instance;
+    private static FTFManager Instance;
+    private static Dictionary<string, object> EventParameters = new Dictionary<string, object>();
 
     public static bool InFTF => PlayerDataManager.IsFTF;
     public static event System.Action OnBeginFTF;
@@ -42,9 +45,9 @@ public class FTFManager : MonoBehaviour
 
     public static void StartFTF()
     {
-        if (m_Instance != null)
+        if (Instance != null)
         {
-            m_Instance._StartFTF();
+            Instance._StartFTF();
         }
         else
         {
@@ -52,7 +55,7 @@ public class FTFManager : MonoBehaviour
             SceneManager.LoadSceneAsync(SceneManager.Scene.FTF, UnityEngine.SceneManagement.LoadSceneMode.Additive, null, () =>
             {
                 LoadingOverlay.Hide();
-                m_Instance._StartFTF();
+                Instance._StartFTF();
             });
         }
     }
@@ -79,8 +82,7 @@ public class FTFManager : MonoBehaviour
 
                     PlayerDataManager.playerData.xp = data.xp;
                     //PlayerDataManager.playerData.spirits = update.spirits;
-                    PlayerDataManager.playerData.tutorial = true;
-
+                    PlayerDataManager.playerData.tutorial = true;                    
                     OnFinishFTF?.Invoke();
                 }
                 callback?.Invoke(result, response);
@@ -96,7 +98,7 @@ public class FTFManager : MonoBehaviour
     public static void SkipFTF()
     {
         Debug.LogError("TODO: SKIP FTF");
-    }
+    }    
 
     private int m_PreviousStepIndex;
     private int m_CurrentStepIndex;
@@ -106,7 +108,7 @@ public class FTFManager : MonoBehaviour
 
     private void Awake()
     {
-        m_Instance = this;
+        Instance = this;
 
         m_BotMessage.OnClick += () => StartCoroutine(NextStep());
         m_TopMessage.OnClick += () => StartCoroutine(NextStep());
@@ -294,7 +296,13 @@ public class FTFManager : MonoBehaviour
                 coroutines.RemoveAt(0);
             }
         }
-        
+
+        // record event
+        if (!string.IsNullOrWhiteSpace(step.trackEventName))
+        {
+            CovensFTFGameSteps.Record(step.trackEventName);
+        }
+
         //setup timer
         if (step.timer > 0)
         {
@@ -305,7 +313,7 @@ public class FTFManager : MonoBehaviour
         else
         {
             m_RunningSetup = false;
-        }
+        }        
     }
 
     private void LoadJson(System.Action<string> onComplete)
@@ -322,11 +330,15 @@ public class FTFManager : MonoBehaviour
     {
         ShowWitchSchool(false, CloseFTF);
         WitchSchoolManager.Open();
+
+        RecordWitchSchoolEvent(false);
     }
 
     private void OnSkipWitchSchool()
     {
         ShowWitchSchool(false, CloseFTF);
+
+        RecordWitchSchoolEvent(false);
     }
 
     private void ShowWitchSchool(bool show, System.Action onComplete)
@@ -343,7 +355,19 @@ public class FTFManager : MonoBehaviour
                 m_WitchSchool.gameObject.SetActive(show);
                 onComplete?.Invoke();
             })
-            .uniqueId;
+            .uniqueId;  
+    }
+
+    private void RecordWitchSchoolEvent(bool showWitchSchool)
+    {
+        if (showWitchSchool)
+        {
+            CovensFTFGameSteps.Record(CovensFTFGameSteps.SchoolOfWitchcraftAccepted);
+        }
+        else
+        {
+            CovensFTFGameSteps.Record(CovensFTFGameSteps.SchoolOfWitchcraftRefused);            
+        }
     }
 
     #region AVAILABLE ACTIONS

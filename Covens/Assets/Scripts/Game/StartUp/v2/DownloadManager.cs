@@ -128,14 +128,7 @@ public class DownloadManager : MonoBehaviour
     }
 
     private static IEnumerator StartDownloads(AssetResponse assets, System.Action dictionariesDownloaded, System.Action bundlesDownloaded)
-    {
-        Dictionary<string, object> eventParams = new Dictionary<string, object>
-        {
-            { "Step", CovensAnalyticsGameSteps.BeginLoading }
-        };
-
-        OktAnalyticsManager.PushEvent(CovensAnalyticsEvents.FirstGameSteps, eventParams);
-
+    {        
         //check if server is under maintenance
         if (assets.maintenance)
         {
@@ -398,11 +391,6 @@ public class DownloadManager : MonoBehaviour
 
         OnDownloadsComplete?.Invoke();
         bundlesDownloaded?.Invoke();
-
-        eventParams.Clear();
-        eventParams.Add("Step", CovensAnalyticsGameSteps.EndLoading);
-
-        OktAnalyticsManager.PushEvent(CovensAnalyticsEvents.FirstGameSteps, eventParams);
     }
 
     public static bool DeserializeLocalisationDictionary(string json, System.Action onError)

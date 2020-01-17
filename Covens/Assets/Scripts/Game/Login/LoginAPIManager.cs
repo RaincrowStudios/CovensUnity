@@ -181,12 +181,6 @@ public static class LoginAPIManager
             {
                 if (result == 200)
                 {
-                    Dictionary<string, object> eventParams = new Dictionary<string, object>
-                    {
-                        { "Step", CovensAnalyticsGameSteps.BeginLoading }
-                    };
-                    OktAnalyticsManager.PushEvent(CovensAnalyticsEvents.FirstGameSteps, eventParams);
-
                     StoredUserName = username;
                     StoredUserPassword = password;
 
@@ -230,6 +224,9 @@ public static class LoginAPIManager
                     // new player 
                     OktAnalyticsManager.PushEvent(CovensAnalyticsEvents.NewPlayer);
 
+                    // game step      
+                    CovensFTFGameSteps.Record(CovensFTFGameSteps.AccountCreated);
+
                     Login(username, password, callback);
                 }
                 else
@@ -261,6 +258,9 @@ public static class LoginAPIManager
                     //OnCharacterReceived?.Invoke();
                     //callback?.Invoke(result, response);
                     Debug.LogError("TEMP FIX - SOCKET NOT WORKING AFTER CREATING A NEW ACCOUNT/CHARACTER");
+
+                    // game step
+                    CovensFTFGameSteps.Record(CovensFTFGameSteps.CharacterCreated);
 
                     loginToken = null;
                     wssToken = null;
