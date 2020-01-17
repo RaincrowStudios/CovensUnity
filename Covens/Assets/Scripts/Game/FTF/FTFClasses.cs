@@ -125,6 +125,9 @@ namespace Raincrow.FTF
         public float timer;
 
         [SerializeField]
+        public string trackEventName;
+
+        [SerializeField]
         public FTFRectData button;
 
         [SerializeField]
