@@ -60,7 +60,7 @@ public static class BlessingManager
                 }
 
                 lastBlessingDate = Utilities.FromJavaTime(LastBlessing);
-                nextBlessingDate = lastBlessingDate.AddHours(24);
+                nextBlessingDate = lastBlessingDate.AddHours(21);
                 nextBlessing = nextBlessingDate - System.DateTime.UtcNow;
                 StartTimer((float)nextBlessing.TotalSeconds);
             }

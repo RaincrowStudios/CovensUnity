@@ -67,16 +67,26 @@ namespace Raincrow.Chat.UI
 
         private Coroutine m_SpawnCoroutine;
         private Coroutine m_UpdateTimestampCoroutine;
-        private Coroutine m_WaitInputCooldownCoroutine;
-        
+        private Coroutine m_WaitInputCooldownCoroutine;        
 
         private static UIChat m_Instance;
 
-        public static void Open(ChatCategory category = ChatCategory.WORLD)
+        public static void Open(ChatCategory category = ChatCategory.NONE)
         {
+            System.Action onLoad = () =>
+            {
+                if (category == ChatCategory.NONE)
+                    category = m_Instance._currentCategory;
+
+                if (category == ChatCategory.NONE)
+                    category = ChatCategory.WORLD;
+
+                m_Instance.Show(category);
+            };
+
             if (m_Instance != null)
             {
-                m_Instance.Show(category);
+                onLoad();
             }
             else
             {
@@ -89,7 +99,7 @@ namespace Raincrow.Chat.UI
                     () =>
                     {
                         LoadingOverlay.Hide();
-                        m_Instance.Show(category);
+                        onLoad();
                     });
             }
         }
@@ -101,9 +111,9 @@ namespace Raincrow.Chat.UI
             m_Instance.AnimateHide();
         }
 
-        public void Show(ChatCategory category = ChatCategory.WORLD)
+        public void Show(ChatCategory category)
         {
-            //SetCategory(category);
+            SetCategory(category);
 
             AnimateShow(() => MapsAPI.Instance.HideMap(true));
 
@@ -677,15 +687,5 @@ namespace Raincrow.Chat.UI
             }
             _SelectedGlow.gameObject.SetActive(true);
         }
-
-#if UNITY_EDITOR
-        [ContextMenu("Open")]
-        private void Debug_Open()
-        {
-            if (Application.isPlaying == false)
-                return;
-            Show();
-        }
-#endif
     }
 }
