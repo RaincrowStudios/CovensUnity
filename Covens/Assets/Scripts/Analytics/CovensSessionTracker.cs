@@ -23,7 +23,7 @@ namespace Raincrow.Analytics
         {
             Dictionary<string, object> eventParams = new Dictionary<string, object>
             {
-                { "appVersion", Application.version }
+                { "clientVersion", Application.version }
             };
 
             // How many times do people start the game? How often in a day to people play my game? Do they come back each week? Is my game improving week to week, version to version.  What are my critical drop out points?
@@ -37,6 +37,7 @@ namespace Raincrow.Analytics
             int sessionLength = Mathf.RoundToInt(Time.unscaledTime);
             Dictionary<string, object> eventParams = new Dictionary<string, object>
             {
+                { "clientVersion",  Application.version }, // version
                 { "sessionLength",  sessionLength } // seconds
             };
 

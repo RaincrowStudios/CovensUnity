@@ -74,6 +74,18 @@ namespace Oktagon.Analytics
                     if (analyticsService.Initialized)
                     {
                         analyticsService.PushEvent(eventName, eventParams);
+#if DEBUG
+                        string eventParamsString = string.Empty;
+                        if (eventParams != null)
+                        {
+                            foreach (KeyValuePair<string, object> kvp in eventParams)
+                            {
+                                eventParamsString = string.Concat(eventParamsString, "{Key: ", kvp.Key, " - Value: ", kvp.Value, "}");
+                            }
+                        }                        
+                        
+                        Debug.LogFormat("[OktAnalyticsManager]: Pushed Event [{0}] with params [{1}]", eventName, eventParamsString);
+#endif                        
                     }
                     else
                     {

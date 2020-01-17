@@ -222,7 +222,11 @@ public static class LoginAPIManager
                 if (result == 200)
                 {
                     // new player 
-                    OktAnalyticsManager.PushEvent(CovensAnalyticsEvents.NewPlayer);
+                    Dictionary<string, object> eventParams = new Dictionary<string, object>
+                    {
+                        { "clientVersion",  Application.version }
+                    };
+                    OktAnalyticsManager.PushEvent(CovensAnalyticsEvents.NewPlayer, eventParams);
 
                     // game step      
                     CovensFTFGameSteps.Record(CovensFTFGameSteps.AccountCreated);

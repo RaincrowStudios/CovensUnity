@@ -96,6 +96,17 @@ public class DownloadManager : MonoBehaviour
 
     public static AssetResponse AssetVersion { get; private set; }
 
+    public static bool IsOpeningGameFirstTime()
+    {
+        int value = PlayerPrefs.GetInt("IsOpeningGameFirstTime", 1);
+        return value == 1;
+    }
+
+    public static void SetFalseToIsOpeningGameFirstTime()
+    {
+        PlayerPrefs.SetInt("IsOpeningGameFirstTime", 0);
+    }
+
     public static void DownloadAssets(System.Action downloadComplete)
     {
         Debug.Log("Requesting asset list from server");
@@ -128,7 +139,12 @@ public class DownloadManager : MonoBehaviour
     }
 
     private static IEnumerator StartDownloads(AssetResponse assets, System.Action dictionariesDownloaded, System.Action bundlesDownloaded)
-    {        
+    {
+        if (IsOpeningGameFirstTime())
+        {
+            CovensLoadingSteps.Record(CovensLoadingSteps.BeginLoading);
+        }
+
         //check if server is under maintenance
         if (assets.maintenance)
         {
@@ -165,6 +181,11 @@ public class DownloadManager : MonoBehaviour
         OnDictionaryDownloadStart?.Invoke();
 
         {
+            if (IsOpeningGameFirstTime())
+            {
+                CovensLoadingSteps.Record(CovensLoadingSteps.BeginGameDictionaryDownload);
+            }
+
             bool isDictionaryComplete = false;
             bool isDictionaryParseError = false;
             string dictionaryDownloadError = null;
@@ -173,6 +194,11 @@ public class DownloadManager : MonoBehaviour
                 onDicionaryReady: () =>
                 {
                     isDictionaryComplete = true;
+
+                    if (IsOpeningGameFirstTime())
+                    {
+                        CovensLoadingSteps.Record(CovensLoadingSteps.EndGameDictionaryDownload);
+                    }                        
                 },
                 onDownloadError: (code, response) =>
                 {
@@ -203,6 +229,11 @@ public class DownloadManager : MonoBehaviour
 
         //download the store dictionary
         {
+            if (IsOpeningGameFirstTime())
+            {
+                CovensLoadingSteps.Record(CovensLoadingSteps.BeginStoreDictionaryDownload);
+            }                
+
             bool isDictionaryComplete = false;
             bool isDictionaryParseError = false;
             string dictionaryDownloadError = null;
@@ -211,6 +242,11 @@ public class DownloadManager : MonoBehaviour
                 onDicionaryReady: () =>
                 {
                     isDictionaryComplete = true;
+
+                    if (IsOpeningGameFirstTime())
+                    {
+                        CovensLoadingSteps.Record(CovensLoadingSteps.EndStoreDictionaryDownload);
+                    }
                 },
                 onDownloadError: (code, response) =>
                 {
@@ -243,6 +279,11 @@ public class DownloadManager : MonoBehaviour
 
         //download the localisation dictionary
         {
+            if (IsOpeningGameFirstTime())
+            {
+                CovensLoadingSteps.Record(CovensLoadingSteps.BeginLocalizationDownload);
+            }    
+
             bool isDictionaryComplete = false;
             bool isDictionaryParseError = false;
             string dictionaryDownloadError = null;
@@ -250,6 +291,10 @@ public class DownloadManager : MonoBehaviour
             DictionaryManager.GetLocalisationDictionary(assets.localization,
                 onDicionaryReady: () =>
                 {
+                    if (IsOpeningGameFirstTime())
+                    {
+                        CovensLoadingSteps.Record(CovensLoadingSteps.EndLocalizationDownload);
+                    }                        
                     isDictionaryComplete = true;
                 },
                 onDownloadError: (code, response) =>
@@ -284,6 +329,10 @@ public class DownloadManager : MonoBehaviour
         DictionaryReady = true;
         dictionariesDownloaded?.Invoke();
 
+        if (IsOpeningGameFirstTime())
+        {
+            CovensLoadingSteps.Record(CovensLoadingSteps.BeginAssetBundlesDownload);
+        }            
 
         //figure out which bundles must be downloaded
         List<string> bundlesToDownload = new List<string>();
@@ -320,7 +369,7 @@ public class DownloadManager : MonoBehaviour
         }
         
         //download the bundles
-        string assetBaseUrl = DownloadManager.downloadUrl + "assetbundles/285/";
+        string assetBaseUrl = downloadUrl + "assetbundles/285/";
         if (Application.platform == RuntimePlatform.IPhonePlayer)
             assetBaseUrl += "ios/";
         else
@@ -384,13 +433,19 @@ public class DownloadManager : MonoBehaviour
             }
         }
 
+        if (IsOpeningGameFirstTime())
+        {
+            CovensLoadingSteps.Record(CovensLoadingSteps.EndAssetBundlesDownload);
+            SetFalseToIsOpeningGameFirstTime();
+        }            
+
         foreach (string key in assets.assets)
         {
             DownloadedAssets.LoadAssetPath(key);
         }
 
         OnDownloadsComplete?.Invoke();
-        bundlesDownloaded?.Invoke();
+        bundlesDownloaded?.Invoke();        
     }
 
     public static bool DeserializeLocalisationDictionary(string json, System.Action onError)
