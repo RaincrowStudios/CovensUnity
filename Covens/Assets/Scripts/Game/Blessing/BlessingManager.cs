@@ -18,7 +18,7 @@ public static class BlessingManager
         {
             if (PlayerPrefs.HasKey("LastBlessing." + PlayerDataManager.playerData.instance) == false)
             {
-                LastBlessing = Utilities.GetUnixTimestamp(System.DateTime.UtcNow.AddHours(-20));
+                LastBlessing = Utilities.GetUnixTimestamp(System.DateTime.UtcNow.AddHours(-CovenConstants.DAILY_BLESSING_COOLDOWN + 4));
             }
             return double.Parse(PlayerPrefs.GetString("LastBlessing." + PlayerDataManager.playerData.instance));
         }
@@ -28,7 +28,7 @@ public static class BlessingManager
     public static void CheckDailyBlessing()
     {
         System.DateTime lastBlessingDate = Utilities.FromJavaTime(LastBlessing);
-        System.DateTime nextBlessingDate = lastBlessingDate.AddHours(21);
+        System.DateTime nextBlessingDate = lastBlessingDate.AddHours(CovenConstants.DAILY_BLESSING_COOLDOWN);
         System.TimeSpan nextBlessing = nextBlessingDate - System.DateTime.UtcNow;
                 
         if (nextBlessing.TotalSeconds > 0)
@@ -60,7 +60,7 @@ public static class BlessingManager
                 }
 
                 lastBlessingDate = Utilities.FromJavaTime(LastBlessing);
-                nextBlessingDate = lastBlessingDate.AddHours(21);
+                nextBlessingDate = lastBlessingDate.AddHours(CovenConstants.DAILY_BLESSING_COOLDOWN);
                 nextBlessing = nextBlessingDate - System.DateTime.UtcNow;
                 StartTimer((float)nextBlessing.TotalSeconds);
             }
@@ -82,7 +82,7 @@ public static class BlessingManager
     public static System.TimeSpan TimeUntilNextBlessing()
     {
         System.DateTime lastBlessingDate = Utilities.FromJavaTime(LastBlessing);
-        System.DateTime nextBlessingDate = lastBlessingDate.AddHours(24);
+        System.DateTime nextBlessingDate = lastBlessingDate.AddHours(CovenConstants.DAILY_BLESSING_COOLDOWN);
         return nextBlessingDate - System.DateTime.UtcNow;
     }
 

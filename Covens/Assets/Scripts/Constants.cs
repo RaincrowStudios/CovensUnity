@@ -10,6 +10,9 @@ public class CovenConstants : MonoBehaviour
     public const string GOOGLE_TERMS_OF_SERVICE_URL = "https://cloud.google.com/maps-platform/terms/";
     public const string GOOGLE_PRIVACY_POLICY_URL = "https://policies.google.com/privacy";
 
+    //TODO: MOVE TO DICTIONARY
+    public const int DAILY_BLESSING_COOLDOWN = 21;
+
     public static bool Debug = true;
     public static bool isBackUpServer = false;
     public static string hostAddress
