@@ -181,7 +181,11 @@ public static class LoginAPIManager
             {
                 if (result == 200)
                 {
-                    OktAnalyticsManager.PushEvent(CovensAnalyticsEvents.LoginSuccess);
+                    Dictionary<string, object> eventParams = new Dictionary<string, object>
+                    {
+                        { "Step", CovensAnalyticsGameSteps.BeginLoading }
+                    };
+                    OktAnalyticsManager.PushEvent(CovensAnalyticsEvents.FirstGameSteps, eventParams);
 
                     StoredUserName = username;
                     StoredUserPassword = password;
