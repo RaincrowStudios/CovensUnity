@@ -34,7 +34,12 @@ namespace Raincrow.Analytics
         public static readonly string SummonSpirit = "summonSpirit";
 
         // clientVersion, result (yes, no, never)
-        public static readonly string RatePopUp = "ratePopUp";
+        public static readonly string EnjoyTheGamePopUp = "enjoyTheGamePopUp";
+
+        // clientVersion, result (yes, no, never)
+        public static readonly string ReviewPopUp = "reviewPopUp";
+
+        public static readonly string HelpcrowPopUp = "helpcrowPopUp";
     }
 
     public static class CovensFTFGameSteps
