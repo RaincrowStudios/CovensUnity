@@ -220,14 +220,7 @@ public static class LoginAPIManager
             (response, result) =>
             {
                 if (result == 200)
-                {
-                    // new player 
-                    Dictionary<string, object> eventParams = new Dictionary<string, object>
-                    {
-                        { "clientVersion",  Application.version }
-                    };
-                    OktAnalyticsManager.PushEvent(CovensAnalyticsEvents.NewPlayer, eventParams);
-
+                {                    
                     // game step      
                     CovensFTFGameSteps.Record(CovensFTFGameSteps.AccountCreated);
 
@@ -262,6 +255,14 @@ public static class LoginAPIManager
                     //OnCharacterReceived?.Invoke();
                     //callback?.Invoke(result, response);
                     Debug.LogError("TEMP FIX - SOCKET NOT WORKING AFTER CREATING A NEW ACCOUNT/CHARACTER");
+
+                    // new player 
+                    Dictionary<string, object> eventParams = new Dictionary<string, object>
+                    {
+                        { "clientVersion",  Application.version },
+                        { "profileImage",  bodyType }
+                    };
+                    OktAnalyticsManager.PushEvent(CovensAnalyticsEvents.NewPlayer, eventParams);
 
                     // game step
                     CovensFTFGameSteps.Record(CovensFTFGameSteps.CharacterCreated);
