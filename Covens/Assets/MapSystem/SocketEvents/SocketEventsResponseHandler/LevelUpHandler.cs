@@ -1,5 +1,8 @@
 ﻿using Newtonsoft.Json;
+using Oktagon.Analytics;
+using Raincrow.Analytics;
 using Raincrow.Maps;
+using System.Collections.Generic;
 using UnityEngine;
 
 namespace Raincrow.GameEventResponses
@@ -42,8 +45,30 @@ namespace Raincrow.GameEventResponses
                 player.silver += data.silver;
                 player.basePower += data.power;
                 player.baseResilience += data.resilience;
+
+                string upgradedStats = "none";
+                if (data.power > 0)
+                {
+                    upgradedStats = "power";
+                }
+                else if (data.resilience > 0)
+                {
+                    upgradedStats = "resilience";
+                }
+
+                Dictionary<string, object> eventParams = new Dictionary<string, object>()
+                {
+                    {"clientVersion", Application.version },
+                    {"level", player.level },
+                    {"upgradedStats", upgradedStats }
+                };
+
+                OktAnalyticsManager.PushEvent(CovensAnalyticsEvents.LevelUp, eventParams);
+
                 if (player.energy < player.baseEnergy)
+                {
                     OnMapEnergyChange.ForceEvent(PlayerManager.marker, player.baseEnergy, data.timestamp);
+                }
                 PlayerDataManager.playerData.UpdateSpells();
                 
                 //udpate UI
