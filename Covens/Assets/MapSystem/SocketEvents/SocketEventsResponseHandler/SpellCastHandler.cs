@@ -1,4 +1,6 @@
 ﻿using Newtonsoft.Json;
+using Oktagon.Analytics;
+using Raincrow.Analytics;
 using Raincrow.Maps;
 using System.Collections.Generic;
 using UnityEngine;
@@ -108,6 +110,7 @@ namespace Raincrow.GameEventResponses
             int energyChange = (int)data.result.amount;
             int casterNewEnergy = data.caster.energy;
             int targetNewEnergy = data.target.energy;
+            int playerCurrentEnergy = player.energy;
 
             OnSpellCast?.Invoke(data);
 
@@ -172,8 +175,25 @@ namespace Raincrow.GameEventResponses
 
                         if (data.result.isSuccess)
                         {
+                            if (playerIsTarget && targetNewEnergy <= 0 && playerCurrentEnergy > 0)
+                            {
+                                // trigger death
+                                string killedBy = (caster.Type == MarkerSpawner.MarkerType.WITCH) ? "witch" : "spirit";
+                                string place = PlayerDataManager.playerData.insidePlaceOfPower ? "pop" : "map";
+                                Dictionary<string, object> eventParams = new Dictionary<string, object>()
+                                {
+                                    {"clientVersion", Application.version},
+                                    {"killedBy", killedBy},
+                                    {"place", place}
+                                };
+
+                                OktAnalyticsManager.PushEvent(CovensAnalyticsEvents.Death, eventParams);
+                            }
+
                             if (m_NonDamagingSpells.Contains(spell.id))
+                            {
                                 SpellcastingFX.SpawnText(target, LocalizeLookUp.GetSpellName(spell.id), 1);
+                            }
                             //SpellcastingFX.SpawnGlyph(target, spell, data.spell);
                             SpellcastingFX.SpawnEnergyChange(target, energyChange, data.result.isCritical ? 1.4f : 1f);
                         }
