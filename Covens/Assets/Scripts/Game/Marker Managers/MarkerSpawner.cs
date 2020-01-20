@@ -8,6 +8,8 @@ using Raincrow.Maps;
 using TMPro;
 using Raincrow.GameEventResponses;
 using Raincrow.FTF;
+using Raincrow.Analytics;
+using Oktagon.Analytics;
 
 public class MarkerSpawner : MonoBehaviour
 {
@@ -348,6 +350,17 @@ public class MarkerSpawner : MonoBehaviour
                 FirstTapManager.Show("ingredients", () => OnClickMarker(m));
                 return;
             }
+
+            Dictionary<string, object> eventParams = new Dictionary<string, object>
+            {
+                { "clientVersion", Application.version },
+                { "itemID", m.Token.instance},
+                { "quantity", (m as CollectableMarker).collectableToken.amount }
+            };
+
+            // Track the name and quantity of each item the user has found on the map.
+            OktAnalyticsManager.PushEvent(CovensAnalyticsEvents.ItemCollected, eventParams);
+
             PickUpCollectibleAPI.PickUpCollectable(m as CollectableMarker);
             return;
         }
@@ -359,6 +372,17 @@ public class MarkerSpawner : MonoBehaviour
                 FirstTapManager.Show("energy", () => OnClickMarker(m));
                 return;
             }
+            
+            Dictionary<string, object> eventParams = new Dictionary<string, object>
+            {
+                { "clientVersion", Application.version },
+                { "itemID", m.Token.instance},
+                { "quantity", 1 }
+            };
+
+            // Track the name and quantity of each item the user has found on the map.
+            OktAnalyticsManager.PushEvent(CovensAnalyticsEvents.ItemCollected, eventParams);
+
             PickUpCollectibleAPI.CollectEnergy(m as EnergyMarker);
             return;
         }
