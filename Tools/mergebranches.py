@@ -23,8 +23,8 @@ def run_git_command(git_command):
     return subprocess.call(git_command_split, stdout=subprocess.DEVNULL)
 
 # get LOCAL origin branch
-origin_branch = input('Origin Branch [default is dev/2.8.6]: ') 
-origin_branch = origin_branch or 'dev/2.8.6'
+origin_branch = input('Origin Branch [default is dev/2.8.7]: ') 
+origin_branch = origin_branch or 'dev/2.8.7'
 if not branch_exists(origin_branch):
     print(origin_branch, 'does not exist in local repository!')
     exit()
@@ -35,8 +35,8 @@ if not branch_exists(remote_origin_branch):
     exit()
 
 # get LOCAL target branch
-target_branch = input('Target Branch [default is release/2.8.6]: ') # get target branch
-target_branch = target_branch or 'release/2.8.6'
+target_branch = input('Target Branch [default is release/2.8.7]: ') # get target branch
+target_branch = target_branch or 'release/2.8.7'
 if not branch_exists(target_branch):
     print(target_branch, 'does not exist in local repository!')
     exit()
