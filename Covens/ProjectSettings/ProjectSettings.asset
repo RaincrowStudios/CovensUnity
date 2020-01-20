@@ -743,7 +743,7 @@ PlayerSettings:
   webGLThreadsSupport: 0
   webGLWasmStreaming: 0
   scriptingDefineSymbols:
-    1: 
+    1: DDNA_IOS_PUSH_NOTIFICATIONS_REMOVED
     4: DDNA_IOS_PUSH_NOTIFICATIONS_REMOVED
     7: DDNA_IOS_PUSH_NOTIFICATIONS_REMOVED
     13: CROSS_PLATFORM_INPUT
