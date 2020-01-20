@@ -10,7 +10,31 @@ namespace Raincrow.Analytics
         public static readonly string GameEnded = "gameEnded";
 
         // Triggers after an account is created
-        public static readonly string NewPlayer = "newPlayer";        
+        public static readonly string NewPlayer = "newPlayer";
+
+        // clientVersion, killedBy (spirit or witch), place (map, pop)
+        public static readonly string Death = "death";
+
+        // clientVersion, itemID, quantity
+        public static readonly string ItemCollected = "itemCollected";
+
+        // clientVersion, currentScreen, navigateTo
+        public static readonly string UiInteraction = "uiInteraction";
+
+        // clientVersion, spiritID, spiritEnergy (when the player found him), knowSpirit (true or false), spiritOwner (player, game)
+        public static readonly string SpiritBanished = "spiritBanished";
+
+        // clientVersion, level, upgradedStats (power or resilience)
+        public static readonly string LevelUp = "levelUp";
+
+        // clientVersion, type (explore, gather or spellcraft)
+        public static readonly string DailyQuest = "dailyQuest";
+
+        // clientVersion, spiritID, spiritTier, spiritType, energyCost,
+        public static readonly string SummonSpirit = "summonSpirit";
+
+        // clientVersion, result (yes, no, never)
+        public static readonly string RatePopUp = "ratePopUp";
     }
 
     public static class CovensFTFGameSteps
