@@ -3,6 +3,8 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using Raincrow.Maps;
+using Oktagon.Analytics;
+using Raincrow.Analytics;
 
 public static class SummoningManager
 {
@@ -41,6 +43,19 @@ public static class SummoningManager
                 int tier = spiritData.tier;
                 int summonCost = PlayerDataManager.summoningCosts[tier - 1];
 
+                Dictionary<string, object> eventParams = new Dictionary<string, object>
+                {
+                    { "clientVersion", Application.version },
+                    { "spiritID", token.spiritId},
+                    { "spiritTier", tier},
+                    { "spiritType", spiritData.type },
+                    { "energyCost", summonCost },
+                    { "place", "map" }
+                };
+
+                // Track what spirits do users summon.
+                OktAnalyticsManager.PushEvent(CovensAnalyticsEvents.SummonSpirit, eventParams);
+
                 PlayerDataManager.playerData.activeSpirits.Add(token.instance);
 
                 OnMapEnergyChange.ForceEvent(PlayerManager.marker, PlayerDataManager.playerData.energy - summonCost);
@@ -74,6 +89,19 @@ public static class SummoningManager
                 SpiritData spiritData = DownloadedAssets.GetSpirit(spirit);
                 int tier = spiritData.tier;
                 int summonCost = PlayerDataManager.summoningCosts[tier - 1];
+
+                Dictionary<string, object> eventParams = new Dictionary<string, object>
+                {
+                    { "clientVersion", Application.version },
+                    { "spiritID", spiritData.id},
+                    { "spiritTier", tier},
+                    { "spiritType", spiritData.type },
+                    { "energyCost", summonCost },
+                    { "place", "pop" }
+                };
+
+                // Track what spirits do users summon.
+                OktAnalyticsManager.PushEvent(CovensAnalyticsEvents.SummonSpirit, eventParams);
 
                 OnMapEnergyChange.ForceEvent(PlayerManager.marker, PlayerDataManager.playerData.energy - summonCost);
                 var spiritToken = JsonConvert.DeserializeObject<SpiritToken>(s);
