@@ -21,6 +21,7 @@ using System.Xml;
 using System.Xml.Linq;
 using System.Xml.Serialization;
 using UnityEditor;
+using UnityEngine;
 
 namespace DeltaDNA.Editor {
 
@@ -58,16 +59,22 @@ namespace DeltaDNA.Editor {
                         "[Analytics] Engage URL has not been configured.",
                         Severity.ERROR));
                 }
-                
-                if (Ads.Editor.InitialisationHelper.IsDevelopment() && config.environmentKey == 1) {
-                    problems.Add(DDNATuple.New(
-                        "[Analytics] Using live environment key for a development build.",
-                        Severity.WARNING));
-                } else if (!Ads.Editor.InitialisationHelper.IsDevelopment() && config.environmentKey == 0) {
-                    problems.Add(DDNATuple.New(
-                        "[Analytics] Using dev environment key for a live build.",
-                        Severity.WARNING));
-                }
+
+                if (!Application.isPlaying)
+                {
+                    if (Ads.Editor.InitialisationHelper.IsDevelopment() && config.environmentKey == 1)
+                    {
+                        problems.Add(DDNATuple.New(
+                            "[Analytics] Using live environment key for a development build.",
+                            Severity.WARNING));
+                    }
+                    else if (!Ads.Editor.InitialisationHelper.IsDevelopment() && config.environmentKey == 0)
+                    {
+                        problems.Add(DDNATuple.New(
+                            "[Analytics] Using dev environment key for a live build.",
+                            Severity.WARNING));
+                    }
+                }                               
                 
                 if (string.IsNullOrEmpty(config.clientVersion) && !config.useApplicationVersion) {
                     problems.Add(DDNATuple.New(
@@ -159,6 +166,7 @@ namespace DeltaDNA.Editor {
                 });
             }
 
+            #if !DDNA_IOS_PUSH_NOTIFICATIONS_REMOVED
             if (File.Exists(NotificationsConfigurator.MANIFEST_XML_PATH)) {
                 var manifest = XDocument.Parse(File.ReadAllText(NotificationsConfigurator.MANIFEST_XML_PATH));
 
@@ -172,7 +180,7 @@ namespace DeltaDNA.Editor {
                         Severity.WARNING));
                 }
             }
-
+            
             if (File.Exists(NotificationsConfigurator.NOTIFICATIONS_XML_PATH)) {
                 new List<string> {
                     NotificationsConfigurator.ATTR_APP_ID,
@@ -198,6 +206,7 @@ namespace DeltaDNA.Editor {
                         }
                     });
             }
+            #endif
         }
     }
 }
