@@ -17,9 +17,9 @@ public class CovenConstants : MonoBehaviour
     public static bool isBackUpServer = false;
     public static string ConfigFilePath
     {
-#if UNITY_EDITOR
         get
         {
+#if UNITY_EDITOR
             if (UnityEditor.EditorPrefs.GetString("Server") == "Release")
             {
                 return "ReleaseConfigFile";
@@ -28,7 +28,6 @@ public class CovenConstants : MonoBehaviour
             {
                 return "StagingConfigFile";
             }
-        }
 #elif DEV
             return "StagingConfigFile";
 #elif PRODUCTION
@@ -36,6 +35,7 @@ public class CovenConstants : MonoBehaviour
 #else
             return "StagingConfigFile";
 #endif
+        }
     }
     public static string hostAddress
     {
