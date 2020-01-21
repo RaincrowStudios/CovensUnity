@@ -1,0 +1,32 @@
+{    
+    "Entries": [
+        {
+            "Key": "deltaDNAEnvDevKey",
+            "Value": "08020919352500926873474198315796"
+        },
+		{
+            "Key": "deltaDNAEnvLiveKey",
+            "Value": "08020928311820964790381126715796"
+        },
+		{
+            "Key": "deltaDNASelectedEnvKey",
+            "Value": "0"
+        },
+		{
+            "Key": "deltaDNACollectUrl",
+            "Value": "https://collect16275cvnst.deltadna.net/collect/api"
+        },
+		{
+            "Key": "deltaDNAEngageUrl",
+            "Value": "https://engage16275cvnst.deltadna.net"
+        },
+		{
+            "Key": "deltaDNAHashSecret",
+            "Value": ""
+        },
+		{
+            "Key": "deltaDNAUseApplicationVersion",
+            "Value": "true"
+        }
+    ]
+}
