@@ -351,11 +351,13 @@ public class MarkerSpawner : MonoBehaviour
                 return;
             }
 
+            CollectableMarker collectableMarker = m as CollectableMarker;
+
             Dictionary<string, object> eventParams = new Dictionary<string, object>
             {
                 { "clientVersion", Application.version },
-                { "itemID", m.Token.instance},
-                { "quantity", (m as CollectableMarker).collectableToken.amount }
+                { "itemID", collectableMarker.collectableToken.collectible},
+                { "quantity", collectableMarker.collectableToken.amount }
             };
 
             // Track the name and quantity of each item the user has found on the map.
@@ -372,18 +374,20 @@ public class MarkerSpawner : MonoBehaviour
                 FirstTapManager.Show("energy", () => OnClickMarker(m));
                 return;
             }
-            
+
+            EnergyMarker energyMarker = m as EnergyMarker;
+
             Dictionary<string, object> eventParams = new Dictionary<string, object>
             {
                 { "clientVersion", Application.version },
-                { "itemID", m.Token.instance},
-                { "quantity", 1 }
+                { "itemID", ((EnergyToken)energyMarker.Token).type},
+                { "quantity", ((EnergyToken)energyMarker.Token).amount }
             };
 
             // Track the name and quantity of each item the user has found on the map.
             OktAnalyticsManager.PushEvent(CovensAnalyticsEvents.ItemCollected, eventParams);
 
-            PickUpCollectibleAPI.CollectEnergy(m as EnergyMarker);
+            PickUpCollectibleAPI.CollectEnergy(energyMarker);
             return;
         }
         
