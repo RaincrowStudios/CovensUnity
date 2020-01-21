@@ -19,6 +19,9 @@ namespace Raincrow.GameEventResponses
             public string spirit;
             public long xp;
             public int silver;
+            public int baseEnergy;
+            public bool wild;
+            public bool knownSpirit;
         }
 
         public void HandleResponse(string eventData)

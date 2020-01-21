@@ -18,6 +18,8 @@ namespace Raincrow.GameEventResponses
             public double banishedOn;
             //public string dominion;
             public double timestamp;
+            public int baseEnergy;
+            public bool wild;
         }
 
         public void HandleResponse(string eventData)

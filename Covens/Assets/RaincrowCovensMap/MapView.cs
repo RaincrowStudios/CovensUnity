@@ -1,4 +1,6 @@
-﻿using Raincrow.GameEventResponses;
+﻿using Oktagon.Analytics;
+using Raincrow.Analytics;
+using Raincrow.GameEventResponses;
 using Raincrow.Maps;
 using System.Collections;
 using System.Collections.Generic;
@@ -183,6 +185,18 @@ public class MapView : MonoBehaviour
             LeanTween.value(0, 0, 0.5f).setOnComplete(() => _OnSpiritBanished(data));
             return;
         }
+
+        Dictionary<string, object> eventParams = new Dictionary<string, object>
+            {
+                { "clientVersion", Application.version },
+                { "spiritID", data.spirit},
+                { "spiritEnergy", data.baseEnergy },
+                { "knowSpirit", data.knownSpirit },
+                { "spiritOwner", data.wild ? "game" : "player" }
+            };
+
+        // Track info about spirit
+        OktAnalyticsManager.PushEvent(CovensAnalyticsEvents.SpiritBanished, eventParams);
 
         Debug.Log(data.spirit + " BANISHED");
         UISpiritBanished.Instance.Show(data);
