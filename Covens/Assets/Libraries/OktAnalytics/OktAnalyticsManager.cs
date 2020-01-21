@@ -11,7 +11,7 @@ namespace Oktagon.Analytics
         /// </summary>
         private static OktAnalyticsManager _instance;
 
-        private static readonly string DefaultConfigPath = "DefaultConfigFile";
+        //private static readonly string DefaultConfigPath = "DefaultConfigFile";
 
         /// <summary>
         /// A list with all the analytics services of our game.
@@ -19,7 +19,7 @@ namespace Oktagon.Analytics
         private List<IOktAnalyticsService> _analyticsServices = new List<IOktAnalyticsService>();        
                
 
-        public static void Initialize()
+        public static void Initialize(string configPath)
         {
             if (_instance == null)
             {
@@ -31,7 +31,7 @@ namespace Oktagon.Analytics
             {
                 DontDestroyOnLoad(_instance);
 
-                TextAsset defaultConfigTextAsset = Resources.Load<TextAsset>(DefaultConfigPath);
+                TextAsset defaultConfigTextAsset = Resources.Load<TextAsset>(configPath);
                 IOktConfigFileReader configFileReader = _instance.GetComponent<IOktConfigFileReader>();
                 configFileReader.SetConfig(defaultConfigTextAsset.text);
 

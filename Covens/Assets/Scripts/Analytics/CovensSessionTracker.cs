@@ -11,7 +11,7 @@ namespace Raincrow.Analytics
         {
             if (!OktAnalyticsManager.IsInitialized())
             {
-                OktAnalyticsManager.Initialize();
+                OktAnalyticsManager.Initialize(CovenConstants.ConfigFilePath);
 
                 // Wait for Analytics Initialization
                 yield return new WaitUntil(() => OktAnalyticsManager.IsInitialized());
