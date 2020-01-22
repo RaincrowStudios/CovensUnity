@@ -376,12 +376,13 @@ public class MarkerSpawner : MonoBehaviour
             }
 
             EnergyMarker energyMarker = m as EnergyMarker;
+            EnergyToken energyToken = energyMarker.Token as EnergyToken;
 
             Dictionary<string, object> eventParams = new Dictionary<string, object>
             {
                 { "clientVersion", Application.version },
-                { "itemID", ((EnergyToken)energyMarker.Token).type},
-                { "quantity", ((EnergyToken)energyMarker.Token).amount }
+                { "itemID", energyToken.type != null ? energyToken.type : "energy"},
+                { "quantity", energyToken.amount }
             };
 
             // Track the name and quantity of each item the user has found on the map.
