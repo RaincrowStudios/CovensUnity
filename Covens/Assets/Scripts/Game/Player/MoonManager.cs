@@ -153,6 +153,9 @@ public class MoonManager : UIAnimationManager
 
     public void Close()
     {
+        // Track user interacting from the interface.
+        UIMainScreens.PushEventAnalyticUI(UIMainScreens.Moonphase, UIMainScreens.Map);
+
         StopAllCoroutines();
         CancelInvoke();
 

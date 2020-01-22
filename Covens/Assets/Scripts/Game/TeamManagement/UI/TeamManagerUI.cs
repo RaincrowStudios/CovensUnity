@@ -365,6 +365,8 @@ public class TeamManagerUI : MonoBehaviour
         if (m_InputRaycaster.enabled == false)
             return;
 
+        UIMainScreens.PushEventAnalyticUI(UIMainScreens.Coven, UIMainScreens.Map);
+
         BackButtonListener.RemoveCloseAction();
 
         EnableEventListeners(false);

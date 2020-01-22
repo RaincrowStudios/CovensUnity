@@ -169,6 +169,8 @@ public class Leaderboards : UIAnimationManager
 
     void Hide()
     {
+        UIMainScreens.PushEventAnalyticUI(UIMainScreens.Leaderboards, UIMainScreens.Map);
+
         LeanTween.cancel(m_TweenId);
 
         BackButtonListener.RemoveCloseAction();

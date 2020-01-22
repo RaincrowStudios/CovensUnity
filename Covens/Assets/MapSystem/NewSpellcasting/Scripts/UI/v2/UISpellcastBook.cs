@@ -306,6 +306,8 @@ public class UISpellcastBook : MonoBehaviour//, IEnhancedScrollerDelegate
 
     private void Hide()
     {
+        UIMainScreens.PushEventAnalyticUI(UIMainScreens.SpellBook, UIMainScreens.Map);
+
         BackButtonListener.RemoveCloseAction();
 
         SpellCastHandler.OnPlayerTargeted -= SpellCastHandler_OnPlayerTargeted;

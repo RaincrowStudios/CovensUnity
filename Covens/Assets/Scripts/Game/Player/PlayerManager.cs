@@ -206,6 +206,8 @@ public class PlayerManager : MonoBehaviour
 
     private void OnStartFlying()
     {
+        UIMainScreens.PushEventAnalyticUI(UIMainScreens.Map, UIMainScreens.Fly);
+        
         m_LastPosition = marker.Coords;
 
         FlightVisuals.Instance.StartFlight();
@@ -218,6 +220,8 @@ public class PlayerManager : MonoBehaviour
 
     private void OnFinishFlying()
     {
+        UIMainScreens.PushEventAnalyticUI(UIMainScreens.Fly, UIMainScreens.Map);
+        
         FlightVisuals.Instance.EndFlight();
 
         System.Action finishFlight = () =>

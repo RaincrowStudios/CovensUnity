@@ -18,7 +18,8 @@ public class BOSController : BOSBase
     private GameObject currentObject;
     private CanvasGroup CG;
     private Button closeBtn;
-
+    private int lastIndex = 0;
+    private string[] screens = {UIMainScreens.BookOfShadowsCharacter, UIMainScreens.BookOfShadowsSpell, UIMainScreens.BookOfShadowsSpirit}; 
     private static int m_TweenId;
     private static int m_RibbonTweenId;
 
@@ -46,6 +47,8 @@ public class BOSController : BOSBase
 
     public void Close()
     {
+        UIMainScreens.PushEventAnalyticUI(UIMainScreens.BookOfShadows, UIMainScreens.Map);
+       
         BackButtonListener.RemoveCloseAction();
 
         MapsAPI.Instance.HideMap(false);
@@ -130,6 +133,12 @@ public class BOSController : BOSBase
             AnimateRibbon(spiritRibbon, 137, ShowSpirits);
         }
 
+        if(index != lastIndex)
+        {
+            UIMainScreens.PushEventAnalyticUI(screens[lastIndex], screens[index]);
+        }
+
+        lastIndex = index;
     }
 
     private int m_AnimTweenId;

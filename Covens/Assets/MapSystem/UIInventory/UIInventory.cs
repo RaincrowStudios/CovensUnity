@@ -115,6 +115,8 @@ public class UIInventory : MonoBehaviour
 
     public void Close()
     {
+        UIMainScreens.PushEventAnalyticUI(UIMainScreens.Inventory, UIMainScreens.Map);
+
         BackButtonListener.RemoveCloseAction();
 
         AnimateOut();

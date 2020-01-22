@@ -363,6 +363,8 @@ namespace Raincrow.Chat.UI
 
         private void AnimateHide()
         {
+            UIMainScreens.PushEventAnalyticUI(UIMainScreens.Chat, UIMainScreens.Map);
+
             BackButtonListener.RemoveCloseAction();
             MapsAPI.Instance.HideMap(false);
 

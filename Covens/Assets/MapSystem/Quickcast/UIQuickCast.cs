@@ -314,6 +314,8 @@ public class UIQuickCast : MonoBehaviour
         if (target == null || targetData == null)
             return;
 
+        UIMainScreens.PushEventAnalyticUI(UIMainScreens.Map, UIMainScreens.SpellBook);
+
         this._Hide(true);
         
         UISpellcastBook.Open(

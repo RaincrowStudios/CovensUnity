@@ -85,6 +85,9 @@ public class ApparelManagerUI : MonoBehaviour
 
     public void Hide()
     {
+        // Track user interacting from the interface.
+        UIMainScreens.PushEventAnalyticUI(UIMainScreens.Wardrobe, UIMainScreens.Map);
+
         BackButtonListener.RemoveCloseAction();
         //UIStateManager.Instance.CallWindowChanged(true);
         SoundManagerOneShot.Instance.MenuSound();

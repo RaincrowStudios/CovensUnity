@@ -328,6 +328,8 @@ public class SettingsManager : MonoBehaviour
 
     public void Hide()
     {
+        UIMainScreens.PushEventAnalyticUI(UIMainScreens.Settings, UIMainScreens.Map);
+        
         OnAudioToggle -= _OnToggleAudio;
         OnBuildingsToggle -= _OnToggleBuilding;
 

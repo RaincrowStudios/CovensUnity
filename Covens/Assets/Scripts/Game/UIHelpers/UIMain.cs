@@ -7,6 +7,8 @@ using Raincrow.Chat;
 using Raincrow.Chat.UI;
 using Raincrow.FTF;
 using Raincrow.GameEventResponses;
+using Oktagon.Analytics;
+using Raincrow.Analytics;
 
 public class UIMain : MonoBehaviour
 {
@@ -128,16 +130,19 @@ public class UIMain : MonoBehaviour
     private void OnClickLeaderboards()
     {
         Utilities.InstantiateUI(m_leaderBoards, null);
+        UIMainScreens.PushEventAnalyticUI(UIMainScreens.Map, UIMainScreens.Leaderboards);
     }
 
     private void OnClickWardrobe()
     {
         ApparelManagerUI.Show();
+        UIMainScreens.PushEventAnalyticUI(UIMainScreens.Map, UIMainScreens.Wardrobe);
     }
 
     private void OnClickMoonphase()
     {
         MoonManager.Open();
+        UIMainScreens.PushEventAnalyticUI(UIMainScreens.Map, UIMainScreens.Moonphase);
     }
 
     private void OnClickRecall()
@@ -153,11 +158,14 @@ public class UIMain : MonoBehaviour
 
     private void OnClickQuests()
     {
+        UIMainScreens.PushEventAnalyticUI(UIMainScreens.Map, UIMainScreens.Quest);
         QuestLogUI.Open();
     }
 
     private void OnClickInventory()
     {
+        UIMainScreens.PushEventAnalyticUI(UIMainScreens.Map, UIMainScreens.Inventory);
+
         System.Action<UIInventoryWheelItem> onSelectItem = (item) =>
         {
             if (item != null && item.inventoryItemId != null && item.inventoryItemId != UICollectableInfo.Instance.CollectableId)
@@ -177,6 +185,7 @@ public class UIMain : MonoBehaviour
 
     private void OnClickCoven()
     {
+        UIMainScreens.PushEventAnalyticUI(UIMainScreens.Map, UIMainScreens.Coven);
         TeamManagerUI.Open(TeamManager.MyCovenId);
     }
 
@@ -192,16 +201,20 @@ public class UIMain : MonoBehaviour
 
     private void OnClickBookOfShadows()
     {
+        UIMainScreens.PushEventAnalyticUI(UIMainScreens.Map, UIMainScreens.BookOfShadows);
         Utilities.InstantiateUI(m_BookOfShadows, null);
     }
 
     private void OnClickSettings()
     {
+        UIMainScreens.PushEventAnalyticUI(UIMainScreens.Map, UIMainScreens.Settings);
         SettingsManager.OpenUI();
     }
 
     private void OnClickSummoning()
     {
+        UIMainScreens.PushEventAnalyticUI(UIMainScreens.Map, UIMainScreens.Summon);
+
         UISummoning.Open(
             () => MapsAPI.Instance.HideMap(true),
             (spirit) => 
@@ -214,11 +227,13 @@ public class UIMain : MonoBehaviour
 
     private void OnClickStore()
     {
+        UIMainScreens.PushEventAnalyticUI(UIMainScreens.Map, UIMainScreens.StoreHome);
         UIStore.OpenStore();
     }
 
     private void OnClickChat()
     {
+        UIMainScreens.PushEventAnalyticUI(UIMainScreens.Map, UIMainScreens.Chat);
         UIChat.Open();
     }
 
@@ -273,5 +288,44 @@ public class UIMain : MonoBehaviour
             m_EnergyTextPanel.m_Content.text = " ";
             m_EnergyTextPanel.Show(false);
         }
+    }
+}
+
+public static class UIMainScreens
+{
+    public static readonly string Map = "map";
+    public static readonly string Wardrobe = "wardrobe";
+    public static readonly string Moonphase = "moonphase";
+    public static readonly string Leaderboards = "leaderboards";
+    public static readonly string Summon = "summon";
+    public static readonly string Quest = "quest";
+    public static readonly string Inventory = "inventory";
+    public static readonly string Coven = "coven";
+    public static readonly string Chat = "chat";
+    public static readonly string Settings = "settings";
+    public static readonly string Fly = "fly";
+    public static readonly string BookOfShadows = "bookOfShadows";
+    public static readonly string BookOfShadowsCharacter = "bookOfShadowsCharacter";
+    public static readonly string BookOfShadowsSpell = "bookOfShadowsSpell";
+    public static readonly string BookOfShadowsSpirit = "bookOfShadowsSpirit";
+    public static readonly string SpellBook = "spellBook";
+    public static readonly string StoreHome = "storeHome";
+    public static readonly string StoreCosmetics = "storeCosmetics";
+    public static readonly string StoreCurrencies = "storeCurrencies";
+    public static readonly string StoreIngredients = "storeIngredients";
+    public static readonly string StoreStyles = "storeStyles";
+    public static readonly string StoreCharms = "storeCharms";
+
+    public static void PushEventAnalyticUI(string currentScreen, string navigateTo)
+    {
+        Dictionary<string, object> eventParams = new Dictionary<string, object>
+                {
+                    { "clientVersion", Application.version },
+                    { "currentScreen", currentScreen},
+                    { "navigateTo", navigateTo}
+                };
+
+        // Track user interacting from the interface.
+        OktAnalyticsManager.PushEvent(CovensAnalyticsEvents.UiInteraction, eventParams);
     }
 }

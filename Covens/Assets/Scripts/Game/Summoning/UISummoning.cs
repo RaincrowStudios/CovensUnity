@@ -192,6 +192,8 @@ public class UISummoning : MonoBehaviour
     [ContextMenu("Close")]
     private void _Close()
     {
+        UIMainScreens.PushEventAnalyticUI(UIMainScreens.Summon, UIMainScreens.Map);
+       
         m_OnClose?.Invoke();
         m_OnClose = null;
 

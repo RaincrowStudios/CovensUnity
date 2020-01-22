@@ -51,6 +51,7 @@ public class UIStore : MonoBehaviour
     private int m_MainTweenId;
     private int m_ScreenTweenId;
     private int m_DrachsTweenId;
+    private string[] m_Screens = {"", UIMainScreens.StoreHome, UIMainScreens.StoreCosmetics, UIMainScreens.StoreStyles, UIMainScreens.StoreCurrencies , UIMainScreens.StoreIngredients, UIMainScreens .StoreCharms};
 
     private static UIStore m_Instance;
 
@@ -199,6 +200,8 @@ public class UIStore : MonoBehaviour
         if (!m_InputRaycaster.enabled)
             return;
 
+        UIMainScreens.PushEventAnalyticUI(m_Screens[(int)m_CurrentScreen], UIMainScreens.Map);
+        
         BackButtonListener.RemoveCloseAction();
 
         LeanTween.cancel(m_MainTweenId);
@@ -223,7 +226,12 @@ public class UIStore : MonoBehaviour
     {
         if (screen == m_CurrentScreen)
             return;
-        
+
+        if (m_CurrentScreen != Screen.NONE)
+        {
+            UIMainScreens.PushEventAnalyticUI(m_Screens[(int)m_CurrentScreen], m_Screens[(int)screen]);
+        }
+
         if (screen == Screen.CURRENCY)
         {
             if (IAPSilver.instance.IsInitialized() == false)

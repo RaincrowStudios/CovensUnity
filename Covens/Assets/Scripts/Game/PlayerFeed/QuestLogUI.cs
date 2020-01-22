@@ -129,6 +129,8 @@ public class QuestLogUI : UIAnimationManager
         if (isOpen == false)
             return;
 
+        UIMainScreens.PushEventAnalyticUI(UIMainScreens.Quest, UIMainScreens.Map);
+
         BackButtonListener.RemoveCloseAction();
 
         isOpen = false;
