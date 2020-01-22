@@ -22,6 +22,12 @@ namespace Raincrow.GameEventResponses
             public int baseEnergy;
             public bool wild;
             public bool knownSpirit;
+            public SpiritBanishedDropItem[] drops;
+        }
+        public struct SpiritBanishedDropItem
+        {
+            public string collectible;
+            public int amount;
         }
 
         public void HandleResponse(string eventData)
