@@ -34,11 +34,13 @@ namespace Raincrow.Analytics
 
         private void EndSession()
         {
+            int sessionFramerate = Mathf.RoundToInt(Time.frameCount / Time.time);
             int sessionLength = Mathf.RoundToInt(Time.unscaledTime);
             Dictionary<string, object> eventParams = new Dictionary<string, object>
             {
                 { "clientVersion",  Application.version }, // version
-                { "sessionLength",  sessionLength } // seconds
+                { "sessionLength",  sessionLength }, // seconds
+                { "sessionFramerate", sessionFramerate }
             };
 
             // Are player's sessions long or short on average? Do they last enough for multiple matches, or usually only one or less? Do players open the game just to check other elements and then close without playing?
