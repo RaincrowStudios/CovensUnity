@@ -24,6 +24,9 @@ namespace Raincrow.Analytics
         // clientVersion, spiritID, spiritEnergy (when the player found him), knowSpirit (true or false), spiritOwner (player, game)
         public static readonly string SpiritBanished = "spiritBanished";
 
+        // clientVersion, alignment, degree
+        public static readonly string DegreeChange = "degreeChange";
+
         // clientVersion, level, upgradedStats (power or resilience)
         public static readonly string LevelUp = "levelUp";
 
