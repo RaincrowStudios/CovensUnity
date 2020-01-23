@@ -13,6 +13,8 @@ namespace Oktagon.Analytics.Services
         private static readonly string CollectUrl = "deltaDNACollectUrl";
         private static readonly string EngageUrl = "deltaDNAEngageUrl";
         private static readonly string HashSecret = "deltaDNAHashSecret";
+        private static readonly string OnInitSendGameStartedEvent = "deltaDNAOnInitSendGameStartedEvent";
+        private static readonly string OnFirstRunSendNewPlayerEvent = "deltaDNAOnFirstRunSendNewPlayerEvent";
         private static readonly string UseApplicationVersion = "deltaDNAUseApplicationVersion";
 
         /// <summary>
@@ -33,8 +35,9 @@ namespace Oktagon.Analytics.Services
                 hashSecret = configFileReader.GetStringValue(HashSecret),
                 useApplicationVersion = configFileReader.GetBoolValue(UseApplicationVersion)
             };
-            DDNA.Instance.Settings.OnInitSendGameStartedEvent = false;
-            DDNA.Instance.Settings.OnFirstRunSendNewPlayerEvent = false;
+            DDNA.Instance.Settings.OnInitSendGameStartedEvent = configFileReader.GetBoolValue(OnInitSendGameStartedEvent);
+            DDNA.Instance.Settings.OnFirstRunSendNewPlayerEvent = configFileReader.GetBoolValue(OnFirstRunSendNewPlayerEvent);
+            DDNA.Instance.ClientVersion = Application.version;
             DDNA.Instance.StartSDK(config);
         }
 

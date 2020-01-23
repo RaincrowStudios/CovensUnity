@@ -27,6 +27,14 @@
 		{
             "Key": "deltaDNAUseApplicationVersion",
             "Value": "true"
+        },
+		{
+            "Key": "deltaDNAOnInitSendGameStartedEvent",
+            "Value": "false"
+        },
+		{
+            "Key": "deltaDNAOnFirstRunSendNewPlayerEvent",
+            "Value": "false"
         }
     ]
 }
