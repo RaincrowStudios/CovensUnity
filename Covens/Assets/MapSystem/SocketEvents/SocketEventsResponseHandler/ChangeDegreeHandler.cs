@@ -1,4 +1,6 @@
 ﻿using Newtonsoft.Json;
+using Oktagon.Analytics;
+using Raincrow.Analytics;
 using Raincrow.Maps;
 using UnityEngine;
 
@@ -22,6 +24,8 @@ namespace Raincrow.GameEventResponses
 
             if (data.instance == PlayerDataManager.playerData.instance)
             {
+                PushAnalyticEvent(data.degree);
+                
                 int oldDegree = PlayerDataManager.playerData.degree;
                 if (oldDegree != data.degree)
                 {
@@ -43,6 +47,27 @@ namespace Raincrow.GameEventResponses
                     }
                 }
             }
+        }
+
+        private void PushAnalyticEvent(int degree)
+        {
+            string witchType = "";
+
+            if (degree < 0)
+                witchType = "shadow";
+            else if (degree > 0)
+                witchType = "white";
+            else
+                witchType = "grey";
+
+            System.Collections.Generic.Dictionary<string, object> eventParams = new System.Collections.Generic.Dictionary<string, object>
+                {
+                    { "clientVersion", Application.version },
+                    { "alignment", witchType},
+                    { "degree", Mathf.Abs(degree)}
+                };
+
+            OktAnalyticsManager.PushEvent(CovensAnalyticsEvents.DegreeChange, eventParams);
         }
     }
 }

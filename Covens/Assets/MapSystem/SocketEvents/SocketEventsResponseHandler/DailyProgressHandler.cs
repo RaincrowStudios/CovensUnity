@@ -2,6 +2,8 @@
 using System.Collections;
 using Raincrow.Maps;
 using Newtonsoft.Json;
+using Oktagon.Analytics;
+using Raincrow.Analytics;
 
 namespace Raincrow.GameEventResponses
 {
@@ -45,6 +47,15 @@ namespace Raincrow.GameEventResponses
 
             if (data.silver != 0)
             {
+                System.Collections.Generic.Dictionary<string, object> eventParams = new System.Collections.Generic.Dictionary<string, object>
+                {
+                    { "clientVersion", Application.version },
+                    { "dailyQuestType", data.daily}
+                };
+
+                // Track quest finished.
+                OktAnalyticsManager.PushEvent(CovensAnalyticsEvents.DailyQuest, eventParams);
+
                 PlayerDataManager.playerData.silver += data.silver;
                 PlayerManagerUI.Instance.UpdateDrachs();
             }
