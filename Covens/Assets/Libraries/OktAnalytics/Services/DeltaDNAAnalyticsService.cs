@@ -1,5 +1,4 @@
-﻿using System.Collections;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using DeltaDNA;
 using Oktagon.Utils;
 using UnityEngine;
@@ -34,14 +33,9 @@ namespace Oktagon.Analytics.Services
                 hashSecret = configFileReader.GetStringValue(HashSecret),
                 useApplicationVersion = configFileReader.GetBoolValue(UseApplicationVersion)
             };
-            Debug.Log(config.environmentKey);
-            Debug.Log(config.environmentKeyDev);
-            Debug.Log(config.environmentKeyLive);
-            Debug.Log(config.engageUrl);
-            Debug.Log(config.collectUrl);
+            DDNA.Instance.Settings.OnInitSendGameStartedEvent = false;
+            DDNA.Instance.Settings.OnFirstRunSendNewPlayerEvent = false;
             DDNA.Instance.StartSDK(config);
-            
-            Debug.Log(DDNA.Instance.UserID);
         }
 
         public void PushEvent(string eventName, Dictionary<string, object> eventParams = null)
