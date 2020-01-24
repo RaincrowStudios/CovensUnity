@@ -189,14 +189,14 @@ public class MapView : MonoBehaviour
         string drops = Newtonsoft.Json.JsonConvert.SerializeObject(data.drops);
 
         Dictionary<string, object> eventParams = new Dictionary<string, object>
-            {
-                { "clientVersion", Application.version },
-                { "spiritID", data.spirit},
-                { "spiritEnergy", data.baseEnergy },
-                { "knowSpirit", data.knownSpirit },
-                { "spiritOwner", data.wild ? "game" : "player" },
-                { "droppedItems", drops}
-            };
+        {
+            { "clientVersion", Application.version },
+            { "spiritID", data.spirit},
+            { "spiritEnergy", data.baseEnergy },
+            { "knownSpirit", data.knownSpirit },
+            { "spiritOwner", data.wild ? "game" : "player" },
+            { "droppedItems", drops}
+        };
 
         // Track info about spirit
         OktAnalyticsManager.PushEvent(CovensAnalyticsEvents.SpiritBanished, eventParams);
