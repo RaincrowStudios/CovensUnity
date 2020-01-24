@@ -59,7 +59,7 @@ namespace Raincrow.GameEventResponses
                 Dictionary<string, object> eventParams = new Dictionary<string, object>()
                 {
                     {"clientVersion", Application.version },
-                    {"level", player.level },
+                    {"witchLevel", player.level },
                     {"upgradedStats", upgradedStats }
                 };
 
