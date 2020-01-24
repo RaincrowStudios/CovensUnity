@@ -28,7 +28,6 @@ namespace Raincrow.GameEventResponses
 
         public static void HandleResponse(DailyProgressEventData data)
         {
-            string message = null;
             switch (data.daily)
             {
                 case "gather":
