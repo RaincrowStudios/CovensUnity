@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
+using Oktagon.Analytics;
+using Raincrow.Analytics;
 
 public class LowEnergyPopup : MonoBehaviour
 {
@@ -84,6 +86,17 @@ public class LowEnergyPopup : MonoBehaviour
             if (result == 200)
             {
                 Instance.Close();
+
+                Dictionary<string, object> eventParams = new Dictionary<string, object>
+                {
+                    { "clientVersion", Application.version },
+                    { "productID", "fullenergyrestore" },
+                    { "productCategory", "energyrestore" },
+                    { "silverDrach", 0 },
+                    { "goldDrach", 1 },
+                };
+
+                OktAnalyticsManager.PushEvent(CovensAnalyticsEvents.PurchaseCurrency, eventParams);
 
                 PlayerDataManager.playerData.gold -= 1;
                 OnMapEnergyChange.ForceEvent(PlayerManager.marker, PlayerDataManager.playerData.baseEnergy);

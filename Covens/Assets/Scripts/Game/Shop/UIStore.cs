@@ -521,8 +521,7 @@ public class UIStore : MonoBehaviour
     }
 
     private void OnPurchaseComplete(string id, string type, string currency, int price)
-    {
-        // clientVersion	productID	productCategory	silverDrach	goldDrach
+    {        
         Dictionary<string, object> eventParams = new Dictionary<string, object>
         {
             { "clientVersion", Application.version },
@@ -541,6 +540,7 @@ public class UIStore : MonoBehaviour
             eventParams.Add("goldDrach", price);
         }
         OktAnalyticsManager.PushEvent(CovensAnalyticsEvents.PurchaseCurrency, eventParams);
+
         _UpdateDrachs();
     }
 
