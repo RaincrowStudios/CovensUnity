@@ -331,7 +331,7 @@ public class FTFManager : MonoBehaviour
         ShowWitchSchool(false, CloseFTF);
         WitchSchoolManager.Open();
 
-        RecordWitchSchoolEvent(false);
+        RecordWitchSchoolEvent(true);
     }
 
     private void OnSkipWitchSchool()
