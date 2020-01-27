@@ -5,6 +5,8 @@ using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
 using Raincrow.Store;
+using Oktagon.Analytics;
+using Raincrow.Analytics;
 
 public class UIStore : MonoBehaviour
 {
@@ -518,8 +520,27 @@ public class UIStore : MonoBehaviour
             .uniqueId;
     }
 
-    private void OnPurchaseComplete(string id, string type)
+    private void OnPurchaseComplete(string id, string type, string currency, int price)
     {
+        // clientVersion	productID	productCategory	silverDrach	goldDrach
+        Dictionary<string, object> eventParams = new Dictionary<string, object>
+        {
+            { "clientVersion", Application.version },
+            { "productID", id },
+            { "productCategory", type }
+        };
+
+        if (string.Equals(currency, "silver"))
+        {
+            eventParams.Add("silverDrach", price);
+            eventParams.Add("goldDrach", 0);
+        }
+        else 
+        {
+            eventParams.Add("silverDrach", 0);
+            eventParams.Add("goldDrach", price);
+        }
+        OktAnalyticsManager.PushEvent(CovensAnalyticsEvents.PurchaseCurrency, eventParams);
         _UpdateDrachs();
     }
 

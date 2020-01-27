@@ -4,6 +4,7 @@ using Newtonsoft.Json;
 using Raincrow.Store;
 using System.Collections.Generic;
 using Oktagon.Analytics;
+using Raincrow.Analytics;
 
 public class IAPSilver : MonoBehaviour, IStoreListener
 {
@@ -163,7 +164,7 @@ public class IAPSilver : MonoBehaviour, IStoreListener
                 productCost = StoreManagerAPI.CurrencyBundleDict[id].cost;
             }
             eventParams.Add("productCost", productCost);
-            OktAnalyticsManager.PushEvent("purchaseIAP", eventParams);
+            OktAnalyticsManager.PushEvent(CovensAnalyticsEvents.PurchaseIAP, eventParams);
                 
             Raincrow.Analytics.Events.PurchaseAnalytics.CompleteIAP(m_OngoingPurchase.id);
             AppsFlyerAPI.TrackStorePurchaseEvent(m_OngoingPurchase.id);

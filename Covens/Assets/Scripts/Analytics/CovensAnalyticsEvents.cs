@@ -43,6 +43,10 @@ namespace Raincrow.Analytics
         public static readonly string ReviewPopUp = "reviewPopUp";
 
         public static readonly string HelpcrowPopUp = "helpcrowPopUp";
+
+        public static readonly string PurchaseCurrency = "purchaseCurrency";
+
+        public static readonly string PurchaseIAP = "purchaseIAP";
     }
 
     public static class CovensFTFGameSteps

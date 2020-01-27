@@ -1,7 +1,5 @@
-﻿using System.Collections;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using UnityEngine;
-using System;
 using Newtonsoft.Json;
 using System.ComponentModel;
 
@@ -109,7 +107,7 @@ namespace Raincrow.Store
         public static Dictionary<string, ConsumableData> ConsumableDict { get; set; }
         public static Dictionary<string, CurrencyBundleData> CurrencyBundleDict { get; set; }
 
-        public static event System.Action<string, string> OnPurchaseComplete;
+        public static event System.Action<string, string, string, int> OnPurchaseComplete;
 
 
 
@@ -193,11 +191,17 @@ namespace Raincrow.Store
 
                     int silver = 0;
                     int gold = 0;
-
+                    int price = 0;
                     if (currency == "silver")
+                    {
                         silver = StoreData.GetPrice(type, id, true);
+                        price = silver;
+                    }
                     if (currency == "gold")
+                    {
                         gold = StoreData.GetPrice(type, id, false);
+                        price = gold;
+                    }
 
                     if (silver != 0)
                     {
@@ -214,7 +218,7 @@ namespace Raincrow.Store
                         PlayerManagerUI.Instance.UpdateDrachs();
 
                     callback?.Invoke(null);
-                    OnPurchaseComplete?.Invoke(id, type);
+                    OnPurchaseComplete?.Invoke(id, type, currency, price);
                 }
                 else
                 {
@@ -231,7 +235,7 @@ namespace Raincrow.Store
             {
                 case TYPE_CURRENCY:
                 {
-                    CurrencyBundleData data = StoreManagerAPI.GetCurrencyBundle(id);
+                    CurrencyBundleData data = GetCurrencyBundle(id);
                     PlayerDataManager.playerData.silver += (data.silver + data.silverBonus);
                     PlayerDataManager.playerData.gold += (data.gold + data.goldBonus);
                     PlayerManagerUI.Instance?.UpdateDrachs();
@@ -241,22 +245,26 @@ namespace Raincrow.Store
                 {
                     //add the item to inventory
                     CosmeticData cosmetic = DownloadedAssets.GetCosmetic(id);
-                    if (PlayerDataManager.playerData.inventory.cosmetics.Exists(c => c.id == id) == false)
+                    if (!PlayerDataManager.playerData.inventory.cosmetics.Exists(c => c.id == id))
+                    {
                         PlayerDataManager.playerData.inventory.cosmetics.Add(cosmetic);
+                    }
                     break;
                 }
                 case TYPE_INGREDIENT_BUNDLE:
                 {
                     //add the ingredients to the inventory
-                    ItemData[] bundle = StoreManagerAPI.GetIngredientBundle(id);
+                    ItemData[] bundle = GetIngredientBundle(id);
                     for (int i = 0; i < bundle.Length; i++)
+                    {
                         PlayerDataManager.playerData.AddIngredient(bundle[i].id, bundle[i].count);
+                    }
                     break;
                 }
                 case TYPE_ELIXIRS:
                 {
                     Item elixir = PlayerDataManager.playerData.inventory.consumables.Find(it => it.id == id);
-                    ConsumableData consumable = StoreManagerAPI.GetConsumable(id); ;
+                    ConsumableData consumable = GetConsumable(id); ;
                     if (elixir == null || string.IsNullOrEmpty(elixir.id))
                     {
                         //add one if none is found on the players inventory
@@ -309,7 +317,7 @@ namespace Raincrow.Store
                 }
                 default:
                 {
-                    Debug.LogException(new Exception("store item type " + type + " (" + id + ") not implemetend"));
+                    Debug.LogException(new System.Exception("store item type " + type + " (" + id + ") not implemetend"));
                     break;
                 }
             }
@@ -321,8 +329,9 @@ namespace Raincrow.Store
 #if UNITY_EDITOR
             Debug.Log("[<color=cyan>StoreAPI</color>] " + msg);
             return;
-#endif
+#else
             Debug.Log("[StoreAPI] " + msg);
+#endif            
         }
 
         private static void LogError(string msg)
@@ -330,8 +339,9 @@ namespace Raincrow.Store
 #if UNITY_EDITOR
             Debug.LogError("[<color=cyan>StoreAPI</color>] " + msg);
             return;
+#else
+            Debug.LogException(new System.Exception("[StoreAPI] " + msg));
 #endif
-            Debug.LogException(new Exception("[StoreAPI] " + msg));
         }
     }
 }
