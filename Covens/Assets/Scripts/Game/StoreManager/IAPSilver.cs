@@ -3,6 +3,7 @@ using UnityEngine.Purchasing;
 using Newtonsoft.Json;
 using Raincrow.Store;
 using System.Collections.Generic;
+using Oktagon.Analytics;
 
 public class IAPSilver : MonoBehaviour, IStoreListener
 {
@@ -139,10 +140,31 @@ public class IAPSilver : MonoBehaviour, IStoreListener
         }
 
         if (string.IsNullOrEmpty(error) == false)
+        {
             LogError(error);
+        }
 
         if (m_OngoingPurchase != null && m_OngoingPurchase.id == id)
         {
+            Dictionary<string, object> eventParams = new Dictionary<string, object>
+            {
+                { "clientVersion", Application.version },
+                { "productID", id }
+            };
+
+            // product cost
+            float productCost = 0;
+            if (StoreManagerAPI.StoreData.Packs.ContainsKey(id))
+            {
+                productCost = StoreManagerAPI.StoreData.Packs[id].fullPrice; 
+            }
+            else if (StoreManagerAPI.CurrencyBundleDict.ContainsKey(id))
+            {
+                productCost = StoreManagerAPI.CurrencyBundleDict[id].cost;
+            }
+            eventParams.Add("productCost", productCost);
+            OktAnalyticsManager.PushEvent("purchaseIAP", eventParams);
+                
             Raincrow.Analytics.Events.PurchaseAnalytics.CompleteIAP(m_OngoingPurchase.id);
             AppsFlyerAPI.TrackStorePurchaseEvent(m_OngoingPurchase.id);
             m_OngoingPurchase?.callback(error);
@@ -287,8 +309,9 @@ public class IAPSilver : MonoBehaviour, IStoreListener
 #if UNITY_EDITOR
         Debug.Log("[<color=cyan>IAPSilver</color>] " + msg);
         return;
-#endif
+#else
         Debug.Log("[IAPSilver] " + msg);
+#endif
     }
 
     private static void LogError(string msg)
@@ -296,7 +319,8 @@ public class IAPSilver : MonoBehaviour, IStoreListener
 #if UNITY_EDITOR
         Debug.LogError("[<color=cyan>IAPSilver</color>] " + msg);
         return;
-#endif
+#else
         Debug.LogError("[IAPSilver] " + msg);
+#endif
     }
 }
