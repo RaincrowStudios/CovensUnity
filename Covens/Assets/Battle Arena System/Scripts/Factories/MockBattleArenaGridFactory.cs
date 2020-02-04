@@ -1,60 +1,12 @@
 ﻿using Raincrow.BattleArena.Builder;
 using Raincrow.BattleArena.Model;
-using System.Collections;
-using UnityEngine;
 
-namespace Raincrow.BattleArena.Controller
+namespace Raincrow.BattleArena.Factory
 {
-    public class BattleArenaGridController : MonoBehaviour
+    public class MockBattleArenaGridFactory : AbstractBattleArenaGridFactory
     {
-        [SerializeField] private BattleArenaGridUIModel _gridUIModel;
-        [SerializeField] private Transform _cellsTransform;
-
-        protected virtual IEnumerator Start()
+        public override IBattleArenaGridModel Create()
         {
-            // Mock BattleArenaGrid
-            BattleArenaGridModel gridModel = CreateMockBattleArenaGridModel();
-            yield return StartCoroutine(CreateBattleArenaGridUIModel(gridModel));
-        }
-
-        private IEnumerator CreateBattleArenaGridUIModel(BattleArenaGridModel gridModel)
-        {
-            float startX = (gridModel.MaxCellsPerColumn - 1) * (_gridUIModel.CellLocalScale.x * 0.5f);
-            startX += _gridUIModel.Spacing.x * (gridModel.MaxCellsPerColumn - 1) * 0.5f;
-
-            float endX = (gridModel.MaxCellsPerColumn - 1) * (_gridUIModel.CellLocalScale.x * -0.5f);
-            endX -= _gridUIModel.Spacing.x * (gridModel.MaxCellsPerColumn - 1) * 0.5f;
-
-            float startZ = (gridModel.MaxCellsPerLine - 1) * (_gridUIModel.CellLocalScale.x * 0.5f);
-            startZ += _gridUIModel.Spacing.y * (gridModel.MaxCellsPerLine - 1) * 0.5f;
-
-            float endZ = (gridModel.MaxCellsPerLine - 1) * (_gridUIModel.CellLocalScale.x * -0.5f);
-            endZ -= _gridUIModel.Spacing.y * (gridModel.MaxCellsPerLine - 1) * 0.5f;
-
-            for (int i = 0; i < gridModel.MaxCellsPerColumn; i++)
-            {
-                for (int j = 0; j < gridModel.MaxCellsPerLine; j++)
-                {
-                    if (gridModel.Cells[i, j] != null)
-                    {
-                        Vector3 cellPosition = new Vector3
-                        {
-                            x = Mathf.Lerp(startX, endX, i / (gridModel.MaxCellsPerColumn - 1f)),
-                            y = gridModel.Cells[i, j].Height,
-                            z = Mathf.Lerp(startZ, endZ, j / (gridModel.MaxCellsPerLine - 1f)),
-                        };
-                        cellPosition = _cellsTransform.TransformPoint(cellPosition);
-                        GameObject cellInstance = Instantiate(_gridUIModel.CellPrefab, cellPosition, _cellsTransform.rotation, _cellsTransform);
-                        cellInstance.transform.localScale = _gridUIModel.CellLocalScale;
-                    }
-                    yield return null;
-                }
-            }
-        }
-
-        private BattleArenaGridModel CreateMockBattleArenaGridModel()
-        {
-            // Create a mock BattleArenaGridBuilder
             BattleArenaGridBuilder gridBuilder;
             {
                 gridBuilder = new BattleArenaGridBuilder()
@@ -103,7 +55,5 @@ namespace Raincrow.BattleArena.Controller
 
             return new BattleArenaGridModel(gridBuilder);
         }
-
-        
     }
 }
