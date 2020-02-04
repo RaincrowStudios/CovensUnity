@@ -378,6 +378,13 @@ public class MarkerSpawner : MonoBehaviour
             EnergyMarker energyMarker = m as EnergyMarker;
             EnergyToken energyToken = energyMarker.Token as EnergyToken;
 
+            if(energyToken == null)
+            {
+                energyToken = new EnergyToken();
+                energyToken.amount = ((CollectableToken)energyMarker.Token).amount;
+                energyToken.type = "energy";
+            }
+
             Dictionary<string, object> eventParams = new Dictionary<string, object>
             {
                 { "clientVersion", Application.version },
