@@ -14,6 +14,11 @@ namespace Raincrow.BattleArena.Controller
         {
             // Mock BattleArenaGrid
             BattleArenaGridModel gridModel = CreateMockBattleArenaGridModel();
+            yield return StartCoroutine(CreateBattleArenaGridUIModel(gridModel));
+        }
+
+        private IEnumerator CreateBattleArenaGridUIModel(BattleArenaGridModel gridModel)
+        {
             float startX = (gridModel.MaxCellsPerColumn - 1) * (_gridUIModel.CellLocalScale.x * 0.5f);
             startX += _gridUIModel.Spacing.x * (gridModel.MaxCellsPerColumn - 1) * 0.5f;
 
@@ -41,8 +46,8 @@ namespace Raincrow.BattleArena.Controller
                         cellPosition = _cellsTransform.TransformPoint(cellPosition);
                         GameObject cellInstance = Instantiate(_gridUIModel.CellPrefab, cellPosition, _cellsTransform.rotation, _cellsTransform);
                         cellInstance.transform.localScale = _gridUIModel.CellLocalScale;
-                    }                    
-                    yield return new WaitForSeconds(0.25f);
+                    }
+                    yield return null;
                 }
             }
         }
@@ -62,7 +67,7 @@ namespace Raincrow.BattleArena.Controller
 
                 // create first column
                 gridBuilder.CellBuilders[0, 0] = null;
-                gridBuilder.CellBuilders[0, 1] = new BattleArenaCellBuilder() { Height = 1 };
+                gridBuilder.CellBuilders[0, 1] = new BattleArenaCellBuilder();// { Height = 1 };
                 gridBuilder.CellBuilders[0, 2] = new BattleArenaCellBuilder();
                 gridBuilder.CellBuilders[0, 3] = new BattleArenaCellBuilder();
                 gridBuilder.CellBuilders[0, 4] = new BattleArenaCellBuilder();
@@ -79,7 +84,7 @@ namespace Raincrow.BattleArena.Controller
                 gridBuilder.CellBuilders[2, 1] = new BattleArenaCellBuilder();
                 gridBuilder.CellBuilders[2, 2] = null;
                 gridBuilder.CellBuilders[2, 3] = new BattleArenaCellBuilder();
-                gridBuilder.CellBuilders[2, 4] = new BattleArenaCellBuilder() { Height = 2 };
+                gridBuilder.CellBuilders[2, 4] = new BattleArenaCellBuilder();// { Height = 2 };
 
                 // create fourth column
                 gridBuilder.CellBuilders[3, 0] = new BattleArenaCellBuilder();
@@ -89,7 +94,7 @@ namespace Raincrow.BattleArena.Controller
                 gridBuilder.CellBuilders[3, 4] = new BattleArenaCellBuilder();
 
                 // create fifth column
-                gridBuilder.CellBuilders[4, 0] = new BattleArenaCellBuilder() { Height = 3 };
+                gridBuilder.CellBuilders[4, 0] = new BattleArenaCellBuilder();// { Height = 3 };
                 gridBuilder.CellBuilders[4, 1] = new BattleArenaCellBuilder();
                 gridBuilder.CellBuilders[4, 2] = new BattleArenaCellBuilder();
                 gridBuilder.CellBuilders[4, 3] = new BattleArenaCellBuilder();
