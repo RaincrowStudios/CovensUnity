@@ -4,7 +4,7 @@ namespace Raincrow.BattleArena.Model
 {
     public class BattleArenaGridModel : IBattleArenaGridModel
     {
-        // PROPERTIES
+        // Properties
 
         /// <summary>
         /// Max Number of Cells per Line in the grid
