@@ -3,7 +3,7 @@ using Raincrow.BattleArena.Model;
 
 namespace Raincrow.BattleArena.Factory
 {
-    public class MockCharacterFactory : AbstractCharacterFactory
+    public class MockCharacterFactory : AbstractCharacterModelFactory
     {
         public override ICharacterModel Create()
         {

@@ -39,9 +39,9 @@ namespace Raincrow.BattleArena.Model
                     CellBuilder cellBuilder = builder.CellBuilders[i, j];
                     if (cellBuilder != null) // if null, cell will be empty
                     {
-                        ICellModel battleArenaCell = new CellModel(i, j, cellBuilder);
+                        ICellModel battleArenaCell = new CellModel(cellBuilder);
                         Cells[i, j] = battleArenaCell;
-                    }                                        
+                    }
                 }
             }
         }

@@ -7,14 +7,18 @@ namespace Raincrow.BattleArena.Controller
 {
     public class GridController : MonoBehaviour
     {
-        [SerializeField] private GridUIModel _gridUIModel;
+        [Header("Grid Settings")]
         [SerializeField] private Transform _cellsTransform;
-        [SerializeField] private AbstractGridFactory _gridFactory; // Factory class responsible for creating our Grid
-        [SerializeField] private AbstractCharacterFactory _characterFactory; // Factory class responsible for creating our Characters
+        [SerializeField] private GridUIModel _gridUIModel;
+        [SerializeField] private AbstractGridModelFactory _gridFactory; // Factory class responsible for creating our Grid
+
+        [Header("Character Settings")]
+        [SerializeField] private AbstractCharacterModelFactory _characterFactory; // Factory class responsible for creating our Characters
+        [SerializeField] private CharacterUIModel _characterUIModel;
 
         protected virtual IEnumerator Start()
         {
-            IGridModel gridModel = _gridFactory.Create();
+            IGridModel gridModel = _gridFactory.Create(_characterFactory);
             yield return StartCoroutine(CreateGridUI(gridModel));
         }
 
@@ -53,10 +57,20 @@ namespace Raincrow.BattleArena.Controller
                         };
                         cellPosition = _cellsTransform.TransformPoint(cellPosition);
                         GameObject cellInstance = Instantiate(_gridUIModel.CellPrefab, cellPosition, _cellsTransform.rotation, _cellsTransform);
+
+                        if (gridModel.Cells[i, j].CharacterModel != null)
+                        {
+                            CreateCharacterUI(gridModel.Cells[i, j].CharacterModel, cellInstance);
+                        }
                     }
                     yield return null;
                 }
             }
-        }        
+        }
+
+        private void CreateCharacterUI(ICharacterModel characterModel, GameObject cellInstance)
+        {
+            Instantiate(_characterUIModel.CharacterPrefab, cellInstance.transform);
+        }
     }
 }
