@@ -40,6 +40,7 @@ namespace Raincrow
             HELP,
             PLAYER_DESC,
             MOONPHASE,
+            ARENA,
         }
 
         private static Dictionary<Scene, string> m_SceneNames = new Dictionary<Scene, string>
@@ -73,6 +74,7 @@ namespace Raincrow
             {Scene.HELP,                "Help" },
             {Scene.PLAYER_DESC,         "TeamPlayerView" },
             {Scene.MOONPHASE,           "Moonphase" },
+            {Scene.ARENA,           "Arena" },
         };
 
         private static SceneManager m_Instance;

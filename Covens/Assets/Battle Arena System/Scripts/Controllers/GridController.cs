@@ -23,7 +23,7 @@ namespace Raincrow.BattleArena.Controller
         /// </summary>
         /// <param name="gridModel">IBattleArenaGridModel that defines how the grid should look</param>
         /// <returns>A CreateBattleArenaGridUI coroutine</returns>
-        private IEnumerator CreateGridUI(IGridModel gridModel)
+        public IEnumerator CreateGridUI(IGridModel gridModel)
         {
             Vector3 cellLocalScale = _gridUIModel.CellPrefab.transform.localScale;
 
