@@ -40,9 +40,9 @@ GameObject:
   m_Component:
   - component: {fileID: 3561526507227420494}
   - component: {fileID: 3561526507227420495}
-  - component: {fileID: 1583197414}
+  - component: {fileID: 5831261063699693009}
   m_Layer: 0
-  m_Name: BattleArenaGridView
+  m_Name: GridView
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -81,8 +81,8 @@ MonoBehaviour:
     _cellLocalScale: {x: 1, y: 2, z: 1}
     _spacing: {x: 0.1, y: 0.1}
   _cellsTransform: {fileID: 55641126279688642}
-  _gridFactory: {fileID: 1583197414}
---- !u!114 &1583197414
+  _gridFactory: {fileID: 5831261063699693009}
+--- !u!114 &5831261063699693009
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -91,6 +91,6 @@ MonoBehaviour:
   m_GameObject: {fileID: 3561526507227420493}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 57d8047d3844d0b4a9853a3cb5b58628, type: 3}
+  m_Script: {fileID: 11500000, guid: e2a48c0c08f4b16408a622ba52d11658, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 

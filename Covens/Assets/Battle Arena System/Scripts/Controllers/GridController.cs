@@ -5,16 +5,17 @@ using UnityEngine;
 
 namespace Raincrow.BattleArena.Controller
 {
-    public class BattleArenaGridController : MonoBehaviour
+    public class GridController : MonoBehaviour
     {
-        [SerializeField] private BattleArenaGridUIModel _gridUIModel;
+        [SerializeField] private GridUIModel _gridUIModel;
         [SerializeField] private Transform _cellsTransform;
-        [SerializeField] private AbstractBattleArenaGridFactory _gridFactory; // Factory class responsible for creating our Grid
+        [SerializeField] private AbstractGridFactory _gridFactory; // Factory class responsible for creating our Grid
+        [SerializeField] private AbstractCharacterFactory _characterFactory; // Factory class responsible for creating our Characters
 
         protected virtual IEnumerator Start()
         {
-            IBattleArenaGridModel gridModel = _gridFactory.Create();
-            yield return StartCoroutine(CreateBattleArenaGridUI(gridModel));
+            IGridModel gridModel = _gridFactory.Create();
+            yield return StartCoroutine(CreateGridUI(gridModel));
         }
 
         /// <summary>
@@ -22,18 +23,20 @@ namespace Raincrow.BattleArena.Controller
         /// </summary>
         /// <param name="gridModel">IBattleArenaGridModel that defines how the grid should look</param>
         /// <returns>A CreateBattleArenaGridUI coroutine</returns>
-        private IEnumerator CreateBattleArenaGridUI(IBattleArenaGridModel gridModel)
+        private IEnumerator CreateGridUI(IGridModel gridModel)
         {
-            float startX = (gridModel.MaxCellsPerColumn - 1) * (_gridUIModel.CellLocalScale.x * 0.5f);
+            Vector3 cellLocalScale = _gridUIModel.CellPrefab.transform.localScale;
+
+            float startX = (gridModel.MaxCellsPerColumn - 1) * (cellLocalScale.x * 0.5f);
             startX += _gridUIModel.Spacing.x * (gridModel.MaxCellsPerColumn - 1) * 0.5f;
 
-            float endX = (gridModel.MaxCellsPerColumn - 1) * (_gridUIModel.CellLocalScale.x * -0.5f);
+            float endX = (gridModel.MaxCellsPerColumn - 1) * (cellLocalScale.x * -0.5f);
             endX -= _gridUIModel.Spacing.x * (gridModel.MaxCellsPerColumn - 1) * 0.5f;
 
-            float startZ = (gridModel.MaxCellsPerLine - 1) * (_gridUIModel.CellLocalScale.x * 0.5f);
+            float startZ = (gridModel.MaxCellsPerLine - 1) * (cellLocalScale.z * 0.5f);
             startZ += _gridUIModel.Spacing.y * (gridModel.MaxCellsPerLine - 1) * 0.5f;
 
-            float endZ = (gridModel.MaxCellsPerLine - 1) * (_gridUIModel.CellLocalScale.x * -0.5f);
+            float endZ = (gridModel.MaxCellsPerLine - 1) * (cellLocalScale.z * -0.5f);
             endZ -= _gridUIModel.Spacing.y * (gridModel.MaxCellsPerLine - 1) * 0.5f;
 
             for (int i = 0; i < gridModel.MaxCellsPerColumn; i++)
@@ -50,7 +53,6 @@ namespace Raincrow.BattleArena.Controller
                         };
                         cellPosition = _cellsTransform.TransformPoint(cellPosition);
                         GameObject cellInstance = Instantiate(_gridUIModel.CellPrefab, cellPosition, _cellsTransform.rotation, _cellsTransform);
-                        cellInstance.transform.localScale = _gridUIModel.CellLocalScale;
                     }
                     yield return null;
                 }

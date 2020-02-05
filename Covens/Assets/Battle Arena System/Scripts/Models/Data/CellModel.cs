@@ -2,7 +2,7 @@
 
 namespace Raincrow.BattleArena.Model
 {
-    public class BattleArenaCellModel : IBattleArenaCellModel
+    public class CellModel : ICellModel
     {
         // Properties
         public int Column { get; private set; }
@@ -12,7 +12,7 @@ namespace Raincrow.BattleArena.Model
         public int Height { get; private set; }
 
         // Constructor
-        public BattleArenaCellModel(int column, int line, BattleArenaCellBuilder builder)
+        public CellModel(int column, int line, CellBuilder builder)
         {
             Column = column;
             Line = line;

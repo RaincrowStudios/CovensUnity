@@ -1,9 +1,9 @@
 ﻿namespace Raincrow.BattleArena.Model
 {
-    public interface IBattleArenaGridModel
+    public interface IGridModel
     {
         int MaxCellsPerLine { get; }
         int MaxCellsPerColumn { get; }
-        IBattleArenaCellModel[,] Cells { get; }
+        ICellModel[,] Cells { get; }
     }
 }

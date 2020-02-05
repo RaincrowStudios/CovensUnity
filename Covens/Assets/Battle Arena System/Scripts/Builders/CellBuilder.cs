@@ -1,6 +1,6 @@
 ﻿namespace Raincrow.BattleArena.Builder
 {
-    public class BattleArenaCellBuilder
+    public class CellBuilder
     {
         public int Height { get; set; }
     }

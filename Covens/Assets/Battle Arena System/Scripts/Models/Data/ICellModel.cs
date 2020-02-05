@@ -1,6 +1,6 @@
 ﻿namespace Raincrow.BattleArena.Model
 {
-    public interface IBattleArenaCellModel
+    public interface ICellModel
     {
         int Column { get; }
         int Line { get; }
