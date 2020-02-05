@@ -68,3 +68,9 @@ TagManager:
   - name: FX
     uniqueID: 3044447305
     locked: 0
+  - name: Cell
+    uniqueID: 188712151
+    locked: 0
+  - name: Character
+    uniqueID: 2567503731
+    locked: 0
