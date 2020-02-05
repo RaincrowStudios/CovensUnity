@@ -5,7 +5,6 @@ namespace Raincrow.BattleArena.Model
     public class CellModel : ICellModel
     {
         // Properties
-
         public int Height { get; private set; }
 
         public ICharacterModel CharacterModel { get; private set; }

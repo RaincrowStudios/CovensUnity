@@ -3,9 +3,9 @@ using Raincrow.BattleArena.Model;
 
 namespace Raincrow.BattleArena.Factory
 {
-    public class MockGridFactory : AbstractGridFactory
+    public class MockGridFactory : AbstractGridModelFactory
     {
-        public override IGridModel Create(AbstractCharacterFactory characterFactory)
+        public override IGridModel Create(AbstractCharacterModelFactory characterFactory)
         {
             GridBuilder gridBuilder;
             {

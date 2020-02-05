@@ -3,7 +3,7 @@ using UnityEngine;
 
 namespace Raincrow.BattleArena.Factory
 {
-    public abstract class AbstractCharacterFactory : MonoBehaviour
+    public abstract class AbstractCharacterModelFactory : MonoBehaviour
     {
         public abstract ICharacterModel Create();
     }

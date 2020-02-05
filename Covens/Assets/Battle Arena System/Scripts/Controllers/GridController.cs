@@ -10,10 +10,10 @@ namespace Raincrow.BattleArena.Controller
         [Header("Grid Settings")]
         [SerializeField] private Transform _cellsTransform;
         [SerializeField] private GridUIModel _gridUIModel;
-        [SerializeField] private AbstractGridFactory _gridFactory; // Factory class responsible for creating our Grid
+        [SerializeField] private AbstractGridModelFactory _gridFactory; // Factory class responsible for creating our Grid
 
         [Header("Character Settings")]
-        [SerializeField] private AbstractCharacterFactory _characterFactory; // Factory class responsible for creating our Characters
+        [SerializeField] private AbstractCharacterModelFactory _characterFactory; // Factory class responsible for creating our Characters
         [SerializeField] private CharacterUIModel _characterUIModel;
 
         protected virtual IEnumerator Start()
