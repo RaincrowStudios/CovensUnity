@@ -18,7 +18,20 @@ namespace Raincrow.BattleArena.Controller
         {
             _grid = _gridFactory.Create();
 
-            
+            int maxCellsPerLine = _grid.GetLength(0);
+            int maxCellsPerColumn = _grid.GetLength(1);
+
+            for (int i = 0; i < maxCellsPerLine; i++)
+            {
+                for (int j = 0; j < maxCellsPerColumn; j++)
+                {
+                    GameObject cellGameObject = _grid[i, j];
+                    if (cellGameObject != null && Random.Range(0, 1f) > 0.9f)
+                    {
+                        _characterFactory.Create(cellGameObject);
+                    }
+                }
+            }
         }
     }
 }

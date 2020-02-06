@@ -77,7 +77,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _gridFactory: {fileID: 330202080}
-  _characterFactory: {fileID: 0}
+  _characterFactory: {fileID: 154814060}
 --- !u!114 &330202080
 MonoBehaviour:
   m_ObjectHideFlags: 0
