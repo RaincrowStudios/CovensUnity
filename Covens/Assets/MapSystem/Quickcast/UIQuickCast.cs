@@ -338,7 +338,7 @@ public class UIQuickCast : MonoBehaviour
 
     public void OnClickChallenge()
     {
-        ChallengeManager.Challenge(target);
+        BattleRequestsManager.Challenge(target);
     }
 
     //GAME EVENTS
