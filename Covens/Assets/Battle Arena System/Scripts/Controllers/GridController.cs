@@ -1,5 +1,6 @@
 ﻿using Raincrow.BattleArena.Factory;
 using System.Collections;
+using System.Collections.Generic;
 using UnityEngine;
 
 namespace Raincrow.BattleArena.Controller
@@ -16,14 +17,9 @@ namespace Raincrow.BattleArena.Controller
         private GameObject[,] _grid = new GameObject[0, 0];
 
         /// <summary>
-        /// Array with all characters
+        /// List with all characters
         /// </summary>
-        private GameObject[] _characters = new GameObject[0];
-
-        /// <summary>
-        /// Number of characters instantiated inside the characters array
-        /// </summary>
-        private int _numCharacters = 0;
+        private List<GameObject> _characters = new List<GameObject>();
 
         public virtual void OnEnable()
         {
@@ -47,21 +43,20 @@ namespace Raincrow.BattleArena.Controller
             int maxCellsPerColumn = _grid.GetLength(1);
 
             // Initialize list of characters
-            _characters = new GameObject[maxCellsPerColumn * maxCellsPerLine];
+            _characters = new List<GameObject>(maxCellsPerColumn * maxCellsPerLine);
 
             for (int i = 0; i < maxCellsPerLine; i++)
             {
                 for (int j = 0; j < maxCellsPerColumn; j++)
                 {
                     GameObject cellGameObject = _grid[i, j];
-                    if (cellGameObject != null)
+                    if (cellGameObject != null && Random.Range(0f, 1f) < 0.1f)
                     {
                         Coroutine<GameObject> createCharacter = this.StartCoroutine<GameObject>(_characterFactory.Create(cellGameObject.transform));
                         yield return createCharacter;
 
                         // add a character
-                        _characters[_numCharacters] = createCharacter.ReturnValue;
-                        _numCharacters += 1;
+                        _characters.Add(createCharacter.ReturnValue);
                     }
                 }
             }
@@ -70,13 +65,11 @@ namespace Raincrow.BattleArena.Controller
         protected void DestroyGrid()
         {
             // Destroy characters
-            for (int i = _numCharacters - 1; i >= 0; i--)
+            for (int i = _characters.Count - 1; i >= 0; i--)
             {
                 Destroy(_characters[i]);
-
-                _numCharacters -= 1;
             }
-            _characters = new GameObject[0];
+            _characters.Clear();
 
             // Destroy grid 
             for (int i = 0; i < _cellsTransform.childCount; i++)
