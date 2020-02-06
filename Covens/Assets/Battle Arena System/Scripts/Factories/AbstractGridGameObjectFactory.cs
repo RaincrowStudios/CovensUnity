@@ -1,9 +1,10 @@
-﻿using UnityEngine;
+﻿using System.Collections;
+using UnityEngine;
 
 namespace Raincrow.BattleArena.Factory
 {
     public abstract class AbstractGridGameObjectFactory : MonoBehaviour
     {
-        public abstract GameObject[,] Create();
+        public abstract IEnumerator Create();
     }
 }

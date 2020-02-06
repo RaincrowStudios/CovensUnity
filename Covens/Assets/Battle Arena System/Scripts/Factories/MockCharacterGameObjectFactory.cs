@@ -1,5 +1,6 @@
 ﻿using Raincrow.BattleArena.Builder;
 using Raincrow.BattleArena.Model;
+using System.Collections;
 using UnityEngine;
 
 namespace Raincrow.BattleArena.Factory
@@ -8,12 +9,12 @@ namespace Raincrow.BattleArena.Factory
     {
         [SerializeField] private GameObject _characterPrefab;
 
-        public override GameObject Create(GameObject cellInstance)
+        public override IEnumerator Create(Transform cellTransform)
         {            
             CharacterBuilder builder = new CharacterBuilder();
             ICharacterModel characterModel = new CharacterModel(builder);
             
-            return Instantiate(_characterPrefab, cellInstance.transform);
+            yield return Instantiate(_characterPrefab, cellTransform);
         }
     }
 }
