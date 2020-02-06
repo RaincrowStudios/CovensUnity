@@ -5,6 +5,6 @@ namespace Raincrow.BattleArena.Factory
 {
     public abstract class AbstractGridModelFactory : MonoBehaviour
     {
-        public abstract IGridModel Create(AbstractCharacterModelFactory characterFactory);
+        public abstract IGridModel Create();
     }
 }

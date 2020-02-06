@@ -5,7 +5,7 @@ namespace Raincrow.BattleArena.Factory
 {
     public class MockGridFactory : AbstractGridModelFactory
     {
-        public override IGridModel Create(AbstractCharacterModelFactory characterFactory)
+        public override IGridModel Create()
         {
             GridBuilder gridBuilder;
             {
@@ -17,15 +17,10 @@ namespace Raincrow.BattleArena.Factory
 
                 gridBuilder.CellBuilders = new CellBuilder[gridBuilder.MaxCellsPerColumn, gridBuilder.MaxCellsPerLine];
 
-                // Characters
-                ICharacterModel witch1 = characterFactory.Create();
-                ICharacterModel witch2 = characterFactory.Create();
-                //ICharacterModel witch3 = new CharacterModel(new CharacterBuilder());
-
                 // create first column
                 gridBuilder.CellBuilders[0, 0] = null;
                 gridBuilder.CellBuilders[0, 1] = new CellBuilder();// { Height = 1 };
-                gridBuilder.CellBuilders[0, 2] = new CellBuilder() { CharacterModel = witch1 };
+                gridBuilder.CellBuilders[0, 2] = new CellBuilder();
                 gridBuilder.CellBuilders[0, 3] = new CellBuilder();
                 gridBuilder.CellBuilders[0, 4] = new CellBuilder();
 
@@ -52,7 +47,7 @@ namespace Raincrow.BattleArena.Factory
 
                 // create fifth column
                 gridBuilder.CellBuilders[4, 0] = new CellBuilder();// { Height = 3 };
-                gridBuilder.CellBuilders[4, 1] = new CellBuilder() { CharacterModel = witch2 };
+                gridBuilder.CellBuilders[4, 1] = new CellBuilder();
                 gridBuilder.CellBuilders[4, 2] = new CellBuilder();
                 gridBuilder.CellBuilders[4, 3] = new CellBuilder();
                 gridBuilder.CellBuilders[4, 4] = null;

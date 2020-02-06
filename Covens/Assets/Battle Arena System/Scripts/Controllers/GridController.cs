@@ -1,6 +1,5 @@
 ﻿using Raincrow.BattleArena.Factory;
 using Raincrow.BattleArena.Model;
-using System.Collections;
 using UnityEngine;
 
 namespace Raincrow.BattleArena.Controller
@@ -12,14 +11,16 @@ namespace Raincrow.BattleArena.Controller
         [SerializeField] private GridUIModel _gridUIModel;
         [SerializeField] private AbstractGridModelFactory _gridFactory; // Factory class responsible for creating our Grid
 
-        [Header("Character Settings")]
-        [SerializeField] private AbstractCharacterModelFactory _characterFactory; // Factory class responsible for creating our Characters
-        [SerializeField] private CharacterUIModel _characterUIModel;
+        //[Header("Character Settings")]
+        //[SerializeField] private AbstractCharacterModelFactory _characterFactory; // Factory class responsible for creating our Characters
+        //[SerializeField] private CharacterUIModel _characterUIModel;
 
-        protected virtual IEnumerator Start()
+        private GameObject[,] _gridGameObjects = new GameObject[0, 0];
+
+        public virtual void OnEnable()
         {
-            IGridModel gridModel = _gridFactory.Create(_characterFactory);
-            yield return StartCoroutine(CreateGridUI(gridModel));
+            IGridModel gridModel = _gridFactory.Create();
+            _gridGameObjects = CreateGridGameObjects(gridModel, _gridUIModel);
         }
 
         /// <summary>
@@ -27,21 +28,23 @@ namespace Raincrow.BattleArena.Controller
         /// </summary>
         /// <param name="gridModel">IBattleArenaGridModel that defines how the grid should look</param>
         /// <returns>A CreateBattleArenaGridUI coroutine</returns>
-        public IEnumerator CreateGridUI(IGridModel gridModel)
+        public GameObject[,] CreateGridGameObjects(IGridModel gridModel, GridUIModel gridUIModel)
         {
-            Vector3 cellLocalScale = _gridUIModel.CellPrefab.transform.localScale;
+            GameObject[,] gridGameObjects = new GameObject[gridModel.MaxCellsPerColumn, gridModel.MaxCellsPerLine];
+
+            Vector3 cellLocalScale = gridUIModel.CellPrefab.transform.localScale;
 
             float startX = (gridModel.MaxCellsPerColumn - 1) * (cellLocalScale.x * 0.5f);
-            startX += _gridUIModel.Spacing.x * (gridModel.MaxCellsPerColumn - 1) * 0.5f;
+            startX += gridUIModel.Spacing.x * (gridModel.MaxCellsPerColumn - 1) * 0.5f;
 
             float endX = (gridModel.MaxCellsPerColumn - 1) * (cellLocalScale.x * -0.5f);
-            endX -= _gridUIModel.Spacing.x * (gridModel.MaxCellsPerColumn - 1) * 0.5f;
+            endX -= gridUIModel.Spacing.x * (gridModel.MaxCellsPerColumn - 1) * 0.5f;
 
             float startZ = (gridModel.MaxCellsPerLine - 1) * (cellLocalScale.z * 0.5f);
-            startZ += _gridUIModel.Spacing.y * (gridModel.MaxCellsPerLine - 1) * 0.5f;
+            startZ += gridUIModel.Spacing.y * (gridModel.MaxCellsPerLine - 1) * 0.5f;
 
             float endZ = (gridModel.MaxCellsPerLine - 1) * (cellLocalScale.z * -0.5f);
-            endZ -= _gridUIModel.Spacing.y * (gridModel.MaxCellsPerLine - 1) * 0.5f;
+            endZ -= gridUIModel.Spacing.y * (gridModel.MaxCellsPerLine - 1) * 0.5f;
 
             for (int i = 0; i < gridModel.MaxCellsPerColumn; i++)
             {
@@ -55,18 +58,20 @@ namespace Raincrow.BattleArena.Controller
                             y = gridModel.Cells[i, j].Height,
                             z = Mathf.Lerp(startZ, endZ, j / (gridModel.MaxCellsPerLine - 1f)),
                         };
-                        cellPosition = _cellsTransform.TransformPoint(cellPosition);
-                        Instantiate(_gridUIModel.CellPrefab, cellPosition, _cellsTransform.rotation, _cellsTransform);
-                        //GameObject cellInstance = Instantiate(_gridUIModel.CellPrefab, cellPosition, _cellsTransform.rotation, _cellsTransform);
+                        cellPosition = _cellsTransform.TransformPoint(cellPosition);                        
+                        GameObject cellInstance = Instantiate(gridUIModel.CellPrefab, cellPosition, _cellsTransform.rotation, _cellsTransform);
+
+                        gridGameObjects[i, j] = cellInstance;
 
                         //if (gridModel.Cells[i, j].CharacterModel != null)
                         //{
                         //    CreateCharacterUI(gridModel.Cells[i, j].CharacterModel, cellInstance);
                         //}
                     }
-                    yield return null;
                 }
             }
+
+            return gridGameObjects;
         }
 
         //private void CreateCharacterUI(ICharacterModel characterModel, GameObject cellInstance)

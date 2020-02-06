@@ -12,7 +12,7 @@ namespace Raincrow.BattleArena.Manager
             BattleOpenHandler.OnBattleOpen += BattleOpen;
         }
 
-        private void BattleOpen(BattleModel arena)
+        private void BattleOpen(IBattleModel arena)
         {
             LoadingOverlay.Show();
             SceneManager.LoadSceneAsync(SceneManager.Scene.ARENA, UnityEngine.SceneManagement.LoadSceneMode.Additive,
@@ -20,7 +20,10 @@ namespace Raincrow.BattleArena.Manager
                 () => {
                     MapsAPI.Instance.HideMap(true);
                     GridController gridController = (GridController)FindObjectOfType(typeof(GridController));
-                    StartCoroutine(gridController.CreateGridUI(arena.Grid));
+                    if (!gridController.isActiveAndEnabled)
+                    {
+                        gridController.gameObject.SetActive(true);
+                    }
                     LoadingOverlay.Hide();
                 }
              );
