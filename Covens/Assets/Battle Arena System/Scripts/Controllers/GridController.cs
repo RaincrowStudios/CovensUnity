@@ -1,4 +1,5 @@
 ﻿using Raincrow.BattleArena.Factory;
+using System.Collections;
 using UnityEngine;
 
 namespace Raincrow.BattleArena.Controller
@@ -16,8 +17,17 @@ namespace Raincrow.BattleArena.Controller
 
         public virtual void OnEnable()
         {
-            _grid = _gridFactory.Create();
+            //_grid = _gridFactory.Create();
+            StartCoroutine(CreateGrid());
+        }
 
+        protected IEnumerator CreateGrid()
+        {
+            Coroutine<GameObject[,]> createGrid = this.StartCoroutine<GameObject[,]>(_gridFactory.Create());
+            yield return createGrid;
+            _grid = createGrid.ReturnValue;
+
+            // Create characters
             int maxCellsPerLine = _grid.GetLength(0);
             int maxCellsPerColumn = _grid.GetLength(1);
 
@@ -28,7 +38,7 @@ namespace Raincrow.BattleArena.Controller
                     GameObject cellGameObject = _grid[i, j];
                     if (cellGameObject != null)
                     {
-                        _characterFactory.Create(cellGameObject);
+                        yield return this.StartCoroutine<GameObject>(_characterFactory.Create(cellGameObject));
                     }
                 }
             }
