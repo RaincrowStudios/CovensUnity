@@ -3,7 +3,7 @@
 namespace Raincrow.BattleArena.Model
 {
     [System.Serializable]
-    public class GridUIModel
+    public class GridGameObjectModel
     {
         // Serializable variables
         [SerializeField] private GameObject _cellPrefab; // Cell Prefab 

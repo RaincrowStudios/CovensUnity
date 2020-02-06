@@ -3,7 +3,7 @@
 namespace Raincrow.BattleArena.Model
 {
     [System.Serializable]
-    public class CharacterUIModel
+    public class CharacterGameObjectModel
     {
         // Serializable variables
         [SerializeField] private GameObject _characterPrefab; // Character Prefab
