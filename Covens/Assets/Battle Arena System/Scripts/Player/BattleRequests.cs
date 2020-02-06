@@ -69,6 +69,21 @@ namespace BattleArena
                 }
             });
         }
+        public static void Flee(System.Action success = null, System.Action error = null)
+        {
+            APIManager.Instance.Post("character/flee", "{}",
+            (response, result) =>
+            {
+                if (result == 200)
+                {
+                    success?.Invoke();
+                }
+                else
+                {
+                    error?.Invoke();
+                }
+            });
+        }
     }
 }
 
