@@ -16,46 +16,54 @@ namespace Raincrow.BattleArena.Factory
             {
                 gridBuilder = new GridBuilder()
                 {
-                    MaxCellsPerLine = 5,
-                    MaxCellsPerColumn = 5,
+                    MaxCellsPerLine = 25,
+                    MaxCellsPerColumn = 25,
                 };
 
                 gridBuilder.CellBuilders = new CellBuilder[gridBuilder.MaxCellsPerLine, gridBuilder.MaxCellsPerColumn];
 
-                // create first line
-                gridBuilder.CellBuilders[0, 0] = null;
-                gridBuilder.CellBuilders[0, 1] = new CellBuilder();// { Height = 1 };
-                gridBuilder.CellBuilders[0, 2] = new CellBuilder();
-                gridBuilder.CellBuilders[0, 3] = new CellBuilder();
-                gridBuilder.CellBuilders[0, 4] = new CellBuilder();
+                for (int i = 0; i < gridBuilder.MaxCellsPerLine; i++)
+                {
+                    for (int j = 0; j < gridBuilder.MaxCellsPerColumn; j++)
+                    {
+                        gridBuilder.CellBuilders[i, j] = new CellBuilder();
+                    }
+                }
 
-                // create second line
-                gridBuilder.CellBuilders[1, 0] = new CellBuilder();
-                gridBuilder.CellBuilders[1, 1] = null;
-                gridBuilder.CellBuilders[1, 2] = new CellBuilder();
-                gridBuilder.CellBuilders[1, 3] = new CellBuilder();
-                gridBuilder.CellBuilders[1, 4] = new CellBuilder();
+                //// create first line
+                //gridBuilder.CellBuilders[0, 0] = null;
+                //gridBuilder.CellBuilders[0, 1] = new CellBuilder();// { Height = 1 };
+                //gridBuilder.CellBuilders[0, 2] = new CellBuilder();
+                //gridBuilder.CellBuilders[0, 3] = new CellBuilder();
+                //gridBuilder.CellBuilders[0, 4] = new CellBuilder();
 
-                // create third line
-                gridBuilder.CellBuilders[2, 0] = new CellBuilder();
-                gridBuilder.CellBuilders[2, 1] = new CellBuilder();
-                gridBuilder.CellBuilders[2, 2] = null;
-                gridBuilder.CellBuilders[2, 3] = new CellBuilder();
-                gridBuilder.CellBuilders[2, 4] = new CellBuilder();// { Height = 2 };
+                //// create second line
+                //gridBuilder.CellBuilders[1, 0] = new CellBuilder();
+                //gridBuilder.CellBuilders[1, 1] = null;
+                //gridBuilder.CellBuilders[1, 2] = new CellBuilder();
+                //gridBuilder.CellBuilders[1, 3] = new CellBuilder();
+                //gridBuilder.CellBuilders[1, 4] = new CellBuilder();
 
-                // create fourth line
-                gridBuilder.CellBuilders[3, 0] = new CellBuilder();
-                gridBuilder.CellBuilders[3, 1] = new CellBuilder();
-                gridBuilder.CellBuilders[3, 2] = new CellBuilder();
-                gridBuilder.CellBuilders[3, 3] = null;
-                gridBuilder.CellBuilders[3, 4] = new CellBuilder();
+                //// create third line
+                //gridBuilder.CellBuilders[2, 0] = new CellBuilder();
+                //gridBuilder.CellBuilders[2, 1] = new CellBuilder();
+                //gridBuilder.CellBuilders[2, 2] = null;
+                //gridBuilder.CellBuilders[2, 3] = new CellBuilder();
+                //gridBuilder.CellBuilders[2, 4] = new CellBuilder();// { Height = 2 };
 
-                // create fifth line
-                gridBuilder.CellBuilders[4, 0] = null;// { Height = 3 };
-                gridBuilder.CellBuilders[4, 1] = new CellBuilder();
-                gridBuilder.CellBuilders[4, 2] = new CellBuilder();
-                gridBuilder.CellBuilders[4, 3] = new CellBuilder();
-                gridBuilder.CellBuilders[4, 4] = null;
+                //// create fourth line
+                //gridBuilder.CellBuilders[3, 0] = new CellBuilder();
+                //gridBuilder.CellBuilders[3, 1] = new CellBuilder();
+                //gridBuilder.CellBuilders[3, 2] = new CellBuilder();
+                //gridBuilder.CellBuilders[3, 3] = null;
+                //gridBuilder.CellBuilders[3, 4] = new CellBuilder();
+
+                //// create fifth line
+                //gridBuilder.CellBuilders[4, 0] = null;// { Height = 3 };
+                //gridBuilder.CellBuilders[4, 1] = new CellBuilder();
+                //gridBuilder.CellBuilders[4, 2] = new CellBuilder();
+                //gridBuilder.CellBuilders[4, 3] = new CellBuilder();
+                //gridBuilder.CellBuilders[4, 4] = null;
             }
 
             IGridModel gridModel = new GridModel(gridBuilder);

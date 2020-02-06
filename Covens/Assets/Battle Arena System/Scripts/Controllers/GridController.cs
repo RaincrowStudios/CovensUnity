@@ -26,7 +26,7 @@ namespace Raincrow.BattleArena.Controller
                 for (int j = 0; j < maxCellsPerColumn; j++)
                 {
                     GameObject cellGameObject = _grid[i, j];
-                    if (cellGameObject != null && Random.Range(0, 1f) > 0.9f)
+                    if (cellGameObject != null)
                     {
                         _characterFactory.Create(cellGameObject);
                     }
