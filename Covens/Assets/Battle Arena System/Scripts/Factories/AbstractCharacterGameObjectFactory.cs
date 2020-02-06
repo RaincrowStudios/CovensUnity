@@ -5,6 +5,6 @@ namespace Raincrow.BattleArena.Factory
 {
     public abstract class AbstractCharacterGameObjectFactory : MonoBehaviour
     {
-        public abstract IEnumerator Create(GameObject cellInstance);
+        public abstract IEnumerator Create(Transform cellTransform);
     }
 }

@@ -64,17 +64,8 @@ namespace Raincrow.BattleArena.Factory
                             z = Mathf.Lerp(startZ, endZ, j / (gridModel.MaxCellsPerLine - 1f)),
                         };
 
-                        GameObject cellInstance = null;
-                        if (_cellsParent != null)
-                        {
-                            cellPosition = _cellsParent.TransformPoint(cellPosition);
-                            cellInstance = Instantiate(_gridGameObjectModel.CellPrefab, cellPosition, _cellsParent.rotation, _cellsParent);
-                        }                        
-                        else
-                        {
-                            cellInstance = Instantiate(_gridGameObjectModel.CellPrefab, cellPosition, Quaternion.identity);
-                        }                        
-
+                        cellPosition = _cellsParent.TransformPoint(cellPosition);
+                        GameObject cellInstance = Instantiate(_gridGameObjectModel.CellPrefab, cellPosition, _cellsParent.rotation, _cellsParent);
                         gridGameObjects[i, j] = cellInstance;
                     }
 

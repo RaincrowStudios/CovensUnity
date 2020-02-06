@@ -9,12 +9,12 @@ namespace Raincrow.BattleArena.Factory
     {
         [SerializeField] private GameObject _characterPrefab;
 
-        public override IEnumerator Create(GameObject cellInstance)
+        public override IEnumerator Create(Transform cellTransform)
         {            
             CharacterBuilder builder = new CharacterBuilder();
             ICharacterModel characterModel = new CharacterModel(builder);
             
-            yield return Instantiate(_characterPrefab, cellInstance.transform);
+            yield return Instantiate(_characterPrefab, cellTransform);
         }
     }
 }
