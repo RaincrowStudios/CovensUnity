@@ -3,7 +3,5 @@
     public interface ICellModel
     {
         int Height { get; }
-
-        ICharacterModel CharacterModel { get; }
     }
 }

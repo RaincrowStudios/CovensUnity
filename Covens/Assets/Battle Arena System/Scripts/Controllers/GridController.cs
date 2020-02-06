@@ -56,21 +56,22 @@ namespace Raincrow.BattleArena.Controller
                             z = Mathf.Lerp(startZ, endZ, j / (gridModel.MaxCellsPerLine - 1f)),
                         };
                         cellPosition = _cellsTransform.TransformPoint(cellPosition);
-                        GameObject cellInstance = Instantiate(_gridUIModel.CellPrefab, cellPosition, _cellsTransform.rotation, _cellsTransform);
+                        Instantiate(_gridUIModel.CellPrefab, cellPosition, _cellsTransform.rotation, _cellsTransform);
+                        //GameObject cellInstance = Instantiate(_gridUIModel.CellPrefab, cellPosition, _cellsTransform.rotation, _cellsTransform);
 
-                        if (gridModel.Cells[i, j].CharacterModel != null)
-                        {
-                            CreateCharacterUI(gridModel.Cells[i, j].CharacterModel, cellInstance);
-                        }
+                        //if (gridModel.Cells[i, j].CharacterModel != null)
+                        //{
+                        //    CreateCharacterUI(gridModel.Cells[i, j].CharacterModel, cellInstance);
+                        //}
                     }
                     yield return null;
                 }
             }
         }
 
-        private void CreateCharacterUI(ICharacterModel characterModel, GameObject cellInstance)
-        {
-            Instantiate(_characterUIModel.CharacterPrefab, cellInstance.transform);
-        }
+        //private void CreateCharacterUI(ICharacterModel characterModel, GameObject cellInstance)
+        //{
+        //    Instantiate(_characterUIModel.CharacterPrefab, cellInstance.transform);
+        //}
     }
 }

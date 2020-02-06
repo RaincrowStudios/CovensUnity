@@ -7,13 +7,10 @@ namespace Raincrow.BattleArena.Model
         // Properties
         public int Height { get; private set; }
 
-        public ICharacterModel CharacterModel { get; private set; }
-
         // Constructor
         public CellModel(CellBuilder builder)
         {
             Height = builder.Height;
-            CharacterModel = builder.CharacterModel;
         }    
     }
 }
