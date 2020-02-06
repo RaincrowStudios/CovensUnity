@@ -7,7 +7,8 @@ namespace Raincrow.BattleArena.Controller
 {
     public class GridController : MonoBehaviour
     {
-        [SerializeField] private Transform _cellsTransform;    
+        [SerializeField] private Camera _battleCamera;
+        [SerializeField] private Transform _cellsTransform;  
         [SerializeField] private AbstractGridGameObjectFactory _gridFactory; // Factory class responsible for creating our Grid        
         [SerializeField] private AbstractCharacterGameObjectFactory _characterFactory; // Factory class responsible for creating our Characters        
 
@@ -24,14 +25,17 @@ namespace Raincrow.BattleArena.Controller
         public virtual void OnEnable()
         {
             StartCoroutine(InstantiateGrid());
-        }
+
+            // Make all characters face the camera
+            StartCoroutine(FaceCamera());
+        }        
 
         public virtual void OnDisable()
         {
             DestroyGrid();
         }
 
-        protected IEnumerator InstantiateGrid()
+        private IEnumerator InstantiateGrid()
         {
             // Create grid
             Coroutine<GameObject[,]> createGrid = this.StartCoroutine<GameObject[,]>(_gridFactory.Create());
@@ -62,7 +66,21 @@ namespace Raincrow.BattleArena.Controller
             }
         }
 
-        protected void DestroyGrid()
+        private IEnumerator FaceCamera()
+        {
+            while (enabled)
+            {
+                yield return new WaitForEndOfFrame();
+                Vector3 forward = _battleCamera.transform.rotation * Vector3.up;
+                foreach (GameObject character in _characters)
+                {
+                    Vector3 worldPosition = character.transform.position + _battleCamera.transform.rotation * Vector3.forward;
+                    character.transform.LookAt(worldPosition, forward);
+                }                
+            }
+        }
+
+        private void DestroyGrid()
         {
             // Destroy characters
             for (int i = _characters.Count - 1; i >= 0; i--)
