@@ -1,10 +1,7 @@
-﻿using Newtonsoft.Json;
-using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
 using Raincrow.Maps;
-using Oktagon.Analytics;
-using Raincrow.Analytics;
+using Raincrow.BattleArena.Model;
+using Newtonsoft.Json;
 
 namespace BattleArena
 {
@@ -42,6 +39,50 @@ namespace BattleArena
                         error?.Invoke();
                     }
                 });
+        }
+
+        ///////////////////////
+        /////// ACTIONS ///////
+        ///////////////////////
+
+        public static void Move(int _line, int _column, System.Action success = null, System.Action error = null)
+        {
+
+            var data = new
+            {
+                column = _column,
+                line = _line
+            };
+
+            string dataJson = JsonConvert.SerializeObject(data);
+
+            APIManager.Instance.Post("character/move", dataJson,
+            (response, result) =>
+            {
+                if (result == 200)
+                {
+                    success?.Invoke();
+                }
+                else
+                {
+                    error?.Invoke();
+                }
+            });
+        }
+        public static void Flee(System.Action success = null, System.Action error = null)
+        {
+            APIManager.Instance.Post("character/flee", "{}",
+            (response, result) =>
+            {
+                if (result == 200)
+                {
+                    success?.Invoke();
+                }
+                else
+                {
+                    error?.Invoke();
+                }
+            });
         }
     }
 }
