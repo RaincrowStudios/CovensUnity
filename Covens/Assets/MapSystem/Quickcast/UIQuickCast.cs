@@ -336,11 +336,6 @@ public class UIQuickCast : MonoBehaviour
         );
     }
 
-    public void OnClickChallenge()
-    {
-        BattleRequests.Challenge(target);
-    }
-
     //GAME EVENTS
 
     private void _OnPlayerAttacked(string caster, SpellData spell, Raincrow.GameEventResponses.SpellCastHandler.Result result)
