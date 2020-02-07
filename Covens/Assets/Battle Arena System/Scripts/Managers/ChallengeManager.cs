@@ -1,7 +1,7 @@
 ﻿using Raincrow.GameEventResponses;
 using UnityEngine;
 using Raincrow.BattleArena.Model;
-using Raincrow.BattleArena.Grid;
+using Raincrow.BattleArena.Controller;
 
 namespace Raincrow.BattleArena.Manager
 {

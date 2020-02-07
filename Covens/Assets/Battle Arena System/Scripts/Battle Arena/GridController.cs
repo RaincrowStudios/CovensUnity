@@ -3,7 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-namespace Raincrow.BattleArena.Grid
+namespace Raincrow.BattleArena.Controller
 {
     public class GridController : MonoBehaviour
     {

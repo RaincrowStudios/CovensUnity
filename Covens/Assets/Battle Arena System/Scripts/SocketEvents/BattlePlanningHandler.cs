@@ -11,7 +11,7 @@ namespace Raincrow.GameEventResponses
 
         public void HandleResponse(string eventData)
         {
-            TurnModel turnModel = JsonConvert.DeserializeObject<TurnModel>(eventData);
+            //TurnModel turnModel = JsonConvert.DeserializeObject<TurnModel>(eventData);
 
             OnBattlePlanning?.Invoke();
         }
