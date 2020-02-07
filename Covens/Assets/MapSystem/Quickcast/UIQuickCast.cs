@@ -1,6 +1,6 @@
 ﻿using BattleArena;
 using Raincrow;
-using Raincrow.BattleArena.Controller;
+using Raincrow.BattleArena.Grid;
 using Raincrow.GameEventResponses;
 using Raincrow.Maps;
 using System.Collections;
