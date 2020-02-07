@@ -1,10 +1,10 @@
-﻿using System.Collections;
+﻿using System.Collections.Generic;
 using UnityEngine;
 
 namespace Raincrow.BattleArena.Factory
 {
     public abstract class AbstractCharacterGameObjectFactory : MonoBehaviour
     {
-        public abstract IEnumerator Create(Transform cellTransform);
+        public abstract IEnumerator<GameObject> Create(Transform cellTransform);
     }
 }

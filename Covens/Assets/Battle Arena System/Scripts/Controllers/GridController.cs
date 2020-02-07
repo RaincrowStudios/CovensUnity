@@ -24,15 +24,21 @@ namespace Raincrow.BattleArena.Controller
 
         public virtual void OnEnable()
         {
-            StartCoroutine(InstantiateGrid());
-
-            // Make all characters face the camera
-            StartCoroutine(FaceCamera());
+            StartCoroutine(OnEnableCoroutine());
         }        
 
         public virtual void OnDisable()
         {
             DestroyGrid();
+        }
+
+        private IEnumerator OnEnableCoroutine()
+        {
+            yield return StartCoroutine(InstantiateGrid());
+
+            yield return StartCoroutine(PlaceCharacters());
+            
+            yield return StartCoroutine(UpdateCharacters());
         }
 
         private IEnumerator InstantiateGrid()
@@ -41,7 +47,10 @@ namespace Raincrow.BattleArena.Controller
             Coroutine<GameObject[,]> createGrid = this.StartCoroutine<GameObject[,]>(_gridFactory.Create());
             yield return createGrid;
             _grid = createGrid.ReturnValue;
+        }
 
+        private IEnumerator PlaceCharacters()
+        {
             // Create characters
             int maxCellsPerLine = _grid.GetLength(0);
             int maxCellsPerColumn = _grid.GetLength(1);
@@ -66,7 +75,11 @@ namespace Raincrow.BattleArena.Controller
             }
         }
 
-        private IEnumerator FaceCamera()
+        /// <summary>
+        /// Make all characters
+        /// </summary>
+        /// <returns></returns>
+        private IEnumerator UpdateCharacters()
         {
             while (enabled)
             {

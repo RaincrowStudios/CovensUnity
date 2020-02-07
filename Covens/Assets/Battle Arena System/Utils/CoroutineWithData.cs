@@ -1,4 +1,5 @@
 ﻿using System.Collections;
+using System.Collections.Generic;
 using UnityEngine;
 
 public class Coroutine<T> : CustomYieldInstruction
@@ -9,10 +10,10 @@ public class Coroutine<T> : CustomYieldInstruction
 
     // Private variables    
     private Coroutine _coroutine;
-    private IEnumerator _target;
+    private IEnumerator<T> _target;
     private bool _keepWaiting;
 
-    public Coroutine(MonoBehaviour owner, IEnumerator target)
+    public Coroutine(MonoBehaviour owner, IEnumerator<T> target)
     {
         _keepWaiting = true;
         _target = target;
@@ -23,7 +24,7 @@ public class Coroutine<T> : CustomYieldInstruction
     {
         while (_target.MoveNext())
         {
-            ReturnValue = (T) _target.Current;
+            ReturnValue = _target.Current;
             yield return ReturnValue;
         }
 
@@ -31,11 +32,11 @@ public class Coroutine<T> : CustomYieldInstruction
     }
 }
 
-public static class CoroutineWithDataExtensions
+public static class CoroutineExtensions
 {
-    public static Coroutine<T> StartCoroutine<T>(this MonoBehaviour t, IEnumerator routine)
+    public static Coroutine<T> StartCoroutine<T>(this MonoBehaviour behaviour, IEnumerator<T> routine)
     {
-        return new Coroutine<T>(t, routine);
+        return new Coroutine<T>(behaviour, routine);
     }
 }
 

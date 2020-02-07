@@ -1,6 +1,6 @@
 ﻿using Raincrow.BattleArena.Builder;
 using Raincrow.BattleArena.Model;
-using System.Collections;
+using System.Collections.Generic;
 using UnityEngine;
 
 namespace Raincrow.BattleArena.Factory
@@ -10,7 +10,7 @@ namespace Raincrow.BattleArena.Factory
         [SerializeField] private Transform _cellsParent;
         [SerializeField] private GridGameObjectModel _gridGameObjectModel;
 
-        public override IEnumerator Create()
+        public override IEnumerator<GameObject[,]> Create()
         {
             // Construct grid builder
             GridBuilder gridBuilder;
