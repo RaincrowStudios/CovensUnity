@@ -7,10 +7,27 @@ namespace BattleArena
 {
    public static class BattleRequests
     {
-        public static void Challenge(IMarker target, System.Action success = null, System.Action error = null)
+        public static void Ready(string battleId, System.Action success = null, System.Action error = null)
         {
             APIManager.Instance.Post(
-                "battle/challenge/" + target.Token.Id, "{}",
+                "battle/ready/" + battleId, "{}",
+                (response, result) =>
+                {
+                    if (result == 200)
+                    {
+                        success?.Invoke();
+                    }
+                    else
+                    {
+                        error?.Invoke();
+                    }
+                });
+        }
+
+        public static void Challenge(string id, System.Action success = null, System.Action error = null)
+        {
+            APIManager.Instance.Post(
+                "battle/challenge/" + id, "{}",
                 (response, result) =>
                 {
                     if (result == 200)
