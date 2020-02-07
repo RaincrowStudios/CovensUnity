@@ -350,6 +350,11 @@ public class UISpiritInfo : UIInfoPanel
         TeamManagerUI.OpenName(SpiritMarkerDetails.coven);
     }
 
+    public void OnClickChallenge()
+    {
+        BattleArena.BattleRequests.Challenge(SpiritToken.Id);
+    }
+
     private void Abort()
     {
         Close();
