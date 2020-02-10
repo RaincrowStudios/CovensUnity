@@ -42,7 +42,7 @@ GameObject:
   - component: {fileID: 3561526507227420495}
   - component: {fileID: 330202080}
   - component: {fileID: 154814060}
-  - component: {fileID: 2392126046062996030}
+  - component: {fileID: 1190233280}
   m_Layer: 0
   m_Name: BattleView
   m_TagString: Untagged
@@ -81,7 +81,7 @@ MonoBehaviour:
   _cellsTransform: {fileID: 55641126279688642}
   _gridFactory: {fileID: 330202080}
   _characterFactory: {fileID: 154814060}
-  _judgeController: {fileID: 2392126046062996030}
+  _gameMasterController: {fileID: 1190233280}
 --- !u!114 &330202080
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -113,7 +113,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _characterPrefab: {fileID: 7862372955884984634, guid: a18a8f148bde0e7489c84b03cac84f89,
     type: 3}
---- !u!114 &2392126046062996030
+--- !u!114 &1190233280
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -122,6 +122,6 @@ MonoBehaviour:
   m_GameObject: {fileID: 3561526507227420493}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 72a4e17f3a532bb4bab8d337b9f79951, type: 3}
+  m_Script: {fileID: 11500000, guid: a074427e41335d846a8dbda0ab2cc5eb, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 

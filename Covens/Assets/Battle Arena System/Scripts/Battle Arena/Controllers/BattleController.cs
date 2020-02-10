@@ -13,22 +13,13 @@ namespace Raincrow.BattleArena.Controller
         [SerializeField] private Camera _battleCamera;
         [SerializeField] private Transform _cellsTransform;  
         [SerializeField] private AbstractGridGameObjectFactory _gridFactory; // Factory class responsible for creating our Grid        
-        [SerializeField] private AbstractCharacterGameObjectFactory _characterFactory; // Factory class responsible for creating our Characters        
+        [SerializeField] private AbstractCharacterGameObjectFactory _characterFactory; // Factory class responsible for creating our Characters   
+        [SerializeField] private AbstractGameMasterController _gameMasterController;
 
-        /// <summary>
-        /// Grid with all the game objects inserted
-        /// </summary>
-        private GameObject[,] _grid = new GameObject[0, 0];
-
-        /// <summary>
-        /// List with all characters
-        /// </summary>
-        private List<GameObject> _characters = new List<GameObject>();
-
-        /// <summary>
-        /// State machine with all phases
-        /// </summary>
-        private IStateMachine<IBattleModel> _stateMachine;
+        private GameObject[,] _grid = new GameObject[0, 0]; // Grid with all the game objects inserted
+        private List<GameObject> _characters = new List<GameObject>(); // List with all characters
+        private IStateMachine<IBattleModel> _stateMachine; // State machine with all phases
+        private IGridModel _gridModel;
 
         public virtual void OnEnable()
         {
@@ -54,9 +45,32 @@ namespace Raincrow.BattleArena.Controller
         }
 
         private IEnumerator InstantiateGrid()
-        {
+        {            
+            // Construct grid builder
+            GridBuilder gridBuilder;
+            {
+                gridBuilder = new GridBuilder()
+                {
+                    MaxCellsPerLine = 25,
+                    MaxCellsPerColumn = 25,
+                };
+
+                gridBuilder.CellBuilders = new CellBuilder[gridBuilder.MaxCellsPerLine, gridBuilder.MaxCellsPerColumn];
+
+                for (int i = 0; i < gridBuilder.MaxCellsPerLine; i++)
+                {
+                    for (int j = 0; j < gridBuilder.MaxCellsPerColumn; j++)
+                    {
+                        gridBuilder.CellBuilders[i, j] = new CellBuilder();
+                    }
+                }
+            }
+
+            // Create grid model
+            _gridModel = new GridModel(gridBuilder);
+
             // Create grid
-            Coroutine<GameObject[,]> createGrid = this.StartCoroutine<GameObject[,]>(_gridFactory.Create());
+            Coroutine<GameObject[,]> createGrid = this.StartCoroutine<GameObject[,]>(_gridFactory.Create(_gridModel));
             yield return createGrid;
             _grid = createGrid.ReturnValue;
         }
@@ -89,7 +103,11 @@ namespace Raincrow.BattleArena.Controller
 
         private IEnumerator StartStateMachine()
         {
-            IBattleModel battleModel = new BattleModel();
+            IBattleModel battleModel = new BattleModel()
+            {
+                Grid = _gridModel,
+                GameMaster = _gameMasterController
+            };
 
             IState<IBattleModel>[] battlePhases = new IState<IBattleModel>[4]
             {
@@ -143,6 +161,8 @@ namespace Raincrow.BattleArena.Controller
                 Destroy(_cellsTransform.GetChild(i).gameObject);
             }
             _grid = new GameObject[0, 0];
+
+            _gridModel = null;
         }
     }
 }

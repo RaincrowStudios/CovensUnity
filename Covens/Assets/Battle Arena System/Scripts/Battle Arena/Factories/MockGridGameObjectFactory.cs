@@ -9,30 +9,8 @@ namespace Raincrow.BattleArena.Factory
         [SerializeField] private Transform _cellsParent;
         [SerializeField] private GridGameObjectModel _gridGameObjectModel;
 
-        public override IEnumerator<GameObject[,]> Create()
+        public override IEnumerator<GameObject[,]> Create(IGridModel gridModel)
         {
-            // Construct grid builder
-            GridBuilder gridBuilder;
-            {
-                gridBuilder = new GridBuilder()
-                {
-                    MaxCellsPerLine = 25,
-                    MaxCellsPerColumn = 25,
-                };
-
-                gridBuilder.CellBuilders = new CellBuilder[gridBuilder.MaxCellsPerLine, gridBuilder.MaxCellsPerColumn];
-
-                for (int i = 0; i < gridBuilder.MaxCellsPerLine; i++)
-                {
-                    for (int j = 0; j < gridBuilder.MaxCellsPerColumn; j++)
-                    {
-                        gridBuilder.CellBuilders[i, j] = new CellBuilder();
-                    }
-                }
-            }
-
-            IGridModel gridModel = new GridModel(gridBuilder);
-
             // Create GameObjects grid
             GameObject[,] gridGameObjects = new GameObject[gridModel.MaxCellsPerColumn, gridModel.MaxCellsPerLine];
 

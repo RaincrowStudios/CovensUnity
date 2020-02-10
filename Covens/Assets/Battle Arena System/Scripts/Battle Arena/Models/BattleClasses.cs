@@ -1,10 +1,12 @@
-﻿using UnityEngine;
+﻿using Raincrow.BattleArena.Controller;
+using UnityEngine;
 
 namespace Raincrow.BattleArena.Model
 {
     public class BattleModel : IBattleModel
     {
         public IGridModel Grid { get; set; }
+        public AbstractGameMasterController GameMaster { get; set; }
     }
 
     [System.Serializable]
