@@ -289,6 +289,11 @@ public class UIMain : MonoBehaviour
             m_EnergyTextPanel.Show(false);
         }
     }
+
+    public static void SetActive(bool value)
+    {
+        Instance?.gameObject.SetActive(value);
+    }
 }
 
 public static class UIMainScreens

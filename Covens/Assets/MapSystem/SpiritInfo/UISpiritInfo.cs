@@ -353,6 +353,7 @@ public class UISpiritInfo : UIInfoPanel
     public void OnClickChallenge()
     {
         BattleArena.BattleRequests.Challenge(SpiritToken.Id);
+        Close();
     }
 
     private void Abort()
