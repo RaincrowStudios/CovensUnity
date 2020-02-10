@@ -1,78 +1,135 @@
 ﻿using System.Collections;
 using Raincrow.BattleArena.Model;
 using Raincrow.StateMachines;
+using UnityEngine;
 
 namespace Raincrow.BattleArena.Phase
 {
     public class InitiativePhase : IState<IBattleModel>
     {
-        public IEnumerator Enter(IBattleModel context)
-        {
+        private float _startTime = 0f;
+
+        public string Name => "Initiative Phase";
+
+        public IEnumerator Enter(IStateMachine<IBattleModel> stateMachine, IBattleModel context)
+        {            
+            Debug.LogFormat("Enter {0}", Name);
+            _startTime = Time.time;
             yield return null;
         }
 
-        public IEnumerator Exit(IBattleModel context)
+        public IEnumerator Update(IStateMachine<IBattleModel> stateMachine, IBattleModel context)
         {
+            if (Time.time - _startTime > 3f)
+            {
+                yield return stateMachine.ChangeState<PlanningPhase>();
+            }
+            else
+            {
+                Debug.LogFormat("Update {0}", Name);
+            }
+        }
+
+        public IEnumerator Exit(IStateMachine<IBattleModel> stateMachine, IBattleModel context)
+        {
+            Debug.LogFormat("Exit {0}", Name);
             yield return null;
-        }
-
-        public void Update(IBattleModel context, float deltaTime)
-        {
-
-        }
+        }        
     }
 
     public class PlanningPhase : IState<IBattleModel>
     {
-        public IEnumerator Enter(IBattleModel context)
+        private float _startTime = 0f;
+
+        public string Name => "Planning Phase";
+
+        public IEnumerator Enter(IStateMachine<IBattleModel> stateMachine, IBattleModel context)
         {
+            Debug.LogFormat("Enter {0}", Name);
+            _startTime = Time.time;
             yield return null;
         }
 
-        public IEnumerator Exit(IBattleModel context)
+        public IEnumerator Update(IStateMachine<IBattleModel> stateMachine, IBattleModel context)
         {
+            if (Time.time - _startTime > 3f)
+            {
+                yield return stateMachine.ChangeState<ActionResolutionPhase>();
+            }
+            else
+            {
+                Debug.LogFormat("Update {0}", Name);
+            }
+        }
+
+        public IEnumerator Exit(IStateMachine<IBattleModel> stateMachine, IBattleModel context)
+        {
+            Debug.LogFormat("Exit {0}", Name);
             yield return null;
-        }
-
-        public void Update(IBattleModel context, float deltaTime)
-        {
-
-        }
+        }        
     }
 
     public class ActionResolutionPhase : IState<IBattleModel>
     {
-        public IEnumerator Enter(IBattleModel context)
-        {
-            yield return null; 
-        }
+        private float _startTime = 0f;
 
-        public IEnumerator Exit(IBattleModel context)
+        public string Name => "Action Resolution Phase";
+
+        public IEnumerator Enter(IStateMachine<IBattleModel> stateMachine, IBattleModel context)
         {
+            Debug.LogFormat("Enter {0}", Name);
+            _startTime = Time.time;
             yield return null;
         }
 
-        public void Update(IBattleModel context, float deltaTime)
+        public IEnumerator Update(IStateMachine<IBattleModel> stateMachine, IBattleModel context)
         {
-            
+            if (Time.time - _startTime > 3f)
+            {
+                yield return stateMachine.ChangeState<BanishmentPhase>();
+            }
+            else
+            {
+                Debug.LogFormat("Update {0}", Name);
+            }
+        }
+
+        public IEnumerator Exit(IStateMachine<IBattleModel> stateMachine, IBattleModel context)
+        {
+            Debug.LogFormat("Exit {0}", Name);
+            yield return null;
         }
     }
 
     public class BanishmentPhase : IState<IBattleModel>
     {
-        public IEnumerator Enter(IBattleModel context)
+        private float _startTime = 0f;
+
+        public string Name => "Banishment Phase";
+
+        public IEnumerator Enter(IStateMachine<IBattleModel> stateMachine, IBattleModel context)
         {
+            Debug.LogFormat("Enter {0}", Name);
+            _startTime = Time.time;
             yield return null;
         }
 
-        public IEnumerator Exit(IBattleModel context)
+        public IEnumerator Update(IStateMachine<IBattleModel> stateMachine, IBattleModel context)
         {
+            if (Time.time - _startTime > 3f)
+            {
+                yield return stateMachine.ChangeState<InitiativePhase>();
+            }
+            else
+            {
+                Debug.LogFormat("Update {0}", Name);
+            }
+        }
+
+        public IEnumerator Exit(IStateMachine<IBattleModel> stateMachine, IBattleModel context)
+        {
+            Debug.LogFormat("Exit {0}", Name);
             yield return null;
-        }
-
-        public void Update(IBattleModel context, float deltaTime)
-        {
-
-        }
+        }        
     }
 }

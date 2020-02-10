@@ -1,71 +1,85 @@
 ﻿using System.Collections;
+using System.Collections.Generic;
 
 namespace Raincrow.StateMachines
 {
     public class StateMachine<T> : IStateMachine<T>
     {
-        private readonly IState<T>[] _states;
+        private readonly Dictionary<System.Type, IState<T>> _states;
         private readonly T _context;
-        private int _currentStateIndex = -1;
-        private bool _enabled;
+        private System.Type _currentStateType;
+        private bool _enabled;        
 
         public StateMachine(T context, IState<T>[] states)
         {
             _context = context;
-            _states = states;
+
+            _states = new Dictionary<System.Type, IState<T>>();
+
+            for (int i = 0; i < states.Length; i++)
+            {
+                _states.Add(states[i].GetType(), states[i]);
+            }
         }
 
-        public IEnumerator Start(IState<T> initialState)
+        public IEnumerator Start<R>() where R : IState<T>
         {
-            int nextStateIndex = System.Array.IndexOf(_states, initialState);
-            _currentStateIndex = nextStateIndex;
-            yield return _states[_currentStateIndex].Enter(_context);
+            _currentStateType = typeof(R);
+            yield return _states[_currentStateType].Enter(this, _context);
 
             _enabled = true;
         }
 
-        public IEnumerator ChangeState(IState<T> state)
+        public IEnumerator ChangeState<R>() where R : IState<T>
         {
-            _enabled = false;
+            System.Type nextStateType = typeof(R);
 
-            int nextStateIndex = System.Array.IndexOf(_states, state);
-            yield return _states[_currentStateIndex].Exit(_context);
+            if (_enabled && nextStateType != _currentStateType) // cannot change to same state
+            {
+                _enabled = false;
+                yield return _states[_currentStateType].Exit(this, _context);
 
-            _currentStateIndex = nextStateIndex;
-            yield return _states[_currentStateIndex].Enter(_context);
+                _currentStateType = nextStateType;
+                yield return _states[_currentStateType].Enter(this, _context);
 
-            _enabled = true;
+                _enabled = true;
+            }
         }
 
-        public void UpdateState(IState<T> state, float deltaTime)
+        public IEnumerator UpdateState()
         {
             if (_enabled)
             {
-                _states[_currentStateIndex].Update(_context, deltaTime);
+                yield return _states[_currentStateType].Update(this, _context);
             }            
         }
 
         public IEnumerator Stop()
         {
-            _enabled = false; 
+            if (_enabled)
+            {
+                _enabled = false;
 
-            yield return _states[_currentStateIndex].Exit(_context);
-            _currentStateIndex = -1;
+                yield return _states[_currentStateType].Exit(this, _context);
+
+                _currentStateType = null;
+            }
         }
     }
 
     public interface IStateMachine<T>
-    {
-        IEnumerator Start(IState<T> initialState);
-        void UpdateState(IState<T> state, float deltaTime);
-        IEnumerator ChangeState(IState<T> state);
+    {        
+        IEnumerator Start<R>() where R : IState<T>;
+        IEnumerator UpdateState();
+        IEnumerator ChangeState<R>() where R: IState<T>;
         IEnumerator Stop();
     }
 
     public interface IState<T>
     {
-        IEnumerator Enter(T context);
-        void Update(T context, float deltaTime);
-        IEnumerator Exit(T context);
+        string Name { get; }
+        IEnumerator Enter(IStateMachine<T> stateMachine, T context);
+        IEnumerator Update(IStateMachine<T> stateMachine, T context);
+        IEnumerator Exit(IStateMachine<T> stateMachine, T context);
     }
 }

@@ -1,4 +1,7 @@
 ﻿using Raincrow.BattleArena.Factory;
+using Raincrow.BattleArena.Model;
+using Raincrow.BattleArena.Phase;
+using Raincrow.StateMachines;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -22,6 +25,11 @@ namespace Raincrow.BattleArena.Controller
         /// </summary>
         private List<GameObject> _characters = new List<GameObject>();
 
+        /// <summary>
+        /// State machine with all phases
+        /// </summary>
+        private IStateMachine<IBattleModel> _stateMachine;
+
         public virtual void OnEnable()
         {
             StartCoroutine(OnEnableCoroutine());
@@ -37,8 +45,10 @@ namespace Raincrow.BattleArena.Controller
             yield return StartCoroutine(InstantiateGrid());
 
             yield return StartCoroutine(PlaceCharacters());
-            
-            yield return StartCoroutine(UpdateCharacters());
+
+            yield return StartCoroutine(StartStateMachine());
+
+            yield return StartCoroutine(UpdateLoop());            
         }
 
         private IEnumerator InstantiateGrid()
@@ -75,15 +85,32 @@ namespace Raincrow.BattleArena.Controller
             }
         }
 
-        /// <summary>
-        /// Make all characters
-        /// </summary>
-        /// <returns></returns>
-        private IEnumerator UpdateCharacters()
+        private IEnumerator StartStateMachine()
+        {
+            IBattleModel battleModel = new BattleModel();
+
+            IState<IBattleModel>[] battlePhases = new IState<IBattleModel>[4]
+            {
+                new InitiativePhase(),
+                new PlanningPhase(),
+                new ActionResolutionPhase(),
+                new BanishmentPhase()
+            };
+
+            _stateMachine = new StateMachine<IBattleModel>(battleModel, battlePhases);
+            yield return _stateMachine.Start<InitiativePhase>(); // initiativePhase
+        }
+
+        private IEnumerator UpdateLoop()
         {
             while (enabled)
             {
                 yield return new WaitForEndOfFrame();
+
+                // Update state machine
+                yield return StartCoroutine(_stateMachine.UpdateState());
+
+                // Update Characters
                 Vector3 forward = _battleCamera.transform.rotation * Vector3.up;
                 foreach (GameObject character in _characters)
                 {
