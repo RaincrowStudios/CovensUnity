@@ -15,6 +15,8 @@ namespace Raincrow.BattleArena.Manager
         private void BattleOpen(IBattleModel arena)
         {
             LoadingOverlay.Show();
+            UIMain.SetActive(false);
+            UIQuickCast.SetActive(false);
             SceneManager.LoadSceneAsync(SceneManager.Scene.ARENA, UnityEngine.SceneManagement.LoadSceneMode.Additive,
                 null,
                 () => {
@@ -32,6 +34,8 @@ namespace Raincrow.BattleArena.Manager
         private void BattleClose()
         {
             LoadingOverlay.Show();
+            UIMain.SetActive(true);
+            UIQuickCast.SetActive(true);
             SceneManager.UnloadScene(SceneManager.Scene.ARENA,
                 null,
                 () => {

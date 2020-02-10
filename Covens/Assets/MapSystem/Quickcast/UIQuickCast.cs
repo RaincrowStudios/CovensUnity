@@ -48,6 +48,11 @@ public class UIQuickCast : MonoBehaviour
         m_Instance?._Hide();
     }
 
+    public static void SetActive(bool value)
+    {
+        m_Instance?.gameObject.SetActive(value);
+    }
+
     public static void UpdateTarget(IMarker marker, CharacterMarkerData details)
     {
         if (m_Instance == null)
