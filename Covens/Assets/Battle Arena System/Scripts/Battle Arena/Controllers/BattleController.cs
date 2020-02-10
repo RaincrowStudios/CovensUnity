@@ -20,9 +20,11 @@ namespace Raincrow.BattleArena.Controller
         private List<GameObject> _characters = new List<GameObject>(); // List with all characters
         private IStateMachine<IBattleModel> _stateMachine; // State machine with all phases
         private IGridModel _gridModel;
+        private string _battleId;
 
         public virtual void OnEnable()
         {
+            _battleId = System.Guid.NewGuid().ToString();
             StartCoroutine(OnEnableCoroutine());
         }        
 
@@ -105,6 +107,7 @@ namespace Raincrow.BattleArena.Controller
         {
             IBattleModel battleModel = new BattleModel()
             {
+                Id = _battleId,
                 Grid = _gridModel,
                 GameMaster = _gameMasterController
             };

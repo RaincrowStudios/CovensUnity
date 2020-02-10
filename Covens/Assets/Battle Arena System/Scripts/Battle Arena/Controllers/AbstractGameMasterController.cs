@@ -5,6 +5,6 @@ namespace Raincrow.BattleArena.Controller
 {
     public abstract class AbstractGameMasterController : MonoBehaviour
     {
-        public abstract IEnumerator<bool> SendReadyBattle(string battleId);
+        public abstract IEnumerator<bool?> SendReadyBattle(string battleId);
     }
 }

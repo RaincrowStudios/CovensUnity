@@ -1,4 +1,5 @@
 ﻿using System.Collections;
+using Raincrow.BattleArena.Controller;
 using Raincrow.BattleArena.Model;
 using Raincrow.StateMachines;
 using UnityEngine;
@@ -7,26 +8,30 @@ namespace Raincrow.BattleArena.Phase
 {
     public class InitiativePhase : IState<IBattleModel>
     {
-        private float _startTime = 0f;
+        // Variables
+        private Coroutine<bool?> _sendReadyBattleResponse;
+        private AbstractGameMasterController _gameMaster;
 
+        // Properties
         public string Name => "Initiative Phase";
 
         public IEnumerator Enter(IStateMachine<IBattleModel> stateMachine, IBattleModel context)
         {            
             Debug.LogFormat("Enter {0}", Name);
-            _startTime = Time.time;
+            _gameMaster = context.GameMaster;
+            _sendReadyBattleResponse = _gameMaster.StartCoroutine<bool?>(_gameMaster.SendReadyBattle(context.Id));
             yield return null;
         }
 
         public IEnumerator Update(IStateMachine<IBattleModel> stateMachine, IBattleModel context)
-        {
-            if (Time.time - _startTime > 3f)
+        {            
+            if (!_sendReadyBattleResponse.ReturnValue.HasValue)
             {
-                yield return stateMachine.ChangeState<PlanningPhase>();
+                Debug.LogFormat("Update {0}", Name);
             }
             else
             {
-                Debug.LogFormat("Update {0}", Name);
+                yield return stateMachine.ChangeState<PlanningPhase>();
             }
         }
 

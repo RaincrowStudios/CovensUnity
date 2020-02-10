@@ -5,6 +5,7 @@ namespace Raincrow.BattleArena.Model
 {
     public class BattleModel : IBattleModel
     {
+        public string Id { get; set; }
         public IGridModel Grid { get; set; }
         public AbstractGameMasterController GameMaster { get; set; }
     }

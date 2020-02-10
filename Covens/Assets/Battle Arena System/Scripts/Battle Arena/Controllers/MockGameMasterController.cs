@@ -5,11 +5,11 @@ namespace Raincrow.BattleArena.Controller
 {
     public class MockGameMasterController : AbstractGameMasterController
     {
-        public override IEnumerator<bool> SendReadyBattle(string battleId)
+        public override IEnumerator<bool?> SendReadyBattle(string battleId)
         {
             for (float f = 0; f < 3f; f += Time.deltaTime)
             {
-                yield return false;
+                yield return null;
             }
 
             // request came back as 200
