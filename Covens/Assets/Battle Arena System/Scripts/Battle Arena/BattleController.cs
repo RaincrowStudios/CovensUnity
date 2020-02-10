@@ -48,7 +48,9 @@ namespace Raincrow.BattleArena.Controller
 
             yield return StartCoroutine(StartStateMachine());
 
-            yield return StartCoroutine(UpdateLoop());            
+            // Update Loop
+            StartCoroutine(UpdateCharacters());
+            StartCoroutine(UpdateStateMachine());
         }
 
         private IEnumerator InstantiateGrid()
@@ -101,14 +103,11 @@ namespace Raincrow.BattleArena.Controller
             yield return _stateMachine.Start<InitiativePhase>(); // initiativePhase
         }
 
-        private IEnumerator UpdateLoop()
+        private IEnumerator UpdateCharacters()
         {
             while (enabled)
             {
-                yield return new WaitForEndOfFrame();
-
-                // Update state machine
-                yield return StartCoroutine(_stateMachine.UpdateState());
+                yield return new WaitForEndOfFrame();                
 
                 // Update Characters
                 Vector3 forward = _battleCamera.transform.rotation * Vector3.up;
@@ -117,6 +116,15 @@ namespace Raincrow.BattleArena.Controller
                     Vector3 worldPosition = character.transform.position + _battleCamera.transform.rotation * Vector3.forward;
                     character.transform.LookAt(worldPosition, forward);
                 }                
+            }
+        }
+
+        private IEnumerator UpdateStateMachine()
+        {
+            while (enabled)
+            {
+                // Update state machine
+                yield return StartCoroutine(_stateMachine.UpdateState());
             }
         }
 
