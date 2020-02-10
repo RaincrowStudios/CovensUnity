@@ -1,5 +1,4 @@
-﻿using Raincrow.BattleArena.Builder;
-using Raincrow.BattleArena.Model;
+﻿using Raincrow.BattleArena.Model;
 using System.Collections.Generic;
 using UnityEngine;
 

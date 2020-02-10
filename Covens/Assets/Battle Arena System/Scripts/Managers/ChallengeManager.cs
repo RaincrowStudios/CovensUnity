@@ -19,7 +19,7 @@ namespace Raincrow.BattleArena.Manager
                 null,
                 () => {
                     MapsAPI.Instance.HideMap(true);
-                    GridController gridController = (GridController)FindObjectOfType(typeof(GridController));
+                    BattleController gridController = (BattleController)FindObjectOfType(typeof(BattleController));
                     if (!gridController.isActiveAndEnabled)
                     {
                         gridController.gameObject.SetActive(true);

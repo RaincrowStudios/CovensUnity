@@ -5,7 +5,7 @@ using UnityEngine;
 
 namespace Raincrow.BattleArena.Controller
 {
-    public class GridController : MonoBehaviour
+    public class BattleController : MonoBehaviour
     {
         [SerializeField] private Camera _battleCamera;
         [SerializeField] private Transform _cellsTransform;  

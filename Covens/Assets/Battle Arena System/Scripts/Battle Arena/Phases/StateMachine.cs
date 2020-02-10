@@ -52,5 +52,20 @@ namespace Raincrow.StateMachines
             yield return _states[_currentStateIndex].Exit(_context);
             _currentStateIndex = -1;
         }
-    }    
+    }
+
+    public interface IStateMachine<T>
+    {
+        IEnumerator Start(IState<T> initialState);
+        void UpdateState(IState<T> state, float deltaTime);
+        IEnumerator ChangeState(IState<T> state);
+        IEnumerator Stop();
+    }
+
+    public interface IState<T>
+    {
+        IEnumerator Enter(T context);
+        void Update(T context, float deltaTime);
+        IEnumerator Exit(T context);
+    }
 }

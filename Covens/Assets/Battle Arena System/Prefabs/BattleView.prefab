@@ -43,7 +43,7 @@ GameObject:
   - component: {fileID: 330202080}
   - component: {fileID: 154814060}
   m_Layer: 0
-  m_Name: GridView
+  m_Name: BattleView
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
