@@ -1,4 +1,5 @@
 ﻿using Raincrow.BattleArena.Controller;
+using System.Collections.Generic;
 
 namespace Raincrow.BattleArena.Model
 {
@@ -6,7 +7,7 @@ namespace Raincrow.BattleArena.Model
     {
         string Id { get; }
         IGridModel Grid { get; }
-        AbstractGameMasterController GameMaster { get; }
+        IGameMasterController GameMaster { get; }
     }
 
     public interface IGridModel

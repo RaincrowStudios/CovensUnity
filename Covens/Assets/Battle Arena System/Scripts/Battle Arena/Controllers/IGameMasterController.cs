@@ -3,30 +3,25 @@ using UnityEngine;
 
 namespace Raincrow.BattleArena.Controller
 {
-    public abstract class AbstractGameMasterController : MonoBehaviour, IGameMasterController
+    public interface IGameMasterController
     {
         /// <summary>
         ///  Send to server an action to move the player on the grid
         /// </summary>
         /// <param name="battleId"></param>
         /// <returns></returns>
-        public abstract IEnumerator<bool?> SendMove();
+        IEnumerator<bool?> SendMove();
 
         /// <summary>
         ///  Send to server an action to flee of battle
         /// </summary>
         /// <returns></returns>
-        public abstract IEnumerator<bool?> SendFlee();
+        IEnumerator<bool?> SendFlee();
 
         /// <summary>
         ///  Send to server that the player is ready to the battle
         /// </summary>
         /// <returns></returns>
-        public abstract IEnumerator<bool?> SendReadyBattle(string battleId);
-
-        public Coroutine<T> DispatchCoroutine<T>(IEnumerator<T> routine)
-        {
-            return this.StartCoroutine<T>(routine);
-        }
+        IEnumerator<bool?> SendReadyBattle(string battleId);
     }
 }

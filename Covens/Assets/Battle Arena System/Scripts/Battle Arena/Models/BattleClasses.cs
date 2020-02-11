@@ -7,7 +7,7 @@ namespace Raincrow.BattleArena.Model
     {
         public string Id { get; set; }
         public IGridModel Grid { get; set; }
-        public AbstractGameMasterController GameMaster { get; set; }
+        public IGameMasterController GameMaster { get; set; }
     }
 
     [System.Serializable]

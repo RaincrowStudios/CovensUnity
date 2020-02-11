@@ -8,7 +8,7 @@ namespace Raincrow.StateMachines
         private readonly Dictionary<System.Type, IState<T>> _states;
         private readonly T _context;
         private System.Type _currentStateType;
-        private bool _enabled;        
+        private bool _enabled;
 
         public StateMachine(T context, IState<T>[] states)
         {

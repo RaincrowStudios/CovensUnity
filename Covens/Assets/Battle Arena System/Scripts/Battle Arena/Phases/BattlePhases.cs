@@ -10,16 +10,22 @@ namespace Raincrow.BattleArena.Phase
     {
         // Variables
         private Coroutine<bool?> _sendReadyBattleResponse;
-        private AbstractGameMasterController _gameMaster;
+        private IGameMasterController _gameMaster;
+        private ICoroutineDispatcher _dispatcher;
 
         // Properties
         public string Name => "Initiative Phase";
+
+        public InitiativePhase(ICoroutineDispatcher dispatcher)
+        {
+            _dispatcher = dispatcher;
+        }
 
         public IEnumerator Enter(IStateMachine<IBattleModel> stateMachine, IBattleModel context)
         {            
             Debug.LogFormat("Enter {0}", Name);
             _gameMaster = context.GameMaster;
-            _sendReadyBattleResponse = _gameMaster.StartCoroutine<bool?>(_gameMaster.SendReadyBattle(context.Id));
+            _sendReadyBattleResponse = _dispatcher.Dispatch(_gameMaster.SendReadyBattle(context.Id));
             yield return null;
         }
 

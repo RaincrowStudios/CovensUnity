@@ -40,3 +40,7 @@ public static class CoroutineExtensions
     }
 }
 
+public interface ICoroutineDispatcher
+{
+    Coroutine<T> Dispatch<T>(IEnumerator<T> routine);
+}

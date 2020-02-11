@@ -8,46 +8,20 @@ using UnityEngine;
 
 namespace Raincrow.BattleArena.Controller
 {
-    public class BattleController : MonoBehaviour
+    public class BattleController : MonoBehaviour, ICoroutineDispatcher
     {
         [SerializeField] private Camera _battleCamera;
-        [SerializeField] private Transform _cellsTransform;  
+        [SerializeField] private Transform _cellsTransform;
         [SerializeField] private AbstractGridGameObjectFactory _gridFactory; // Factory class responsible for creating our Grid        
         [SerializeField] private AbstractCharacterGameObjectFactory _characterFactory; // Factory class responsible for creating our Characters   
         [SerializeField] private AbstractGameMasterController _gameMasterController;
 
         private GameObject[,] _grid = new GameObject[0, 0]; // Grid with all the game objects inserted
         private List<GameObject> _characters = new List<GameObject>(); // List with all characters
-        private IStateMachine<IBattleModel> _stateMachine; // State machine with all phases
-        private IGridModel _gridModel;
-        private string _battleId;
+        private IStateMachine<IBattleModel> _stateMachine; // State machine with all phases        
 
         public virtual void OnEnable()
         {
-            _battleId = System.Guid.NewGuid().ToString();
-            StartCoroutine(OnEnableCoroutine());
-        }        
-
-        public virtual void OnDisable()
-        {
-            DestroyGrid();
-        }
-
-        private IEnumerator OnEnableCoroutine()
-        {
-            yield return StartCoroutine(InstantiateGrid());
-
-            yield return StartCoroutine(PlaceCharacters());
-
-            yield return StartCoroutine(StartStateMachine());
-
-            // Update Loop
-            StartCoroutine(UpdateCharacters());
-            StartCoroutine(UpdateStateMachine());
-        }
-
-        private IEnumerator InstantiateGrid()
-        {            
             // Construct grid builder
             GridBuilder gridBuilder;
             {
@@ -69,10 +43,41 @@ namespace Raincrow.BattleArena.Controller
             }
 
             // Create grid model
-            _gridModel = new GridModel(gridBuilder);
+            IGridModel gridModel = new GridModel(gridBuilder);
 
+            // Battle Id
+            string battleId = System.Guid.NewGuid().ToString();
+
+            StartCoroutine(StartBattle(battleId, gridModel, _gameMasterController));
+        }
+
+        public virtual void OnDisable()
+        {
+            EndBattle();
+        }
+
+        public IEnumerator StartBattle(string battleId, IGridModel gridModel, IGameMasterController gameMasterController)
+        {
+            if (!isActiveAndEnabled)
+            {
+                gameObject.SetActive(true);
+            }
+
+            yield return StartCoroutine(InstantiateGrid(gridModel));
+
+            yield return StartCoroutine(PlaceCharacters());
+
+            yield return StartCoroutine(StartStateMachine(battleId, gridModel, gameMasterController));
+
+            // Update Loop
+            StartCoroutine(UpdateCharacters());
+            StartCoroutine(UpdateStateMachine());
+        }
+
+        private IEnumerator InstantiateGrid(IGridModel gridModel)
+        {
             // Create grid
-            Coroutine<GameObject[,]> createGrid = this.StartCoroutine<GameObject[,]>(_gridFactory.Create(_gridModel));
+            Coroutine<GameObject[,]> createGrid = this.StartCoroutine<GameObject[,]>(_gridFactory.Create(gridModel));
             yield return createGrid;
             _grid = createGrid.ReturnValue;
         }
@@ -103,18 +108,18 @@ namespace Raincrow.BattleArena.Controller
             }
         }
 
-        private IEnumerator StartStateMachine()
+        private IEnumerator StartStateMachine(string battleId, IGridModel gridModel, IGameMasterController gameMasterController)
         {
             IBattleModel battleModel = new BattleModel()
             {
-                Id = _battleId,
-                Grid = _gridModel,
-                GameMaster = _gameMasterController
+                Id = battleId,
+                Grid = gridModel,
+                GameMaster = gameMasterController
             };
 
             IState<IBattleModel>[] battlePhases = new IState<IBattleModel>[4]
             {
-                new InitiativePhase(),
+                new InitiativePhase(this),
                 new PlanningPhase(),
                 new ActionResolutionPhase(),
                 new BanishmentPhase()
@@ -128,7 +133,7 @@ namespace Raincrow.BattleArena.Controller
         {
             while (enabled)
             {
-                yield return new WaitForEndOfFrame();                
+                yield return new WaitForEndOfFrame();
 
                 // Update Characters
                 Vector3 forward = _battleCamera.transform.rotation * Vector3.up;
@@ -136,7 +141,7 @@ namespace Raincrow.BattleArena.Controller
                 {
                     Vector3 worldPosition = character.transform.position + _battleCamera.transform.rotation * Vector3.forward;
                     character.transform.LookAt(worldPosition, forward);
-                }                
+                }
             }
         }
 
@@ -149,7 +154,7 @@ namespace Raincrow.BattleArena.Controller
             }
         }
 
-        private void DestroyGrid()
+        public void EndBattle()
         {
             // Destroy characters
             for (int i = _characters.Count - 1; i >= 0; i--)
@@ -165,7 +170,15 @@ namespace Raincrow.BattleArena.Controller
             }
             _grid = new GameObject[0, 0];
 
-            _gridModel = null;
+            if (isActiveAndEnabled)
+            {
+                gameObject.SetActive(false);
+            }
+        }
+
+        public Coroutine<T> Dispatch<T>(IEnumerator<T> routine)
+        {
+            return this.StartCoroutine<T>(routine);
         }
     }
 }
