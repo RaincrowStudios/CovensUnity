@@ -1,7 +1,5 @@
-﻿using Raincrow.BattleArena.Model;
-using Raincrow.GameEventResponses;
+﻿using Raincrow.BattleArena.Events;
 using System.Collections.Generic;
-using UnityEngine;
 
 namespace Raincrow.BattleArena.Controller
 {
@@ -10,28 +8,28 @@ namespace Raincrow.BattleArena.Controller
         private void Awake()
         {
             //Create a handle to listen when the turn start
-            new GameBattleHandler<TurnStartClasses>("battle.turn.start", OnTurnStart);
+            new TurnStartEvent(OnTurnStartResponse);
 
             //Create a handle to listen when the turn resolution
-            new GameBattleHandler<TurnResolutionClasses>("battle.turn.resolution", OnTurnResolution);
+            new TurnResolutionEvent(OnTurnResolutionResponse);
 
             //Create a handle to listen when the battle ends
-            new GameBattleHandler<BattleEndClasses>("battle.end", OnBattleEnd);
+            new BattleEndEvent(OnBattleEndResponse);
         }
 
-        private void OnTurnStart(TurnStartClasses turn)
+        private void OnBattleEndResponse(BattleEndEvent.BattleEndResponse response)
         {
-
+            
         }
 
-        private void OnTurnResolution(TurnResolutionClasses resolution)
+        private void OnTurnStartResponse(TurnStartEvent.TurnStartResponse response)
         {
-
+            
         }
 
-        private void OnBattleEnd(BattleEndClasses response)
+        private void OnTurnResolutionResponse(TurnResolutionEvent.TurnResolutionResponse response)
         {
-
+            
         }
 
         public override IEnumerator<bool?> SendReadyBattle(string battleId)
@@ -47,7 +45,7 @@ namespace Raincrow.BattleArena.Controller
                    responded = true;
                });
 
-            while(!responded)
+            while (!responded)
             {
                 yield return null;
             }
