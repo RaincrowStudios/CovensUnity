@@ -235,6 +235,11 @@ public class SocketClient : MonoBehaviour
         responsesQueue.Enqueue(response);
     }
 
+    public void AddHandle(IGameEventHandler instance)
+    {
+        m_EventActionDictionary.Add(instance.EventName, instance);
+    }
+
     private IEnumerator ReadFromQueue()
     {
         int batchIndex = 0;

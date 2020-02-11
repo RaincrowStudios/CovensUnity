@@ -15,5 +15,15 @@ namespace Raincrow.BattleArena.Controller
             // request came back as 200
             yield return true;
         }
+
+        public override IEnumerator<bool?> SendFlee()
+        {
+            throw new System.NotImplementedException();
+        }
+
+        public override IEnumerator<bool?> SendMove()
+        {
+            throw new System.NotImplementedException();
+        }
     }
 }

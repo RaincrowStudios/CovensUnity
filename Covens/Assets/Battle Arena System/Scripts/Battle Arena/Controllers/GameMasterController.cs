@@ -1,0 +1,103 @@
+﻿using Raincrow.BattleArena.Model;
+using Raincrow.GameEventResponses;
+using System.Collections.Generic;
+using UnityEngine;
+
+namespace Raincrow.BattleArena.Controller
+{
+    public class GameMasterController : AbstractGameMasterController
+    {
+        private void Awake()
+        {
+            //Create a handle to listen when the turn start
+            new GameBattleHandler<TurnStartClasses>("battle.turn.start", OnTurnStart);
+
+            //Create a handle to listen when the turn resolution
+            new GameBattleHandler<TurnResolutionClasses>("battle.turn.resolution", OnTurnResolution);
+
+            //Create a handle to listen when the battle ends
+            new GameBattleHandler<BattleEndClasses>("battle.end", OnBattleEnd);
+        }
+
+        private void OnTurnStart(TurnStartClasses turn)
+        {
+
+        }
+
+        private void OnTurnResolution(TurnResolutionClasses resolution)
+        {
+
+        }
+
+        private void OnBattleEnd(BattleEndClasses response)
+        {
+
+        }
+
+        public override IEnumerator<bool?> SendReadyBattle(string battleId)
+        {
+            bool responded = false;
+            int resultCode = 0;
+
+            APIManager.Instance.Post(
+               "battle/ready/" + battleId, "{}",
+               (response, result) =>
+               {
+                   resultCode = result;
+                   responded = true;
+               });
+
+            while(!responded)
+            {
+                yield return null;
+            }
+
+            // request came back as 200
+            yield return resultCode == 200;
+        }
+
+        public override IEnumerator<bool?> SendFlee()
+        {
+            bool responded = false;
+            int resultCode = 0;
+
+            APIManager.Instance.Post(
+               "battle/flee/", "{}",
+               (response, result) =>
+               {
+                   resultCode = result;
+                   responded = true;
+               });
+
+            while (!responded)
+            {
+                yield return null;
+            }
+
+            // request came back as 200
+            yield return resultCode == 200;
+        }
+
+        public override IEnumerator<bool?> SendMove()
+        {
+            bool responded = false;
+            int resultCode = 0;
+
+            APIManager.Instance.Post(
+               "battle/move/", "{}",
+               (response, result) =>
+               {
+                   resultCode = result;
+                   responded = true;
+               });
+
+            while (!responded)
+            {
+                yield return null;
+            }
+
+            // request came back as 200
+            yield return resultCode == 200;
+        }
+    }
+}
