@@ -20,5 +20,8 @@ namespace Raincrow.BattleArena.Model
     public interface ICellModel
     {
         int Height { get; }
+        int X { get; }
+        int Y { get; }
+        string Id { get; }
     }
 }
