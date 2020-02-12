@@ -1,10 +1,25 @@
-﻿using System.Collections.Generic;
+﻿using Raincrow.BattleArena.Events;
+using System.Collections.Generic;
 using UnityEngine;
 
 namespace Raincrow.BattleArena.Controller
 {
     public abstract class AbstractGameMasterController : MonoBehaviour, IGameMasterController
     {
+        protected virtual void OnEnable()
+        {
+            TurnStartEventHandler.AddListener(OnTurnStart);
+            TurnResolutionEventHandler.AddListener(OnTurnResolution);
+            BattleEndEventHandler.AddListener(OnBattleEnd);
+        }
+
+        protected virtual void OnDisable()
+        {
+            TurnStartEventHandler.RemoveListener(OnTurnStart);
+            TurnResolutionEventHandler.RemoveListener(OnTurnResolution);
+            BattleEndEventHandler.RemoveListener(OnBattleEnd);
+        }
+
         /// <summary>
         ///  Send to server an action to move the player on the grid
         /// </summary>
@@ -28,5 +43,11 @@ namespace Raincrow.BattleArena.Controller
         {
             return this.StartCoroutine<T>(routine);
         }
+
+        protected abstract void OnBattleEnd(BattleEndEventArgs response);
+
+        protected abstract void OnTurnStart(TurnStartEventArgs response);
+
+        protected abstract void OnTurnResolution(TurnResolutionEventArgs response);
     }
 }

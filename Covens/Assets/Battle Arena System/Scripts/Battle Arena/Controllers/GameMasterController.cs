@@ -4,34 +4,7 @@ using System.Collections.Generic;
 namespace Raincrow.BattleArena.Controller
 {
     public class GameMasterController : AbstractGameMasterController
-    {
-        private void Awake()
-        {
-            //Create a handle to listen when the turn start
-            new TurnStartEvent(OnTurnStartResponse);
-
-            //Create a handle to listen when the turn resolution
-            new TurnResolutionEvent(OnTurnResolutionResponse);
-
-            //Create a handle to listen when the battle ends
-            new BattleEndEvent(OnBattleEndResponse);
-        }
-
-        private void OnBattleEndResponse(BattleEndEvent.BattleEndResponse response)
-        {
-            
-        }
-
-        private void OnTurnStartResponse(TurnStartEvent.TurnStartResponse response)
-        {
-            
-        }
-
-        private void OnTurnResolutionResponse(TurnResolutionEvent.TurnResolutionResponse response)
-        {
-            
-        }
-
+    {        
         public override IEnumerator<bool?> SendReadyBattle(string battleId)
         {
             bool responded = false;
@@ -96,6 +69,21 @@ namespace Raincrow.BattleArena.Controller
 
             // request came back as 200
             yield return resultCode == 200;
+        }
+
+        protected override void OnBattleEnd(BattleEndEventArgs response)
+        {
+            
+        }
+
+        protected override void OnTurnStart(TurnStartEventArgs response)
+        {
+            
+        }
+
+        protected override void OnTurnResolution(TurnResolutionEventArgs response)
+        {
+            
         }
     }
 }

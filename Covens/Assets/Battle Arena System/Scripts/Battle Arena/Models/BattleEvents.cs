@@ -1,70 +1,107 @@
 ﻿using Raincrow.GameEventResponses;
+using UnityEngine.Events;
 
 namespace Raincrow.BattleArena.Events
 {
-    public class TurnStartEvent : IGameEventHandler
-    {
-        // Variables
-        private System.Action<TurnStartResponse> _response;
+    #region Events
 
-        // Properties
+    public class TurnStartEventHandler : IGameEventHandler
+    {
+        // TurnStartEvent
+        private class TurnStartEvent : UnityEvent<TurnStartEventArgs> { }
+        private static TurnStartEvent Response = new TurnStartEvent();
+
+        // Properties        
         public string EventName => "battle.turn.start";
 
-        public struct TurnStartResponse { }
-
-        public TurnStartEvent(System.Action<TurnStartResponse> response)
-        {
-            _response = response;
-        }
-
         public void HandleResponse(string eventData)
         {
-            TurnStartResponse data = Newtonsoft.Json.JsonConvert.DeserializeObject<TurnStartResponse>(eventData);
-            _response?.Invoke(data);
+            TurnStartEventArgs data = Newtonsoft.Json.JsonConvert.DeserializeObject<TurnStartEventArgs>(eventData);
+            Response?.Invoke(data);
+        }
+
+        public static void AddListener(UnityAction<TurnStartEventArgs> turnStartAction)
+        {
+            if (Response == null)
+            {
+                Response = new TurnStartEvent();
+            }
+            Response.AddListener(turnStartAction);
+        }
+
+        public static void RemoveListener(UnityAction<TurnStartEventArgs> turnStartAction)
+        {            
+            Response?.RemoveListener(turnStartAction);
         }
     }
 
-    public class TurnResolutionEvent : IGameEventHandler
+    public class TurnResolutionEventHandler : IGameEventHandler
     {
-        // Variables
-        private System.Action<TurnResolutionResponse> _response;
+        private class TurnResolutionEvent : UnityEvent<TurnResolutionEventArgs> { }
+        private static TurnResolutionEvent Response = new TurnResolutionEvent();
 
-        // Properties
-        public string EventName => "battle.turn.resolution";
-
-        public struct TurnResolutionResponse { }
-
-        public TurnResolutionEvent(System.Action<TurnResolutionResponse> response)
-        {
-            _response = response;
-        }
+        // Properties        
+        public string EventName => "battle.turn.resolution";     
 
         public void HandleResponse(string eventData)
         {
-            TurnResolutionResponse data = Newtonsoft.Json.JsonConvert.DeserializeObject<TurnResolutionResponse>(eventData);
-            _response?.Invoke(data);
+            TurnResolutionEventArgs data = Newtonsoft.Json.JsonConvert.DeserializeObject<TurnResolutionEventArgs>(eventData);
+            Response?.Invoke(data);
+        }
+
+        public static void AddListener(UnityAction<TurnResolutionEventArgs> turnResolutionAction)
+        {
+            if (Response == null)
+            {
+                Response = new TurnResolutionEvent();
+            }
+            Response.AddListener(turnResolutionAction);
+        }
+
+        public static void RemoveListener(UnityAction<TurnResolutionEventArgs> turnResolutionAction)
+        {
+            Response?.RemoveListener(turnResolutionAction);
         }
     }
 
-    public class BattleEndEvent : IGameEventHandler
+    public class BattleEndEventHandler : IGameEventHandler
     {
-        // Variables
-        private System.Action<BattleEndResponse> _response;
+        private class BattleEndEvent : UnityEvent<BattleEndEventArgs> { }
+        private static BattleEndEvent Response = new BattleEndEvent();
 
-        // Properties
+        // Properties        
         public string EventName => "battle.end";
 
-        public struct BattleEndResponse { }
-
-        public BattleEndEvent(System.Action<BattleEndResponse> response)
-        {
-            _response = response;
-        }
-
         public void HandleResponse(string eventData)
         {
-            BattleEndResponse data = Newtonsoft.Json.JsonConvert.DeserializeObject<BattleEndResponse>(eventData);
-            _response?.Invoke(data);
+            BattleEndEventArgs data = Newtonsoft.Json.JsonConvert.DeserializeObject<BattleEndEventArgs>(eventData);
+            Response?.Invoke(data);
+        }
+
+        public static void AddListener(UnityAction<BattleEndEventArgs> battleEndAction)
+        {
+            if (Response == null)
+            {
+                Response = new BattleEndEvent();
+            }
+            Response.AddListener(battleEndAction);
+        }
+
+        public static void RemoveListener(UnityAction<BattleEndEventArgs> battleEndAction)
+        {
+            Response?.RemoveListener(battleEndAction);
         }
     }
+
+    #endregion
+
+    #region Responses
+
+    public struct TurnStartEventArgs { }
+
+    public struct TurnResolutionEventArgs { }
+
+    public struct BattleEndEventArgs { }
+
+    #endregion
 }

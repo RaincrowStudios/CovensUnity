@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using Raincrow.BattleArena.Events;
+using System.Collections.Generic;
 using UnityEngine;
 
 namespace Raincrow.BattleArena.Controller
@@ -18,12 +19,27 @@ namespace Raincrow.BattleArena.Controller
 
         public override IEnumerator<bool?> SendFlee()
         {
-            throw new System.NotImplementedException();
+            yield return false;
         }
 
         public override IEnumerator<bool?> SendMove()
         {
-            throw new System.NotImplementedException();
+            yield return false;
+        }
+
+        protected override void OnBattleEnd(BattleEndEventArgs response)
+        {
+            
+        }
+
+        protected override void OnTurnStart(TurnStartEventArgs response)
+        {
+            
+        }
+
+        protected override void OnTurnResolution(TurnResolutionEventArgs response)
+        {
+            
         }
     }
 }
