@@ -1,5 +1,4 @@
-﻿using Raincrow.BattleArena.Controller;
-using UnityEngine;
+﻿using UnityEngine;
 
 namespace Raincrow.BattleArena.Model
 {
@@ -7,7 +6,9 @@ namespace Raincrow.BattleArena.Model
     {
         public string Id { get; set; }
         public IGridModel Grid { get; set; }
-        public IGameMasterController GameMaster { get; set; }
+        public string[] PlanningOrder { get; set; }
+        public float PlanningMaxTime { get; set; }
+        public int MaxActionsAllowed { get; set; }
     }
 
     [System.Serializable]

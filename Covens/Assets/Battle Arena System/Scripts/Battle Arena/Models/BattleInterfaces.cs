@@ -1,13 +1,9 @@
-﻿using Raincrow.BattleArena.Controller;
-using System.Collections.Generic;
-
-namespace Raincrow.BattleArena.Model
-{
+﻿namespace Raincrow.BattleArena.Model
+{    
     public interface IBattleModel
     {
-        string Id { get; }
-        IGridModel Grid { get; }
-        IGameMasterController GameMaster { get; }
+        string Id { get; }        
+        IGridModel Grid { get; }        
     }
 
     public interface IGridModel

@@ -8,13 +8,13 @@ using UnityEngine;
 
 namespace Raincrow.BattleArena.Phase
 {
-    public class InitiativePhase : IState<IBattleModel>
+    public class InitiativePhase : IState<ITurnController>
     {
         // Variables
-        private IGameMasterController _gameMaster;
         private ICoroutineHandler _coroutineHandler;
         private IEnumerator<bool?> _sendPlanningPhaseReady;
-        private bool? _isPlanningPhaseReady; 
+        private ITurnController _context;
+        private bool? _isPlanningPhaseReady;        
 
         // Properties
         public string Name => "Initiative Phase";
@@ -22,26 +22,29 @@ namespace Raincrow.BattleArena.Phase
         public InitiativePhase(ICoroutineHandler coroutineStarter)
         {
             _coroutineHandler = coroutineStarter;
+            _sendPlanningPhaseReady = null;
+            _context = default;
+            _isPlanningPhaseReady = null;
         }
 
-        public IEnumerator Enter(IStateMachine<IBattleModel> stateMachine, IBattleModel context)
-        {   
-            // Set Game Master
-            _gameMaster = context.GameMaster;
+        public IEnumerator Enter(IStateMachine<ITurnController> stateMachine, ITurnController context)
+        {
+            // Set context
+            _context = context;
 
             // Create the Send Planning Phase Ready Coroutine
-            _sendPlanningPhaseReady = _gameMaster.SendPlanningPhaseReady(context.Id);
+            _sendPlanningPhaseReady = _context.GameMaster.SendPlanningPhaseReady(_context.Battle.Id);
 
             // Start the Send Planning Phase Ready Coroutine
             _coroutineHandler.Invoke(_sendPlanningPhaseReady);
 
             // Subscribe to the 'On Planning Phase Ready' event
-            _gameMaster.OnPlanningPhaseReadyEvent.AddListener(OnPlanningPhaseReady);
+            _context.GameMaster.OnPlanningPhaseReadyEvent.AddListener(OnPlanningPhaseReady);
 
             yield return null;
         }        
 
-        public IEnumerator Update(IStateMachine<IBattleModel> stateMachine, IBattleModel context)
+        public IEnumerator Update(IStateMachine<ITurnController> stateMachine, ITurnController context)
         {
             if (_isPlanningPhaseReady.GetValueOrDefault())
             {
@@ -49,27 +52,45 @@ namespace Raincrow.BattleArena.Phase
             }
         }
 
-        public IEnumerator Exit(IStateMachine<IBattleModel> stateMachine, IBattleModel context)
+        public IEnumerator Exit(IStateMachine<ITurnController> stateMachine, ITurnController context)
         {
             // Stop Send Planning Phase Ready Coroutine
             if (_sendPlanningPhaseReady != null)
             {
                 _coroutineHandler.StopInvoke(_sendPlanningPhaseReady);
-            }            
+            }
 
             // Unsubscribe to the 'On Planning Phase Ready' event
-            _gameMaster.OnPlanningPhaseReadyEvent?.RemoveListener(OnPlanningPhaseReady);
+            _context.GameMaster.OnPlanningPhaseReadyEvent?.RemoveListener(OnPlanningPhaseReady);
 
             yield return null;
         }
 
+        #region Socket Events
+
         private void OnPlanningPhaseReady(PlanningPhaseReadyEventArgs args)
         {
+            // Copy Planning order to battle model
+            if (args.PlanningOrder != null)
+            {
+                _context.PlanningOrder = new string[args.PlanningOrder.Length];
+                args.PlanningOrder.CopyTo(_context.PlanningOrder, 0);
+            }            
+            else
+            {
+                _context.PlanningOrder = new string[0];
+            }
+
+            _context.PlanningMaxTime = args.PlanningMaxTime;
+            _context.MaxActionsAllowed = args.MaxActionsAllowed;
+
             _isPlanningPhaseReady = true;
         }
+
+        #endregion
     }
 
-    public class PlanningPhase : IState<IBattleModel>
+    public class PlanningPhase : IState<ITurnController>
     {
         private float _startTime = 0f;
         private ICoroutineHandler _coroutineStarter;
@@ -81,13 +102,13 @@ namespace Raincrow.BattleArena.Phase
             _coroutineStarter = coroutineStarter;
         }
 
-        public IEnumerator Enter(IStateMachine<IBattleModel> stateMachine, IBattleModel context)
+        public IEnumerator Enter(IStateMachine<ITurnController> stateMachine, ITurnController context)
         {
             _startTime = Time.time;
             yield return null;
         }
 
-        public IEnumerator Update(IStateMachine<IBattleModel> stateMachine, IBattleModel context)
+        public IEnumerator Update(IStateMachine<ITurnController> stateMachine, ITurnController context)
         {
             if (Time.time - _startTime > 3f)
             {
@@ -95,13 +116,13 @@ namespace Raincrow.BattleArena.Phase
             }
         }
 
-        public IEnumerator Exit(IStateMachine<IBattleModel> stateMachine, IBattleModel context)
+        public IEnumerator Exit(IStateMachine<ITurnController> stateMachine, ITurnController context)
         {
             yield return null;
         }        
     }
 
-    public class ActionResolutionPhase : IState<IBattleModel>
+    public class ActionResolutionPhase : IState<ITurnController>
     {
         private float _startTime = 0f;
         private ICoroutineHandler _coroutineStarter;
@@ -113,13 +134,13 @@ namespace Raincrow.BattleArena.Phase
             _coroutineStarter = coroutineStarter;
         }
 
-        public IEnumerator Enter(IStateMachine<IBattleModel> stateMachine, IBattleModel context)
+        public IEnumerator Enter(IStateMachine<ITurnController> stateMachine, ITurnController context)
         {
             _startTime = Time.time;
             yield return null;
         }
 
-        public IEnumerator Update(IStateMachine<IBattleModel> stateMachine, IBattleModel context)
+        public IEnumerator Update(IStateMachine<ITurnController> stateMachine, ITurnController context)
         {
             if (Time.time - _startTime > 3f)
             {
@@ -127,13 +148,13 @@ namespace Raincrow.BattleArena.Phase
             }
         }
 
-        public IEnumerator Exit(IStateMachine<IBattleModel> stateMachine, IBattleModel context)
+        public IEnumerator Exit(IStateMachine<ITurnController> stateMachine, ITurnController context)
         {
             yield return null;
         }
     }
 
-    public class BanishmentPhase : IState<IBattleModel>
+    public class BanishmentPhase : IState<ITurnController>
     {
         private float _startTime = 0f;
         private ICoroutineHandler _coroutineStarter;
@@ -145,13 +166,13 @@ namespace Raincrow.BattleArena.Phase
             _coroutineStarter = coroutineStarter;
         }
 
-        public IEnumerator Enter(IStateMachine<IBattleModel> stateMachine, IBattleModel context)
+        public IEnumerator Enter(IStateMachine<ITurnController> stateMachine, ITurnController context)
         {
             _startTime = Time.time;
             yield return null;
         }
 
-        public IEnumerator Update(IStateMachine<IBattleModel> stateMachine, IBattleModel context)
+        public IEnumerator Update(IStateMachine<ITurnController> stateMachine, ITurnController context)
         {
             if (Time.time - _startTime > 3f)
             {
@@ -159,7 +180,7 @@ namespace Raincrow.BattleArena.Phase
             }
         }
 
-        public IEnumerator Exit(IStateMachine<IBattleModel> stateMachine, IBattleModel context)
+        public IEnumerator Exit(IStateMachine<ITurnController> stateMachine, ITurnController context)
         {
             yield return null;
         }        

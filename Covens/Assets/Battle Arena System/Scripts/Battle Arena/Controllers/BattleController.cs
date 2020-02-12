@@ -18,7 +18,7 @@ namespace Raincrow.BattleArena.Controller
 
         private GameObject[,] _grid = new GameObject[0, 0]; // Grid with all the game objects inserted
         private List<GameObject> _characters = new List<GameObject>(); // List with all characters
-        private IStateMachine<IBattleModel> _stateMachine; // State machine with all phases        
+        private IStateMachine<ITurnController> _stateMachine; // State machine with all phases        
 
         public virtual void OnEnable()
         {
@@ -111,11 +111,15 @@ namespace Raincrow.BattleArena.Controller
         private IEnumerator StartStateMachine(string battleId, IGridModel gridModel, IGameMasterController gameMasterController)
         {
             // We yield at each allocation to avoid a lot of allocations on a single frame
-            IBattleModel battleModel = new BattleModel()
+            ITurnController turnController = new TurnController()
             {
-                Id = battleId,
-                Grid = gridModel,
-                GameMaster = gameMasterController
+                Battle = new BattleModel()
+                {
+                    Id = battleId,
+                    Grid = gridModel
+                },
+                GameMaster = gameMasterController,
+                PlanningOrder = new string[0]
             };
             yield return null;
 
@@ -131,10 +135,16 @@ namespace Raincrow.BattleArena.Controller
             BanishmentPhase banishmentPhase = new BanishmentPhase(this);
             yield return null;
 
-            IState<IBattleModel>[] battlePhases = new IState<IBattleModel>[4] { initiativePhase, planningPhase, actionResolutionPhase, banishmentPhase };
+            IState<ITurnController>[] battlePhases = new IState<ITurnController>[4] 
+            {
+                initiativePhase,
+                planningPhase,
+                actionResolutionPhase,
+                banishmentPhase
+            };
 
-            _stateMachine = new StateMachine<IBattleModel>(battleModel, battlePhases);
-            yield return _stateMachine.Start<InitiativePhase>(); // initiativePhase
+            _stateMachine = new StateMachine<ITurnController>(turnController, battlePhases);
+            yield return _stateMachine.Start<InitiativePhase>();
         }
 
         private IEnumerator UpdateCharacters()
@@ -197,5 +207,23 @@ namespace Raincrow.BattleArena.Controller
         }
 
         #endregion
+    }
+
+    public interface ITurnController
+    {
+        IBattleModel Battle { get; set; }
+        IGameMasterController GameMaster { get; set; }
+        string[] PlanningOrder { get; set; }
+        float PlanningMaxTime { get; set; }
+        int MaxActionsAllowed { get; set; }
+    }
+
+    public struct TurnController : ITurnController
+    {
+        public IBattleModel Battle { get; set; }
+        public IGameMasterController GameMaster { get; set; }
+        public string[] PlanningOrder { get; set; }
+        public float PlanningMaxTime { get; set; }
+        public int MaxActionsAllowed { get; set; }
     }
 }
