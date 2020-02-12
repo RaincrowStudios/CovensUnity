@@ -12,11 +12,12 @@ namespace Raincrow.BattleArena.Manager
             BattleOpenHandler.OnBattleOpen += BattleOpen;
         }
 
-        private void BattleOpen(IBattleModel arena)
+        private void BattleOpen(BattleObjectServer battle)
         {
             LoadingOverlay.Show();
             UIMain.SetActive(false);
             UIQuickCast.SetActive(false);
+
             SceneManager.LoadSceneAsync(SceneManager.Scene.ARENA, UnityEngine.SceneManagement.LoadSceneMode.Additive,
                 null,
                 () => {
@@ -26,6 +27,11 @@ namespace Raincrow.BattleArena.Manager
                     {
                         gridController.gameObject.SetActive(true);
                     }
+
+                    IGridModel grid = new GridModel(battle.grid.MaxCellsPerColumn, battle.grid.MaxCellsPerLine, battle.grid.Cells);
+
+                    StartCoroutine(gridController.StartBattle(battle._id, grid));
+                    
                     LoadingOverlay.Hide();
                 }
              );

@@ -65,6 +65,13 @@ namespace Raincrow.BattleArena.Model
                 }
             }
         }
+
+        public GridModel(int maxCellsPerLine, int maxCellsPerColumn, ICellModel[,] cells)
+        {
+            this.MaxCellsPerLine = maxCellsPerColumn;
+            this.MaxCellsPerColumn = maxCellsPerColumn;
+            this.Cells = cells;
+        }
     }
 
     public class GridBuilder
@@ -79,6 +86,12 @@ namespace Raincrow.BattleArena.Model
         // Properties
         public int Height { get; private set; }
 
+        public int X { get; set; }
+
+        public int Y { get; set; }
+
+        public string Id { get; set; }
+
         // Constructor
         public CellModel(CellBuilder builder)
         {
@@ -88,6 +101,8 @@ namespace Raincrow.BattleArena.Model
 
     public class CellBuilder
     {
+        public int X { get; set; }
+        public int Y { get; set; }
         public int Height { get; set; }
     }
 }

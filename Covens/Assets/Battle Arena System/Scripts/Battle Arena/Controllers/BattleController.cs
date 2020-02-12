@@ -48,7 +48,7 @@ namespace Raincrow.BattleArena.Controller
             // Battle Id
             string battleId = System.Guid.NewGuid().ToString();
 
-            StartCoroutine(StartBattle(battleId, gridModel));
+            //StartCoroutine(StartBattle(battleId, gridModel));
         }
 
         public virtual void OnDisable()
