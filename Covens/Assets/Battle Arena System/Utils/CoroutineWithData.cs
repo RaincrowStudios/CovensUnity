@@ -40,7 +40,8 @@ public static class CoroutineExtensions
     }
 }
 
-public interface ICoroutineDispatcher
+public interface ICoroutineHandler
 {
-    Coroutine<T> Dispatch<T>(IEnumerator<T> routine);
+    Coroutine<T> Invoke<T>(IEnumerator<T> routine);
+    void StopInvoke<T>(IEnumerator<T> routine);
 }

@@ -25,7 +25,7 @@ namespace Raincrow.BattleArena.Controller
 
         #region IGameMasterController
 
-        public override IEnumerator<bool?> SendReadyBattle(string battleId)
+        public override IEnumerator<bool?> SendPlanningPhaseReady(string battleId)
         {
             bool responded = false;
             int resultCode = 0;

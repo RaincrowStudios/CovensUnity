@@ -4,12 +4,11 @@ using UnityEngine.Events;
 
 namespace Raincrow.BattleArena.Events
 {
-    #region Events
+    #region Event Handlers
 
     public class PlanningPhaseStartEventHandler : IGameEventHandler
     {
-        // PlanningPhaseStartEvent
-        private class PlanningPhaseStartEvent : UnityEvent<PlanningPhaseReadyEventArgs> { }
+        // PlanningPhaseStartEvent        
         private static PlanningPhaseStartEvent Response = new PlanningPhaseStartEvent();
 
         // Properties        
@@ -37,8 +36,7 @@ namespace Raincrow.BattleArena.Events
     }
 
     public class TurnResolutionEventHandler : IGameEventHandler
-    {
-        private class TurnResolutionEvent : UnityEvent<TurnResolutionEventArgs> { }
+    {        
         private static TurnResolutionEvent Response = new TurnResolutionEvent();
 
         // Properties        
@@ -66,8 +64,7 @@ namespace Raincrow.BattleArena.Events
     }
 
     public class BattleEndEventHandler : IGameEventHandler
-    {
-        private class BattleEndEvent : UnityEvent<BattleEndEventArgs> { }
+    {        
         private static BattleEndEvent Response = new BattleEndEvent();
 
         // Properties        
@@ -93,6 +90,16 @@ namespace Raincrow.BattleArena.Events
             Response?.RemoveListener(battleEndAction);
         }
     }
+
+    #endregion    
+
+    #region Events
+
+    public class BattleEndEvent : UnityEvent<BattleEndEventArgs> { }
+
+    public class PlanningPhaseStartEvent : UnityEvent<PlanningPhaseReadyEventArgs> { }
+
+    public class TurnResolutionEvent : UnityEvent<TurnResolutionEventArgs> { }
 
     #endregion
 

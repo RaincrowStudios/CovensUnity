@@ -8,7 +8,7 @@ using UnityEngine;
 
 namespace Raincrow.BattleArena.Controller
 {
-    public class BattleController : MonoBehaviour, ICoroutineDispatcher
+    public class BattleController : MonoBehaviour, ICoroutineHandler
     {
         [SerializeField] private Camera _battleCamera;
         [SerializeField] private Transform _cellsTransform;
@@ -48,7 +48,7 @@ namespace Raincrow.BattleArena.Controller
             // Battle Id
             string battleId = System.Guid.NewGuid().ToString();
 
-            //StartCoroutine(StartBattle(battleId, gridModel));
+            StartCoroutine(StartBattle(battleId, gridModel));
         }
 
         public virtual void OnDisable()
@@ -184,9 +184,18 @@ namespace Raincrow.BattleArena.Controller
             }
         }
 
-        public Coroutine<T> Dispatch<T>(IEnumerator<T> routine)
+        #region ICoroutineStarter
+
+        public Coroutine<T> Invoke<T>(IEnumerator<T> routine)
         {
             return this.StartCoroutine<T>(routine);
         }
+
+        public void StopInvoke<T>(IEnumerator<T> routine)
+        {
+            StopCoroutine(routine);
+        }
+
+        #endregion
     }
 }

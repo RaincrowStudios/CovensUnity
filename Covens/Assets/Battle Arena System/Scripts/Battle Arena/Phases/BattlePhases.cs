@@ -1,5 +1,7 @@
 ﻿using System.Collections;
+using System.Collections.Generic;
 using Raincrow.BattleArena.Controller;
+using Raincrow.BattleArena.Events;
 using Raincrow.BattleArena.Model;
 using Raincrow.StateMachines;
 using UnityEngine;
@@ -9,28 +11,39 @@ namespace Raincrow.BattleArena.Phase
     public class InitiativePhase : IState<IBattleModel>
     {
         // Variables
-        private Coroutine<bool?> _sendReadyBattleResponse;
         private IGameMasterController _gameMaster;
-        private ICoroutineDispatcher _dispatcher;
+        private ICoroutineHandler _coroutineHandler;
+        private IEnumerator<bool?> _sendPlanningPhaseReady;
+        private bool? _isPlanningPhaseReady; 
 
         // Properties
         public string Name => "Initiative Phase";
 
-        public InitiativePhase(ICoroutineDispatcher dispatcher)
+        public InitiativePhase(ICoroutineHandler coroutineStarter)
         {
-            _dispatcher = dispatcher;
+            _coroutineHandler = coroutineStarter;
         }
 
         public IEnumerator Enter(IStateMachine<IBattleModel> stateMachine, IBattleModel context)
-        {            
+        {   
+            // Set Game Master
             _gameMaster = context.GameMaster;
-            _sendReadyBattleResponse = _dispatcher.Dispatch(_gameMaster.SendReadyBattle(context.Id));
+
+            // Create the Send Planning Phase Ready Coroutine
+            _sendPlanningPhaseReady = _gameMaster.SendPlanningPhaseReady(context.Id);
+
+            // Start the Send Planning Phase Ready Coroutine
+            _coroutineHandler.Invoke(_sendPlanningPhaseReady);
+
+            // Subscribe to the 'On Planning Phase Ready' event
+            _gameMaster.OnPlanningPhaseReadyEvent.AddListener(OnPlanningPhaseReady);
+
             yield return null;
-        }
+        }        
 
         public IEnumerator Update(IStateMachine<IBattleModel> stateMachine, IBattleModel context)
-        {            
-            if (_sendReadyBattleResponse.ReturnValue.HasValue)
+        {
+            if (_isPlanningPhaseReady.GetValueOrDefault())
             {
                 yield return stateMachine.ChangeState<PlanningPhase>();
             }
@@ -38,20 +51,34 @@ namespace Raincrow.BattleArena.Phase
 
         public IEnumerator Exit(IStateMachine<IBattleModel> stateMachine, IBattleModel context)
         {
+            // Stop Send Planning Phase Ready Coroutine
+            if (_sendPlanningPhaseReady != null)
+            {
+                _coroutineHandler.StopInvoke(_sendPlanningPhaseReady);
+            }            
+
+            // Unsubscribe to the 'On Planning Phase Ready' event
+            _gameMaster.OnPlanningPhaseReadyEvent?.RemoveListener(OnPlanningPhaseReady);
+
             yield return null;
-        }        
+        }
+
+        private void OnPlanningPhaseReady(PlanningPhaseReadyEventArgs args)
+        {
+            _isPlanningPhaseReady = true;
+        }
     }
 
     public class PlanningPhase : IState<IBattleModel>
     {
         private float _startTime = 0f;
-        private ICoroutineDispatcher _dispatcher;
+        private ICoroutineHandler _coroutineStarter;
 
         public string Name => "Planning Phase";
 
-        public PlanningPhase(ICoroutineDispatcher dispatcher)
+        public PlanningPhase(ICoroutineHandler coroutineStarter)
         {
-            _dispatcher = dispatcher;
+            _coroutineStarter = coroutineStarter;
         }
 
         public IEnumerator Enter(IStateMachine<IBattleModel> stateMachine, IBattleModel context)
@@ -77,13 +104,13 @@ namespace Raincrow.BattleArena.Phase
     public class ActionResolutionPhase : IState<IBattleModel>
     {
         private float _startTime = 0f;
-        private ICoroutineDispatcher _dispatcher;
+        private ICoroutineHandler _coroutineStarter;
 
         public string Name => "Action Resolution Phase";
 
-        public ActionResolutionPhase(ICoroutineDispatcher dispatcher)
+        public ActionResolutionPhase(ICoroutineHandler coroutineStarter)
         {
-            _dispatcher = dispatcher;
+            _coroutineStarter = coroutineStarter;
         }
 
         public IEnumerator Enter(IStateMachine<IBattleModel> stateMachine, IBattleModel context)
@@ -109,13 +136,13 @@ namespace Raincrow.BattleArena.Phase
     public class BanishmentPhase : IState<IBattleModel>
     {
         private float _startTime = 0f;
-        private ICoroutineDispatcher _dispatcher;
+        private ICoroutineHandler _coroutineStarter;
 
         public string Name => "Banishment Phase";
 
-        public BanishmentPhase(ICoroutineDispatcher dispatcher)
+        public BanishmentPhase(ICoroutineHandler coroutineStarter)
         {
-            _dispatcher = dispatcher;
+            _coroutineStarter = coroutineStarter;
         }
 
         public IEnumerator Enter(IStateMachine<IBattleModel> stateMachine, IBattleModel context)

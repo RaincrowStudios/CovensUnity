@@ -1,6 +1,5 @@
 ﻿using Raincrow.BattleArena.Events;
 using System.Collections.Generic;
-using UnityEngine.Events;
 
 namespace Raincrow.BattleArena.Controller
 {
@@ -20,24 +19,24 @@ namespace Raincrow.BattleArena.Controller
         IEnumerator<bool?> SendFlee();
 
         /// <summary>
-        ///  Send to server that the player is ready to the battle
+        ///  Send to server that the player is ready for planning
         /// </summary>
         /// <returns></returns>
-        IEnumerator<bool?> SendReadyBattle(string battleId);
+        IEnumerator<bool?> SendPlanningPhaseReady(string battleId);
 
         /// <summary>
         /// Socket event
         /// </summary>
-        UnityEvent<PlanningPhaseReadyEventArgs> OnPlanningPhaseReadyEvent { get; }
+        PlanningPhaseStartEvent OnPlanningPhaseReadyEvent { get; }
 
         /// <summary>
         /// Socket event
         /// </summary>
-        UnityEvent<TurnResolutionEventArgs> OnTurnResolutionEvent { get; }
+        TurnResolutionEvent OnTurnResolutionEvent { get; }
 
         /// <summary>
         /// Socket event
         /// </summary>
-        UnityEvent<BattleEndEventArgs> OnBattleEndEvent { get; }
+        BattleEndEvent OnBattleEndEvent { get; }
     }
 }
