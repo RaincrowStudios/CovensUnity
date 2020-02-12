@@ -4,7 +4,27 @@ using System.Collections.Generic;
 namespace Raincrow.BattleArena.Controller
 {
     public class GameMasterController : AbstractGameMasterController
-    {        
+    {
+        #region MonoBehaviour
+
+        protected virtual void OnEnable()
+        {
+            PlanningPhaseStartEventHandler.AddListener(OnPlanningPhaseReady);
+            TurnResolutionEventHandler.AddListener(OnTurnResolution);
+            BattleEndEventHandler.AddListener(OnBattleEnd);
+        }
+
+        protected virtual void OnDisable()
+        {
+            PlanningPhaseStartEventHandler.RemoveListener(OnPlanningPhaseReady);
+            TurnResolutionEventHandler.RemoveListener(OnTurnResolution);
+            BattleEndEventHandler.RemoveListener(OnBattleEnd);
+        }
+
+        #endregion
+
+        #region IGameMasterController
+
         public override IEnumerator<bool?> SendReadyBattle(string battleId)
         {
             bool responded = false;
@@ -71,19 +91,25 @@ namespace Raincrow.BattleArena.Controller
             yield return resultCode == 200;
         }
 
-        protected override void OnBattleEnd(BattleEndEventArgs response)
+        #endregion
+
+        #region Unity Actions
+
+        private void OnPlanningPhaseReady(PlanningPhaseReadyEventArgs response)
         {
-            
+            OnPlanningPhaseReadyEvent?.Invoke(response);
         }
 
-        protected override void OnTurnStart(TurnStartEventArgs response)
+        private void OnTurnResolution(TurnResolutionEventArgs response)
         {
-            
+            OnTurnResolutionEvent?.Invoke(response);
         }
 
-        protected override void OnTurnResolution(TurnResolutionEventArgs response)
+        private void OnBattleEnd(BattleEndEventArgs response)
         {
-            
+            OnBattleEndEvent?.Invoke(response);
         }
+
+        #endregion
     }
 }

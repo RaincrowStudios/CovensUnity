@@ -1,5 +1,4 @@
-﻿using Raincrow.BattleArena.Events;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using UnityEngine;
 
 namespace Raincrow.BattleArena.Controller
@@ -25,21 +24,6 @@ namespace Raincrow.BattleArena.Controller
         public override IEnumerator<bool?> SendMove()
         {
             yield return false;
-        }        
-
-        protected override void OnTurnStart(TurnStartEventArgs response)
-        {
-            
-        }
-
-        protected override void OnTurnResolution(TurnResolutionEventArgs response)
-        {
-            
-        }
-
-        protected override void OnBattleEnd(BattleEndEventArgs response)
-        {
-
         }
     }
 }

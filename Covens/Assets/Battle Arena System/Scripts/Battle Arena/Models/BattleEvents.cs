@@ -1,37 +1,38 @@
-﻿using Raincrow.GameEventResponses;
+﻿using Newtonsoft.Json;
+using Raincrow.GameEventResponses;
 using UnityEngine.Events;
 
 namespace Raincrow.BattleArena.Events
 {
     #region Events
 
-    public class TurnStartEventHandler : IGameEventHandler
+    public class PlanningPhaseStartEventHandler : IGameEventHandler
     {
-        // TurnStartEvent
-        private class TurnStartEvent : UnityEvent<TurnStartEventArgs> { }
-        private static TurnStartEvent Response = new TurnStartEvent();
+        // PlanningPhaseStartEvent
+        private class PlanningPhaseStartEvent : UnityEvent<PlanningPhaseReadyEventArgs> { }
+        private static PlanningPhaseStartEvent Response = new PlanningPhaseStartEvent();
 
         // Properties        
         public string EventName => "battle.turn.start";
 
         public void HandleResponse(string eventData)
         {
-            TurnStartEventArgs data = Newtonsoft.Json.JsonConvert.DeserializeObject<TurnStartEventArgs>(eventData);
+            PlanningPhaseReadyEventArgs data = JsonConvert.DeserializeObject<PlanningPhaseReadyEventArgs>(eventData);
             Response?.Invoke(data);
         }
 
-        public static void AddListener(UnityAction<TurnStartEventArgs> turnStartAction)
+        public static void AddListener(UnityAction<PlanningPhaseReadyEventArgs> planningPhaseStart)
         {
             if (Response == null)
             {
-                Response = new TurnStartEvent();
+                Response = new PlanningPhaseStartEvent();
             }
-            Response.AddListener(turnStartAction);
+            Response.AddListener(planningPhaseStart);
         }
 
-        public static void RemoveListener(UnityAction<TurnStartEventArgs> turnStartAction)
+        public static void RemoveListener(UnityAction<PlanningPhaseReadyEventArgs> planningPhaseStart)
         {            
-            Response?.RemoveListener(turnStartAction);
+            Response?.RemoveListener(planningPhaseStart);
         }
     }
 
@@ -45,7 +46,7 @@ namespace Raincrow.BattleArena.Events
 
         public void HandleResponse(string eventData)
         {
-            TurnResolutionEventArgs data = Newtonsoft.Json.JsonConvert.DeserializeObject<TurnResolutionEventArgs>(eventData);
+            TurnResolutionEventArgs data = JsonConvert.DeserializeObject<TurnResolutionEventArgs>(eventData);
             Response?.Invoke(data);
         }
 
@@ -74,7 +75,7 @@ namespace Raincrow.BattleArena.Events
 
         public void HandleResponse(string eventData)
         {
-            BattleEndEventArgs data = Newtonsoft.Json.JsonConvert.DeserializeObject<BattleEndEventArgs>(eventData);
+            BattleEndEventArgs data = JsonConvert.DeserializeObject<BattleEndEventArgs>(eventData);
             Response?.Invoke(data);
         }
 
@@ -97,7 +98,16 @@ namespace Raincrow.BattleArena.Events
 
     #region Responses
 
-    public struct TurnStartEventArgs { }
+    public struct PlanningPhaseReadyEventArgs
+    {
+        [JsonProperty("maxActionsAllowed")] private int _maxActionsAllowed;
+        [JsonProperty("planningMaxTime")] private float _planningMaxTime;
+        [JsonProperty("planningOrder")] private string[] _planningOrder;
+
+        public int MaxActionsAllowed { get => _maxActionsAllowed; }
+        public float PlanningMaxTime { get => _planningMaxTime; }
+        public string[] PlanningOrder { get => _planningOrder; }
+    }
 
     public struct TurnResolutionEventArgs { }
 

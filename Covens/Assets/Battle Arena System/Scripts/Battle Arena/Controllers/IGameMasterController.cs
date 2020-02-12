@@ -1,5 +1,6 @@
-﻿using System.Collections.Generic;
-using UnityEngine;
+﻿using Raincrow.BattleArena.Events;
+using System.Collections.Generic;
+using UnityEngine.Events;
 
 namespace Raincrow.BattleArena.Controller
 {
@@ -23,5 +24,20 @@ namespace Raincrow.BattleArena.Controller
         /// </summary>
         /// <returns></returns>
         IEnumerator<bool?> SendReadyBattle(string battleId);
+
+        /// <summary>
+        /// Socket event
+        /// </summary>
+        UnityEvent<PlanningPhaseReadyEventArgs> OnPlanningPhaseReadyEvent { get; }
+
+        /// <summary>
+        /// Socket event
+        /// </summary>
+        UnityEvent<TurnResolutionEventArgs> OnTurnResolutionEvent { get; }
+
+        /// <summary>
+        /// Socket event
+        /// </summary>
+        UnityEvent<BattleEndEventArgs> OnBattleEndEvent { get; }
     }
 }
