@@ -51,8 +51,14 @@ namespace Raincrow.BattleArena.Phase
     public class PlanningPhase : IState<IBattleModel>
     {
         private float _startTime = 0f;
+        private ICoroutineDispatcher _dispatcher;
 
         public string Name => "Planning Phase";
+
+        public PlanningPhase(ICoroutineDispatcher dispatcher)
+        {
+            _dispatcher = dispatcher;
+        }
 
         public IEnumerator Enter(IStateMachine<IBattleModel> stateMachine, IBattleModel context)
         {
@@ -83,8 +89,14 @@ namespace Raincrow.BattleArena.Phase
     public class ActionResolutionPhase : IState<IBattleModel>
     {
         private float _startTime = 0f;
+        private ICoroutineDispatcher _dispatcher;
 
         public string Name => "Action Resolution Phase";
+
+        public ActionResolutionPhase(ICoroutineDispatcher dispatcher)
+        {
+            _dispatcher = dispatcher;
+        }
 
         public IEnumerator Enter(IStateMachine<IBattleModel> stateMachine, IBattleModel context)
         {
@@ -115,8 +127,14 @@ namespace Raincrow.BattleArena.Phase
     public class BanishmentPhase : IState<IBattleModel>
     {
         private float _startTime = 0f;
+        private ICoroutineDispatcher _dispatcher;
 
         public string Name => "Banishment Phase";
+
+        public BanishmentPhase(ICoroutineDispatcher dispatcher)
+        {
+            _dispatcher = dispatcher;
+        }
 
         public IEnumerator Enter(IStateMachine<IBattleModel> stateMachine, IBattleModel context)
         {

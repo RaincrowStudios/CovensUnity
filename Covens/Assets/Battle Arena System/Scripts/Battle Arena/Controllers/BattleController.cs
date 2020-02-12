@@ -110,20 +110,28 @@ namespace Raincrow.BattleArena.Controller
 
         private IEnumerator StartStateMachine(string battleId, IGridModel gridModel, IGameMasterController gameMasterController)
         {
+            // We yield at each allocation to avoid a lot of allocations on a single frame
             IBattleModel battleModel = new BattleModel()
             {
                 Id = battleId,
                 Grid = gridModel,
                 GameMaster = gameMasterController
             };
+            yield return null;
 
-            IState<IBattleModel>[] battlePhases = new IState<IBattleModel>[4]
-            {
-                new InitiativePhase(this),
-                new PlanningPhase(),
-                new ActionResolutionPhase(),
-                new BanishmentPhase()
-            };
+            InitiativePhase initiativePhase = new InitiativePhase(this);
+            yield return null;
+
+            PlanningPhase planningPhase = new PlanningPhase(this);
+            yield return null;
+
+            ActionResolutionPhase actionResolutionPhase = new ActionResolutionPhase(this);
+            yield return null;
+
+            BanishmentPhase banishmentPhase = new BanishmentPhase(this);
+            yield return null;
+
+            IState<IBattleModel>[] battlePhases = new IState<IBattleModel>[4] { initiativePhase, planningPhase, actionResolutionPhase, banishmentPhase };
 
             _stateMachine = new StateMachine<IBattleModel>(battleModel, battlePhases);
             yield return _stateMachine.Start<InitiativePhase>(); // initiativePhase
