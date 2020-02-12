@@ -48,7 +48,7 @@ namespace Raincrow.BattleArena.Controller
             // Battle Id
             string battleId = System.Guid.NewGuid().ToString();
 
-            StartCoroutine(StartBattle(battleId, gridModel, _gameMasterController));
+            StartCoroutine(StartBattle(battleId, gridModel));
         }
 
         public virtual void OnDisable()
@@ -56,7 +56,7 @@ namespace Raincrow.BattleArena.Controller
             EndBattle();
         }
 
-        public IEnumerator StartBattle(string battleId, IGridModel gridModel, IGameMasterController gameMasterController)
+        public IEnumerator StartBattle(string battleId, IGridModel gridModel)
         {
             if (!isActiveAndEnabled)
             {
@@ -67,7 +67,7 @@ namespace Raincrow.BattleArena.Controller
 
             yield return StartCoroutine(PlaceCharacters());
 
-            yield return StartCoroutine(StartStateMachine(battleId, gridModel, gameMasterController));
+            yield return StartCoroutine(StartStateMachine(battleId, gridModel, _gameMasterController));
 
             // Update Loop
             StartCoroutine(UpdateCharacters());
