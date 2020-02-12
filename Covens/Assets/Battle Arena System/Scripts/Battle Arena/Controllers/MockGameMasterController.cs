@@ -25,12 +25,7 @@ namespace Raincrow.BattleArena.Controller
         public override IEnumerator<bool?> SendMove()
         {
             yield return false;
-        }
-
-        protected override void OnBattleEnd(BattleEndEventArgs response)
-        {
-            
-        }
+        }        
 
         protected override void OnTurnStart(TurnStartEventArgs response)
         {
@@ -40,6 +35,11 @@ namespace Raincrow.BattleArena.Controller
         protected override void OnTurnResolution(TurnResolutionEventArgs response)
         {
             
+        }
+
+        protected override void OnBattleEnd(BattleEndEventArgs response)
+        {
+
         }
     }
 }

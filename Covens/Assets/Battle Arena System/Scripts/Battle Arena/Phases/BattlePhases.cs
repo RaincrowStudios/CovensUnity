@@ -23,7 +23,6 @@ namespace Raincrow.BattleArena.Phase
 
         public IEnumerator Enter(IStateMachine<IBattleModel> stateMachine, IBattleModel context)
         {            
-            Debug.LogFormat("Enter {0}", Name);
             _gameMaster = context.GameMaster;
             _sendReadyBattleResponse = _dispatcher.Dispatch(_gameMaster.SendReadyBattle(context.Id));
             yield return null;
@@ -31,11 +30,7 @@ namespace Raincrow.BattleArena.Phase
 
         public IEnumerator Update(IStateMachine<IBattleModel> stateMachine, IBattleModel context)
         {            
-            if (!_sendReadyBattleResponse.ReturnValue.HasValue)
-            {
-                Debug.LogFormat("Update {0}", Name);
-            }
-            else
+            if (_sendReadyBattleResponse.ReturnValue.HasValue)
             {
                 yield return stateMachine.ChangeState<PlanningPhase>();
             }
@@ -43,7 +38,6 @@ namespace Raincrow.BattleArena.Phase
 
         public IEnumerator Exit(IStateMachine<IBattleModel> stateMachine, IBattleModel context)
         {
-            Debug.LogFormat("Exit {0}", Name);
             yield return null;
         }        
     }
@@ -62,7 +56,6 @@ namespace Raincrow.BattleArena.Phase
 
         public IEnumerator Enter(IStateMachine<IBattleModel> stateMachine, IBattleModel context)
         {
-            Debug.LogFormat("Enter {0}", Name);
             _startTime = Time.time;
             yield return null;
         }
@@ -73,15 +66,10 @@ namespace Raincrow.BattleArena.Phase
             {
                 yield return stateMachine.ChangeState<ActionResolutionPhase>();
             }
-            else
-            {
-                Debug.LogFormat("Update {0}", Name);
-            }
         }
 
         public IEnumerator Exit(IStateMachine<IBattleModel> stateMachine, IBattleModel context)
         {
-            Debug.LogFormat("Exit {0}", Name);
             yield return null;
         }        
     }
@@ -100,7 +88,6 @@ namespace Raincrow.BattleArena.Phase
 
         public IEnumerator Enter(IStateMachine<IBattleModel> stateMachine, IBattleModel context)
         {
-            Debug.LogFormat("Enter {0}", Name);
             _startTime = Time.time;
             yield return null;
         }
@@ -111,15 +98,10 @@ namespace Raincrow.BattleArena.Phase
             {
                 yield return stateMachine.ChangeState<BanishmentPhase>();
             }
-            else
-            {
-                Debug.LogFormat("Update {0}", Name);
-            }
         }
 
         public IEnumerator Exit(IStateMachine<IBattleModel> stateMachine, IBattleModel context)
         {
-            Debug.LogFormat("Exit {0}", Name);
             yield return null;
         }
     }
@@ -138,7 +120,6 @@ namespace Raincrow.BattleArena.Phase
 
         public IEnumerator Enter(IStateMachine<IBattleModel> stateMachine, IBattleModel context)
         {
-            Debug.LogFormat("Enter {0}", Name);
             _startTime = Time.time;
             yield return null;
         }
@@ -149,15 +130,10 @@ namespace Raincrow.BattleArena.Phase
             {
                 yield return stateMachine.ChangeState<InitiativePhase>();
             }
-            else
-            {
-                Debug.LogFormat("Update {0}", Name);
-            }
         }
 
         public IEnumerator Exit(IStateMachine<IBattleModel> stateMachine, IBattleModel context)
         {
-            Debug.LogFormat("Exit {0}", Name);
             yield return null;
         }        
     }
