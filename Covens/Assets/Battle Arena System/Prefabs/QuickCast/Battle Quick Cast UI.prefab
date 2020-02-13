@@ -281,7 +281,7 @@ GameObject:
   - component: {fileID: 2891449820701939691}
   - component: {fileID: 2891449820701939693}
   m_Layer: 5
-  m_Name: Quick Cast UI
+  m_Name: Battle Quick Cast UI
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
