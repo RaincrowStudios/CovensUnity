@@ -4,15 +4,15 @@ using UnityEngine;
 
 namespace Raincrow.BattleArena.Factory
 {
-    public class MockCharacterGameObjectFactory : AbstractCharacterGameObjectFactory
+    public class WitchGameObjectFactory : AbstractCharacterGameObjectFactory
     {
         [SerializeField] private GameObject _characterPrefab;
 
         public override IEnumerator<GameObject> Create(Transform cellTransform, ICharacterModel character)
-        {            
+        {
             CharacterBuilder builder = new CharacterBuilder();
-            ICharacterModel characterModel = new CharacterModel(builder);
-            
+            IWitchModel witchModel = new WitchModel(builder);
+
             yield return Instantiate(_characterPrefab, cellTransform);
         }
     }

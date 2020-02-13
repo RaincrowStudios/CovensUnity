@@ -120,6 +120,51 @@ NavMeshSettings:
     debug:
       m_Flags: 0
   m_NavMeshData: {fileID: 0}
+--- !u!1 &135026788
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 135026790}
+  - component: {fileID: 135026789}
+  m_Layer: 0
+  m_Name: SpiritGameObjectFactory
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &135026789
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 135026788}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 892faa42e94831942ac3eb0462969a63, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _characterPrefab: {fileID: 4145961894182003931, guid: ad0336f45a4e5924da6c29a530712245,
+    type: 3}
+--- !u!4 &135026790
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 135026788}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0.24564552, y: 3.6975489, z: -6.349764}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_RootOrder: 4
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &183075891
 GameObject:
   m_ObjectHideFlags: 0
@@ -369,6 +414,51 @@ RectTransform:
     type: 3}
   m_PrefabInstance: {fileID: 244931508}
   m_PrefabAsset: {fileID: 0}
+--- !u!1 &483176789
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 483176791}
+  - component: {fileID: 483176790}
+  m_Layer: 0
+  m_Name: WitchGameObjectFactory
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &483176790
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 483176789}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e113a7e8807d38b41be4d2c579be7fdd, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _characterPrefab: {fileID: 7862372955884984634, guid: a18a8f148bde0e7489c84b03cac84f89,
+    type: 3}
+--- !u!4 &483176791
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 483176789}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0.24564552, y: 3.6975489, z: -6.349764}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_RootOrder: 5
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1297089580
 GameObject:
   m_ObjectHideFlags: 0
@@ -590,5 +680,15 @@ PrefabInstance:
       propertyPath: _battleCamera
       value: 
       objectReference: {fileID: 2007260386}
+    - target: {fileID: 3561526507227420495, guid: 61c97baa5215f1647a7ed02e6b0d3ef8,
+        type: 3}
+      propertyPath: _spiritFactory
+      value: 
+      objectReference: {fileID: 135026789}
+    - target: {fileID: 3561526507227420495, guid: 61c97baa5215f1647a7ed02e6b0d3ef8,
+        type: 3}
+      propertyPath: _witchFactory
+      value: 
+      objectReference: {fileID: 483176790}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 61c97baa5215f1647a7ed02e6b0d3ef8, type: 3}
