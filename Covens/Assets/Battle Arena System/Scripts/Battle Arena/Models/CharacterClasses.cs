@@ -13,40 +13,93 @@ namespace Raincrow.BattleArena.Model
 
     public class CharacterModel : ICharacterModel
     {
-        // Properties
-
-        /// <summary>
-        /// Player or Spirit ID
-        /// </summary>
-        public string Id { set; get; }
-
-        /// <summary>
-        /// Position X on Grid
-        /// </summary>
-        public int Line { set; get; }
-
-        /// <summary>
-        /// Position Y on Grid
-        /// </summary>
-        public int Column { set; get; }
-
-        public int BaseEnergy => throw new System.NotImplementedException();
-        public int Energy { get => throw new System.NotImplementedException(); set => throw new System.NotImplementedException(); }
-        public int Power { get => throw new System.NotImplementedException(); set => throw new System.NotImplementedException(); }
-        public int Resilience { get => throw new System.NotImplementedException(); set => throw new System.NotImplementedException(); }
-        public CharacterType Type => throw new System.NotImplementedException();
+        public string Id { get; set; }
+        public int Line { get; set; }
+        public int Column { get; set; }
+        public int BaseEnergy { get; set; }
+        public int Energy { get; set; }
+        public int Power { get; set; }
+        public int Resilience { get; set; }
+        public CharacterType Type { get; set; }
+        public BattleSlot Slot { get; set; }
+        public string Model { get; set; }
 
         public CharacterModel(CharacterBuilder builder)
         {
 
         }
+
+    }
+
+    public class WitchModel : IWitchModel
+    {
+        // Properties
+
+        /// <summary>
+        /// Player ID
+        /// </summary>
+        public string Id { get; set; }
+
+        /// <summary>
+        /// Position X on Grid
+        /// </summary>
+        public int Line { get; set; }
+
+        /// <summary>
+        /// Position Y on Grid
+        /// </summary>
+        public int Column { get; set; }
+        public int BaseEnergy { get; set; }
+        public int Energy { get; set; }
+        public int Power { get; set; }
+        public int Resilience { get; set; }
+        public CharacterType Type { get; set; }
+        public int Degree { get; set; }
+        public BattleSlot Slot { get; set; }
+        public string Name { get; set; }
+        public int Level { get; set; }
+
+        public string Model { get; set; }
+
+        public WitchModel(CharacterBuilder builder)
+        {
+
+        }
+    }
+
+    public class SpiritModel : ISpiritModel
+    {
+        public bool Wild { get; set; }
+        public string Id { get; set; }
+        public int Line { get; set; }
+        public int Column { get; set; }
+        public int BaseEnergy { get; set; }
+        public int Energy { get; set; }
+        public int Power { get; set; }
+        public int Resilience { get; set; }
+        public CharacterType Type { get; set; }
+        public BattleSlot Slot { get; set; }
+        public string Spirit { get; set; }
+        public string Model { get; set; }
+
+        public SpiritModel(CharacterBuilder builder)
+        {
+
+        }
+    }
+
+    public class BattleSlot : IBattleSlot
+    {
+        public string Id { get; set; }
+        public int Row { get; set; }
+        public int Col { get; set; }
     }
 
     public class ItemModel : IItemModel
     {
-        public string Id { set; get; }
-        public string Name { set; get; }
-        public int Count { set; get; }
+        public string Id { get; set; }
+        public string Name { get; set; }
+        public int Count { get; set; }
     }
 
     public class CharacterBuilder

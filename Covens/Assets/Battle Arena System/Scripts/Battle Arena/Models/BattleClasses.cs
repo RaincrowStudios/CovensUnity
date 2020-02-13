@@ -91,13 +91,11 @@ namespace Raincrow.BattleArena.Model
 
         public int Y { get; set; }
 
-        public string Id { get; set; }
 
         // Constructor
         public CellModel(CellBuilder builder)
         {
             Height = builder.Height;
-            Id = builder.Id;
         }
     }    
 
@@ -106,6 +104,5 @@ namespace Raincrow.BattleArena.Model
         public int X { get; set; }
         public int Y { get; set; }
         public int Height { get; set; }
-        public string Id { get; set; }
     }
 }

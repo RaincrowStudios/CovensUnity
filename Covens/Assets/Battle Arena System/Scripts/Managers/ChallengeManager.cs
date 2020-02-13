@@ -2,6 +2,7 @@
 using UnityEngine;
 using Raincrow.BattleArena.Model;
 using Raincrow.BattleArena.Controller;
+using System.Collections.Generic;
 
 namespace Raincrow.BattleArena.Manager
 {
@@ -30,7 +31,21 @@ namespace Raincrow.BattleArena.Manager
 
                     IGridModel grid = new GridModel(battle.grid.MaxCellsPerColumn, battle.grid.MaxCellsPerLine, battle.grid.Cells);
 
-                    StartCoroutine(gridController.StartBattle(battle._id, grid));
+                    List<ICharacterModel> characters = new List<ICharacterModel>();
+
+                    foreach (GenericCharacterObjectServer character in battle.participants)
+                    {
+                        if (character.Type == CharacterType.spirit)
+                        {
+                            characters.Add(character as ISpiritModel);
+                        }
+                        else
+                        {
+                            characters.Add(character as IWitchModel);
+                        }
+                    }
+
+                    StartCoroutine(gridController.StartBattle(battle._id, grid, characters));
                     
                     LoadingOverlay.Hide();
                 }

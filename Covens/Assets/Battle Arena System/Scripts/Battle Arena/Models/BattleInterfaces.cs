@@ -18,6 +18,5 @@
         int Height { get; }
         int X { get; }
         int Y { get; }
-        string Id { get; }
     }
 }

@@ -13,7 +13,8 @@ namespace Raincrow.BattleArena.Controller
         [SerializeField] private Camera _battleCamera;
         [SerializeField] private Transform _cellsTransform;
         [SerializeField] private AbstractGridGameObjectFactory _gridFactory; // Factory class responsible for creating our Grid        
-        [SerializeField] private AbstractCharacterGameObjectFactory _characterFactory; // Factory class responsible for creating our Characters   
+        [SerializeField] private AbstractCharacterGameObjectFactory _spiritFactory; // Factory class responsible for creating our Spirits   
+        [SerializeField] private AbstractCharacterGameObjectFactory _witchFactory; // Factory class responsible for creating our Witchs   
         [SerializeField] private AbstractGameMasterController _gameMasterController;
 
         private GameObject[,] _grid = new GameObject[0, 0]; // Grid with all the game objects inserted
@@ -39,10 +40,6 @@ namespace Raincrow.BattleArena.Controller
                     {
                         gridBuilder.CellBuilders[i, j] = new CellBuilder();
 
-                        if (Random.Range(0f, 1f) > 0.9f)
-                        {
-                            gridBuilder.CellBuilders[i, j].Id = System.Guid.NewGuid().ToString();
-                        }
                     }
                 }
             }
@@ -53,7 +50,7 @@ namespace Raincrow.BattleArena.Controller
             // Battle Id
             string battleId = System.Guid.NewGuid().ToString();
 
-            StartCoroutine(StartBattle(battleId, gridModel));
+            //StartCoroutine(StartBattle(battleId, gridModel));
         }
 
         public virtual void OnDisable()
@@ -61,7 +58,7 @@ namespace Raincrow.BattleArena.Controller
             EndBattle();
         }
 
-        public IEnumerator StartBattle(string battleId, IGridModel gridModel)
+        public IEnumerator StartBattle(string battleId, IGridModel gridModel, List<ICharacterModel> characters)
         {
             if (!isActiveAndEnabled)
             {
@@ -70,7 +67,7 @@ namespace Raincrow.BattleArena.Controller
 
             yield return StartCoroutine(InstantiateGrid(gridModel));
 
-            yield return StartCoroutine(PlaceCharacters(gridModel));
+            yield return StartCoroutine(PlaceCharacters(characters));
 
             yield return StartCoroutine(StartStateMachine(battleId, gridModel, _gameMasterController));
 
@@ -87,28 +84,33 @@ namespace Raincrow.BattleArena.Controller
             _grid = createGrid.ReturnValue;
         }
 
-        private IEnumerator PlaceCharacters(IGridModel gridModel)
+        private IEnumerator PlaceCharacters(List<ICharacterModel> characters)
         {
-            // Create characters
-            int maxCellsPerLine = _grid.GetLength(0);
-            int maxCellsPerColumn = _grid.GetLength(1);
-
             // Initialize list of characters
-            _characters = new List<GameObject>(maxCellsPerColumn * maxCellsPerLine);
+            _characters = new List<GameObject>();
 
-            for (int i = 0; i < maxCellsPerLine; i++)
+            foreach(ICharacterModel character in characters)
             {
-                for (int j = 0; j < maxCellsPerColumn; j++)
+                GameObject cellGameObject = _grid[character.Slot.Row, character.Slot.Col];
+                if (cellGameObject != null)
                 {
-                    GameObject cellGameObject = _grid[i, j];
-                    if (cellGameObject != null && !string.IsNullOrEmpty(gridModel.Cells[i, j].Id))
+                    if(character.Type == CharacterType.spirit)
                     {
-                        Coroutine<GameObject> createCharacter = this.StartCoroutine<GameObject>(_characterFactory.Create(cellGameObject.transform));
+                        Coroutine<GameObject> createCharacter = this.StartCoroutine<GameObject>(_spiritFactory.Create(cellGameObject.transform, character));
                         yield return createCharacter;
 
                         // add a character
                         _characters.Add(createCharacter.ReturnValue);
                     }
+                    else
+                    {
+                        Coroutine<GameObject> createCharacter = this.StartCoroutine<GameObject>(_witchFactory.Create(cellGameObject.transform, character));
+                        yield return createCharacter;
+
+                        // add a character
+                        _characters.Add(createCharacter.ReturnValue);
+                    }
+
                 }
             }
         }
