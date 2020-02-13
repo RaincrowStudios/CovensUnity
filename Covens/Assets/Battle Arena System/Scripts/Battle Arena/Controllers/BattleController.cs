@@ -38,6 +38,11 @@ namespace Raincrow.BattleArena.Controller
                     for (int j = 0; j < gridBuilder.MaxCellsPerColumn; j++)
                     {
                         gridBuilder.CellBuilders[i, j] = new CellBuilder();
+
+                        if (Random.Range(0f, 1f) > 0.9f)
+                        {
+                            gridBuilder.CellBuilders[i, j].Id = System.Guid.NewGuid().ToString();
+                        }
                     }
                 }
             }
@@ -65,7 +70,7 @@ namespace Raincrow.BattleArena.Controller
 
             yield return StartCoroutine(InstantiateGrid(gridModel));
 
-            yield return StartCoroutine(PlaceCharacters());
+            yield return StartCoroutine(PlaceCharacters(gridModel));
 
             yield return StartCoroutine(StartStateMachine(battleId, gridModel, _gameMasterController));
 
@@ -82,7 +87,7 @@ namespace Raincrow.BattleArena.Controller
             _grid = createGrid.ReturnValue;
         }
 
-        private IEnumerator PlaceCharacters()
+        private IEnumerator PlaceCharacters(IGridModel gridModel)
         {
             // Create characters
             int maxCellsPerLine = _grid.GetLength(0);
@@ -96,7 +101,7 @@ namespace Raincrow.BattleArena.Controller
                 for (int j = 0; j < maxCellsPerColumn; j++)
                 {
                     GameObject cellGameObject = _grid[i, j];
-                    if (cellGameObject != null && Random.Range(0f, 1f) < 0.1f)
+                    if (cellGameObject != null && !string.IsNullOrEmpty(gridModel.Cells[i, j].Id))
                     {
                         Coroutine<GameObject> createCharacter = this.StartCoroutine<GameObject>(_characterFactory.Create(cellGameObject.transform));
                         yield return createCharacter;

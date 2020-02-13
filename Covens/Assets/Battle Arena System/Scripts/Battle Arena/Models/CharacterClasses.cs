@@ -18,7 +18,7 @@ namespace Raincrow.BattleArena.Model
         /// <summary>
         /// Player or Spirit ID
         /// </summary>
-        public int Id { set; get; }
+        public string Id { set; get; }
 
         /// <summary>
         /// Position X on Grid
@@ -30,14 +30,28 @@ namespace Raincrow.BattleArena.Model
         /// </summary>
         public int Column { set; get; }
 
+        public int BaseEnergy => throw new System.NotImplementedException();
+        public int Energy { get => throw new System.NotImplementedException(); set => throw new System.NotImplementedException(); }
+        public int Power { get => throw new System.NotImplementedException(); set => throw new System.NotImplementedException(); }
+        public int Resilience { get => throw new System.NotImplementedException(); set => throw new System.NotImplementedException(); }
+        public CharacterType Type => throw new System.NotImplementedException();
+
         public CharacterModel(CharacterBuilder builder)
         {
 
         }
-    }    
+    }
+
+    public class ItemModel : IItemModel
+    {
+        public string Id { set; get; }
+        public string Name { set; get; }
+        public int Count { set; get; }
+    }
 
     public class CharacterBuilder
     {
 
     }
+
 }
