@@ -4,7 +4,7 @@ using UnityEngine;
 
 namespace Raincrow.BattleArena.Factory
 {
-    public class MockGridGameObjectFactory : AbstractGridGameObjectFactory
+    public class GridGameObjectFactory : AbstractGridGameObjectFactory
     {
         [SerializeField] private Transform _cellsParent;
         [SerializeField] private GridGameObjectModel _gridGameObjectModel;
