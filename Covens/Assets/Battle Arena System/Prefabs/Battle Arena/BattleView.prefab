@@ -40,9 +40,8 @@ GameObject:
   m_Component:
   - component: {fileID: 3561526507227420494}
   - component: {fileID: 3561526507227420495}
-  - component: {fileID: 330202080}
-  - component: {fileID: 154814060}
   - component: {fileID: 1190233280}
+  - component: {fileID: 7196786638976531525}
   m_Layer: 0
   m_Name: BattleView
   m_TagString: Untagged
@@ -79,40 +78,10 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _battleCamera: {fileID: 0}
   _cellsTransform: {fileID: 55641126279688642}
-  _gridFactory: {fileID: 330202080}
-  _characterFactory: {fileID: 154814060}
+  _gridFactory: {fileID: 7196786638976531525}
+  _spiritFactory: {fileID: 0}
+  _witchFactory: {fileID: 0}
   _gameMasterController: {fileID: 1190233280}
---- !u!114 &330202080
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 3561526507227420493}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 8927d6a52ce7344408077b838a943c0d, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  _cellsParent: {fileID: 55641126279688642}
-  _gridGameObjectModel:
-    _cellPrefab: {fileID: 8107487652929660501, guid: 8a0cadd5128d28e47a4b7668266f42f6,
-      type: 3}
-    _spacing: {x: 0.1, y: 0.1}
---- !u!114 &154814060
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 3561526507227420493}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 6f6f9c8599acd2046a567d66f4fd42c7, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  _characterPrefab: {fileID: 7862372955884984634, guid: a18a8f148bde0e7489c84b03cac84f89,
-    type: 3}
 --- !u!114 &1190233280
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -125,3 +94,22 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a074427e41335d846a8dbda0ab2cc5eb, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _sendPlanningPhaseReadyMaxTime: 3
+  _waitForPlanningPhaseReadyMaxTime: 3
+--- !u!114 &7196786638976531525
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3561526507227420493}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1d2b3a78561eb764b98212884beefbb7, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _cellsParent: {fileID: 55641126279688642}
+  _gridGameObjectModel:
+    _cellPrefab: {fileID: 8107487652929660501, guid: 8a0cadd5128d28e47a4b7668266f42f6,
+      type: 3}
+    _spacing: {x: 0.1, y: 0.1}
