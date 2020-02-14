@@ -1,5 +1,5 @@
 ﻿using Raincrow.BattleArena.Model;
-using Raincrow.BattleArena.Marker;
+using Raincrow.BattleArena.View;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -7,12 +7,12 @@ namespace Raincrow.BattleArena.Factory
 {
     public class SpiritGameObjectFactory : AbstractCharacterGameObjectFactory
     {
-        [SerializeField] private BattleSpiritMarker _characterPrefab;
+        [SerializeField] private BattleSpiritView _battleSpiritViewPrefab;
 
-        public override IEnumerator<AbstractCharacterMaker> Create(Transform cellTransform, ICharacterModel character)
+        public override IEnumerator<AbstractCharacterView> Create(Transform cellTransform, ICharacterModel character)
         {
-            BattleSpiritMarker spiritMarker = Instantiate(_characterPrefab, cellTransform);
-            spiritMarker.Init(character);
+            BattleSpiritView spiritMarker = Instantiate(_battleSpiritViewPrefab, cellTransform);
+            //spiritMarker.Init(character);
 
             yield return spiritMarker;
         }

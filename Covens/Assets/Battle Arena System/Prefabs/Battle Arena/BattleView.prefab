@@ -42,6 +42,8 @@ GameObject:
   - component: {fileID: 3561526507227420495}
   - component: {fileID: 1190233280}
   - component: {fileID: 7196786638976531525}
+  - component: {fileID: 8938269710436315475}
+  - component: {fileID: 1794520544814550441}
   m_Layer: 0
   m_Name: BattleView
   m_TagString: Untagged
@@ -79,8 +81,8 @@ MonoBehaviour:
   _battleCamera: {fileID: 0}
   _cellsTransform: {fileID: 55641126279688642}
   _gridFactory: {fileID: 7196786638976531525}
-  _spiritFactory: {fileID: 0}
-  _witchFactory: {fileID: 0}
+  _spiritFactory: {fileID: 8938269710436315475}
+  _witchFactory: {fileID: 1794520544814550441}
   _gameMasterController: {fileID: 1190233280}
 --- !u!114 &1190233280
 MonoBehaviour:
@@ -113,3 +115,31 @@ MonoBehaviour:
     _cellPrefab: {fileID: 8107487652929660501, guid: 8a0cadd5128d28e47a4b7668266f42f6,
       type: 3}
     _spacing: {x: 0.1, y: 0.1}
+--- !u!114 &8938269710436315475
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3561526507227420493}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 892faa42e94831942ac3eb0462969a63, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _battleSpiritViewPrefab: {fileID: 8594441439031050491, guid: ad0336f45a4e5924da6c29a530712245,
+    type: 3}
+--- !u!114 &1794520544814550441
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3561526507227420493}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e113a7e8807d38b41be4d2c579be7fdd, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _battleWitchViewPrefab: {fileID: 7898114360831156526, guid: a18a8f148bde0e7489c84b03cac84f89,
+    type: 3}

@@ -1,29 +1,5 @@
-﻿using System.Collections.Generic;
-
-namespace Raincrow.BattleArena.Model
-{
-    public static class ObjectType
-    {
-        public static readonly string Witch = "witch";
-        public static readonly string Spirit = "spirit";
-        public static readonly string Item = "item";
-    }
-
-    public static class InventoryApparelPosition
-    {
-        public static readonly string BaseBody = "baseBody";
-        public static readonly string BaseHand = "baseHand";
-        public static readonly string Hair = "hair";
-        public static readonly string Chest = "chest";
-        public static readonly string Legs = "legs";
-        public static readonly string Feet = "feet";
-        public static readonly string Neck = "neck";
-        public static readonly string Wrist = "wrist";
-        public static readonly string Hands = "hands";
-        public static readonly string CarryOn = "carryOn";
-        public static readonly string Tattoo = "tattoo";
-    }
-
+﻿namespace Raincrow.BattleArena.Model
+{    
     public interface ICharacterModel : IObjectModel
     {
         int BaseEnergy { get; }

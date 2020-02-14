@@ -1,5 +1,5 @@
 ﻿using Raincrow.BattleArena.Factory;
-using Raincrow.BattleArena.Marker;
+using Raincrow.BattleArena.View;
 using Raincrow.BattleArena.Model;
 using Raincrow.BattleArena.Phase;
 using Raincrow.StateMachines;
@@ -19,7 +19,7 @@ namespace Raincrow.BattleArena.Controller
         [SerializeField] private AbstractGameMasterController _gameMasterController;
 
         private GameObject[,] _grid = new GameObject[0, 0]; // Grid with all the game objects inserted
-        private List<AbstractCharacterMaker> _characters = new List<AbstractCharacterMaker>(); // List with all characters
+        private List<AbstractCharacterView> _characters = new List<AbstractCharacterView>(); // List with all characters
         private IStateMachine<ITurnController> _stateMachine; // State machine with all phases        
 
         public virtual void OnEnable()
@@ -29,8 +29,8 @@ namespace Raincrow.BattleArena.Controller
             {
                 gridBuilder = new GridBuilder()
                 {
-                    MaxCellsPerRow = 25,
-                    MaxCellsPerColumn = 25,
+                    MaxCellsPerRow = 5,
+                    MaxCellsPerColumn = 5,
                 };
 
                 gridBuilder.CellBuilders = new CellBuilder[gridBuilder.MaxCellsPerRow, gridBuilder.MaxCellsPerColumn];
@@ -107,7 +107,7 @@ namespace Raincrow.BattleArena.Controller
         private IEnumerator PlaceCharacters(IGridModel gridModel, List<ICharacterModel> characters)
         {
             // Initialize list of characters
-            _characters = new List<AbstractCharacterMaker>();
+            _characters = new List<AbstractCharacterView>();
 
             Dictionary<string, ICharacterModel> dictCharacters = new Dictionary<string, ICharacterModel>();
             foreach (ICharacterModel character in characters)
@@ -125,7 +125,7 @@ namespace Raincrow.BattleArena.Controller
                         if (string.Equals(character.ObjectType, ObjectType.Spirit))
                         {
                             GameObject cellGameObject = _grid[i, j];
-                            Coroutine<AbstractCharacterMaker> createCharacter = this.StartCoroutine<AbstractCharacterMaker>(_spiritFactory.Create(cellGameObject.transform, character));
+                            Coroutine<AbstractCharacterView> createCharacter = this.StartCoroutine<AbstractCharacterView>(_spiritFactory.Create(cellGameObject.transform, character));
                         yield return createCharacter;
                             // add a character
                             _characters.Add(createCharacter.ReturnValue);
@@ -133,7 +133,7 @@ namespace Raincrow.BattleArena.Controller
                         else if (string.Equals(character.ObjectType, ObjectType.Witch))
                         {
                             GameObject cellGameObject = _grid[i, j];
-                            Coroutine<AbstractCharacterMaker> createCharacter = this.StartCoroutine<AbstractCharacterMaker>(_witchFactory.Create(cellGameObject.transform, character));
+                            Coroutine<AbstractCharacterView> createCharacter = this.StartCoroutine<AbstractCharacterView>(_witchFactory.Create(cellGameObject.transform, character));
                             yield return createCharacter;
 
                             // add a character
@@ -192,10 +192,9 @@ namespace Raincrow.BattleArena.Controller
 
                 // Update Characters
                 Vector3 forward = _battleCamera.transform.rotation * Vector3.up;
-                foreach (AbstractCharacterMaker character in _characters)
-                {
-                    Vector3 worldPosition = character.transform.position + _battleCamera.transform.rotation * Vector3.forward;
-                    character.transform.LookAt(worldPosition, forward);
+                foreach (AbstractCharacterView character in _characters)
+                {                    
+                    character.FaceCamera(_battleCamera.transform.rotation, forward);
                 }
             }
         }
