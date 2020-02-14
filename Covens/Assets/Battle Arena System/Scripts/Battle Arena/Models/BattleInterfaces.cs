@@ -8,15 +8,14 @@
 
     public interface IGridModel
     {
-        int MaxCellsPerLine { get; }
+        int MaxCellsPerRow { get; }
         int MaxCellsPerColumn { get; }
         ICellModel[,] Cells { get; }
     }
 
     public interface ICellModel
     {
+        string ObjectId { get; set; }
         int Height { get; }
-        int X { get; }
-        int Y { get; }
     }
 }

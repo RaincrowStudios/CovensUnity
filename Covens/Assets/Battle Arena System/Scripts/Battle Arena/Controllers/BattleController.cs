@@ -28,29 +28,48 @@ namespace Raincrow.BattleArena.Controller
             {
                 gridBuilder = new GridBuilder()
                 {
-                    MaxCellsPerLine = 25,
+                    MaxCellsPerRow = 25,
                     MaxCellsPerColumn = 25,
                 };
 
-                gridBuilder.CellBuilders = new CellBuilder[gridBuilder.MaxCellsPerLine, gridBuilder.MaxCellsPerColumn];
+                gridBuilder.CellBuilders = new CellBuilder[gridBuilder.MaxCellsPerRow, gridBuilder.MaxCellsPerColumn];
 
-                for (int i = 0; i < gridBuilder.MaxCellsPerLine; i++)
+                for (int i = 0; i < gridBuilder.MaxCellsPerRow; i++)
                 {
                     for (int j = 0; j < gridBuilder.MaxCellsPerColumn; j++)
                     {
                         gridBuilder.CellBuilders[i, j] = new CellBuilder();
-
                     }
                 }
-            }
+            }            
+            IGridModel gridModel = new GridModel(gridBuilder); // Create grid model
 
-            // Create grid model
-            IGridModel gridModel = new GridModel(gridBuilder);
+            // Create characters
+            ICharacterModel witchModel = new WitchModel()
+            {
+                Id = "emanuel",
+                ObjectType = ObjectType.Witch,
+                Degree = 0,
+                Name = "Emanuel",
+                Level = 1
+            };
+            ICharacterModel spiritModel = new SpiritModel()
+            {
+                ObjectType = ObjectType.Spirit,
+                Id = "Crackudo"
+            };
+
+            // place characters in grid model
+            gridModel.Cells[0, 0].ObjectId = witchModel.Id;
+            gridModel.Cells[0, 1].ObjectId = spiritModel.Id;
+
+            // Add all characters
+            List<ICharacterModel> characterModels = new List<ICharacterModel> { witchModel, spiritModel };
 
             // Battle Id
             string battleId = System.Guid.NewGuid().ToString();
 
-            //StartCoroutine(StartBattle(battleId, gridModel));
+            StartCoroutine(StartBattle(battleId, gridModel, characterModels));
         }
 
         public virtual void OnDisable()
@@ -67,7 +86,7 @@ namespace Raincrow.BattleArena.Controller
 
             yield return StartCoroutine(InstantiateGrid(gridModel));
 
-            yield return StartCoroutine(PlaceCharacters(characters));
+            yield return StartCoroutine(PlaceCharacters(gridModel, characters));
 
             yield return StartCoroutine(StartStateMachine(battleId, gridModel, _gameMasterController));
 
@@ -84,33 +103,43 @@ namespace Raincrow.BattleArena.Controller
             _grid = createGrid.ReturnValue;
         }
 
-        private IEnumerator PlaceCharacters(List<ICharacterModel> characters)
+        private IEnumerator PlaceCharacters(IGridModel gridModel, List<ICharacterModel> characters)
         {
             // Initialize list of characters
             _characters = new List<GameObject>();
 
+            Dictionary<string, ICharacterModel> dictCharacters = new Dictionary<string, ICharacterModel>();
             foreach (ICharacterModel character in characters)
             {
-                GameObject cellGameObject = _grid[character.Slot.Row, character.Slot.Col];
-                if (cellGameObject != null)
+                dictCharacters.Add(character.Id, character);
+            }
+
+            for (int i = 0; i < gridModel.MaxCellsPerRow; i++)
+            {
+                for (int j = 0; j < gridModel.MaxCellsPerColumn; j++)
                 {
-                    if (string.Equals(character.CharacterType, CharacterType.Spirit))
+                    ICellModel cell = gridModel.Cells[i, j];
+                    if (!string.IsNullOrEmpty(cell.ObjectId) && dictCharacters.TryGetValue(cell.ObjectId, out ICharacterModel character)) // has a character/item
                     {
-                        Coroutine<GameObject> createCharacter = this.StartCoroutine<GameObject>(_spiritFactory.Create(cellGameObject.transform, character));
-                        yield return createCharacter;
+                        if (string.Equals(character.ObjectType, ObjectType.Spirit))
+                        {
+                            GameObject cellGameObject = _grid[i, j];
+                            Coroutine<GameObject> createCharacter = this.StartCoroutine<GameObject>(_spiritFactory.Create(cellGameObject.transform, character));
+                            yield return createCharacter;
+                            // add a character
+                            _characters.Add(createCharacter.ReturnValue);
+                        }
+                        else if (string.Equals(character.ObjectType, ObjectType.Witch))
+                        {
+                            GameObject cellGameObject = _grid[i, j];
+                            Coroutine<GameObject> createCharacter = this.StartCoroutine<GameObject>(_witchFactory.Create(cellGameObject.transform, character));
+                            yield return createCharacter;
 
-                        // add a character
-                        _characters.Add(createCharacter.ReturnValue);
+                            // add a character
+                            _characters.Add(createCharacter.ReturnValue);
+                        }
                     }
-                    else
-                    {
-                        Coroutine<GameObject> createCharacter = this.StartCoroutine<GameObject>(_witchFactory.Create(cellGameObject.transform, character));
-                        yield return createCharacter;
-
-                        // add a character
-                        _characters.Add(createCharacter.ReturnValue);
-                    }
-
+                    else yield return null;
                 }
             }
         }

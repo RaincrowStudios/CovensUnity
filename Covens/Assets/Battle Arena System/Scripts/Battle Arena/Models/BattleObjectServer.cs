@@ -1,14 +1,15 @@
 ﻿using Newtonsoft.Json;
 using Raincrow.BattleArena.Model;
-using System.Collections.Generic;
-using UnityEngine;
 
 [System.Serializable]
 public class BattleObjectServer
 {
-    public string _id { get; set; }
-    public GenericCharacterObjectServer[] participants { get; set; }
-    public GridObjectServer grid { get; set; }
+    [JsonProperty("_id")]
+    public string Id { get; set; }
+    [JsonProperty("participants")]
+    public GenericCharacterObjectServer[] Participants { get; set; }
+    [JsonProperty("grid")]
+    public GridObjectServer Grid { get; set; }
 }
 
 [System.Serializable]
@@ -24,29 +25,23 @@ public class GridObjectServer {
 [System.Serializable]
 public class CellObjectServer : ICellModel
 {
+    [JsonProperty("id")]
+    public string ObjectId { get; set; }
     public int Height { get; private set; }
-
-    public int X { get; set; }
-
-    public int Y { get; set; }
 }
 
 [System.Serializable]
 public class GenericCharacterObjectServer : ICharacterModel, ISpiritModel, IWitchModel
 {
-    [JsonProperty("_id")]
-    public string Id { get; set; }
+    [JsonProperty("_id")] public string Id { get; set; }
+    [JsonProperty("type")] public string ObjectType { get; set; }
+    public string Name { get; set; }
+    public int Degree { get; set; }
+    public int Level { get; set; }
+    public string OwnerId { get; set; }
+    [JsonProperty("spirit")] public string Texture { get; set; }
     public int BaseEnergy { get; set; }
     public int Energy { get; set; }
     public int Power { get; set; }
     public int Resilience { get; set; }
-    public string CharacterType { get; set; }
-    public bool Wild { get; set; }
-    public int Degree { get; set; }
-    [JsonProperty("battleSlot")]
-    public BattleSlot Slot { get; set; }
-    public string Name { get; set; }
-    public int Level { get; set; }
-    public string Spirit { get; set; }
-    public string Model { get; set; }
 }

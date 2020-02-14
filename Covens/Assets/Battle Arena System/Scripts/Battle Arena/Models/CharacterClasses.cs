@@ -13,18 +13,15 @@ namespace Raincrow.BattleArena.Model
 
     public class CharacterModel : ICharacterModel
     {
-        public string Id { get; set; }
-        public int Line { get; set; }
-        public int Column { get; set; }
+        public string Id { get; set; }        
         public int BaseEnergy { get; set; }
         public int Energy { get; set; }
         public int Power { get; set; }
         public int Resilience { get; set; }
-        public string CharacterType { get; set; }
-        public BattleSlot Slot { get; set; }
-        public string Model { get; set; }
+        public string ObjectType { get; set; }        
+        //public string Texture { get; set; }
 
-        public CharacterModel(CharacterBuilder builder)
+        public CharacterModel()
         {
 
         }
@@ -39,29 +36,16 @@ namespace Raincrow.BattleArena.Model
         /// Player ID
         /// </summary>
         public string Id { get; set; }
-
-        /// <summary>
-        /// Position X on Grid
-        /// </summary>
-        public int Line { get; set; }
-
-        /// <summary>
-        /// Position Y on Grid
-        /// </summary>
-        public int Column { get; set; }
         public int BaseEnergy { get; set; }
         public int Energy { get; set; }
         public int Power { get; set; }
         public int Resilience { get; set; }
-        public string CharacterType { get; set; }
+        public string ObjectType { get; set; }
         public int Degree { get; set; }
-        public BattleSlot Slot { get; set; }
         public string Name { get; set; }
         public int Level { get; set; }
 
-        public string Model { get; set; }
-
-        public WitchModel(CharacterBuilder builder)
+        public WitchModel()
         {
 
         }
@@ -71,40 +55,30 @@ namespace Raincrow.BattleArena.Model
     {
         public bool Wild { get; set; }
         public string Id { get; set; }
-        public int Line { get; set; }
-        public int Column { get; set; }
         public int BaseEnergy { get; set; }
         public int Energy { get; set; }
         public int Power { get; set; }
         public int Resilience { get; set; }
-        public string CharacterType { get; set; }
-        public BattleSlot Slot { get; set; }
-        public string Spirit { get; set; }
-        public string Model { get; set; }
+        public string ObjectType { get; set; }                
+        public string Texture { get; set; }
+        public string OwnerId { get; set; }
 
-        public SpiritModel(CharacterBuilder builder)
+        public SpiritModel()
         {
 
         }
     }
 
-    public class BattleSlot : IBattleSlot
+    public struct BattleSlot
     {
-        public string Id { get; set; }
         public int Row { get; set; }
         public int Col { get; set; }
     }
 
-    public class ItemModel : IItemModel
+    public struct InventoryItemModel : IInventoryItemModel
     {
         public string Id { get; set; }
         public string Name { get; set; }
         public int Count { get; set; }
     }
-
-    public class CharacterBuilder
-    {
-
-    }
-
 }

@@ -30,7 +30,7 @@ namespace Raincrow.BattleArena.Model
         /// <summary>
         /// Max Number of Cells per Line in the grid
         /// </summary>
-        public int MaxCellsPerLine { get; private set; }
+        public int MaxCellsPerRow { get; private set; }
 
         /// <summary>
         /// Max Number of Cells per Column in the grid
@@ -49,13 +49,13 @@ namespace Raincrow.BattleArena.Model
         public GridModel(GridBuilder builder)
         {
             MaxCellsPerColumn = builder.MaxCellsPerColumn;
-            MaxCellsPerLine = builder.MaxCellsPerLine;
+            MaxCellsPerRow = builder.MaxCellsPerRow;
 
-            Cells = new CellModel[MaxCellsPerColumn, MaxCellsPerLine];
+            Cells = new CellModel[MaxCellsPerColumn, MaxCellsPerRow];
 
             for (int i = 0; i < MaxCellsPerColumn; i++)
             {
-                for (int j = 0; j < MaxCellsPerLine; j++)
+                for (int j = 0; j < MaxCellsPerRow; j++)
                 {
                     CellBuilder cellBuilder = builder.CellBuilders[i, j];
                     if (cellBuilder != null) // if null, cell will be empty
@@ -69,28 +69,24 @@ namespace Raincrow.BattleArena.Model
 
         public GridModel(int maxCellsPerLine, int maxCellsPerColumn, ICellModel[,] cells)
         {
-            this.MaxCellsPerLine = maxCellsPerColumn;
-            this.MaxCellsPerColumn = maxCellsPerColumn;
-            this.Cells = cells;
+            MaxCellsPerRow = maxCellsPerColumn;
+            MaxCellsPerColumn = maxCellsPerColumn;
+            Cells = cells;
         }
     }
 
     public class GridBuilder
-    {
-        public int MaxCellsPerLine { get; set; }
+    {        
         public int MaxCellsPerColumn { get; set; }
+        public int MaxCellsPerRow { get; set; }
         public CellBuilder[,] CellBuilders { get; set; }
     }
 
     public class CellModel : ICellModel
     {
         // Properties
+        public string ObjectId { get; set; }
         public int Height { get; private set; }
-
-        public int X { get; set; }
-
-        public int Y { get; set; }
-
 
         // Constructor
         public CellModel(CellBuilder builder)
@@ -101,8 +97,6 @@ namespace Raincrow.BattleArena.Model
 
     public class CellBuilder
     {
-        public int X { get; set; }
-        public int Y { get; set; }
         public int Height { get; set; }
     }
 }

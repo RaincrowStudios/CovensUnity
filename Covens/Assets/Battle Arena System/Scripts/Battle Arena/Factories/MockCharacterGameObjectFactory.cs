@@ -10,8 +10,7 @@ namespace Raincrow.BattleArena.Factory
 
         public override IEnumerator<GameObject> Create(Transform cellTransform, ICharacterModel character)
         {            
-            CharacterBuilder builder = new CharacterBuilder();
-            ICharacterModel characterModel = new CharacterModel(builder);
+            ICharacterModel characterModel = new CharacterModel();
             
             yield return Instantiate(_characterPrefab, cellTransform);
         }

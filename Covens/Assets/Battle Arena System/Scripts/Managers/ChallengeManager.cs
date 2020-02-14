@@ -29,15 +29,15 @@ namespace Raincrow.BattleArena.Manager
                         gridController.gameObject.SetActive(true);
                     }
 
-                    IGridModel grid = new GridModel(battle.grid.MaxCellsPerColumn, battle.grid.MaxCellsPerLine, battle.grid.Cells);
+                    IGridModel grid = new GridModel(battle.Grid.MaxCellsPerColumn, battle.Grid.MaxCellsPerLine, battle.Grid.Cells);
 
                     List<ICharacterModel> characters = new List<ICharacterModel>();
 
-                    foreach (GenericCharacterObjectServer character in battle.participants)
+                    foreach (GenericCharacterObjectServer character in battle.Participants)
                     {
-                        if (string.Equals(character.CharacterType, CharacterType.Spirit))
+                        if (string.Equals(character.ObjectType, ObjectType.Spirit))
                         {
-                            characters.Add(character as ISpiritModel);
+                            characters.Add(character); // as ISpiritModel
                         }
                         else
                         {
@@ -45,7 +45,7 @@ namespace Raincrow.BattleArena.Manager
                         }
                     }
 
-                    StartCoroutine(gridController.StartBattle(battle._id, grid, characters));
+                    StartCoroutine(gridController.StartBattle(battle.Id, grid, characters));
                     
                     LoadingOverlay.Hide();
                 }

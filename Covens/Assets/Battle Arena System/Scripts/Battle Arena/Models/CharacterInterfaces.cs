@@ -1,28 +1,24 @@
 ﻿namespace Raincrow.BattleArena.Model
 {
-    public static class CharacterType
+    public static class ObjectType
     {
         public static readonly string Witch = "witch";
         public static readonly string Spirit = "spirit";
+        public static readonly string Item = "item";
     }
 
-    public interface ICharacterModel
+    public interface ICharacterModel : IObjectModel
     {
-        string Id { get;  }
-        BattleSlot Slot { get; }
         int BaseEnergy { get; }
         int Energy { get; set; }
         int Power { get; set; }
-        int Resilience { get; set; }
-        string CharacterType { get; }
-        string Model { get; }
+        int Resilience { get; set; }        
     }
 
-    public interface IBattleSlot
+    public interface IObjectModel
     {
         string Id { get; }
-        int Row { get; }
-        int Col { get; }
+        string ObjectType { get; }        
     }
 
     public interface IWitchModel : ICharacterModel
@@ -34,11 +30,11 @@
 
     public interface ISpiritModel : ICharacterModel
     {
-        bool Wild { get; set; }
-        string Spirit { get; }
+        string OwnerId { get; set; }
+        string Texture { get; set; }
     }
 
-    public interface IItemModel
+    public interface IInventoryItemModel
     {
         string Id { get; set; }
         string Name { get; set; }
