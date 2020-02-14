@@ -1,9 +1,9 @@
 ﻿namespace Raincrow.BattleArena.Model
 {
-    public enum CharacterType
+    public static class CharacterType
     {
-        character,
-        spirit
+        public static readonly string Witch = "witch";
+        public static readonly string Spirit = "spirit";
     }
 
     public interface ICharacterModel
@@ -14,7 +14,7 @@
         int Energy { get; set; }
         int Power { get; set; }
         int Resilience { get; set; }
-        CharacterType Type { get; }
+        string CharacterType { get; }
         string Model { get; }
     }
 

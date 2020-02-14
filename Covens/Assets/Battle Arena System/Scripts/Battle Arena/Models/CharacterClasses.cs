@@ -20,7 +20,7 @@ namespace Raincrow.BattleArena.Model
         public int Energy { get; set; }
         public int Power { get; set; }
         public int Resilience { get; set; }
-        public CharacterType Type { get; set; }
+        public string CharacterType { get; set; }
         public BattleSlot Slot { get; set; }
         public string Model { get; set; }
 
@@ -53,7 +53,7 @@ namespace Raincrow.BattleArena.Model
         public int Energy { get; set; }
         public int Power { get; set; }
         public int Resilience { get; set; }
-        public CharacterType Type { get; set; }
+        public string CharacterType { get; set; }
         public int Degree { get; set; }
         public BattleSlot Slot { get; set; }
         public string Name { get; set; }
@@ -77,7 +77,7 @@ namespace Raincrow.BattleArena.Model
         public int Energy { get; set; }
         public int Power { get; set; }
         public int Resilience { get; set; }
-        public CharacterType Type { get; set; }
+        public string CharacterType { get; set; }
         public BattleSlot Slot { get; set; }
         public string Spirit { get; set; }
         public string Model { get; set; }

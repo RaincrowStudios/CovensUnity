@@ -40,7 +40,7 @@ public class GenericCharacterObjectServer : ICharacterModel, ISpiritModel, IWitc
     public int Energy { get; set; }
     public int Power { get; set; }
     public int Resilience { get; set; }
-    public CharacterType Type { get; set; }
+    public string CharacterType { get; set; }
     public bool Wild { get; set; }
     public int Degree { get; set; }
     [JsonProperty("battleSlot")]

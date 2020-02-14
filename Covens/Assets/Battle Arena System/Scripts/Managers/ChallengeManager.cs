@@ -35,7 +35,7 @@ namespace Raincrow.BattleArena.Manager
 
                     foreach (GenericCharacterObjectServer character in battle.participants)
                     {
-                        if (character.Type == CharacterType.spirit)
+                        if (string.Equals(character.CharacterType, CharacterType.Spirit))
                         {
                             characters.Add(character as ISpiritModel);
                         }

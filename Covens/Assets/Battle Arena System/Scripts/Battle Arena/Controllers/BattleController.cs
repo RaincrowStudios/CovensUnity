@@ -89,12 +89,12 @@ namespace Raincrow.BattleArena.Controller
             // Initialize list of characters
             _characters = new List<GameObject>();
 
-            foreach(ICharacterModel character in characters)
+            foreach (ICharacterModel character in characters)
             {
                 GameObject cellGameObject = _grid[character.Slot.Row, character.Slot.Col];
                 if (cellGameObject != null)
                 {
-                    if(character.Type == CharacterType.spirit)
+                    if (string.Equals(character.CharacterType, CharacterType.Spirit))
                     {
                         Coroutine<GameObject> createCharacter = this.StartCoroutine<GameObject>(_spiritFactory.Create(cellGameObject.transform, character));
                         yield return createCharacter;
@@ -142,7 +142,7 @@ namespace Raincrow.BattleArena.Controller
             BanishmentPhase banishmentPhase = new BanishmentPhase(this);
             yield return null;
 
-            IState<ITurnController>[] battlePhases = new IState<ITurnController>[4] 
+            IState<ITurnController>[] battlePhases = new IState<ITurnController>[4]
             {
                 initiativePhase,
                 planningPhase,
