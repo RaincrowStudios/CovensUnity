@@ -1,4 +1,6 @@
-﻿using UnityEngine;
+﻿using Newtonsoft.Json;
+using System.Collections.Generic;
+using UnityEngine;
 
 namespace Raincrow.BattleArena.Model
 {
@@ -44,6 +46,7 @@ namespace Raincrow.BattleArena.Model
         public int Degree { get; set; }
         public string Name { get; set; }
         public int Level { get; set; }
+        public InventoryModel Inventory { get; set; }
 
         public WitchModel()
         {
@@ -52,8 +55,7 @@ namespace Raincrow.BattleArena.Model
     }
 
     public class SpiritModel : ISpiritModel
-    {
-        public bool Wild { get; set; }
+    {        
         public string Id { get; set; }
         public int BaseEnergy { get; set; }
         public int Energy { get; set; }
@@ -75,10 +77,23 @@ namespace Raincrow.BattleArena.Model
         public int Col { get; set; }
     }
 
-    public struct InventoryItemModel : IInventoryItemModel
+    public struct InventoryItemModel
     {
         public string Id { get; set; }
         public string Name { get; set; }
         public int Count { get; set; }
+    }
+
+    public struct InventoryApparelModel
+    {
+        public string Id { get; set; }
+        public string Name { get; set; }
+        public string Position { get; set; }
+    }
+
+    public class InventoryModel
+    {        
+        public List<InventoryItemModel> Items { get; }
+        [JsonProperty("equipped")] public List<InventoryApparelModel> Apparels { get; }
     }
 }

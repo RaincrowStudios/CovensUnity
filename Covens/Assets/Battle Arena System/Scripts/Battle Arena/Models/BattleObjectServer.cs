@@ -44,4 +44,6 @@ public class GenericCharacterObjectServer : ICharacterModel, ISpiritModel, IWitc
     public int Energy { get; set; }
     public int Power { get; set; }
     public int Resilience { get; set; }
+    [JsonProperty("inventory")]
+    public InventoryModel Inventory { get; set; }
 }
