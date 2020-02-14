@@ -149,7 +149,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 892faa42e94831942ac3eb0462969a63, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _characterPrefab: {fileID: 4145961894182003931, guid: ad0336f45a4e5924da6c29a530712245,
+  _characterPrefab: {fileID: 5651703569958389647, guid: ad0336f45a4e5924da6c29a530712245,
     type: 3}
 --- !u!4 &135026790
 Transform:
@@ -443,7 +443,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e113a7e8807d38b41be4d2c579be7fdd, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _characterPrefab: {fileID: 7862372955884984634, guid: a18a8f148bde0e7489c84b03cac84f89,
+  _characterPrefab: {fileID: 5651703569958389647, guid: ad0336f45a4e5924da6c29a530712245,
     type: 3}
 --- !u!4 &483176791
 Transform:
@@ -602,7 +602,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2007260384}
   m_LocalRotation: {x: 0.4330127, y: 0.4330127, z: -0.25, w: 0.75}
-  m_LocalPosition: {x: 1.25, y: 9, z: 1.6}
+  m_LocalPosition: {x: -3.5, y: 5.26, z: -1.68}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
