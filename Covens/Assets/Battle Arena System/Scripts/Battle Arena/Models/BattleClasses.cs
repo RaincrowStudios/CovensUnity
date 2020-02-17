@@ -1,7 +1,41 @@
 ﻿using UnityEngine;
 
 namespace Raincrow.BattleArena.Model
-{
+{ 
+    public class ActionType
+    {
+        public static readonly string Move = "move";
+        public static readonly string Cast = "cast";
+        public static readonly string Summon = "summon";
+        public static readonly string Flee = "flee";
+    }
+
+    public class ActionModel
+    {        
+        public virtual string Type { get; }
+    }
+
+    public class MoveActionModel : ActionModel
+    {
+        public override string Type => ActionType.Move;
+        public BattleSlot Position { get; set; }
+    }
+
+    public class CastSpellActionModel : ActionModel
+    {
+        public override string Type => ActionType.Cast;
+        public string SpellId { get; set; }
+        public string TargetId { get; set; }
+        public InventoryItemModel[] Ingredients { get; set; }        
+    }
+
+    public class SummonActionModel : ActionModel
+    {
+        public override string Type => ActionType.Summon;
+        public string SpiritId { get; set; }
+        public BattleSlot Position { get; set; }
+    }
+
     public class BattleModel : IBattleModel
     {
         public string Id { get; set; }
