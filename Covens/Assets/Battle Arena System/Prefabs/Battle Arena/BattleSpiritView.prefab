@@ -205,7 +205,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_EnergyRing: {fileID: 8227745265960040050}
-  m_AvatarRender: {fileID: 776169818871746028}
+  m_AvatarRenderer: {fileID: 776169818871746028}
 --- !u!1 &5544250881397260102
 GameObject:
   m_ObjectHideFlags: 0
