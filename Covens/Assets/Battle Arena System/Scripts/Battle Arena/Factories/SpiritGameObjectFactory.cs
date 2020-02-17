@@ -12,7 +12,7 @@ namespace Raincrow.BattleArena.Factory
         public override IEnumerator<AbstractCharacterView> Create(Transform cellTransform, ICharacterModel character)
         {
             BattleSpiritView spiritMarker = Instantiate(_battleSpiritViewPrefab, cellTransform);
-            //spiritMarker.Init(character);
+            spiritMarker.Init(character);
 
             yield return spiritMarker;
         }
