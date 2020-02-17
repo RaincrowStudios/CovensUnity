@@ -154,3 +154,4 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _avatarRoot: {fileID: 2484422669062743101}
+  _renderer: {fileID: 7556108810512063564}

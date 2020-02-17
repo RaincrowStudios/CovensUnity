@@ -35,14 +35,7 @@ namespace Raincrow.BattleArena.Manager
 
                     foreach (GenericCharacterObjectServer character in battle.Participants)
                     {
-                        if (string.Equals(character.ObjectType, ObjectType.Spirit))
-                        {
-                            characters.Add(character); // as ISpiritModel
-                        }
-                        else
-                        {
-                            characters.Add(character as IWitchModel);
-                        }
+                        characters.Add(character); // as ICharacterModel
                     }
 
                     StartCoroutine(gridController.StartBattle(battle.Id, grid, characters));

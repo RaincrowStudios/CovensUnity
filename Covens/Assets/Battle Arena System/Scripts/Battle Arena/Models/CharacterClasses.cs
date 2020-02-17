@@ -6,7 +6,7 @@ namespace Raincrow.BattleArena.Model
 {
     public static class ObjectType
     {
-        public static readonly string Witch = "witch";
+        public static readonly string Witch = "character";
         public static readonly string Spirit = "spirit";
         public static readonly string Item = "item";
     }
@@ -17,7 +17,7 @@ namespace Raincrow.BattleArena.Model
         public static readonly string Base = "base";
         public static readonly string Head = "head";
         public static readonly string Hair = "hair";
-        public static readonly string Chest = "chest";                      
+        public static readonly string Chest = "chest";
         public static readonly string Neck = "neck";
         public static readonly string WristLeft = "wristLeft";
         public static readonly string WristRight = "wristRight";
@@ -38,6 +38,12 @@ namespace Raincrow.BattleArena.Model
         public static readonly string BaseHand = "baseHand";
     }
 
+    public static class CharacterGender
+    {
+        public static readonly bool Male = true;
+        public static readonly bool Female = false;
+    }
+
     [System.Serializable]
     public class CharacterGameObjectModel
     {
@@ -49,19 +55,17 @@ namespace Raincrow.BattleArena.Model
 
     public class CharacterModel : ICharacterModel
     {
-        public string Id { get; set; }        
+        public string Id { get; set; }
         public int BaseEnergy { get; set; }
         public int Energy { get; set; }
         public int Power { get; set; }
         public int Resilience { get; set; }
-        public string ObjectType { get; set; }        
-        //public string Texture { get; set; }
+        public string ObjectType { get; set; }
 
         public CharacterModel()
         {
 
         }
-
     }
 
     public class WitchModel : IWitchModel
@@ -81,28 +85,27 @@ namespace Raincrow.BattleArena.Model
         public string Name { get; set; }
         public int Level { get; set; }
         public InventoryModel Inventory { get; set; }
+        public CharacterInfo Info { get; set; }
 
         public WitchModel()
         {
-
+            Inventory = new InventoryModel();
+            Info = new CharacterInfo();
         }
     }
 
     public class SpiritModel : ISpiritModel
-    {        
+    {
         public string Id { get; set; }
         public int BaseEnergy { get; set; }
         public int Energy { get; set; }
         public int Power { get; set; }
         public int Resilience { get; set; }
-        public string ObjectType { get; set; }                
+        public string ObjectType { get; set; }
         public string Texture { get; set; }
         public string OwnerId { get; set; }
 
-        public SpiritModel()
-        {
-
-        }
+        public SpiritModel() { }
     }
 
     public struct BattleSlot
@@ -121,13 +124,52 @@ namespace Raincrow.BattleArena.Model
     public class InventoryApparelModel
     {
         public string Id { get; set; }
-        public string Name { get; set; }
         public string Position { get; set; }
+        public string[] Assets { get; set; }
+
+        public InventoryApparelModel()
+        {
+            Assets = new string[0];
+        }
+    }
+
+    public class AssetsApparelModel
+    {
+        public string[] BaseAsset { get; set; }
+        public string[] Grey { get; set; }
+        public string[] Shadow { get; set; }
+        public string[] White { get; set; }
+
+        public AssetsApparelModel()
+        {
+            BaseAsset = new string[0];
+            Grey = new string[0];
+            Shadow = new string[0];
+            White = new string[0];
+        }
+    }
+
+    public struct CharacterInfo
+    {
+        [JsonProperty("male")] public bool Gender { get; set; }
+        public int BodyType { get; set; }
     }
 
     public class InventoryModel
-    {        
-        public List<InventoryItemModel> Items { get; }
-        [JsonProperty("equipped")] public List<InventoryApparelModel> Apparels { get; }
+    {
+        public List<InventoryItemModel> Tools { get; }
+        public List<InventoryItemModel> Herbs { get; }
+        public List<InventoryItemModel> Gems { get; }
+        public List<InventoryItemModel> Consumables { get; }
+        [JsonProperty("equipped")] public List<InventoryApparelModel> Equipped { get; }
+
+        public InventoryModel()
+        {
+            Tools = new List<InventoryItemModel>();
+            Herbs = new List<InventoryItemModel>();
+            Gems = new List<InventoryItemModel>();
+            Consumables = new List<InventoryItemModel>();
+            Equipped = new List<InventoryApparelModel>();
+        }
     }
 }

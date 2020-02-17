@@ -31,7 +31,7 @@ public class CellObjectServer : ICellModel
 }
 
 [System.Serializable]
-public class GenericCharacterObjectServer : ICharacterModel, ISpiritModel, IWitchModel
+public class GenericCharacterObjectServer : ISpiritModel, IWitchModel
 {
     [JsonProperty("_id")] public string Id { get; set; }
     [JsonProperty("type")] public string ObjectType { get; set; }
@@ -44,6 +44,6 @@ public class GenericCharacterObjectServer : ICharacterModel, ISpiritModel, IWitc
     public int Energy { get; set; }
     public int Power { get; set; }
     public int Resilience { get; set; }
-    [JsonProperty("inventory")]
     public InventoryModel Inventory { get; set; }
+    public CharacterInfo Info { get; set; }
 }

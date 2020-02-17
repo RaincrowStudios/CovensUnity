@@ -24,53 +24,98 @@ namespace Raincrow.BattleArena.Controller
 
         public virtual void OnEnable()
         {
-            // Construct grid builder
-            GridBuilder gridBuilder;
-            {
-                gridBuilder = new GridBuilder()
-                {
-                    MaxCellsPerRow = 5,
-                    MaxCellsPerColumn = 5,
-                };
+            //// Construct grid builder
+            //GridBuilder gridBuilder;
+            //{
+            //    gridBuilder = new GridBuilder()
+            //    {
+            //        MaxCellsPerRow = 5,
+            //        MaxCellsPerColumn = 5,
+            //    };
 
-                gridBuilder.CellBuilders = new CellBuilder[gridBuilder.MaxCellsPerRow, gridBuilder.MaxCellsPerColumn];
+            //    gridBuilder.CellBuilders = new CellBuilder[gridBuilder.MaxCellsPerRow, gridBuilder.MaxCellsPerColumn];
 
-                for (int i = 0; i < gridBuilder.MaxCellsPerRow; i++)
-                {
-                    for (int j = 0; j < gridBuilder.MaxCellsPerColumn; j++)
-                    {
-                        gridBuilder.CellBuilders[i, j] = new CellBuilder();
-                    }
-                }
-            }            
-            IGridModel gridModel = new GridModel(gridBuilder); // Create grid model
+            //    for (int i = 0; i < gridBuilder.MaxCellsPerRow; i++)
+            //    {
+            //        for (int j = 0; j < gridBuilder.MaxCellsPerColumn; j++)
+            //        {
+            //            gridBuilder.CellBuilders[i, j] = new CellBuilder();
+            //        }
+            //    }
+            //}            
+            //IGridModel gridModel = new GridModel(gridBuilder); // Create grid model
 
-            // Create characters
-            ICharacterModel witchModel = new WitchModel()
-            {
-                Id = "emanuel",
-                ObjectType = ObjectType.Witch,
-                Degree = 0,
-                Name = "Emanuel",
-                Level = 1
-            };
-            ICharacterModel spiritModel = new SpiritModel()
-            {
-                ObjectType = ObjectType.Spirit,
-                Id = "Crackudo"
-            };
+            //// Create characters
+            //IWitchModel witchModel = new WitchModel()
+            //{
+            //    Id = "emanuel",
+            //    ObjectType = ObjectType.Witch,
+            //    Degree = 0,
+            //    Name = "Emanuel",
+            //    Level = 1
+            //};
 
-            // place characters in grid model
-            gridModel.Cells[0, 0].ObjectId = witchModel.Id;
-            gridModel.Cells[0, 1].ObjectId = spiritModel.Id;
+            //InventoryApparelModel equip = new InventoryApparelModel()
+            //{
+            //    Id = "cosmetic_m_A_B",
+            //    Position = InventoryApparelPosition.BaseBody,
+            //    Assets = new AssetsApparelModel()
+            //    {
+            //        BaseAsset = new string[1] { "m_A_B" }
+            //    }
+            //};
+            //witchModel.Inventory.Equipped.Add(equip);
 
-            // Add all characters
-            List<ICharacterModel> characterModels = new List<ICharacterModel> { witchModel, spiritModel };
+            //equip = new InventoryApparelModel()
+            //{
+            //    Id = "cosmetic_m_E_B",
+            //    Position = InventoryApparelPosition.BaseBody,
+            //    Assets = new AssetsApparelModel()
+            //    {
+            //        BaseAsset = new string[1] { "m_E_B" }
+            //    }
+            //};
+            //witchModel.Inventory.Equipped.Add(equip);
 
-            // Battle Id
-            string battleId = System.Guid.NewGuid().ToString();
+            //equip = new InventoryApparelModel()
+            //{
+            //    Id = "cosmetic_m_O_B",
+            //    Position = InventoryApparelPosition.BaseBody,
+            //    Assets = new AssetsApparelModel()
+            //    {
+            //        BaseAsset = new string[1] { "m_O_B" }
+            //    }
+            //};
+            //witchModel.Inventory.Equipped.Add(equip);
 
-            StartCoroutine(StartBattle(battleId, gridModel, characterModels));
+            //equip = new InventoryApparelModel()
+            //{
+            //    Id = "cosmetic_m_A_H",
+            //    Position = InventoryApparelPosition.BaseBody,
+            //    Assets = new AssetsApparelModel()
+            //    {
+            //        BaseAsset = new string[2] { "m_A_H_Relaxed",  "m_A_H_Censer" }
+            //    }
+            //};
+            //witchModel.Inventory.Equipped.Add(equip);
+
+            //ISpiritModel spiritModel = new SpiritModel()
+            //{
+            //    ObjectType = ObjectType.Spirit,
+            //    Id = "Crackudo"
+            //};
+
+            //// place characters in grid model
+            //gridModel.Cells[0, 0].ObjectId = witchModel.Id;
+            //gridModel.Cells[0, 1].ObjectId = spiritModel.Id;
+
+            //// Add all characters
+            //List<ICharacterModel> characterModels = new List<ICharacterModel> { witchModel, spiritModel };
+
+            //// Battle Id
+            //string battleId = System.Guid.NewGuid().ToString();
+
+            //StartCoroutine(StartBattle(battleId, gridModel, characterModels));
         }
 
         public virtual void OnDisable()
@@ -126,7 +171,8 @@ namespace Raincrow.BattleArena.Controller
                         {
                             GameObject cellGameObject = _grid[i, j];
                             Coroutine<AbstractCharacterView> createCharacter = this.StartCoroutine<AbstractCharacterView>(_spiritFactory.Create(cellGameObject.transform, character));
-                        yield return createCharacter;
+                            yield return createCharacter;
+                            
                             // add a character
                             _characters.Add(createCharacter.ReturnValue);
                         }

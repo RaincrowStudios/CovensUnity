@@ -18,9 +18,10 @@
     {
         string Name { get; set; }
         int Degree { get; set; }
-        int Level { get; set; }
-        InventoryModel Inventory { get; }
-    }    
+        int Level { get; set; }        
+        CharacterInfo Info { get; set; }
+        InventoryModel Inventory { get; set; }
+    }
 
     public interface ISpiritModel : ICharacterModel
     {
