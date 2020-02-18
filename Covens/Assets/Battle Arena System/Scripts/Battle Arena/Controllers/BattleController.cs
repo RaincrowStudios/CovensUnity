@@ -62,10 +62,10 @@ namespace Raincrow.BattleArena.Controller
         private IEnumerator InstantiateGrid(IGridModel gridModel)
         {
             // Create grid
-            Coroutine<GameObject[,]> createGrid = this.StartCoroutine<GameObject[,]>(_gridFactory.Create(gridModel));
+            Coroutine<GameObject[,]> createGrid = this.StartCoroutine<GameObject[,]>(_gridFactory.Create(gridModel, OnCellClick));
             yield return createGrid;
             _grid = createGrid.ReturnValue;
-        }
+        }        
 
         private IEnumerator PlaceCharacters(IGridModel gridModel, IList<ICharacterModel> characters)
         {
@@ -192,6 +192,11 @@ namespace Raincrow.BattleArena.Controller
             {
                 gameObject.SetActive(false);
             }
+        }
+
+        private void OnCellClick(ICellModel cellModel)
+        {
+            Debug.Log(cellModel.ObjectId);
         }
 
         #region ICoroutineStarter
