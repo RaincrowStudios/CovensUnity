@@ -17,5 +17,7 @@
     {
         string ObjectId { get; set; }
         int Height { get; }
+        int X { get; }
+        int Y { get; }
     }
 }

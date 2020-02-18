@@ -121,6 +121,8 @@ namespace Raincrow.BattleArena.Model
         // Properties
         public string ObjectId { get; set; }
         public int Height { get; private set; }
+        public int X { get; set; }
+        public int Y { get; set; }
 
         // Constructor
         public CellModel(CellBuilder builder)
