@@ -45,3 +45,5 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _avatarSpriteUtilPrefab: {fileID: 114571930509834984, guid: 0e3939987ca57dd4d854722c38c57f68,
     type: 3}
+  _loadingViewPrefab: {fileID: 1022135221388339036, guid: 26f00b8706aeb0742b0834a3e3e386b6,
+    type: 3}

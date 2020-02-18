@@ -1,4 +1,5 @@
 ﻿using Raincrow.BattleArena.Factory;
+using Raincrow.Loading.View;
 using UnityEngine;
 
 namespace Raincrow.Services
@@ -7,12 +8,25 @@ namespace Raincrow.Services
     {
         #region Avatar Sprite Util 
 
-        [Header("Services")]
-        // Avatar Sprite Util Prefab
-        [SerializeField] private AvatarSpriteUtil _avatarSpriteUtilPrefab;
+        [Header("Service Prefabs")]
+        [SerializeField] private AvatarSpriteUtil _avatarSpriteUtilPrefab; // Avatar Sprite Util Prefab
+        [SerializeField] private LoadingView _loadingViewPrefab;
 
-        // Avatar Sprite Util Instance
-        private AvatarSpriteUtil _avatarSpriteUtilInstance;
+        [Header("Service Instances")]
+        [SerializeField] private AvatarSpriteUtil _avatarSpriteUtilInstance; // Avatar Sprite Util Instance
+        [SerializeField] private LoadingView _loadingViewInstance; // Loading View Instance
+
+        [Header("UI")]
+        [SerializeField] private Canvas _mainCanvas;
+
+        public ILoadingView GetLoadingView()
+        {
+            if (_loadingViewInstance == null)
+            {
+                _loadingViewInstance = GetInstance(_loadingViewPrefab, _mainCanvas.transform);
+            }
+            return _loadingViewInstance;
+        }
 
         public IWitchAvatarFactory GetWitchAvatarFactory()
         {
@@ -32,7 +46,7 @@ namespace Raincrow.Services
             return _avatarSpriteUtilInstance;
         }
 
-        private T GetInstance<T>(T prefab) where T : Object
+        private T GetInstance<T>(T prefab, Transform parent = null) where T : Object
         {
             T target = FindObjectOfType<T>();
             if (target != null)
@@ -40,7 +54,7 @@ namespace Raincrow.Services
                 return target;
             }
 
-            return Instantiate(prefab);
+            return Instantiate(prefab, parent);
         }
 
         #endregion
