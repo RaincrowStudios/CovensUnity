@@ -28,19 +28,19 @@ namespace Raincrow.BattleArena.Factory
             IWitchModel witchModel = character as IWitchModel;
 
             // Create character
-            AbstractCharacterView characterMarker = Instantiate(_battleWitchViewPrefab, cellTransform);
+            AbstractCharacterView characterView = Instantiate(_battleWitchViewPrefab, cellTransform);
             yield return null;
 
             // wait for coroutine
-            Coroutine<Texture> tex = this.StartCoroutine<Texture>(GetWitchAvatar(witchModel));            
-            while (tex.keepWaiting)
+            Coroutine<Texture> request = this.StartCoroutine<Texture>(GetWitchAvatar(witchModel));            
+            while (request.keepWaiting)
             {
                 yield return null;
             }
 
-            characterMarker.ChangeCharacterTexture(tex.ReturnValue);
+            characterView.ChangeCharacterTexture(request.ReturnValue);
 
-            yield return characterMarker;
+            yield return characterView;
         }
 
         private IEnumerator<Texture> GetWitchAvatar(IWitchModel witchModel)
@@ -60,6 +60,11 @@ namespace Raincrow.BattleArena.Factory
     public interface IWitchAvatarFactory
     {
         IEnumerator<AvatarRequest> CreateWitchAvatar(IWitchModel witchModel);
+    }
+
+    public interface ISpiritAvatarFactory
+    {
+        IEnumerator<AvatarRequest> CreateSpiritAvatar(ISpiritModel spiritModel);
     }
 
     public struct AvatarRequest

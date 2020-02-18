@@ -5,7 +5,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class AvatarSpriteUtil : MonoBehaviour, IWitchAvatarFactory
+public class AvatarSpriteUtil : MonoBehaviour, IWitchAvatarFactory, ISpiritAvatarFactory
 {
     private class MarkerSpriteCollection
     {
@@ -414,6 +414,22 @@ public class AvatarSpriteUtil : MonoBehaviour, IWitchAvatarFactory
             yield return request;
         }
 
+        yield return request;
+    }
+
+    public IEnumerator<AvatarRequest> CreateSpiritAvatar(ISpiritModel spiritModel)
+    {
+        AvatarRequest request = new AvatarRequest();
+        DownloadedAssets.GetSprite(spiritModel.Texture, (sprite) => 
+        {
+            request.Avatar = sprite.texture;
+            request.IsDone = true;
+        });
+
+        while (!request.IsDone)
+        {
+            yield return request;
+        }
         yield return request;
     }
 

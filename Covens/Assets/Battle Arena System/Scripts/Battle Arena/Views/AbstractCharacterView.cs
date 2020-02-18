@@ -8,9 +8,9 @@ namespace Raincrow.BattleArena.View
 
         public abstract void ChangeCharacterTexture(Texture texture);
 
-        public virtual void UpdateEnergy(float time = 1f)
-        {
+        //public virtual void UpdateEnergy(float time = 1f)
+        //{
 
-        }
+        //}
     }
 }

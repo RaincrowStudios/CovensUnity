@@ -23,6 +23,15 @@ namespace Raincrow.Services
             return _avatarSpriteUtilInstance;
         }
 
+        public ISpiritAvatarFactory GetSpiritAvatarFactory()
+        {
+            if (_avatarSpriteUtilInstance == null)
+            {
+                _avatarSpriteUtilInstance = GetInstance(_avatarSpriteUtilPrefab);
+            }
+            return _avatarSpriteUtilInstance;
+        }
+
         private T GetInstance<T>(T prefab) where T : Object
         {
             T target = FindObjectOfType<T>();
