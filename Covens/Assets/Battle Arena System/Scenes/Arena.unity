@@ -120,6 +120,18 @@ NavMeshSettings:
     debug:
       m_Flags: 0
   m_NavMeshData: {fileID: 0}
+--- !u!114 &69001165 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 3561526507227420495, guid: 61c97baa5215f1647a7ed02e6b0d3ef8,
+    type: 3}
+  m_PrefabInstance: {fileID: 6916038785134463033}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6e7e65d202e16e947a5b844118b467ad, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &183075891
 GameObject:
   m_ObjectHideFlags: 0
@@ -435,6 +447,18 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 3
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1442890515 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 4425357438223079680, guid: db00a0b38accd6e4795b4974336638ec,
+    type: 3}
+  m_PrefabInstance: {fileID: 4425357438994848275}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: cde6f99bb9820254ea5f17a3b3517def, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &2007260384
 GameObject:
   m_ObjectHideFlags: 0
@@ -518,6 +542,119 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 60, y: 60, z: 0}
+--- !u!1 &2111958077
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 2111958078}
+  - component: {fileID: 2111958079}
+  m_Layer: 0
+  m_Name: Start Battle Mock [DISABLE ON RELEASE]
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &2111958078
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2111958077}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_RootOrder: 5
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &2111958079
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2111958077}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 831d896a630c0bc45bbc0e1b4e45540d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _battleController: {fileID: 69001165}
+--- !u!1001 &4425357438994848275
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    m_TransformParent: {fileID: 0}
+    m_Modifications:
+    - target: {fileID: 4425357438223079681, guid: db00a0b38accd6e4795b4974336638ec,
+        type: 3}
+      propertyPath: m_Name
+      value: ServiceLocator
+      objectReference: {fileID: 0}
+    - target: {fileID: 4425357438223079687, guid: db00a0b38accd6e4795b4974336638ec,
+        type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4425357438223079687, guid: db00a0b38accd6e4795b4974336638ec,
+        type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4425357438223079687, guid: db00a0b38accd6e4795b4974336638ec,
+        type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4425357438223079687, guid: db00a0b38accd6e4795b4974336638ec,
+        type: 3}
+      propertyPath: m_LocalRotation.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4425357438223079687, guid: db00a0b38accd6e4795b4974336638ec,
+        type: 3}
+      propertyPath: m_LocalRotation.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4425357438223079687, guid: db00a0b38accd6e4795b4974336638ec,
+        type: 3}
+      propertyPath: m_LocalRotation.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4425357438223079687, guid: db00a0b38accd6e4795b4974336638ec,
+        type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 4425357438223079687, guid: db00a0b38accd6e4795b4974336638ec,
+        type: 3}
+      propertyPath: m_RootOrder
+      value: 4
+      objectReference: {fileID: 0}
+    - target: {fileID: 4425357438223079687, guid: db00a0b38accd6e4795b4974336638ec,
+        type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4425357438223079687, guid: db00a0b38accd6e4795b4974336638ec,
+        type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4425357438223079687, guid: db00a0b38accd6e4795b4974336638ec,
+        type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+  m_SourcePrefab: {fileID: 100100000, guid: db00a0b38accd6e4795b4974336638ec, type: 3}
 --- !u!1001 &6916038785134463033
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -529,6 +666,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Name
       value: GridView
+      objectReference: {fileID: 0}
+    - target: {fileID: 3561526507227420493, guid: 61c97baa5215f1647a7ed02e6b0d3ef8,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 3561526507227420494, guid: 61c97baa5215f1647a7ed02e6b0d3ef8,
         type: 3}
@@ -590,5 +732,10 @@ PrefabInstance:
       propertyPath: _battleCamera
       value: 
       objectReference: {fileID: 2007260386}
+    - target: {fileID: 1794520544814550441, guid: 61c97baa5215f1647a7ed02e6b0d3ef8,
+        type: 3}
+      propertyPath: _serviceLocator
+      value: 
+      objectReference: {fileID: 1442890515}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 61c97baa5215f1647a7ed02e6b0d3ef8, type: 3}

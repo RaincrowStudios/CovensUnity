@@ -1,9 +1,11 @@
-﻿using System;
+﻿using Raincrow.BattleArena.Factory;
+using Raincrow.BattleArena.Model;
+using System;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class AvatarSpriteUtil : MonoBehaviour
+public class AvatarSpriteUtil : MonoBehaviour, IWitchAvatarFactory
 {
     private class MarkerSpriteCollection
     {
@@ -381,6 +383,40 @@ public class AvatarSpriteUtil : MonoBehaviour
         });       
     }
 
+    public IEnumerator<AvatarRequest> CreateWitchAvatar(IWitchModel witchModel)
+    {
+        bool isMale = (witchModel.Info.Gender == CharacterGender.Male);
+
+        AvatarRequest request = new AvatarRequest();
+
+        // Convert inventory to equipped apparel
+        List<EquippedApparel> equippedApparels = new List<EquippedApparel>();
+        foreach (InventoryApparelModel apparel in witchModel.Inventory.Equipped)
+        {
+            EquippedApparel equippedApparel = new EquippedApparel()
+            {
+                id = apparel.Id,
+                assets = new List<string>(apparel.Assets)
+            };
+            equippedApparels.Add(equippedApparel);
+            yield return request;
+        }
+        
+        GenerateAvatar(isMale, equippedApparels, (sprite) =>
+        {
+            request.Avatar = sprite.texture;
+            request.IsDone = true;
+        });
+
+        // wait for texture to be generated
+        while (!request.IsDone)
+        {
+            yield return request;
+        }
+
+        yield return request;
+    }
+
 #if UNITY_EDITOR
     private void SaveTexture(Texture2D tex)
     {
@@ -388,6 +424,6 @@ public class AvatarSpriteUtil : MonoBehaviour
         if (System.IO.Directory.Exists(Application.dataPath + $"/../../Tools/AvatarSpriteUtils") == false)
             System.IO.Directory.CreateDirectory(Application.dataPath + $"/../../Tools/AvatarSpriteUtils");
         System.IO.File.WriteAllBytes(Application.dataPath + $"/../../Tools/AvatarSpriteUtils/{System.DateTime.Now.Ticks}.png", bytes);
-    }
+    }    
 #endif
 }

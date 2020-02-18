@@ -2,6 +2,7 @@
 using Raincrow.BattleArena.Model;
 using System.Collections.Generic;
 using UnityEngine;
+using Raincrow.Services;
 
 namespace Raincrow.BattleArena.Factory
 {
@@ -9,15 +10,16 @@ namespace Raincrow.BattleArena.Factory
     {
         // serialized variables
         [SerializeField] private BattleWitchView _battleWitchViewPrefab;
+        [SerializeField] private ServiceLocator _serviceLocator;
 
-        // private variables
-        private AvatarSpriteUtil _avatarSpriteUtil;
+        // private variables        
+        private IWitchAvatarFactory _witchAvatarFactory;
 
         protected virtual void OnEnable()
         {
-            if (_avatarSpriteUtil == null)
+            if (_witchAvatarFactory == null)
             {
-                _avatarSpriteUtil = FindObjectOfType<AvatarSpriteUtil>();
+                _witchAvatarFactory = _serviceLocator.GetWitchAvatarFactory();
             }
         }
 
@@ -30,8 +32,8 @@ namespace Raincrow.BattleArena.Factory
             yield return null;
 
             // wait for coroutine
-            Coroutine<Texture> tex = this.StartCoroutine<Texture>(GenerateAvatar(witchModel));            
-            while (tex.ReturnValue == null)
+            Coroutine<Texture> tex = this.StartCoroutine<Texture>(GetWitchAvatar(witchModel));            
+            while (tex.keepWaiting)
             {
                 yield return null;
             }
@@ -41,38 +43,28 @@ namespace Raincrow.BattleArena.Factory
             yield return characterMarker;
         }
 
-        private IEnumerator<Texture> GenerateAvatar(IWitchModel witchModel)
+        private IEnumerator<Texture> GetWitchAvatar(IWitchModel witchModel)
         {
-            bool isMale = (witchModel.Info.Gender == CharacterGender.Male);
-
-            // Convert inventory to equipped apparel
-            List<EquippedApparel> equippedApparels = new List<EquippedApparel>();
-            foreach (InventoryApparelModel apparel in witchModel.Inventory.Equipped)
-            {
-                EquippedApparel equippedApparel = new EquippedApparel()
-                {
-                    id = apparel.Id,
-                    assets = new List<string>(apparel.Assets)
-                };
-                equippedApparels.Add(equippedApparel);
-                yield return null;
-            }
-
-            Texture generatedAvatar = null;
-            bool isGeneratingAvatar = true;
-            _avatarSpriteUtil.GenerateAvatar(isMale, equippedApparels, (sprite) =>
-            {
-                generatedAvatar = sprite.texture;
-                isGeneratingAvatar = false;
-            });
-
-            // wait for texture to be generated
-            while (isGeneratingAvatar)
+            IEnumerator<AvatarRequest> enumerator = _witchAvatarFactory.CreateWitchAvatar(witchModel);
+            Coroutine<AvatarRequest> coroutine = this.StartCoroutine<AvatarRequest>(enumerator);
+            while (coroutine.keepWaiting)
             {
                 yield return null;
             }
 
-            yield return generatedAvatar;
+            Texture avatarTexture = coroutine.ReturnValue.Avatar;
+            yield return avatarTexture;
         }
+    }
+
+    public interface IWitchAvatarFactory
+    {
+        IEnumerator<AvatarRequest> CreateWitchAvatar(IWitchModel witchModel);
+    }
+
+    public struct AvatarRequest
+    {
+        public Texture Avatar { get; set; }
+        public bool IsDone { get; set; }
     }
 }
