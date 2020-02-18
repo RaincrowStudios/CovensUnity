@@ -15,7 +15,6 @@ namespace Raincrow.BattleArena.Controller
     {
         [SerializeField] private Camera _battleCamera;
         [SerializeField] private Transform _cellsTransform;
-        [SerializeField] private ServiceLocator _serviceLocator;
         [SerializeField] private AbstractGridGameObjectFactory _gridFactory; // Factory class responsible for creating our Grid        
         [SerializeField] private AbstractCharacterGameObjectFactory _spiritFactory; // Factory class responsible for creating our Spirits   
         [SerializeField] private AbstractCharacterGameObjectFactory _witchFactory; // Factory class responsible for creating our Witchs   
@@ -23,47 +22,34 @@ namespace Raincrow.BattleArena.Controller
 
         private GameObject[,] _grid = new GameObject[0, 0]; // Grid with all the game objects inserted
         private List<AbstractCharacterView> _characters = new List<AbstractCharacterView>(); // List with all characters
-        private IStateMachine<ITurnController> _stateMachine; // State machine with all phases        
-        private ILoadingView _loadingView;
-
-        protected virtual void OnEnable()
-        {
-            if (_loadingView == null)
-            {
-                _loadingView = _serviceLocator.GetLoadingView();
-            }
-        }
+        private IStateMachine<ITurnController> _stateMachine; // State machine with all phases
 
         public virtual void OnDisable()
         {
             EndBattle();
         }
 
-        public IEnumerator StartBattle(string battleId, IGridModel gridModel, List<ICharacterModel> characters)
+        public IEnumerator StartBattle(string battleId, IGridModel gridModel, List<ICharacterModel> characters, ILoadingView loadingView = null)
         {
             if (!isActiveAndEnabled)
             {
                 gameObject.SetActive(true);
             }
 
-            _loadingView.UpdateMessage("Instantiang grid");
-            yield return StartCoroutine(_loadingView.Show(1f, 1f));
-
+            loadingView?.UpdateMessage("Instantiang grid");
             yield return StartCoroutine(InstantiateGrid(gridModel));
 
-            _loadingView.UpdateMessage("Placing characters");
+            loadingView?.UpdateMessage("Placing characters");
             yield return StartCoroutine(PlaceCharacters(gridModel, characters));
 
-            _loadingView.UpdateMessage("Starting state machine");
+            loadingView?.UpdateMessage("Starting state machine");
             yield return StartCoroutine(StartStateMachine(battleId, gridModel, _gameMasterController));
+
+            loadingView?.UpdateMessage("Starting battle");
 
             // Update Loop
             StartCoroutine(UpdateCharacters());
-            StartCoroutine(UpdateStateMachine());
-
-            // Hide Loading
-            yield return new WaitForEndOfFrame();
-            yield return StartCoroutine(_loadingView.Hide(1f));
+            StartCoroutine(UpdateStateMachine());            
         }
 
         private IEnumerator InstantiateGrid(IGridModel gridModel)

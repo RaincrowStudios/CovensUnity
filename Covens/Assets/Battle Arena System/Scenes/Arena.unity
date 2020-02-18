@@ -435,6 +435,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _battleController: {fileID: 69001165}
+  _serviceLocator: {fileID: 1442890515}
 --- !u!1001 &4425357438994848275
 PrefabInstance:
   m_ObjectHideFlags: 0

@@ -1,5 +1,8 @@
 ﻿using Raincrow.BattleArena.Controller;
 using Raincrow.BattleArena.Model;
+using Raincrow.Loading.View;
+using Raincrow.Services;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -11,6 +14,7 @@ namespace Raincrow.Mocks
 #if !RELEASE
 
         [SerializeField] private BattleController _battleController;
+        [SerializeField] private ServiceLocator _serviceLocator;
 
         protected virtual void OnEnable()
         {
@@ -19,12 +23,12 @@ namespace Raincrow.Mocks
                 LoginAPIManager.Login((result, response) =>
                 {
                     LoginAPIManager.GetCharacter(null);
-                    CreateGrid();
+                    StartCoroutine(CreateGrid());
                 });
             });
         }
 
-        private void CreateGrid()
+        private IEnumerator CreateGrid()
         {
             // Construct grid builder
             GridBuilder gridBuilder;
@@ -108,10 +112,12 @@ namespace Raincrow.Mocks
             // Battle Id
             string battleId = System.Guid.NewGuid().ToString();
 
-            StartCoroutine(_battleController.StartBattle(battleId, gridModel, characterModels));
+            // Show Loading
+            ILoadingView loadingView = _serviceLocator.GetLoadingView();
+            yield return StartCoroutine(loadingView.Show(0.1f, 1f));
+            yield return StartCoroutine(_battleController.StartBattle(battleId, gridModel, characterModels, loadingView));            
+            StartCoroutine(loadingView.Hide(1f));
         }
-
 #endif
-
     }
 }
