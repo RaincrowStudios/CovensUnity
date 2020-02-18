@@ -3,6 +3,9 @@ using UnityEngine;
 using Raincrow.BattleArena.Model;
 using Raincrow.BattleArena.Controller;
 using System.Collections.Generic;
+using Raincrow.Services;
+using Raincrow.Loading.View;
+using System.Collections;
 
 namespace Raincrow.BattleArena.Manager
 {
@@ -21,13 +24,9 @@ namespace Raincrow.BattleArena.Manager
 
             SceneManager.LoadSceneAsync(SceneManager.Scene.ARENA, UnityEngine.SceneManagement.LoadSceneMode.Additive,
                 null,
-                () => {
-                    MapsAPI.Instance.HideMap(true);
-                    BattleController gridController = (BattleController)FindObjectOfType(typeof(BattleController));
-                    if (!gridController.isActiveAndEnabled)
-                    {
-                        gridController.gameObject.SetActive(true);
-                    }
+                () =>
+                {
+                    MapsAPI.Instance.HideMap(true);                    
 
                     IGridModel grid = new GridModel(battle.Grid.MaxCellsPerColumn, battle.Grid.MaxCellsPerLine, battle.Grid.Cells);
 
@@ -38,11 +37,28 @@ namespace Raincrow.BattleArena.Manager
                         characters.Add(character); // as ICharacterModel
                     }
 
-                    StartCoroutine(gridController.StartBattle(battle.Id, grid, characters));
-                    
+                    IBattleModel battleModel = new BattleModel()
+                    {
+                        Id = battle.Id,
+                        Grid = grid,
+                        Characters = characters
+                    };
+                    StartCoroutine(StartBattle(battleModel));
+
                     LoadingOverlay.Hide();
                 }
              );
+        }
+
+        private IEnumerator StartBattle(IBattleModel battleModel)
+        {
+            ServiceLocator serviceLocator = FindObjectOfType<ServiceLocator>();
+            ILoadingView loadingView = serviceLocator.GetLoadingView();
+            BattleController battleController = serviceLocator.GetBattleController();
+
+            yield return StartCoroutine(loadingView.Show(0f, 1f));
+            yield return StartCoroutine(battleController.StartBattle(battleModel.Id, battleModel.Grid, battleModel.Characters, loadingView));
+            yield return StartCoroutine(loadingView.Hide(1f));
         }
 
         private void BattleClose()
@@ -52,7 +68,8 @@ namespace Raincrow.BattleArena.Manager
             UIQuickCast.SetActive(true);
             SceneManager.UnloadScene(SceneManager.Scene.ARENA,
                 null,
-                () => {
+                () =>
+                {
                     MapsAPI.Instance.HideMap(false);
                     LoadingOverlay.Hide();
                 }

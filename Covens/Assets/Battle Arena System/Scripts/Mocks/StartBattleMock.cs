@@ -10,10 +10,8 @@ namespace Raincrow.Mocks
 {
     public class StartBattleMock : MonoBehaviour
     {
-
 #if !RELEASE
-
-        [SerializeField] private BattleController _battleController;
+        
         [SerializeField] private ServiceLocator _serviceLocator;
 
         protected virtual void OnEnable()
@@ -113,9 +111,11 @@ namespace Raincrow.Mocks
             string battleId = System.Guid.NewGuid().ToString();
 
             // Show Loading
-            ILoadingView loadingView = _serviceLocator.GetLoadingView();
+            ILoadingView loadingView = _serviceLocator.GetLoadingView();            
             yield return StartCoroutine(loadingView.Show(0.1f, 1f));
-            yield return StartCoroutine(_battleController.StartBattle(battleId, gridModel, characterModels, loadingView));            
+
+            BattleController battleController = _serviceLocator.GetBattleController();
+            yield return StartCoroutine(battleController.StartBattle(battleId, gridModel, characterModels, loadingView));            
             StartCoroutine(loadingView.Hide(1f));
         }
 #endif

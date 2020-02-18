@@ -6,8 +6,9 @@ using Raincrow.StateMachines;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using Raincrow.Services;
 using Raincrow.Loading.View;
+using Raincrow.Services;
+using System;
 
 namespace Raincrow.BattleArena.Controller
 {
@@ -18,6 +19,12 @@ namespace Raincrow.BattleArena.Controller
         [SerializeField] private AbstractGridGameObjectFactory _gridFactory; // Factory class responsible for creating our Grid        
         [SerializeField] private AbstractCharacterGameObjectFactory _spiritFactory; // Factory class responsible for creating our Spirits   
         [SerializeField] private AbstractCharacterGameObjectFactory _witchFactory; // Factory class responsible for creating our Witchs   
+
+        public static explicit operator BattleController(ServiceLocator v)
+        {
+            throw new NotImplementedException();
+        }
+
         [SerializeField] private AbstractGameMasterController _gameMasterController;
 
         private GameObject[,] _grid = new GameObject[0, 0]; // Grid with all the game objects inserted
@@ -29,7 +36,7 @@ namespace Raincrow.BattleArena.Controller
             EndBattle();
         }
 
-        public IEnumerator StartBattle(string battleId, IGridModel gridModel, List<ICharacterModel> characters, ILoadingView loadingView = null)
+        public IEnumerator StartBattle(string battleId, IGridModel gridModel, IList<ICharacterModel> characters, ILoadingView loadingView = null)
         {
             if (!isActiveAndEnabled)
             {
@@ -60,7 +67,7 @@ namespace Raincrow.BattleArena.Controller
             _grid = createGrid.ReturnValue;
         }
 
-        private IEnumerator PlaceCharacters(IGridModel gridModel, List<ICharacterModel> characters)
+        private IEnumerator PlaceCharacters(IGridModel gridModel, IList<ICharacterModel> characters)
         {
             // Initialize list of characters
             _characters = new List<AbstractCharacterView>();

@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿using System.Collections.Generic;
+using UnityEngine;
 
 namespace Raincrow.BattleArena.Model
 { 
@@ -40,9 +41,10 @@ namespace Raincrow.BattleArena.Model
     {
         public string Id { get; set; }
         public IGridModel Grid { get; set; }
+        public IList<ICharacterModel> Characters { get; set; }
         public string[] PlanningOrder { get; set; }
         public float PlanningMaxTime { get; set; }
-        public int MaxActionsAllowed { get; set; }
+        public int MaxActionsAllowed { get; set; }        
     }
 
     [System.Serializable]
