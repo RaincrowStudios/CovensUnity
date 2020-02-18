@@ -28,7 +28,9 @@ public class CellObjectServer : ICellModel
     [JsonProperty("id")]
     public string ObjectId { get; set; }
     public int Height { get; private set; }
+    [JsonProperty("row")]
     public int X { get; set; }
+    [JsonProperty("col")]
     public int Y { get; set; }
 }
 
