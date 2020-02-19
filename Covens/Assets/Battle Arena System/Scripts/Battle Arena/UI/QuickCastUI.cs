@@ -4,6 +4,7 @@ using UnityEngine.UI;
 using UnityEngine;
 using Raincrow.BattleArena.Controller;
 using Raincrow.BattleArena.View;
+using Raincrow.BattleArena.Model;
 using TMPro;
 
 namespace Raincrow.BattleArena.UI
@@ -22,13 +23,29 @@ namespace Raincrow.BattleArena.UI
         [SerializeField] private GameObject m_ActionsMenu;
 
 
+        private CellView selectedView;
         private GameObject currentMenu;
         private bool open;
 
         private const float TimeToToggle = 0.05f;
 
+        public void OnClickMove()
+        {
+            if (m_BattleController.TurnController.RemainingActions <= 0)
+            {
+                return;
+            }
+
+            BattleSlot slot = new BattleSlot() { Col = selectedView.CellModel.Y, Row = selectedView.CellModel.X };
+            m_BattleController.TurnController.AddAction(new MoveActionModel() { Position = slot });
+
+            m_TextAmountActions.text = m_BattleController.TurnController.RemainingActions.ToString();
+        }
+
         public void OnClickCell(CellView cell)
         {
+            selectedView = cell;
+
             if (cell.IsEmpty)
             {
                 ChangeMenu(m_ActionsMenu);

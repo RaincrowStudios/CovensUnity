@@ -224,7 +224,8 @@ namespace Raincrow.BattleArena.Controller
                 },
                 GameMaster = gameMasterController,
                 PlanningOrder = new string[0],
-                MaxActionsAllowed = 3
+                MaxActionsAllowed = 3,
+                Actions = new List<ActionModel>()
             };
             yield return null;
 
@@ -337,15 +338,10 @@ namespace Raincrow.BattleArena.Controller
         public float PlanningMaxTime { get; set; }
         public int MaxActionsAllowed { get; set; }
         public int RemainingActions { get { return Actions ==  null ? MaxActionsAllowed : MaxActionsAllowed - Actions.Count; } }
-        public List<ActionModel> Actions { get; private set; }
+        public List<ActionModel> Actions { get; set; }
 
         public void AddAction(ActionModel action)
         {
-            if(Actions == null)
-            {
-                Actions = new List<ActionModel>();
-            }
-
             Actions.Add(action);
         }
     }
