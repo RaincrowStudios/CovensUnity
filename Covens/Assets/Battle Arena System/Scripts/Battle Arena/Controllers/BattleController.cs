@@ -212,6 +212,11 @@ namespace Raincrow.BattleArena.Controller
             _quickCastUI.OnClickCell(cellView);
         }
 
+        public void OnClickFlee()
+        {
+            QuickCastUI.OnClickFlee();
+        }
+
         #region ICoroutineStarter
 
         public Coroutine<T> Invoke<T>(IEnumerator<T> routine)
