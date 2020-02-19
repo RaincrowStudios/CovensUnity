@@ -50,4 +50,10 @@ public class GenericCharacterObjectServer : ISpiritModel, IWitchModel
     public int Resilience { get; set; }
     public InventoryModel Inventory { get; set; }
     public CharacterInfo Info { get; set; }
+
+    public GenericCharacterObjectServer()
+    {
+        Inventory = new InventoryModel();
+        Info = new CharacterInfo();
+    }
 }
