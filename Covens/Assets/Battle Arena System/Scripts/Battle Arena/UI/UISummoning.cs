@@ -1,0 +1,410 @@
+﻿using Raincrow.FTF;
+using System.Collections.Generic;
+using UnityEngine;
+using UnityEngine.UI;
+using TMPro;
+
+namespace Raincrow.BattleArena.UI
+{
+
+    public class UISummoning : MonoBehaviour
+    {
+        private static UISummoning m_Instance;
+
+        public static bool IsOpen { get; private set; }
+        private static System.Action<string> m_OnSummom;
+
+        /// <summary>
+        /// 
+        /// </summary>
+        public static void Open(System.Action<string> onSummom)
+        {
+            m_OnSummom = onSummom;
+
+            if (m_Instance != null)
+            {
+                m_Instance._Open();
+            }
+            else
+            {
+                LoadingOverlay.Show();
+                SceneManager.LoadSceneAsync(SceneManager.Scene.SUMMONING_ARENA, UnityEngine.SceneManagement.LoadSceneMode.Additive, null, () =>
+                {
+                    LoadingOverlay.Hide();
+                    m_Instance._Open();
+                });
+            }
+        }
+
+
+        public static void Close()
+        {
+            if (m_Instance == null)
+                return;
+            m_Instance._Close();
+        }
+
+        [SerializeField] private Canvas m_Canvas;
+        [SerializeField] private GraphicRaycaster m_InputRaycaster;
+        [SerializeField] private CanvasGroup m_CanvasGroup;
+        [SerializeField] private RectTransform m_MainRect;
+        [SerializeField] private SwipeDetector m_SwipeDetector;
+        [SerializeField] private UISummoningSpiritInfo m_InfoPopup;
+
+        [Header("header")]
+        [SerializeField] private List<Button> m_TierButtons;
+        [SerializeField] private Button m_CloseButton;
+
+        [Header("spirit")]
+        [SerializeField] private CanvasGroup m_PageCanvasGroup;
+        [SerializeField] private RectTransform m_PageRect;
+        [SerializeField] private GameObject m_SpiritContainer;
+        [SerializeField] private GameObject m_NoSpiritContainer;
+        [SerializeField] private Image m_SpiritArt;
+        [SerializeField] private TextMeshProUGUI m_SpiritName;
+        [SerializeField] private TextMeshProUGUI m_SpiritBehavior;
+        [SerializeField] private TextMeshProUGUI m_SpiritRequiredIngredients;
+        [SerializeField] private TextMeshProUGUI m_Required;
+        [SerializeField] private TextMeshProUGUI m_SummonCost;
+        [SerializeField] private Button m_SummonButton;
+        [SerializeField] private Button m_InfoButton;
+
+        [Header("")]
+        [SerializeField] private TextMeshProUGUI m_PageCounter;
+        [SerializeField] private Button m_PrevPageButton;
+        [SerializeField] private Button m_NextPageButton;
+
+        private int m_TweenId;
+        private int m_PageTweenId;
+        private int m_ArtTweenId;
+        private int m_CurrentIndex = 0;
+        private int m_CurrentTier = 1;
+        private RectTransform m_CanvasRect;
+        private List<List<SpiritData>> m_SpiritsByTier;
+
+        private void Awake()
+        {
+            m_Instance = this;
+            m_CanvasRect = m_Canvas.GetComponent<RectTransform>();
+
+            m_Canvas.enabled = false;
+            m_InputRaycaster.enabled = false;
+            m_CanvasGroup.alpha = 0;
+            m_NoSpiritContainer.gameObject.SetActive(false);
+            m_InfoPopup.gameObject.SetActive(false);
+
+            m_SummonButton.onClick.AddListener(OnClickSummon);
+            m_InfoButton.onClick.AddListener(OnClickInfo);
+            m_CloseButton.onClick.AddListener(OnClickClose);
+            m_NextPageButton.onClick.AddListener(NextPage);
+            m_PrevPageButton.onClick.AddListener(PrevPage);
+
+            for (int i = 0; i < m_TierButtons.Count; i++)
+            {
+                int idx = i + 1;
+                m_TierButtons[i].onClick.AddListener(() => OnClickTier(idx));
+            }
+
+            DownloadedAssets.OnWillUnloadAssets += DownloadedAssets_OnWillUnloadAssets;
+        }
+
+        private void DownloadedAssets_OnWillUnloadAssets()
+        {
+            if (IsOpen)
+                return;
+
+            DownloadedAssets.OnWillUnloadAssets -= DownloadedAssets_OnWillUnloadAssets;
+
+            LeanTween.cancel(m_TweenId);
+            LeanTween.cancel(m_PageTweenId);
+            LeanTween.cancel(m_ArtTweenId);
+            SceneManager.UnloadScene(SceneManager.Scene.SUMMONING, null, null);
+        }
+
+        [ContextMenu("Open")]
+        private void _Open()
+        {
+
+            BackButtonListener.AddCloseAction(OnClickClose);
+
+            IsOpen = true;
+
+            if (FirstTapManager.IsFirstTime("summoning"))
+                FirstTapManager.Show("summoning", null);
+
+            m_InputRaycaster.enabled = true;
+            m_Canvas.enabled = true;
+
+            //animate
+            LeanTween.cancel(m_TweenId);
+            m_TweenId = LeanTween.value(m_CanvasGroup.alpha, 1f, 0.6f)
+                .setEaseOutCubic()
+                .setOnUpdate((float t) =>
+                {
+                    m_CanvasGroup.alpha = t;
+                    m_MainRect.localScale = new Vector3(t, t, t);
+                })
+                .uniqueId;
+
+            //setup
+            m_SwipeDetector.SwipeRight += PrevPage;
+            m_SwipeDetector.SwipeLeft += NextPage;
+
+            m_SpiritsByTier = new List<List<SpiritData>>();
+            for (int i = 0; i < m_TierButtons.Count; i++)
+            {
+                m_SpiritsByTier.Add(new List<SpiritData>());
+                foreach (KnownSpirits item in PlayerDataManager.playerData.knownSpirits)
+                {
+                    SpiritData data = DownloadedAssets.GetSpirit(item.spirit);
+
+                    if (data.tier == i + 1)
+                        m_SpiritsByTier[i].Add(data);
+                }
+            }
+
+            SetupPage();
+            SetupPageCounter();
+        }
+
+        [ContextMenu("Close")]
+        private void _Close()
+        {
+            UIMainScreens.PushEventAnalyticUI(UIMainScreens.SummonArena, UIMainScreens.Arena);
+
+            IsOpen = false;
+            m_SwipeDetector.SwipeRight -= PrevPage;
+            m_SwipeDetector.SwipeLeft -= NextPage;
+            m_InputRaycaster.enabled = false;
+
+            //animate
+            LeanTween.cancel(m_TweenId);
+            m_TweenId = LeanTween.value(m_CanvasGroup.alpha, 0, 1f)
+                .setEaseOutCubic()
+                .setOnUpdate((float t) =>
+                {
+                    m_CanvasGroup.alpha = t;
+                    m_MainRect.localScale = new Vector3(t, t, t);
+                })
+                .setOnComplete(() =>
+                {
+                    m_Canvas.enabled = false;
+                })
+                .uniqueId;
+        }
+
+        private void AnimateLeft(System.Action onComplete)
+        {
+            LeanTween.cancel(m_PageTweenId);
+            m_PageTweenId = LeanTween.value(1 - m_PageCanvasGroup.alpha, 1, m_PageCanvasGroup.alpha / 4f)
+                .setEaseOutCubic()
+                .setOnUpdate((float t) =>
+                {
+                    m_PageCanvasGroup.alpha = 1 - t;
+                    m_PageRect.anchoredPosition = new Vector2(Mathf.Lerp(0, -m_CanvasRect.sizeDelta.x / 4f, t), 0);
+                })
+                .setOnComplete(onComplete)
+                .uniqueId;
+        }
+
+        private void AnimateRight(System.Action onComplete)
+        {
+            LeanTween.cancel(m_PageTweenId);
+            m_PageTweenId = LeanTween.value(1 - m_PageCanvasGroup.alpha, 1, m_PageCanvasGroup.alpha / 4f)
+               .setEaseOutCubic()
+               .setOnUpdate((float t) =>
+               {
+                   m_PageCanvasGroup.alpha = 1 - t;
+                   m_PageRect.anchoredPosition = new Vector2(Mathf.Lerp(0, m_CanvasRect.sizeDelta.x / 5f, t), 0);
+               })
+               .setOnComplete(onComplete)
+               .uniqueId;
+        }
+
+        private void AnimateCenter(System.Action onComplete)
+        {
+            LeanTween.cancel(m_PageTweenId);
+
+            float start = -m_PageRect.anchoredPosition.x;
+            float end = 0;
+
+            m_PageTweenId = LeanTween.value(0 - m_PageCanvasGroup.alpha, 1, 0.25f)
+                .setEaseInOutCubic()
+                .setOnUpdate((float t) =>
+                {
+                    m_PageCanvasGroup.alpha = t;
+                    m_PageRect.anchoredPosition = new Vector2(Mathf.Lerp(start, end, t), 0);
+                })
+                .setOnComplete(onComplete)
+                .uniqueId;
+        }
+
+        private void NextPage()
+        {
+            m_CurrentIndex += 1;
+            if (m_CurrentIndex >= m_SpiritsByTier[m_CurrentTier - 1].Count)
+                m_CurrentIndex = 0;
+
+            //pan and fade out
+            AnimateLeft(() =>
+            {
+                SetupPage();
+                AnimateCenter(null);
+            });
+
+            SetupPageCounter();
+        }
+
+        private void PrevPage()
+        {
+            m_CurrentIndex -= 1;
+            if (m_CurrentIndex < 0)
+                m_CurrentIndex = m_SpiritsByTier[m_CurrentTier - 1].Count - 1;
+
+            AnimateRight(() =>
+            {
+                SetupPage();
+                AnimateCenter(null);
+            });
+
+            SetupPageCounter();
+        }
+        private void IngredientStringSetup(string String)
+        {
+            if (!string.IsNullOrEmpty(String))
+            {
+                if (m_SpiritRequiredIngredients.text != "")
+                {
+                    m_SpiritRequiredIngredients.text += "\n";
+                }
+                m_SpiritRequiredIngredients.text += string.Concat(LocalizeLookUp.GetCollectableName(String), " ({}/1)");
+                if (PlayerDataManager.playerData.GetIngredient(String) == 0)
+                {
+                    m_SpiritRequiredIngredients.text = m_SpiritRequiredIngredients.text.Replace("({}/1)", "<color=red>(0/1)</color>");
+                }
+                else { m_SpiritRequiredIngredients.text = m_SpiritRequiredIngredients.text.Replace("{}", string.Concat("<b>", PlayerDataManager.playerData.GetIngredient(String).ToString(), "</b>")); }
+            }
+        }
+        private void SetupPage()
+        {
+            if (m_SpiritsByTier[m_CurrentTier - 1].Count == 0)
+            {
+                m_SpiritContainer.SetActive(false);
+                m_NoSpiritContainer.SetActive(true);
+                return;
+            }
+
+            m_SpiritContainer.SetActive(true);
+            m_NoSpiritContainer.SetActive(false);
+
+            int spiritIdx = m_CurrentIndex;
+            SpiritData spirit = m_SpiritsByTier[m_CurrentTier - 1][spiritIdx];
+
+
+            m_SpiritName.text = spirit.Name;
+            var m_zone = "";
+            foreach (var item in spirit.zones)
+            {
+                m_zone = LocalizeLookUp.GetZoneName(item);
+                break;
+            }
+            m_SpiritBehavior.text = LocalizeLookUp.GetText("spirit_behavior")
+            .Replace("{{type}}", LocalizeLookUp.GetText("spirit_type_" + spirit.type))
+            .Replace("{{behavior}}", LocalizeLookUp.GetText("spirit_behavior_" + spirit.type))
+            .Replace("{{zone}}", m_zone);
+
+            m_Required.text = LocalizeLookUp.GetText("pop_required_ingredients").Replace("{{ingredient}}", "");
+            if (string.IsNullOrEmpty(spirit.herb) && string.IsNullOrEmpty(spirit.tool) && string.IsNullOrEmpty(spirit.gem))
+            {
+                m_SpiritRequiredIngredients.text = LocalizeLookUp.GetText("lt_none");
+            }
+            else
+            {
+                m_SpiritRequiredIngredients.text = "";
+                IngredientStringSetup(spirit.gem);
+                IngredientStringSetup(spirit.herb);
+                IngredientStringSetup(spirit.tool);
+            }
+
+            m_SpiritArt.overrideSprite = null;
+            m_SpiritArt.color = Color.black;
+            m_SummonButton.interactable = SummoningManager.CanSummon(spirit.id);
+            int summonCost = PlayerDataManager.summoningCosts[spirit.tier - 1];
+            m_SummonCost.text = LocalizeLookUp.GetText("spell_data_cost").Replace("{{Energy Cost}}", summonCost.ToString());
+
+            DownloadedAssets.GetSprite(spirit.id, spr =>
+            {
+                if (m_SpiritArt == null)
+                    return;
+                if (spiritIdx != m_CurrentIndex)
+                    return;
+
+                LeanTween.cancel(m_ArtTweenId);
+                m_SpiritArt.overrideSprite = spr;
+                m_ArtTweenId = LeanTween.color(m_SpiritArt.rectTransform, Color.white, 1f).uniqueId;
+            });
+        }
+
+        private void SetupPageCounter()
+        {
+            m_PageCounter.text = $"{m_CurrentIndex + 1}/{m_SpiritsByTier[m_CurrentTier - 1].Count}";
+        }
+
+        private void OnClickClose()
+        {
+            BackButtonListener.RemoveCloseAction();
+            _Close();
+        }
+
+        private void OnClickSummon()
+        {
+            string spiritId = m_SpiritsByTier[m_CurrentTier - 1][m_CurrentIndex].id;
+            m_OnSummom?.Invoke(spiritId);
+            Close();
+        }
+
+        private void OnClickInfo()
+        {
+            string spiritId = m_SpiritsByTier[m_CurrentTier - 1][m_CurrentIndex].id;
+            SpiritData spirit = DownloadedAssets.GetSpirit(spiritId);
+            m_InfoPopup.Show(spirit);
+        }
+
+        private void OnClickTier(int tier)
+        {
+            if (m_CurrentTier == tier)
+                return;
+
+            for (int i = 0; i < m_TierButtons.Count; i++)
+            {
+                if (i + 1 == tier)
+                    m_TierButtons[i].targetGraphic.color = Color.white;
+                else
+                    m_TierButtons[i].targetGraphic.color = Color.grey;
+            }
+
+            if (tier > m_CurrentTier)
+            {
+                AnimateLeft(() =>
+                {
+                    SetupPage();
+                    SetupPageCounter();
+                    AnimateCenter(null);
+                });
+            }
+            else
+            {
+                AnimateRight(() =>
+                {
+                    SetupPage();
+                    SetupPageCounter();
+                    AnimateCenter(null);
+                });
+            }
+
+            m_CurrentIndex = 0;
+            m_CurrentTier = tier;
+        }
+    }
+}
+
