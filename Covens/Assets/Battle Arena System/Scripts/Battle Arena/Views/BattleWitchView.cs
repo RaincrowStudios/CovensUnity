@@ -14,6 +14,7 @@ namespace Raincrow.BattleArena.View
         [SerializeField] private GameObject _deathIcon;
         [SerializeField] private TMPro.TextMeshProUGUI _playerLevel;
         [SerializeField] private TMPro.TextMeshProUGUI _playerName;
+        [SerializeField] private Canvas _canvas;
 
         // private variables
         private Material _rendererMaterial;
@@ -30,9 +31,9 @@ namespace Raincrow.BattleArena.View
             }
         }
 
-        public override void Init(IWitchModel characterModel)
+        public override void Init(IWitchModel characterModel, Camera battleCamera)
         {
-            base.Init(characterModel);
+            base.Init(characterModel, battleCamera);
 
             _immunityIcon.SetActive(false);
             _deathIcon.SetActive(false);
@@ -41,6 +42,9 @@ namespace Raincrow.BattleArena.View
             _playerLevel.text = characterModel.Level.ToString();
             _playerName.gameObject.SetActive(true);
             _playerName.text = characterModel.Name;
+
+            _canvas.renderMode = RenderMode.WorldSpace;
+            _canvas.worldCamera = battleCamera;
         }
 
         public override void FaceCamera(Quaternion cameraRotation, Vector3 cameraForward)

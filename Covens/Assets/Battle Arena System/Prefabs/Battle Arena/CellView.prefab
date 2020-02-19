@@ -11,7 +11,7 @@ GameObject:
   - component: {fileID: 6613280951815210365}
   - component: {fileID: 8067020066545925722}
   - component: {fileID: 1545156458735728162}
-  m_Layer: 0
+  m_Layer: 24
   m_Name: Renderer
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -89,7 +89,7 @@ GameObject:
   - component: {fileID: 8107487652929660500}
   - component: {fileID: 8107487652929660503}
   - component: {fileID: 6753272869729047748}
-  m_Layer: 0
+  m_Layer: 24
   m_Name: CellView
   m_TagString: Untagged
   m_Icon: {fileID: 0}

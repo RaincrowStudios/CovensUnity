@@ -132,7 +132,7 @@ GameObject:
   - component: {fileID: 147957911}
   - component: {fileID: 147957910}
   - component: {fileID: 147957909}
-  m_Layer: 5
+  m_Layer: 26
   m_Name: ButtonFlee
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -265,7 +265,7 @@ GameObject:
   - component: {fileID: 183075894}
   - component: {fileID: 183075893}
   - component: {fileID: 183075892}
-  m_Layer: 5
+  m_Layer: 26
   m_Name: Canvas
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -321,7 +321,7 @@ Canvas:
   m_Enabled: 1
   serializedVersion: 3
   m_RenderMode: 0
-  m_Camera: {fileID: 0}
+  m_Camera: {fileID: 2007260386}
   m_PlaneDistance: 100
   m_PixelPerfect: 0
   m_ReceivesEvents: 1
@@ -423,19 +423,14 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 3561526507227420495, guid: 61c97baa5215f1647a7ed02e6b0d3ef8,
         type: 3}
-      propertyPath: _battleCamera
+      propertyPath: _serviceLocator
       value: 
-      objectReference: {fileID: 2007260386}
+      objectReference: {fileID: 1442890515}
     - target: {fileID: 3561526507227420495, guid: 61c97baa5215f1647a7ed02e6b0d3ef8,
         type: 3}
       propertyPath: _quickCastUI
       value: 
       objectReference: {fileID: 6547865450329836963}
-    - target: {fileID: 3561526507227420495, guid: 61c97baa5215f1647a7ed02e6b0d3ef8,
-        type: 3}
-      propertyPath: _serviceLocator
-      value: 
-      objectReference: {fileID: 1442890515}
     - target: {fileID: 8938269710436315475, guid: 61c97baa5215f1647a7ed02e6b0d3ef8,
         type: 3}
       propertyPath: _serviceLocator
@@ -459,7 +454,7 @@ GameObject:
   - component: {fileID: 1079908455}
   - component: {fileID: 1079908457}
   - component: {fileID: 1079908456}
-  m_Layer: 5
+  m_Layer: 26
   m_Name: TextFlee
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -618,11 +613,6 @@ PrefabInstance:
       propertyPath: m_Name
       value: Loading View
       objectReference: {fileID: 0}
-    - target: {fileID: 7842126965393978447, guid: 26f00b8706aeb0742b0834a3e3e386b6,
-        type: 3}
-      propertyPath: m_IsActive
-      value: 1
-      objectReference: {fileID: 0}
     - target: {fileID: 7842126965393978432, guid: 26f00b8706aeb0742b0834a3e3e386b6,
         type: 3}
       propertyPath: m_LocalPosition.x
@@ -727,81 +717,6 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Pivot.y
       value: 0.5
-      objectReference: {fileID: 0}
-    - target: {fileID: 7842126964024301721, guid: 26f00b8706aeb0742b0834a3e3e386b6,
-        type: 3}
-      propertyPath: m_textAlignment
-      value: 513
-      objectReference: {fileID: 0}
-    - target: {fileID: 7842126964024301721, guid: 26f00b8706aeb0742b0834a3e3e386b6,
-        type: 3}
-      propertyPath: m_fontSize
-      value: 90
-      objectReference: {fileID: 0}
-    - target: {fileID: 7842126964024301721, guid: 26f00b8706aeb0742b0834a3e3e386b6,
-        type: 3}
-      propertyPath: m_fontSizeBase
-      value: 90
-      objectReference: {fileID: 0}
-    - target: {fileID: 7842126964024301721, guid: 26f00b8706aeb0742b0834a3e3e386b6,
-        type: 3}
-      propertyPath: m_text
-      value: REALLY LONG LOADING TEXT FOR TESTING PURPOSES
-      objectReference: {fileID: 0}
-    - target: {fileID: 7842126964024301721, guid: 26f00b8706aeb0742b0834a3e3e386b6,
-        type: 3}
-      propertyPath: m_textInfo.characterCount
-      value: 45
-      objectReference: {fileID: 0}
-    - target: {fileID: 7842126964024301721, guid: 26f00b8706aeb0742b0834a3e3e386b6,
-        type: 3}
-      propertyPath: m_textInfo.spaceCount
-      value: 6
-      objectReference: {fileID: 0}
-    - target: {fileID: 7842126964024301721, guid: 26f00b8706aeb0742b0834a3e3e386b6,
-        type: 3}
-      propertyPath: m_textInfo.wordCount
-      value: 7
-      objectReference: {fileID: 0}
-    - target: {fileID: 7842126964024301721, guid: 26f00b8706aeb0742b0834a3e3e386b6,
-        type: 3}
-      propertyPath: m_firstOverflowCharacterIndex
-      value: -1
-      objectReference: {fileID: 0}
-    - target: {fileID: 7842126964024301721, guid: 26f00b8706aeb0742b0834a3e3e386b6,
-        type: 3}
-      propertyPath: m_textInfo.lineCount
-      value: 2
-      objectReference: {fileID: 0}
-    - target: {fileID: 7842126964024301721, guid: 26f00b8706aeb0742b0834a3e3e386b6,
-        type: 3}
-      propertyPath: m_textInfo.pageCount
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 7842126964942098660, guid: 26f00b8706aeb0742b0834a3e3e386b6,
-        type: 3}
-      propertyPath: m_AnchoredPosition.x
-      value: -1025
-      objectReference: {fileID: 0}
-    - target: {fileID: 7842126964942098660, guid: 26f00b8706aeb0742b0834a3e3e386b6,
-        type: 3}
-      propertyPath: m_SizeDelta.x
-      value: 200
-      objectReference: {fileID: 0}
-    - target: {fileID: 7842126964942098660, guid: 26f00b8706aeb0742b0834a3e3e386b6,
-        type: 3}
-      propertyPath: m_SizeDelta.y
-      value: 200
-      objectReference: {fileID: 0}
-    - target: {fileID: 7842126964024301720, guid: 26f00b8706aeb0742b0834a3e3e386b6,
-        type: 3}
-      propertyPath: m_AnchoredPosition.x
-      value: -100
-      objectReference: {fileID: 0}
-    - target: {fileID: 7842126964024301720, guid: 26f00b8706aeb0742b0834a3e3e386b6,
-        type: 3}
-      propertyPath: m_SizeDelta.x
-      value: 775
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 26f00b8706aeb0742b0834a3e3e386b6, type: 3}
@@ -935,7 +850,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!4 &2111958078
 Transform:
   m_ObjectHideFlags: 0
@@ -978,7 +893,7 @@ PrefabInstance:
     - target: {fileID: 3543581160031026037, guid: 0251eb9112595734eb75de6863092d3a,
         type: 3}
       propertyPath: m_LocalPosition.x
-      value: -3.5
+      value: -0.5
       objectReference: {fileID: 0}
     - target: {fileID: 3543581160031026037, guid: 0251eb9112595734eb75de6863092d3a,
         type: 3}
@@ -988,7 +903,7 @@ PrefabInstance:
     - target: {fileID: 3543581160031026037, guid: 0251eb9112595734eb75de6863092d3a,
         type: 3}
       propertyPath: m_LocalPosition.z
-      value: -1.68
+      value: 0.32
       objectReference: {fileID: 0}
     - target: {fileID: 3543581160031026037, guid: 0251eb9112595734eb75de6863092d3a,
         type: 3}
@@ -1137,11 +1052,6 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Name
       value: Battle Quick Cast UI
-      objectReference: {fileID: 0}
-    - target: {fileID: 2891449820701939688, guid: 98e8afefca54adc4f9f873b05bf5af0b,
-        type: 3}
-      propertyPath: m_IsActive
-      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 2891449820701939691, guid: 98e8afefca54adc4f9f873b05bf5af0b,
         type: 3}

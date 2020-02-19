@@ -7,7 +7,7 @@ namespace Raincrow.BattleArena.View
     {
         public virtual T Model { get; protected set; }
 
-        public virtual void Init(T characterModel)
+        public virtual void Init(T characterModel, Camera battleCamera)
         {
             Model = characterModel;
         }

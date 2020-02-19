@@ -9,7 +9,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 55641126279688642}
-  m_Layer: 0
+  m_Layer: 24
   m_Name: Cells
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -44,7 +44,7 @@ GameObject:
   - component: {fileID: 7196786638976531525}
   - component: {fileID: 8938269710436315475}
   - component: {fileID: 1794520544814550441}
-  m_Layer: 0
+  m_Layer: 24
   m_Name: BattleView
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -78,12 +78,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6e7e65d202e16e947a5b844118b467ad, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _battleCamera: {fileID: 0}
   _cellsTransform: {fileID: 55641126279688642}
+  _serviceLocator: {fileID: 0}
   _gridFactory: {fileID: 7196786638976531525}
   _spiritFactory: {fileID: 8938269710436315475}
   _witchFactory: {fileID: 1794520544814550441}
   _gameMasterController: {fileID: 1190233280}
+  _quickCastUI: {fileID: 0}
 --- !u!114 &1190233280
 MonoBehaviour:
   m_ObjectHideFlags: 0

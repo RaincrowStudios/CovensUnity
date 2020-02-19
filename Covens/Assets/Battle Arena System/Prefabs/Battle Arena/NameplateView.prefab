@@ -11,7 +11,7 @@ GameObject:
   - component: {fileID: 4470161376793716426}
   - component: {fileID: 4470161376793716424}
   - component: {fileID: 4470161376793716427}
-  m_Layer: 5
+  m_Layer: 26
   m_Name: ImmunityIcon
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -34,8 +34,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0.5}
   m_AnchorMax: {x: 1, y: 0.5}
-  m_AnchoredPosition: {x: 0.15, y: 0}
-  m_SizeDelta: {x: -2, y: 0.5}
+  m_AnchoredPosition: {x: 0.105, y: 0}
+  m_SizeDelta: {x: -1.905, y: 0.5}
   m_Pivot: {x: 0, y: 0.5}
 --- !u!222 &4470161376793716424
 CanvasRenderer:
@@ -86,13 +86,13 @@ GameObject:
   - component: {fileID: 4470161377004348099}
   - component: {fileID: 4470161377004348097}
   - component: {fileID: 4470161377004348096}
-  m_Layer: 5
+  m_Layer: 26
   m_Name: DeathIcon
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &4470161377004348099
 RectTransform:
   m_ObjectHideFlags: 0
@@ -161,7 +161,7 @@ GameObject:
   - component: {fileID: 4470161377665353373}
   - component: {fileID: 4470161377665353372}
   - component: {fileID: 4470161377665353375}
-  m_Layer: 5
+  m_Layer: 26
   m_Name: NameplateView
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -246,7 +246,7 @@ GameObject:
   - component: {fileID: 4470161377777368559}
   - component: {fileID: 4470161377777368557}
   - component: {fileID: 4470161377777368556}
-  m_Layer: 5
+  m_Layer: 26
   m_Name: Player Level
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -270,7 +270,7 @@ RectTransform:
   m_AnchorMin: {x: 0, y: 0.5}
   m_AnchorMax: {x: 1, y: 0.5}
   m_AnchoredPosition: {x: 0.13, y: 0.015}
-  m_SizeDelta: {x: -1.98, y: 0.25}
+  m_SizeDelta: {x: -1.98, y: 0.5}
   m_Pivot: {x: 0, y: 0.5}
 --- !u!222 &4470161377777368557
 CanvasRenderer:
@@ -329,8 +329,8 @@ MonoBehaviour:
   m_outlineColor:
     serializedVersion: 2
     rgba: 4278190080
-  m_fontSize: 0.2
-  m_fontSizeBase: 0.2
+  m_fontSize: 0.35
+  m_fontSizeBase: 0.35
   m_fontWeight: 400
   m_enableAutoSizing: 0
   m_fontSizeMin: 18
@@ -404,7 +404,7 @@ GameObject:
   - component: {fileID: 4470161378409380400}
   - component: {fileID: 4470161378409380406}
   - component: {fileID: 4470161378409380401}
-  m_Layer: 5
+  m_Layer: 26
   m_Name: NameplateIcon
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -479,7 +479,7 @@ GameObject:
   - component: {fileID: 4470161378502450149}
   - component: {fileID: 4470161378502450155}
   - component: {fileID: 4470161378502450154}
-  m_Layer: 5
+  m_Layer: 26
   m_Name: Player Name
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -502,8 +502,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0.5}
   m_AnchorMax: {x: 1, y: 0.5}
-  m_AnchoredPosition: {x: -0.049999952, y: 0}
-  m_SizeDelta: {x: -0.7, y: 0.5}
+  m_AnchoredPosition: {x: -0.01, y: 0}
+  m_SizeDelta: {x: -0.60899997, y: 0.5}
   m_Pivot: {x: 1, y: 0.5}
 --- !u!222 &4470161378502450155
 CanvasRenderer:
@@ -533,7 +533,7 @@ MonoBehaviour:
       m_Calls: []
     m_TypeName: UnityEngine.UI.MaskableGraphic+CullStateChangedEvent, UnityEngine.UI,
       Version=1.0.0.0, Culture=neutral, PublicKeyToken=null
-  m_text: VeryLongLongLongName
+  m_text: Emanuel
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 38350119ae09440479434f932beb604a, type: 2}
   m_sharedMaterial: {fileID: 21238215743915936, guid: 38350119ae09440479434f932beb604a,
@@ -562,12 +562,12 @@ MonoBehaviour:
   m_outlineColor:
     serializedVersion: 2
     rgba: 4278190080
-  m_fontSize: 0.2
+  m_fontSize: 0.3
   m_fontSizeBase: 0.2
   m_fontWeight: 400
-  m_enableAutoSizing: 0
-  m_fontSizeMin: 18
-  m_fontSizeMax: 72
+  m_enableAutoSizing: 1
+  m_fontSizeMin: 0.2
+  m_fontSizeMax: 0.3
   m_fontStyle: 0
   m_textAlignment: 4098
   m_characterSpacing: 0
@@ -603,12 +603,12 @@ MonoBehaviour:
   m_margin: {x: 0, y: 0, z: 0, w: 0}
   m_textInfo:
     textComponent: {fileID: 4470161378502450154}
-    characterCount: 20
+    characterCount: 7
     spriteCount: 0
     spaceCount: 0
     wordCount: 1
     linkCount: 0
-    lineCount: 2
+    lineCount: 1
     pageCount: 1
     materialCount: 1
   m_isUsingLegacyAnimationComponent: 0

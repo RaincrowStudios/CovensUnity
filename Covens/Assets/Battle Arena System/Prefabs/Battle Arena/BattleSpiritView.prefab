@@ -10,7 +10,7 @@ GameObject:
   m_Component:
   - component: {fileID: 4151571229379165949}
   - component: {fileID: 8594441439031050491}
-  m_Layer: 0
+  m_Layer: 25
   m_Name: BattleSpiritView
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -57,7 +57,7 @@ GameObject:
   - component: {fileID: 8128010212100880320}
   - component: {fileID: 462576460934717136}
   - component: {fileID: 776169818871746028}
-  m_Layer: 0
+  m_Layer: 25
   m_Name: Avatar Renderer
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -133,7 +133,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 8130115422030448422}
-  m_Layer: 0
+  m_Layer: 25
   m_Name: Avatar Renderer Root
   m_TagString: Untagged
   m_Icon: {fileID: 0}

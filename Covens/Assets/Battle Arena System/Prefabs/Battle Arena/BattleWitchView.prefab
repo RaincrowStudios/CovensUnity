@@ -9,7 +9,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 2484422669062743101}
-  m_Layer: 0
+  m_Layer: 25
   m_Name: Avatar Renderer Root
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -43,7 +43,7 @@ GameObject:
   - component: {fileID: 8537262420661956340}
   - component: {fileID: 8587740960221603405}
   - component: {fileID: 7556108810512063564}
-  m_Layer: 0
+  m_Layer: 25
   m_Name: Avatar Renderer
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -120,7 +120,7 @@ GameObject:
   m_Component:
   - component: {fileID: 7856794403783820060}
   - component: {fileID: 7898114360831156526}
-  m_Layer: 0
+  m_Layer: 25
   m_Name: BattleWitchView
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -160,6 +160,7 @@ MonoBehaviour:
   _deathIcon: {fileID: 2174404105654439247}
   _playerLevel: {fileID: 2174404103809782369}
   _playerName: {fileID: 2174404104131179623}
+  _canvas: {fileID: 2174404103894395153}
 --- !u!1001 &2316043272514760589
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -277,36 +278,17 @@ PrefabInstance:
       propertyPath: m_Pivot.y
       value: 0.5
       objectReference: {fileID: 0}
-    - target: {fileID: 4470161378502450149, guid: 91ad658fd6d07b944bca4b7d22e0d2b3,
-        type: 3}
-      propertyPath: m_AnchoredPosition.x
-      value: -0.049999952
-      objectReference: {fileID: 0}
-    - target: {fileID: 4470161378502450154, guid: 91ad658fd6d07b944bca4b7d22e0d2b3,
-        type: 3}
-      propertyPath: m_textInfo.characterCount
-      value: 20
-      objectReference: {fileID: 0}
-    - target: {fileID: 4470161378502450154, guid: 91ad658fd6d07b944bca4b7d22e0d2b3,
-        type: 3}
-      propertyPath: m_textInfo.wordCount
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 4470161378502450154, guid: 91ad658fd6d07b944bca4b7d22e0d2b3,
-        type: 3}
-      propertyPath: m_textInfo.lineCount
-      value: 2
-      objectReference: {fileID: 0}
-    - target: {fileID: 4470161378502450154, guid: 91ad658fd6d07b944bca4b7d22e0d2b3,
-        type: 3}
-      propertyPath: m_textInfo.pageCount
-      value: 1
-      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 91ad658fd6d07b944bca4b7d22e0d2b3, type: 3}
 --- !u!224 &2174404103894395152 stripped
 RectTransform:
   m_CorrespondingSourceObject: {fileID: 4470161377665353373, guid: 91ad658fd6d07b944bca4b7d22e0d2b3,
+    type: 3}
+  m_PrefabInstance: {fileID: 2316043272514760589}
+  m_PrefabAsset: {fileID: 0}
+--- !u!223 &2174404103894395153 stripped
+Canvas:
+  m_CorrespondingSourceObject: {fileID: 4470161377665353372, guid: 91ad658fd6d07b944bca4b7d22e0d2b3,
     type: 3}
   m_PrefabInstance: {fileID: 2316043272514760589}
   m_PrefabAsset: {fileID: 0}

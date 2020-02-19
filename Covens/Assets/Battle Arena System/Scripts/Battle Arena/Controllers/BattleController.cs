@@ -66,6 +66,7 @@ namespace Raincrow.BattleArena.Controller
             // Initialize list of characters            
             _witches = new List<AbstractCharacterView<IWitchModel>>();
             _spirits = new List<AbstractCharacterView<ISpiritModel>>();
+            Camera battleCamera = _serviceLocator.GetBattleCamera();
 
             Dictionary<string, IWitchModel> dictWitches = new Dictionary<string, IWitchModel>();
             foreach (IWitchModel witch in witches)
@@ -94,7 +95,7 @@ namespace Raincrow.BattleArena.Controller
 
                             // add spirit and init
                             AbstractCharacterView<ISpiritModel> spiritView = createCharacter.ReturnValue;
-                            spiritView.Init(spirit);
+                            spiritView.Init(spirit, battleCamera);
                             _spirits.Add(spiritView);
                         }
                         else if (dictWitches.TryGetValue(cell.ObjectId, out IWitchModel witch)) // has a character/item
@@ -105,7 +106,7 @@ namespace Raincrow.BattleArena.Controller
 
                             // add a witch and init
                             AbstractCharacterView<IWitchModel> witchModel = createCharacter.ReturnValue;
-                            witchModel.Init(witch);
+                            witchModel.Init(witch, battleCamera);
                             _witches.Add(witchModel);
                         }
                     }
