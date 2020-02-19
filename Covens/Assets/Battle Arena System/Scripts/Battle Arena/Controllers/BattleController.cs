@@ -198,7 +198,7 @@ namespace Raincrow.BattleArena.Controller
 
         public void OnClickFlee()
         {
-            TurnController.AddAction(new FleeActionModel());
+            QuickCastUI.OnClickFlee();
         }
 
         #region ICoroutineStarter

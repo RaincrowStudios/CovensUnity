@@ -54,6 +54,17 @@ namespace Raincrow.BattleArena.UI
             UISummoning.Open(AddActionSummon);
         }
 
+        public void OnClickFlee()
+        {
+            if (m_BattleController.TurnController.RemainingActions <= 0)
+            {
+                return;
+            }
+
+            m_BattleController.TurnController.AddAction(new FleeActionModel());
+
+            m_TextAmountActions.text = m_BattleController.TurnController.RemainingActions.ToString();
+        }
         private void AddActionSummon(string spiritID)
         {
             BattleSlot slot = new BattleSlot() { Col = selectedView.CellModel.Y, Row = selectedView.CellModel.X };
