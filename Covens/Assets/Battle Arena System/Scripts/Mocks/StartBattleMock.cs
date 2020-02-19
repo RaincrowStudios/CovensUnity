@@ -101,7 +101,7 @@ namespace Raincrow.Mocks
             };
 
             // place characters in grid model
-            gridModel.Cells[0, 0].ObjectId = witchModel.Id;
+            gridModel.Cells[4, 4].ObjectId = witchModel.Id;
             gridModel.Cells[0, 1].ObjectId = spiritModel.Id;
 
             // Add all characters
