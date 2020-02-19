@@ -36,7 +36,7 @@ namespace Raincrow.BattleArena.Manager
                     {
                         if (character.ObjectType == ObjectType.Spirit)
                         {
-                            witches.Add(character);
+                            spirits.Add(character);
                         }
                         else if (character.ObjectType == ObjectType.Witch)
                         {
