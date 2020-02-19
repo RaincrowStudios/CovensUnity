@@ -17,6 +17,11 @@ namespace Raincrow.BattleArena.Model
         public virtual string Type { get; }
     }
 
+    public class FleeActionModel : ActionModel
+    {
+        public override string Type => ActionType.Flee;
+    }
+
     public class MoveActionModel : ActionModel
     {
         public override string Type => ActionType.Move;
