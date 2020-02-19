@@ -21,6 +21,7 @@ namespace Raincrow.BattleArena.UI
 
         [Header("Menus")]
         [SerializeField] private GameObject m_ActionsMenu;
+        [SerializeField] private GameObject m_SpellMenu;
 
 
         private CellView selectedView;
@@ -42,6 +43,25 @@ namespace Raincrow.BattleArena.UI
             m_TextAmountActions.text = m_BattleController.TurnController.RemainingActions.ToString();
         }
 
+        public void OnClickSummon()
+        {
+            if (m_BattleController.TurnController.RemainingActions <= 0)
+            {
+                return;
+            }
+
+            UIMainScreens.PushEventAnalyticUI(UIMainScreens.Arena, UIMainScreens.SummonArena);
+            UISummoning.Open(AddActionSummon);
+        }
+
+        private void AddActionSummon(string spiritID)
+        {
+            BattleSlot slot = new BattleSlot() { Col = selectedView.CellModel.Y, Row = selectedView.CellModel.X };
+            m_BattleController.TurnController.AddAction(new SummonActionModel() { Position = slot, SpiritId = spiritID });
+
+            m_TextAmountActions.text = m_BattleController.TurnController.RemainingActions.ToString();
+        }
+
         public void OnClickCell(CellView cell)
         {
             selectedView = cell;
@@ -49,6 +69,10 @@ namespace Raincrow.BattleArena.UI
             if (cell.IsEmpty)
             {
                 ChangeMenu(m_ActionsMenu);
+            }
+            else
+            {
+                ChangeMenu(m_SpellMenu);
             }
         }
 
@@ -64,19 +88,27 @@ namespace Raincrow.BattleArena.UI
             }
 
             menu.SetActive(true);
-            
-            if (currentMenu == null)
+
+            if (currentMenu == null || !open)
             {
+                if(currentMenu != null)
+                {
+                    currentMenu.SetActive(false);
+                }
+
                 LeanTween.scaleY(menu, 1.0f, TimeToToggle);
-            } else
+                currentMenu = menu;
+            }
+            else if (open)
             {
                 LeanTween.scaleY(currentMenu, 0.0f, TimeToToggle).setOnComplete(() => {
                     currentMenu.SetActive(false);
-                    LeanTween.scaleY(menu, 1.0f, TimeToToggle).setDelay(0.05f);
+                    LeanTween.scaleY(menu, 1.0f, TimeToToggle);
+                    currentMenu = menu;
                 });
             }
+           
 
-            currentMenu = menu;
             open = true;
             m_ImageIcon.sprite = m_IconOpen;
         }

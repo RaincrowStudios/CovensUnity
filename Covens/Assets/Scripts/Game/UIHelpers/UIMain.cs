@@ -299,6 +299,8 @@ public class UIMain : MonoBehaviour
 public static class UIMainScreens
 {
     public static readonly string Map = "map";
+    public static readonly string Arena = "arena";
+    public static readonly string SummonArena = "summonArena";
     public static readonly string Wardrobe = "wardrobe";
     public static readonly string Moonphase = "moonphase";
     public static readonly string Leaderboards = "leaderboards";
