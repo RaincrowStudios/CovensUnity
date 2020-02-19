@@ -298,9 +298,9 @@ namespace Raincrow.BattleArena.Controller
             }
         }
 
-        private void OnCellClick(ICellModel cellModel)
+        private void OnCellClick(CellView cellView)
         {
-            Debug.Log(cellModel.ObjectId);
+            _quickCastUI.OnClickCell(cellView);
         }
 
         #region ICoroutineStarter

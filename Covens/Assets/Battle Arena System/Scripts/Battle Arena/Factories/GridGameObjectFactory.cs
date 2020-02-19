@@ -11,7 +11,7 @@ namespace Raincrow.BattleArena.Factory
         [SerializeField] private Transform _cellsParent;
         [SerializeField] private GridGameObjectModel _gridGameObjectModel;
 
-        public override IEnumerator<GameObject[,]> Create(IGridModel gridModel, UnityAction<ICellModel> cellClickCallback)
+        public override IEnumerator<GameObject[,]> Create(IGridModel gridModel, UnityAction<CellView> cellClickCallback)
         {
             // Create GameObjects grid
             GameObject[,] gridGameObjects = new GameObject[gridModel.MaxCellsPerColumn, gridModel.MaxCellsPerRow];
