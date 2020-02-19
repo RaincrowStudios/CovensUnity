@@ -1,12 +1,19 @@
-﻿using UnityEngine;
+﻿using Raincrow.BattleArena.Model;
+using UnityEngine;
 
 namespace Raincrow.BattleArena.View
 {
-    public class BattleWitchView : AbstractCharacterView
+    public class BattleWitchView : AbstractCharacterView<IWitchModel>
     {
         // Serialized variables
         [SerializeField] private Transform _avatarRoot;
         [SerializeField] private Renderer _renderer;
+
+        [Header("Nameplate")]
+        [SerializeField] private GameObject _immunityIcon;
+        [SerializeField] private GameObject _deathIcon;
+        [SerializeField] private TMPro.TextMeshProUGUI _playerLevel;
+        [SerializeField] private TMPro.TextMeshProUGUI _playerName;
 
         // private variables
         private Material _rendererMaterial;
@@ -21,6 +28,19 @@ namespace Raincrow.BattleArena.View
                 _rendererMaterial = new Material(_renderer.sharedMaterial);
                 _renderer.material = _rendererMaterial;
             }
+        }
+
+        public override void Init(IWitchModel characterModel)
+        {
+            base.Init(characterModel);
+
+            _immunityIcon.SetActive(false);
+            _deathIcon.SetActive(false);
+
+            _playerLevel.gameObject.SetActive(true);
+            _playerLevel.text = characterModel.Level.ToString();
+            _playerName.gameObject.SetActive(true);
+            _playerName.text = characterModel.Name;
         }
 
         public override void FaceCamera(Quaternion cameraRotation, Vector3 cameraForward)

@@ -10,16 +10,14 @@ namespace Raincrow.BattleArena.View
 
         // Private serialized variables
         [SerializeField] private CellClickEvent _cellClickEvent = new CellClickEvent();
+        
+        public bool IsEmpty { get { return string.IsNullOrEmpty(CellModel.ObjectId); } }
 
-        // Private variables
-        private ICellModel _cellModel;
-
-        public bool IsEmpty { get { return string.IsNullOrEmpty(_cellModel.ObjectId); } }
-        public ICellModel CellModel { get => _cellModel;}
+        public ICellModel CellModel { get; private set; }
 
         public void Init(ICellModel cellModel, UnityAction<CellView> callback)
         {
-            _cellModel = cellModel;
+            CellModel = cellModel;
             _cellClickEvent.AddListener(callback);            
         }
 

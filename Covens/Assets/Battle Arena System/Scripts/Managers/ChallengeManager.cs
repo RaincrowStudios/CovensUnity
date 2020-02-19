@@ -30,18 +30,26 @@ namespace Raincrow.BattleArena.Manager
 
                     IGridModel grid = new GridModel(battle.Grid.MaxCellsPerColumn, battle.Grid.MaxCellsPerLine, battle.Grid.Cells);
 
-                    List<ICharacterModel> characters = new List<ICharacterModel>();
-
+                    List<IWitchModel> witches = new List<IWitchModel>();
+                    List<ISpiritModel> spirits = new List<ISpiritModel>();
                     foreach (GenericCharacterObjectServer character in battle.Participants)
                     {
-                        characters.Add(character); // as ICharacterModel
+                        if (character.ObjectType == ObjectType.Spirit)
+                        {
+                            witches.Add(character);
+                        }
+                        else if (character.ObjectType == ObjectType.Witch)
+                        {
+                            witches.Add(character);
+                        }                        
                     }
 
                     IBattleModel battleModel = new BattleModel()
                     {
                         Id = battle.Id,
                         Grid = grid,
-                        Characters = characters
+                        Witches = witches,
+                        Spirits = spirits
                     };
                     StartCoroutine(StartBattle(battleModel));
 
@@ -57,7 +65,7 @@ namespace Raincrow.BattleArena.Manager
             BattleController battleController = serviceLocator.GetBattleController();
 
             yield return StartCoroutine(loadingView.Show(0f, 1f));
-            yield return StartCoroutine(battleController.StartBattle(battleModel.Id, battleModel.Grid, battleModel.Characters, loadingView));
+            yield return StartCoroutine(battleController.StartBattle(battleModel.Id, battleModel.Grid, battleModel.Witches, battleModel.Spirits, loadingView));
             yield return StartCoroutine(loadingView.Hide(1f));
         }
 

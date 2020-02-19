@@ -105,7 +105,8 @@ namespace Raincrow.Mocks
             gridModel.Cells[0, 1].ObjectId = spiritModel.Id;
 
             // Add all characters
-            List<ICharacterModel> characterModels = new List<ICharacterModel> { witchModel, spiritModel };
+            List<IWitchModel> witchModels = new List<IWitchModel> { witchModel };
+            List<ISpiritModel> spiritModels = new List<ISpiritModel> { spiritModel };
 
             // Battle Id
             string battleId = System.Guid.NewGuid().ToString();
@@ -115,7 +116,7 @@ namespace Raincrow.Mocks
             yield return StartCoroutine(loadingView.Show(0.1f, 1f));
 
             BattleController battleController = _serviceLocator.GetBattleController();
-            yield return StartCoroutine(battleController.StartBattle(battleId, gridModel, characterModels, loadingView));            
+            yield return StartCoroutine(battleController.StartBattle(battleId, gridModel, witchModels, spiritModels, loadingView));            
             StartCoroutine(loadingView.Hide(1f));
         }
 #endif

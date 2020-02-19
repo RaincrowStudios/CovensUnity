@@ -1,8 +1,9 @@
-﻿using UnityEngine;
+﻿using Raincrow.BattleArena.Model;
+using UnityEngine;
 
 namespace Raincrow.BattleArena.View
 {
-    public class BattleSpiritView : AbstractCharacterView
+    public class BattleSpiritView : AbstractCharacterView<ISpiritModel>
     {        
         // Serialized variables
         [SerializeField] private Transform _avatarRoot;

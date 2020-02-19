@@ -42,10 +42,11 @@ namespace Raincrow.BattleArena.Model
     {
         public string Id { get; set; }
         public IGridModel Grid { get; set; }
-        public IList<ICharacterModel> Characters { get; set; }
         public string[] PlanningOrder { get; set; }
         public float PlanningMaxTime { get; set; }
-        public int MaxActionsAllowed { get; set; }        
+        public int MaxActionsAllowed { get; set; }
+        public IList<ISpiritModel> Spirits { get; set; }
+        public IList<IWitchModel> Witches { get; set; }
     }
 
     [System.Serializable]

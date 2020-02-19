@@ -6,7 +6,7 @@ using Raincrow.Services;
 
 namespace Raincrow.BattleArena.Factory
 {
-    public class WitchGameObjectFactory : AbstractCharacterGameObjectFactory
+    public class WitchGameObjectFactory : AbstractCharacterGameObjectFactory<IWitchModel>
     {
         // serialized variables
         [SerializeField] private BattleWitchView _battleWitchViewPrefab;
@@ -23,16 +23,14 @@ namespace Raincrow.BattleArena.Factory
             }
         }
 
-        public override IEnumerator<AbstractCharacterView> Create(Transform cellTransform, ICharacterModel character)
+        public override IEnumerator<AbstractCharacterView<IWitchModel>> Create(Transform cellTransform, IWitchModel model)
         {
-            IWitchModel witchModel = character as IWitchModel;
-
             // Create character
-            AbstractCharacterView characterView = Instantiate(_battleWitchViewPrefab, cellTransform);
+            AbstractCharacterView<IWitchModel> characterView = Instantiate(_battleWitchViewPrefab, cellTransform);
             yield return null;
 
             // wait for coroutine
-            Coroutine<Texture> request = this.StartCoroutine<Texture>(GetWitchAvatar(witchModel));            
+            Coroutine<Texture> request = this.StartCoroutine<Texture>(GetWitchAvatar(model));            
             while (request.keepWaiting)
             {
                 yield return null;

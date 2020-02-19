@@ -6,7 +6,8 @@ namespace Raincrow.BattleArena.Model
     {
         string Id { get; }        
         IGridModel Grid { get; }   
-        IList<ICharacterModel> Characters { get; set; }
+        IList<IWitchModel> Witches { get; set; }
+        IList<ISpiritModel> Spirits { get; set; }
     }
 
     public interface IGridModel

@@ -17,19 +17,20 @@ namespace Raincrow.BattleArena.Controller
         [SerializeField] private Transform _cellsTransform;
         [SerializeField] private ServiceLocator _serviceLocator;
         [SerializeField] private AbstractGridGameObjectFactory _gridFactory; // Factory class responsible for creating our Grid        
-        [SerializeField] private AbstractCharacterGameObjectFactory _spiritFactory; // Factory class responsible for creating our Spirits   
-        [SerializeField] private AbstractCharacterGameObjectFactory _witchFactory; // Factory class responsible for creating our Witchs   
+        [SerializeField] private SpiritGameObjectFactory _spiritFactory; // Factory class responsible for creating our Spirits   
+        [SerializeField] private WitchGameObjectFactory _witchFactory; // Factory class responsible for creating our Witchs   
         [SerializeField] private AbstractGameMasterController _gameMasterController;
         [SerializeField] private QuickCastUI _quickCastUI;
 
         private GameObject[,] _grid = new GameObject[0, 0]; // Grid with all the game objects inserted
-        private List<AbstractCharacterView> _characters = new List<AbstractCharacterView>(); // List with all characters
+        private List<AbstractCharacterView<IWitchModel>> _witches = new List<AbstractCharacterView<IWitchModel>>(); // List with all witches
+        private List<AbstractCharacterView<ISpiritModel>> _spirits = new List<AbstractCharacterView<ISpiritModel>>(); // List with all spirits
         private IStateMachine<ITurnController> _stateMachine; // State machine with all phases
 
         public TurnController TurnController { get; private set; }
         public QuickCastUI QuickCastUI { get => _quickCastUI; }
 
-        public IEnumerator StartBattle(string battleId, IGridModel gridModel, IList<ICharacterModel> characters, ILoadingView loadingView = null)
+        public IEnumerator StartBattle(string battleId, IGridModel gridModel, IList<IWitchModel> witches, IList<ISpiritModel> spirits, ILoadingView loadingView = null)
         {
             if (!isActiveAndEnabled)
             {
@@ -40,7 +41,7 @@ namespace Raincrow.BattleArena.Controller
             yield return StartCoroutine(InstantiateGrid(gridModel));
           
             loadingView?.UpdateMessage("Placing characters");
-            yield return StartCoroutine(PlaceCharacters(gridModel, characters));
+            yield return StartCoroutine(PlaceCharacters(gridModel, witches, spirits));
 
             loadingView?.UpdateMessage("Starting state machine");
             yield return StartCoroutine(StartStateMachine(battleId, gridModel, _gameMasterController));
@@ -60,45 +61,56 @@ namespace Raincrow.BattleArena.Controller
             _grid = createGrid.ReturnValue;
         }        
 
-        private IEnumerator PlaceCharacters(IGridModel gridModel, IList<ICharacterModel> characters)
+        private IEnumerator PlaceCharacters(IGridModel gridModel, IList<IWitchModel> witches, IList<ISpiritModel> spirits)
         {
-            // Initialize list of characters
-            _characters = new List<AbstractCharacterView>();
+            // Initialize list of characters            
+            _witches = new List<AbstractCharacterView<IWitchModel>>();
+            _spirits = new List<AbstractCharacterView<ISpiritModel>>();
 
-            Dictionary<string, ICharacterModel> dictCharacters = new Dictionary<string, ICharacterModel>();
-            foreach (ICharacterModel character in characters)
+            Dictionary<string, IWitchModel> dictWitches = new Dictionary<string, IWitchModel>();
+            foreach (IWitchModel witch in witches)
             {
-                dictCharacters.Add(character.Id, character);
+                dictWitches.Add(witch.Id, witch);
             }
+
+            Dictionary<string, ISpiritModel> dictSpirits = new Dictionary<string, ISpiritModel>();
+            foreach (ISpiritModel spirit in spirits)
+            {
+                dictSpirits.Add(spirit.Id, spirit);
+            }            
 
             for (int i = 0; i < gridModel.MaxCellsPerRow; i++)
             {
                 for (int j = 0; j < gridModel.MaxCellsPerColumn; j++)
                 {
                     ICellModel cell = gridModel.Cells[i, j];
-                    if (!string.IsNullOrEmpty(cell.ObjectId) && dictCharacters.TryGetValue(cell.ObjectId, out ICharacterModel character)) // has a character/item
+                    if (!string.IsNullOrEmpty(cell.ObjectId))
                     {
-                        if (string.Equals(character.ObjectType, ObjectType.Spirit))
+                        if (dictSpirits.TryGetValue(cell.ObjectId, out ISpiritModel spirit)) // has a character/item
                         {
                             GameObject cellGameObject = _grid[i, j];
-                            Coroutine<AbstractCharacterView> createCharacter = this.StartCoroutine<AbstractCharacterView>(_spiritFactory.Create(cellGameObject.transform, character));
-                   
-                            yield return createCharacter;
-                            
-                            // add a character
-                            _characters.Add(createCharacter.ReturnValue);
-                        }
-                        else if (string.Equals(character.ObjectType, ObjectType.Witch))
-                        {
-                            GameObject cellGameObject = _grid[i, j];
-                            Coroutine<AbstractCharacterView> createCharacter = this.StartCoroutine<AbstractCharacterView>(_witchFactory.Create(cellGameObject.transform, character));
+                            Coroutine<AbstractCharacterView<ISpiritModel>> createCharacter = this.StartCoroutine<AbstractCharacterView<ISpiritModel>>(_spiritFactory.Create(cellGameObject.transform, spirit));
                             yield return createCharacter;
 
-                            // add a character
-                            _characters.Add(createCharacter.ReturnValue);
+                            // add spirit and init
+                            AbstractCharacterView<ISpiritModel> spiritView = createCharacter.ReturnValue;
+                            spiritView.Init(spirit);
+                            _spirits.Add(spiritView);
+                        }
+                        else if (dictWitches.TryGetValue(cell.ObjectId, out IWitchModel witch)) // has a character/item
+                        {
+                            GameObject cellGameObject = _grid[i, j];
+                            Coroutine<AbstractCharacterView<IWitchModel>> createCharacter = this.StartCoroutine<AbstractCharacterView<IWitchModel>>(_witchFactory.Create(cellGameObject.transform, witch));
+                            yield return createCharacter;
+
+                            // add a witch and init
+                            AbstractCharacterView<IWitchModel> witchModel = createCharacter.ReturnValue;
+                            witchModel.Init(witch);
+                            _witches.Add(witchModel);
                         }
                     }
-                    else yield return null;
+
+                    yield return null;
                 }
             }
         }
@@ -153,9 +165,13 @@ namespace Raincrow.BattleArena.Controller
 
                 // Update Characters
                 Vector3 forward = battleCamera.transform.rotation * Vector3.up;
-                foreach (AbstractCharacterView character in _characters)
+                foreach (AbstractCharacterView<ISpiritModel> spirit in _spirits)
                 {                    
-                    character.FaceCamera(battleCamera.transform.rotation, forward);
+                    spirit.FaceCamera(battleCamera.transform.rotation, forward);
+                }
+                foreach (AbstractCharacterView<IWitchModel> witch in _witches)
+                {
+                    witch.FaceCamera(battleCamera.transform.rotation, forward);
                 }
             }
         }
@@ -172,11 +188,11 @@ namespace Raincrow.BattleArena.Controller
         public void EndBattle()
         {
             // Destroy characters
-            for (int i = _characters.Count - 1; i >= 0; i--)
+            for (int i = _spirits.Count - 1; i >= 0; i--)
             {
-                Destroy(_characters[i]);
+                Destroy(_spirits[i]);
             }
-            _characters.Clear();
+            _spirits.Clear();
 
             // Destroy grid 
             for (int i = 0; i < _cellsTransform.childCount; i++)

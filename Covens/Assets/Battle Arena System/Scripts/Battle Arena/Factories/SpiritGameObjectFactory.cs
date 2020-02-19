@@ -6,7 +6,7 @@ using UnityEngine;
 
 namespace Raincrow.BattleArena.Factory
 {
-    public class SpiritGameObjectFactory : AbstractCharacterGameObjectFactory
+    public class SpiritGameObjectFactory : AbstractCharacterGameObjectFactory<ISpiritModel>
     {
         // serialized variables
         [SerializeField] private BattleSpiritView _battleSpiritViewPrefab;
@@ -23,23 +23,21 @@ namespace Raincrow.BattleArena.Factory
             }
         }
 
-        public override IEnumerator<AbstractCharacterView> Create(Transform cellTransform, ICharacterModel character)
+        public override IEnumerator<AbstractCharacterView<ISpiritModel>> Create(Transform cellTransform, ISpiritModel model)
         {
-            ISpiritModel spiritModel = character as ISpiritModel;
-
             // Create character
-            AbstractCharacterView characterView = Instantiate(_battleSpiritViewPrefab, cellTransform);
+            AbstractCharacterView<ISpiritModel> battleSpiritView = Instantiate(_battleSpiritViewPrefab, cellTransform);
             yield return null;
 
             // wait for coroutine
-            Coroutine<Texture> tex = this.StartCoroutine<Texture>(GetWitchAvatar(spiritModel));
+            Coroutine<Texture> tex = this.StartCoroutine<Texture>(GetWitchAvatar(model));
             while (tex.keepWaiting)
             {
                 yield return null;
             }
 
-            characterView.ChangeCharacterTexture(tex.ReturnValue);
-            yield return characterView;
+            battleSpiritView.ChangeCharacterTexture(tex.ReturnValue);
+            yield return battleSpiritView;
         }
 
         private IEnumerator<Texture> GetWitchAvatar(ISpiritModel witchModel)
