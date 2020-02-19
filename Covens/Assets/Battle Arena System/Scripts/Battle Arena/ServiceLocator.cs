@@ -13,11 +13,13 @@ namespace Raincrow.Services
         [SerializeField] private AvatarSpriteUtil _avatarSpriteUtilPrefab; // Avatar Sprite Util Prefab
         [SerializeField] private LoadingView _loadingViewPrefab;
         [SerializeField] private BattleController _battleControllerPrefab;
+        [SerializeField] private Camera _battleCameraPrefab;
 
         [Header("Service Instances")]
         [SerializeField] private AvatarSpriteUtil _avatarSpriteUtilInstance; // Avatar Sprite Util Instance
         [SerializeField] private LoadingView _loadingViewInstance; // Loading View Instance
         [SerializeField] private BattleController _battleControllerInstance;
+        [SerializeField] private Camera _battleCameraInstance;
 
         [Header("UI")]
         [SerializeField] private Canvas _mainCanvas;
@@ -47,6 +49,15 @@ namespace Raincrow.Services
                 _avatarSpriteUtilInstance = GetInstance(_avatarSpriteUtilPrefab);
             }
             return _avatarSpriteUtilInstance;
+        }
+
+        public Camera GetBattleCamera()
+        {
+            if (_battleCameraInstance == null)
+            {
+                _battleCameraInstance = GetInstance(_battleCameraPrefab);
+            }
+            return _battleCameraInstance;
         }
 
         public BattleController GetBattleController()

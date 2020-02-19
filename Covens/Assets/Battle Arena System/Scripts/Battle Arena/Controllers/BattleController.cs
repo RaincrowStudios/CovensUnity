@@ -9,23 +9,16 @@ using System.Collections.Generic;
 using UnityEngine;
 using Raincrow.Loading.View;
 using Raincrow.Services;
-using System;
 
 namespace Raincrow.BattleArena.Controller
 {
     public class BattleController : MonoBehaviour, ICoroutineHandler
-    {
-        [SerializeField] private Camera _battleCamera;
+    {        
         [SerializeField] private Transform _cellsTransform;
+        [SerializeField] private ServiceLocator _serviceLocator;
         [SerializeField] private AbstractGridGameObjectFactory _gridFactory; // Factory class responsible for creating our Grid        
         [SerializeField] private AbstractCharacterGameObjectFactory _spiritFactory; // Factory class responsible for creating our Spirits   
         [SerializeField] private AbstractCharacterGameObjectFactory _witchFactory; // Factory class responsible for creating our Witchs   
-
-        public static explicit operator BattleController(ServiceLocator v)
-        {
-            throw new NotImplementedException();
-        }
-
         [SerializeField] private AbstractGameMasterController _gameMasterController;
         [SerializeField] private QuickCastUI _quickCastUI;
 
@@ -35,108 +28,6 @@ namespace Raincrow.BattleArena.Controller
 
         public TurnController TurnController { get; private set; }
         public QuickCastUI QuickCastUI { get => _quickCastUI; }
-
-        public virtual void OnEnable()
-        {
-            //// Construct grid builder
-            //GridBuilder gridBuilder;
-            //{
-            //    gridBuilder = new GridBuilder()
-            //    {
-            //        MaxCellsPerRow = 5,
-            //        MaxCellsPerColumn = 5,
-            //    };
-
-            //    gridBuilder.CellBuilders = new CellBuilder[gridBuilder.MaxCellsPerRow, gridBuilder.MaxCellsPerColumn];
-
-            //    for (int i = 0; i < gridBuilder.MaxCellsPerRow; i++)
-            //    {
-            //        for (int j = 0; j < gridBuilder.MaxCellsPerColumn; j++)
-            //        {
-            //            gridBuilder.CellBuilders[i, j] = new CellBuilder();
-            //        }
-            //    }
-            //}            
-            //IGridModel gridModel = new GridModel(gridBuilder); // Create grid model
-
-            //// Create characters
-            //IWitchModel witchModel = new WitchModel()
-            //{
-            //    Id = "emanuel",
-            //    ObjectType = ObjectType.Witch,
-            //    Degree = 0,
-            //    Name = "Emanuel",
-            //    Level = 1
-            //};
-
-            //InventoryApparelModel equip = new InventoryApparelModel()
-            //{
-            //    Id = "cosmetic_m_A_B",
-            //    Position = InventoryApparelPosition.BaseBody,
-            //    Assets = new AssetsApparelModel()
-            //    {
-            //        BaseAsset = new string[1] { "m_A_B" }
-            //    }
-            //};
-            //witchModel.Inventory.Equipped.Add(equip);
-
-            //equip = new InventoryApparelModel()
-            //{
-            //    Id = "cosmetic_m_E_B",
-            //    Position = InventoryApparelPosition.BaseBody,
-            //    Assets = new AssetsApparelModel()
-            //    {
-            //        BaseAsset = new string[1] { "m_E_B" }
-            //    }
-            //};
-            //witchModel.Inventory.Equipped.Add(equip);
-
-            //equip = new InventoryApparelModel()
-            //{
-            //    Id = "cosmetic_m_O_B",
-            //    Position = InventoryApparelPosition.BaseBody,
-            //    Assets = new AssetsApparelModel()
-            //    {
-            //        BaseAsset = new string[1] { "m_O_B" }
-            //    }
-            //};
-            //witchModel.Inventory.Equipped.Add(equip);
-
-            //StartCoroutine(StartBattle(battleId, gridModel, characterModels));
-            //equip = new InventoryApparelModel()
-            //{
-            //    Id = "cosmetic_m_A_H",
-            //    Position = InventoryApparelPosition.BaseBody,
-            //    Assets = new AssetsApparelModel()
-            //    {
-            //        BaseAsset = new string[2] { "m_A_H_Relaxed",  "m_A_H_Censer" }
-            //    }
-            //};
-            //witchModel.Inventory.Equipped.Add(equip);
-
-            //ISpiritModel spiritModel = new SpiritModel()
-            //{
-            //    ObjectType = ObjectType.Spirit,
-            //    Id = "Crackudo"
-            //};
-
-            //// place characters in grid model
-            //gridModel.Cells[0, 0].ObjectId = witchModel.Id;
-            //gridModel.Cells[0, 1].ObjectId = spiritModel.Id;
-
-            //// Add all characters
-            //List<ICharacterModel> characterModels = new List<ICharacterModel> { witchModel, spiritModel };
-
-            //// Battle Id
-            //string battleId = System.Guid.NewGuid().ToString();
-
-            //StartCoroutine(StartBattle(battleId, gridModel, characterModels));
-        }
-
-        public virtual void OnDisable()
-        {
-            EndBattle();
-        }
 
         public IEnumerator StartBattle(string battleId, IGridModel gridModel, IList<ICharacterModel> characters, ILoadingView loadingView = null)
         {
@@ -255,15 +146,16 @@ namespace Raincrow.BattleArena.Controller
 
         private IEnumerator UpdateCharacters()
         {
+            Camera battleCamera = _serviceLocator.GetBattleCamera();
             while (enabled)
             {
                 yield return new WaitForEndOfFrame();
 
                 // Update Characters
-                Vector3 forward = _battleCamera.transform.rotation * Vector3.up;
+                Vector3 forward = battleCamera.transform.rotation * Vector3.up;
                 foreach (AbstractCharacterView character in _characters)
                 {                    
-                    character.FaceCamera(_battleCamera.transform.rotation, forward);
+                    character.FaceCamera(battleCamera.transform.rotation, forward);
                 }
             }
         }

@@ -49,7 +49,10 @@ MonoBehaviour:
     type: 3}
   _battleControllerPrefab: {fileID: 3561526507227420495, guid: 61c97baa5215f1647a7ed02e6b0d3ef8,
     type: 3}
+  _battleCameraPrefab: {fileID: 3543581160031026036, guid: 0251eb9112595734eb75de6863092d3a,
+    type: 3}
   _avatarSpriteUtilInstance: {fileID: 0}
   _loadingViewInstance: {fileID: 0}
   _battleControllerInstance: {fileID: 0}
+  _battleCameraInstance: {fileID: 0}
   _mainCanvas: {fileID: 0}
