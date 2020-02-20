@@ -51,11 +51,6 @@ namespace Raincrow.BattleArena.View
             }
         }
 
-        protected virtual void Update()
-        {
-
-        }
-
         public override void Init(IWitchModel characterModel, IWitchViewModel characterViewModel, Camera battleCamera)
         {
             base.Init(characterModel, characterViewModel, battleCamera);
