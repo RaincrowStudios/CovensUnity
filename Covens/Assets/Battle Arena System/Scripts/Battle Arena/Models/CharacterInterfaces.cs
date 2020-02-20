@@ -4,7 +4,7 @@ namespace Raincrow.BattleArena.Model
 {
     public interface ICharacterModel : IObjectModel
     {
-        int BaseEnergy { get; }
+        int BaseEnergy { get; set; }
         int Energy { get; set; }
         int Power { get; set; }
         int Resilience { get; set; }        
@@ -12,8 +12,8 @@ namespace Raincrow.BattleArena.Model
 
     public interface IObjectModel
     {
-        string Id { get; }
-        string ObjectType { get; }    
+        string Id { get; set; }
+        string ObjectType { get; set; }    
     }
 
     public interface IWitchModel : ICharacterModel
@@ -44,5 +44,10 @@ namespace Raincrow.BattleArena.Model
     public interface ISpiritViewModel : ICharacterViewModel
     {
         
+    }
+
+    public interface ICloneable<T>
+    {
+        T Clone();
     }
 }

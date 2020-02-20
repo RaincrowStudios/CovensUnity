@@ -68,7 +68,7 @@ namespace Raincrow.BattleArena.Model
         }
     }
 
-    public class WitchModel : IWitchModel
+    public class WitchModel : IWitchModel, ICloneable<IWitchModel>
     {
         // Properties
 
@@ -92,9 +92,28 @@ namespace Raincrow.BattleArena.Model
             Inventory = new InventoryModel();
             Info = new CharacterInfo();
         }
+
+        public IWitchModel Clone()
+        {
+            WitchModel destination = new WitchModel()
+            {
+                Id = Id,
+                BaseEnergy = BaseEnergy,
+                Energy = Energy,
+                Power = Power,
+                Resilience = Resilience,
+                ObjectType = ObjectType,
+                Degree = Degree,
+                Name = Name,
+                Level = Level,
+                Inventory = Inventory.Clone(),
+                Info = Info.Clone()
+            };
+            return destination;
+        }
     }
 
-    public class SpiritModel : ISpiritModel
+    public class SpiritModel : ISpiritModel, ICloneable<ISpiritModel>
     {
         public string Id { get; set; }
         public int BaseEnergy { get; set; }
@@ -106,6 +125,22 @@ namespace Raincrow.BattleArena.Model
         public string OwnerId { get; set; }
 
         public SpiritModel() { }
+
+        public ISpiritModel Clone()
+        {
+            SpiritModel destination = new SpiritModel()
+            {
+                Id = Id,
+                BaseEnergy = BaseEnergy,
+                Energy = Energy,
+                Power = Power,
+                Resilience = Resilience,
+                ObjectType = ObjectType,
+                Texture = Texture,
+                OwnerId = OwnerId,
+            };
+            return destination;
+        }
     }
 
     public struct BattleSlot
@@ -114,23 +149,18 @@ namespace Raincrow.BattleArena.Model
         public int Col { get; set; }
     }
 
-    public class InventoryItemModel
+    public struct InventoryItemModel
     {
         public string Id { get; set; }
         public string Name { get; set; }
         public int Count { get; set; }
     }
 
-    public class InventoryApparelModel
+    public struct InventoryApparelModel
     {
         public string Id { get; set; }
         public string Position { get; set; }
         public string[] Assets { get; set; }
-
-        public InventoryApparelModel()
-        {
-            Assets = new string[0];
-        }
     }
 
     public class AssetsApparelModel
@@ -149,13 +179,23 @@ namespace Raincrow.BattleArena.Model
         }
     }
 
-    public struct CharacterInfo
+    public struct CharacterInfo : ICloneable<CharacterInfo>
     {
         [JsonProperty("male")] public bool Gender { get; set; }
         public int BodyType { get; set; }
+
+        public CharacterInfo Clone()
+        {
+            CharacterInfo destination = new CharacterInfo()
+            {
+                Gender = Gender,
+                BodyType = BodyType
+            };
+            return destination;
+        }
     }
 
-    public class InventoryModel
+    public class InventoryModel : ICloneable<InventoryModel>
     {
         public List<InventoryItemModel> Tools { get; }
         public List<InventoryItemModel> Herbs { get; }
@@ -170,6 +210,17 @@ namespace Raincrow.BattleArena.Model
             Gems = new List<InventoryItemModel>();
             Consumables = new List<InventoryItemModel>();
             Equipped = new List<InventoryApparelModel>();
+        }
+
+        public InventoryModel Clone()
+        {
+            InventoryModel destination = new InventoryModel();
+            destination.Tools.AddRange(Tools);
+            destination.Herbs.AddRange(Herbs);
+            destination.Gems.AddRange(Gems);
+            destination.Consumables.AddRange(Consumables);
+            destination.Equipped.AddRange(Equipped);
+            return destination;
         }
     }
 

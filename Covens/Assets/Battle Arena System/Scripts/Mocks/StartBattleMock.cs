@@ -47,12 +47,13 @@ namespace Raincrow.Mocks
                     }
                 }
             }
+
             IGridModel gridModel = new GridModel(gridBuilder); // Create grid model
 
             // Create characters
-            IWitchModel witchModel = new WitchModel()
+            WitchModel witchModel = new WitchModel()
             {
-                Id = "emanuel",
+                //Id = System.Guid.NewGuid().ToString(),
                 ObjectType = ObjectType.Witch,
                 Degree = 0,
                 Name = "Emanuel",
@@ -93,22 +94,44 @@ namespace Raincrow.Mocks
             };
             witchModel.Inventory.Equipped.Add(equip);
 
-            ISpiritModel spiritModel = new SpiritModel()
+            SpiritModel spiritModel = new SpiritModel()
             {
                 ObjectType = ObjectType.Spirit,
-                Id = "Crackudo",
+                //Id = System.Guid.NewGuid().ToString(),
                 Texture = "spirit_moonSnake",
                 BaseEnergy = 200,
                 Energy = 80
             };
 
-            // place characters in grid model
-            gridModel.Cells[4, 4].ObjectId = witchModel.Id;
-            gridModel.Cells[0, 1].ObjectId = spiritModel.Id;
-
             // Add all characters
-            List<IWitchModel> witchModels = new List<IWitchModel> { witchModel };
-            List<ISpiritModel> spiritModels = new List<ISpiritModel> { spiritModel };
+            List<IWitchModel> witchModels = new List<IWitchModel>();
+            List<ISpiritModel> spiritModels = new List<ISpiritModel>();
+            // place characters in grid model
+            bool addSpirit = false;
+            for (int i = 0; i < gridModel.MaxCellsPerRow; i++)
+            {
+                for (int j = 0; j < gridModel.MaxCellsPerColumn; j++)
+                {
+                    if (addSpirit)
+                    {
+                        ISpiritModel spiritModelClone = spiritModel.Clone();
+                        spiritModelClone.Id = System.Guid.NewGuid().ToString();
+                        Debug.Log(spiritModelClone.Id);
+                        gridModel.Cells[i, j].ObjectId = spiritModelClone.Id;
+                        spiritModels.Add(spiritModelClone);
+                    }
+                    else
+                    {
+                        IWitchModel witchModelClone = witchModel.Clone();
+                        witchModelClone.Id = System.Guid.NewGuid().ToString();
+                        Debug.Log(witchModelClone.Id);
+                        gridModel.Cells[i, j].ObjectId = witchModelClone.Id;
+                        witchModels.Add(witchModelClone);
+                    }
+
+                    addSpirit = !addSpirit;
+                }
+            }                        
 
             // Battle Id
             string battleId = System.Guid.NewGuid().ToString();
