@@ -13,5 +13,7 @@ namespace Raincrow.BattleArena.View
         }
 
         public abstract void FaceCamera(Quaternion cameraRotation, Vector3 cameraForward);
+
+        public abstract void UpdateView();
     }
 }

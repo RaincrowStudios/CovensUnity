@@ -56,7 +56,9 @@ namespace Raincrow.Mocks
                 ObjectType = ObjectType.Witch,
                 Degree = 0,
                 Name = "Emanuel",
-                Level = 1
+                Level = 1,
+                BaseEnergy = 200,
+                Energy = 80
             };
 
             InventoryApparelModel equip = new InventoryApparelModel()

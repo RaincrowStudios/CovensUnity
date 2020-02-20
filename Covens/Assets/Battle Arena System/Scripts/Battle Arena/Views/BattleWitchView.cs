@@ -28,7 +28,8 @@ namespace Raincrow.BattleArena.View
 
         // Static readonlies
         private static readonly int MainTexPropertyId = Shader.PropertyToID("_MainTex");
-        private static readonly int MainColorPropertyId = Shader.PropertyToID("_Color");
+        private static readonly int ColorPropertyId = Shader.PropertyToID("_Color");
+        private static readonly int AlphaCutoffPropertyId = Shader.PropertyToID("_Cutoff");
 
         protected virtual void OnEnable()
         {
@@ -51,6 +52,17 @@ namespace Raincrow.BattleArena.View
             }
         }
 
+        protected virtual void Update()
+        {
+            if (Model != null)
+            {
+                float lerpTime = 5f;
+                float f = Mathf.InverseLerp(0, lerpTime, Time.time % lerpTime);
+                Model.Energy = Mathf.FloorToInt(Mathf.Lerp(0, Model.BaseEnergy, f));
+                UpdateView();
+            }
+        }
+
         public override void Init(IWitchModel characterModel, IWitchViewModel characterViewModel, Camera battleCamera)
         {
             base.Init(characterModel, characterViewModel, battleCamera);
@@ -70,13 +82,21 @@ namespace Raincrow.BattleArena.View
             _avatarMat.SetTexture(MainTexPropertyId, characterViewModel.Texture);
 
             // Set alignment color
-            _alignmentRingMat.SetColor(MainColorPropertyId, characterViewModel.AlignmentColor);
+            _alignmentRingMat.SetColor(ColorPropertyId, characterViewModel.AlignmentColor);
         }
 
         public override void FaceCamera(Quaternion cameraRotation, Vector3 cameraForward)
         {
             Vector3 worldPosition = transform.position + cameraRotation * Vector3.forward;
             _avatarRoot.transform.LookAt(worldPosition, cameraForward);
+        }
+
+        public override void UpdateView()
+        {
+            int baseEnergy = Model.BaseEnergy;
+            int energy = Model.Energy;
+            float energyNormalized = Mathf.InverseLerp(Mathf.Epsilon, baseEnergy, energy);
+            _damageRingMat.SetFloat(AlphaCutoffPropertyId, 1f - energyNormalized);
         }
     }
 }
