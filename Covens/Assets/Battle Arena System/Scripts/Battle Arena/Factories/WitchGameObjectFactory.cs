@@ -43,31 +43,36 @@ namespace Raincrow.BattleArena.Factory
 
         private IEnumerator<Texture> GetWitchAvatar(IWitchModel witchModel)
         {
-            IEnumerator<AvatarRequest> enumerator = _witchAvatarFactory.CreateWitchAvatar(witchModel);
-            Coroutine<AvatarRequest> coroutine = this.StartCoroutine<AvatarRequest>(enumerator);
+            IEnumerator<TextureRequest> enumerator = _witchAvatarFactory.CreateWitchAvatar(witchModel);
+            Coroutine<TextureRequest> coroutine = this.StartCoroutine<TextureRequest>(enumerator);
             while (coroutine.keepWaiting)
             {
                 yield return null;
             }
 
-            Texture avatarTexture = coroutine.ReturnValue.Avatar;
+            Texture avatarTexture = coroutine.ReturnValue.Texture;
             yield return avatarTexture;
         }
     }
 
     public interface IWitchAvatarFactory
     {
-        IEnumerator<AvatarRequest> CreateWitchAvatar(IWitchModel witchModel);
+        IEnumerator<TextureRequest> CreateWitchAvatar(IWitchModel witchModel);
     }
 
     public interface ISpiritAvatarFactory
     {
-        IEnumerator<AvatarRequest> CreateSpiritAvatar(ISpiritModel spiritModel);
+        IEnumerator<TextureRequest> CreateSpiritAvatar(ISpiritModel spiritModel);
     }
 
-    public struct AvatarRequest
+    public interface ISpiritPortraitFactory
     {
-        public Texture Avatar { get; set; }
+        IEnumerator<TextureRequest> CreateSpiritPortrait(ISpiritModel spiritModel);
+    }
+
+    public struct TextureRequest
+    {
+        public Texture Texture { get; set; }
         public bool IsDone { get; set; }
     }
 }

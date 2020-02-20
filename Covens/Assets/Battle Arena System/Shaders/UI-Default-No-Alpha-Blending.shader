@@ -1,4 +1,4 @@
-﻿Shader "UI/DefaultNoAlphaBlending"
+﻿Shader "UI/TransparentNoAlphaBlending"
 {
 	Properties
 	{

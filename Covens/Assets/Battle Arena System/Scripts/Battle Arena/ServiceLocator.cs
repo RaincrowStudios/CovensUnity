@@ -51,6 +51,15 @@ namespace Raincrow.Services
             return _avatarSpriteUtilInstance;
         }
 
+        public ISpiritPortraitFactory GetSpiritPortraitFactory()
+        {
+            if (_avatarSpriteUtilInstance == null)
+            {
+                _avatarSpriteUtilInstance = GetInstance(_avatarSpriteUtilPrefab);
+            }
+            return _avatarSpriteUtilInstance;
+        }
+
         public Camera GetBattleCamera()
         {
             if (_battleCameraInstance == null)

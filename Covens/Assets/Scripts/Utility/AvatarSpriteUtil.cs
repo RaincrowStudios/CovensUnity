@@ -5,7 +5,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class AvatarSpriteUtil : MonoBehaviour, IWitchAvatarFactory, ISpiritAvatarFactory
+public class AvatarSpriteUtil : MonoBehaviour, IWitchAvatarFactory, ISpiritAvatarFactory, ISpiritPortraitFactory
 {
     private class MarkerSpriteCollection
     {
@@ -383,11 +383,11 @@ public class AvatarSpriteUtil : MonoBehaviour, IWitchAvatarFactory, ISpiritAvata
         });       
     }
 
-    public IEnumerator<AvatarRequest> CreateWitchAvatar(IWitchModel witchModel)
+    public IEnumerator<TextureRequest> CreateWitchAvatar(IWitchModel witchModel)
     {
         bool isMale = (witchModel.Info.Gender == CharacterGender.Male);
 
-        AvatarRequest request = new AvatarRequest();
+        TextureRequest request = new TextureRequest();
 
         // Convert inventory to equipped apparel
         List<EquippedApparel> equippedApparels = new List<EquippedApparel>();
@@ -404,7 +404,7 @@ public class AvatarSpriteUtil : MonoBehaviour, IWitchAvatarFactory, ISpiritAvata
         
         GenerateAvatar(isMale, equippedApparels, (sprite) =>
         {
-            request.Avatar = sprite.texture;
+            request.Texture = sprite.texture;
             request.IsDone = true;
         });
 
@@ -417,12 +417,12 @@ public class AvatarSpriteUtil : MonoBehaviour, IWitchAvatarFactory, ISpiritAvata
         yield return request;
     }
 
-    public IEnumerator<AvatarRequest> CreateSpiritAvatar(ISpiritModel spiritModel)
+    public IEnumerator<TextureRequest> CreateSpiritAvatar(ISpiritModel spiritModel)
     {
-        AvatarRequest request = new AvatarRequest();
+        TextureRequest request = new TextureRequest();
         DownloadedAssets.GetSprite(spiritModel.Texture, (sprite) => 
         {
-            request.Avatar = sprite.texture;
+            request.Texture = sprite.texture;
             request.IsDone = true;
         });
 
@@ -430,6 +430,15 @@ public class AvatarSpriteUtil : MonoBehaviour, IWitchAvatarFactory, ISpiritAvata
         {
             yield return request;
         }
+        yield return request;
+    }
+
+    public IEnumerator<TextureRequest> CreateSpiritPortrait(ISpiritModel spiritModel)
+    {
+        TextureRequest request = new TextureRequest()
+        {
+            IsDone = true
+        };
         yield return request;
     }
 

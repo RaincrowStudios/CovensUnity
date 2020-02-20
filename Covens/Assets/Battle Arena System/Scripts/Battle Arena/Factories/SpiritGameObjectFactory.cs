@@ -42,14 +42,14 @@ namespace Raincrow.BattleArena.Factory
 
         private IEnumerator<Texture> GetWitchAvatar(ISpiritModel witchModel)
         {
-            IEnumerator<AvatarRequest> enumerator = _spiritAvatarFactory.CreateSpiritAvatar(witchModel);
-            Coroutine<AvatarRequest> coroutine = this.StartCoroutine<AvatarRequest>(enumerator);
+            IEnumerator<TextureRequest> enumerator = _spiritAvatarFactory.CreateSpiritAvatar(witchModel);
+            Coroutine<TextureRequest> coroutine = this.StartCoroutine<TextureRequest>(enumerator);
             while (coroutine.keepWaiting)
             {
                 yield return null;
             }
 
-            Texture avatarTexture = coroutine.ReturnValue.Avatar;
+            Texture avatarTexture = coroutine.ReturnValue.Texture;
             yield return avatarTexture;
         }
     }
