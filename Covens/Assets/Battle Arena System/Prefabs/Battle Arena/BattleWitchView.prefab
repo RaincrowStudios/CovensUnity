@@ -263,6 +263,11 @@ PrefabInstance:
       propertyPath: m_Name
       value: NameplateView
       objectReference: {fileID: 0}
+    - target: {fileID: 4470161377665353372, guid: 91ad658fd6d07b944bca4b7d22e0d2b3,
+        type: 3}
+      propertyPath: m_AdditionalShaderChannelsFlag
+      value: 25
+      objectReference: {fileID: 0}
     - target: {fileID: 4470161377665353373, guid: 91ad658fd6d07b944bca4b7d22e0d2b3,
         type: 3}
       propertyPath: m_LocalPosition.x

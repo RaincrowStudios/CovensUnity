@@ -34,11 +34,12 @@ namespace Raincrow.BattleArena.Model
     public interface ICharacterViewModel
     {
         Texture Texture { get; set; }
+        Material AlignmentMaterial { get; set; }
     }
 
     public interface IWitchViewModel : ICharacterViewModel
     {
-        Color AlignmentColor { get; set; }
+        
     }
 
     public interface ISpiritViewModel : ICharacterViewModel

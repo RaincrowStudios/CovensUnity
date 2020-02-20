@@ -132,6 +132,8 @@ MonoBehaviour:
   _battleSpiritViewPrefab: {fileID: 8594441439031050491, guid: ad0336f45a4e5924da6c29a530712245,
     type: 3}
   _serviceLocator: {fileID: 0}
+  _wildAlignmentMaterial: {fileID: 2100000, guid: 6bb44f595f475d846ad8731dc9b19806,
+    type: 2}
 --- !u!114 &1794520544814550441
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -147,6 +149,9 @@ MonoBehaviour:
   _battleWitchViewPrefab: {fileID: 7898114360831156526, guid: a18a8f148bde0e7489c84b03cac84f89,
     type: 3}
   _serviceLocator: {fileID: 0}
-  _alignmentWhiteColor: {r: 0, g: 1, b: 1, a: 1}
-  _alignmentShadowColor: {r: 0.97, g: 0.67, b: 0.18, a: 1}
-  _alignmentGreyColor: {r: 0.698, g: 0, b: 1, a: 1}
+  _alignmentWhiteMaterial: {fileID: 2100000, guid: 9abc0555e03eb664685a10cecf4d21ae,
+    type: 2}
+  _alignmentShadowMaterial: {fileID: 2100000, guid: 565342dbdf026b642ba5c32bfd9440f6,
+    type: 2}
+  _alignmentGreyMaterial: {fileID: 2100000, guid: f91c46bf0bbdb02418aaaa2fd3d55ee0,
+    type: 2}

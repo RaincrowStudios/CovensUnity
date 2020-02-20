@@ -11,6 +11,9 @@ namespace Raincrow.BattleArena.Factory
         // serialized variables
         [SerializeField] private BattleSpiritView _battleSpiritViewPrefab;
         [SerializeField] private ServiceLocator _serviceLocator;
+        
+        [Header("Alignment")]
+        [SerializeField] private Material _wildAlignmentMaterial;
 
         // private variables        
         private ISpiritAvatarFactory _spiritAvatarFactory;
@@ -38,7 +41,8 @@ namespace Raincrow.BattleArena.Factory
 
             ISpiritViewModel spiritViewModel = new SpiritViewModel()
             {
-                Texture = request.ReturnValue
+                Texture = request.ReturnValue,
+                AlignmentMaterial = _wildAlignmentMaterial
             };
             characterView.Init(model, spiritViewModel, _serviceLocator.GetBattleCamera());
             yield return characterView;

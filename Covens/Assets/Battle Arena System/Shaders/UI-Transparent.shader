@@ -5,17 +5,18 @@
 // - no lightmap support
 // - no per-material color
 
-Shader "Oktagon/Unlit-Transparent Cutout" {
+Shader "Oktagon/Unlit-Transparent" {
 	Properties{
 		_MainTex("Base (RGB) Trans (A)", 2D) = "white" {}
 		_Color("Tint", Color) = (1,1,1,1)
-		_Cutoff("Alpha cutoff", Range(0.0001,1)) = 0.5
 	}
 		SubShader{
-			Tags {"Queue" = "AlphaTest" "IgnoreProjector" = "True" "RenderType" = "TransparentCutout"}
+			Tags {"Queue" = "Transparent" "IgnoreProjector" = "True"}
 			LOD 100
 
 			Lighting Off
+			ZWrite Off
+			Blend SrcAlpha OneMinusSrcAlpha
 
 			Pass {
 				CGPROGRAM
@@ -61,7 +62,7 @@ Shader "Oktagon/Unlit-Transparent Cutout" {
 					fixed4 frag(v2f i) : SV_Target
 					{
 						fixed4 col = tex2D(_MainTex, i.texcoord) * i.color;
-						clip(col.a - _Cutoff);
+						clip(col.a - 0.0001);
 						UNITY_APPLY_FOG(i.fogCoord, col);
 						return col;
 					}

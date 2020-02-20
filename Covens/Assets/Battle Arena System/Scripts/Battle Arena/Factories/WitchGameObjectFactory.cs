@@ -13,9 +13,9 @@ namespace Raincrow.BattleArena.Factory
         [SerializeField] private ServiceLocator _serviceLocator;
 
         [Header("Alignment")]
-        [SerializeField] private Color _alignmentWhiteColor;
-        [SerializeField] private Color _alignmentShadowColor;
-        [SerializeField] private Color _alignmentGreyColor;
+        [SerializeField] private Material _alignmentWhiteMaterial;
+        [SerializeField] private Material _alignmentShadowMaterial;
+        [SerializeField] private Material _alignmentGreyMaterial;
 
         // private variables        
         private IWitchAvatarFactory _witchAvatarFactory;
@@ -41,22 +41,22 @@ namespace Raincrow.BattleArena.Factory
                 yield return null;
             }
 
-            Color alignmentColor = _alignmentGreyColor;
+            Material alignmentMaterial = _alignmentGreyMaterial;
             if (model.Degree > 0)
             {
-                alignmentColor = _alignmentWhiteColor;
+                alignmentMaterial = _alignmentWhiteMaterial;
             }
             else if (model.Degree < 0)
             {
-                alignmentColor = _alignmentShadowColor;
+                alignmentMaterial = _alignmentShadowMaterial;
             }
 
-            IWitchViewModel viewModel = new WitchViewModel()
+            IWitchViewModel witchViewModel = new WitchViewModel()
             {
                 Texture = request.ReturnValue,
-                AlignmentColor = alignmentColor
+                AlignmentMaterial = alignmentMaterial
             };
-            characterView.Init(model, viewModel, _serviceLocator.GetBattleCamera());
+            characterView.Init(model, witchViewModel, _serviceLocator.GetBattleCamera());
 
             yield return characterView;
         }

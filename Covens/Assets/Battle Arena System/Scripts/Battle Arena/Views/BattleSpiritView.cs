@@ -16,7 +16,6 @@ namespace Raincrow.BattleArena.View
         // private variables
         private Material _avatarMat;
         private Material _damageRingMat;
-        private Material _alignmentRingMat;
 
         // Static readonlies
         private static readonly int MainTexPropertyId = Shader.PropertyToID("_MainTex");
@@ -36,12 +35,6 @@ namespace Raincrow.BattleArena.View
                 _damageRingMat = new Material(_damageRingRenderer.sharedMaterial);
                 _damageRingRenderer.material = _damageRingMat;
             }
-
-            if (_alignmentRingMat == null)
-            {
-                _alignmentRingMat = new Material(_alignmentRingRenderer.sharedMaterial);
-                _alignmentRingRenderer.material = _alignmentRingMat;
-            }
         }
 
         protected virtual void Update()
@@ -58,7 +51,12 @@ namespace Raincrow.BattleArena.View
         public override void Init(ISpiritModel characterModel, ISpiritViewModel characterViewModel, Camera battleCamera)
         {
             base.Init(characterModel, characterViewModel, battleCamera);
+
+            // Set avatar texture
             _avatarMat.SetTexture(MainTexPropertyId, characterViewModel.Texture);
+
+            // Set alignment color
+            _alignmentRingRenderer.sharedMaterial = characterViewModel.AlignmentMaterial;
         }
 
         public override void FaceCamera(Quaternion cameraRotation, Vector3 cameraForward)

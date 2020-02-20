@@ -226,12 +226,13 @@ namespace Raincrow.BattleArena.Model
 
     public class WitchViewModel : IWitchViewModel
     {
-        public Color AlignmentColor { get; set; }
         public Texture Texture { get; set; }
+        public Material AlignmentMaterial { get; set; }        
     }
 
     public class SpiritViewModel : ISpiritViewModel
     {
         public Texture Texture { get; set; }
+        public Material AlignmentMaterial { get; set; }
     }
 }
