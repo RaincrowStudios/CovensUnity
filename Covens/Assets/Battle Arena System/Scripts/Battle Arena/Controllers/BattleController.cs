@@ -23,8 +23,8 @@ namespace Raincrow.BattleArena.Controller
         [SerializeField] private QuickCastUI _quickCastUI;
 
         private GameObject[,] _grid = new GameObject[0, 0]; // Grid with all the game objects inserted
-        private List<AbstractCharacterView<IWitchModel>> _witches = new List<AbstractCharacterView<IWitchModel>>(); // List with all witches
-        private List<AbstractCharacterView<ISpiritModel>> _spirits = new List<AbstractCharacterView<ISpiritModel>>(); // List with all spirits
+        private List<AbstractCharacterView<IWitchModel, IWitchViewModel>> _witches = new List<AbstractCharacterView<IWitchModel, IWitchViewModel>>(); // List with all witches
+        private List<AbstractCharacterView<ISpiritModel, ISpiritViewModel>> _spirits = new List<AbstractCharacterView<ISpiritModel, ISpiritViewModel>>(); // List with all spirits
         private IStateMachine<ITurnController> _stateMachine; // State machine with all phases
 
         public TurnController TurnController { get; private set; }
@@ -64,8 +64,8 @@ namespace Raincrow.BattleArena.Controller
         private IEnumerator PlaceCharacters(IGridModel gridModel, IList<IWitchModel> witches, IList<ISpiritModel> spirits)
         {
             // Initialize list of characters            
-            _witches = new List<AbstractCharacterView<IWitchModel>>();
-            _spirits = new List<AbstractCharacterView<ISpiritModel>>();
+            _witches = new List<AbstractCharacterView<IWitchModel, IWitchViewModel>>();
+            _spirits = new List<AbstractCharacterView<ISpiritModel, ISpiritViewModel>>();
             Camera battleCamera = _serviceLocator.GetBattleCamera();
 
             Dictionary<string, IWitchModel> dictWitches = new Dictionary<string, IWitchModel>();
@@ -90,24 +90,26 @@ namespace Raincrow.BattleArena.Controller
                         if (dictSpirits.TryGetValue(cell.ObjectId, out ISpiritModel spirit)) // has a character/item
                         {
                             GameObject cellGameObject = _grid[i, j];
-                            Coroutine<AbstractCharacterView<ISpiritModel>> createCharacter = this.StartCoroutine<AbstractCharacterView<ISpiritModel>>(_spiritFactory.Create(cellGameObject.transform, spirit));
+                            Coroutine<AbstractCharacterView<ISpiritModel, ISpiritViewModel>> createCharacter = 
+                                this.StartCoroutine<AbstractCharacterView<ISpiritModel, ISpiritViewModel>>(_spiritFactory.Create(cellGameObject.transform, spirit));
                             yield return createCharacter;
 
                             // add spirit and init
-                            AbstractCharacterView<ISpiritModel> spiritView = createCharacter.ReturnValue;
-                            spiritView.Init(spirit, battleCamera);
-                            _spirits.Add(spiritView);
+                            //AbstractCharacterView<ISpiritModel> spiritView = ;
+                            //spiritView.Init(spirit, battleCamera);
+                            _spirits.Add(createCharacter.ReturnValue);
                         }
                         else if (dictWitches.TryGetValue(cell.ObjectId, out IWitchModel witch)) // has a character/item
                         {
                             GameObject cellGameObject = _grid[i, j];
-                            Coroutine<AbstractCharacterView<IWitchModel>> createCharacter = this.StartCoroutine<AbstractCharacterView<IWitchModel>>(_witchFactory.Create(cellGameObject.transform, witch));
+                            Coroutine<AbstractCharacterView<IWitchModel, IWitchViewModel>> createCharacter = 
+                                this.StartCoroutine<AbstractCharacterView<IWitchModel, IWitchViewModel>>(_witchFactory.Create(cellGameObject.transform, witch));
                             yield return createCharacter;
 
                             // add a witch and init
-                            AbstractCharacterView<IWitchModel> witchModel = createCharacter.ReturnValue;
-                            witchModel.Init(witch, battleCamera);
-                            _witches.Add(witchModel);
+                            //AbstractCharacterView<IWitchModel> witchModel = createCharacter.ReturnValue;
+                            //witchModel.Init(witch, battleCamera);
+                            _witches.Add(createCharacter.ReturnValue);
                         }
                     }
 
@@ -166,11 +168,11 @@ namespace Raincrow.BattleArena.Controller
 
                 // Update Characters
                 Vector3 forward = battleCamera.transform.rotation * Vector3.up;
-                foreach (AbstractCharacterView<ISpiritModel> spirit in _spirits)
+                foreach (AbstractCharacterView<ISpiritModel, ISpiritViewModel> spirit in _spirits)
                 {                    
                     spirit.FaceCamera(battleCamera.transform.rotation, forward);
                 }
-                foreach (AbstractCharacterView<IWitchModel> witch in _witches)
+                foreach (AbstractCharacterView<IWitchModel, IWitchViewModel> witch in _witches)
                 {
                     witch.FaceCamera(battleCamera.transform.rotation, forward);
                 }

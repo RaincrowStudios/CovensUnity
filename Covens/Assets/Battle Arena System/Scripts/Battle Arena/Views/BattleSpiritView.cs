@@ -3,7 +3,7 @@ using UnityEngine;
 
 namespace Raincrow.BattleArena.View
 {
-    public class BattleSpiritView : AbstractCharacterView<ISpiritModel>
+    public class BattleSpiritView : AbstractCharacterView<ISpiritModel, ISpiritViewModel>
     {        
         // Serialized variables
         [SerializeField] private Transform _avatarRoot;
@@ -24,15 +24,16 @@ namespace Raincrow.BattleArena.View
             }
         }
 
+        public override void Init(ISpiritModel characterModel, ISpiritViewModel characterViewModel, Camera battleCamera)
+        {
+            base.Init(characterModel, characterViewModel, battleCamera);
+            _rendererMaterial.SetTexture(MainTexPropertyId, characterViewModel.Texture);
+        }
+
         public override void FaceCamera(Quaternion cameraRotation, Vector3 cameraForward)
         {
             Vector3 worldPosition = transform.position + cameraRotation * Vector3.forward;
             _avatarRoot.transform.LookAt(worldPosition, cameraForward);
-        }
-
-        public override void ChangeCharacterTexture(Texture texture)
-        {
-            _rendererMaterial.SetTexture(MainTexPropertyId, texture);
         }
 
         //[SerializeField] protected SpriteRenderer m_EnergyRing;

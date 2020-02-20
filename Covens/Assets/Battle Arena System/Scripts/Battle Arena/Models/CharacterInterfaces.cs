@@ -1,5 +1,7 @@
-﻿namespace Raincrow.BattleArena.Model
-{    
+﻿using UnityEngine;
+
+namespace Raincrow.BattleArena.Model
+{
     public interface ICharacterModel : IObjectModel
     {
         int BaseEnergy { get; }
@@ -11,7 +13,7 @@
     public interface IObjectModel
     {
         string Id { get; }
-        string ObjectType { get; }        
+        string ObjectType { get; }    
     }
 
     public interface IWitchModel : ICharacterModel
@@ -28,4 +30,19 @@
         string OwnerId { get; set; }
         string Texture { get; set; }
     }    
+
+    public interface ICharacterViewModel
+    {
+        Texture Texture { get; set; }
+    }
+
+    public interface IWitchViewModel : ICharacterViewModel
+    {
+        Color AlignmentColor { get; set; }
+    }
+
+    public interface ISpiritViewModel : ICharacterViewModel
+    {
+        
+    }
 }

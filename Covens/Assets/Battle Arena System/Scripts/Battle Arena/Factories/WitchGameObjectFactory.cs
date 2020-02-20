@@ -6,11 +6,16 @@ using Raincrow.Services;
 
 namespace Raincrow.BattleArena.Factory
 {
-    public class WitchGameObjectFactory : AbstractCharacterGameObjectFactory<IWitchModel>
+    public class WitchGameObjectFactory : AbstractCharacterGameObjectFactory<IWitchModel, IWitchViewModel>
     {
         // serialized variables
         [SerializeField] private BattleWitchView _battleWitchViewPrefab;
         [SerializeField] private ServiceLocator _serviceLocator;
+
+        [Header("Alignment")]
+        [SerializeField] private Color _alignmentWhiteColor;
+        [SerializeField] private Color _alignmentShadowColor;
+        [SerializeField] private Color _alignmentGreyColor;
 
         // private variables        
         private IWitchAvatarFactory _witchAvatarFactory;
@@ -23,10 +28,10 @@ namespace Raincrow.BattleArena.Factory
             }
         }
 
-        public override IEnumerator<AbstractCharacterView<IWitchModel>> Create(Transform cellTransform, IWitchModel model)
+        public override IEnumerator<AbstractCharacterView<IWitchModel, IWitchViewModel>> Create(Transform cellTransform, IWitchModel model)
         {
             // Create character
-            AbstractCharacterView<IWitchModel> characterView = Instantiate(_battleWitchViewPrefab, cellTransform);
+            AbstractCharacterView<IWitchModel, IWitchViewModel> characterView = Instantiate(_battleWitchViewPrefab, cellTransform);
             yield return null;
 
             // wait for coroutine
@@ -36,7 +41,22 @@ namespace Raincrow.BattleArena.Factory
                 yield return null;
             }
 
-            characterView.ChangeCharacterTexture(request.ReturnValue);
+            Color alignmentColor = _alignmentGreyColor;
+            if (model.Degree > 0)
+            {
+                alignmentColor = _alignmentWhiteColor;
+            }
+            else if (model.Degree < 0)
+            {
+                alignmentColor = _alignmentShadowColor;
+            }
+
+            IWitchViewModel viewModel = new WitchViewModel()
+            {
+                Texture = request.ReturnValue,
+                AlignmentColor = alignmentColor
+            };
+            characterView.Init(model, viewModel, _serviceLocator.GetBattleCamera());
 
             yield return characterView;
         }

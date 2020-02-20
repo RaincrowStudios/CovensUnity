@@ -6,7 +6,7 @@ using UnityEngine;
 
 namespace Raincrow.BattleArena.Factory
 {
-    public class SpiritGameObjectFactory : AbstractCharacterGameObjectFactory<ISpiritModel>
+    public class SpiritGameObjectFactory : AbstractCharacterGameObjectFactory<ISpiritModel, ISpiritViewModel>
     {
         // serialized variables
         [SerializeField] private BattleSpiritView _battleSpiritViewPrefab;
@@ -23,21 +23,25 @@ namespace Raincrow.BattleArena.Factory
             }
         }
 
-        public override IEnumerator<AbstractCharacterView<ISpiritModel>> Create(Transform cellTransform, ISpiritModel model)
+        public override IEnumerator<AbstractCharacterView<ISpiritModel, ISpiritViewModel>> Create(Transform cellTransform, ISpiritModel model)
         {
             // Create character
-            AbstractCharacterView<ISpiritModel> battleSpiritView = Instantiate(_battleSpiritViewPrefab, cellTransform);
+            AbstractCharacterView<ISpiritModel, ISpiritViewModel> characterView = Instantiate(_battleSpiritViewPrefab, cellTransform);
             yield return null;
 
             // wait for coroutine
-            Coroutine<Texture> tex = this.StartCoroutine<Texture>(GetWitchAvatar(model));
-            while (tex.keepWaiting)
+            Coroutine<Texture> request = this.StartCoroutine<Texture>(GetWitchAvatar(model));
+            while (request.keepWaiting)
             {
                 yield return null;
             }
 
-            battleSpiritView.ChangeCharacterTexture(tex.ReturnValue);
-            yield return battleSpiritView;
+            ISpiritViewModel spiritViewModel = new SpiritViewModel()
+            {
+                Texture = request.ReturnValue
+            };
+            characterView.Init(model, spiritViewModel, _serviceLocator.GetBattleCamera());
+            yield return characterView;
         }
 
         private IEnumerator<Texture> GetWitchAvatar(ISpiritModel witchModel)

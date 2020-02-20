@@ -146,3 +146,6 @@ MonoBehaviour:
   _battleWitchViewPrefab: {fileID: 7898114360831156526, guid: a18a8f148bde0e7489c84b03cac84f89,
     type: 3}
   _serviceLocator: {fileID: 0}
+  _alignmentWhiteColor: {r: 0, g: 1, b: 1, a: 1}
+  _alignmentShadowColor: {r: 0.97, g: 0.67, b: 0.18, a: 1}
+  _alignmentGreyColor: {r: 0.698, g: 0, b: 1, a: 1}

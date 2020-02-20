@@ -85,7 +85,7 @@ namespace Raincrow.BattleArena.Model
         public string Name { get; set; }
         public int Level { get; set; }
         public InventoryModel Inventory { get; set; }
-        public CharacterInfo Info { get; set; }
+        public CharacterInfo Info { get; set; }        
 
         public WitchModel()
         {
@@ -171,5 +171,16 @@ namespace Raincrow.BattleArena.Model
             Consumables = new List<InventoryItemModel>();
             Equipped = new List<InventoryApparelModel>();
         }
+    }
+
+    public class WitchViewModel : IWitchViewModel
+    {
+        public Color AlignmentColor { get; set; }
+        public Texture Texture { get; set; }
+    }
+
+    public class SpiritViewModel : ISpiritViewModel
+    {
+        public Texture Texture { get; set; }
     }
 }
