@@ -110,7 +110,7 @@ namespace Raincrow.BattleArena.Phase
 
         public IEnumerator Update(IStateMachine<ITurnController> stateMachine, ITurnController context)
         {
-            if (Time.time - _startTime > 3f)
+            if (Time.time - _startTime > context.PlanningMaxTime)
             {
                 yield return stateMachine.ChangeState<ActionResolutionPhase>();
             }

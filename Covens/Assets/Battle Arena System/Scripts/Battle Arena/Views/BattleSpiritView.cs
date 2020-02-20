@@ -7,27 +7,46 @@ namespace Raincrow.BattleArena.View
     {        
         // Serialized variables
         [SerializeField] private Transform _avatarRoot;
-        [SerializeField] protected Renderer _renderer;
+        [SerializeField] protected Renderer _avatarRenderer;
+
+        [Header("Health")]
+        [SerializeField] private Renderer _damageRingRenderer;
+        [SerializeField] private Renderer _alignmentRingRenderer;
 
         // private variables
-        private Material _rendererMaterial;
+        private Material _avatarMat;
+        private Material _damageRingMat;
+        private Material _alignmentRingMat;
 
         // Static readonlies
         private static readonly int MainTexPropertyId = Shader.PropertyToID("_MainTex");
+        private static readonly int MainColorPropertyId = Shader.PropertyToID("_Color");
 
         protected virtual void OnEnable()
         {
-            if (_rendererMaterial == null)
+            if (_avatarMat == null)
             {
-                _rendererMaterial = new Material(_renderer.sharedMaterial);
-                _renderer.material = _rendererMaterial;
+                _avatarMat = new Material(_avatarRenderer.sharedMaterial);
+                _avatarRenderer.material = _avatarMat;
+            }
+
+            if (_damageRingMat == null)
+            {
+                _damageRingMat = new Material(_damageRingRenderer.sharedMaterial);
+                _damageRingRenderer.material = _damageRingMat;
+            }
+
+            if (_alignmentRingMat == null)
+            {
+                _alignmentRingMat = new Material(_alignmentRingRenderer.sharedMaterial);
+                _alignmentRingRenderer.material = _alignmentRingMat;
             }
         }
 
         public override void Init(ISpiritModel characterModel, ISpiritViewModel characterViewModel, Camera battleCamera)
         {
             base.Init(characterModel, characterViewModel, battleCamera);
-            _rendererMaterial.SetTexture(MainTexPropertyId, characterViewModel.Texture);
+            _avatarMat.SetTexture(MainTexPropertyId, characterViewModel.Texture);
         }
 
         public override void FaceCamera(Quaternion cameraRotation, Vector3 cameraForward)

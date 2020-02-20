@@ -16,18 +16,18 @@ namespace Raincrow.BattleArena.Factory
             // Create GameObjects grid
             GameObject[,] gridGameObjects = new GameObject[gridModel.MaxCellsPerColumn, gridModel.MaxCellsPerRow];
 
-            Vector3 cellLocalScale = _gridGameObjectModel.CellPrefab.transform.localScale;
+            Vector2 cellScale = _gridGameObjectModel.CellScale;
 
-            float startX = (gridModel.MaxCellsPerColumn - 1) * (cellLocalScale.x * 0.5f);
+            float startX = (gridModel.MaxCellsPerColumn - 1) * (cellScale.x * 0.5f);
             startX += _gridGameObjectModel.Spacing.x * (gridModel.MaxCellsPerColumn - 1) * 0.5f;
 
-            float endX = (gridModel.MaxCellsPerColumn - 1) * (cellLocalScale.x * -0.5f);
+            float endX = (gridModel.MaxCellsPerColumn - 1) * (cellScale.x * -0.5f);
             endX -= _gridGameObjectModel.Spacing.x * (gridModel.MaxCellsPerColumn - 1) * 0.5f;
 
-            float startZ = (gridModel.MaxCellsPerRow - 1) * (cellLocalScale.z * 0.5f);
+            float startZ = (gridModel.MaxCellsPerRow - 1) * (cellScale.y * 0.5f);
             startZ += _gridGameObjectModel.Spacing.y * (gridModel.MaxCellsPerRow - 1) * 0.5f;
 
-            float endZ = (gridModel.MaxCellsPerRow - 1) * (cellLocalScale.z * -0.5f);
+            float endZ = (gridModel.MaxCellsPerRow - 1) * (cellScale.y * -0.5f);
             endZ -= _gridGameObjectModel.Spacing.y * (gridModel.MaxCellsPerRow - 1) * 0.5f;
 
             for (int i = 0; i < gridModel.MaxCellsPerColumn; i++)
@@ -47,7 +47,7 @@ namespace Raincrow.BattleArena.Factory
 
                         // Create CellView
                         CellView cellInstance = Instantiate(_gridGameObjectModel.CellPrefab, cellPosition, _cellsParent.rotation, _cellsParent);
-                        cellInstance.Init(gridModel.Cells[i, j], cellClickCallback);
+                        cellInstance.Init(gridModel.Cells[i, j], cellScale, cellClickCallback);
 
                         gridGameObjects[i, j] = cellInstance.gameObject;
                     }

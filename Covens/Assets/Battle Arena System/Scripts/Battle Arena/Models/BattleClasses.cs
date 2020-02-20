@@ -60,10 +60,12 @@ namespace Raincrow.BattleArena.Model
         // Serializable variables
         [SerializeField] private CellView _cellPrefab; // Cell Prefab 
         [SerializeField] private Vector2 _spacing = Vector2.zero; // width and length distance between each cell
+        [SerializeField] private Vector2 _cellScale = Vector2.one;
 
         // Properties
         public CellView CellPrefab { get => _cellPrefab; private set => _cellPrefab = value; }
         public Vector2 Spacing { get => _spacing; private set => _spacing = value; }
+        public Vector2 CellScale { get => _cellScale; set => _cellScale = value; }
     }
 
     public class GridModel : IGridModel
