@@ -117,6 +117,7 @@ MonoBehaviour:
       type: 3}
     _spacing: {x: 0.1, y: 0.1}
     _cellScale: {x: 2, y: 2}
+  _serviceLocator: {fileID: 0}
 --- !u!114 &8938269710436315475
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -147,6 +148,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _battleWitchViewPrefab: {fileID: 7898114360831156526, guid: a18a8f148bde0e7489c84b03cac84f89,
+    type: 3}
+  _nameplateViewPrefab: {fileID: 977975159945587519, guid: 91ad658fd6d07b944bca4b7d22e0d2b3,
     type: 3}
   _serviceLocator: {fileID: 0}
   _alignmentWhiteMaterial: {fileID: 2100000, guid: 9abc0555e03eb664685a10cecf4d21ae,

@@ -8,14 +8,7 @@ namespace Raincrow.BattleArena.View
         // Serialized variables
         [Header("Avatar")]
         [SerializeField] private Transform _avatarRoot;
-        [SerializeField] private Renderer _avatarRenderer;
-
-        [Header("Nameplate")]
-        [SerializeField] private GameObject _immunityIcon;
-        [SerializeField] private GameObject _deathIcon;
-        [SerializeField] private TMPro.TextMeshProUGUI _playerLevel;
-        [SerializeField] private TMPro.TextMeshProUGUI _playerName;
-        [SerializeField] private Canvas _canvas;
+        [SerializeField] private Renderer _avatarRenderer;        
 
         [Header("Health")]
         [SerializeField] private Renderer _damageRingRenderer;
@@ -58,17 +51,6 @@ namespace Raincrow.BattleArena.View
         public override void Init(IWitchModel characterModel, IWitchViewModel characterViewModel, Camera battleCamera)
         {
             base.Init(characterModel, characterViewModel, battleCamera);
-
-            _immunityIcon.SetActive(false);
-            _deathIcon.SetActive(false);
-
-            _playerLevel.gameObject.SetActive(true);
-            _playerLevel.text = characterModel.Level.ToString();
-            _playerName.gameObject.SetActive(true);
-            _playerName.text = characterModel.Name;
-
-            _canvas.renderMode = RenderMode.WorldSpace;
-            _canvas.worldCamera = battleCamera;
 
             // Set avatar texture
             _avatarMat.SetTexture(MainTexPropertyId, characterViewModel.Texture);

@@ -10,16 +10,19 @@ namespace Raincrow.BattleArena.Factory
     {
         // serialized variables
         [SerializeField] private BattleWitchView _battleWitchViewPrefab;
+        [SerializeField] private NameplateView _nameplateViewPrefab;
         [SerializeField] private ServiceLocator _serviceLocator;
+        [SerializeField] private Transform _nameplatesParent;
 
         [Header("Alignment")]
         [SerializeField] private Material _alignmentWhiteMaterial;
         [SerializeField] private Material _alignmentShadowMaterial;
         [SerializeField] private Material _alignmentGreyMaterial;
 
-        // private variables        
+        // private variables                
         private IWitchAvatarFactory _witchAvatarFactory;
         private ObjectPool _objectPool;
+        private Camera _battleCamera;
 
         protected virtual void OnEnable()
         {
@@ -32,6 +35,11 @@ namespace Raincrow.BattleArena.Factory
             {
                 _objectPool = _serviceLocator.GetObjectPool();
             }
+
+            if (_battleCamera == null)
+            {
+                _battleCamera = _serviceLocator.GetBattleCamera();
+            }
         }
 
         public override IEnumerator<AbstractCharacterView<IWitchModel, IWitchViewModel>> Create(Transform cellTransform, IWitchModel model)
@@ -41,7 +49,7 @@ namespace Raincrow.BattleArena.Factory
             yield return null;
 
             // wait for coroutine
-            Coroutine<Texture> request = this.StartCoroutine<Texture>(GetWitchAvatar(model));            
+            Coroutine<Texture> request = this.StartCoroutine<Texture>(GetWitchAvatar(model));
             while (request.keepWaiting)
             {
                 yield return null;
@@ -63,8 +71,11 @@ namespace Raincrow.BattleArena.Factory
                 AlignmentMaterial = alignmentMaterial
             };
             characterView.Init(model, witchViewModel, _serviceLocator.GetBattleCamera());
-
             yield return characterView;
+
+            // Nameplate
+            NameplateView nameplateView = Instantiate(_nameplateViewPrefab);
+            nameplateView.Init(model, characterView.transform, _nameplatesParent, _serviceLocator.GetBattleCamera());
         }
 
         private IEnumerator<Texture> GetWitchAvatar(IWitchModel witchModel)

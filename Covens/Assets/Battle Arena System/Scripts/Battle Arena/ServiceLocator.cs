@@ -87,6 +87,11 @@ namespace Raincrow.Services
             return _objectPoolInstance;
         }
 
+        public Canvas GetMainCanvas()
+        {
+            return _mainCanvas;
+        }
+
         private T GetInstance<T>(T prefab, Transform parent = null) where T : Object
         {
             T target = FindObjectOfType<T>();

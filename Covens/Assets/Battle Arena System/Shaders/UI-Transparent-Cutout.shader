@@ -12,10 +12,11 @@ Shader "Oktagon/Unlit-Transparent Cutout" {
 		_Cutoff("Alpha cutoff", Range(0.0001,1)) = 0.5
 	}
 		SubShader{
-			Tags {"Queue" = "AlphaTest" "IgnoreProjector" = "True" "RenderType" = "TransparentCutout"}
+			Tags {"Queue" = "Transparent" "IgnoreProjector" = "True" "RenderType" = "TransparentCutout"}
 			LOD 100
 
 			Lighting Off
+			ZWrite Off
 
 			Pass {
 				CGPROGRAM

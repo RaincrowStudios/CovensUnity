@@ -58,7 +58,7 @@ namespace Raincrow.Mocks
                 //Id = System.Guid.NewGuid().ToString(),
                 ObjectType = ObjectType.Witch,
                 Degree = 0,
-                Name = "Emanuel",
+                Name = "SHADOW THE HEDGEHOG",
                 Level = 1,
                 BaseEnergy = 200,
                 Energy = 80
