@@ -18,6 +18,7 @@ namespace Raincrow.Mocks
 
         protected virtual void OnEnable()
         {
+            QualitySettings.vSyncCount = 0;
             DownloadManager.DownloadAssets(() =>
             {
                 LoginAPIManager.Login((result, response) =>

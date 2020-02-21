@@ -24,6 +24,7 @@ Shader "Oktagon/Unlit-Transparent Cutout" {
 					#pragma fragment frag
 					#pragma target 2.0
 					#pragma multi_compile_fog
+					#pragma multi_compile_instancing 
 
 					#include "UnityCG.cginc"
 
@@ -45,7 +46,10 @@ Shader "Oktagon/Unlit-Transparent Cutout" {
 					sampler2D _MainTex;
 					float4 _MainTex_ST;
 					fixed4 _Color;
-					fixed _Cutoff;
+					//fixed _Cutoff;
+					UNITY_INSTANCING_BUFFER_START(Props)
+						UNITY_DEFINE_INSTANCED_PROP(fixed, _Cutoff)
+					UNITY_INSTANCING_BUFFER_END(Props)
 
 					v2f vert(appdata_t v)
 					{
@@ -62,7 +66,7 @@ Shader "Oktagon/Unlit-Transparent Cutout" {
 					fixed4 frag(v2f i) : SV_Target
 					{
 						fixed4 col = tex2D(_MainTex, i.texcoord) * i.color;
-						clip(col.a - _Cutoff);
+						clip(col.a - UNITY_ACCESS_INSTANCED_PROP(Props, _Cutoff));
 						UNITY_APPLY_FOG(i.fogCoord, col);
 						return col;
 					}

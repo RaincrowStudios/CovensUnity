@@ -22,7 +22,8 @@ namespace Raincrow.BattleArena.View
 
         // private variables
         private Material _avatarMat;
-        private Material _damageRingMat;
+        //private Material _damageRingMat;
+        private MaterialPropertyBlock props;
 
         // Static readonlies
         private static readonly int MainTexPropertyId = Shader.PropertyToID("_MainTex");        
@@ -36,11 +37,15 @@ namespace Raincrow.BattleArena.View
                 _avatarRenderer.material = _avatarMat;
             }
 
-            if (_damageRingMat == null)
+            if (props == null)
             {
-                _damageRingMat = new Material(_damageRingRenderer.sharedMaterial);
-                _damageRingRenderer.material = _damageRingMat;
+                props = new MaterialPropertyBlock();
             }
+            //if (_damageRingMat == null)
+            //{
+            //    _damageRingMat = new Material(_damageRingRenderer.sharedMaterial);
+            //    _damageRingRenderer.material = _damageRingMat;
+            //}
         }
 
         protected virtual void Update()
@@ -84,7 +89,10 @@ namespace Raincrow.BattleArena.View
             int baseEnergy = Model.BaseEnergy;
             int energy = Model.Energy;
             float energyNormalized = Mathf.InverseLerp(Mathf.Epsilon, baseEnergy, energy);
-            _damageRingMat.SetFloat(AlphaCutoffPropertyId, 1f - energyNormalized);
+
+            //_damageRingMat.SetFloat(AlphaCutoffPropertyId, 1f - energyNormalized);
+            props.SetFloat(AlphaCutoffPropertyId, 1f - energyNormalized);
+            _damageRingRenderer.SetPropertyBlock(props);
         }
     }
 }
