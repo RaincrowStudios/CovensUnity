@@ -5,7 +5,7 @@ namespace Raincrow.BattleArena.View
 {
     public class BattleWitchView : AbstractCharacterView<IWitchModel, IWitchViewModel>
     {
-        // Serialized variables
+        // Serialized variables        
         [Header("Avatar")]
         [SerializeField] private Transform _avatarRoot;
         [SerializeField] private Renderer _avatarRenderer;        
@@ -13,7 +13,10 @@ namespace Raincrow.BattleArena.View
         [Header("Health")]
         [SerializeField] private Renderer _damageRingRenderer;
         [SerializeField] private Renderer _alignmentRingRenderer;
-   
+
+        [Header("Nameplate")]
+        [SerializeField] private Transform _nameplateTarget;
+
         // private variables
         private Material _avatarMat;
         private Material _damageRingMat;
@@ -21,6 +24,9 @@ namespace Raincrow.BattleArena.View
         // Static readonlies
         private static readonly int MainTexPropertyId = Shader.PropertyToID("_MainTex");        
         private static readonly int AlphaCutoffPropertyId = Shader.PropertyToID("_Cutoff");
+
+        // Properties
+        public Transform NameplateTarget { get => _nameplateTarget; }
 
         protected virtual void OnEnable()
         {

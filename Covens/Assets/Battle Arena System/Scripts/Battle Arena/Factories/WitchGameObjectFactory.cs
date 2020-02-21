@@ -45,7 +45,7 @@ namespace Raincrow.BattleArena.Factory
         public override IEnumerator<AbstractCharacterView<IWitchModel, IWitchViewModel>> Create(Transform cellTransform, IWitchModel model)
         {
             // Create character            
-            AbstractCharacterView<IWitchModel, IWitchViewModel> characterView = _objectPool.Spawn(_battleWitchViewPrefab, cellTransform);
+            BattleWitchView battleWitchView = _objectPool.Spawn(_battleWitchViewPrefab, cellTransform);
             yield return null;
 
             // wait for coroutine
@@ -70,12 +70,12 @@ namespace Raincrow.BattleArena.Factory
                 Texture = request.ReturnValue,
                 AlignmentMaterial = alignmentMaterial
             };
-            characterView.Init(model, witchViewModel, _serviceLocator.GetBattleCamera());
-            yield return characterView;
+            battleWitchView.Init(model, witchViewModel, _serviceLocator.GetBattleCamera());
+            yield return battleWitchView;
 
             // Nameplate
             NameplateView nameplateView = Instantiate(_nameplateViewPrefab);
-            nameplateView.Init(model, characterView.transform, _nameplatesParent, _serviceLocator.GetBattleCamera());
+            nameplateView.Init(model, battleWitchView.NameplateTarget, _nameplatesParent, _serviceLocator.GetBattleCamera());
         }
 
         private IEnumerator<Texture> GetWitchAvatar(IWitchModel witchModel)

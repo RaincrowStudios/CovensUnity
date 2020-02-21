@@ -961,8 +961,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _serviceLocator: {fileID: 1442890515}
-  _maxCellsPerRow: 10
-  _maxCellsPerColumn: 10
+  _maxCellsPerRow: 5
+  _maxCellsPerColumn: 5
 --- !u!1001 &3543581159215474582
 PrefabInstance:
   m_ObjectHideFlags: 0
