@@ -118,7 +118,6 @@ namespace Raincrow.Mocks
                     {
                         ISpiritModel spiritModelClone = spiritModel.Clone();
                         spiritModelClone.Id = System.Guid.NewGuid().ToString();
-                        Debug.Log(spiritModelClone.Id);
                         gridModel.Cells[i, j].ObjectId = spiritModelClone.Id;
                         spiritModels.Add(spiritModelClone);
                     }
@@ -126,7 +125,6 @@ namespace Raincrow.Mocks
                     {
                         IWitchModel witchModelClone = witchModel.Clone();
                         witchModelClone.Id = System.Guid.NewGuid().ToString();
-                        Debug.Log(witchModelClone.Id);
                         gridModel.Cells[i, j].ObjectId = witchModelClone.Id;
                         witchModels.Add(witchModelClone);
                     }

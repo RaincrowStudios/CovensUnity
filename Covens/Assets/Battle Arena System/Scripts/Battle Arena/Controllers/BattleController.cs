@@ -71,14 +71,12 @@ namespace Raincrow.BattleArena.Controller
             Dictionary<string, IWitchModel> dictWitches = new Dictionary<string, IWitchModel>();
             foreach (IWitchModel witch in witches)
             {
-                Debug.Log(witch.Id);
                 dictWitches.Add(witch.Id, witch);
             }
 
             Dictionary<string, ISpiritModel> dictSpirits = new Dictionary<string, ISpiritModel>();
             foreach (ISpiritModel spirit in spirits)
             {
-                Debug.Log(spirit.Id);
                 dictSpirits.Add(spirit.Id, spirit);
             }            
 
