@@ -15,7 +15,10 @@ namespace Raincrow.BattleArena.View
         [SerializeField] private Renderer _alignmentRingRenderer;
 
         [Header("Nameplate")]
-        [SerializeField] private Transform _nameplateTarget;
+        [SerializeField] private GameObject _immunityIcon;
+        [SerializeField] private GameObject _deathIcon;
+        [SerializeField] private TMPro.TextMeshPro _playerLevel;
+        [SerializeField] private TMPro.TextMeshPro _playerName;
 
         // private variables
         private Material _avatarMat;
@@ -24,9 +27,6 @@ namespace Raincrow.BattleArena.View
         // Static readonlies
         private static readonly int MainTexPropertyId = Shader.PropertyToID("_MainTex");        
         private static readonly int AlphaCutoffPropertyId = Shader.PropertyToID("_Cutoff");
-
-        // Properties
-        public Transform NameplateTarget { get => _nameplateTarget; }
 
         protected virtual void OnEnable()
         {
@@ -63,6 +63,14 @@ namespace Raincrow.BattleArena.View
 
             // Set alignment color
             _alignmentRingRenderer.sharedMaterial = characterViewModel.AlignmentMaterial;
+
+            _immunityIcon.SetActive(false);
+            _deathIcon.SetActive(false);
+
+            _playerLevel.gameObject.SetActive(true);
+            _playerLevel.text = characterModel.Level.ToString();
+            _playerName.gameObject.SetActive(true);
+            _playerName.text = characterModel.Name;
         }
 
         public override void FaceCamera(Quaternion cameraRotation, Vector3 cameraForward)

@@ -10,9 +10,7 @@ namespace Raincrow.BattleArena.Factory
     {
         // serialized variables
         [SerializeField] private BattleWitchView _battleWitchViewPrefab;
-        [SerializeField] private NameplateView _nameplateViewPrefab;
         [SerializeField] private ServiceLocator _serviceLocator;
-        [SerializeField] private Transform _nameplatesParent;
 
         [Header("Alignment")]
         [SerializeField] private Material _alignmentWhiteMaterial;
@@ -22,7 +20,6 @@ namespace Raincrow.BattleArena.Factory
         // private variables                
         private IWitchAvatarFactory _witchAvatarFactory;
         private ObjectPool _objectPool;
-        private Camera _battleCamera;
 
         protected virtual void OnEnable()
         {
@@ -34,11 +31,6 @@ namespace Raincrow.BattleArena.Factory
             if (_objectPool == null)
             {
                 _objectPool = _serviceLocator.GetObjectPool();
-            }
-
-            if (_battleCamera == null)
-            {
-                _battleCamera = _serviceLocator.GetBattleCamera();
             }
         }
 
@@ -72,10 +64,6 @@ namespace Raincrow.BattleArena.Factory
             };
             battleWitchView.Init(model, witchViewModel, _serviceLocator.GetBattleCamera());
             yield return battleWitchView;
-
-            // Nameplate
-            NameplateView nameplateView = Instantiate(_nameplateViewPrefab);
-            nameplateView.Init(model, battleWitchView.NameplateTarget, _nameplatesParent, _serviceLocator.GetBattleCamera());
         }
 
         private IEnumerator<Texture> GetWitchAvatar(IWitchModel witchModel)
