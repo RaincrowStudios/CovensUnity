@@ -30,13 +30,13 @@ namespace Raincrow.BattleArena.Controller
         PlanningPhaseStartEvent OnPlanningPhaseReadyEvent { get; }
 
         /// <summary>
-        /// Socket event
-        /// </summary>
-        TurnResolutionEvent OnTurnResolutionEvent { get; }
+        ///// Socket event
+        ///// </summary>
+        //TurnResolutionEvent OnTurnResolutionEvent { get; }
 
-        /// <summary>
-        /// Socket event
-        /// </summary>
-        BattleEndEvent OnBattleEndEvent { get; }
+        ///// <summary>
+        ///// Socket event
+        ///// </summary>
+        //BattleEndEvent OnBattleEndEvent { get; }
     }
 }

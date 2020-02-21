@@ -7,8 +7,8 @@ namespace Raincrow.BattleArena.Controller
     public abstract class AbstractGameMasterController : MonoBehaviour, IGameMasterController
     {
         public PlanningPhaseStartEvent OnPlanningPhaseReadyEvent { get; } = new PlanningPhaseStartEvent();
-        public TurnResolutionEvent OnTurnResolutionEvent { get; } = new TurnResolutionEvent();
-        public BattleEndEvent OnBattleEndEvent { get; } = new BattleEndEvent();
+        //public TurnResolutionEvent OnTurnResolutionEvent { get; } = new TurnResolutionEvent();
+        //public BattleEndEvent OnBattleEndEvent { get; } = new BattleEndEvent();
 
         /// <summary>
         ///  Send to server an action to move the player on the grid
