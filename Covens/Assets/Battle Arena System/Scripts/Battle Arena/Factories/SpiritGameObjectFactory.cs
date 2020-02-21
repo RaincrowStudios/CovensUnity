@@ -17,6 +17,7 @@ namespace Raincrow.BattleArena.Factory
 
         // private variables        
         private ISpiritAvatarFactory _spiritAvatarFactory;
+        private ObjectPool _objectPool;
 
         protected virtual void OnEnable()
         {
@@ -24,12 +25,17 @@ namespace Raincrow.BattleArena.Factory
             {
                 _spiritAvatarFactory = _serviceLocator.GetSpiritAvatarFactory();
             }
+
+            if (_objectPool == null)
+            {
+                _objectPool = _serviceLocator.GetObjectPool();
+            }
         }
 
         public override IEnumerator<AbstractCharacterView<ISpiritModel, ISpiritViewModel>> Create(Transform cellTransform, ISpiritModel model)
         {
-            // Create character
-            AbstractCharacterView<ISpiritModel, ISpiritViewModel> characterView = Instantiate(_battleSpiritViewPrefab, cellTransform);
+            // Create character            
+            AbstractCharacterView<ISpiritModel, ISpiritViewModel> characterView = _objectPool.Spawn(_battleSpiritViewPrefab, cellTransform);
             yield return null;
 
             // wait for coroutine

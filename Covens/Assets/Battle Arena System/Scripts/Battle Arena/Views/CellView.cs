@@ -32,7 +32,7 @@ namespace Raincrow.BattleArena.View
             _cellClickEvent.Invoke(this);
         }
 
-        protected virtual void OnDestroy()
+        protected virtual void OnDisable()
         {
             _cellClickEvent.RemoveAllListeners();
         }

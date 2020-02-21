@@ -6,20 +6,20 @@ using UnityEngine;
 namespace Raincrow.Services
 {
     public class ServiceLocator : MonoBehaviour
-    {
-        #region Avatar Sprite Util 
-
+    {        
         [Header("Service Prefabs")]
         [SerializeField] private AvatarSpriteUtil _avatarSpriteUtilPrefab; // Avatar Sprite Util Prefab
         [SerializeField] private LoadingView _loadingViewPrefab;
         [SerializeField] private BattleController _battleControllerPrefab;
         [SerializeField] private Camera _battleCameraPrefab;
+        [SerializeField] private ObjectPool _objectPoolPrefab;
 
         [Header("Service Instances")]
         [SerializeField] private AvatarSpriteUtil _avatarSpriteUtilInstance; // Avatar Sprite Util Instance
         [SerializeField] private LoadingView _loadingViewInstance; // Loading View Instance
         [SerializeField] private BattleController _battleControllerInstance;
         [SerializeField] private Camera _battleCameraInstance;
+        [SerializeField] private ObjectPool _objectPoolInstance;
 
         [Header("UI")]
         [SerializeField] private Canvas _mainCanvas;
@@ -78,6 +78,15 @@ namespace Raincrow.Services
             return _battleControllerInstance;
         }
 
+        public ObjectPool GetObjectPool()
+        {
+            if (_objectPoolInstance == null)
+            {
+                _objectPoolInstance = GetInstance(_objectPoolPrefab);
+            }
+            return _objectPoolInstance;
+        }
+
         private T GetInstance<T>(T prefab, Transform parent = null) where T : Object
         {
             T target = FindObjectOfType<T>();
@@ -88,7 +97,5 @@ namespace Raincrow.Services
 
             return Instantiate(prefab, parent);
         }
-
-        #endregion
     }
 }

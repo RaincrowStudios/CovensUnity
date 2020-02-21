@@ -13,6 +13,8 @@ namespace Raincrow.Mocks
 #if !RELEASE
         
         [SerializeField] private ServiceLocator _serviceLocator;
+        [SerializeField] private int _maxCellsPerRow = 5;
+        [SerializeField] private int _maxCellsPerColumn = 5;
 
         protected virtual void OnEnable()
         {
@@ -33,8 +35,8 @@ namespace Raincrow.Mocks
             {
                 gridBuilder = new GridBuilder()
                 {
-                    MaxCellsPerRow = 5,
-                    MaxCellsPerColumn = 5,
+                    MaxCellsPerRow = _maxCellsPerRow,
+                    MaxCellsPerColumn = _maxCellsPerColumn,
                 };
 
                 gridBuilder.CellBuilders = new CellBuilder[gridBuilder.MaxCellsPerRow, gridBuilder.MaxCellsPerColumn];

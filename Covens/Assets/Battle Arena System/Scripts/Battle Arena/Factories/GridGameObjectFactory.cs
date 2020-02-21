@@ -1,5 +1,6 @@
 ﻿using Raincrow.BattleArena.Model;
 using Raincrow.BattleArena.View;
+using Raincrow.Services;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Events;
@@ -10,6 +11,18 @@ namespace Raincrow.BattleArena.Factory
     {
         [SerializeField] private Transform _cellsParent;
         [SerializeField] private GridGameObjectModel _gridGameObjectModel;
+        [SerializeField] private ServiceLocator _serviceLocator;
+
+        // private variables        
+        private ObjectPool _objectPool;
+
+        protected virtual void OnEnable()
+        {
+            if (_objectPool == null)
+            {
+                _objectPool = _serviceLocator.GetObjectPool();
+            }
+        }
 
         public override IEnumerator<GameObject[,]> Create(IGridModel gridModel, UnityAction<CellView> cellClickCallback)
         {
@@ -45,8 +58,8 @@ namespace Raincrow.BattleArena.Factory
 
                         cellPosition = _cellsParent.TransformPoint(cellPosition);
 
-                        // Create CellView
-                        CellView cellInstance = Instantiate(_gridGameObjectModel.CellPrefab, cellPosition, _cellsParent.rotation, _cellsParent);
+                        // Create CellView                        
+                        CellView cellInstance = _objectPool.Spawn(_gridGameObjectModel.CellPrefab, _cellsParent, cellPosition, _cellsParent.rotation);
                         cellInstance.Init(gridModel.Cells[i, j], cellScale, cellClickCallback);
 
                         gridGameObjects[i, j] = cellInstance.gameObject;

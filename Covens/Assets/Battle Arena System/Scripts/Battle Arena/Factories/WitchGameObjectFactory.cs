@@ -19,6 +19,7 @@ namespace Raincrow.BattleArena.Factory
 
         // private variables        
         private IWitchAvatarFactory _witchAvatarFactory;
+        private ObjectPool _objectPool;
 
         protected virtual void OnEnable()
         {
@@ -26,12 +27,17 @@ namespace Raincrow.BattleArena.Factory
             {
                 _witchAvatarFactory = _serviceLocator.GetWitchAvatarFactory();
             }
+
+            if (_objectPool == null)
+            {
+                _objectPool = _serviceLocator.GetObjectPool();
+            }
         }
 
         public override IEnumerator<AbstractCharacterView<IWitchModel, IWitchViewModel>> Create(Transform cellTransform, IWitchModel model)
         {
-            // Create character
-            AbstractCharacterView<IWitchModel, IWitchViewModel> characterView = Instantiate(_battleWitchViewPrefab, cellTransform);
+            // Create character            
+            AbstractCharacterView<IWitchModel, IWitchViewModel> characterView = _objectPool.Spawn(_battleWitchViewPrefab, cellTransform);
             yield return null;
 
             // wait for coroutine
