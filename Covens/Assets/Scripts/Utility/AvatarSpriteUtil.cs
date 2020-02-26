@@ -5,7 +5,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class AvatarSpriteUtil : MonoBehaviour, IWitchAvatarFactory, ISpiritAvatarFactory, ISpiritPortraitFactory
+public class AvatarSpriteUtil : MonoBehaviour, IWitchAvatarFactory, ISpiritAvatarFactory, ISpiritPortraitFactory, IWitchPortraitFactory
 {
     private class MarkerSpriteCollection
     {
@@ -41,7 +41,7 @@ public class AvatarSpriteUtil : MonoBehaviour, IWitchAvatarFactory, ISpiritAvata
         {
             if (m_Dict.ContainsKey(marker))
             {
-                for(int i = 0; i < m_List.Count; i++)
+                for (int i = 0; i < m_List.Count; i++)
                 {
                     if (m_List[i] == marker)
                     {
@@ -95,11 +95,20 @@ public class AvatarSpriteUtil : MonoBehaviour, IWitchAvatarFactory, ISpiritAvata
         public Type type;
     }
 
+    private struct SpriteSpiritGenerationSetting
+    {
+        public System.Action<Sprite> callback;
+        public Vector2 size;
+        public Vector2 pivot;
+        public string spiritId;
+    }
+
     private enum Type
     {
         Portrait,
         Avatar,
         WardrobePortrait,
+        ArenaPortrait
     }
 
     public static AvatarSpriteUtil Instance { get; private set; }
@@ -108,23 +117,31 @@ public class AvatarSpriteUtil : MonoBehaviour, IWitchAvatarFactory, ISpiritAvata
     [SerializeField] private ApparelView m_FemaleView;
     [SerializeField] private Camera m_FullbodyCamera;
 
+    [Header("Spirit")]
+    [SerializeField] private GameObject m_SpiritAvatar;
+    [SerializeField] private Image m_ImageSpirit;
+
     [Header("Portrait")]
     [SerializeField] private Image m_PortraitBackground;
     [SerializeField] private Image m_PortraitFrame;
     [SerializeField] private Camera m_PortraitCamera;
-    [SerializeField, Range(0f,1f)] private float m_PortraitRadiusFactor = 1;
+    [SerializeField, Range(0f, 1f)] private float m_PortraitRadiusFactor = 1;
+
+    [Header("Arena Portrait")]
+    [SerializeField] private Image m_PortraitArenaBackground;
 
     [Header("Wardrobe Portrait")]
     [SerializeField] private Image m_PortraitFrame_Wardrobe;
     [SerializeField] private Camera m_PortraitCamera_Wardrobe;
 
     List<SpriteGenerationSetting> m_GenQueue = new List<SpriteGenerationSetting>();
+
     MarkerSpriteCollection m_AvatarQueue;
     MarkerSpriteCollection m_PortraitQueue;
 
     private void Awake()
     {
-        if(Instance != null)
+        if (Instance != null)
         {
             Destroy(this.gameObject);
             return;
@@ -136,10 +153,13 @@ public class AvatarSpriteUtil : MonoBehaviour, IWitchAvatarFactory, ISpiritAvata
         m_PortraitFrame.enabled = false;
         m_PortraitBackground.enabled = false;
         m_PortraitFrame_Wardrobe.enabled = false;
+        m_PortraitArenaBackground.enabled = false;
 
         m_PortraitCamera.enabled = false;
         m_FullbodyCamera.enabled = false;
         m_PortraitCamera_Wardrobe.enabled = false;
+
+        m_SpiritAvatar.SetActive(false);
 
         m_AvatarQueue = new MarkerSpriteCollection();
         m_PortraitQueue = new MarkerSpriteCollection();
@@ -192,11 +212,24 @@ public class AvatarSpriteUtil : MonoBehaviour, IWitchAvatarFactory, ISpiritAvata
             pivot = new Vector2(0.5f, 0.5f),
             type = Type.Portrait
         };
-        
+
         m_GenQueue.Add(prop);
 
         if (m_GenQueue.Count == 1)
             GenerateSprite();
+    }
+
+    public void GenerateSpiritPortrait(string spiritId, System.Action<Sprite> callback)
+    {
+        SpriteSpiritGenerationSetting prop = new SpriteSpiritGenerationSetting
+        {
+            spiritId = spiritId,
+            callback = callback,
+            size = new Vector2(256f / 2, 256f / 2),
+            pivot = new Vector2(0.5f, 0.5f)
+        };
+
+        GenerateSpriteSpirit(prop);
     }
 
     public void GenerateWardrobePortrait(System.Action<Sprite> callback)
@@ -232,7 +265,7 @@ public class AvatarSpriteUtil : MonoBehaviour, IWitchAvatarFactory, ISpiritAvata
             //Debug.Log(marker.name + " removed : " + m_AvatarQueue.Count);
         }
     }
-    
+
     public void AddToPortraitQueue(WitchMarker marker, System.Action<Sprite> callback)
     {
         if (m_GenQueue.Count == 0)
@@ -288,6 +321,12 @@ public class AvatarSpriteUtil : MonoBehaviour, IWitchAvatarFactory, ISpiritAvata
             {
                 m_PortraitFrame.enabled = true;
                 m_PortraitBackground.enabled = true;
+
+                cam = m_PortraitCamera;
+            }
+            else if (properties.type == Type.ArenaPortrait)
+            {
+                m_PortraitArenaBackground.enabled = true;
 
                 cam = m_PortraitCamera;
             }
@@ -354,16 +393,16 @@ public class AvatarSpriteUtil : MonoBehaviour, IWitchAvatarFactory, ISpiritAvata
             {
                 m_PortraitFrame_Wardrobe.enabled = false;
             }
-            
+
             //reset character to initial state
             root.transform.position = prevRootPos;
             root.gameObject.SetActive(prevRootState);
             characterView.ResetApparelView();
             characterView.gameObject.SetActive(prevState);
-                       
+
             properties.callback?.Invoke(sprite);
             m_GenQueue.RemoveAt(0);
-            
+
             //when all is over, check the map avatar and potrait queue
             if (m_GenQueue.Count == 0)
             {
@@ -380,7 +419,61 @@ public class AvatarSpriteUtil : MonoBehaviour, IWitchAvatarFactory, ISpiritAvata
             {
                 GenerateSprite();
             }
-        });       
+        });
+    }
+
+    private void GenerateSpriteSpirit(SpriteSpiritGenerationSetting properties)
+    {
+        m_SpiritAvatar.SetActive(true);
+
+        Camera cam = m_PortraitCamera;
+        cam.enabled = true;
+
+        //generate the texture and sprite
+        int width = (int)properties.size.x;
+        int height = (int)properties.size.y;
+
+        DownloadedAssets.GetSprite(properties.spiritId, (spriteSpirit) =>
+        {
+            m_ImageSpirit.sprite = spriteSpirit;
+
+            float posY = 0.3f * spriteSpirit.rect.height;
+            m_ImageSpirit.rectTransform.sizeDelta = new Vector2(spriteSpirit.rect.width * 0.7f, spriteSpirit.rect.height * 0.7f);
+            m_ImageSpirit.rectTransform.localPosition = new Vector2(0, posY);
+           
+            RenderTexture rt = new RenderTexture(width, height, 0);
+            cam.targetTexture = rt;
+            Texture2D texture = new Texture2D(width, height, TextureFormat.ARGB32, false);
+            cam.Render();
+            RenderTexture prev = RenderTexture.active;
+            RenderTexture.active = rt;
+            texture.ReadPixels(new Rect(0, 0, width, height), 0, 0);
+
+            float cx = width / 2f;
+            float cy = height / 2f;
+            float r2 = width / 2f;
+            for (int x = 0; x < width; x++)
+            {
+                for (int y = 0; y < height; y++)
+                {
+                    if (Mathf.Sqrt(Mathf.Pow(x - cx, 2) + Mathf.Pow(y - cy, 2)) >= r2 * m_PortraitRadiusFactor)
+                        texture.SetPixel(x, y, new Color(0, 0, 0, 0));
+                }
+            }
+
+            //generate the sprite
+            texture.Apply();
+            Sprite sprite = Sprite.Create(texture, new Rect(0, 0, width, height), properties.pivot);
+
+            //reset values
+            RenderTexture.active = prev;
+            Destroy(rt);
+            cam.targetTexture = null;
+            cam.enabled = false;
+            m_SpiritAvatar.SetActive(false);
+
+            properties.callback?.Invoke(sprite);
+        });
     }
 
     public IEnumerator<TextureRequest> CreateWitchAvatar(IWitchModel witchModel)
@@ -401,7 +494,7 @@ public class AvatarSpriteUtil : MonoBehaviour, IWitchAvatarFactory, ISpiritAvata
             equippedApparels.Add(equippedApparel);
             yield return request;
         }
-        
+
         GenerateAvatar(isMale, equippedApparels, (sprite) =>
         {
             request.Texture = sprite.texture;
@@ -420,7 +513,7 @@ public class AvatarSpriteUtil : MonoBehaviour, IWitchAvatarFactory, ISpiritAvata
     public IEnumerator<TextureRequest> CreateSpiritAvatar(ISpiritModel spiritModel)
     {
         TextureRequest request = new TextureRequest();
-        DownloadedAssets.GetSprite(spiritModel.Texture, (sprite) => 
+        DownloadedAssets.GetSprite(spiritModel.Texture, (sprite) =>
         {
             request.Texture = sprite.texture;
             request.IsDone = true;
@@ -433,12 +526,72 @@ public class AvatarSpriteUtil : MonoBehaviour, IWitchAvatarFactory, ISpiritAvata
         yield return request;
     }
 
-    public IEnumerator<TextureRequest> CreateSpiritPortrait(ISpiritModel spiritModel)
+    public IEnumerator<SpriteRequest> CreateSpiritPortrait(ISpiritModel spiritModel)
     {
-        TextureRequest request = new TextureRequest()
+        SpriteRequest request = new SpriteRequest();
+
+        // Convert inventory to equipped apparel
+        GenerateSpiritPortrait(spiritModel.Texture, (sprite) =>
         {
-            IsDone = true
+            request.Sprite = sprite;
+            request.IsDone = true;
+        });
+
+        // wait for texture to be generated
+        while (!request.IsDone)
+        {
+            yield return request;
+        }
+
+        yield return request;
+    }
+
+    public IEnumerator<SpriteRequest> CreateIWitchPortrait(IWitchModel witchModel)
+    {
+        bool isMale = (witchModel.Info.Gender == CharacterGender.Male);
+
+        SpriteRequest request = new SpriteRequest();
+
+        // Convert inventory to equipped apparel
+        List<EquippedApparel> equippedApparels = new List<EquippedApparel>();
+        foreach (InventoryApparelModel apparel in witchModel.Inventory.Equipped)
+        {
+            EquippedApparel equippedApparel = new EquippedApparel()
+            {
+                id = apparel.Id,
+                assets = new List<string>(apparel.Assets)
+            };
+            equippedApparels.Add(equippedApparel);
+            yield return request;
+        }
+
+        System.Action<Sprite> callback = (sprite) =>
+        {
+            request.Sprite = sprite;
+            request.IsDone = true;
         };
+
+        SpriteGenerationSetting prop = new SpriteGenerationSetting
+        {
+            male = isMale,
+            equips = equippedApparels,
+            callback = callback,
+            size = new Vector2(256f / 2, 256f / 2),
+            pivot = new Vector2(0.5f, 0.5f),
+            type = Type.ArenaPortrait
+        };
+
+        m_GenQueue.Add(prop);
+
+        if (m_GenQueue.Count == 1)
+            GenerateSprite();
+
+        // wait for texture to be generated
+        while (!request.IsDone)
+        {
+            yield return request;
+        }
+
         yield return request;
     }
 
@@ -449,6 +602,6 @@ public class AvatarSpriteUtil : MonoBehaviour, IWitchAvatarFactory, ISpiritAvata
         if (System.IO.Directory.Exists(Application.dataPath + $"/../../Tools/AvatarSpriteUtils") == false)
             System.IO.Directory.CreateDirectory(Application.dataPath + $"/../../Tools/AvatarSpriteUtils");
         System.IO.File.WriteAllBytes(Application.dataPath + $"/../../Tools/AvatarSpriteUtils/{System.DateTime.Now.Ticks}.png", bytes);
-    }    
+    }
 #endif
 }

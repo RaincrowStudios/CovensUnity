@@ -39,22 +39,22 @@ namespace Raincrow.BattleArena.Factory
             yield return null;
 
             // wait for coroutine
-            Coroutine<Texture> request = this.StartCoroutine<Texture>(GetWitchAvatar(model));
-            while (request.keepWaiting)
+            Coroutine<Texture> tex = this.StartCoroutine<Texture>(GetSpiritAvatar(model));
+            while (tex.keepWaiting)
             {
                 yield return null;
             }
 
             ISpiritViewModel spiritViewModel = new SpiritViewModel()
             {
-                Texture = request.ReturnValue,
+                Texture = tex.ReturnValue,
                 AlignmentMaterial = _wildAlignmentMaterial
             };
             characterView.Init(model, spiritViewModel, _serviceLocator.GetBattleCamera());
             yield return characterView;
         }
 
-        private IEnumerator<Texture> GetWitchAvatar(ISpiritModel witchModel)
+        private IEnumerator<Texture> GetSpiritAvatar(ISpiritModel witchModel)
         {
             IEnumerator<TextureRequest> enumerator = _spiritAvatarFactory.CreateSpiritAvatar(witchModel);
             Coroutine<TextureRequest> coroutine = this.StartCoroutine<TextureRequest>(enumerator);

@@ -92,12 +92,23 @@ namespace Raincrow.BattleArena.Factory
 
     public interface ISpiritPortraitFactory
     {
-        IEnumerator<TextureRequest> CreateSpiritPortrait(ISpiritModel spiritModel);
+        IEnumerator<SpriteRequest> CreateSpiritPortrait(ISpiritModel spiritModel);
+    }
+
+    public interface IWitchPortraitFactory
+    {
+        IEnumerator<SpriteRequest> CreateIWitchPortrait(IWitchModel witchModel);
     }
 
     public struct TextureRequest
     {
         public Texture Texture { get; set; }
+        public bool IsDone { get; set; }
+    }
+
+    public struct SpriteRequest
+    {
+        public Sprite Sprite { get; set; }
         public bool IsDone { get; set; }
     }
 }

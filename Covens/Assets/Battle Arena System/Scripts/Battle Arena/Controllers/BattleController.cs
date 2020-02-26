@@ -29,6 +29,8 @@ namespace Raincrow.BattleArena.Controller
 
         public TurnController TurnController { get; private set; }
         public QuickCastUI QuickCastUI { get => _quickCastUI; }
+        public List<AbstractCharacterView<IWitchModel, IWitchViewModel>> Witches { get => _witches; }
+        public List<AbstractCharacterView<ISpiritModel, ISpiritViewModel>> Spirits { get => _spirits; }
 
         public IEnumerator StartBattle(string battleId, IGridModel gridModel, IList<IWitchModel> witches, IList<ISpiritModel> spirits, ILoadingView loadingView = null)
         {
@@ -129,8 +131,6 @@ namespace Raincrow.BattleArena.Controller
                     Grid = gridModel
                 },
                 GameMaster = gameMasterController,
-                PlanningOrder = new string[0],
-                MaxActionsAllowed = 3,
                 Actions = new List<ActionModel>()
             };
             yield return null;
