@@ -33,13 +33,13 @@ namespace Raincrow.BattleArena.Phase
             _context = context;
 
             // Create the Send Planning Phase Ready Coroutine
-            _sendPlanningPhaseReady = _context.GameMaster.SendPlanningPhaseReady(_context.Battle.Id);
+            _sendPlanningPhaseReady = _context.GameMaster.SendPlanningPhaseReady(_context.Battle.Id, OnPlanningPhaseReady);
 
             // Start the Send Planning Phase Ready Coroutine
             _coroutineHandler.Invoke(_sendPlanningPhaseReady);
 
             // Subscribe to the 'On Planning Phase Ready' event
-            _context.GameMaster.OnPlanningPhaseReadyEvent.AddListener(OnPlanningPhaseReady);
+            //_context.GameMaster.OnPlanningPhaseReadyEvent.AddListener(OnPlanningPhaseReady);
 
             yield return null;
         }        
@@ -61,7 +61,7 @@ namespace Raincrow.BattleArena.Phase
             }
 
             // Unsubscribe to the 'On Planning Phase Ready' event
-            _context.GameMaster.OnPlanningPhaseReadyEvent?.RemoveListener(OnPlanningPhaseReady);
+            //_context.GameMaster.OnPlanningPhaseReadyEvent?.RemoveListener(OnPlanningPhaseReady);
 
             yield return null;
         }

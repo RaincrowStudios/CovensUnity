@@ -1,10 +1,14 @@
 ﻿using Raincrow.BattleArena.Events;
 using System.Collections.Generic;
+using UnityEngine.Events;
 
 namespace Raincrow.BattleArena.Controller
 {
     public class GameMasterController : AbstractGameMasterController
     {
+        // Variables
+        private UnityAction<PlanningPhaseReadyEventArgs> _onPlanningPhaseReady;
+
         #region MonoBehaviour
 
         protected virtual void OnEnable()
@@ -25,57 +29,15 @@ namespace Raincrow.BattleArena.Controller
 
         #region IGameMasterController
 
-        public override IEnumerator<bool?> SendPlanningPhaseReady(string battleId)
+        public override IEnumerator<bool?> SendPlanningPhaseReady(string battleId, UnityAction<PlanningPhaseReadyEventArgs> onPlanningPhaseReady)
         {
+            _onPlanningPhaseReady = onPlanningPhaseReady;
+
             bool responded = false;
             int resultCode = 0;
 
             APIManager.Instance.Post(
                "battle/ready/" + battleId, "{}",
-               (response, result) =>
-               {
-                   resultCode = result;
-                   responded = true;
-               });
-
-            while (!responded)
-            {
-                yield return null;
-            }
-
-            // request came back as 200
-            yield return resultCode == 200;
-        }
-
-        public override IEnumerator<bool?> SendFlee()
-        {
-            bool responded = false;
-            int resultCode = 0;
-
-            APIManager.Instance.Post(
-               "battle/flee/", "{}",
-               (response, result) =>
-               {
-                   resultCode = result;
-                   responded = true;
-               });
-
-            while (!responded)
-            {
-                yield return null;
-            }
-
-            // request came back as 200
-            yield return resultCode == 200;
-        }
-
-        public override IEnumerator<bool?> SendMove()
-        {
-            bool responded = false;
-            int resultCode = 0;
-
-            APIManager.Instance.Post(
-               "battle/move/", "{}",
                (response, result) =>
                {
                    resultCode = result;
@@ -97,7 +59,7 @@ namespace Raincrow.BattleArena.Controller
 
         private void OnPlanningPhaseReady(PlanningPhaseReadyEventArgs response)
         {
-            OnPlanningPhaseReadyEvent?.Invoke(response);
+            _onPlanningPhaseReady?.Invoke(response);
         }
 
         //private void OnTurnResolution(TurnResolutionEventArgs response)

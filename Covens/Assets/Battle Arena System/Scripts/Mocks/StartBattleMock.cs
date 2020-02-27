@@ -55,7 +55,7 @@ namespace Raincrow.Mocks
             // Create characters
             WitchModel witchModel = new WitchModel()
             {
-                //Id = System.Guid.NewGuid().ToString(),
+                Id = "witch1",
                 ObjectType = ObjectType.Witch,
                 Degree = 0,
                 Name = "SHADOW THE HEDGEHOG",
@@ -99,7 +99,7 @@ namespace Raincrow.Mocks
             SpiritModel spiritModel = new SpiritModel()
             {
                 ObjectType = ObjectType.Spirit,
-                //Id = System.Guid.NewGuid().ToString(),
+                Id = "spirit1",
                 Texture = "spirit_moonSnake",
                 BaseEnergy = 200,
                 Energy = 80
@@ -108,30 +108,39 @@ namespace Raincrow.Mocks
             // Add all characters
             List<IWitchModel> witchModels = new List<IWitchModel>();
             List<ISpiritModel> spiritModels = new List<ISpiritModel>();
-            // place characters in grid model
-            bool addSpirit = false;
-            for (int i = 0; i < gridModel.MaxCellsPerRow; i++)
-            {
-                for (int j = 0; j < gridModel.MaxCellsPerColumn; j++)
-                {
-                    if (addSpirit)
-                    {
-                        ISpiritModel spiritModelClone = spiritModel.Clone();
-                        spiritModelClone.Id = System.Guid.NewGuid().ToString();
-                        gridModel.Cells[i, j].ObjectId = spiritModelClone.Id;
-                        spiritModels.Add(spiritModelClone);
-                    }
-                    else
-                    {
-                        IWitchModel witchModelClone = witchModel.Clone();
-                        witchModelClone.Id = System.Guid.NewGuid().ToString();
-                        gridModel.Cells[i, j].ObjectId = witchModelClone.Id;
-                        witchModels.Add(witchModelClone);
-                    }
 
-                    addSpirit = !addSpirit;
-                }
-            }                        
+            // add witch
+            gridModel.Cells[0, 0].ObjectId = witchModel.Id;
+            witchModels.Add(witchModel);
+
+            // add spirit
+            gridModel.Cells[4, 4].ObjectId = spiritModel.Id;
+            spiritModels.Add(spiritModel);
+
+            // place characters in grid model
+            //bool addSpirit = false;
+            //for (int i = 0; i < gridModel.MaxCellsPerRow; i++)
+            //{
+            //    for (int j = 0; j < gridModel.MaxCellsPerColumn; j++)
+            //    {
+            //        if (addSpirit)
+            //        {
+            //            ISpiritModel spiritModelClone = spiritModel.Clone();
+            //            spiritModelClone.Id = System.Guid.NewGuid().ToString();
+            //            gridModel.Cells[i, j].ObjectId = spiritModelClone.Id;
+            //            spiritModels.Add(spiritModelClone);
+            //        }
+            //        else
+            //        {
+            //            IWitchModel witchModelClone = witchModel.Clone();
+            //            witchModelClone.Id = System.Guid.NewGuid().ToString();
+            //            gridModel.Cells[i, j].ObjectId = witchModelClone.Id;
+            //            witchModels.Add(witchModelClone);
+            //        }
+
+            //        addSpirit = !addSpirit;
+            //    }
+            //}                        
 
             // Battle Id
             string battleId = System.Guid.NewGuid().ToString();

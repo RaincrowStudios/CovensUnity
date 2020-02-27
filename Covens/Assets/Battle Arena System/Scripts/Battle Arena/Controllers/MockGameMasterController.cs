@@ -2,16 +2,23 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Events;
 
 namespace Raincrow.BattleArena.Controller
 {
     public class MockGameMasterController : AbstractGameMasterController
     {
+        // Serialized Variables
         [SerializeField] private float _sendPlanningPhaseReadyMaxTime = 3f;
         [SerializeField] private float _waitForPlanningPhaseReadyMaxTime = 3f;
 
-        public override IEnumerator<bool?> SendPlanningPhaseReady(string battleId)
+        // Variables
+        private UnityAction<PlanningPhaseReadyEventArgs> _onPlanningPhaseReady;
+
+        public override IEnumerator<bool?> SendPlanningPhaseReady(string battleId, UnityAction<PlanningPhaseReadyEventArgs> onPlanningPhaseReady)
         {
+            _onPlanningPhaseReady = onPlanningPhaseReady;
+
             for (float f = 0; f < _sendPlanningPhaseReadyMaxTime; f += Time.deltaTime)
             {
                 yield return null;
@@ -23,21 +30,17 @@ namespace Raincrow.BattleArena.Controller
             StartCoroutine(WaitForPlanningPhaseReadyEvent());
         }
 
-        public override IEnumerator<bool?> SendFlee()
-        {
-            yield return false;
-        }
-
-        public override IEnumerator<bool?> SendMove()
-        {
-            yield return false;
-        }
-
         private IEnumerator WaitForPlanningPhaseReadyEvent()
         {
             yield return new WaitForSeconds(_waitForPlanningPhaseReadyMaxTime);
-            PlanningPhaseReadyEventArgs eventArgs = new PlanningPhaseReadyEventArgs();
-            OnPlanningPhaseReadyEvent.Invoke(eventArgs);
+            PlanningPhaseReadyEventArgs planningPhaseModel = new PlanningPhaseReadyEventArgs()
+            {
+                MaxActionsAllowed = 3,
+                PlanningMaxTime = 30f,
+                PlanningOrder = new string[2] { "witch1", "spirit1" }
+            };
+
+            _onPlanningPhaseReady.Invoke(planningPhaseModel);
         }
     }
 }

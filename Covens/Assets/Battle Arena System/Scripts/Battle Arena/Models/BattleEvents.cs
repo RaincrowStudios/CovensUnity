@@ -111,9 +111,9 @@ namespace Raincrow.BattleArena.Events
         [JsonProperty("planningMaxTime")] private float _planningMaxTime;
         [JsonProperty("planningOrder")] private string[] _planningOrder;
 
-        public int MaxActionsAllowed { get => _maxActionsAllowed; }
-        public float PlanningMaxTime { get => _planningMaxTime; }
-        public string[] PlanningOrder { get => _planningOrder; }
+        public int MaxActionsAllowed { get => _maxActionsAllowed; set => _maxActionsAllowed = value; }
+        public float PlanningMaxTime { get => _planningMaxTime; set => _planningMaxTime = value; }
+        public string[] PlanningOrder { get => _planningOrder; set => _planningOrder = value; }
     }
 
     public struct TurnResolutionEventArgs { }
