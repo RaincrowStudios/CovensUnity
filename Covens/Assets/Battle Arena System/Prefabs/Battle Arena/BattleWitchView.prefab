@@ -109,7 +109,7 @@ MeshRenderer:
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: -1727463565
   m_SortingLayer: 3
-  m_SortingOrder: 0
+  m_SortingOrder: 1
 --- !u!1 &7862372955884984634
 GameObject:
   m_ObjectHideFlags: 0
@@ -262,6 +262,11 @@ PrefabInstance:
       propertyPath: m_Name
       value: Nameplate
       objectReference: {fileID: 0}
+    - target: {fileID: 8677399697308754128, guid: 8c8c249e3c4a16d45ac260a115b243c2,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 4549616007911908408, guid: 8c8c249e3c4a16d45ac260a115b243c2,
         type: 3}
       propertyPath: m_LocalPosition.x
@@ -317,17 +322,12 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: 8677399697308754128, guid: 8c8c249e3c4a16d45ac260a115b243c2,
-        type: 3}
-      propertyPath: m_IsActive
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 1061844790979939668, guid: 8c8c249e3c4a16d45ac260a115b243c2,
+    - target: {fileID: 5746705809416777784, guid: 8c8c249e3c4a16d45ac260a115b243c2,
         type: 3}
       propertyPath: m_Mesh
       value: 
       objectReference: {fileID: 0}
-    - target: {fileID: 5746705809416777784, guid: 8c8c249e3c4a16d45ac260a115b243c2,
+    - target: {fileID: 1061844790979939668, guid: 8c8c249e3c4a16d45ac260a115b243c2,
         type: 3}
       propertyPath: m_Mesh
       value: 
