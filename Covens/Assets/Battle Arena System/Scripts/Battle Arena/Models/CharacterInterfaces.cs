@@ -7,7 +7,9 @@ namespace Raincrow.BattleArena.Model
         int BaseEnergy { get; set; }
         int Energy { get; set; }
         int Power { get; set; }
-        int Resilience { get; set; }        
+        int Resilience { get; set; }
+
+        Color GetAlignmentColor();
     }
 
     public interface IObjectModel

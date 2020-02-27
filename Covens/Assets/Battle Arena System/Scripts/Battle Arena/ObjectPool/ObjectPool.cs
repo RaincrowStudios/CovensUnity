@@ -81,31 +81,31 @@ public class ObjectPool : MonoBehaviour
         }
     }
 
-    public T Spawn<T>(T prefab, Transform parent, Vector3 position, Quaternion rotation) where T : Component
+    public T Spawn<T>(T prefab, Transform parent, Vector3 position, Quaternion rotation, bool worldPositionStays = true) where T : Component
     {
-        return Spawn(prefab.gameObject, parent, position, rotation).GetComponent<T>();
+        return Spawn(prefab.gameObject, parent, position, rotation, worldPositionStays).GetComponent<T>();
     }
-    public T Spawn<T>(T prefab, Vector3 position, Quaternion rotation) where T : Component
+    public T Spawn<T>(T prefab, Vector3 position, Quaternion rotation, bool worldPositionStays = true) where T : Component
     {
-        return Spawn(prefab.gameObject, null, position, rotation).GetComponent<T>();
+        return Spawn(prefab.gameObject, null, position, rotation, worldPositionStays).GetComponent<T>();
     }
-    public T Spawn<T>(T prefab, Transform parent, Vector3 position) where T : Component
+    public T Spawn<T>(T prefab, Transform parent, Vector3 position, bool worldPositionStays = true) where T : Component
     {
-        return Spawn(prefab.gameObject, parent, position, Quaternion.identity).GetComponent<T>();
+        return Spawn(prefab.gameObject, parent, position, Quaternion.identity, worldPositionStays).GetComponent<T>();
     }
     public T Spawn<T>(T prefab, Vector3 position) where T : Component
     {
         return Spawn(prefab.gameObject, null, position, Quaternion.identity).GetComponent<T>();
     }
-    public T Spawn<T>(T prefab, Transform parent) where T : Component
+    public T Spawn<T>(T prefab, Transform parent, bool worldPositionStays = true) where T : Component
     {
-        return Spawn(prefab.gameObject, parent, Vector3.zero, Quaternion.identity).GetComponent<T>();
+        return Spawn(prefab.gameObject, parent, Vector3.zero, Quaternion.identity, worldPositionStays).GetComponent<T>();
     }
     public T Spawn<T>(T prefab) where T : Component
     {
         return Spawn(prefab.gameObject, null, Vector3.zero, Quaternion.identity).GetComponent<T>();
     }
-    public GameObject Spawn(GameObject prefab, Transform parent, Vector3 position, Quaternion rotation)
+    public GameObject Spawn(GameObject prefab, Transform parent, Vector3 position, Quaternion rotation, bool worldPositionStays = true)
     {
         Transform trans;
         GameObject obj;
@@ -122,7 +122,7 @@ public class ObjectPool : MonoBehaviour
                 if (obj != null)
                 {
                     trans = obj.transform;
-                    trans.parent = parent;
+                    trans.SetParent(parent, worldPositionStays);
                     trans.localPosition = position;
                     trans.localRotation = rotation;
                     obj.SetActive(true);
@@ -132,7 +132,7 @@ public class ObjectPool : MonoBehaviour
             }
             obj = Instantiate(prefab);
             trans = obj.transform;
-            trans.parent = parent;
+            trans.SetParent(parent, worldPositionStays);
             trans.localPosition = position;
             trans.localRotation = rotation;
             _spawnedObjects.Add(obj, prefab);
@@ -142,31 +142,11 @@ public class ObjectPool : MonoBehaviour
         {
             obj = Instantiate(prefab);
             trans = obj.GetComponent<Transform>();
-            trans.parent = parent;
+            trans.SetParent(parent);
             trans.localPosition = position;
             trans.localRotation = rotation;
             return obj;
         }
-    }
-    public GameObject Spawn(GameObject prefab, Transform parent, Vector3 position)
-    {
-        return Spawn(prefab, parent, position, Quaternion.identity);
-    }
-    public GameObject Spawn(GameObject prefab, Vector3 position, Quaternion rotation)
-    {
-        return Spawn(prefab, null, position, rotation);
-    }
-    public GameObject Spawn(GameObject prefab, Transform parent)
-    {
-        return Spawn(prefab, parent, Vector3.zero, Quaternion.identity);
-    }
-    public GameObject Spawn(GameObject prefab, Vector3 position)
-    {
-        return Spawn(prefab, null, position, Quaternion.identity);
-    }
-    public GameObject Spawn(GameObject prefab)
-    {
-        return Spawn(prefab, null, Vector3.zero, Quaternion.identity);
     }
 
     public void Recycle<T>(T obj) where T : Component

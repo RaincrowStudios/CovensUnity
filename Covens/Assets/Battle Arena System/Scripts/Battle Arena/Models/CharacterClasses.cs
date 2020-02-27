@@ -53,20 +53,25 @@ namespace Raincrow.BattleArena.Model
         public GameObject CharacterPrefab { get => _characterPrefab; set => _characterPrefab = value; }
     }
 
-    public class CharacterModel : ICharacterModel
-    {
-        public string Id { get; set; }
-        public int BaseEnergy { get; set; }
-        public int Energy { get; set; }
-        public int Power { get; set; }
-        public int Resilience { get; set; }
-        public string ObjectType { get; set; }
+    //public class CharacterModel : ICharacterModel
+    //{
+    //    public string Id { get; set; }
+    //    public int BaseEnergy { get; set; }
+    //    public int Energy { get; set; }
+    //    public int Power { get; set; }
+    //    public int Resilience { get; set; }
+    //    public string ObjectType { get; set; }
 
-        public CharacterModel()
-        {
+    //    public CharacterModel()
+    //    {
 
-        }
-    }
+    //    }
+
+    //    public Color GetAligmentColor()
+    //    {
+
+    //    }
+    //}
 
     public class WitchModel : IWitchModel, ICloneable<IWitchModel>
     {
@@ -85,7 +90,7 @@ namespace Raincrow.BattleArena.Model
         public string Name { get; set; }
         public int Level { get; set; }
         public InventoryModel Inventory { get; set; }
-        public CharacterInfo Info { get; set; }        
+        public CharacterInfo Info { get; set; }
 
         public WitchModel()
         {
@@ -110,6 +115,19 @@ namespace Raincrow.BattleArena.Model
                 Info = Info.Clone()
             };
             return destination;
+        }
+
+        public Color GetAlignmentColor()
+        {
+            if (Degree > 0)
+            {
+                return Utilities.Orange;
+            }
+            else if (Degree < 0)
+            {
+                return Utilities.Purple;
+            }
+            return Utilities.Blue;
         }
     }
 
@@ -140,6 +158,11 @@ namespace Raincrow.BattleArena.Model
                 OwnerId = OwnerId,
             };
             return destination;
+        }
+
+        public Color GetAlignmentColor()
+        {
+            return Color.white;
         }
     }
 
@@ -227,7 +250,7 @@ namespace Raincrow.BattleArena.Model
     public class WitchViewModel : IWitchViewModel
     {
         public Texture Texture { get; set; }
-        public Material AlignmentMaterial { get; set; }        
+        public Material AlignmentMaterial { get; set; }
     }
 
     public class SpiritViewModel : ISpiritViewModel

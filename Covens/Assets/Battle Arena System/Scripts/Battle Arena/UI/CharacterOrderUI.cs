@@ -1,6 +1,4 @@
-﻿using Raincrow.BattleArena.Controller;
-using Raincrow.BattleArena.Events;
-using Raincrow.BattleArena.Factory;
+﻿using Raincrow.BattleArena.Factory;
 using Raincrow.BattleArena.Model;
 using Raincrow.BattleArena.View;
 using Raincrow.Services;
@@ -11,16 +9,17 @@ using UnityEngine.UI;
 
 namespace Raincrow.BattleArena.UI
 {
-    public class CharacterOrderUI : MonoBehaviour
+    public class CharacterOrderUI : MonoBehaviour, ICharacterOrderView
     {
+        [SerializeField] private ServiceLocator _serviceLocator;
+
         [Header("Prefabs UI")]
-        [SerializeField] private CharacterPositionView m_CharacterUI;
-        [SerializeField] private GameObject m_ActionUI;
+        [SerializeField] private CharacterPositionView _characterUI;
+        [SerializeField] private Image _actionUI;
 
         [Header("Points UI")]
         [SerializeField] private Sprite m_EmptyPoint;
         [SerializeField] private Sprite m_FilledPoint;
-
 
         [Header("Roots")]
         [SerializeField] private Transform m_CharactersRoot;
@@ -29,57 +28,86 @@ namespace Raincrow.BattleArena.UI
         // private variables     
         private ISpiritPortraitFactory spiritPortraitFactory;
         private IWitchPortraitFactory witchPortraitFactory;
+        private ObjectPool objectPool;
 
-        private ServiceLocator serviceLocator;
-        private BattleController battleController;
         private List<CharacterPositionView> characterPositions = new List<CharacterPositionView>();
         private List<Image> actionsPoints = new List<Image>();
 
+        private Dictionary<string, IWitchModel> _dicWitches = new Dictionary<string, IWitchModel>(); // List with all witches
+        private Dictionary<string, ISpiritModel> _dicSpirits = new Dictionary<string, ISpiritModel>(); // List with all spirits
 
-        private void Awake()
+        public IEnumerator Show(string[] planningOrder, int maxActionsAllowed, IList<IWitchModel> witchModels, IList<ISpiritModel> spiritModels)
         {
-            serviceLocator = FindObjectOfType<ServiceLocator>();
-            battleController = FindObjectOfType<BattleController>();
+            gameObject.SetActive(true);
 
-            spiritPortraitFactory = serviceLocator.GetSpiritPortraitFactory();
-            witchPortraitFactory = serviceLocator.GetWitchPortraitFactory();
+            if (spiritPortraitFactory == null)
+            {
+                spiritPortraitFactory = _serviceLocator.GetSpiritPortraitFactory();
+            }
+
+            if (witchPortraitFactory == null)
+            {
+                witchPortraitFactory = _serviceLocator.GetWitchPortraitFactory();
+            }
+
+            if (objectPool == null)
+            {
+                objectPool = _serviceLocator.GetObjectPool();
+            }
+
+            _dicWitches.Clear();
+            _dicSpirits.Clear();
+
+            foreach (IWitchModel witch in witchModels)
+            {
+                _dicWitches.Add(witch.Id, witch);
+            }
+
+            foreach (ISpiritModel spirit in spiritModels)
+            {
+                _dicSpirits.Add(spirit.Id, spirit);
+            }
+
+            yield return StartCoroutine(CreateOrder(planningOrder));
+            yield return StartCoroutine(CreateActionsPoints(maxActionsAllowed));
         }
 
-        public void Init(PlanningPhaseReadyEventArgs args)
+        public void Hide()
         {
-            StartCoroutine(CreateOrder(args.PlanningOrder));
-            StartCoroutine(CreateActionsPoints(args.MaxActionsAllowed));
+            gameObject.SetActive(false);
         }
 
         private IEnumerator CreateOrder(string[] characters)
         {
-            foreach (string character in characters)
+            foreach (string characterID in characters)
             {
-                ICharacterModel characterModel = GetCharacterModel(character);
-                int degree = 0;
-                if (characterModel != null)
+                Coroutine<Sprite> coroutine = null;
+                Color alignmentColor = Color.clear;
+
+                if (_dicWitches.TryGetValue(characterID, out IWitchModel witch))
                 {
-                    Coroutine<Sprite> coroutine;
-                    if (characterModel.ObjectType == ObjectType.Witch)
+                    alignmentColor = witch.GetAlignmentColor();
+                    coroutine = this.StartCoroutine<Sprite>(GetWitchPortraitAvatar(witch));
+                    while (coroutine.keepWaiting)
                     {
-                        degree = ((IWitchModel)characterModel).Degree;
-                        coroutine = this.StartCoroutine<Sprite>(GetWitchPortraitAvatar(characterModel as IWitchModel));
-                        while (coroutine.keepWaiting)
-                        {
-                            yield return null;
-                        }
-                    }
-                    else
-                    {
-                        coroutine = this.StartCoroutine<Sprite>(GetSpiritPortraitAvatar(characterModel as ISpiritModel));
-                        while (coroutine.keepWaiting)
-                        {
-                            yield return null;
-                        }
+                        yield return null;
                     }
 
-                    CharacterPositionView characterPosition = Instantiate(m_CharacterUI, m_CharactersRoot);
-                    characterPosition.Init(coroutine.ReturnValue, degree, characterModel.ObjectType == ObjectType.Spirit);
+                }
+                else if (_dicSpirits.TryGetValue(characterID, out ISpiritModel spirit))
+                {
+                    alignmentColor = spirit.GetAlignmentColor();
+                    coroutine = this.StartCoroutine<Sprite>(GetSpiritPortraitAvatar(spirit));
+                    while (coroutine.keepWaiting)
+                    {
+                        yield return null;
+                    }
+                }
+
+                if (coroutine != null && coroutine.ReturnValue != null)
+                {
+                    CharacterPositionView characterPosition = objectPool.Spawn(_characterUI, m_CharactersRoot, false);
+                    characterPosition.Init(coroutine.ReturnValue, alignmentColor);
                     characterPositions.Add(characterPosition);
                 }
             }
@@ -113,45 +141,40 @@ namespace Raincrow.BattleArena.UI
             yield return avatarSprite;
         }
 
-        private ICharacterModel GetCharacterModel(string id)
+        private IEnumerator CreateActionsPoints(int numActions)
         {
-            foreach (AbstractCharacterView<IWitchModel, IWitchViewModel> witch in battleController.Witches)
+            for (int i = 0; i < numActions; i++)
             {
-                if (witch.Model.Id.Equals(id))
-                {
-                    return witch.Model;
-                }
-            }
-
-            foreach (AbstractCharacterView<ISpiritModel, ISpiritViewModel> spirit in battleController.Spirits)
-            {
-                if (spirit.Model.Id.Equals(id))
-                {
-                    return spirit.Model;
-                }
-            }
-
-            return null;
-        }
-
-        private IEnumerator CreateActionsPoints(int length)
-        {
-            for(int x = 0; x < length; x++)
-            {
-                Image point = Instantiate(m_ActionUI, m_ActionsRoot).GetComponent<Image>();
+                Image point = objectPool.Spawn(_actionUI, m_ActionsRoot, false);
                 yield return point;
                 actionsPoints.Add(point);
             }
 
-            UpdateActionsPoints(0);
+            UpdateActionsPoints(2);
         }
 
         private void UpdateActionsPoints(int actionsUsed)
         {
-            foreach(Image point in actionsPoints)
+            foreach (Image point in actionsPoints)
             {
                 point.sprite = actionsPoints.IndexOf(point) < actionsUsed ? m_FilledPoint : m_EmptyPoint;
             }
-        }
+        }        
+
+        //public Coroutine<T> Invoke<T>(IEnumerator<T> routine)
+        //{
+        //    return this.StartCoroutine<T>(routine);
+        //}
+
+        //public void StopInvoke<T>(IEnumerator<T> routine)
+        //{
+        //    StopCoroutine(routine);
+        //}
+    }
+
+    public interface ICharacterOrderView
+    {
+        IEnumerator Show(string[] planningOrder, int maxActionsAllowed, IList<IWitchModel> witchModels, IList<ISpiritModel> spiritModels);
+        void Hide();
     }
 }

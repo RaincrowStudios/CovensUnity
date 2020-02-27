@@ -1,5 +1,7 @@
 ﻿using Newtonsoft.Json;
 using Raincrow.BattleArena.Model;
+using UnityEngine;
+using CharacterInfo = Raincrow.BattleArena.Model.CharacterInfo;
 
 [System.Serializable]
 public class BattleObjectServer
@@ -55,5 +57,10 @@ public class GenericCharacterObjectServer : ISpiritModel, IWitchModel
     {
         Inventory = new InventoryModel();
         Info = new CharacterInfo();
+    }
+
+    public Color GetAlignmentColor()
+    {
+        return Color.clear;
     }
 }

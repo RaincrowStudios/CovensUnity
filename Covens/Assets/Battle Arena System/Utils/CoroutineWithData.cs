@@ -42,6 +42,8 @@ public static class CoroutineExtensions
 
 public interface ICoroutineHandler
 {
+    Coroutine Invoke(IEnumerator routine);
+    void StopInvoke(IEnumerator routine);
     Coroutine<T> Invoke<T>(IEnumerator<T> routine);
     void StopInvoke<T>(IEnumerator<T> routine);
 }

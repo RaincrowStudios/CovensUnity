@@ -53,9 +53,12 @@ MonoBehaviour:
     type: 3}
   _objectPoolPrefab: {fileID: 4462185829501744796, guid: 6a56930dadb7218499baff096daa51c0,
     type: 3}
+  _characterOrderViewPrefab: {fileID: 349273368, guid: 24d94688b6912974c9b522690290dcb6,
+    type: 3}
   _avatarSpriteUtilInstance: {fileID: 0}
   _loadingViewInstance: {fileID: 0}
   _battleControllerInstance: {fileID: 0}
   _battleCameraInstance: {fileID: 0}
   _objectPoolInstance: {fileID: 0}
+  _characterOrderViewInstance: {fileID: 0}
   _mainCanvas: {fileID: 0}

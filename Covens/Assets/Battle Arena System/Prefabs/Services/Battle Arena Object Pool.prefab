@@ -53,3 +53,10 @@ MonoBehaviour:
   - size: 100
     prefab: {fileID: 8107487652929660501, guid: 8a0cadd5128d28e47a4b7668266f42f6,
       type: 3}
+  - size: 10
+    prefab: {fileID: 9153963588975831505, guid: 1b2bb6b7d94910f45a3e419ae89822fb,
+      type: 3}
+  - size: 10
+    prefab: {fileID: 4661672224984752376, guid: f6a09c7eee3585c4bbfd96c7a02cf34a,
+      type: 3}
+  startupPoolMode: 0

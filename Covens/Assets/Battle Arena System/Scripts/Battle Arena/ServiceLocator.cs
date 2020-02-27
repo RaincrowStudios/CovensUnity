@@ -1,5 +1,6 @@
 ﻿using Raincrow.BattleArena.Controller;
 using Raincrow.BattleArena.Factory;
+using Raincrow.BattleArena.UI;
 using Raincrow.Loading.View;
 using UnityEngine;
 
@@ -13,6 +14,7 @@ namespace Raincrow.Services
         [SerializeField] private BattleController _battleControllerPrefab;
         [SerializeField] private Camera _battleCameraPrefab;
         [SerializeField] private ObjectPool _objectPoolPrefab;
+        [SerializeField] private CharacterOrderUI _characterOrderViewPrefab;
 
         [Header("Service Instances")]
         [SerializeField] private AvatarSpriteUtil _avatarSpriteUtilInstance; // Avatar Sprite Util Instance
@@ -20,6 +22,7 @@ namespace Raincrow.Services
         [SerializeField] private BattleController _battleControllerInstance;
         [SerializeField] private Camera _battleCameraInstance;
         [SerializeField] private ObjectPool _objectPoolInstance;
+        [SerializeField] private CharacterOrderUI _characterOrderViewInstance;
 
         [Header("UI")]
         [SerializeField] private Canvas _mainCanvas;
@@ -67,6 +70,15 @@ namespace Raincrow.Services
                 _avatarSpriteUtilInstance = GetInstance(_avatarSpriteUtilPrefab);
             }
             return _avatarSpriteUtilInstance;
+        }
+
+        public ICharacterOrderView GetCharacterOrderView()
+        {
+            if (_characterOrderViewInstance == null)
+            {
+                _characterOrderViewInstance = GetInstance(_characterOrderViewPrefab, _mainCanvas.transform);
+            }
+            return _characterOrderViewInstance;
         }
 
         public Camera GetBattleCamera()

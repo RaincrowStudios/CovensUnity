@@ -50,9 +50,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 07905284d66da014088ed19cd8a46f1e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_CharacterUI: {fileID: 7367254306616854521, guid: f6a09c7eee3585c4bbfd96c7a02cf34a,
+  _serviceLocator: {fileID: 0}
+  _characterUI: {fileID: 7367254306616854521, guid: f6a09c7eee3585c4bbfd96c7a02cf34a,
     type: 3}
-  m_ActionUI: {fileID: 9153963588975831505, guid: 1b2bb6b7d94910f45a3e419ae89822fb,
+  _actionUI: {fileID: 7661106719177311410, guid: 1b2bb6b7d94910f45a3e419ae89822fb,
     type: 3}
   m_EmptyPoint: {fileID: 21300000, guid: 1bd095b8882dca24d8eedc81d0b698b0, type: 3}
   m_FilledPoint: {fileID: 21300000, guid: 60f61c4acb306a64e8c7cb2434ada429, type: 3}
