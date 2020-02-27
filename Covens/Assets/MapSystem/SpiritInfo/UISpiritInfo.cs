@@ -25,6 +25,7 @@ public class UISpiritInfo : UIInfoPanel
     [SerializeField] private Button m_InfoButton;
     [SerializeField] private Button m_OwnerButton;
     [SerializeField] private Button m_CloseButton;
+    [SerializeField] private Button m_ChallengeButton;
 
     private static UISpiritInfo m_Instance;
 
@@ -104,7 +105,7 @@ public class UISpiritInfo : UIInfoPanel
 
         m_CloseButton.onClick.AddListener(OnClickClose);
         m_InfoButton.onClick.AddListener(OnClickInfo);
-
+        m_ChallengeButton.onClick.AddListener(OnClickChallenge);
         DownloadedAssets.OnWillUnloadAssets += OnWillUnloadAssets;
     }
 
@@ -246,6 +247,7 @@ public class UISpiritInfo : UIInfoPanel
         SpiritMarker = null;
         SpiritToken = null;
         SpiritMarkerDetails = null;
+        m_ChallengeButton.interactable = false;
 
         base.Close();
 
@@ -278,6 +280,8 @@ public class UISpiritInfo : UIInfoPanel
             Abort();
             return;
         }
+
+        m_ChallengeButton.interactable = string.IsNullOrEmpty(details.owner);
 
         if (string.IsNullOrEmpty(SpiritMarkerDetails.owner))
         {
@@ -350,7 +354,7 @@ public class UISpiritInfo : UIInfoPanel
         TeamManagerUI.OpenName(SpiritMarkerDetails.coven);
     }
 
-    public void OnClickChallenge()
+    private void OnClickChallenge()
     {
         BattleArena.ChallengeRequests.Challenge(SpiritToken.Id);
         Close();
