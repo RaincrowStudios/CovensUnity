@@ -72,7 +72,7 @@ namespace Raincrow.Services
             return _avatarSpriteUtilInstance;
         }
 
-        public ICharactersTurnOrderView GetCharacterOrderView()
+        public ICharactersTurnOrderView GetCharactersTurnOrderView()
         {
             if (_charactersTurnOrderViewInstance == null)
             {

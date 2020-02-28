@@ -173,7 +173,7 @@ namespace Raincrow.BattleArena.Views
             UpdateActionsPoints(0);
         }
 
-        private void UpdateActionsPoints(int numActionsUsed)
+        public void UpdateActionsPoints(int numActionsUsed)
         {            
             // Set all actions that are not available anymore
             for (int i = 0; i < numActionsUsed; i++)
@@ -194,6 +194,9 @@ namespace Raincrow.BattleArena.Views
     public interface ICharactersTurnOrderView
     {
         IEnumerator Show(string[] planningOrder, int maxActionsAllowed, IList<IWitchModel> witchModels, IList<ISpiritModel> spiritModels);
+
+        void UpdateActionsPoints(int numActionsUsed);
+
         void Hide();
     }
 }

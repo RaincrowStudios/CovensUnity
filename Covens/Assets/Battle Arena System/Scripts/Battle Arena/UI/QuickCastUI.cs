@@ -6,11 +6,19 @@ using Raincrow.BattleArena.Controller;
 using Raincrow.BattleArena.Views;
 using Raincrow.BattleArena.Model;
 using TMPro;
+using UnityEngine.Events;
+using System;
 
-namespace Raincrow.BattleArena.Views
+namespace Raincrow.BattleArena.UI
 {
-    public class QuickCastUI : MonoBehaviour
+    public class QuickCastUI : MonoBehaviour, QuickCastView
     {
+        public enum QuickCastMenus
+        {
+            Spell,
+            Action
+        }
+
         [SerializeField] private BattleController m_BattleController;
 
         [Header("UI")]
@@ -19,65 +27,31 @@ namespace Raincrow.BattleArena.Views
         [SerializeField] private Sprite m_IconOpen;
         [SerializeField] private TextMeshProUGUI m_TextAmountActions;
 
+        [Header("Actions Buttons")]
+        [SerializeField] private Button m_ButtonFly;
+        [SerializeField] private Button m_ButtonSummon;
+
         [Header("Menus")]
         [SerializeField] private GameObject m_ActionsMenu;
         [SerializeField] private GameObject m_SpellMenu;
 
-
-        private CellView selectedView;
         private GameObject currentMenu;
         private bool open;
 
+        private Action<string> onSummon;
+
         private const float TimeToToggle = 0.05f;
 
-        public void OnClickMove()
+
+        public void Init(UnityAction onClickFly, UnityAction onClickSummom)
         {
-            //if (m_BattleController.TurnController.RemainingActions <= 0)
-            //{
-            //    return;
-            //}
-
-            BattleSlot slot = new BattleSlot() { Col = selectedView.CellModel.Y, Row = selectedView.CellModel.X };
-            //m_BattleController.TurnController.AddAction(new MoveActionModel() { Position = slot });
-
-            //m_TextAmountActions.text = m_BattleController.TurnController.RemainingActions.ToString();
+            m_ButtonFly.onClick.AddListener(onClickFly);
+            m_ButtonSummon.onClick.AddListener(onClickSummom);
         }
-
-        public void OnClickSummon()
+              
+        public void OnClickCell(QuickCastMenus selectedMenu)
         {
-            //if (m_BattleController.TurnController.RemainingActions <= 0)
-            //{
-            //    return;
-            //}
-
-            UIMainScreens.PushEventAnalyticUI(UIMainScreens.Arena, UIMainScreens.SummonArena);
-            UISummoning.Open(AddActionSummon);
-        }
-
-        public void OnClickFlee()
-        {
-            //if (m_BattleController.TurnController.RemainingActions <= 0)
-            //{
-            //    return;
-            //}
-
-            //m_BattleController.TurnController.AddAction(new FleeActionModel());
-
-            //m_TextAmountActions.text = m_BattleController.TurnController.RemainingActions.ToString();
-        }
-        private void AddActionSummon(string spiritID)
-        {
-            BattleSlot slot = new BattleSlot() { Col = selectedView.CellModel.Y, Row = selectedView.CellModel.X };
-            //m_BattleController.TurnController.AddAction(new SummonActionModel() { Position = slot, SpiritId = spiritID });
-
-            //m_TextAmountActions.text = m_BattleController.TurnController.RemainingActions.ToString();
-        }
-
-        public void OnClickCell(CellView cell)
-        {
-            selectedView = cell;
-
-            if (cell.IsEmpty)
+            if (selectedMenu == QuickCastMenus.Action)
             {
                 ChangeMenu(m_ActionsMenu);
             }
@@ -135,5 +109,12 @@ namespace Raincrow.BattleArena.Views
             open = !open;
             m_ImageIcon.sprite = open ? m_IconOpen : m_IconClose;
         }
+    }
+
+    public interface QuickCastView
+    {
+        void Init(UnityAction onClickFly, UnityAction onClickSummom);
+
+        void OnClickCell(QuickCastUI.QuickCastMenus selectedMenu);
     }
 }

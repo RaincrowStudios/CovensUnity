@@ -138,7 +138,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!224 &147957908
 RectTransform:
   m_ObjectHideFlags: 0
@@ -367,6 +367,61 @@ PrefabInstance:
       propertyPath: m_Name
       value: BattleView
       objectReference: {fileID: 0}
+    - target: {fileID: 3561526507227420495, guid: 61c97baa5215f1647a7ed02e6b0d3ef8,
+        type: 3}
+      propertyPath: _serviceLocator
+      value: 
+      objectReference: {fileID: 1442890515}
+    - target: {fileID: 3561526507227420495, guid: 61c97baa5215f1647a7ed02e6b0d3ef8,
+        type: 3}
+      propertyPath: _quickCastUI
+      value: 
+      objectReference: {fileID: 6547865450329836963}
+    - target: {fileID: 3561526507227420495, guid: 61c97baa5215f1647a7ed02e6b0d3ef8,
+        type: 3}
+      propertyPath: _quickCastView
+      value: 
+      objectReference: {fileID: 6547865450329836963}
+    - target: {fileID: 7196786638976531525, guid: 61c97baa5215f1647a7ed02e6b0d3ef8,
+        type: 3}
+      propertyPath: _objectPool
+      value: 
+      objectReference: {fileID: 719144469}
+    - target: {fileID: 7196786638976531525, guid: 61c97baa5215f1647a7ed02e6b0d3ef8,
+        type: 3}
+      propertyPath: _serviceLocator
+      value: 
+      objectReference: {fileID: 1442890515}
+    - target: {fileID: 8938269710436315475, guid: 61c97baa5215f1647a7ed02e6b0d3ef8,
+        type: 3}
+      propertyPath: _serviceLocator
+      value: 
+      objectReference: {fileID: 1442890515}
+    - target: {fileID: 8938269710436315475, guid: 61c97baa5215f1647a7ed02e6b0d3ef8,
+        type: 3}
+      propertyPath: _objectPool
+      value: 
+      objectReference: {fileID: 719144469}
+    - target: {fileID: 1794520544814550441, guid: 61c97baa5215f1647a7ed02e6b0d3ef8,
+        type: 3}
+      propertyPath: _serviceLocator
+      value: 
+      objectReference: {fileID: 1442890515}
+    - target: {fileID: 1794520544814550441, guid: 61c97baa5215f1647a7ed02e6b0d3ef8,
+        type: 3}
+      propertyPath: _objectPool
+      value: 
+      objectReference: {fileID: 719144469}
+    - target: {fileID: 1794520544814550441, guid: 61c97baa5215f1647a7ed02e6b0d3ef8,
+        type: 3}
+      propertyPath: _nameplatesRoot
+      value: 
+      objectReference: {fileID: 0}
+    - target: {fileID: 1794520544814550441, guid: 61c97baa5215f1647a7ed02e6b0d3ef8,
+        type: 3}
+      propertyPath: _nameplatesParent
+      value: 
+      objectReference: {fileID: 0}
     - target: {fileID: 3561526507227420494, guid: 61c97baa5215f1647a7ed02e6b0d3ef8,
         type: 3}
       propertyPath: m_LocalPosition.x
@@ -422,56 +477,6 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: 3561526507227420495, guid: 61c97baa5215f1647a7ed02e6b0d3ef8,
-        type: 3}
-      propertyPath: _serviceLocator
-      value: 
-      objectReference: {fileID: 1442890515}
-    - target: {fileID: 3561526507227420495, guid: 61c97baa5215f1647a7ed02e6b0d3ef8,
-        type: 3}
-      propertyPath: _quickCastUI
-      value: 
-      objectReference: {fileID: 6547865450329836963}
-    - target: {fileID: 8938269710436315475, guid: 61c97baa5215f1647a7ed02e6b0d3ef8,
-        type: 3}
-      propertyPath: _serviceLocator
-      value: 
-      objectReference: {fileID: 1442890515}
-    - target: {fileID: 8938269710436315475, guid: 61c97baa5215f1647a7ed02e6b0d3ef8,
-        type: 3}
-      propertyPath: _objectPool
-      value: 
-      objectReference: {fileID: 719144469}
-    - target: {fileID: 1794520544814550441, guid: 61c97baa5215f1647a7ed02e6b0d3ef8,
-        type: 3}
-      propertyPath: _serviceLocator
-      value: 
-      objectReference: {fileID: 1442890515}
-    - target: {fileID: 1794520544814550441, guid: 61c97baa5215f1647a7ed02e6b0d3ef8,
-        type: 3}
-      propertyPath: _objectPool
-      value: 
-      objectReference: {fileID: 719144469}
-    - target: {fileID: 1794520544814550441, guid: 61c97baa5215f1647a7ed02e6b0d3ef8,
-        type: 3}
-      propertyPath: _nameplatesRoot
-      value: 
-      objectReference: {fileID: 0}
-    - target: {fileID: 1794520544814550441, guid: 61c97baa5215f1647a7ed02e6b0d3ef8,
-        type: 3}
-      propertyPath: _nameplatesParent
-      value: 
-      objectReference: {fileID: 0}
-    - target: {fileID: 7196786638976531525, guid: 61c97baa5215f1647a7ed02e6b0d3ef8,
-        type: 3}
-      propertyPath: _objectPool
-      value: 
-      objectReference: {fileID: 719144469}
-    - target: {fileID: 7196786638976531525, guid: 61c97baa5215f1647a7ed02e6b0d3ef8,
-        type: 3}
-      propertyPath: _serviceLocator
-      value: 
-      objectReference: {fileID: 1442890515}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 61c97baa5215f1647a7ed02e6b0d3ef8, type: 3}
 --- !u!114 &719144469 stripped
@@ -659,7 +664,7 @@ PrefabInstance:
     - target: {fileID: 7842126965393978447, guid: 26f00b8706aeb0742b0834a3e3e386b6,
         type: 3}
       propertyPath: m_IsActive
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 7842126965393978432, guid: 26f00b8706aeb0742b0834a3e3e386b6,
         type: 3}
@@ -893,6 +898,30 @@ PrefabInstance:
       propertyPath: m_IsActive
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 349273368, guid: 24d94688b6912974c9b522690290dcb6, type: 3}
+      propertyPath: _serviceLocator
+      value: 
+      objectReference: {fileID: 1442890515}
+    - target: {fileID: 2226291959475939334, guid: 24d94688b6912974c9b522690290dcb6,
+        type: 3}
+      propertyPath: m_SizeDelta.x
+      value: 80
+      objectReference: {fileID: 0}
+    - target: {fileID: 2226291959475939334, guid: 24d94688b6912974c9b522690290dcb6,
+        type: 3}
+      propertyPath: m_SizeDelta.y
+      value: 60
+      objectReference: {fileID: 0}
+    - target: {fileID: 6773930920304387003, guid: 24d94688b6912974c9b522690290dcb6,
+        type: 3}
+      propertyPath: m_SizeDelta.x
+      value: 80
+      objectReference: {fileID: 0}
+    - target: {fileID: 6773930920304387003, guid: 24d94688b6912974c9b522690290dcb6,
+        type: 3}
+      propertyPath: m_SizeDelta.y
+      value: 60
+      objectReference: {fileID: 0}
     - target: {fileID: 1481154652407713146, guid: 24d94688b6912974c9b522690290dcb6,
         type: 3}
       propertyPath: m_LocalPosition.x
@@ -997,30 +1026,6 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Pivot.y
       value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 349273368, guid: 24d94688b6912974c9b522690290dcb6, type: 3}
-      propertyPath: _serviceLocator
-      value: 
-      objectReference: {fileID: 1442890515}
-    - target: {fileID: 2226291959475939334, guid: 24d94688b6912974c9b522690290dcb6,
-        type: 3}
-      propertyPath: m_SizeDelta.x
-      value: 80
-      objectReference: {fileID: 0}
-    - target: {fileID: 2226291959475939334, guid: 24d94688b6912974c9b522690290dcb6,
-        type: 3}
-      propertyPath: m_SizeDelta.y
-      value: 60
-      objectReference: {fileID: 0}
-    - target: {fileID: 6773930920304387003, guid: 24d94688b6912974c9b522690290dcb6,
-        type: 3}
-      propertyPath: m_SizeDelta.x
-      value: 80
-      objectReference: {fileID: 0}
-    - target: {fileID: 6773930920304387003, guid: 24d94688b6912974c9b522690290dcb6,
-        type: 3}
-      propertyPath: m_SizeDelta.y
-      value: 60
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 24d94688b6912974c9b522690290dcb6, type: 3}
@@ -1356,7 +1361,7 @@ PrefabInstance:
     - target: {fileID: 2891449820701939688, guid: 98e8afefca54adc4f9f873b05bf5af0b,
         type: 3}
       propertyPath: m_IsActive
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 2891449820701939691, guid: 98e8afefca54adc4f9f873b05bf5af0b,
         type: 3}
