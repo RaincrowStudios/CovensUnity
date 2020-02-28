@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 
 namespace Raincrow.BattleArena.Model
-{ 
+{
     public class ActionType
     {
         public static readonly string Move = "move";
@@ -13,7 +13,7 @@ namespace Raincrow.BattleArena.Model
     }
 
     public interface IActionModel
-    {        
+    {
         string Type { get; }
     }
 
@@ -33,7 +33,7 @@ namespace Raincrow.BattleArena.Model
         public string Type => ActionType.Cast;
         public string SpellId { get; set; }
         public string TargetId { get; set; }
-        public InventoryItemModel[] Ingredients { get; set; }        
+        public InventoryItemModel[] Ingredients { get; set; }
     }
 
     public class SummonActionModel : IActionModel
@@ -91,26 +91,7 @@ namespace Raincrow.BattleArena.Model
         /// Create a new instance of Battle Arena Grid using a Battle Arena Grid Builder
         /// </summary>
         /// <param name="builder"></param>
-        public GridModel(GridBuilder builder)
-        {
-            MaxCellsPerColumn = builder.MaxCellsPerColumn;
-            MaxCellsPerRow = builder.MaxCellsPerRow;
-
-            Cells = new CellModel[MaxCellsPerColumn, MaxCellsPerRow];
-
-            for (int i = 0; i < MaxCellsPerColumn; i++)
-            {
-                for (int j = 0; j < MaxCellsPerRow; j++)
-                {
-                    CellBuilder cellBuilder = builder.CellBuilders[i, j];
-                    if (cellBuilder != null) // if null, cell will be empty
-                    {
-                        ICellModel battleArenaCell = new CellModel(cellBuilder);
-                        Cells[i, j] = battleArenaCell;
-                    }
-                }
-            }
-        }
+        private GridModel() { }
 
         public GridModel(int maxCellsPerLine, int maxCellsPerColumn, ICellModel[,] cells)
         {
@@ -118,13 +99,37 @@ namespace Raincrow.BattleArena.Model
             MaxCellsPerColumn = maxCellsPerColumn;
             Cells = cells;
         }
-    }
 
-    public class GridBuilder
-    {        
-        public int MaxCellsPerColumn { get; set; }
-        public int MaxCellsPerRow { get; set; }
-        public CellBuilder[,] CellBuilders { get; set; }
+        public sealed class Builder
+        {
+            public int MaxCellsPerColumn { get; set; }
+            public int MaxCellsPerRow { get; set; }
+            public CellModel.Builder[,] CellBuilders { get; set; }
+
+            public IGridModel Build()
+            {
+                IGridModel gridModel = new GridModel()
+                {
+                    MaxCellsPerColumn = this.MaxCellsPerColumn,
+                    MaxCellsPerRow = this.MaxCellsPerRow,
+                    Cells = new CellModel[MaxCellsPerRow, MaxCellsPerColumn]
+                };
+
+                for (int i = 0; i < MaxCellsPerRow; i++)
+                {
+                    for (int j = 0; j < MaxCellsPerColumn; j++)
+                    {
+                        CellModel.Builder cellBuilder = CellBuilders[i, j];
+                        if (cellBuilder != null) // if null, cell will be empty
+                        {
+                            ICellModel battleArenaCell = cellBuilder.Build();
+                            gridModel.Cells[i, j] = battleArenaCell;
+                        }
+                    }
+                }
+                return gridModel;
+            }
+        }
     }
 
     public class CellModel : ICellModel
@@ -136,14 +141,24 @@ namespace Raincrow.BattleArena.Model
         public int Y { get; set; }
 
         // Constructor
-        public CellModel(CellBuilder builder)
-        {
-            Height = builder.Height;
-        }
-    }    
+        private CellModel() { }
 
-    public class CellBuilder
-    {
-        public int Height { get; set; }
+        public sealed class Builder
+        {
+            public int X { get; set; }
+            public int Y { get; set; }
+            public int Height { get; set; }
+
+            public ICellModel Build()
+            {
+                ICellModel cellModel = new CellModel()
+                {
+                    Height = this.Height,
+                    X = this.X,
+                    Y = this.Y
+                };
+                return cellModel;
+            }
+        }
     }
 }

@@ -45,26 +45,30 @@ namespace Raincrow.Mocks
         private IEnumerator CreateGrid()
         {
             // Construct grid builder
-            GridBuilder gridBuilder;
+            GridModel.Builder gridBuilder;
             {
-                gridBuilder = new GridBuilder()
+                gridBuilder = new GridModel.Builder()
                 {
                     MaxCellsPerRow = _maxCellsPerRow,
                     MaxCellsPerColumn = _maxCellsPerColumn,
                 };
 
-                gridBuilder.CellBuilders = new CellBuilder[gridBuilder.MaxCellsPerRow, gridBuilder.MaxCellsPerColumn];
+                gridBuilder.CellBuilders = new CellModel.Builder[gridBuilder.MaxCellsPerRow, gridBuilder.MaxCellsPerColumn];
 
                 for (int i = 0; i < gridBuilder.MaxCellsPerRow; i++)
                 {
                     for (int j = 0; j < gridBuilder.MaxCellsPerColumn; j++)
                     {
-                        gridBuilder.CellBuilders[i, j] = new CellBuilder();
+                        gridBuilder.CellBuilders[i, j] = new CellModel.Builder()
+                        {
+                            X = i,
+                            Y = j
+                        };
                     }
                 }
             }
 
-            IGridModel gridModel = new GridModel(gridBuilder); // Create grid model
+            IGridModel gridModel = gridBuilder.Build(); // Create grid model
 
             // Create characters
             WitchModel witchModel = new WitchModel()

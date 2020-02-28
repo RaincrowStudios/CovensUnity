@@ -110,6 +110,10 @@ namespace Raincrow.BattleArena.Phase
         {
             _startTime = Time.time;
 
+            // Remove all requested actions
+            _turnModel.ActionsRequested.Clear();
+
+            // Show Character Turn Order View
             IEnumerator showCharacterTurnOrderView = _characterTurnOrderView.Show(_turnModel.PlanningOrder, _turnModel.MaxActionsAllowed, _battleModel.Witches, _battleModel.Spirits);
             yield return _coroutineStarter.Invoke(showCharacterTurnOrderView);
         }
