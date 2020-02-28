@@ -142,50 +142,50 @@ public class ObjectPool : MonoBehaviour
         {
             obj = Instantiate(prefab);
             trans = obj.GetComponent<Transform>();
-            trans.SetParent(parent);
+            trans.SetParent(parent, worldPositionStays);
             trans.localPosition = position;
             trans.localRotation = rotation;
             return obj;
         }
     }
 
-    public void Recycle<T>(T obj) where T : Component
+    public void Recycle<T>(T obj, bool worldPositionStays = true) where T : Component
     {
-        Recycle(obj.gameObject);
+        Recycle(obj.gameObject, worldPositionStays);
     }
-    public void Recycle(GameObject obj)
+    public void Recycle(GameObject obj, bool worldPositionStays = true)
     {
         if (_spawnedObjects.TryGetValue(obj, out GameObject prefab))
-            Recycle(obj, prefab);
+            Recycle(obj, prefab, worldPositionStays);
         else
             Destroy(obj);
     }
-    private void Recycle(GameObject obj, GameObject prefab)
+    private void Recycle(GameObject obj, GameObject prefab, bool worldPositionStays = true)
     {
         _pooledObjects[prefab].Add(obj);
         _spawnedObjects.Remove(obj);
-        obj.transform.SetParent(transform);
+        obj.transform.SetParent(transform, worldPositionStays);
         obj.SetActive(false);
     }
 
-    public void RecycleAll<T>(T prefab) where T : Component
+    public void RecycleAll<T>(T prefab, bool worldPositionStays = true) where T : Component
     {
-        RecycleAll(prefab.gameObject);
+        RecycleAll(prefab.gameObject, worldPositionStays);
     }
-    public void RecycleAll(GameObject prefab)
+    public void RecycleAll(GameObject prefab, bool worldPositionStays = true)
     {
         foreach (var item in _spawnedObjects)
             if (item.Value == prefab)
                 TempList.Add(item.Key);
         for (int i = 0; i < TempList.Count; ++i)
-            Recycle(TempList[i]);
+            Recycle(TempList[i], worldPositionStays);
         TempList.Clear();
     }
-    public void RecycleAll()
+    public void RecycleAll(bool worldPositionStays = true)
     {
         TempList.AddRange(_spawnedObjects.Keys);
         for (int i = 0; i < TempList.Count; ++i)
-            Recycle(TempList[i]);
+            Recycle(TempList[i], worldPositionStays);
         TempList.Clear();
     }
 

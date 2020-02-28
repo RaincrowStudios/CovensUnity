@@ -12,33 +12,33 @@ namespace Raincrow.BattleArena.Model
         public static readonly string Flee = "flee";
     }
 
-    public class ActionModel
+    public interface IActionModel
     {        
-        public virtual string Type { get; }
+        string Type { get; }
     }
 
-    public class FleeActionModel : ActionModel
+    public class FleeActionModel : IActionModel
     {
-        public override string Type => ActionType.Flee;
+        public string Type => ActionType.Flee;
     }
 
-    public class MoveActionModel : ActionModel
+    public class MoveActionModel : IActionModel
     {
-        public override string Type => ActionType.Move;
+        public string Type => ActionType.Move;
         public BattleSlot Position { get; set; }
     }
 
-    public class CastSpellActionModel : ActionModel
+    public class CastSpellActionModel : IActionModel
     {
-        public override string Type => ActionType.Cast;
+        public string Type => ActionType.Cast;
         public string SpellId { get; set; }
         public string TargetId { get; set; }
         public InventoryItemModel[] Ingredients { get; set; }        
     }
 
-    public class SummonActionModel : ActionModel
+    public class SummonActionModel : IActionModel
     {
-        public override string Type => ActionType.Summon;
+        public string Type => ActionType.Summon;
         public string SpiritId { get; set; }
         public BattleSlot Position { get; set; }
     }

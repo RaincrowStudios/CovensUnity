@@ -2,7 +2,6 @@
 using Raincrow.BattleArena.Views;
 using Raincrow.BattleArena.Model;
 using Raincrow.BattleArena.Phase;
-using Raincrow.BattleArena.Views;
 using Raincrow.StateMachines;
 using System.Collections;
 using System.Collections.Generic;
@@ -25,9 +24,9 @@ namespace Raincrow.BattleArena.Controller
         private GameObject[,] _grid = new GameObject[0, 0]; // Grid with all the game objects inserted
         private List<AbstractCharacterView<IWitchModel, IWitchViewModel>> _witches = new List<AbstractCharacterView<IWitchModel, IWitchViewModel>>(); // List with all witches
         private List<AbstractCharacterView<ISpiritModel, ISpiritViewModel>> _spirits = new List<AbstractCharacterView<ISpiritModel, ISpiritViewModel>>(); // List with all spirits
-        private IStateMachine<ITurnController> _stateMachine; // State machine with all phases
+        private IStateMachine _stateMachine; // State machine with all phases
+        private ITurnModel _turnModel;
 
-        public TurnController TurnController { get; private set; }
         public QuickCastUI QuickCastUI { get => _quickCastUI; }
 
         protected virtual void OnValidate()
@@ -135,24 +134,21 @@ namespace Raincrow.BattleArena.Controller
         private IEnumerator StartStateMachine(string battleId, IGridModel gridModel, IList<IWitchModel> witches, IList<ISpiritModel> spirits, IGameMasterController gameMasterController)
         {
             // We yield at each allocation to avoid a lot of allocations on a single frame
-            TurnController = new TurnController()
+            _turnModel = new TurnModel();
+
+            IBattleModel battleModel = new BattleModel()
             {
-                Battle = new BattleModel()
-                {
-                    Id = battleId,
-                    Grid = gridModel,
-                    Witches = witches,
-                    Spirits = spirits
-                },
-                GameMaster = gameMasterController,
-                Actions = new List<ActionModel>()
+                Id = battleId,
+                Grid = gridModel,
+                Witches = witches,
+                Spirits = spirits
             };
             yield return null;
 
-            InitiativePhase initiativePhase = new InitiativePhase(this);
+            InitiativePhase initiativePhase = new InitiativePhase(this, _gameMasterController, _turnModel, battleModel);
             yield return null;
 
-            PlanningPhase planningPhase = new PlanningPhase(this, _serviceLocator.GetCharacterOrderView());
+            PlanningPhase planningPhase = new PlanningPhase(this, _serviceLocator.GetCharacterOrderView(), _turnModel, battleModel);
             yield return null;
 
             ActionResolutionPhase actionResolutionPhase = new ActionResolutionPhase(this);
@@ -161,7 +157,7 @@ namespace Raincrow.BattleArena.Controller
             BanishmentPhase banishmentPhase = new BanishmentPhase(this);
             yield return null;
 
-            IState<ITurnController>[] battlePhases = new IState<ITurnController>[4]
+            IState[] battlePhases = new IState[4]
             {
                 initiativePhase,
                 planningPhase,
@@ -169,7 +165,7 @@ namespace Raincrow.BattleArena.Controller
                 banishmentPhase
             };
 
-            _stateMachine = new StateMachine<ITurnController>(TurnController, battlePhases);
+            _stateMachine = new StateMachine(battlePhases);
             yield return _stateMachine.Start<InitiativePhase>();
         }
 
@@ -259,28 +255,35 @@ namespace Raincrow.BattleArena.Controller
         #endregion
     }
 
-    public interface ITurnController
+    public interface ITurnModel
     {
-        IBattleModel Battle { get; set; }
-        IGameMasterController GameMaster { get; set; }
+        //IBattleModel Battle { get; set; }
+        //IGameMasterController GameMaster { get; set; }
         string[] PlanningOrder { get; set; }
         float PlanningMaxTime { get; set; }
         int MaxActionsAllowed { get; set; }
         int RemainingActions { get; }
-        List<ActionModel> Actions { get; }
+        IList<IActionModel> Actions { get; }
+        void AddAction(IActionModel action);
     }
 
-    public struct TurnController : ITurnController
+    public class TurnModel : ITurnModel
     {
-        public IBattleModel Battle { get; set; }
-        public IGameMasterController GameMaster { get; set; }
+        //public IBattleModel Battle { get; set; }
+        //public IGameMasterController GameMaster { get; set; }
         public string[] PlanningOrder { get; set; }
         public float PlanningMaxTime { get; set; }
         public int MaxActionsAllowed { get; set; }
         public int RemainingActions { get { return Actions == null ? MaxActionsAllowed : MaxActionsAllowed - Actions.Count; } }
-        public List<ActionModel> Actions { get; set; }
+        public IList<IActionModel> Actions { get; set; }
 
-        public void AddAction(ActionModel action)
+        public TurnModel()
+        {
+            PlanningOrder = new string[0];
+            Actions = new List<IActionModel>();
+        }
+
+        public void AddAction(IActionModel action)
         {
             Actions.Add(action);
         }

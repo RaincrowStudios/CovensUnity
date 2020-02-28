@@ -32,23 +32,23 @@ namespace Raincrow.BattleArena.Views
 
         public void OnClickMove()
         {
-            if (m_BattleController.TurnController.RemainingActions <= 0)
-            {
-                return;
-            }
+            //if (m_BattleController.TurnController.RemainingActions <= 0)
+            //{
+            //    return;
+            //}
 
             BattleSlot slot = new BattleSlot() { Col = selectedView.CellModel.Y, Row = selectedView.CellModel.X };
-            m_BattleController.TurnController.AddAction(new MoveActionModel() { Position = slot });
+            //m_BattleController.TurnController.AddAction(new MoveActionModel() { Position = slot });
 
-            m_TextAmountActions.text = m_BattleController.TurnController.RemainingActions.ToString();
+            //m_TextAmountActions.text = m_BattleController.TurnController.RemainingActions.ToString();
         }
 
         public void OnClickSummon()
         {
-            if (m_BattleController.TurnController.RemainingActions <= 0)
-            {
-                return;
-            }
+            //if (m_BattleController.TurnController.RemainingActions <= 0)
+            //{
+            //    return;
+            //}
 
             UIMainScreens.PushEventAnalyticUI(UIMainScreens.Arena, UIMainScreens.SummonArena);
             UISummoning.Open(AddActionSummon);
@@ -56,21 +56,21 @@ namespace Raincrow.BattleArena.Views
 
         public void OnClickFlee()
         {
-            if (m_BattleController.TurnController.RemainingActions <= 0)
-            {
-                return;
-            }
+            //if (m_BattleController.TurnController.RemainingActions <= 0)
+            //{
+            //    return;
+            //}
 
-            m_BattleController.TurnController.AddAction(new FleeActionModel());
+            //m_BattleController.TurnController.AddAction(new FleeActionModel());
 
-            m_TextAmountActions.text = m_BattleController.TurnController.RemainingActions.ToString();
+            //m_TextAmountActions.text = m_BattleController.TurnController.RemainingActions.ToString();
         }
         private void AddActionSummon(string spiritID)
         {
             BattleSlot slot = new BattleSlot() { Col = selectedView.CellModel.Y, Row = selectedView.CellModel.X };
-            m_BattleController.TurnController.AddAction(new SummonActionModel() { Position = slot, SpiritId = spiritID });
+            //m_BattleController.TurnController.AddAction(new SummonActionModel() { Position = slot, SpiritId = spiritID });
 
-            m_TextAmountActions.text = m_BattleController.TurnController.RemainingActions.ToString();
+            //m_TextAmountActions.text = m_BattleController.TurnController.RemainingActions.ToString();
         }
 
         public void OnClickCell(CellView cell)

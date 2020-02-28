@@ -3,18 +3,15 @@ using System.Collections.Generic;
 
 namespace Raincrow.StateMachines
 {
-    public class StateMachine<T> : IStateMachine<T>
+    public class StateMachine : IStateMachine
     {
-        private readonly Dictionary<System.Type, IState<T>> _states;
-        private readonly T _context;
+        private readonly Dictionary<System.Type, IState> _states;
         private System.Type _currentStateType;
         private bool _enabled;
 
-        public StateMachine(T context, IState<T>[] states)
+        public StateMachine(IState[] states)
         {
-            _context = context;
-
-            _states = new Dictionary<System.Type, IState<T>>();
+            _states = new Dictionary<System.Type, IState>();
 
             for (int i = 0; i < states.Length; i++)
             {
@@ -22,25 +19,25 @@ namespace Raincrow.StateMachines
             }
         }
 
-        public IEnumerator Start<R>() where R : IState<T>
+        public IEnumerator Start<R>() where R : IState
         {
             _currentStateType = typeof(R);
-            yield return _states[_currentStateType].Enter(this, _context);
+            yield return _states[_currentStateType].Enter(this);
 
             _enabled = true;
         }
 
-        public IEnumerator ChangeState<R>() where R : IState<T>
+        public IEnumerator ChangeState<R>() where R : IState
         {
             System.Type nextStateType = typeof(R);
 
             if (_enabled && nextStateType != _currentStateType) // cannot change to same state
             {
                 _enabled = false;
-                yield return _states[_currentStateType].Exit(this, _context);
+                yield return _states[_currentStateType].Exit(this);
 
                 _currentStateType = nextStateType;
-                yield return _states[_currentStateType].Enter(this, _context);
+                yield return _states[_currentStateType].Enter(this);
 
                 _enabled = true;
             }
@@ -50,7 +47,7 @@ namespace Raincrow.StateMachines
         {
             if (_enabled)
             {
-                yield return _states[_currentStateType].Update(this, _context);
+                yield return _states[_currentStateType].Update(this);
             }            
         }
 
@@ -60,26 +57,26 @@ namespace Raincrow.StateMachines
             {
                 _enabled = false;
 
-                yield return _states[_currentStateType].Exit(this, _context);
+                yield return _states[_currentStateType].Exit(this);
 
                 _currentStateType = null;
             }
         }
     }
 
-    public interface IStateMachine<T>
+    public interface IStateMachine
     {        
-        IEnumerator Start<R>() where R : IState<T>;
+        IEnumerator Start<R>() where R : IState;
         IEnumerator UpdateState();
-        IEnumerator ChangeState<R>() where R: IState<T>;
+        IEnumerator ChangeState<R>() where R: IState;
         IEnumerator Stop();
     }
 
-    public interface IState<T>
+    public interface IState
     {
         string Name { get; }
-        IEnumerator Enter(IStateMachine<T> stateMachine, T context);
-        IEnumerator Update(IStateMachine<T> stateMachine, T context);
-        IEnumerator Exit(IStateMachine<T> stateMachine, T context);
+        IEnumerator Enter(IStateMachine stateMachine);
+        IEnumerator Update(IStateMachine stateMachine);
+        IEnumerator Exit(IStateMachine stateMachine);
     }
 }

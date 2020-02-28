@@ -65,8 +65,8 @@ namespace Raincrow.BattleArena.Views
             _actionsPoints.Clear();
 
             // Clean up object pool
-            _objectPool.RecycleAll(_actionPointViewPrefab);
-            _objectPool.RecycleAll(_characterTurnOrderViewPrefab);
+            _objectPool.RecycleAll(_actionPointViewPrefab, false);
+            _objectPool.RecycleAll(_characterTurnOrderViewPrefab, false);
 
             foreach (IWitchModel witch in witchModels)
             {
@@ -93,8 +93,8 @@ namespace Raincrow.BattleArena.Views
             _actionsPoints.Clear();
 
             // Clean up object pool
-            _objectPool.RecycleAll(_actionPointViewPrefab);
-            _objectPool.RecycleAll(_characterTurnOrderViewPrefab);
+            _objectPool.RecycleAll(_actionPointViewPrefab, false);
+            _objectPool.RecycleAll(_characterTurnOrderViewPrefab, false);
         }
 
         private IEnumerator CreateCharactersTurnOrder(string[] characters)
