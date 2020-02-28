@@ -30,6 +30,20 @@ namespace Raincrow.BattleArena.Controller
         public TurnController TurnController { get; private set; }
         public QuickCastUI QuickCastUI { get => _quickCastUI; }
 
+        protected virtual void OnValidate()
+        {
+            if (_serviceLocator == null)
+            {
+                _serviceLocator = FindObjectOfType<ServiceLocator>();
+            }
+
+            // Could not lazily initialize Service Locator
+            if (_serviceLocator == null)
+            {
+                Debug.LogError("Could not find Service Locator!");
+            }
+        }
+
         public IEnumerator StartBattle(string battleId, IGridModel gridModel, IList<IWitchModel> witches, IList<ISpiritModel> spirits, ILoadingView loadingView = null)
         {
             if (!isActiveAndEnabled)
