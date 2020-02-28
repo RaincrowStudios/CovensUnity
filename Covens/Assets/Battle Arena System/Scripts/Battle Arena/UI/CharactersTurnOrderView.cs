@@ -64,6 +64,10 @@ namespace Raincrow.BattleArena.Views
             _characterPositions.Clear();
             _actionsPoints.Clear();
 
+            // Clean up object pool
+            _objectPool.RecycleAll(_actionPointViewPrefab);
+            _objectPool.RecycleAll(_characterTurnOrderViewPrefab);
+
             foreach (IWitchModel witch in witchModels)
             {
                 _dictWitches.Add(witch.Id, witch);
@@ -74,7 +78,7 @@ namespace Raincrow.BattleArena.Views
                 _dictSpirits.Add(spirit.Id, spirit);
             }            
 
-            yield return StartCoroutine(CreateOrder(planningOrder));
+            yield return StartCoroutine(CreateCharactersTurnOrder(planningOrder));
             yield return StartCoroutine(CreateActionsPoints(maxActionsAllowed));
         }
 
@@ -88,11 +92,12 @@ namespace Raincrow.BattleArena.Views
             _characterPositions.Clear();
             _actionsPoints.Clear();
 
+            // Clean up object pool
             _objectPool.RecycleAll(_actionPointViewPrefab);
             _objectPool.RecycleAll(_characterTurnOrderViewPrefab);
         }
 
-        private IEnumerator CreateOrder(string[] characters)
+        private IEnumerator CreateCharactersTurnOrder(string[] characters)
         {
             foreach (string characterID in characters)
             {
@@ -121,13 +126,13 @@ namespace Raincrow.BattleArena.Views
 
                 if (coroutine != null && coroutine.ReturnValue != null)
                 {
-                    CharacterTurnOrderView characterPosition = _objectPool.Spawn(_characterTurnOrderViewPrefab, _characterTurnOrderViewRoot, false);
-                    characterPosition.Init(coroutine.ReturnValue, alignmentColor);
-                    _characterPositions.Add(characterPosition);
+                    CharacterTurnOrderView characterTurnOrderView = _objectPool.Spawn(_characterTurnOrderViewPrefab, _characterTurnOrderViewRoot, false);
+                    characterTurnOrderView.Init(coroutine.ReturnValue, alignmentColor);
+                    _characterPositions.Add(characterTurnOrderView);
                 }
-            }
 
-            yield return null;
+                yield return new WaitForSeconds(0.1f);
+            }
         }
 
         private IEnumerator<Sprite> GetWitchPortraitAvatar(IWitchModel witchModel)
@@ -161,17 +166,15 @@ namespace Raincrow.BattleArena.Views
             for (int i = 0; i < numActions; i++)
             {
                 ActionPointView actionPointView = _objectPool.Spawn(_actionPointViewPrefab, _actionsRoot, false);
-                yield return actionPointView;
                 _actionsPoints.Add(actionPointView);
+                yield return new WaitForSeconds(0.1f);
             }
 
             UpdateActionsPoints(0);
         }
 
         private void UpdateActionsPoints(int numActionsUsed)
-        {
-            //numActionsUsed = Mathf.Min(_actionsPoints.Count, numActionsUsed);
-            
+        {            
             // Set all actions that are not available anymore
             for (int i = 0; i < numActionsUsed; i++)
             {
@@ -185,17 +188,7 @@ namespace Raincrow.BattleArena.Views
                 ActionPointView actionPointView = _actionsPoints[i];
                 actionPointView.SetState(true);
             }
-        }        
-
-        //public Coroutine<T> Invoke<T>(IEnumerator<T> routine)
-        //{
-        //    return this.StartCoroutine<T>(routine);
-        //}
-
-        //public void StopInvoke<T>(IEnumerator<T> routine)
-        //{
-        //    StopCoroutine(routine);
-        //}
+        }
     }
 
     public interface ICharactersTurnOrderView

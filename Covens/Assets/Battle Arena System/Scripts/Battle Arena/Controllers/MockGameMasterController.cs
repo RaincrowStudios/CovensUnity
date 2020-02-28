@@ -36,7 +36,7 @@ namespace Raincrow.BattleArena.Controller
             PlanningPhaseReadyEventArgs planningPhaseModel = new PlanningPhaseReadyEventArgs()
             {
                 MaxActionsAllowed = 3,
-                PlanningMaxTime = 30f,
+                PlanningMaxTime = 10f,
                 PlanningOrder = new string[2] { "witch1", "spirit1" }
             };
 

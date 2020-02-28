@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using Raincrow.BattleArena.Controller;
 using Raincrow.BattleArena.Events;
-using Raincrow.BattleArena.Model;
 using Raincrow.BattleArena.Views;
 using Raincrow.StateMachines;
 using UnityEngine;
@@ -39,9 +38,6 @@ namespace Raincrow.BattleArena.Phase
             // Start the Send Planning Phase Ready Coroutine
             _coroutineHandler.Invoke(_sendPlanningPhaseReady);
 
-            // Subscribe to the 'On Planning Phase Ready' event
-            //_context.GameMaster.OnPlanningPhaseReadyEvent.AddListener(OnPlanningPhaseReady);
-
             yield return null;
         }        
 
@@ -60,9 +56,6 @@ namespace Raincrow.BattleArena.Phase
             {
                 _coroutineHandler.StopInvoke(_sendPlanningPhaseReady);
             }
-
-            // Unsubscribe to the 'On Planning Phase Ready' event
-            //_context.GameMaster.OnPlanningPhaseReadyEvent?.RemoveListener(OnPlanningPhaseReady);
 
             yield return null;
         }
@@ -95,22 +88,22 @@ namespace Raincrow.BattleArena.Phase
     {
         private float _startTime = 0f;
         private ICoroutineHandler _coroutineStarter;
-        private ICharactersTurnOrderView _characterOrderView;
+        private ICharactersTurnOrderView _characterTurnOrderView;
 
         public string Name => "Planning Phase";
 
         public PlanningPhase(ICoroutineHandler coroutineStarter, ICharactersTurnOrderView characterOrderView)
         {
             _coroutineStarter = coroutineStarter;
-            _characterOrderView = characterOrderView;
+            _characterTurnOrderView = characterOrderView;
         }
 
         public IEnumerator Enter(IStateMachine<ITurnController> stateMachine, ITurnController context)
         {
             _startTime = Time.time;
 
-            IEnumerator characterOrderUiInit = _characterOrderView.Show(context.PlanningOrder, context.MaxActionsAllowed, context.Battle.Witches, context.Battle.Spirits);
-            yield return _coroutineStarter.Invoke(characterOrderUiInit);
+            IEnumerator showCharacterTurnOrderView = _characterTurnOrderView.Show(context.PlanningOrder, context.MaxActionsAllowed, context.Battle.Witches, context.Battle.Spirits);
+            yield return _coroutineStarter.Invoke(showCharacterTurnOrderView);
         }
 
         public IEnumerator Update(IStateMachine<ITurnController> stateMachine, ITurnController context)
@@ -123,7 +116,7 @@ namespace Raincrow.BattleArena.Phase
 
         public IEnumerator Exit(IStateMachine<ITurnController> stateMachine, ITurnController context)
         {
-            _characterOrderView.Hide();
+            _characterTurnOrderView.Hide();
             yield return null;
         }        
     }
