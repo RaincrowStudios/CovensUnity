@@ -131,7 +131,7 @@ namespace Raincrow.BattleArena.Phase
 
         public IEnumerator Update(IStateMachine stateMachine)
         {
-            if (Time.time - _startTime > _turnModel.PlanningMaxTime)
+            if (Time.time - _startTime > _turnModel.PlanningMaxTime || !HasActionsAvailable())
             {
                 yield return stateMachine.ChangeState<ActionResolutionPhase>();
             }
@@ -146,41 +146,39 @@ namespace Raincrow.BattleArena.Phase
 
         private void OnClickFlee()
         {
-            if (_turnModel.MaxActionsAllowed - _turnModel.ActionsRequested.Count <= 0)
+            if (HasActionsAvailable())
             {
-                return;
+                _turnModel.AddAction(new FleeActionModel());
+                _charactersTurnOrderView.UpdateActionsPoints(_turnModel.ActionsRequested.Count);
             }
-
-            _turnModel.AddAction(new FleeActionModel());
-            _charactersTurnOrderView.UpdateActionsPoints(_turnModel.ActionsRequested.Count);
         }
 
         private void OnClickFly()
         {
-            if (_turnModel.MaxActionsAllowed - _turnModel.ActionsRequested.Count <= 0)
+            if (HasActionsAvailable())
             {
-                return;
+                _turnModel.AddAction(new MoveActionModel() { Position = _turnModel.SelectedSlot });
+                _charactersTurnOrderView.UpdateActionsPoints(_turnModel.ActionsRequested.Count);
             }
-
-            _turnModel.AddAction(new MoveActionModel() { Position = _turnModel.SelectedSlot });
-            _charactersTurnOrderView.UpdateActionsPoints(_turnModel.ActionsRequested.Count);
         }
 
         private void OnClickSummon()
         {
-            if (_turnModel.MaxActionsAllowed - _turnModel.ActionsRequested.Count <= 0)
+            if (HasActionsAvailable())
             {
-                return;
+                _summoningView.Open(OnSummon);
             }
-
-            //UIMainScreens.PushEventAnalyticUI(UIMainScreens.Arena, UIMainScreens.SummonArena);
-            _summoningView.Open(OnSummon);
         }
 
         private void OnSummon(string spiritID)
         {
             _turnModel.AddAction(new SummonActionModel() { Position = _turnModel.SelectedSlot, SpiritId = spiritID });
             _charactersTurnOrderView.UpdateActionsPoints(_turnModel.ActionsRequested.Count);
+        }
+
+        private bool HasActionsAvailable()
+        {
+            return _turnModel.MaxActionsAllowed > _turnModel.ActionsRequested.Count;
         }
     }
 
