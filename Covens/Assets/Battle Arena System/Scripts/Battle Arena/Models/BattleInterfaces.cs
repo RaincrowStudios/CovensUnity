@@ -23,5 +23,6 @@ namespace Raincrow.BattleArena.Model
         int Height { get; }
         int X { get; }
         int Y { get; }
+        bool IsEmpty();
     }
 }

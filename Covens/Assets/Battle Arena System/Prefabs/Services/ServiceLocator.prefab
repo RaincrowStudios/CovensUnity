@@ -55,10 +55,13 @@ MonoBehaviour:
     type: 3}
   _charactersTurnOrderViewPrefab: {fileID: 349273368, guid: 24d94688b6912974c9b522690290dcb6,
     type: 3}
+  _quickCastViewPrefab: {fileID: 417430506551422047, guid: 98e8afefca54adc4f9f873b05bf5af0b,
+    type: 3}
   _avatarSpriteUtilInstance: {fileID: 0}
   _loadingViewInstance: {fileID: 0}
   _battleControllerInstance: {fileID: 0}
   _battleCameraInstance: {fileID: 0}
   _objectPoolInstance: {fileID: 0}
   _charactersTurnOrderViewInstance: {fileID: 0}
+  _quickCastViewInstance: {fileID: 0}
   _mainCanvas: {fileID: 0}

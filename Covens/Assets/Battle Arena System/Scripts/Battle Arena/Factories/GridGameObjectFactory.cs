@@ -38,7 +38,7 @@ namespace Raincrow.BattleArena.Factory
             }
         }
 
-        public override IEnumerator<GameObject[,]> Create(IGridModel gridModel, UnityAction<CellView> cellClickCallback)
+        public override IEnumerator<GameObject[,]> Create(IGridModel gridModel, UnityAction<ICellModel> cellClickCallback)
         {
             // Create GameObjects grid
             GameObject[,] gridGameObjects = new GameObject[gridModel.MaxCellsPerColumn, gridModel.MaxCellsPerRow];
@@ -74,7 +74,7 @@ namespace Raincrow.BattleArena.Factory
 
                         // Create CellView                        
                         CellView cellInstance = _objectPool.Spawn(_gridGameObjectModel.CellPrefab, _cellsParent, cellPosition, _cellsParent.rotation);
-                        cellInstance.Init(gridModel.Cells[i, j], cellScale, cellClickCallback);
+                        cellInstance.Show(gridModel.Cells[i, j], cellScale, cellClickCallback);
 
                         gridGameObjects[i, j] = cellInstance.gameObject;
                     }

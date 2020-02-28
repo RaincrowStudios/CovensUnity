@@ -143,6 +143,11 @@ namespace Raincrow.BattleArena.Model
         // Constructor
         private CellModel() { }
 
+        public bool IsEmpty()
+        {
+            return string.IsNullOrWhiteSpace(ObjectId);
+        }
+
         public sealed class Builder
         {
             public int X { get; set; }

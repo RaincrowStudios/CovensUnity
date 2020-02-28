@@ -6,19 +6,18 @@ namespace Raincrow.BattleArena.Views
 {
     public class CellView : MonoBehaviour
     {
-        private class CellClickEvent : UnityEvent<CellView> { }
+        private class CellClickEvent : UnityEvent<ICellModel> { }
 
         // Private serialized variables
         [SerializeField] private CellClickEvent _cellClickEvent = new CellClickEvent();
         [SerializeField] private Renderer _renderer;
 
-        public bool IsEmpty { get { return string.IsNullOrEmpty(CellModel.ObjectId); } }
+        // Variables
+        private ICellModel _cellModel;
 
-        public ICellModel CellModel { get; private set; }
-
-        public void Init(ICellModel cellModel, Vector2 cellScale, UnityAction<CellView> callback)
+        public void Show(ICellModel cellModel, Vector2 cellScale, UnityAction<ICellModel> callback)
         {
-            CellModel = cellModel;
+            _cellModel = cellModel;
             _cellClickEvent.AddListener(callback);
 
             Vector3 localScale = _renderer.transform.localScale;
@@ -29,7 +28,7 @@ namespace Raincrow.BattleArena.Views
 
         protected virtual void OnMouseUpAsButton()
         {
-            _cellClickEvent.Invoke(this);
+            _cellClickEvent.Invoke(_cellModel);
         }
 
         protected virtual void OnDisable()

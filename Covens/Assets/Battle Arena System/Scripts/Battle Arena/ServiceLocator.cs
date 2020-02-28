@@ -15,6 +15,7 @@ namespace Raincrow.Services
         [SerializeField] private Camera _battleCameraPrefab;
         [SerializeField] private ObjectPool _objectPoolPrefab;
         [SerializeField] private CharactersTurnOrderView _charactersTurnOrderViewPrefab;
+        [SerializeField] private QuickCastView _quickCastViewPrefab;
 
         [Header("Service Instances")]
         [SerializeField] private AvatarSpriteUtil _avatarSpriteUtilInstance; // Avatar Sprite Util Instance
@@ -23,6 +24,7 @@ namespace Raincrow.Services
         [SerializeField] private Camera _battleCameraInstance;
         [SerializeField] private ObjectPool _objectPoolInstance;
         [SerializeField] private CharactersTurnOrderView _charactersTurnOrderViewInstance;
+        [SerializeField] private QuickCastView _quickCastViewInstance;
 
         [Header("UI")]
         [SerializeField] private Canvas _mainCanvas;
@@ -106,6 +108,15 @@ namespace Raincrow.Services
                 _objectPoolInstance = GetInstance(_objectPoolPrefab);
             }
             return _objectPoolInstance;
+        }
+
+        public IQuickCastView GetQuickCastView()
+        {
+            if (_quickCastViewInstance == null)
+            {
+                _quickCastViewInstance = GetInstance(_quickCastViewPrefab);
+            }
+            return _quickCastViewInstance;
         }
 
         public Canvas GetMainCanvas()

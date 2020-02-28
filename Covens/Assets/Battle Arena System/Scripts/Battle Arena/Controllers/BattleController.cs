@@ -8,7 +8,6 @@ using System.Collections.Generic;
 using UnityEngine;
 using Raincrow.Loading.View;
 using Raincrow.Services;
-using Raincrow.BattleArena.UI;
 
 namespace Raincrow.BattleArena.Controller
 {
@@ -20,15 +19,14 @@ namespace Raincrow.BattleArena.Controller
         [SerializeField] private SpiritGameObjectFactory _spiritFactory; // Factory class responsible for creating our Spirits   
         [SerializeField] private WitchGameObjectFactory _witchFactory; // Factory class responsible for creating our Witchs   
         [SerializeField] private AbstractGameMasterController _gameMasterController;
-        [SerializeField] private QuickCastUI _quickCastView;
 
         private GameObject[,] _grid = new GameObject[0, 0]; // Grid with all the game objects inserted
         private List<AbstractCharacterView<IWitchModel, IWitchViewModel>> _witches = new List<AbstractCharacterView<IWitchModel, IWitchViewModel>>(); // List with all witches
         private List<AbstractCharacterView<ISpiritModel, ISpiritViewModel>> _spirits = new List<AbstractCharacterView<ISpiritModel, ISpiritViewModel>>(); // List with all spirits
         private IStateMachine _stateMachine; // State machine with all phases
         private ITurnModel _turnModel;
-        private CellView _selectedView;
-
+        //private CellView _selectedView;
+        private IQuickCastView _quickCastView;
 
         protected virtual void OnValidate()
         {
@@ -42,6 +40,11 @@ namespace Raincrow.BattleArena.Controller
             {
                 Debug.LogError("Could not find Service Locator!");
             }
+
+            if (_quickCastView == null)
+            {
+                _quickCastView = _serviceLocator.GetQuickCastView();
+            }
         }
 
         public IEnumerator StartBattle(string battleId, IGridModel gridModel, IList<IWitchModel> witches, IList<ISpiritModel> spirits, ILoadingView loadingView = null)
@@ -51,7 +54,7 @@ namespace Raincrow.BattleArena.Controller
                 gameObject.SetActive(true);
             }
 
-            _quickCastView.Init(OnClickFly, OnClickSummon);
+            //_quickCastView.Show(OnClickFly, OnClickSummon, OnClickFlee);
 
             loadingView?.UpdateMessage("Instantiang grid");
             yield return StartCoroutine(InstantiateGrid(gridModel));
@@ -151,7 +154,7 @@ namespace Raincrow.BattleArena.Controller
             InitiativePhase initiativePhase = new InitiativePhase(this, _gameMasterController, _turnModel, battleModel);
             yield return null;
 
-            PlanningPhase planningPhase = new PlanningPhase(this, _serviceLocator.GetCharactersTurnOrderView(), _turnModel, battleModel);
+            PlanningPhase planningPhase = new PlanningPhase(this, _quickCastView, _serviceLocator.GetCharactersTurnOrderView(), _turnModel, battleModel);
             yield return null;
 
             ActionResolutionPhase actionResolutionPhase = new ActionResolutionPhase(this);
@@ -223,52 +226,21 @@ namespace Raincrow.BattleArena.Controller
             }
         }
 
-        private void OnCellClick(CellView cellView)
+        private void OnCellClick(ICellModel cellModel)
         {
-            QuickCastUI.QuickCastMenus menu = cellView.IsEmpty ? QuickCastUI.QuickCastMenus.Action : QuickCastUI.QuickCastMenus.Spell;
-            _selectedView = cellView;
-            _quickCastView.OnClickCell(menu);
-        }
-
-        public void OnClickFlee()
-        {
-            if (_turnModel.MaxActionsAllowed - _turnModel.ActionsRequested.Count <= 0)
+            _turnModel.SelectedSlot = new BattleSlot()
             {
-                return;
-            }
-
-            _turnModel.AddAction(new FleeActionModel());
-            _serviceLocator.GetCharactersTurnOrderView().UpdateActionsPoints(_turnModel.ActionsRequested.Count);
-        }
-
-        private void OnClickFly()
-        {
-            if (_turnModel.MaxActionsAllowed - _turnModel.ActionsRequested.Count <= 0)
+                Row = cellModel.X,
+                Col = cellModel.Y,
+            };
+            if (cellModel.IsEmpty())
             {
-                return;
+                _quickCastView.OpenActionsMenu();
             }
-
-            BattleSlot slot = new BattleSlot() { Col = _selectedView.CellModel.Y, Row = _selectedView.CellModel.X };
-            _turnModel.AddAction(new MoveActionModel() { Position = slot });
-            _serviceLocator.GetCharactersTurnOrderView().UpdateActionsPoints(_turnModel.ActionsRequested.Count);
-        }
-
-        private void OnClickSummon()
-        {
-            if (_turnModel.MaxActionsAllowed - _turnModel.ActionsRequested.Count <= 0)
+            else
             {
-                return;
+                _quickCastView.OpenSpellMenu();
             }
-
-            UIMainScreens.PushEventAnalyticUI(UIMainScreens.Arena, UIMainScreens.SummonArena);
-            Views.UISummoning.Open(OnSummon);
-        }
-
-        private void OnSummon(string spiritID)
-        {
-            BattleSlot slot = new BattleSlot() { Col = _selectedView.CellModel.Y, Row = _selectedView.CellModel.X };
-            _turnModel.AddAction(new SummonActionModel() { Position = slot, SpiritId = spiritID });
-            _serviceLocator.GetCharactersTurnOrderView().UpdateActionsPoints(_turnModel.ActionsRequested.Count);
         }
 
         #region ICoroutineStarter
@@ -305,6 +277,7 @@ namespace Raincrow.BattleArena.Controller
         int MaxActionsAllowed { get; set; }
         IList<IActionModel> ActionsRequested { get; }
         void AddAction(IActionModel action);
+        BattleSlot SelectedSlot { get; set; }
     }
 
     public class TurnModel : ITurnModel
@@ -315,6 +288,7 @@ namespace Raincrow.BattleArena.Controller
         public float PlanningMaxTime { get; set; }
         public int MaxActionsAllowed { get; set; }
         public IList<IActionModel> ActionsRequested { get; set; }
+        public BattleSlot SelectedSlot { get; set; }
 
         public TurnModel()
         {

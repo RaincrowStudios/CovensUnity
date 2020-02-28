@@ -91,17 +91,23 @@ namespace Raincrow.BattleArena.Phase
         // Variables
         private float _startTime = 0f;
         private ICoroutineHandler _coroutineStarter;
-        private ICharactersTurnOrderView _characterTurnOrderView;
+        private IQuickCastView _quickCastView;
+        private ICharactersTurnOrderView _charactersTurnOrderView;
         private ITurnModel _turnModel;
         private IBattleModel _battleModel;
 
         // Properties
         public string Name => "Planning Phase";
 
-        public PlanningPhase(ICoroutineHandler coroutineStarter, ICharactersTurnOrderView characterOrderView, ITurnModel turnModel, IBattleModel battleModel)
+        public PlanningPhase(ICoroutineHandler coroutineStarter, 
+                             IQuickCastView quickCastView,
+                             ICharactersTurnOrderView charactersTurnOrderView, 
+                             ITurnModel turnModel, 
+                             IBattleModel battleModel)
         {
             _coroutineStarter = coroutineStarter;
-            _characterTurnOrderView = characterOrderView;
+            _quickCastView = quickCastView;
+            _charactersTurnOrderView = charactersTurnOrderView;
             _turnModel = turnModel;
             _battleModel = battleModel;
         }
@@ -110,11 +116,13 @@ namespace Raincrow.BattleArena.Phase
         {
             _startTime = Time.time;
 
+            _quickCastView.Show(OnClickFly, OnClickSummon, OnClickFlee);
+
             // Remove all requested actions
             _turnModel.ActionsRequested.Clear();
 
             // Show Character Turn Order View
-            IEnumerator showCharacterTurnOrderView = _characterTurnOrderView.Show(_turnModel.PlanningOrder, _turnModel.MaxActionsAllowed, _battleModel.Witches, _battleModel.Spirits);
+            IEnumerator showCharacterTurnOrderView = _charactersTurnOrderView.Show(_turnModel.PlanningOrder, _turnModel.MaxActionsAllowed, _battleModel.Witches, _battleModel.Spirits);
             yield return _coroutineStarter.Invoke(showCharacterTurnOrderView);
         }
 
@@ -128,9 +136,49 @@ namespace Raincrow.BattleArena.Phase
 
         public IEnumerator Exit(IStateMachine stateMachine)
         {
-            _characterTurnOrderView.Hide();
+            _quickCastView.Hide();
+            _charactersTurnOrderView.Hide();
             yield return null;
-        }        
+        }
+
+        private void OnClickFlee()
+        {
+            if (_turnModel.MaxActionsAllowed - _turnModel.ActionsRequested.Count <= 0)
+            {
+                return;
+            }
+
+            _turnModel.AddAction(new FleeActionModel());
+            _charactersTurnOrderView.UpdateActionsPoints(_turnModel.ActionsRequested.Count);
+        }
+
+        private void OnClickFly()
+        {
+            if (_turnModel.MaxActionsAllowed - _turnModel.ActionsRequested.Count <= 0)
+            {
+                return;
+            }
+
+            _turnModel.AddAction(new MoveActionModel() { Position = _turnModel.SelectedSlot });
+            _charactersTurnOrderView.UpdateActionsPoints(_turnModel.ActionsRequested.Count);
+        }
+
+        private void OnClickSummon()
+        {
+            if (_turnModel.MaxActionsAllowed - _turnModel.ActionsRequested.Count <= 0)
+            {
+                return;
+            }
+
+            UIMainScreens.PushEventAnalyticUI(UIMainScreens.Arena, UIMainScreens.SummonArena);
+            Views.UISummoning.Open(OnSummon);
+        }
+
+        private void OnSummon(string spiritID)
+        {
+            _turnModel.AddAction(new SummonActionModel() { Position = _turnModel.SelectedSlot, SpiritId = spiritID });
+            _charactersTurnOrderView.UpdateActionsPoints(_turnModel.ActionsRequested.Count);
+        }
     }
 
     public class ActionResolutionPhase : IState

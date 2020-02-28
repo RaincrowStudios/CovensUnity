@@ -34,6 +34,11 @@ public class CellObjectServer : ICellModel
     public int X { get; set; }
     [JsonProperty("col")]
     public int Y { get; set; }
+
+    public bool IsEmpty()
+    {
+        return string.IsNullOrWhiteSpace(ObjectId);
+    }
 }
 
 [System.Serializable]
