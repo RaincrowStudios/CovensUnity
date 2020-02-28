@@ -6,6 +6,10 @@ using TMPro;
 
 namespace Raincrow.BattleArena.Views
 {
+    public interface ISummoningView
+    {
+        void Open(System.Action<string> onSummon);
+    }
 
     public class UISummoning : MonoBehaviour
     {

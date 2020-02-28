@@ -154,7 +154,12 @@ namespace Raincrow.BattleArena.Controller
             InitiativePhase initiativePhase = new InitiativePhase(this, _gameMasterController, _turnModel, battleModel);
             yield return null;
 
-            PlanningPhase planningPhase = new PlanningPhase(this, _quickCastView, _serviceLocator.GetCharactersTurnOrderView(), _turnModel, battleModel);
+            PlanningPhase planningPhase = new PlanningPhase(this, 
+                _quickCastView,
+                _serviceLocator,
+                _serviceLocator.GetCharactersTurnOrderView(), 
+                _turnModel, 
+                battleModel);
             yield return null;
 
             ActionResolutionPhase actionResolutionPhase = new ActionResolutionPhase(this);

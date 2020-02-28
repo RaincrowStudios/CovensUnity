@@ -92,6 +92,7 @@ namespace Raincrow.BattleArena.Phase
         private float _startTime = 0f;
         private ICoroutineHandler _coroutineStarter;
         private IQuickCastView _quickCastView;
+        private ISummoningView _summoningView;
         private ICharactersTurnOrderView _charactersTurnOrderView;
         private ITurnModel _turnModel;
         private IBattleModel _battleModel;
@@ -100,12 +101,14 @@ namespace Raincrow.BattleArena.Phase
         public string Name => "Planning Phase";
 
         public PlanningPhase(ICoroutineHandler coroutineStarter, 
-                             IQuickCastView quickCastView,
+                             IQuickCastView quickCastView, 
+                             ISummoningView summoningView,
                              ICharactersTurnOrderView charactersTurnOrderView, 
                              ITurnModel turnModel, 
                              IBattleModel battleModel)
         {
             _coroutineStarter = coroutineStarter;
+            _summoningView = summoningView;
             _quickCastView = quickCastView;
             _charactersTurnOrderView = charactersTurnOrderView;
             _turnModel = turnModel;
@@ -170,8 +173,8 @@ namespace Raincrow.BattleArena.Phase
                 return;
             }
 
-            UIMainScreens.PushEventAnalyticUI(UIMainScreens.Arena, UIMainScreens.SummonArena);
-            Views.UISummoning.Open(OnSummon);
+            //UIMainScreens.PushEventAnalyticUI(UIMainScreens.Arena, UIMainScreens.SummonArena);
+            _summoningView.Open(OnSummon);
         }
 
         private void OnSummon(string spiritID)

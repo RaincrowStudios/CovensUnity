@@ -6,7 +6,7 @@ using UnityEngine;
 
 namespace Raincrow.Services
 {
-    public class ServiceLocator : MonoBehaviour
+    public class ServiceLocator : MonoBehaviour, ISummoningView
     {        
         [Header("Service Prefabs")]
         [SerializeField] private AvatarSpriteUtil _avatarSpriteUtilPrefab; // Avatar Sprite Util Prefab
@@ -133,6 +133,11 @@ namespace Raincrow.Services
             }
 
             return Instantiate(prefab, parent);
+        }
+
+        public void Open(System.Action<string> onSummon)
+        {
+            BattleArena.Views.UISummoning.Open(onSummon);
         }
     }
 }
