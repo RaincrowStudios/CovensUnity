@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using Raincrow.BattleArena.Controller;
 using Raincrow.BattleArena.Events;
 using Raincrow.BattleArena.Model;
-using Raincrow.BattleArena.UI;
+using Raincrow.BattleArena.Views;
 using Raincrow.StateMachines;
 using UnityEngine;
 
@@ -95,11 +95,11 @@ namespace Raincrow.BattleArena.Phase
     {
         private float _startTime = 0f;
         private ICoroutineHandler _coroutineStarter;
-        private ICharacterOrderView _characterOrderView;
+        private ICharactersTurnOrderView _characterOrderView;
 
         public string Name => "Planning Phase";
 
-        public PlanningPhase(ICoroutineHandler coroutineStarter, ICharacterOrderView characterOrderView)
+        public PlanningPhase(ICoroutineHandler coroutineStarter, ICharactersTurnOrderView characterOrderView)
         {
             _coroutineStarter = coroutineStarter;
             _characterOrderView = characterOrderView;

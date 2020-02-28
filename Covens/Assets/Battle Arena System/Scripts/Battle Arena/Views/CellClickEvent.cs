@@ -1,4 +1,4 @@
-﻿namespace Raincrow.BattleArena.View
+﻿namespace Raincrow.BattleArena.Views
 {
     internal class CellClickEvent
     {

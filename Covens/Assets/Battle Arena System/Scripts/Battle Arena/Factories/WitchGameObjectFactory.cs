@@ -1,4 +1,4 @@
-﻿using Raincrow.BattleArena.View;
+﻿using Raincrow.BattleArena.Views;
 using Raincrow.BattleArena.Model;
 using System.Collections.Generic;
 using UnityEngine;

@@ -1,9 +1,9 @@
 ﻿using UnityEngine;
 using UnityEngine.UI;
 
-namespace Raincrow.BattleArena.View
+namespace Raincrow.BattleArena.Views
 {
-    public class CharacterPositionView : MonoBehaviour
+    public class CharacterTurnOrderView : MonoBehaviour
     {
         [SerializeField] private Image _avatar;
         [SerializeField] private Image _alignment;

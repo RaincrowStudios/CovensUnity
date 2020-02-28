@@ -4,7 +4,7 @@ using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
 
-namespace Raincrow.BattleArena.UI
+namespace Raincrow.BattleArena.Views
 {
 
     public class UISummoning : MonoBehaviour

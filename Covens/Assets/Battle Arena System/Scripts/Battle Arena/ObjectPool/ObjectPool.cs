@@ -73,7 +73,7 @@ public class ObjectPool : MonoBehaviour
                 while (list.Count < initialPoolSize)
                 {
                     var obj = Instantiate(prefab);
-                    obj.transform.parent = parent;
+                    obj.transform.SetParent(parent);
                     list.Add(obj);
                 }
                 prefab.SetActive(active);
@@ -164,7 +164,7 @@ public class ObjectPool : MonoBehaviour
     {
         _pooledObjects[prefab].Add(obj);
         _spawnedObjects.Remove(obj);
-        obj.transform.parent = transform;
+        obj.transform.SetParent(transform);
         obj.SetActive(false);
     }
 

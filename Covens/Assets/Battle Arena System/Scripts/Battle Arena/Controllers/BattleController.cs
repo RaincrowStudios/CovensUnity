@@ -1,8 +1,8 @@
 ﻿using Raincrow.BattleArena.Factory;
-using Raincrow.BattleArena.View;
+using Raincrow.BattleArena.Views;
 using Raincrow.BattleArena.Model;
 using Raincrow.BattleArena.Phase;
-using Raincrow.BattleArena.UI;
+using Raincrow.BattleArena.Views;
 using Raincrow.StateMachines;
 using System.Collections;
 using System.Collections.Generic;

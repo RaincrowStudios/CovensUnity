@@ -3,11 +3,11 @@ using System.Collections.Generic;
 using UnityEngine.UI;
 using UnityEngine;
 using Raincrow.BattleArena.Controller;
-using Raincrow.BattleArena.View;
+using Raincrow.BattleArena.Views;
 using Raincrow.BattleArena.Model;
 using TMPro;
 
-namespace Raincrow.BattleArena.UI
+namespace Raincrow.BattleArena.Views
 {
     public class QuickCastUI : MonoBehaviour
     {

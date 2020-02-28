@@ -1,7 +1,7 @@
 ﻿using Raincrow.BattleArena.Model;
 using UnityEngine;
 
-namespace Raincrow.BattleArena.View
+namespace Raincrow.BattleArena.Views
 {
     public abstract class AbstractCharacterView<T, U> : MonoBehaviour where T : ICharacterModel where U : ICharacterViewModel
     {

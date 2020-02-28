@@ -1,5 +1,5 @@
 ﻿using Raincrow.BattleArena.Model;
-using Raincrow.BattleArena.View;
+using Raincrow.BattleArena.Views;
 using Raincrow.Services;
 using System.Collections.Generic;
 using UnityEngine;

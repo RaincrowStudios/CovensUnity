@@ -11,8 +11,9 @@ GameObject:
   - component: {fileID: 4221802734038844179}
   - component: {fileID: 7748526177576582920}
   - component: {fileID: 7661106719177311410}
+  - component: {fileID: 6525196865725427909}
   m_Layer: 5
-  m_Name: ActionUI
+  m_Name: ActionPointView
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -75,3 +76,18 @@ MonoBehaviour:
   m_FillOrigin: 0
   m_UseSpriteMesh: 0
   m_PixelsPerUnitMultiplier: 1
+--- !u!114 &6525196865725427909
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 9153963588975831505}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 755a37e5a597f5d47be5f03ed328b15d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _emptyPoint: {fileID: 21300000, guid: 1bd095b8882dca24d8eedc81d0b698b0, type: 3}
+  _filledPoint: {fileID: 21300000, guid: 60f61c4acb306a64e8c7cb2434ada429, type: 3}
+  _image: {fileID: 7661106719177311410}

@@ -1,7 +1,7 @@
 ﻿using Raincrow.BattleArena.Model;
 using UnityEngine;
 
-namespace Raincrow.BattleArena.View
+namespace Raincrow.BattleArena.Views
 {
     public class BattleSpiritView : AbstractCharacterView<ISpiritModel, ISpiritViewModel>
     {        

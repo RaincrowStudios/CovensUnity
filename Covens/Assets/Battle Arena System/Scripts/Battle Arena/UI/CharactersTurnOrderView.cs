@@ -1,72 +1,64 @@
 ﻿using Raincrow.BattleArena.Factory;
 using Raincrow.BattleArena.Model;
-using Raincrow.BattleArena.View;
 using Raincrow.Services;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.UI;
 
-namespace Raincrow.BattleArena.UI
+namespace Raincrow.BattleArena.Views
 {
-    public class CharacterOrderUI : MonoBehaviour, ICharacterOrderView
+    public class CharactersTurnOrderView : MonoBehaviour, ICharactersTurnOrderView
     {
         [SerializeField] private ServiceLocator _serviceLocator;
-
-        [Header("Prefabs UI")]
-        [SerializeField] private CharacterPositionView _characterUI;
-        [SerializeField] private Image _actionUI;
-
-        [Header("Points UI")]
-        [SerializeField] private Sprite m_EmptyPoint;
-        [SerializeField] private Sprite m_FilledPoint;
-
-        [Header("Roots")]
-        [SerializeField] private Transform m_CharactersRoot;
-        [SerializeField] private Transform m_ActionsRoot;
+        [SerializeField] private CharacterTurnOrderView _characterTurnOrderViewPrefab;
+        [SerializeField] private ActionPointView _actionPointViewPrefab;
+        [SerializeField] private Transform _characterTurnOrderViewRoot;
+        [SerializeField] private Transform _actionsRoot;
 
         // private variables     
-        private ISpiritPortraitFactory spiritPortraitFactory;
-        private IWitchPortraitFactory witchPortraitFactory;
-        private ObjectPool objectPool;
-
-        private List<CharacterPositionView> characterPositions = new List<CharacterPositionView>();
-        private List<Image> actionsPoints = new List<Image>();
-
-        private Dictionary<string, IWitchModel> _dicWitches = new Dictionary<string, IWitchModel>(); // List with all witches
-        private Dictionary<string, ISpiritModel> _dicSpirits = new Dictionary<string, ISpiritModel>(); // List with all spirits
+        private ISpiritPortraitFactory _spiritPortraitFactory;
+        private IWitchPortraitFactory _witchPortraitFactory;
+        private ObjectPool _objectPool;
+        private List<CharacterTurnOrderView> _characterPositions = new List<CharacterTurnOrderView>();
+        private List<ActionPointView> _actionsPoints = new List<ActionPointView>();
+        private Dictionary<string, IWitchModel> _dictWitches = new Dictionary<string, IWitchModel>(); // List with all witches
+        private Dictionary<string, ISpiritModel> _dictSpirits = new Dictionary<string, ISpiritModel>(); // List with all spirits
 
         public IEnumerator Show(string[] planningOrder, int maxActionsAllowed, IList<IWitchModel> witchModels, IList<ISpiritModel> spiritModels)
         {
             gameObject.SetActive(true);
 
-            if (spiritPortraitFactory == null)
+            // Lazy initialization
+            if (_spiritPortraitFactory == null)
             {
-                spiritPortraitFactory = _serviceLocator.GetSpiritPortraitFactory();
+                _spiritPortraitFactory = _serviceLocator.GetSpiritPortraitFactory();
             }
 
-            if (witchPortraitFactory == null)
+            if (_witchPortraitFactory == null)
             {
-                witchPortraitFactory = _serviceLocator.GetWitchPortraitFactory();
+                _witchPortraitFactory = _serviceLocator.GetWitchPortraitFactory();
             }
 
-            if (objectPool == null)
+            if (_objectPool == null)
             {
-                objectPool = _serviceLocator.GetObjectPool();
+                _objectPool = _serviceLocator.GetObjectPool();
             }
 
-            _dicWitches.Clear();
-            _dicSpirits.Clear();
+            // Clear all arrays
+            _dictWitches.Clear();
+            _dictSpirits.Clear();
+            _characterPositions.Clear();
+            _actionsPoints.Clear();
 
             foreach (IWitchModel witch in witchModels)
             {
-                _dicWitches.Add(witch.Id, witch);
+                _dictWitches.Add(witch.Id, witch);
             }
 
             foreach (ISpiritModel spirit in spiritModels)
             {
-                _dicSpirits.Add(spirit.Id, spirit);
-            }
+                _dictSpirits.Add(spirit.Id, spirit);
+            }            
 
             yield return StartCoroutine(CreateOrder(planningOrder));
             yield return StartCoroutine(CreateActionsPoints(maxActionsAllowed));
@@ -75,6 +67,15 @@ namespace Raincrow.BattleArena.UI
         public void Hide()
         {
             gameObject.SetActive(false);
+
+            // Clear all arrays
+            _dictWitches.Clear();
+            _dictSpirits.Clear();
+            _characterPositions.Clear();
+            _actionsPoints.Clear();
+
+            _objectPool.RecycleAll(_actionPointViewPrefab);
+            _objectPool.RecycleAll(_characterTurnOrderViewPrefab);
         }
 
         private IEnumerator CreateOrder(string[] characters)
@@ -84,7 +85,7 @@ namespace Raincrow.BattleArena.UI
                 Coroutine<Sprite> coroutine = null;
                 Color alignmentColor = Color.clear;
 
-                if (_dicWitches.TryGetValue(characterID, out IWitchModel witch))
+                if (_dictWitches.TryGetValue(characterID, out IWitchModel witch))
                 {
                     alignmentColor = witch.GetAlignmentColor();
                     coroutine = this.StartCoroutine<Sprite>(GetWitchPortraitAvatar(witch));
@@ -94,7 +95,7 @@ namespace Raincrow.BattleArena.UI
                     }
 
                 }
-                else if (_dicSpirits.TryGetValue(characterID, out ISpiritModel spirit))
+                else if (_dictSpirits.TryGetValue(characterID, out ISpiritModel spirit))
                 {
                     alignmentColor = spirit.GetAlignmentColor();
                     coroutine = this.StartCoroutine<Sprite>(GetSpiritPortraitAvatar(spirit));
@@ -106,9 +107,9 @@ namespace Raincrow.BattleArena.UI
 
                 if (coroutine != null && coroutine.ReturnValue != null)
                 {
-                    CharacterPositionView characterPosition = objectPool.Spawn(_characterUI, m_CharactersRoot, false);
+                    CharacterTurnOrderView characterPosition = _objectPool.Spawn(_characterTurnOrderViewPrefab, _characterTurnOrderViewRoot, false);
                     characterPosition.Init(coroutine.ReturnValue, alignmentColor);
-                    characterPositions.Add(characterPosition);
+                    _characterPositions.Add(characterPosition);
                 }
             }
 
@@ -117,7 +118,7 @@ namespace Raincrow.BattleArena.UI
 
         private IEnumerator<Sprite> GetWitchPortraitAvatar(IWitchModel witchModel)
         {
-            IEnumerator<SpriteRequest> enumerator = witchPortraitFactory.CreateIWitchPortrait(witchModel);
+            IEnumerator<SpriteRequest> enumerator = _witchPortraitFactory.CreateIWitchPortrait(witchModel);
             Coroutine<SpriteRequest> coroutine = this.StartCoroutine<SpriteRequest>(enumerator);
             while (coroutine.keepWaiting)
             {
@@ -130,7 +131,7 @@ namespace Raincrow.BattleArena.UI
 
         private IEnumerator<Sprite> GetSpiritPortraitAvatar(ISpiritModel spiritModel)
         {
-            IEnumerator<SpriteRequest> enumerator = spiritPortraitFactory.CreateSpiritPortrait(spiritModel);
+            IEnumerator<SpriteRequest> enumerator = _spiritPortraitFactory.CreateSpiritPortrait(spiritModel);
             Coroutine<SpriteRequest> coroutine = this.StartCoroutine<SpriteRequest>(enumerator);
             while (coroutine.keepWaiting)
             {
@@ -145,19 +146,30 @@ namespace Raincrow.BattleArena.UI
         {
             for (int i = 0; i < numActions; i++)
             {
-                Image point = objectPool.Spawn(_actionUI, m_ActionsRoot, false);
-                yield return point;
-                actionsPoints.Add(point);
+                ActionPointView actionPointView = _objectPool.Spawn(_actionPointViewPrefab, _actionsRoot, false);
+                yield return actionPointView;
+                _actionsPoints.Add(actionPointView);
             }
 
-            UpdateActionsPoints(2);
+            UpdateActionsPoints(0);
         }
 
-        private void UpdateActionsPoints(int actionsUsed)
+        private void UpdateActionsPoints(int numActionsUsed)
         {
-            foreach (Image point in actionsPoints)
+            //numActionsUsed = Mathf.Min(_actionsPoints.Count, numActionsUsed);
+            
+            // Set all actions that are not available anymore
+            for (int i = 0; i < numActionsUsed; i++)
             {
-                point.sprite = actionsPoints.IndexOf(point) < actionsUsed ? m_FilledPoint : m_EmptyPoint;
+                ActionPointView actionPointView = _actionsPoints[i];
+                actionPointView.SetState(false);
+            }
+
+            // Set actions that are still available
+            for (int i = numActionsUsed; i < _actionsPoints.Count; i++)
+            {
+                ActionPointView actionPointView = _actionsPoints[i];
+                actionPointView.SetState(true);
             }
         }        
 
@@ -172,7 +184,7 @@ namespace Raincrow.BattleArena.UI
         //}
     }
 
-    public interface ICharacterOrderView
+    public interface ICharactersTurnOrderView
     {
         IEnumerator Show(string[] planningOrder, int maxActionsAllowed, IList<IWitchModel> witchModels, IList<ISpiritModel> spiritModels);
         void Hide();

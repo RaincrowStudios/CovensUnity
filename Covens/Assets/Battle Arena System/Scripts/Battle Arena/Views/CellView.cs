@@ -2,7 +2,7 @@
 using UnityEngine;
 using UnityEngine.Events;
 
-namespace Raincrow.BattleArena.View
+namespace Raincrow.BattleArena.Views
 {
     public class CellView : MonoBehaviour
     {
