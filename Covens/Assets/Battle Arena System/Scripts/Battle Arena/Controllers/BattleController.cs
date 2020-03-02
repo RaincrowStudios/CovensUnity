@@ -159,7 +159,9 @@ namespace Raincrow.BattleArena.Controller
                 _serviceLocator,
                 _serviceLocator.GetCharactersTurnOrderView(), 
                 _turnModel, 
-                battleModel);
+                battleModel,
+                _serviceLocator.GetCountdownView()
+                );
             yield return null;
 
             ActionResolutionPhase actionResolutionPhase = new ActionResolutionPhase(this);

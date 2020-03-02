@@ -16,6 +16,7 @@ namespace Raincrow.Services
         [SerializeField] private ObjectPool _objectPoolPrefab;
         [SerializeField] private CharactersTurnOrderView _charactersTurnOrderViewPrefab;
         [SerializeField] private QuickCastView _quickCastViewPrefab;
+        [SerializeField] private CountdownView _countdownViewPrefab;
 
         [Header("Service Instances")]
         [SerializeField] private AvatarSpriteUtil _avatarSpriteUtilInstance; // Avatar Sprite Util Instance
@@ -25,6 +26,7 @@ namespace Raincrow.Services
         [SerializeField] private ObjectPool _objectPoolInstance;
         [SerializeField] private CharactersTurnOrderView _charactersTurnOrderViewInstance;
         [SerializeField] private QuickCastView _quickCastViewInstance;
+        [SerializeField] private CountdownView _countdownViewInstace;
 
         [Header("UI")]
         [SerializeField] private Canvas _mainCanvas;
@@ -117,6 +119,15 @@ namespace Raincrow.Services
                 _quickCastViewInstance = GetInstance(_quickCastViewPrefab);
             }
             return _quickCastViewInstance;
+        }
+
+        public ICountdownView GetCountdownView()
+        {
+            if (_countdownViewInstace == null)
+            {
+                _countdownViewInstace = GetInstance(_countdownViewPrefab);
+            }
+            return _countdownViewInstace;
         }
 
         public Canvas GetMainCanvas()

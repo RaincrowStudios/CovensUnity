@@ -92,6 +92,7 @@ namespace Raincrow.BattleArena.Phase
         private float _startTime = 0f;
         private ICoroutineHandler _coroutineStarter;
         private IQuickCastView _quickCastView;
+        private ICountdownView _countdownView;
         private ISummoningView _summoningView;
         private ICharactersTurnOrderView _charactersTurnOrderView;
         private ITurnModel _turnModel;
@@ -105,7 +106,9 @@ namespace Raincrow.BattleArena.Phase
                              ISummoningView summoningView,
                              ICharactersTurnOrderView charactersTurnOrderView, 
                              ITurnModel turnModel, 
-                             IBattleModel battleModel)
+                             IBattleModel battleModel,
+                             ICountdownView countdownView
+                             )
         {
             _coroutineStarter = coroutineStarter;
             _summoningView = summoningView;
@@ -113,6 +116,7 @@ namespace Raincrow.BattleArena.Phase
             _charactersTurnOrderView = charactersTurnOrderView;
             _turnModel = turnModel;
             _battleModel = battleModel;
+            _countdownView = countdownView;
         }
 
         public IEnumerator Enter(IStateMachine stateMachine)
@@ -120,6 +124,9 @@ namespace Raincrow.BattleArena.Phase
             _startTime = Time.time;
 
             _quickCastView.Show(OnClickFly, OnClickSummon, OnClickFlee);
+
+            //Start countdown turn
+            _countdownView.Show(_turnModel.PlanningMaxTime);
 
             // Remove all requested actions
             _turnModel.ActionsRequested.Clear();
@@ -141,6 +148,7 @@ namespace Raincrow.BattleArena.Phase
         {
             _quickCastView.Hide();
             _charactersTurnOrderView.Hide();
+            _countdownView.Hide();
             yield return null;
         }
 
