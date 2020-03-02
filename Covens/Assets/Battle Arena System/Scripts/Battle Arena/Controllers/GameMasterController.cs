@@ -1,4 +1,6 @@
-﻿using Raincrow.BattleArena.Events;
+﻿using Newtonsoft.Json;
+using Raincrow.BattleArena.Events;
+using Raincrow.BattleArena.Model;
 using System.Collections.Generic;
 using UnityEngine.Events;
 
@@ -8,6 +10,7 @@ namespace Raincrow.BattleArena.Controller
     {
         // Variables
         private UnityAction<PlanningPhaseReadyEventArgs> _onPlanningPhaseReady;
+        private UnityAction<PlanningPhaseFinishedEventArgs> _onPlanningPhaseFinished;
 
         #region MonoBehaviour
 
@@ -53,6 +56,31 @@ namespace Raincrow.BattleArena.Controller
             yield return resultCode == 200;
         }
 
+        public override IEnumerator<bool?> SendFinishPlanningPhase(string battleId, IActionModel[] actions, UnityAction<PlanningPhaseFinishedEventArgs> onPlanningPhaseFinished)
+        {
+            _onPlanningPhaseFinished = onPlanningPhaseFinished;
+
+            string actionsJson = JsonConvert.SerializeObject(actions);
+            bool responded = false;
+            int resultCode = 0;
+
+            APIManager.Instance.Post(
+               "battle/actions/" + battleId, actionsJson,
+               (response, result) =>
+               {
+                   resultCode = result;
+                   responded = true;
+               });
+
+            while (!responded)
+            {
+                yield return null;
+            }
+
+            // request came back as 200
+            yield return resultCode == 200;
+        }
+
         #endregion
 
         #region Unity Actions
@@ -61,16 +89,6 @@ namespace Raincrow.BattleArena.Controller
         {
             _onPlanningPhaseReady?.Invoke(response);
         }
-
-        //private void OnTurnResolution(TurnResolutionEventArgs response)
-        //{
-        //    OnTurnResolutionEvent?.Invoke(response);
-        //}
-
-        //private void OnBattleEnd(BattleEndEventArgs response)
-        //{
-        //    OnBattleEndEvent?.Invoke(response);
-        //}
 
         #endregion
     }

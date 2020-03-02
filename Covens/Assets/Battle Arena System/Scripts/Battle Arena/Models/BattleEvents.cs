@@ -116,6 +116,11 @@ namespace Raincrow.BattleArena.Events
         public string[] PlanningOrder { get => _planningOrder; set => _planningOrder = value; }
     }
 
+    public struct PlanningPhaseFinishedEventArgs
+    {
+
+    }
+
     public struct TurnResolutionEventArgs { }
 
     public struct BattleEndEventArgs { }

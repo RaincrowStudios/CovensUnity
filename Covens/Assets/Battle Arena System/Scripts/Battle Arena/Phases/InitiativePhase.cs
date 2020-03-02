@@ -1,0 +1,86 @@
+﻿using Raincrow.BattleArena.Controller;
+using Raincrow.BattleArena.Events;
+using Raincrow.BattleArena.Model;
+using Raincrow.StateMachines;
+using System.Collections;
+using System.Collections.Generic;
+
+namespace Raincrow.BattleArena.Phases
+{
+    public class InitiativePhase : IState
+    {
+        // Variables
+        private ICoroutineHandler _coroutineHandler;
+        private IEnumerator<bool?> _sendPlanningPhaseReady;
+        private bool? _isPlanningPhaseReady;
+        private AbstractGameMasterController _gameMaster;
+        private ITurnModel _turnModel;
+        private IBattleModel _battleModel;
+
+        // Properties
+        public string Name => "Initiative Phase";
+
+        public InitiativePhase(ICoroutineHandler coroutineStarter, AbstractGameMasterController gameMaster, ITurnModel turnModel, IBattleModel battleModel)
+        {
+            _coroutineHandler = coroutineStarter;
+            _sendPlanningPhaseReady = null;
+            _isPlanningPhaseReady = null;
+            _gameMaster = gameMaster;
+            _turnModel = turnModel;
+            _battleModel = battleModel;
+        }
+
+        public IEnumerator Enter(IStateMachine stateMachine)
+        {
+            // Create the Send Planning Phase Ready Coroutine
+            _sendPlanningPhaseReady = _gameMaster.SendPlanningPhaseReady(_battleModel.Id, OnPlanningPhaseReady);
+
+            // Start the Send Planning Phase Ready Coroutine
+            _coroutineHandler.Invoke(_sendPlanningPhaseReady);
+
+            yield return null;
+        }
+
+        public IEnumerator Update(IStateMachine stateMachine)
+        {
+            if (_isPlanningPhaseReady.GetValueOrDefault())
+            {
+                yield return stateMachine.ChangeState<PlanningPhase>();
+            }
+        }
+
+        public IEnumerator Exit(IStateMachine stateMachine)
+        {
+            // Stop Send Planning Phase Ready Coroutine
+            if (_sendPlanningPhaseReady != null)
+            {
+                _coroutineHandler.StopInvoke(_sendPlanningPhaseReady);
+            }
+
+            yield return null;
+        }
+
+        #region Socket Events
+
+        private void OnPlanningPhaseReady(PlanningPhaseReadyEventArgs args)
+        {
+            // Copy Planning order to battle model
+            if (args.PlanningOrder != null)
+            {
+                _turnModel.PlanningOrder = new string[args.PlanningOrder.Length];
+                args.PlanningOrder.CopyTo(_turnModel.PlanningOrder, 0);
+            }
+            else
+            {
+                _turnModel.PlanningOrder = new string[0];
+            }
+
+            _turnModel.PlanningMaxTime = args.PlanningMaxTime;
+            _turnModel.MaxActionsAllowed = args.MaxActionsAllowed;
+
+            _isPlanningPhaseReady = true;
+        }
+
+        #endregion
+    }
+}

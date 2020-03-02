@@ -1,7 +1,7 @@
 ﻿using Raincrow.BattleArena.Factory;
 using Raincrow.BattleArena.Views;
 using Raincrow.BattleArena.Model;
-using Raincrow.BattleArena.Phase;
+using Raincrow.BattleArena.Phases;
 using Raincrow.StateMachines;
 using System.Collections;
 using System.Collections.Generic;
@@ -154,7 +154,8 @@ namespace Raincrow.BattleArena.Controller
             InitiativePhase initiativePhase = new InitiativePhase(this, _gameMasterController, _turnModel, battleModel);
             yield return null;
 
-            PlanningPhase planningPhase = new PlanningPhase(this, 
+            PlanningPhase planningPhase = new PlanningPhase(this,
+                _gameMasterController,
                 _quickCastView,
                 _serviceLocator,
                 _serviceLocator.GetCharactersTurnOrderView(), 
