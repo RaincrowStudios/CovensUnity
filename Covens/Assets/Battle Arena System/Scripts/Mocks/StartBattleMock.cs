@@ -16,22 +16,13 @@ namespace Raincrow.Mocks
         [SerializeField] private int _maxCellsPerRow = 5;
         [SerializeField] private int _maxCellsPerColumn = 5;
 
-        protected virtual void OnValidate()
+        protected virtual void OnEnable()
         {
             if (_serviceLocator == null)
             {
                 _serviceLocator = FindObjectOfType<ServiceLocator>();
             }
 
-            // Could not lazily initialize Service Locator
-            if (_serviceLocator == null)
-            {
-                Debug.LogError("Could not find Service Locator!");
-            }
-        }
-
-        protected virtual void OnEnable()
-        {
             DownloadManager.DownloadAssets(() =>
             {
                 LoginAPIManager.Login((result, response) =>

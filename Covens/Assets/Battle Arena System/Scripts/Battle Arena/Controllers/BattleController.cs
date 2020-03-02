@@ -28,7 +28,7 @@ namespace Raincrow.BattleArena.Controller
         //private CellView _selectedView;
         private IQuickCastView _quickCastView;
 
-        protected virtual void OnValidate()
+        protected virtual void OnEnable()
         {
             if (_serviceLocator == null)
             {

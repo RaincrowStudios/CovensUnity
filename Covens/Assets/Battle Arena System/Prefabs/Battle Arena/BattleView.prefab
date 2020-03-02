@@ -40,10 +40,10 @@ GameObject:
   m_Component:
   - component: {fileID: 3561526507227420494}
   - component: {fileID: 3561526507227420495}
-  - component: {fileID: 1190233280}
   - component: {fileID: 7196786638976531525}
   - component: {fileID: 8938269710436315475}
   - component: {fileID: 1794520544814550441}
+  - component: {fileID: 1546967330173566990}
   m_Layer: 24
   m_Name: BattleView
   m_TagString: Untagged
@@ -83,22 +83,7 @@ MonoBehaviour:
   _gridFactory: {fileID: 7196786638976531525}
   _spiritFactory: {fileID: 8938269710436315475}
   _witchFactory: {fileID: 1794520544814550441}
-  _gameMasterController: {fileID: 1190233280}
-  _quickCastUI: {fileID: 0}
---- !u!114 &1190233280
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 3561526507227420493}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: a074427e41335d846a8dbda0ab2cc5eb, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  _sendPlanningPhaseReadyMaxTime: 3
-  _waitForPlanningPhaseReadyMaxTime: 3
+  _gameMasterController: {fileID: 1546967330173566990}
 --- !u!114 &7196786638976531525
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -149,8 +134,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _battleWitchViewPrefab: {fileID: 7898114360831156526, guid: a18a8f148bde0e7489c84b03cac84f89,
     type: 3}
-  _nameplateViewPrefab: {fileID: 977975159945587519, guid: 91ad658fd6d07b944bca4b7d22e0d2b3,
-    type: 3}
   _serviceLocator: {fileID: 0}
   _alignmentWhiteMaterial: {fileID: 2100000, guid: 9abc0555e03eb664685a10cecf4d21ae,
     type: 2}
@@ -158,3 +141,15 @@ MonoBehaviour:
     type: 2}
   _alignmentGreyMaterial: {fileID: 2100000, guid: f91c46bf0bbdb02418aaaa2fd3d55ee0,
     type: 2}
+--- !u!114 &1546967330173566990
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3561526507227420493}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3f08d2e9e0ef4ca42aa5259d7caff7f7, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 

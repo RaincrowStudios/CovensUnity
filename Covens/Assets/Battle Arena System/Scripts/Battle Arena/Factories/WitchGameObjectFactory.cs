@@ -21,22 +21,13 @@ namespace Raincrow.BattleArena.Factory
         private IWitchAvatarFactory _witchAvatarFactory;
         private ObjectPool _objectPool;
 
-        protected virtual void OnValidate()
+        protected virtual void OnEnable()
         {
             if (_serviceLocator == null)
             {
                 _serviceLocator = FindObjectOfType<ServiceLocator>();
             }
 
-            // Could not lazily initialize Service Locator
-            if (_serviceLocator == null)
-            {
-                Debug.LogError("Could not find Service Locator!");
-            }
-        }
-
-        protected virtual void OnEnable()
-        {
             if (_witchAvatarFactory == null)
             {
                 _witchAvatarFactory = _serviceLocator.GetWitchAvatarFactory();

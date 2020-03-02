@@ -24,17 +24,11 @@ namespace Raincrow.BattleArena.Views
         private Dictionary<string, IWitchModel> _dictWitches = new Dictionary<string, IWitchModel>(); // List with all witches
         private Dictionary<string, ISpiritModel> _dictSpirits = new Dictionary<string, ISpiritModel>(); // List with all spirits
 
-        protected virtual void OnValidate()
+        protected virtual void OnEnable()
         {
             if (_serviceLocator == null)
             {
                 _serviceLocator = FindObjectOfType<ServiceLocator>();
-            }
-
-            // Could not lazily initialize Service Locator
-            if (_serviceLocator == null)
-            {
-                Debug.LogError("Could not find Service Locator!");
             }
         }
 
