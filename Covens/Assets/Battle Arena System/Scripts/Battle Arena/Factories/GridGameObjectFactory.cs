@@ -3,7 +3,6 @@ using Raincrow.BattleArena.Views;
 using Raincrow.Services;
 using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.Events;
 
 namespace Raincrow.BattleArena.Factory
 {
@@ -38,10 +37,10 @@ namespace Raincrow.BattleArena.Factory
             }
         }
 
-        public override IEnumerator<GameObject[,]> Create(IGridModel gridModel, UnityAction<ICellModel> cellClickCallback)
+        public override IEnumerator<ICellView[,]> Create(IGridModel gridModel)
         {
-            // Create GameObjects grid
-            GameObject[,] gridGameObjects = new GameObject[gridModel.MaxCellsPerColumn, gridModel.MaxCellsPerRow];
+            // Create CellView grid
+            ICellView[,] cellViews = new ICellView[gridModel.MaxCellsPerColumn, gridModel.MaxCellsPerRow];
 
             Vector2 cellScale = _gridGameObjectModel.CellScale;
 
@@ -73,17 +72,17 @@ namespace Raincrow.BattleArena.Factory
                         cellPosition = _cellsParent.TransformPoint(cellPosition);
 
                         // Create CellView                        
-                        CellView cellInstance = _objectPool.Spawn(_gridGameObjectModel.CellPrefab, _cellsParent, cellPosition, _cellsParent.rotation);
-                        cellInstance.Show(gridModel.Cells[i, j], cellScale, cellClickCallback);
+                        ICellView cellInstance = _objectPool.Spawn(_gridGameObjectModel.CellPrefab, _cellsParent, cellPosition, _cellsParent.rotation);
+                        cellInstance.Show(gridModel.Cells[i, j], cellScale);
 
-                        gridGameObjects[i, j] = cellInstance.gameObject;
+                        cellViews[i, j] = cellInstance;
                     }
 
                     yield return null;
                 }
             }
 
-            yield return gridGameObjects;
+            yield return cellViews;
         }
     }
 }

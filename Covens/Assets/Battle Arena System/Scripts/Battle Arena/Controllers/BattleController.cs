@@ -20,7 +20,7 @@ namespace Raincrow.BattleArena.Controller
         [SerializeField] private WitchGameObjectFactory _witchFactory; // Factory class responsible for creating our Witchs   
         [SerializeField] private AbstractGameMasterController _gameMasterController;
 
-        private GameObject[,] _grid = new GameObject[0, 0]; // Grid with all the game objects inserted
+        private ICellView[,] _grid = new ICellView[0, 0]; // Grid with all the game objects inserted
         private List<AbstractCharacterView<IWitchModel, IWitchViewModel>> _witches = new List<AbstractCharacterView<IWitchModel, IWitchViewModel>>(); // List with all witches
         private List<AbstractCharacterView<ISpiritModel, ISpiritViewModel>> _spirits = new List<AbstractCharacterView<ISpiritModel, ISpiritViewModel>>(); // List with all spirits
         private IStateMachine _stateMachine; // State machine with all phases
@@ -75,7 +75,7 @@ namespace Raincrow.BattleArena.Controller
         private IEnumerator InstantiateGrid(IGridModel gridModel)
         {
             // Create grid
-            Coroutine<GameObject[,]> createGrid = this.StartCoroutine<GameObject[,]>(_gridFactory.Create(gridModel, OnCellClick));
+            Coroutine<ICellView[,]> createGrid = this.StartCoroutine<ICellView[,]>(_gridFactory.Create(gridModel));
             yield return createGrid;
             _grid = createGrid.ReturnValue;
         }
@@ -108,9 +108,9 @@ namespace Raincrow.BattleArena.Controller
                     {
                         if (dictSpirits.TryGetValue(cell.ObjectId, out ISpiritModel spirit)) // has a character/item
                         {
-                            GameObject cellGameObject = _grid[i, j];
+                            ICellView cellView = _grid[i, j];
                             Coroutine<AbstractCharacterView<ISpiritModel, ISpiritViewModel>> createCharacter =
-                                this.StartCoroutine<AbstractCharacterView<ISpiritModel, ISpiritViewModel>>(_spiritFactory.Create(cellGameObject.transform, spirit));
+                                this.StartCoroutine<AbstractCharacterView<ISpiritModel, ISpiritViewModel>>(_spiritFactory.Create(cellView.GetTransform(), spirit));
                             yield return createCharacter;
 
                             // add spirit and init
@@ -120,9 +120,9 @@ namespace Raincrow.BattleArena.Controller
                         }
                         else if (dictWitches.TryGetValue(cell.ObjectId, out IWitchModel witch)) // has a character/item
                         {
-                            GameObject cellGameObject = _grid[i, j];
+                            ICellView cellView = _grid[i, j];
                             Coroutine<AbstractCharacterView<IWitchModel, IWitchViewModel>> createCharacter =
-                                this.StartCoroutine<AbstractCharacterView<IWitchModel, IWitchViewModel>>(_witchFactory.Create(cellGameObject.transform, witch));
+                                this.StartCoroutine<AbstractCharacterView<IWitchModel, IWitchViewModel>>(_witchFactory.Create(cellView.GetTransform(), witch));
                             yield return createCharacter;
 
                             // add a witch and init
@@ -159,7 +159,8 @@ namespace Raincrow.BattleArena.Controller
                 _serviceLocator,
                 _serviceLocator.GetCharactersTurnOrderView(), 
                 _turnModel, 
-                battleModel);
+                battleModel,
+                _grid);
             yield return null;
 
             ActionResolutionPhase actionResolutionPhase = new ActionResolutionPhase(this);
@@ -223,7 +224,7 @@ namespace Raincrow.BattleArena.Controller
             {
                 Destroy(_cellsTransform.GetChild(i).gameObject);
             }
-            _grid = new GameObject[0, 0];
+            _grid = new ICellView[0, 0];
 
             if (isActiveAndEnabled)
             {
@@ -231,22 +232,22 @@ namespace Raincrow.BattleArena.Controller
             }
         }
 
-        private void OnCellClick(ICellModel cellModel)
-        {
-            _turnModel.SelectedSlot = new BattleSlot()
-            {
-                Row = cellModel.X,
-                Col = cellModel.Y,
-            };
-            if (cellModel.IsEmpty())
-            {
-                _quickCastView.OpenActionsMenu();
-            }
-            else
-            {
-                _quickCastView.OpenSpellMenu();
-            }
-        }
+        //private void OnCellClick(ICellModel cellModel)
+        //{
+        //    _turnModel.SelectedSlot = new BattleSlot()
+        //    {
+        //        Row = cellModel.X,
+        //        Col = cellModel.Y,
+        //    };
+        //    if (cellModel.IsEmpty())
+        //    {
+        //        _quickCastView.OpenActionsMenu();
+        //    }
+        //    else
+        //    {
+        //        _quickCastView.OpenSpellMenu();
+        //    }
+        //}
 
         #region ICoroutineStarter
 
