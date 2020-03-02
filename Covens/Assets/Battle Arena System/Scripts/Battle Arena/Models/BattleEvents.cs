@@ -37,31 +37,32 @@ namespace Raincrow.BattleArena.Events
         }
     }
 
-    public class TurnResolutionEventHandler : IGameEventHandler
-    {        
-        private static TurnResolutionEvent Response = new TurnResolutionEvent();
+    public class PlanningPhaseFinishedEventHandler : IGameEventHandler
+    {
+        // PlanningPhaseFinishedEvent
+        private static PlanningPhaseFinishedEvent Response = new PlanningPhaseFinishedEvent();
 
         // Properties        
         public string EventName => "battle.turn.resolution";     
 
         public void HandleResponse(string eventData)
         {
-            TurnResolutionEventArgs data = JsonConvert.DeserializeObject<TurnResolutionEventArgs>(eventData);
+            PlanningPhaseFinishedEventArgs data = JsonConvert.DeserializeObject<PlanningPhaseFinishedEventArgs>(eventData);
             Response?.Invoke(data);
         }
 
-        public static void AddListener(UnityAction<TurnResolutionEventArgs> turnResolutionAction)
+        public static void AddListener(UnityAction<PlanningPhaseFinishedEventArgs> finishPlanningPhaseAction)
         {
             if (Response == null)
             {
-                Response = new TurnResolutionEvent();
+                Response = new PlanningPhaseFinishedEvent();
             }
-            Response.AddListener(turnResolutionAction);
+            Response.AddListener(finishPlanningPhaseAction);
         }
 
-        public static void RemoveListener(UnityAction<TurnResolutionEventArgs> turnResolutionAction)
+        public static void RemoveListener(UnityAction<PlanningPhaseFinishedEventArgs> finishPlanningPhaseAction)
         {
-            Response?.RemoveListener(turnResolutionAction);
+            Response?.RemoveListener(finishPlanningPhaseAction);
         }
     }
 
@@ -101,7 +102,7 @@ namespace Raincrow.BattleArena.Events
 
     public class PlanningPhaseStartEvent : UnityEvent<PlanningPhaseReadyEventArgs> { }
 
-    public class TurnResolutionEvent : UnityEvent<TurnResolutionEventArgs> { }
+    public class PlanningPhaseFinishedEvent : UnityEvent<PlanningPhaseFinishedEventArgs> { }
 
     #endregion
 
@@ -124,8 +125,6 @@ namespace Raincrow.BattleArena.Events
 
         public Dictionary<string, List<IActionResultModel>> BattleActions { get => _battleActionResults; set => _battleActionResults = value; }
     }
-
-    public struct TurnResolutionEventArgs { }
 
     public struct BattleEndEventArgs { }
 

@@ -1,6 +1,4 @@
-﻿using Newtonsoft.Json;
-
-namespace Raincrow.BattleArena.Model
+﻿namespace Raincrow.BattleArena.Model
 {
     public class ActionRequestType
     {
@@ -43,12 +41,17 @@ namespace Raincrow.BattleArena.Model
 
     public class ActionResultType
     {
-        public static readonly string BanishSpirit = "battle.kill.spirit";
-        public static readonly string BanishWitch = "battle.kill.character";
+        public static readonly string Banish = "battle.kill";
         public static readonly string CastSpell = "battle.cast";
         public static readonly string Summon = "battle.summon";
         public static readonly string Move = "battle.move";
         public static readonly string Flee = "battle.flee";
+    }
+
+    public class BanisActionResultModel : IActionResultModel
+    {
+        public string Event => ActionResultType.Banish;
+        public string TargetId { get; set; }
     }
 
     public class MoveActionResultModel : IActionResultModel

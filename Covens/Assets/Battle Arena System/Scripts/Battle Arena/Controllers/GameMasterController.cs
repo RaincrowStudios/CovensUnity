@@ -17,6 +17,7 @@ namespace Raincrow.BattleArena.Controller
         protected virtual void OnEnable()
         {
             PlanningPhaseStartEventHandler.AddListener(OnPlanningPhaseReady);
+            PlanningPhaseFinishedEventHandler.AddListener(OnPlanningPhaseFinished);
             //TurnResolutionEventHandler.AddListener(OnTurnResolution);
             //BattleEndEventHandler.AddListener(OnBattleEnd);
         }
@@ -24,6 +25,7 @@ namespace Raincrow.BattleArena.Controller
         protected virtual void OnDisable()
         {
             PlanningPhaseStartEventHandler.RemoveListener(OnPlanningPhaseReady);
+            PlanningPhaseFinishedEventHandler.RemoveListener(OnPlanningPhaseFinished);
             //TurnResolutionEventHandler.RemoveListener(OnTurnResolution);
             //BattleEndEventHandler.RemoveListener(OnBattleEnd);
         }
@@ -88,6 +90,11 @@ namespace Raincrow.BattleArena.Controller
         private void OnPlanningPhaseReady(PlanningPhaseReadyEventArgs response)
         {
             _onPlanningPhaseReady?.Invoke(response);
+        }
+
+        private void OnPlanningPhaseFinished(PlanningPhaseFinishedEventArgs response)
+        {
+            _onPlanningPhaseFinished?.Invoke(response);
         }
 
         #endregion
