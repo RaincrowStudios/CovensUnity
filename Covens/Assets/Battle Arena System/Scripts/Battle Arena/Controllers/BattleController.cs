@@ -164,7 +164,7 @@ namespace Raincrow.BattleArena.Controller
                 _grid);
             yield return null;
 
-            ActionResolutionPhase actionResolutionPhase = new ActionResolutionPhase(this);
+            ActionResolutionPhase actionResolutionPhase = new ActionResolutionPhase(this, _turnModel);
             yield return null;
 
             BanishmentPhase banishmentPhase = new BanishmentPhase(this);
@@ -282,9 +282,12 @@ namespace Raincrow.BattleArena.Controller
         string[] PlanningOrder { get; set; }
         float PlanningMaxTime { get; set; }
         int MaxActionsAllowed { get; set; }
-        IList<IActionModel> ActionsRequested { get; }
-        void AddAction(IActionModel action);
-        BattleSlot SelectedSlot { get; set; }
+        IList<IActionRequestModel> ActionsRequested { get; }
+        IDictionary<string, IList<IActionResultModel>> BattleActionResults { get; }
+        void AddActionRequest(IActionRequestModel action);
+        void AddActionResult(string characterId, IActionResultModel actionResult);
+        void Reset();
+        //BattleSlot SelectedSlot { get; set; }
     }
 
     public class TurnModel : ITurnModel
@@ -294,18 +297,45 @@ namespace Raincrow.BattleArena.Controller
         public string[] PlanningOrder { get; set; }
         public float PlanningMaxTime { get; set; }
         public int MaxActionsAllowed { get; set; }
-        public IList<IActionModel> ActionsRequested { get; set; }
-        public BattleSlot SelectedSlot { get; set; }
+        public IList<IActionRequestModel> ActionsRequested { get; private set; }
+        public IDictionary<string, IList<IActionResultModel>> BattleActionResults { get; private set; }
+
+        //public BattleSlot SelectedSlot { get; set; }
 
         public TurnModel()
         {
             PlanningOrder = new string[0];
-            ActionsRequested = new List<IActionModel>();
+            ActionsRequested = new List<IActionRequestModel>();
+            BattleActionResults = new Dictionary<string, IList<IActionResultModel>>();
         }
 
-        public void AddAction(IActionModel action)
+        public void AddActionRequest(IActionRequestModel actionRequest)
         {
-            ActionsRequested.Add(action);
+            ActionsRequested.Add(actionRequest);
+        }
+
+        public void AddActionResult(string characterId, IActionResultModel actionResult)
+        {
+            if (!BattleActionResults.ContainsKey(characterId))
+            {
+                IList<IActionResultModel> actionResults = new List<IActionResultModel>{ actionResult };
+                BattleActionResults.Add(characterId, actionResults);
+            }
+            else
+            {
+                IList<IActionResultModel> listActionResults = BattleActionResults[characterId];
+                listActionResults.Add(actionResult);
+                //BattleActionResults[characterId] = listActionResults;
+            }
+        }
+
+        public void Reset()
+        {
+            PlanningOrder = new string[0];
+            ActionsRequested.Clear();
+            BattleActionResults.Clear();
+            PlanningMaxTime = 0f;
+            MaxActionsAllowed = 0;
         }
     }
 }

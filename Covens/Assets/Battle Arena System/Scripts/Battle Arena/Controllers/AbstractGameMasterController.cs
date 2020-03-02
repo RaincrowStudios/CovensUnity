@@ -14,6 +14,6 @@ namespace Raincrow.BattleArena.Controller
         /// <returns></returns>
         public abstract IEnumerator<bool?> SendPlanningPhaseReady(string battleId, UnityAction<PlanningPhaseReadyEventArgs> onPlanningPhaseReady);
 
-        public abstract IEnumerator<bool?> SendFinishPlanningPhase(string battleId, IActionModel[] actions, UnityAction<PlanningPhaseFinishedEventArgs> onPlanningPhaseFinished);
+        public abstract IEnumerator<bool?> SendFinishPlanningPhase(string battleId, IActionRequestModel[] actions, UnityAction<PlanningPhaseFinishedEventArgs> onPlanningPhaseFinished);
     }
 }

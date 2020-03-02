@@ -32,11 +32,14 @@ namespace Raincrow.BattleArena.Phases
 
         public IEnumerator Enter(IStateMachine stateMachine)
         {
+            // Reset Turn Model
+            _turnModel.Reset();
+
             // Create the Send Planning Phase Ready Coroutine
             _sendPlanningPhaseReady = _gameMaster.SendPlanningPhaseReady(_battleModel.Id, OnPlanningPhaseReady);
 
             // Start the Send Planning Phase Ready Coroutine
-            _coroutineHandler.Invoke(_sendPlanningPhaseReady);
+            _coroutineHandler.Invoke(_sendPlanningPhaseReady);            
 
             yield return null;
         }
@@ -57,6 +60,8 @@ namespace Raincrow.BattleArena.Phases
                 _coroutineHandler.StopInvoke(_sendPlanningPhaseReady);
             }
 
+            _sendPlanningPhaseReady = null;
+            _isPlanningPhaseReady = null;
             yield return null;
         }
 
@@ -69,10 +74,6 @@ namespace Raincrow.BattleArena.Phases
             {
                 _turnModel.PlanningOrder = new string[args.PlanningOrder.Length];
                 args.PlanningOrder.CopyTo(_turnModel.PlanningOrder, 0);
-            }
-            else
-            {
-                _turnModel.PlanningOrder = new string[0];
             }
 
             _turnModel.PlanningMaxTime = args.PlanningMaxTime;

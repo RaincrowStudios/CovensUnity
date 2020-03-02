@@ -13,7 +13,7 @@ namespace Raincrow.BattleArena.Phases
     {
         // Variables
         private float _startTime = 0f;
-        private IEnumerator<bool?> sendFinishPlanningPhase;
+        private IEnumerator<bool?> _sendFinishPlanningPhase;
         private bool? _isPlanningPhaseFinished;
         private ICoroutineHandler _coroutineStarter;
         private AbstractGameMasterController _gameMaster;
@@ -23,6 +23,7 @@ namespace Raincrow.BattleArena.Phases
         private ITurnModel _turnModel;
         private IBattleModel _battleModel;
         private ICellView[,] _gridView;
+        private BattleSlot? _selectedSlot;
 
         // Properties
         public string Name => "Planning Phase";
@@ -37,6 +38,8 @@ namespace Raincrow.BattleArena.Phases
                              ICellView[,] gridView)
         {
             _coroutineStarter = coroutineStarter;
+            _isPlanningPhaseFinished = null;
+            _sendFinishPlanningPhase = null;
             _gameMaster = gameMaster;
             _summoningView = summoningView;
             _quickCastView = quickCastView;
@@ -52,9 +55,6 @@ namespace Raincrow.BattleArena.Phases
 
             _quickCastView.Show(OnClickFly, OnClickSummon, OnClickFlee);
 
-            // Remove all requested actions
-            _turnModel.ActionsRequested.Clear();
-
             // Add Click Events
             for (int i = 0; i < _battleModel.Grid.MaxCellsPerRow; i++)
             {
@@ -65,6 +65,8 @@ namespace Raincrow.BattleArena.Phases
                 }
             }
 
+            _selectedSlot = null;
+
             // Show Character Turn Order View
             IEnumerator showCharacterTurnOrderView = _charactersTurnOrderView.Show(_turnModel.PlanningOrder, _turnModel.MaxActionsAllowed, _battleModel.Witches, _battleModel.Spirits);
             yield return _coroutineStarter.Invoke(showCharacterTurnOrderView);
@@ -72,6 +74,12 @@ namespace Raincrow.BattleArena.Phases
 
         private void CheckInput(ICellModel cellModel)
         {
+            _selectedSlot = new BattleSlot()
+            {
+                Row = cellModel.X,
+                Col = cellModel.Y
+            };
+
             if (cellModel.IsEmpty())
             {
                 _quickCastView.OpenActionsMenu();
@@ -88,11 +96,11 @@ namespace Raincrow.BattleArena.Phases
             {
                 // copy actions to array
                 int numActions = _turnModel.ActionsRequested.Count;
-                IActionModel[] actions = new IActionModel[numActions];
+                IActionRequestModel[] actions = new IActionRequestModel[numActions];
                 _turnModel.ActionsRequested.CopyTo(actions, 0);
 
-                sendFinishPlanningPhase = _gameMaster.SendFinishPlanningPhase(_battleModel.Id, actions, OnPlanningPhaseFinished);
-                _coroutineStarter.Invoke(sendFinishPlanningPhase);
+                _sendFinishPlanningPhase = _gameMaster.SendFinishPlanningPhase(_battleModel.Id, actions, OnPlanningPhaseFinished);
+                _coroutineStarter.Invoke(_sendFinishPlanningPhase);
 
                 yield return stateMachine.ChangeState<ActionResolutionPhase>();
             }
@@ -113,6 +121,9 @@ namespace Raincrow.BattleArena.Phases
                 }
             }
 
+            _isPlanningPhaseFinished = null;
+            _sendFinishPlanningPhase = null;
+
             // wait for planning phase finished event
             yield return new WaitUntil(() => _isPlanningPhaseFinished.GetValueOrDefault());
         }
@@ -126,6 +137,15 @@ namespace Raincrow.BattleArena.Phases
 
         private void OnPlanningPhaseFinished(PlanningPhaseFinishedEventArgs args)
         {
+            foreach (var characterActions in args.BattleActions)
+            {
+                string characterId = characterActions.Key;
+                foreach (var actionResult in characterActions.Value)
+                {
+                    _turnModel.AddActionResult(characterId, actionResult);
+                }
+            }
+
             _isPlanningPhaseFinished = true;
         }
 
@@ -135,25 +155,25 @@ namespace Raincrow.BattleArena.Phases
 
         private void OnClickFlee()
         {
-            if (HasActionsAvailable())
+            if (HasActionsAvailable() && _selectedSlot.HasValue)
             {
-                _turnModel.AddAction(new FleeActionModel());
+                _turnModel.AddActionRequest(new FleeActionRequestModel());
                 _charactersTurnOrderView.UpdateActionsPoints(_turnModel.ActionsRequested.Count);
             }
         }
 
         private void OnClickFly()
         {
-            if (HasActionsAvailable())
+            if (HasActionsAvailable() && _selectedSlot.HasValue)
             {
-                _turnModel.AddAction(new MoveActionModel() { Position = _turnModel.SelectedSlot });
+                _turnModel.AddActionRequest(new MoveActionRequestModel() { Position = _selectedSlot.Value });
                 _charactersTurnOrderView.UpdateActionsPoints(_turnModel.ActionsRequested.Count);
             }
         }
 
         private void OnClickSummon()
         {
-            if (HasActionsAvailable())
+            if (HasActionsAvailable() && _selectedSlot.HasValue)
             {
                 _summoningView.Open(OnSummon);
             }
@@ -161,7 +181,7 @@ namespace Raincrow.BattleArena.Phases
 
         private void OnSummon(string spiritID)
         {
-            _turnModel.AddAction(new SummonActionModel() { Position = _turnModel.SelectedSlot, SpiritId = spiritID });
+            _turnModel.AddActionRequest(new SummonActionRequestModel() { Position = _selectedSlot.Value, SpiritId = spiritID });
             _charactersTurnOrderView.UpdateActionsPoints(_turnModel.ActionsRequested.Count);
         }
 

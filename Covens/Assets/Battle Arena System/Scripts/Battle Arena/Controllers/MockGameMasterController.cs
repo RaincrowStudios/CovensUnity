@@ -34,7 +34,7 @@ namespace Raincrow.BattleArena.Controller
             StartCoroutine(WaitForPlanningPhaseReadyEvent());
         }
 
-        public override IEnumerator<bool?> SendFinishPlanningPhase(string battleId, IActionModel[] actions, UnityAction<PlanningPhaseFinishedEventArgs> onPlanningPhaseFinished)
+        public override IEnumerator<bool?> SendFinishPlanningPhase(string battleId, IActionRequestModel[] actionRequests, UnityAction<PlanningPhaseFinishedEventArgs> onPlanningPhaseFinished)
         {
             _onPlanningPhaseFinished = onPlanningPhaseFinished;
 
@@ -45,7 +45,7 @@ namespace Raincrow.BattleArena.Controller
 
             // request came back as 200
             yield return true;
-            StartCoroutine(WaitForActionResolutionReadyEvent());
+            StartCoroutine(WaitForActionResolutionReadyEvent(actionRequests));
         }
 
         private IEnumerator WaitForPlanningPhaseReadyEvent()
@@ -61,11 +61,58 @@ namespace Raincrow.BattleArena.Controller
             _onPlanningPhaseReady.Invoke(planningPhaseReadyEvent);
         }
 
-        private IEnumerator WaitForActionResolutionReadyEvent()
+        private IEnumerator WaitForActionResolutionReadyEvent(IActionRequestModel[] actionRequests)
         {
             yield return new WaitForSeconds(_waitForActionResolutionReadyMaxTime);
-            PlanningPhaseFinishedEventArgs planningPhaseFinishedEvent = new PlanningPhaseFinishedEventArgs();
+            PlanningPhaseFinishedEventArgs planningPhaseFinishedEvent = new PlanningPhaseFinishedEventArgs
+            {
+                BattleActions = new Dictionary<string, List<IActionResultModel>>()
+            };
+
+            //planningPhaseFinishedEvent.BattleActions.Add("", )
+            List<IActionResultModel> actionResults = new List<IActionResultModel>();
+            foreach (IActionRequestModel actionRequest in actionRequests)
+            {
+                actionResults.Add(ConvertActionRequestToResult(actionRequest));
+            }
+
+            planningPhaseFinishedEvent.BattleActions.Add("witch1", actionResults);
+
             _onPlanningPhaseFinished.Invoke(planningPhaseFinishedEvent);
+        }
+
+        private IActionResultModel ConvertActionRequestToResult(IActionRequestModel actionRequest)
+        {
+            if (actionRequest.Type == ActionRequestType.Cast)
+            {
+                CastSpellActionRequestModel castSpellActionRequest = actionRequest as CastSpellActionRequestModel;
+                return new CastSpellActionResultModel()
+                {
+                    SpellId = castSpellActionRequest.SpellId,
+                    TargetId = castSpellActionRequest.TargetId
+                };
+            }
+
+            if (actionRequest.Type == ActionRequestType.Move)
+            {
+                MoveActionRequestModel moveactionRequest = actionRequest as MoveActionRequestModel;
+                return new MoveActionResultModel()
+                {
+                    Position = moveactionRequest.Position
+                };
+            }
+
+            if (actionRequest.Type == ActionRequestType.Summon)
+            {
+                SummonActionRequestModel summonActionRequest = actionRequest as SummonActionRequestModel;
+                return new SummonResultActionModel()
+                {
+                    SpiritId = summonActionRequest.SpiritId,
+                    Position = summonActionRequest.Position
+                };
+            }
+
+            return new FleeActionResultModel();
         }
     }
 }

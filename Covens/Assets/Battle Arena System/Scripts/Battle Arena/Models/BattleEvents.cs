@@ -1,5 +1,7 @@
 ﻿using Newtonsoft.Json;
+using Raincrow.BattleArena.Model;
 using Raincrow.GameEventResponses;
+using System.Collections.Generic;
 using UnityEngine.Events;
 
 namespace Raincrow.BattleArena.Events
@@ -118,7 +120,9 @@ namespace Raincrow.BattleArena.Events
 
     public struct PlanningPhaseFinishedEventArgs
     {
+        [JsonProperty("executionLog")]  private Dictionary<string, List<IActionResultModel>> _battleActionResults;
 
+        public Dictionary<string, List<IActionResultModel>> BattleActions { get => _battleActionResults; set => _battleActionResults = value; }
     }
 
     public struct TurnResolutionEventArgs { }

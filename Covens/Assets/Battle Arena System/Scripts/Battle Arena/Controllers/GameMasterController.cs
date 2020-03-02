@@ -56,7 +56,7 @@ namespace Raincrow.BattleArena.Controller
             yield return resultCode == 200;
         }
 
-        public override IEnumerator<bool?> SendFinishPlanningPhase(string battleId, IActionModel[] actions, UnityAction<PlanningPhaseFinishedEventArgs> onPlanningPhaseFinished)
+        public override IEnumerator<bool?> SendFinishPlanningPhase(string battleId, IActionRequestModel[] actions, UnityAction<PlanningPhaseFinishedEventArgs> onPlanningPhaseFinished)
         {
             _onPlanningPhaseFinished = onPlanningPhaseFinished;
 
