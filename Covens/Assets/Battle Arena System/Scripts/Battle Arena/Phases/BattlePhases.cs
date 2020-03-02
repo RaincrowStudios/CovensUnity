@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using Raincrow.BattleArena.Controller;
 using Raincrow.BattleArena.Events;
@@ -97,6 +98,7 @@ namespace Raincrow.BattleArena.Phase
         private ICharactersTurnOrderView _charactersTurnOrderView;
         private ITurnModel _turnModel;
         private IBattleModel _battleModel;
+        private ICellView[,] _gridView;
 
         // Properties
         public string Name => "Planning Phase";
@@ -107,6 +109,7 @@ namespace Raincrow.BattleArena.Phase
                              ICharactersTurnOrderView charactersTurnOrderView, 
                              ITurnModel turnModel, 
                              IBattleModel battleModel,
+                             ICellView[,] gridView,
                              ICountdownView countdownView
                              )
         {
@@ -116,6 +119,7 @@ namespace Raincrow.BattleArena.Phase
             _charactersTurnOrderView = charactersTurnOrderView;
             _turnModel = turnModel;
             _battleModel = battleModel;
+            _gridView = gridView;
             _countdownView = countdownView;
         }
 
@@ -131,9 +135,31 @@ namespace Raincrow.BattleArena.Phase
             // Remove all requested actions
             _turnModel.ActionsRequested.Clear();
 
+            // Add Click Events
+            for (int i = 0; i < _battleModel.Grid.MaxCellsPerRow; i++)
+            {
+                for (int j = 0; j < _battleModel.Grid.MaxCellsPerColumn; j++)
+                {
+                    ICellView cellView = _gridView[i, j];
+                    cellView.OnCellClick.AddListener(CheckInput);
+                }
+            }
+
             // Show Character Turn Order View
             IEnumerator showCharacterTurnOrderView = _charactersTurnOrderView.Show(_turnModel.PlanningOrder, _turnModel.MaxActionsAllowed, _battleModel.Witches, _battleModel.Spirits);
             yield return _coroutineStarter.Invoke(showCharacterTurnOrderView);
+        }
+
+        private void CheckInput(ICellModel cellModel)
+        {
+            if (cellModel.IsEmpty())
+            {
+                _quickCastView.OpenActionsMenu();
+            }
+            else
+            {
+                _quickCastView.OpenSpellMenu();
+            }
         }
 
         public IEnumerator Update(IStateMachine stateMachine)
@@ -147,8 +173,17 @@ namespace Raincrow.BattleArena.Phase
         public IEnumerator Exit(IStateMachine stateMachine)
         {
             _quickCastView.Hide();
-            _charactersTurnOrderView.Hide();
-            _countdownView.Hide();
+            _charactersTurnOrderView.Hide();            _countdownView.Hide();
+
+            // Remove Click Events
+            for (int i = 0; i < _battleModel.Grid.MaxCellsPerRow; i++)
+            {
+                for (int j = 0; j < _battleModel.Grid.MaxCellsPerColumn; j++)
+                {
+                    ICellView cellView = _gridView[i, j];
+                    cellView.OnCellClick.RemoveListener(CheckInput);
+                }
+            }
             yield return null;
         }
 
