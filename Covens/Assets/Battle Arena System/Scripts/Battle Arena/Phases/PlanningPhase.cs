@@ -25,6 +25,7 @@ namespace Raincrow.BattleArena.Phases
         private IBattleModel _battleModel;
         private ICellView[,] _gridView;
         private BattleSlot? _selectedSlot;
+        private string _objectId;
 
         // Properties
         public string Name => "Planning Phase";
@@ -56,7 +57,7 @@ namespace Raincrow.BattleArena.Phases
         {
             _startTime = Time.time;
 
-            _quickCastView.Show(OnClickFly, OnClickSummon, OnClickFlee);
+            _quickCastView.Show(OnClickFly, OnClickSummon, OnClickFlee, OnCastSpell);
 
             //Start countdown turn
             _countdownView.Show(_turnModel.PlanningMaxTime);
@@ -85,6 +86,8 @@ namespace Raincrow.BattleArena.Phases
                 Row = cellModel.X,
                 Col = cellModel.Y
             };
+
+            _objectId = cellModel.ObjectId;
 
             if (cellModel.IsEmpty())
             {
@@ -181,6 +184,22 @@ namespace Raincrow.BattleArena.Phases
             if (HasActionsAvailable() && _selectedSlot.HasValue)
             {
                 _turnModel.RequestedActions.Add(new FleeActionRequestModel());
+                _charactersTurnOrderView.UpdateActionsPoints(_turnModel.RequestedActions.Count);
+            }
+        }
+        
+        private void OnCastSpell(string spell)
+        {
+            if (HasActionsAvailable() && _selectedSlot.HasValue && Spellcasting.CanCast(spell))
+            {
+                CastActionRequestModel cast = new CastActionRequestModel()
+                {
+                    SpellId = spell,
+                    TargetId = _objectId,
+                    Ingredients = new InventoryItemModel[0]
+                };
+
+                _turnModel.RequestedActions.Add(cast);
                 _charactersTurnOrderView.UpdateActionsPoints(_turnModel.RequestedActions.Count);
             }
         }

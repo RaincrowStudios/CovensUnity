@@ -63,7 +63,7 @@ public class Spellcasting
         /// player does not meet the spell's levev requirement
         /// </summary>
         NoLevel,
-        
+
         /// <summary>
         /// the spell cant be casted on yourself or cant be casted on someone else
         /// </summary>
@@ -73,7 +73,7 @@ public class Spellcasting
         /// the player's school does not match the required school to cast this spell
         /// </summary>
         InvalidCasterSchool,
-        
+
         /// <summary>
         /// the target's school does not match the required school to target this spell
         /// </summary>
@@ -89,13 +89,37 @@ public class Spellcasting
         /// </summary>
         InvalidTargetStatus,
     }
-    
-    private static Dictionary <string, System.Action<SpellData, IMarker, List<spellIngredientsData>, System.Action<Raincrow.GameEventResponses.SpellCastHandler.Result>, System.Action>> m_SpecialSpells = 
+
+    private static Dictionary<string, System.Action<SpellData, IMarker, List<spellIngredientsData>, System.Action<Raincrow.GameEventResponses.SpellCastHandler.Result>, System.Action>> m_SpecialSpells =
         new Dictionary<string, System.Action<SpellData, IMarker, List<spellIngredientsData>, System.Action<Raincrow.GameEventResponses.SpellCastHandler.Result>, System.Action>>
         {
             { "spell_channeling", SpellChanneling.CastSpell }
         };
 
+    public static bool CanCast(string spell = null)
+    {
+        SpellData spellData = DownloadedAssets.GetSpell(spell);
+
+        if (DownloadedAssets.spellDictData.ContainsKey(spellData.id) == false)
+            return false;
+
+        if (spellData.level > PlayerDataManager.playerData.level)
+            return false;
+
+        if (spellData.casterSchool != null && spellData.casterSchool.Count > 0 && spellData.casterSchool.Contains((int)PlayerDataManager.playerData.school) == false)
+            return false;
+
+        if (spellData.ingredients != null)
+        {
+            for (int i = 0; i < spellData.ingredients.Count; i++)
+            {
+                if (PlayerDataManager.playerData.GetIngredient(spellData.ingredients[i]) == 0)
+                    return false;
+            }
+        }
+
+        return true;
+    }
     public static SpellState CanCast(SpellData spell = null, IMarker target = null, CharacterMarkerData targetData = null)
     {
         //silenced
@@ -105,7 +129,7 @@ public class Spellcasting
         //dead
         if (DeathState.IsDead)
             return SpellState.PlayerDead;
-        
+
         //SPELL
         if (spell != null)
         {
@@ -118,7 +142,7 @@ public class Spellcasting
             //caster school
             if (spell.casterSchool != null && spell.casterSchool.Count > 0 && spell.casterSchool.Contains((int)PlayerDataManager.playerData.school) == false)
                 return SpellState.InvalidCasterSchool;
-                        
+
             //check ingredients
             if (spell.ingredients != null)
             {
@@ -132,7 +156,7 @@ public class Spellcasting
             //in cooldown?
             if (CooldownManager.GetCooldown(spell.id) != null)
                 return SpellState.InCooldown;
-            
+
             if (target != null)
             {
                 Token token = target.Token;
@@ -226,14 +250,14 @@ public class Spellcasting
         if (target == null)
         {
             UIWaitingCastResult.Instance.Show(
-                actionId, 
-                target, 
-                spell, 
+                actionId,
+                target,
+                spell,
                 ingredients,
                 (result) => onContinue?.Invoke(result),
                 () => onClose?.Invoke()
             );
-            UIWaitingCastResult.Instance.ShowResults(spell, new SpellCastHandler.Result{});
+            UIWaitingCastResult.Instance.ShowResults(spell, new SpellCastHandler.Result { });
             return;
         }
 
@@ -335,7 +359,7 @@ public class Spellcasting
                     }
 
                     UIWaitingCastResult.Instance.Close();
-                    
+
                     //retry
                     if (response == "2016")
                     {
@@ -354,7 +378,7 @@ public class Spellcasting
                     if (response == "2014")
                     {
                         Vector2 coords = target.Coords + (Vector2)Random.onUnitSphere.normalized * 0.1f;
-                        MoveTokenHandler.HandleEvent(targetId, coords.x, coords.y); 
+                        MoveTokenHandler.HandleEvent(targetId, coords.x, coords.y);
                         UIWaitingCastResult.Instance.Close();
                         return;
                     }
@@ -378,4 +402,52 @@ public class Spellcasting
                 );
         }
     }
+
+    public static ResponseRequireIngredients RequireIngredients(string spell)
+    {
+        SpellData spellData = DownloadedAssets.GetSpell(spell);
+
+        bool requiredGem = false;
+        bool requiredTool = false;
+        bool requiredHerb = false;
+
+        foreach (string ingr in spellData.ingredients)
+        {
+            if (ingr == null)
+                return new ResponseRequireIngredients()
+                {
+                    RequiredGem = false,
+                    RequiredTool = false,
+                    RequiredHerb = false
+                };
+
+            var data = DownloadedAssets.GetCollectable(ingr);
+            if (data.Type == IngredientType.gem)
+            {
+                requiredGem = true;
+            }
+            else if (data.Type == IngredientType.tool)
+            {
+                requiredTool = true;
+            }
+            else if (data.Type == IngredientType.herb)
+            {
+                requiredHerb = true;
+            }
+        }
+
+        return new ResponseRequireIngredients()
+        {
+            RequiredGem = requiredGem,
+            RequiredTool = requiredTool,
+            RequiredHerb = requiredHerb
+        };
+    }
+}
+
+public class ResponseRequireIngredients
+{
+    public bool RequiredGem { get; set; }
+    public bool RequiredTool { get; set; }
+    public bool RequiredHerb { get; set; }
 }

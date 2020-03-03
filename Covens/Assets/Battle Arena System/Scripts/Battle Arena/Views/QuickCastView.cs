@@ -15,31 +15,43 @@ namespace Raincrow.BattleArena.Views
         [SerializeField] private Image _imageIcon;
         [SerializeField] private Sprite _iconClose;
         [SerializeField] private Sprite _iconOpen;
-        [SerializeField] private TextMeshProUGUI _textAmountActions;
 
         [Header("Actions Buttons")]
         [SerializeField] private Button _buttonFly;
         [SerializeField] private Button _buttonSummon;
         [SerializeField] private Button _buttonFlee;
 
+        [Header("Spell Buttons")]
+        [SerializeField] private Button _buttonAstral;
+
         [Header("Menus")]
         [SerializeField] private GameObject _actionsMenu;
-        [SerializeField] private GameObject _spellMenu;
+        [SerializeField] private SpellView _spellMenu;
 
         // Variables
         private GameObject _currentMenu;
         private bool _isOpen;
 
-        public void Show(UnityAction onClickFly, UnityAction onClickSummon, UnityAction onClickFlee)
+        public void Show(UnityAction onClickFly, UnityAction onClickSummon, UnityAction onClickFlee, System.Action<string> onCastSpell)
         {
             gameObject.SetActive(true);
             _buttonFly.onClick.AddListener(onClickFly);
             _buttonSummon.onClick.AddListener(onClickSummon);
             _buttonFlee.onClick.AddListener(onClickFlee);
+            _buttonAstral.onClick.AddListener(()=> { onCastSpell("spell_astral"); });
+
+            _spellMenu.Show(onCastSpell);
         }
 
         public void Hide()
         {
+            if(_currentMenu != null)
+            {
+                LeanTween.scaleY(_currentMenu, 0.0f, 0);
+                _currentMenu.SetActive(false);
+                _currentMenu = null;
+            }
+   
             gameObject.SetActive(false);
             _buttonFly.onClick.RemoveAllListeners();
             _buttonSummon.onClick.RemoveAllListeners();
@@ -50,7 +62,7 @@ namespace Raincrow.BattleArena.Views
         {
             if (isActiveAndEnabled)
             {
-                ChangeMenu(_spellMenu);
+                ChangeMenu(_spellMenu.gameObject);
             }
         }
 
@@ -115,7 +127,7 @@ namespace Raincrow.BattleArena.Views
 
     public interface IQuickCastView
     {
-        void Show(UnityAction onClickFly, UnityAction onClickSummon, UnityAction onClickFlee);
+        void Show(UnityAction onClickFly, UnityAction onClickSummon, UnityAction onClickFlee, System.Action<string> onCastSpell);
 
         void Hide();
 
