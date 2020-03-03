@@ -1,13 +1,14 @@
-﻿using System.Collections.Generic;
+﻿using Raincrow.BattleArena.Views;
+using System.Collections.Generic;
 
 namespace Raincrow.BattleArena.Model
 {    
     public interface IBattleModel
     {
         string Id { get; }        
-        IGridModel Grid { get; }   
-        IList<IWitchModel> Witches { get; set; }
-        IList<ISpiritModel> Spirits { get; set; }
+        IGridModel Grid { get; }
+        IList<ICharacterView<ISpiritModel, ISpiritUIModel>> SpiritsViews { get; set; }
+        IList<ICharacterView<IWitchModel, IWitchUIModel>> WitchesViews { get; set; }
     }
 
     public interface IGridModel

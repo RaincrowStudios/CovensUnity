@@ -6,7 +6,7 @@ using UnityEngine;
 
 namespace Raincrow.BattleArena.Factory
 {
-    public class SpiritGameObjectFactory : AbstractCharacterGameObjectFactory<ISpiritModel, ISpiritViewModel>
+    public class SpiritGameObjectFactory : AbstractCharacterGameObjectFactory<ISpiritModel, ISpiritUIModel>
     {
         // serialized variables
         [SerializeField] private BattleSpiritView _battleSpiritViewPrefab;
@@ -37,10 +37,18 @@ namespace Raincrow.BattleArena.Factory
             }
         }
 
-        public override IEnumerator<AbstractCharacterView<ISpiritModel, ISpiritViewModel>> Create(Transform cellTransform, ISpiritModel model)
+        protected virtual void OnDisable()
+        {
+            if (_objectPool != null)
+            {
+                _objectPool.RecycleAll(_battleSpiritViewPrefab);
+            }
+        }
+
+        public override IEnumerator<ICharacterView<ISpiritModel, ISpiritUIModel>> Create(Transform cellTransform, ISpiritModel model)
         {
             // Create character            
-            AbstractCharacterView<ISpiritModel, ISpiritViewModel> characterView = _objectPool.Spawn(_battleSpiritViewPrefab, cellTransform);
+            ICharacterView<ISpiritModel, ISpiritUIModel> characterView = _objectPool.Spawn(_battleSpiritViewPrefab, cellTransform);
             yield return null;
 
             // wait for coroutine
@@ -50,12 +58,12 @@ namespace Raincrow.BattleArena.Factory
                 yield return null;
             }
 
-            ISpiritViewModel spiritViewModel = new SpiritViewModel()
+            ISpiritUIModel spiritViewModel = new SpiritViewModel()
             {
                 Texture = tex.ReturnValue,
                 AlignmentMaterial = _wildAlignmentMaterial
             };
-            characterView.Init(model, spiritViewModel, _serviceLocator.GetBattleCamera());
+            characterView.Init(model, spiritViewModel);
             yield return characterView;
         }
 

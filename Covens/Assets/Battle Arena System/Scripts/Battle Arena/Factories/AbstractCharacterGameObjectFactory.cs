@@ -5,8 +5,8 @@ using UnityEngine;
 
 namespace Raincrow.BattleArena.Factory
 {
-    public abstract class AbstractCharacterGameObjectFactory<T, U> : MonoBehaviour where T : ICharacterModel where U : ICharacterViewModel
+    public abstract class AbstractCharacterGameObjectFactory<T, U> : MonoBehaviour where T : ICharacterModel where U : ICharacterUIModel
     {
-        public abstract IEnumerator<AbstractCharacterView<T, U>> Create(Transform cellTransform, T model);
+        public abstract IEnumerator<ICharacterView<T, U>> Create(Transform cellTransform, T model);
     }
 }

@@ -6,7 +6,7 @@ using Raincrow.Services;
 
 namespace Raincrow.BattleArena.Factory
 {
-    public class WitchGameObjectFactory : AbstractCharacterGameObjectFactory<IWitchModel, IWitchViewModel>
+    public class WitchGameObjectFactory : AbstractCharacterGameObjectFactory<IWitchModel, IWitchUIModel>
     {
         // serialized variables
         [SerializeField] private BattleWitchView _battleWitchViewPrefab;
@@ -39,7 +39,15 @@ namespace Raincrow.BattleArena.Factory
             }
         }
 
-        public override IEnumerator<AbstractCharacterView<IWitchModel, IWitchViewModel>> Create(Transform cellTransform, IWitchModel model)
+        protected virtual void OnDisable()
+        {
+            if (_objectPool != null)
+            {
+                _objectPool.RecycleAll(_battleWitchViewPrefab);
+            }
+        }
+
+        public override IEnumerator<ICharacterView<IWitchModel, IWitchUIModel>> Create(Transform cellTransform, IWitchModel model)
         {
             // Create character            
             BattleWitchView battleWitchView = _objectPool.Spawn(_battleWitchViewPrefab, cellTransform);
@@ -62,12 +70,12 @@ namespace Raincrow.BattleArena.Factory
                 alignmentMaterial = _alignmentShadowMaterial;
             }
 
-            IWitchViewModel witchViewModel = new WitchViewModel()
+            IWitchUIModel witchViewModel = new WitchViewModel()
             {
                 Texture = request.ReturnValue,
                 AlignmentMaterial = alignmentMaterial
             };
-            battleWitchView.Init(model, witchViewModel, _serviceLocator.GetBattleCamera());
+            battleWitchView.Init(model, witchViewModel);
             yield return battleWitchView;
         }
 
@@ -82,7 +90,7 @@ namespace Raincrow.BattleArena.Factory
 
             Texture avatarTexture = coroutine.ReturnValue.Texture;
             yield return avatarTexture;
-        }
+        }        
     }
 
     public interface IWitchAvatarFactory

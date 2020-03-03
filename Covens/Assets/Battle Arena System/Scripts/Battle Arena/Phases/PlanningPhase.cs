@@ -68,13 +68,28 @@ namespace Raincrow.BattleArena.Phases
                 {
                     ICellView cellView = _gridView[i, j];
                     cellView.OnCellClick.AddListener(CheckInput);
+                    yield return null;
                 }
             }
 
             _selectedSlot = null;
 
             // Show Character Turn Order View
-            IEnumerator showCharacterTurnOrderView = _charactersTurnOrderView.Show(_turnModel.PlanningOrder, _turnModel.MaxActionsAllowed, _battleModel.Witches, _battleModel.Spirits);
+            IList<IWitchModel> witches = new List<IWitchModel>();
+            foreach (var item in _battleModel.WitchesViews)
+            {
+                witches.Add(item.Model);
+                yield return null;
+            }
+
+            IList<ISpiritModel> spirits = new List<ISpiritModel>();
+            foreach (var item in _battleModel.SpiritsViews)
+            {
+                spirits.Add(item.Model);
+                yield return null;
+            }
+
+            IEnumerator showCharacterTurnOrderView = _charactersTurnOrderView.Show(_turnModel.PlanningOrder, _turnModel.MaxActionsAllowed, witches, spirits);
             yield return _coroutineStarter.Invoke(showCharacterTurnOrderView);
         }
 
