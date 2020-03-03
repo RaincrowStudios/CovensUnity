@@ -1,5 +1,4 @@
 ﻿using Raincrow.BattleArena.Controller;
-using Raincrow.BattleArena.Model;
 using Raincrow.StateMachines;
 using System.Collections;
 using UnityEngine;
@@ -25,14 +24,7 @@ namespace Raincrow.BattleArena.Phases
         public IEnumerator Enter(IStateMachine stateMachine)
         {
             _startTime = Time.time;
-            foreach (var item in _turnModel.BattleActionResults)
-            {
-                foreach (var actionResult in item.Value)
-                {
-                    Debug.Log(actionResult.Event);
-                    yield return new WaitForSeconds(0.1f);
-                }                
-            }
+            yield return null;
         }
 
         public IEnumerator Update(IStateMachine stateMachine)

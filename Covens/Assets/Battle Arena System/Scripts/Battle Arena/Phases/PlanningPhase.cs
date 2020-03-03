@@ -137,14 +137,6 @@ namespace Raincrow.BattleArena.Phases
 
         private void OnPlanningPhaseFinished(PlanningPhaseFinishedEventArgs args)
         {
-            foreach (var characterActions in args.BattleActions)
-            {
-                string characterId = characterActions.Key;
-                foreach (var actionResult in characterActions.Value)
-                {
-                    _turnModel.AddActionResult(characterId, actionResult);
-                }
-            }
 
             _isPlanningPhaseFinished = true;
         }
@@ -157,7 +149,7 @@ namespace Raincrow.BattleArena.Phases
         {
             if (HasActionsAvailable() && _selectedSlot.HasValue)
             {
-                _turnModel.AddActionRequest(new FleeActionRequestModel());
+                _turnModel.ActionsRequested.Add(new FleeActionRequestModel());
                 _charactersTurnOrderView.UpdateActionsPoints(_turnModel.ActionsRequested.Count);
             }
         }
@@ -166,7 +158,7 @@ namespace Raincrow.BattleArena.Phases
         {
             if (HasActionsAvailable() && _selectedSlot.HasValue)
             {
-                _turnModel.AddActionRequest(new MoveActionRequestModel() { Position = _selectedSlot.Value });
+                _turnModel.ActionsRequested.Add(new MoveActionRequestModel() { Position = _selectedSlot.Value });
                 _charactersTurnOrderView.UpdateActionsPoints(_turnModel.ActionsRequested.Count);
             }
         }
@@ -181,7 +173,7 @@ namespace Raincrow.BattleArena.Phases
 
         private void OnSummon(string spiritID)
         {
-            _turnModel.AddActionRequest(new SummonActionRequestModel() { Position = _selectedSlot.Value, SpiritId = spiritID });
+            _turnModel.ActionsRequested.Add(new SummonActionRequestModel() { Position = _selectedSlot.Value, SpiritId = spiritID });
             _charactersTurnOrderView.UpdateActionsPoints(_turnModel.ActionsRequested.Count);
         }
 

@@ -39,48 +39,48 @@
         string Type { get; }
     }
 
-    public class ActionResultType
-    {
-        public static readonly string Banish = "battle.kill";
-        public static readonly string CastSpell = "battle.cast";
-        public static readonly string Summon = "battle.summon";
-        public static readonly string Move = "battle.move";
-        public static readonly string Flee = "battle.flee";
-    }
+    //public class ActionResultType
+    //{
+    //    public static readonly string Banish = "battle.kill";
+    //    public static readonly string CastSpell = "battle.cast";
+    //    public static readonly string Summon = "battle.summon";
+    //    public static readonly string Move = "battle.move";
+    //    public static readonly string Flee = "battle.flee";
+    //}
 
-    public class BanisActionResultModel : IActionResultModel
-    {
-        public string Event => ActionResultType.Banish;
-        public string TargetId { get; set; }
-    }
+    //public class BanisActionResultModel : IActionResultModel
+    //{
+    //    public string Event => ActionResultType.Banish;
+    //    public string TargetId { get; set; }
+    //}
 
-    public class MoveActionResultModel : IActionResultModel
-    {
-        public BattleSlot Position { get; set; }
-        public string Event =>  ActionResultType.Move;
-    }
+    //public class MoveActionResultModel : IActionResultModel
+    //{
+    //    public BattleSlot Position { get; set; }
+    //    public string Event =>  ActionResultType.Move;
+    //}
 
-    public class CastSpellActionResultModel : IActionResultModel
-    {
-        public string Event => ActionResultType.CastSpell;
-        public string SpellId { get; set; }
-        public string TargetId { get; set; }
-    }
+    //public class CastSpellActionResultModel : IActionResultModel
+    //{
+    //    public string Event => ActionResultType.CastSpell;
+    //    public string SpellId { get; set; }
+    //    public string TargetId { get; set; }
+    //}
 
-    public class SummonResultActionModel : IActionResultModel
-    {
-        public string Event => ActionResultType.Summon;
-        public string SpiritId { get; set; }
-        public BattleSlot Position { get; set; }
-    }
+    //public class SummonResultActionModel : IActionResultModel
+    //{
+    //    public string Event => ActionResultType.Summon;
+    //    public string SpiritId { get; set; }
+    //    public BattleSlot Position { get; set; }
+    //}
 
-    public class FleeActionResultModel : IActionResultModel
-    {
-        public string Event => ActionResultType.Flee;
-    }
+    //public class FleeActionResultModel : IActionResultModel
+    //{
+    //    public string Event => ActionResultType.Flee;
+    //}
 
-    public interface IActionResultModel
-    {
-        string Event { get; }
-    }
+    //public interface IActionResultModel
+    //{
+    //    string Event { get; }
+    //}
 }
