@@ -17,6 +17,7 @@ namespace Raincrow.BattleArena.Phases
         private bool? _isPlanningPhaseFinished;
         private ICoroutineHandler _coroutineStarter;
         private AbstractGameMasterController _gameMaster;
+        private ICountdownView _countdownView;
         private IQuickCastView _quickCastView;
         private ISummoningView _summoningView;
         private ICharactersTurnOrderView _charactersTurnOrderView;
@@ -35,7 +36,8 @@ namespace Raincrow.BattleArena.Phases
                              ICharactersTurnOrderView charactersTurnOrderView,
                              ITurnModel turnModel,
                              IBattleModel battleModel,
-                             ICellView[,] gridView)
+                             ICellView[,] gridView,
+                             ICountdownView countdownView)
         {
             _coroutineStarter = coroutineStarter;
             _isPlanningPhaseFinished = null;
@@ -47,6 +49,7 @@ namespace Raincrow.BattleArena.Phases
             _turnModel = turnModel;
             _battleModel = battleModel;
             _gridView = gridView;
+            _countdownView = countdownView;
         }
 
         public IEnumerator Enter(IStateMachine stateMachine)
@@ -54,6 +57,9 @@ namespace Raincrow.BattleArena.Phases
             _startTime = Time.time;
 
             _quickCastView.Show(OnClickFly, OnClickSummon, OnClickFlee);
+
+            //Start countdown turn
+            _countdownView.Show(_turnModel.PlanningMaxTime);
 
             // Add Click Events
             for (int i = 0; i < _battleModel.Grid.MaxCellsPerRow; i++)
@@ -109,6 +115,7 @@ namespace Raincrow.BattleArena.Phases
         public IEnumerator Exit(IStateMachine stateMachine)
         {
             _quickCastView.Hide();
+            _countdownView.Hide();
             _charactersTurnOrderView.Hide();
 
             // Remove Click Events
