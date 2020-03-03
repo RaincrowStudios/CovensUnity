@@ -29,10 +29,16 @@ namespace Raincrow.BattleArena.Phases
 
         public IEnumerator Update(IStateMachine stateMachine)
         {
-            if (Time.time - _startTime > 3f)
+            foreach (var key in _turnModel.ResponseActions)
             {
-                yield return stateMachine.ChangeState<BanishmentPhase>();
+                foreach (var responseAction in key.Value)
+                {
+                    Debug.Log(responseAction.Type);
+                    yield return new WaitForSeconds(1f);
+                }
             }
+
+            yield return stateMachine.ChangeState<BanishmentPhase>();
         }
 
         public IEnumerator Exit(IStateMachine stateMachine)

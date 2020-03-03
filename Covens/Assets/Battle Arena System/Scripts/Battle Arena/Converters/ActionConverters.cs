@@ -5,41 +5,41 @@ using Raincrow.BattleArena.Model;
 
 namespace Raincrow.BattleArena.Converters
 {
-    public class ActionResultModelContractResolver : DefaultContractResolver
+    public class ActionResponseModelContractResolver : DefaultContractResolver
     {
         protected override JsonConverter ResolveContractConverter(System.Type objectType)
         {
-            if (typeof(ActionResultModel).IsAssignableFrom(objectType) && !objectType.IsAbstract)
+            if (typeof(ActionResponseModel).IsAssignableFrom(objectType) && !objectType.IsAbstract)
                 return null;
             return base.ResolveContractConverter(objectType);
         }
     }
 
-    public class ActionResultModelConverter : JsonConverter
+    public class ActionResponseModelConverter : JsonConverter
     {
-        private static readonly JsonSerializerSettings SpecifiedSubclassConversion = new JsonSerializerSettings() { ContractResolver = new ActionResultModelContractResolver() };
+        private static readonly JsonSerializerSettings SpecifiedSubclassConversion = new JsonSerializerSettings() { ContractResolver = new ActionResponseModelContractResolver() };
 
         public override bool CanConvert(System.Type objectType)
         {
-            return (objectType == typeof(ActionResultModel));
+            return (objectType == typeof(ActionResponseModel));
         }
 
         public override object ReadJson(JsonReader reader, System.Type objectType, object existingValue, JsonSerializer serializer)
         {
             JObject jo = JObject.Load(reader);
-            string actionResultType = jo["event"].Value<string>();
-            switch (actionResultType)
+            string actionResponseType = jo["event"].Value<string>();
+            switch (actionResponseType)
             {
-                case ActionResultType.Cast:
-                    return JsonConvert.DeserializeObject<CastActionResultModel>(jo.ToString(), SpecifiedSubclassConversion);
-                case ActionResultType.Move:
-                    return JsonConvert.DeserializeObject<MoveActionResultModel>(jo.ToString(), SpecifiedSubclassConversion);
-                case ActionResultType.Summon:
-                    return JsonConvert.DeserializeObject<SummonActionResultModel>(jo.ToString(), SpecifiedSubclassConversion);
-                case ActionResultType.Flee:
-                    return JsonConvert.DeserializeObject<FleeActionResultModel>(jo.ToString(), SpecifiedSubclassConversion);
-                case ActionResultType.Banish:
-                    return JsonConvert.DeserializeObject<BanishActionResultModel>(jo.ToString(), SpecifiedSubclassConversion);
+                case ActionResponseType.Cast:
+                    return JsonConvert.DeserializeObject<CastActionResponseModel>(jo.ToString(), SpecifiedSubclassConversion);
+                case ActionResponseType.Move:
+                    return JsonConvert.DeserializeObject<MoveActionResponseModel>(jo.ToString(), SpecifiedSubclassConversion);
+                case ActionResponseType.Summon:
+                    return JsonConvert.DeserializeObject<SummonActionResponseModel>(jo.ToString(), SpecifiedSubclassConversion);
+                case ActionResponseType.Flee:
+                    return JsonConvert.DeserializeObject<FleeActionResponseModel>(jo.ToString(), SpecifiedSubclassConversion);
+                case ActionResponseType.Banish:
+                    return JsonConvert.DeserializeObject<BanishActionResponseModel>(jo.ToString(), SpecifiedSubclassConversion);
             }
             throw new System.NotImplementedException();
         }

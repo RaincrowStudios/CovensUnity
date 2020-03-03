@@ -168,7 +168,9 @@ namespace Raincrow.BattleArena.Model
 
     public struct BattleSlot
     {
+        [JsonProperty("row")]
         public int Row { get; set; }
+        [JsonProperty("col")]
         public int Col { get; set; }
     }
 

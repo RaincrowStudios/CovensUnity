@@ -233,23 +233,6 @@ namespace Raincrow.BattleArena.Controller
             }
         }
 
-        //private void OnCellClick(ICellModel cellModel)
-        //{
-        //    _turnModel.SelectedSlot = new BattleSlot()
-        //    {
-        //        Row = cellModel.X,
-        //        Col = cellModel.Y,
-        //    };
-        //    if (cellModel.IsEmpty())
-        //    {
-        //        _quickCastView.OpenActionsMenu();
-        //    }
-        //    else
-        //    {
-        //        _quickCastView.OpenSpellMenu();
-        //    }
-        //}
-
         #region ICoroutineStarter
 
         public Coroutine Invoke(IEnumerator routine)
@@ -282,7 +265,8 @@ namespace Raincrow.BattleArena.Controller
         string[] PlanningOrder { get; set; }
         float PlanningMaxTime { get; set; }
         int MaxActionsAllowed { get; set; }
-        IList<IActionRequestModel> ActionsRequested { get; }
+        IList<IActionRequestModel> RequestedActions { get; }
+        IDictionary<string, IList<IActionResponseModel>> ResponseActions { get; }
         void Reset();
         //BattleSlot SelectedSlot { get; set; }
     }
@@ -294,20 +278,23 @@ namespace Raincrow.BattleArena.Controller
         public string[] PlanningOrder { get; set; }
         public float PlanningMaxTime { get; set; }
         public int MaxActionsAllowed { get; set; }
-        public IList<IActionRequestModel> ActionsRequested { get; private set; }
+        public IList<IActionRequestModel> RequestedActions { get; private set; }
+        public IDictionary<string, IList<IActionResponseModel>> ResponseActions { get; }
 
         //public BattleSlot SelectedSlot { get; set; }
 
         public TurnModel()
         {
             PlanningOrder = new string[0];
-            ActionsRequested = new List<IActionRequestModel>();
+            RequestedActions = new List<IActionRequestModel>();
+            ResponseActions = new Dictionary<string, IList<IActionResponseModel>>();
         }
 
         public void Reset()
         {
             PlanningOrder = new string[0];
-            ActionsRequested.Clear();
+            RequestedActions.Clear();
+            ResponseActions.Clear();
             PlanningMaxTime = 0f;
             MaxActionsAllowed = 0;
         }

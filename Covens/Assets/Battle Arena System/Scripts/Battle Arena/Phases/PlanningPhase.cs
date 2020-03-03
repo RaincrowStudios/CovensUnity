@@ -95,9 +95,9 @@ namespace Raincrow.BattleArena.Phases
             if (Time.time - _startTime > _turnModel.PlanningMaxTime || !HasActionsAvailable())
             {
                 // copy actions to array
-                int numActions = _turnModel.ActionsRequested.Count;
+                int numActions = _turnModel.RequestedActions.Count;
                 IActionRequestModel[] actions = new IActionRequestModel[numActions];
-                _turnModel.ActionsRequested.CopyTo(actions, 0);
+                _turnModel.RequestedActions.CopyTo(actions, 0);
 
                 _sendFinishPlanningPhase = _gameMaster.SendFinishPlanningPhase(_battleModel.Id, actions, OnPlanningPhaseFinished);
                 _coroutineStarter.Invoke(_sendFinishPlanningPhase);
@@ -130,14 +130,38 @@ namespace Raincrow.BattleArena.Phases
 
         private bool HasActionsAvailable()
         {
-            return _turnModel.MaxActionsAllowed > _turnModel.ActionsRequested.Count;
+            return _turnModel.MaxActionsAllowed > _turnModel.RequestedActions.Count;
         }
 
         #region Socket Events
 
         private void OnPlanningPhaseFinished(PlanningPhaseFinishedEventArgs args)
-        {
+        {            
+            _coroutineStarter.Invoke(OnPlanningPhaseFinishedCoroutine(args));
+        }
 
+        private IEnumerator OnPlanningPhaseFinishedCoroutine(PlanningPhaseFinishedEventArgs args)
+        {
+            foreach (BattleActor actor in args.Actors)
+            {
+                string characterId = actor.Id;
+                foreach (BattleAction battleAction in actor.Actions)
+                {
+                    List<IActionResponseModel> actionsResults = new List<IActionResponseModel>(battleAction.Results);
+                    if (!_turnModel.ResponseActions.ContainsKey(characterId))
+                    {
+                        _turnModel.ResponseActions.Add(characterId, actionsResults);
+                    }
+                    else
+                    {
+                        IList<IActionResponseModel> responseActions = _turnModel.ResponseActions[characterId];
+                        actionsResults.AddRange(responseActions);
+                        _turnModel.ResponseActions[characterId] = actionsResults;
+                    }
+                    
+                    yield return null;
+                }
+            }
             _isPlanningPhaseFinished = true;
         }
 
@@ -149,8 +173,8 @@ namespace Raincrow.BattleArena.Phases
         {
             if (HasActionsAvailable() && _selectedSlot.HasValue)
             {
-                _turnModel.ActionsRequested.Add(new FleeActionRequestModel());
-                _charactersTurnOrderView.UpdateActionsPoints(_turnModel.ActionsRequested.Count);
+                _turnModel.RequestedActions.Add(new FleeActionRequestModel());
+                _charactersTurnOrderView.UpdateActionsPoints(_turnModel.RequestedActions.Count);
             }
         }
 
@@ -158,8 +182,8 @@ namespace Raincrow.BattleArena.Phases
         {
             if (HasActionsAvailable() && _selectedSlot.HasValue)
             {
-                _turnModel.ActionsRequested.Add(new MoveActionRequestModel() { Position = _selectedSlot.Value });
-                _charactersTurnOrderView.UpdateActionsPoints(_turnModel.ActionsRequested.Count);
+                _turnModel.RequestedActions.Add(new MoveActionRequestModel() { Position = _selectedSlot.Value });
+                _charactersTurnOrderView.UpdateActionsPoints(_turnModel.RequestedActions.Count);
             }
         }
 
@@ -173,8 +197,8 @@ namespace Raincrow.BattleArena.Phases
 
         private void OnSummon(string spiritID)
         {
-            _turnModel.ActionsRequested.Add(new SummonActionRequestModel() { Position = _selectedSlot.Value, SpiritId = spiritID });
-            _charactersTurnOrderView.UpdateActionsPoints(_turnModel.ActionsRequested.Count);
+            _turnModel.RequestedActions.Add(new SummonActionRequestModel() { Position = _selectedSlot.Value, SpiritId = spiritID });
+            _charactersTurnOrderView.UpdateActionsPoints(_turnModel.RequestedActions.Count);
         }
 
         #endregion

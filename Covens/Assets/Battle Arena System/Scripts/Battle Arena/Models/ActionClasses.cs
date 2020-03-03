@@ -21,12 +21,16 @@ namespace Raincrow.BattleArena.Model
 
     public class MoveActionRequestModel : ActionRequestModel
     {
+        [JsonProperty("type")]
+        public override string Type => ActionRequestType.Move;
         [JsonProperty("position")]
         public BattleSlot Position { get; set; }
     }
 
     public class CastActionRequestModel : ActionRequestModel
     {
+        [JsonProperty("type")]
+        public override string Type => ActionRequestType.Cast;
         [JsonProperty("spellId")]
         public string SpellId { get; set; }
         [JsonProperty("targetId")]
@@ -37,15 +41,17 @@ namespace Raincrow.BattleArena.Model
 
     public class SummonActionRequestModel : ActionRequestModel
     {
+        [JsonProperty("type")]
+        public override string Type => ActionRequestType.Summon;
         public string SpiritId { get; set; }
+        [JsonProperty("position")]
         public BattleSlot Position { get; set; }
     }
 
     [JsonConverter(typeof(ActionRequestModelConverter))]
-    public class ActionRequestModel : IActionRequestModel
+    public abstract class ActionRequestModel : IActionRequestModel
     {
-        [JsonProperty("type")]
-        public virtual string Type { get; set; }
+        public abstract string Type { get; }
     }
 
     public interface IActionRequestModel
@@ -53,7 +59,7 @@ namespace Raincrow.BattleArena.Model
         string Type { get; }
     }
 
-    public class ActionResultType
+    public class ActionResponseType
     {
         public const string Banish = "battle.kill";
         public const string Cast = "battle.cast";
@@ -62,46 +68,53 @@ namespace Raincrow.BattleArena.Model
         public const string Flee = "battle.flee";
     }
 
-    public class BanishActionResultModel : ActionResultModel
+    public class BanishActionResponseModel : ActionResponseModel
     {
+        public override string Type => ActionResponseType.Banish;
         public string TargetId { get; set; }
     }
 
-    public class MoveActionResultModel : ActionResultModel
+    public class MoveActionResponseModel : ActionResponseModel
     {
+        public override string Type => ActionResponseType.Move;
         [JsonProperty("position")]
         public BattleSlot Position { get; set; }
     }
 
-    public class CastActionResultModel : ActionResultModel
+    public class CastActionResponseModel : ActionResponseModel
     {
+        public override string Type => ActionResponseType.Cast;
         [JsonProperty("target")]
         public GenericCharacterObjectServer Target { get; set; }
         [JsonProperty("caster")]
         public GenericCharacterObjectServer Caster { get; set; }
     }
 
-    public class SummonActionResultModel : ActionResultModel
+    public class SummonActionResponseModel : ActionResponseModel
     {
+        public override string Type => ActionResponseType.Summon;
         public string SpiritId { get; set; }
         [JsonProperty("position")]
         public BattleSlot Position { get; set; }
     }
 
-    public class FleeActionResultModel : ActionResultModel { }
-
-    [JsonConverter(typeof(ActionResultModelConverter))]
-    public class ActionResultModel : IActionResultModel
+    public class FleeActionResponseModel : ActionResponseModel
     {
-        [JsonProperty("event")]
-        public string Event { get; set; }
+        public override string Type => ActionResponseType.Flee;
+    }
+
+    [JsonConverter(typeof(ActionResponseModelConverter))]
+    public abstract class ActionResponseModel : IActionResponseModel
+    {
+        public abstract string Type { get; }
         [JsonProperty("isSuccess")]
         public bool IsSuccess { get; set; }
     }
 
-    public interface IActionResultModel
+    public interface IActionResponseModel
     {        
         bool IsSuccess { get; set; }
+        string Type { get; }
     }
 
     #region Server Classes
@@ -119,7 +132,7 @@ namespace Raincrow.BattleArena.Model
         [JsonProperty("action")]
         public ActionRequestModel Request { get; set; }
         [JsonProperty("result")]
-        public List<ActionResultModel> Results { get; set; }
+        public List<ActionResponseModel> Results { get; set; }
     }
 
     #endregion    
