@@ -69,7 +69,7 @@ namespace Raincrow.BattleArena.Controller
             string json = @"{
                   participants: [
                     {
-                      _id: '5dcf04c1a473310013cd6321',
+                      _id: 'witch1',
                       actionResolution: [
                         {
                           action: { type: 'move', position: { row: 1, col: 1 } },
@@ -77,7 +77,7 @@ namespace Raincrow.BattleArena.Controller
                             {
                               event: 'battle.move',
                               isSuccess: true,
-                              position: { row: 1, col: 1, id: '5dcf04c1a473310013cd6321' }
+                              position: { row: 1, col: 1, id: 'witch1' }
                             }
                           ]
                         },
@@ -85,7 +85,7 @@ namespace Raincrow.BattleArena.Controller
                           action: {
                             type: 'cast',
                             spellId: 'spell_hex',
-                            targetId: '5dbe1d2ef3acb30013327d86',
+                            targetId: 'spirit1',
                             ingredients: []
                           },
                           result: [
@@ -93,14 +93,14 @@ namespace Raincrow.BattleArena.Controller
                               event: 'battle.cast',
                               isSuccess: true,
                                 target: {
-                                  name: 'spirit_whiteLady',
-                                  _id: '5dbe1d2ef3acb30013327d86',
+                                  name: 'spirit_moonSnake',
+                                  _id: 'spirit1',
                                   energy: 874,
                                   type: 'spirit'
                                 },
                                 caster: {
-                                  name: 'Pablo Vittar',
-                                  _id: '5dcf04c1a473310013cd6321',
+                                  name: 'SHADOW THE HEDGEHOG',
+                                  _id: 'witch1',
                                   energy: 60000,
                                   type: 'character'
                                 },
@@ -123,27 +123,27 @@ namespace Raincrow.BattleArena.Controller
                       ]
                     },
                     {
-                      _id: '5dbe1d2ef3acb30013327d86',
+                      _id: 'spirit1',
                       actionResolution: [
                         {
                           action: {
                             type: 'cast',
                             spellId: 'attack',
-                            targetId: '5dcf04c1a473310013cd6321'
+                            targetId: 'witch1'
                           },
                           result: [
                             {
                               event: 'battle.cast',
                               isSuccess: true,
                                 target: {
-                                  name: 'Pablo Vittar',
-                                  _id: '5dcf04c1a473310013cd6321',
+                                  name: 'SHADOW THE HEDGEHOG',
+                                  _id: 'witch1',
                                   energy: 59873,
                                   type: 'character'
                                 },
                                 caster: {
-                                  name: 'spirit_whiteLady',
-                                  _id: '5dbe1d2ef3acb30013327d86',
+                                  name: 'spirit_moonSnake',
+                                  _id: 'spirit1',
                                   energy: 874,
                                   type: 'spirit'
                                 },
