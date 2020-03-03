@@ -21,7 +21,7 @@ namespace Raincrow.BattleArena.Views
 
         private IEnumerator StartCountdown(float time)
         {
-            for(float t = time; t > 0; t -= Time.deltaTime)
+            for (float t = time; t > 0; t -= Time.deltaTime)
             {
                 _textTime.text = Mathf.FloorToInt(t).ToString();
                 yield return new WaitForEndOfFrame();
