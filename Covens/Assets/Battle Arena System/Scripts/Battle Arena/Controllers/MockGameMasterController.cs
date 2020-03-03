@@ -1,4 +1,5 @@
-﻿using Raincrow.BattleArena.Events;
+﻿using Newtonsoft.Json;
+using Raincrow.BattleArena.Events;
 using Raincrow.BattleArena.Model;
 using System.Collections;
 using System.Collections.Generic;
@@ -64,46 +65,104 @@ namespace Raincrow.BattleArena.Controller
         private IEnumerator WaitForActionResolutionReadyEvent(IActionRequestModel[] actionRequests)
         {
             yield return new WaitForSeconds(_waitForActionResolutionReadyMaxTime);
-            PlanningPhaseFinishedEventArgs planningPhaseFinishedEvent = new PlanningPhaseFinishedEventArgs
-            {
-                
-            };            
 
+            string json = @"{
+                  participants: [
+                    {
+                      _id: '5dcf04c1a473310013cd6321',
+                      actionResolution: [
+                        {
+                          action: { type: 'move', position: { row: 1, col: 1 } },
+                          result: [
+                            {
+                              event: 'battle.move',
+                              isSuccess: true,
+                              position: { row: 1, col: 1, id: '5dcf04c1a473310013cd6321' }
+                            }
+                          ]
+                        },
+                        {
+                          action: {
+                            type: 'cast',
+                            spellId: 'spell_hex',
+                            targetId: '5dbe1d2ef3acb30013327d86',
+                            ingredients: []
+                          },
+                          result: [
+                            {
+                              event: 'battle.cast',
+                              isSuccess: true,
+                                target: {
+                                  name: 'spirit_whiteLady',
+                                  _id: '5dbe1d2ef3acb30013327d86',
+                                  energy: 874,
+                                  type: 'spirit'
+                                },
+                                caster: {
+                                  name: 'Pablo Vittar',
+                                  _id: '5dcf04c1a473310013cd6321',
+                                  energy: 60000,
+                                  type: 'character'
+                                },
+                                spell: 'spell_hex',
+                                cooldown: 1583236676382,
+                                result: {
+                                  damage: -76,
+                                  isCritical: false,
+                                  appliedEffect: {
+                                    buff: false,
+                                    modifiers: { beCrit: '#1*caster:power' },
+                                    stackable: 3,
+                                    duration: '60*caster:level/1',
+                                    expiresOn: 0
+                                  }
+                                }
+                            }
+                          ]
+                        }
+                      ]
+                    },
+                    {
+                      _id: '5dbe1d2ef3acb30013327d86',
+                      actionResolution: [
+                        {
+                          action: {
+                            type: 'cast',
+                            spellId: 'attack',
+                            targetId: '5dcf04c1a473310013cd6321'
+                          },
+                          result: [
+                            {
+                              event: 'battle.cast',
+                              isSuccess: true,
+                                target: {
+                                  name: 'Pablo Vittar',
+                                  _id: '5dcf04c1a473310013cd6321',
+                                  energy: 59873,
+                                  type: 'character'
+                                },
+                                caster: {
+                                  name: 'spirit_whiteLady',
+                                  _id: '5dbe1d2ef3acb30013327d86',
+                                  energy: 874,
+                                  type: 'spirit'
+                                },
+                                spell: 'attack',
+                                cooldown: 1583236674883,
+                                result: {
+                                  damage: -127
+                                }
+                            }
+                          ]
+                        }
+                      ]
+                    }
+                  ],
+                  timestamp: 1583236674922
+                }";
+
+            PlanningPhaseFinishedEventArgs planningPhaseFinishedEvent = JsonConvert.DeserializeObject<PlanningPhaseFinishedEventArgs>(json);
             _onPlanningPhaseFinished.Invoke(planningPhaseFinishedEvent);
         }
-
-        //private IActionResultModel ConvertActionRequestToResult(IActionRequestModel actionRequest)
-        //{
-        //    if (actionRequest.Type == ActionRequestType.Cast)
-        //    {
-        //        CastSpellActionRequestModel castSpellActionRequest = actionRequest as CastSpellActionRequestModel;
-        //        return new CastSpellActionResultModel()
-        //        {
-        //            SpellId = castSpellActionRequest.SpellId,
-        //            TargetId = castSpellActionRequest.TargetId
-        //        };
-        //    }
-
-        //    if (actionRequest.Type == ActionRequestType.Move)
-        //    {
-        //        MoveActionRequestModel moveactionRequest = actionRequest as MoveActionRequestModel;
-        //        return new MoveActionResultModel()
-        //        {
-        //            Position = moveactionRequest.Position
-        //        };
-        //    }
-
-        //    if (actionRequest.Type == ActionRequestType.Summon)
-        //    {
-        //        SummonActionRequestModel summonActionRequest = actionRequest as SummonActionRequestModel;
-        //        return new SummonResultActionModel()
-        //        {
-        //            SpiritId = summonActionRequest.SpiritId,
-        //            Position = summonActionRequest.Position
-        //        };
-        //    }
-
-        //    return new FleeActionResultModel();
-        //}
     }
 }

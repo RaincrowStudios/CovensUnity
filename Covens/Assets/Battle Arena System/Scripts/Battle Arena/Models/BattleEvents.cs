@@ -1,5 +1,7 @@
 ﻿using Newtonsoft.Json;
+using Raincrow.BattleArena.Model;
 using Raincrow.GameEventResponses;
+using System.Collections.Generic;
 using UnityEngine.Events;
 
 namespace Raincrow.BattleArena.Events
@@ -119,7 +121,8 @@ namespace Raincrow.BattleArena.Events
 
     public struct PlanningPhaseFinishedEventArgs
     {
-        
+        [JsonProperty("participants")]
+        public List<BattleActor> Actors { get; set; }
     }
 
     public struct BattleEndEventArgs { }
