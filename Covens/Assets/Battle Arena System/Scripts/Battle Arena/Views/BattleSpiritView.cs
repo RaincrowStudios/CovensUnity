@@ -3,7 +3,7 @@ using UnityEngine;
 
 namespace Raincrow.BattleArena.Views
 {
-    public class BattleSpiritView : AbstractCharacterView<ISpiritModel, ISpiritViewModel>
+    public class BattleSpiritView : MonoBehaviour, ICharacterView<ISpiritModel, ISpiritUIModel>
     {        
         // Serialized variables
         [SerializeField] private Transform _avatarRoot;
@@ -21,6 +21,10 @@ namespace Raincrow.BattleArena.Views
         private static readonly int MainTexPropertyId = Shader.PropertyToID("_MainTex");
         private static readonly int ColorPropertyId = Shader.PropertyToID("_Color");
         private static readonly int AlphaCutoffPropertyId = Shader.PropertyToID("_Cutoff");
+
+        // Properties
+        public ISpiritModel Model { get; private set; }
+        public ISpiritUIModel UIModel { get; private set; }
 
         protected virtual void OnEnable()
         {
@@ -48,9 +52,10 @@ namespace Raincrow.BattleArena.Views
             }
         }
 
-        public override void Init(ISpiritModel characterModel, ISpiritViewModel characterViewModel, Camera battleCamera)
-        {
-            base.Init(characterModel, characterViewModel, battleCamera);
+        public void Init(ISpiritModel characterModel, ISpiritUIModel characterViewModel)
+        {            
+            Model = characterModel;
+            UIModel = characterViewModel;
 
             // Set avatar texture
             _avatarMat.SetTexture(MainTexPropertyId, characterViewModel.Texture);
@@ -59,18 +64,23 @@ namespace Raincrow.BattleArena.Views
             _alignmentRingRenderer.sharedMaterial = characterViewModel.AlignmentMaterial;
         }
 
-        public override void FaceCamera(Quaternion cameraRotation, Vector3 cameraForward)
+        public void FaceCamera(Quaternion cameraRotation, Vector3 cameraForward)
         {
             Vector3 worldPosition = transform.position + cameraRotation * Vector3.forward;
             _avatarRoot.transform.LookAt(worldPosition, cameraForward);
         }
 
-        public override void UpdateView()
+        public void UpdateView()
         {
             int baseEnergy = Model.BaseEnergy;
             int energy = Model.Energy;
             float energyNormalized = Mathf.InverseLerp(Mathf.Epsilon, baseEnergy, energy);
             _damageRingMat.SetFloat(AlphaCutoffPropertyId, 1f - energyNormalized);
+        }
+
+        public Transform GetTransform()
+        {
+            return transform;
         }
     }
 }

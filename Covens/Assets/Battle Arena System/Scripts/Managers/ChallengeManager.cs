@@ -30,8 +30,8 @@ namespace Raincrow.BattleArena.Manager
 
                     IGridModel grid = new GridModel(battle.Grid.MaxCellsPerColumn, battle.Grid.MaxCellsPerLine, battle.Grid.Cells);
 
-                    List<IWitchModel> witches = new List<IWitchModel>();
-                    List<ISpiritModel> spirits = new List<ISpiritModel>();
+                    IList<IWitchModel> witches = new List<IWitchModel>();
+                    IList<ISpiritModel> spirits = new List<ISpiritModel>();
                     foreach (GenericCharacterObjectServer character in battle.Participants)
                     {
                         if (character.ObjectType == ObjectType.Spirit)
@@ -44,28 +44,21 @@ namespace Raincrow.BattleArena.Manager
                         }                        
                     }
 
-                    IBattleModel battleModel = new BattleModel()
-                    {
-                        Id = battle.Id,
-                        Grid = grid,
-                        Witches = witches,
-                        Spirits = spirits
-                    };
-                    StartCoroutine(StartBattle(battleModel));
+                    StartCoroutine(StartBattle(battle.Id, grid, witches, spirits));
 
                     LoadingOverlay.Hide();
                 }
              );
         }
 
-        private IEnumerator StartBattle(IBattleModel battleModel)
+        private IEnumerator StartBattle(string id, IGridModel grid, IList<IWitchModel> witches, IList<ISpiritModel> spirits)
         {
             ServiceLocator serviceLocator = FindObjectOfType<ServiceLocator>();
             ILoadingView loadingView = serviceLocator.GetLoadingView();
             BattleController battleController = serviceLocator.GetBattleController();
 
             yield return StartCoroutine(loadingView.Show(0f, 1f));
-            yield return StartCoroutine(battleController.StartBattle(battleModel.Id, battleModel.Grid, battleModel.Witches, battleModel.Spirits, loadingView));
+            yield return StartCoroutine(battleController.StartBattle(id, grid, witches, spirits, loadingView));
             yield return StartCoroutine(loadingView.Hide(1f));
         }
 

@@ -12,7 +12,7 @@ namespace Raincrow.BattleArena.Factory
         [SerializeField] private GridGameObjectModel _gridGameObjectModel;
         [SerializeField] private ServiceLocator _serviceLocator;
 
-        // private variables        
+        // private variables
         private ObjectPool _objectPool;
 
         protected virtual void OnEnable()
@@ -25,6 +25,14 @@ namespace Raincrow.BattleArena.Factory
             if (_objectPool == null)
             {
                 _objectPool = _serviceLocator.GetObjectPool();
+            }
+        }
+
+        protected virtual void OnDisable()
+        {
+            if (_objectPool != null)
+            {
+                _objectPool.RecycleAll(_gridGameObjectModel.CellPrefab);
             }
         }
 

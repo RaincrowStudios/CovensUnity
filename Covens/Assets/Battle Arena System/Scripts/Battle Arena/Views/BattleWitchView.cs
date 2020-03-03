@@ -3,7 +3,7 @@ using UnityEngine;
 
 namespace Raincrow.BattleArena.Views
 {
-    public class BattleWitchView : AbstractCharacterView<IWitchModel, IWitchViewModel>
+    public class BattleWitchView : MonoBehaviour, ICharacterView<IWitchModel, IWitchUIModel>
     {
         // Serialized variables        
         [Header("Avatar")]
@@ -28,6 +28,10 @@ namespace Raincrow.BattleArena.Views
         // Static readonlies
         private static readonly int MainTexPropertyId = Shader.PropertyToID("_MainTex");        
         private static readonly int AlphaCutoffPropertyId = Shader.PropertyToID("_Cutoff");
+
+        // Properties
+        public IWitchModel Model { get; private set; }
+        public IWitchUIModel UIModel { get; private set; }
 
         protected virtual void OnEnable()
         {
@@ -59,9 +63,10 @@ namespace Raincrow.BattleArena.Views
             }
         }
 
-        public override void Init(IWitchModel characterModel, IWitchViewModel characterViewModel, Camera battleCamera)
+        public void Init(IWitchModel characterModel, IWitchUIModel characterViewModel)
         {
-            base.Init(characterModel, characterViewModel, battleCamera);
+            Model = characterModel;
+            UIModel = characterViewModel;
 
             // Set avatar texture
             _avatarMat.SetTexture(MainTexPropertyId, characterViewModel.Texture);
@@ -78,13 +83,13 @@ namespace Raincrow.BattleArena.Views
             _playerName.text = characterModel.Name;
         }
 
-        public override void FaceCamera(Quaternion cameraRotation, Vector3 cameraForward)
+        public void FaceCamera(Quaternion cameraRotation, Vector3 cameraForward)
         {
             Vector3 worldPosition = transform.position + cameraRotation * Vector3.forward;
             _avatarRoot.transform.LookAt(worldPosition, cameraForward);
         }
 
-        public override void UpdateView()
+        public void UpdateView()
         {
             int baseEnergy = Model.BaseEnergy;
             int energy = Model.Energy;
@@ -93,6 +98,11 @@ namespace Raincrow.BattleArena.Views
             //_damageRingMat.SetFloat(AlphaCutoffPropertyId, 1f - energyNormalized);
             props.SetFloat(AlphaCutoffPropertyId, 1f - energyNormalized);
             _damageRingRenderer.SetPropertyBlock(props);
+        }
+
+        public Transform GetTransform()
+        {
+            return transform;
         }
     }
 }
