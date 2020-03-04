@@ -16,6 +16,7 @@ namespace Raincrow.BattleArena.Model
     {
         string Id { get; set; }
         string ObjectType { get; set; }    
+        BattleSlot? BattleSlot { get; set; }
     }
 
     public interface IWitchModel : ICharacterModel
@@ -33,10 +34,15 @@ namespace Raincrow.BattleArena.Model
         string Texture { get; set; }
     }    
 
-    public interface ICharacterUIModel
+    public interface IObjectUIModel
+    {
+        Transform Transform { get; }
+    }
+
+    public interface ICharacterUIModel : IObjectUIModel
     {
         Texture Texture { get; set; }
-        Material AlignmentMaterial { get; set; }
+        Material AlignmentMaterial { get; set; }        
     }
 
     public interface IWitchUIModel : ICharacterUIModel

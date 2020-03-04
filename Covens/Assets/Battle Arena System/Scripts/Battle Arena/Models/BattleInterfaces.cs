@@ -1,14 +1,31 @@
 ﻿using Raincrow.BattleArena.Views;
 using System.Collections.Generic;
+using UnityEngine;
 
 namespace Raincrow.BattleArena.Model
 {    
     public interface IBattleModel
     {
-        string Id { get; }        
-        IGridModel Grid { get; }
-        IList<ICharacterView<ISpiritModel, ISpiritUIModel>> SpiritsViews { get; set; }
-        IList<ICharacterView<IWitchModel, IWitchUIModel>> WitchesViews { get; set; }
+        string Id { get; }
+        IGridUIModel GridUI { get; }        
+    }
+
+    public interface IGridUIModel
+    {
+        ICellUIModel[,] Cells { get; }
+        int MaxCellsPerRow { get; }
+        int MaxCellsPerColumn { get; }
+        IList<ICharacterView<ISpiritModel, ISpiritUIModel>> SpiritsViews { get; }
+        IList<ICharacterView<IWitchModel, IWitchUIModel>> WitchesViews { get; }
+        void SetObjectToGrid(IObjectUIModel objectUIModel, IObjectModel objectModel, int row, int col);
+        void RemoveObjectFromGrid(IObjectUIModel objectUIModel, IObjectModel objectModel);        
+    }
+
+    public interface ICellUIModel
+    {
+        void Show(ICellModel cellModel, Vector2 cellScale);
+        Transform Transform { get; }
+        CellClickEvent OnCellClick { get; }
     }
 
     public interface IGridModel
@@ -16,6 +33,8 @@ namespace Raincrow.BattleArena.Model
         int MaxCellsPerRow { get; }
         int MaxCellsPerColumn { get; }
         ICellModel[,] Cells { get; }
+        void SetObjectToGrid(IObjectModel objectModel, int row, int col);
+        void RemoveObjectFromGrid(IObjectModel objectModel);
     }
 
     public interface ICellModel

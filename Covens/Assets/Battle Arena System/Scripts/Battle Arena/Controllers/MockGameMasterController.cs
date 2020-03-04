@@ -66,103 +66,179 @@ namespace Raincrow.BattleArena.Controller
         {
             yield return new WaitForSeconds(_waitForActionResolutionReadyMaxTime);
 
-            string json = @"{
-                  participants: [
-                    {
-                      _id: 'witch1',
-                      actionResolution: [
-                        {
-                          action: { type: 'move', position: { row: 1, col: 1 } },
-                          result: [
-                            {
-                              event: 'battle.move',
-                              isSuccess: true,
-                              position: { row: 1, col: 1, id: 'witch1' }
-                            }
-                          ]
-                        },
-                        {
-                          action: {
-                            type: 'cast',
-                            spellId: 'spell_hex',
-                            targetId: 'spirit1',
-                            ingredients: []
-                          },
-                          result: [
-                            {
-                              event: 'battle.cast',
-                              isSuccess: true,
-                                target: {
-                                  name: 'spirit_moonSnake',
-                                  _id: 'spirit1',
-                                  energy: 874,
-                                  type: 'spirit'
-                                },
-                                caster: {
-                                  name: 'SHADOW THE HEDGEHOG',
-                                  _id: 'witch1',
-                                  energy: 60000,
-                                  type: 'character'
-                                },
-                                spell: 'spell_hex',
-                                cooldown: 1583236676382,
-                                result: {
-                                  damage: -76,
-                                  isCritical: false,
-                                  appliedEffect: {
-                                    buff: false,
-                                    modifiers: { beCrit: '#1*caster:power' },
-                                    stackable: 3,
-                                    duration: '60*caster:level/1',
-                                    expiresOn: 0
-                                  }
-                                }
-                            }
-                          ]
-                        }
-                      ]
-                    },
-                    {
-                      _id: 'spirit1',
-                      actionResolution: [
-                        {
-                          action: {
-                            type: 'cast',
-                            spellId: 'attack',
-                            targetId: 'witch1'
-                          },
-                          result: [
-                            {
-                              event: 'battle.cast',
-                              isSuccess: true,
-                                target: {
-                                  name: 'SHADOW THE HEDGEHOG',
-                                  _id: 'witch1',
-                                  energy: 59873,
-                                  type: 'character'
-                                },
-                                caster: {
-                                  name: 'spirit_moonSnake',
-                                  _id: 'spirit1',
-                                  energy: 874,
-                                  type: 'spirit'
-                                },
-                                spell: 'attack',
-                                cooldown: 1583236674883,
-                                result: {
-                                  damage: -127
-                                }
-                            }
-                          ]
-                        }
-                      ]
-                    }
-                  ],
-                  timestamp: 1583236674922
-                }";
+            string characterId = "witch1";
 
-            PlanningPhaseFinishedEventArgs planningPhaseFinishedEvent = JsonConvert.DeserializeObject<PlanningPhaseFinishedEventArgs>(json);
+            List<BattleAction> actionResults = new List<BattleAction>();
+            foreach (ActionRequestModel actionRequest in actionRequests)
+            {
+                actionResults.Add(ConvertActionRequestToResult(characterId, actionRequest));
+            }
+
+            BattleActor actor = new BattleActor()
+            {
+                Id = characterId,
+                Actions = new List<BattleAction>(actionResults)
+            };
+
+            PlanningPhaseFinishedEventArgs planningPhaseFinishedEvent = new PlanningPhaseFinishedEventArgs
+            {
+                Actors = new List<BattleActor> { actor }
+            };      
+
             _onPlanningPhaseFinished.Invoke(planningPhaseFinishedEvent);
+
+            //string json = @"{
+            //      participants: [
+            //        {
+            //          _id: 'witch1',
+            //          actionResolution: [
+            //            {
+            //              action: { type: 'move', position: { row: 1, col: 1 } },
+            //              result: [
+            //                {
+            //                  event: 'battle.move',
+            //                  isSuccess: true,
+            //                  position: { row: 1, col: 1, id: 'witch1' }
+            //                }
+            //              ]
+            //            },
+            //            {
+            //              action: {
+            //                type: 'cast',
+            //                spellId: 'spell_hex',
+            //                targetId: 'spirit1',
+            //                ingredients: []
+            //              },
+            //              result: [
+            //                {
+            //                  event: 'battle.cast',
+            //                  isSuccess: true,
+            //                    target: {
+            //                      name: 'spirit_moonSnake',
+            //                      _id: 'spirit1',
+            //                      energy: 874,
+            //                      type: 'spirit'
+            //                    },
+            //                    caster: {
+            //                      name: 'SHADOW THE HEDGEHOG',
+            //                      _id: 'witch1',
+            //                      energy: 60000,
+            //                      type: 'character'
+            //                    },
+            //                    spell: 'spell_hex',
+            //                    cooldown: 1583236676382,
+            //                    result: {
+            //                      damage: -76,
+            //                      isCritical: false,
+            //                      appliedEffect: {
+            //                        buff: false,
+            //                        modifiers: { beCrit: '#1*caster:power' },
+            //                        stackable: 3,
+            //                        duration: '60*caster:level/1',
+            //                        expiresOn: 0
+            //                      }
+            //                    }
+            //                }
+            //              ]
+            //            }
+            //          ]
+            //        },
+            //        {
+            //          _id: 'spirit1',
+            //          actionResolution: [
+            //            {
+            //              action: {
+            //                type: 'cast',
+            //                spellId: 'attack',
+            //                targetId: 'witch1'
+            //              },
+            //              result: [
+            //                {
+            //                  event: 'battle.cast',
+            //                  isSuccess: true,
+            //                    target: {
+            //                      name: 'SHADOW THE HEDGEHOG',
+            //                      _id: 'witch1',
+            //                      energy: 59873,
+            //                      type: 'character'
+            //                    },
+            //                    caster: {
+            //                      name: 'spirit_moonSnake',
+            //                      _id: 'spirit1',
+            //                      energy: 874,
+            //                      type: 'spirit'
+            //                    },
+            //                    spell: 'attack',
+            //                    cooldown: 1583236674883,
+            //                    result: {
+            //                      damage: -127
+            //                    }
+            //                }
+            //              ]
+            //            }
+            //          ]
+            //        }
+            //      ],
+            //      timestamp: 1583236674922
+            //    }";
+            //PlanningPhaseFinishedEventArgs planningPhaseFinishedEvent = JsonConvert.DeserializeObject<PlanningPhaseFinishedEventArgs>(json);      
+        }
+
+        private BattleAction ConvertActionRequestToResult(string characterId, ActionRequestModel actionRequest)
+        {
+            BattleAction battleAction = new BattleAction()
+            {
+                Request = actionRequest,
+                Results = new List<ActionResponseModel>()
+            };
+
+            if (actionRequest.Type == ActionRequestType.Cast)
+            {
+                CastActionRequestModel castSpellActionRequest = actionRequest as CastActionRequestModel;
+
+                GenericCharacterObjectServer target = new GenericCharacterObjectServer()
+                {
+                    Id = castSpellActionRequest.TargetId
+                };
+
+                GenericCharacterObjectServer caster = new GenericCharacterObjectServer()
+                {
+                    Id = characterId
+                };
+
+                battleAction.Results.Add(new CastActionResponseModel()
+                {
+                    Target = target,
+                    Caster = caster
+                });
+                return battleAction;
+            }
+
+            if (actionRequest.Type == ActionRequestType.Move)
+            {
+                MoveActionRequestModel moveactionRequest = actionRequest as MoveActionRequestModel;
+
+                battleAction.Results.Add(new MoveActionResponseModel()
+                {
+                    Position = moveactionRequest.Position
+                });
+                return battleAction;
+            }
+
+            if (actionRequest.Type == ActionRequestType.Summon)
+            {
+                SummonActionRequestModel summonActionRequest = actionRequest as SummonActionRequestModel;
+                battleAction.Results.Add(new SummonActionResponseModel()
+                {
+                    SpiritId = summonActionRequest.SpiritId,
+                    Position = summonActionRequest.Position
+                });
+                return battleAction;
+            }
+
+
+            battleAction.Results.Add(new FleeActionResponseModel());
+            return battleAction;
         }
     }
 }

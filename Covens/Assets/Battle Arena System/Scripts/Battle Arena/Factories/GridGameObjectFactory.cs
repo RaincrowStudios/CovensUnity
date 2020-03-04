@@ -36,10 +36,10 @@ namespace Raincrow.BattleArena.Factory
             }
         }
 
-        public override IEnumerator<ICellView[,]> Create(IGridModel gridModel)
+        public override IEnumerator<ICellUIModel[,]> Create(IGridModel gridModel)
         {
             // Create CellView grid
-            ICellView[,] cellViews = new ICellView[gridModel.MaxCellsPerColumn, gridModel.MaxCellsPerRow];
+            ICellUIModel[,] cellViews = new ICellUIModel[gridModel.MaxCellsPerColumn, gridModel.MaxCellsPerRow];
 
             Vector2 cellScale = _gridGameObjectModel.CellScale;
 
@@ -71,7 +71,7 @@ namespace Raincrow.BattleArena.Factory
                         cellPosition = _cellsParent.TransformPoint(cellPosition);
 
                         // Create CellView                        
-                        ICellView cellInstance = _objectPool.Spawn(_gridGameObjectModel.CellPrefab, _cellsParent, cellPosition, _cellsParent.rotation);
+                        ICellUIModel cellInstance = _objectPool.Spawn(_gridGameObjectModel.CellPrefab, _cellsParent, cellPosition, _cellsParent.rotation);
                         cellInstance.Show(gridModel.Cells[i, j], cellScale);
 
                         cellViews[i, j] = cellInstance;

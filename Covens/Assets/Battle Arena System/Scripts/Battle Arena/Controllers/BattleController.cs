@@ -11,7 +11,7 @@ using Raincrow.Services;
 
 namespace Raincrow.BattleArena.Controller
 {
-    public class BattleController : MonoBehaviour, ICoroutineHandler
+    public class BattleController : MonoBehaviour, ICoroutineHandler, IGridUIModel
     {
         //[SerializeField] private Transform _cellsTransform;
         [SerializeField] private ServiceLocator _serviceLocator;
@@ -20,13 +20,17 @@ namespace Raincrow.BattleArena.Controller
         [SerializeField] private WitchGameObjectFactory _witchFactory; // Factory class responsible for creating our Witchs   
         [SerializeField] private AbstractGameMasterController _gameMasterController;
 
-        private ICellView[,] _grid = new ICellView[0, 0]; // Grid with all the game objects inserted
-        private IList<ICharacterView<IWitchModel, IWitchUIModel>> _witches = new List<ICharacterView<IWitchModel, IWitchUIModel>>(); // List with all witches
-        private IList<ICharacterView<ISpiritModel, ISpiritUIModel>> _spirits = new List<ICharacterView<ISpiritModel, ISpiritUIModel>>(); // List with all spirits
         private IStateMachine _stateMachine; // State machine with all phases
+        private IGridModel _gridModel;
         private ITurnModel _turnModel;
-        //private CellView _selectedView;
         private IQuickCastView _quickCastView;
+
+        // Properties
+        public ICellUIModel[,] Cells { get; private set; } = new ICellUIModel[0, 0]; // Grid with all the game objects inserted
+        public IList<ICharacterView<IWitchModel, IWitchUIModel>> WitchesViews { get; private set; } = new List<ICharacterView<IWitchModel, IWitchUIModel>>(); // List with all witches
+        public IList<ICharacterView<ISpiritModel, ISpiritUIModel>> SpiritsViews { get; private set; } = new List<ICharacterView<ISpiritModel, ISpiritUIModel>>(); // List with all spirits
+        public int MaxCellsPerRow => _gridModel.MaxCellsPerRow;
+        public int MaxCellsPerColumn => _gridModel.MaxCellsPerColumn;        
 
         protected virtual void OnEnable()
         {
@@ -54,16 +58,16 @@ namespace Raincrow.BattleArena.Controller
                 gameObject.SetActive(true);
             }
 
-            //_quickCastView.Show(OnClickFly, OnClickSummon, OnClickFlee);
+            _gridModel = gridModel;
 
             loadingView?.UpdateMessage("Instantiang grid");
-            yield return StartCoroutine(InstantiateGrid(gridModel));
+            yield return StartCoroutine(InstantiateGrid());
 
             loadingView?.UpdateMessage("Placing characters");
-            yield return StartCoroutine(PlaceCharacters(gridModel, witches, spirits));
+            yield return StartCoroutine(PlaceCharacters(witches, spirits));
 
             loadingView?.UpdateMessage("Starting state machine");
-            yield return StartCoroutine(StartStateMachine(battleId, gridModel, _gameMasterController));
+            yield return StartCoroutine(StartStateMachine(battleId, _gameMasterController));
 
             loadingView?.UpdateMessage("Starting battle");
 
@@ -72,19 +76,19 @@ namespace Raincrow.BattleArena.Controller
             StartCoroutine(UpdateStateMachine());
         }
 
-        private IEnumerator InstantiateGrid(IGridModel gridModel)
+        private IEnumerator InstantiateGrid()
         {
             // Create grid
-            Coroutine<ICellView[,]> createGrid = this.StartCoroutine<ICellView[,]>(_gridFactory.Create(gridModel));
+            Coroutine<ICellUIModel[,]> createGrid = this.StartCoroutine<ICellUIModel[,]>(_gridFactory.Create(_gridModel));
             yield return createGrid;
-            _grid = createGrid.ReturnValue;
+            Cells = createGrid.ReturnValue;
         }
 
-        private IEnumerator PlaceCharacters(IGridModel gridModel, IList<IWitchModel> witches, IList<ISpiritModel> spirits)
+        private IEnumerator PlaceCharacters(IList<IWitchModel> witches, IList<ISpiritModel> spirits)
         {
             // Initialize list of characters            
-            _witches = new List<ICharacterView<IWitchModel, IWitchUIModel>>();
-            _spirits = new List<ICharacterView<ISpiritModel, ISpiritUIModel>>();
+            WitchesViews = new List<ICharacterView<IWitchModel, IWitchUIModel>>();
+            SpiritsViews = new List<ICharacterView<ISpiritModel, ISpiritUIModel>>();
             Camera battleCamera = _serviceLocator.GetBattleCamera();
 
             Dictionary<string, IWitchModel> dictWitches = new Dictionary<string, IWitchModel>();
@@ -99,36 +103,36 @@ namespace Raincrow.BattleArena.Controller
                 dictSpirits.Add(spirit.Id, spirit);
             }
 
-            for (int i = 0; i < gridModel.MaxCellsPerRow; i++)
+            for (int i = 0; i < _gridModel.MaxCellsPerRow; i++)
             {
-                for (int j = 0; j < gridModel.MaxCellsPerColumn; j++)
+                for (int j = 0; j < _gridModel.MaxCellsPerColumn; j++)
                 {
-                    ICellModel cell = gridModel.Cells[i, j];
+                    ICellModel cell = _gridModel.Cells[i, j];
                     if (!string.IsNullOrEmpty(cell.ObjectId))
                     {
                         if (dictSpirits.TryGetValue(cell.ObjectId, out ISpiritModel spirit)) // has a character/item
                         {
-                            ICellView cellView = _grid[i, j];
+                            ICellUIModel cellView = Cells[i, j];
                             Coroutine<ICharacterView<ISpiritModel, ISpiritUIModel>> createCharacter =
-                                this.StartCoroutine<ICharacterView<ISpiritModel, ISpiritUIModel>>(_spiritFactory.Create(cellView.GetTransform(), spirit));
+                                this.StartCoroutine<ICharacterView<ISpiritModel, ISpiritUIModel>>(_spiritFactory.Create(cellView.Transform, spirit));
                             yield return createCharacter;
 
                             // add spirit and init
                             //AbstractCharacterView<ISpiritModel> spiritView = ;
                             //spiritView.Init(spirit, battleCamera);
-                            _spirits.Add(createCharacter.ReturnValue);
+                            SpiritsViews.Add(createCharacter.ReturnValue);
                         }
                         else if (dictWitches.TryGetValue(cell.ObjectId, out IWitchModel witch)) // has a character/item
                         {
-                            ICellView cellView = _grid[i, j];
+                            ICellUIModel cellView = Cells[i, j];
                             Coroutine<ICharacterView<IWitchModel, IWitchUIModel>> createCharacter =
-                                this.StartCoroutine<ICharacterView<IWitchModel, IWitchUIModel>>(_witchFactory.Create(cellView.GetTransform(), witch));
+                                this.StartCoroutine<ICharacterView<IWitchModel, IWitchUIModel>>(_witchFactory.Create(cellView.Transform, witch));
                             yield return createCharacter;
 
                             // add a witch and init
                             //AbstractCharacterView<IWitchModel> witchModel = createCharacter.ReturnValue;
                             //witchModel.Init(witch, battleCamera);
-                            _witches.Add(createCharacter.ReturnValue);
+                            WitchesViews.Add(createCharacter.ReturnValue);
                         }
                     }
 
@@ -137,7 +141,7 @@ namespace Raincrow.BattleArena.Controller
             }
         }
 
-        private IEnumerator StartStateMachine(string battleId, IGridModel gridModel, IGameMasterController gameMasterController)
+        private IEnumerator StartStateMachine(string battleId, IGameMasterController gameMasterController)
         {
             // We yield at each allocation to avoid a lot of allocations on a single frame
             _turnModel = new TurnModel();
@@ -145,9 +149,7 @@ namespace Raincrow.BattleArena.Controller
             IBattleModel battleModel = new BattleModel()
             {
                 Id = battleId,
-                Grid = gridModel,
-                WitchesViews = _witches,
-                SpiritsViews = _spirits
+                GridUI = this
             };
             yield return null;
 
@@ -161,12 +163,12 @@ namespace Raincrow.BattleArena.Controller
                 _serviceLocator.GetCharactersTurnOrderView(), 
                 _turnModel, 
                 battleModel,
-                _grid,
+                Cells,
                 _serviceLocator.GetCountdownView()
                 );
             yield return null;
 
-            ActionResolutionPhase actionResolutionPhase = new ActionResolutionPhase(this, battleModel, _turnModel);
+            ActionResolutionPhase actionResolutionPhase = new ActionResolutionPhase(this, Cells, battleModel, _turnModel);
             yield return null;
 
             BanishmentPhase banishmentPhase = new BanishmentPhase(this);
@@ -193,11 +195,11 @@ namespace Raincrow.BattleArena.Controller
 
                 // Update Characters
                 Vector3 forward = battleCamera.transform.rotation * Vector3.up;
-                foreach (ICharacterView<ISpiritModel, ISpiritUIModel> spirit in _spirits)
+                foreach (ICharacterView<ISpiritModel, ISpiritUIModel> spirit in SpiritsViews)
                 {
                     spirit.FaceCamera(battleCamera.transform.rotation, forward);
                 }
-                foreach (ICharacterView<IWitchModel, IWitchUIModel> witch in _witches)
+                foreach (ICharacterView<IWitchModel, IWitchUIModel> witch in WitchesViews)
                 {
                     witch.FaceCamera(battleCamera.transform.rotation, forward);
                 }
@@ -265,6 +267,25 @@ namespace Raincrow.BattleArena.Controller
         }
 
         #endregion
+
+        #region IGridView
+
+        public void SetObjectToGrid(IObjectUIModel objectUIModel, IObjectModel objectModel, int row, int col)
+        {
+            // Set cell transform position to object UI Model position
+            ICellUIModel cellUIModel = Cells[row, col];            
+            objectUIModel.Transform.position = cellUIModel.Transform.position;
+
+            // Add object model in the grid model
+            _gridModel.SetObjectToGrid(objectModel, row, col);
+        }
+
+        public void RemoveObjectFromGrid(IObjectUIModel objectUIModel, IObjectModel objectModel)
+        {
+            _gridModel.RemoveObjectFromGrid(objectModel);
+        }
+
+        #endregion
     }
 
     public interface ITurnModel
@@ -284,20 +305,13 @@ namespace Raincrow.BattleArena.Controller
     {
         //public IBattleModel Battle { get; set; }
         //public IGameMasterController GameMaster { get; set; }
-        public string[] PlanningOrder { get; set; }
+        public string[] PlanningOrder { get; set; } = new string[0];
         public float PlanningMaxTime { get; set; }
-        public int MaxActionsAllowed { get; set; }
-        public IList<IActionRequestModel> RequestedActions { get; private set; }
-        public IDictionary<string, IList<IActionResponseModel>> ResponseActions { get; }
+        public int MaxActionsAllowed { get; set; } 
+        public IList<IActionRequestModel> RequestedActions { get; private set; } = new List<IActionRequestModel>();
+        public IDictionary<string, IList<IActionResponseModel>> ResponseActions { get; } = new Dictionary<string, IList<IActionResponseModel>>();
 
         //public BattleSlot SelectedSlot { get; set; }
-
-        public TurnModel()
-        {
-            PlanningOrder = new string[0];
-            RequestedActions = new List<IActionRequestModel>();
-            ResponseActions = new Dictionary<string, IList<IActionResponseModel>>();
-        }
 
         public void Reset()
         {

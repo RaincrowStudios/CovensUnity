@@ -7,24 +7,22 @@ namespace Raincrow.BattleArena.Model
     public class BattleModel : IBattleModel
     {
         public string Id { get; set; }
-        public IGridModel Grid { get; set; }
+        public IGridUIModel GridUI { get; set; }
         public string[] PlanningOrder { get; set; }
         public float PlanningMaxTime { get; set; }
         public int MaxActionsAllowed { get; set; }
-        public IList<ICharacterView<ISpiritModel, ISpiritUIModel>> SpiritsViews { get; set; }
-        public IList<ICharacterView<IWitchModel, IWitchUIModel>> WitchesViews { get; set; }
     }
 
     [System.Serializable]
     public class GridGameObjectModel
     {
         // Serializable variables
-        [SerializeField] private CellView _cellPrefab; // Cell Prefab 
+        [SerializeField] private CellUIController _cellPrefab; // Cell Prefab 
         [SerializeField] private Vector2 _spacing = Vector2.zero; // width and length distance between each cell
         [SerializeField] private Vector2 _cellScale = Vector2.one;
 
         // Properties
-        public CellView CellPrefab { get => _cellPrefab; private set => _cellPrefab = value; }
+        public CellUIController CellPrefab { get => _cellPrefab; private set => _cellPrefab = value; }
         public Vector2 Spacing { get => _spacing; private set => _spacing = value; }
         public Vector2 CellScale { get => _cellScale; set => _cellScale = value; }
     }
@@ -61,6 +59,33 @@ namespace Raincrow.BattleArena.Model
             Cells = cells;
         }
 
+        public void SetObjectToGrid(IObjectModel objectModel, int row, int col)
+        {
+            if (objectModel.BattleSlot.HasValue)
+            {
+                // remove from previous space
+                RemoveObjectFromGrid(objectModel);
+            }
+
+            ICellModel cell = Cells[row, col];
+            cell.ObjectId = objectModel.Id;
+
+            objectModel.BattleSlot = new BattleSlot()
+            {
+                Row = row,
+                Col = col
+            };            
+        }
+
+        public void RemoveObjectFromGrid(IObjectModel objectModel)
+        {
+            int col = objectModel.BattleSlot.Value.Row;
+            int row = objectModel.BattleSlot.Value.Col;
+
+            Cells[row, col].ObjectId = string.Empty;
+            objectModel.BattleSlot = null;
+        }
+
         public sealed class Builder
         {
             public int MaxCellsPerColumn { get; set; }
@@ -90,7 +115,7 @@ namespace Raincrow.BattleArena.Model
                 }
                 return gridModel;
             }
-        }
+        }        
     }
 
     public class CellModel : ICellModel

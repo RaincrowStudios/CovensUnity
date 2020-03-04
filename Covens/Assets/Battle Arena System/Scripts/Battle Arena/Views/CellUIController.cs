@@ -4,7 +4,7 @@ using UnityEngine.Events;
 
 namespace Raincrow.BattleArena.Views
 {
-    public class CellView : MonoBehaviour, ICellView
+    public class CellUIController : MonoBehaviour, ICellUIModel
     {
         // Private serialized variables
         [SerializeField] private Renderer _renderer;
@@ -14,6 +14,8 @@ namespace Raincrow.BattleArena.Views
 
         // Properties
         public CellClickEvent OnCellClick { get; private set; } = new CellClickEvent();
+
+        public Transform Transform => transform;
 
         public void Show(ICellModel cellModel, Vector2 cellScale)
         {
@@ -25,23 +27,11 @@ namespace Raincrow.BattleArena.Views
             _renderer.transform.localScale = localScale;
         }
 
-        public Transform GetTransform()
-        {
-            return transform;
-        }
-
         protected virtual void OnMouseUpAsButton()
         {
             OnCellClick?.Invoke(_cellModel);
         }
     }
 
-    public class CellClickEvent : UnityEvent<ICellModel> { }
-
-    public interface ICellView
-    {
-        void Show(ICellModel cellModel, Vector2 cellScale);
-        Transform GetTransform();
-        CellClickEvent OnCellClick { get; }
-    }
+    public class CellClickEvent : UnityEvent<ICellModel> { }    
 }

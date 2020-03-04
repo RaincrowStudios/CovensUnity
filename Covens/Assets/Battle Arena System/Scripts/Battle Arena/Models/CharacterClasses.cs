@@ -91,6 +91,7 @@ namespace Raincrow.BattleArena.Model
         public int Level { get; set; }
         public InventoryModel Inventory { get; set; }
         public CharacterInfo Info { get; set; }
+        public BattleSlot? BattleSlot { get; set; }
 
         public WitchModel()
         {
@@ -114,6 +115,11 @@ namespace Raincrow.BattleArena.Model
                 Inventory = Inventory.Clone(),
                 Info = Info.Clone()
             };
+
+            if (BattleSlot.HasValue)
+            {
+                destination.BattleSlot = BattleSlot.Value.Clone();
+            }
             return destination;
         }
 
@@ -141,6 +147,7 @@ namespace Raincrow.BattleArena.Model
         public string ObjectType { get; set; }
         public string Texture { get; set; }
         public string OwnerId { get; set; }
+        public BattleSlot? BattleSlot { get; set; }
 
         public SpiritModel() { }
 
@@ -157,6 +164,11 @@ namespace Raincrow.BattleArena.Model
                 Texture = Texture,
                 OwnerId = OwnerId,
             };
+
+            if (BattleSlot.HasValue)
+            {
+                destination.BattleSlot = BattleSlot.Value.Clone();
+            }
             return destination;
         }
 
@@ -166,12 +178,22 @@ namespace Raincrow.BattleArena.Model
         }
     }
 
-    public struct BattleSlot
+    public struct BattleSlot : ICloneable<BattleSlot>
     {
         [JsonProperty("row")]
         public int Row { get; set; }
         [JsonProperty("col")]
         public int Col { get; set; }
+
+        public BattleSlot Clone()
+        {
+            BattleSlot clone = new BattleSlot()
+            {
+                Row = Row,
+                Col = Col
+            };
+            return clone;
+        }
     }
 
     public struct InventoryItemModel
@@ -249,15 +271,27 @@ namespace Raincrow.BattleArena.Model
         }
     }
 
-    public class WitchViewModel : IWitchUIModel
+    public class WitchUIModel : IWitchUIModel
     {
         public Texture Texture { get; set; }
         public Material AlignmentMaterial { get; set; }
+        public Transform Transform { get; private set; }
+
+        public WitchUIModel(Transform transform)
+        {
+            Transform = transform;
+        }
     }
 
-    public class SpiritViewModel : ISpiritUIModel
+    public class SpiritUIModel : ISpiritUIModel
     {
         public Texture Texture { get; set; }
         public Material AlignmentMaterial { get; set; }
+        public Transform Transform { get; private set; }
+
+        public SpiritUIModel(Transform transform)
+        {
+            Transform = transform;
+        }
     }
 }

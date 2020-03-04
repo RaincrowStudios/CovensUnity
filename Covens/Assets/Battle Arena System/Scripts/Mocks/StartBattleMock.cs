@@ -119,11 +119,13 @@ namespace Raincrow.Mocks
             List<ISpiritModel> spiritModels = new List<ISpiritModel>();
 
             // add witch
-            gridModel.Cells[0, 0].ObjectId = witchModel.Id;
+            //gridModel.Cells[0, 0].ObjectId = witchModel.Id;
+            gridModel.SetObjectToGrid(witchModel, 0, 0);
             witchModels.Add(witchModel);
 
             // add spirit
-            gridModel.Cells[4, 4].ObjectId = spiritModel.Id;
+            //gridModel.Cells[4, 4].ObjectId = spiritModel.Id;
+            gridModel.SetObjectToGrid(spiritModel, 4, 4);
             spiritModels.Add(spiritModel);
 
             // place characters in grid model

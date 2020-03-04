@@ -57,6 +57,7 @@ public class GenericCharacterObjectServer : ISpiritModel, IWitchModel
     public int Resilience { get; set; }
     public InventoryModel Inventory { get; set; }
     public CharacterInfo Info { get; set; }
+    public BattleSlot? BattleSlot { get; set; }
 
     public GenericCharacterObjectServer()
     {
