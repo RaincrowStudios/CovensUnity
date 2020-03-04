@@ -425,6 +425,8 @@ namespace Raincrow.BattleArena.Phases
                 _countdownView.Show();
             }
 
+            _quickCastView.SetOnMenuIngredient(false, "");
+
             _gem = new CollectableItem();
             _herb = new CollectableItem();
             _tool = new CollectableItem();

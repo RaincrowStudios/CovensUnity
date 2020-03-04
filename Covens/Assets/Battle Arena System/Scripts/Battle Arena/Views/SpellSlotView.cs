@@ -63,13 +63,19 @@ namespace Raincrow.BattleArena.Views
 
         public void OnPointerDonwSpell()
         {
-            _pointerDown = true;
-            StartCoroutine(WaitPointerUpCoroutine());
+            if (_buttonSpell.interactable)
+            {
+                _pointerDown = true;
+                StartCoroutine(WaitPointerUpCoroutine());
+            }
         }
 
         public void OnPointerUpSpell()
         {
-            _pointerDown = false;
+            if (_buttonSpell.interactable)
+            {
+                _pointerDown = false;
+            }
         }
 
         private IEnumerator WaitPointerUpCoroutine()
