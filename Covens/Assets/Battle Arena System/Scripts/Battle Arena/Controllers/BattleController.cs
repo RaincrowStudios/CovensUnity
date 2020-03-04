@@ -280,6 +280,11 @@ namespace Raincrow.BattleArena.Controller
 
             // Add object model in the grid model
             _gridModel.SetObjectToGrid(objectModel, row, col);
+
+            // Get transform of our character
+            Transform characterTransform = objectUIModel.Transform;
+            ICellUIModel targetCellView = Cells[row, col];
+            Transform cellTransform = targetCellView.Transform;
         }
 
         public void RemoveObjectFromGrid(IObjectUIModel objectUIModel, IObjectModel objectModel)

@@ -1,5 +1,4 @@
-﻿using Newtonsoft.Json;
-using Raincrow.BattleArena.Events;
+﻿using Raincrow.BattleArena.Events;
 using Raincrow.BattleArena.Model;
 using System.Collections;
 using System.Collections.Generic;

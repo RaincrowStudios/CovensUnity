@@ -109,21 +109,12 @@ namespace Raincrow.BattleArena.Phases
             {
                 character = spiritTuple.Item1;
                 characterUI = spiritTuple.Item2;
-            }
-
-            // Get transform of our character
-            Transform characterTransform = characterUI.Transform;
+            }            
 
             // Get transform of our target Cell
-            BattleSlot targetPosition = moveAction.Position;
-            ICellUIModel targetCellView = _gridView[targetPosition.Row, targetPosition.Col];
-            Transform cellTransform = targetCellView.Transform;
-
-            // Remove it
-            _battleModel.GridUI.RemoveObjectFromGrid(characterUI, character);
+            BattleSlot targetPosition = moveAction.Position;            
 
             // Animation
-
 
             // Set it
             _battleModel.GridUI.SetObjectToGrid(characterUI, character, targetPosition.Row, targetPosition.Col);
