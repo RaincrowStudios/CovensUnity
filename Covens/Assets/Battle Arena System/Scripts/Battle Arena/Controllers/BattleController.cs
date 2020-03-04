@@ -170,7 +170,7 @@ namespace Raincrow.BattleArena.Controller
                 );
             yield return null;
 
-            ActionResolutionPhase actionResolutionPhase = new ActionResolutionPhase(this, Cells, battleModel, _turnModel, _spiritFactory);
+            ActionResolutionPhase actionResolutionPhase = new ActionResolutionPhase(this, battleModel, _turnModel);
             yield return null;
 
             BanishmentPhase banishmentPhase = new BanishmentPhase(this);
