@@ -1,4 +1,5 @@
 ﻿using Raincrow.BattleArena.Controller;
+using Raincrow.BattleArena.Controllers;
 using Raincrow.BattleArena.Model;
 using Raincrow.StateMachines;
 using System.Collections;
@@ -13,8 +14,10 @@ namespace Raincrow.BattleArena.Phases
         private ICoroutineHandler _coroutineStarter;
         private IBattleModel _battleModel;
         private ITurnModel _turnModel;
-        private IDictionary<string, (IWitchModel, IWitchUIModel)> _witches = new Dictionary<string, (IWitchModel, IWitchUIModel)>(); // holy shit, it works
-        private IDictionary<string, (ISpiritModel, ISpiritUIModel)> _spirits = new Dictionary<string, (ISpiritModel, ISpiritUIModel)>(); // holy shit, it works
+        private IDictionary<string, ICharacterController<IWitchModel, IWitchUIModel>> _witches = 
+            new Dictionary<string, ICharacterController<IWitchModel, IWitchUIModel>>(); // holy shit, it works
+        private IDictionary<string, ICharacterController<ISpiritModel, ISpiritUIModel>> _spirits = 
+            new Dictionary<string, ICharacterController<ISpiritModel, ISpiritUIModel>>(); // holy shit, it works
 
         // Properties
         public string Name => "Action Resolution Phase";
@@ -33,14 +36,14 @@ namespace Raincrow.BattleArena.Phases
             _witches.Clear();
             foreach (var view in _battleModel.GridUI.WitchesViews)
             {
-                _witches.Add(view.Model.Id, (view.Model, view.UIModel));
+                _witches.Add(view.Model.Id, view);
                 yield return null;
             }
 
             _spirits.Clear();
             foreach (var view in _battleModel.GridUI.SpiritsViews)
             {
-                _spirits.Add(view.Model.Id, (view.Model, view.UIModel));
+                _spirits.Add(view.Model.Id, view);
                 yield return null;
             }
         }
@@ -64,7 +67,11 @@ namespace Raincrow.BattleArena.Phases
                                 break;
                             case ActionResponseType.Summon:
                                 SummonActionResponseModel summonAction = responseAction as SummonActionResponseModel;
-                                actionRoutine = Summon(characterId, summonAction);
+                                actionRoutine = Summon(summonAction);
+                                break;
+                            case ActionResponseType.Cast:
+                                CastActionResponseModel castAction = responseAction as CastActionResponseModel;
+                                actionRoutine = Cast(characterId, castAction);
                                 break;
                         }
 
@@ -88,16 +95,16 @@ namespace Raincrow.BattleArena.Phases
         {
             ICharacterUIModel characterUI = default;
             ICharacterModel character = default;
-            if (_witches.TryGetValue(characterId, out (IWitchModel, IWitchUIModel) witchTuple))
+            if (_witches.TryGetValue(characterId, out ICharacterController<IWitchModel, IWitchUIModel> witchView))
             {
-                character = witchTuple.Item1;
-                characterUI = witchTuple.Item2;
+                character = witchView.Model;
+                characterUI = witchView.UIModel;
             }
-            else if (_spirits.TryGetValue(characterId, out (ISpiritModel, ISpiritUIModel) spiritTuple))
+            else if (_spirits.TryGetValue(characterId, out ICharacterController<ISpiritModel, ISpiritUIModel> spiritView))
             {
-                character = spiritTuple.Item1;
-                characterUI = spiritTuple.Item2;
-            }            
+                character = spiritView.Model;
+                characterUI = spiritView.UIModel;
+            }
 
             // Get transform of our target Cell
             BattleSlot targetPosition = moveAction.Position;            
@@ -112,14 +119,43 @@ namespace Raincrow.BattleArena.Phases
             yield return new WaitForSeconds(1f);
         }
 
-        private IEnumerator Summon(string characterId, SummonActionResponseModel summonAction)
+        private IEnumerator Summon(SummonActionResponseModel summonAction)
         {
             // Get cell transform
             BattleSlot targetPosition = summonAction.Position;            
             ISpiritModel spiritModel = summonAction.Spirit;            
             yield return _battleModel.GridUI.SpawnObjectOnGrid(spiritModel, targetPosition.Row, targetPosition.Col);
 
+            Debug.LogFormat("Execute Summon {0} to Slot X:{1} Y:{2}", spiritModel.Id, targetPosition.Row, targetPosition.Col);
             yield return new WaitForSeconds(1f);
+        }
+
+        private IEnumerator Cast(string characterId, CastActionResponseModel castAction)
+        {
+            // Get caster
+            var casterView = GetCharacterView(castAction.Caster.Id);
+            var targetView = GetCharacterView(castAction.Target.Id);
+
+            if (castAction.Damage > 0)
+            {
+                yield return targetView.AddDamage(castAction.Damage);
+            }
+
+            Debug.LogFormat("Execute Cast to {0} and apply {1} damage", castAction.Target.Id, castAction.Damage);
+            yield return new WaitForSeconds(1f);
+        }
+
+        private ICharacterController GetCharacterView(string characterId)
+        {
+            if (_witches.TryGetValue(characterId, out ICharacterController<IWitchModel, IWitchUIModel> witchView))
+            {
+                return witchView;
+            }
+            if (_spirits.TryGetValue(characterId, out ICharacterController<ISpiritModel, ISpiritUIModel> spiritView))
+            {
+                return spiritView;
+            }
+            return default;
         }
 
         #endregion

@@ -1,9 +1,11 @@
-﻿using Raincrow.BattleArena.Model;
+﻿using Raincrow.BattleArena.Controllers;
+using Raincrow.BattleArena.Model;
+using System.Collections;
 using UnityEngine;
 
 namespace Raincrow.BattleArena.Views
 {
-    public class BattleWitchView : MonoBehaviour, ICharacterView<IWitchModel, IWitchUIModel>
+    public class BattleWitchView : MonoBehaviour, ICharacterController<IWitchModel, IWitchUIModel>
     {
         // Serialized variables        
         [Header("Avatar")]
@@ -28,6 +30,7 @@ namespace Raincrow.BattleArena.Views
         // Static readonlies
         private static readonly int MainTexPropertyId = Shader.PropertyToID("_MainTex");        
         private static readonly int AlphaCutoffPropertyId = Shader.PropertyToID("_Cutoff");
+        private static readonly float MinAlphaCutoff = 0.0001f;
 
         // Properties
         public IWitchModel Model { get; private set; }
@@ -44,22 +47,6 @@ namespace Raincrow.BattleArena.Views
             if (props == null)
             {
                 props = new MaterialPropertyBlock();
-            }
-            //if (_damageRingMat == null)
-            //{
-            //    _damageRingMat = new Material(_damageRingRenderer.sharedMaterial);
-            //    _damageRingRenderer.material = _damageRingMat;
-            //}
-        }
-
-        protected virtual void Update()
-        {
-            if (Model != null)
-            {
-                float lerpTime = 5f;
-                float f = Mathf.InverseLerp(0, lerpTime, Time.time % lerpTime);
-                Model.Energy = Mathf.FloorToInt(Mathf.Lerp(0, Model.BaseEnergy, f));
-                UpdateView();
             }
         }
 
@@ -81,6 +68,8 @@ namespace Raincrow.BattleArena.Views
             _playerLevel.text = characterModel.Level.ToString();
             _playerName.gameObject.SetActive(true);
             _playerName.text = characterModel.Name;
+
+            UpdateView(Model.BaseEnergy, Model.Energy);
         }
 
         public void FaceCamera(Quaternion cameraRotation, Vector3 cameraForward)
@@ -89,20 +78,28 @@ namespace Raincrow.BattleArena.Views
             _avatarRoot.transform.LookAt(worldPosition, cameraForward);
         }
 
-        public void UpdateView()
-        {
-            int baseEnergy = Model.BaseEnergy;
-            int energy = Model.Energy;
-            float energyNormalized = Mathf.InverseLerp(Mathf.Epsilon, baseEnergy, energy);
-
-            //_damageRingMat.SetFloat(AlphaCutoffPropertyId, 1f - energyNormalized);
-            props.SetFloat(AlphaCutoffPropertyId, 1f - energyNormalized);
+        public void UpdateView(int baseEnergy, int energy)
+        {            
+            float energyNormalized = Mathf.InverseLerp(0f, baseEnergy, energy);            
+            props.SetFloat(AlphaCutoffPropertyId, Mathf.Max(energyNormalized, MinAlphaCutoff));
             _damageRingRenderer.SetPropertyBlock(props);
+
+            bool isDead = energy <= 0;
+            _deathIcon.SetActive(isDead);
+            Debug.LogFormat("Update Energy {0} {1}", baseEnergy, energy);            
         }
 
         public Transform GetTransform()
         {
             return transform;
+        }
+
+        public IEnumerator AddDamage(int damage)
+        {
+            Model.Energy -= damage;
+            Model.Energy = Mathf.Max(Model.Energy, 0);
+            UpdateView(Model.BaseEnergy, Model.Energy);            
+            yield return null;
         }
     }
 }

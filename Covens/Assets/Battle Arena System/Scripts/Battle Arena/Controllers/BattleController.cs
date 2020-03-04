@@ -8,6 +8,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using Raincrow.Loading.View;
 using Raincrow.Services;
+using Raincrow.BattleArena.Controllers;
 
 namespace Raincrow.BattleArena.Controller
 {
@@ -24,13 +25,13 @@ namespace Raincrow.BattleArena.Controller
         private IGridModel _gridModel;
         private ITurnModel _turnModel;
         private IQuickCastView _quickCastView;
-        private IDictionary<string, ICharacterView<IWitchModel, IWitchUIModel>> _dictWitchesViews = new Dictionary<string, ICharacterView<IWitchModel, IWitchUIModel>>();
-        private IDictionary<string, ICharacterView<ISpiritModel, ISpiritUIModel>> _dictSpiritViews = new Dictionary<string, ICharacterView<ISpiritModel, ISpiritUIModel>>();
+        private IDictionary<string, ICharacterController<IWitchModel, IWitchUIModel>> _dictWitchesViews = new Dictionary<string, ICharacterController<IWitchModel, IWitchUIModel>>();
+        private IDictionary<string, ICharacterController<ISpiritModel, ISpiritUIModel>> _dictSpiritViews = new Dictionary<string, ICharacterController<ISpiritModel, ISpiritUIModel>>();
 
         // Properties
         public ICellUIModel[,] Cells { get; private set; } = new ICellUIModel[0, 0]; // Grid with all the game objects inserted
-        public ICollection<ICharacterView<IWitchModel, IWitchUIModel>> WitchesViews => _dictWitchesViews.Values; // List with all witches
-        public ICollection<ICharacterView<ISpiritModel, ISpiritUIModel>> SpiritsViews => _dictSpiritViews.Values; // List with all spirits
+        public ICollection<ICharacterController<IWitchModel, IWitchUIModel>> WitchesViews => _dictWitchesViews.Values; // List with all witches
+        public ICollection<ICharacterController<ISpiritModel, ISpiritUIModel>> SpiritsViews => _dictSpiritViews.Values; // List with all spirits
         public int MaxCellsPerRow => _gridModel.MaxCellsPerRow;
         public int MaxCellsPerColumn => _gridModel.MaxCellsPerColumn;        
 
@@ -115,8 +116,8 @@ namespace Raincrow.BattleArena.Controller
                         if (dictSpirits.TryGetValue(cell.ObjectId, out ISpiritModel spirit)) // has a character/item
                         {
                             ICellUIModel cellView = Cells[i, j];
-                            Coroutine<ICharacterView<ISpiritModel, ISpiritUIModel>> createCharacter =
-                                this.StartCoroutine<ICharacterView<ISpiritModel, ISpiritUIModel>>(_spiritFactory.Create(cellView.Transform, spirit));
+                            Coroutine<ICharacterController<ISpiritModel, ISpiritUIModel>> createCharacter =
+                                this.StartCoroutine<ICharacterController<ISpiritModel, ISpiritUIModel>>(_spiritFactory.Create(cellView.Transform, spirit));
                             yield return createCharacter;
 
                             // add spirit and init
@@ -127,8 +128,8 @@ namespace Raincrow.BattleArena.Controller
                         else if (dictWitches.TryGetValue(cell.ObjectId, out IWitchModel witch)) // has a character/item
                         {
                             ICellUIModel cellView = Cells[i, j];
-                            Coroutine<ICharacterView<IWitchModel, IWitchUIModel>> createCharacter =
-                                this.StartCoroutine<ICharacterView<IWitchModel, IWitchUIModel>>(_witchFactory.Create(cellView.Transform, witch));
+                            Coroutine<ICharacterController<IWitchModel, IWitchUIModel>> createCharacter =
+                                this.StartCoroutine<ICharacterController<IWitchModel, IWitchUIModel>>(_witchFactory.Create(cellView.Transform, witch));
                             yield return createCharacter;
 
                             // add a witch and init
@@ -197,11 +198,11 @@ namespace Raincrow.BattleArena.Controller
 
                 // Update Characters
                 Vector3 forward = battleCamera.transform.rotation * Vector3.up;
-                foreach (ICharacterView<ISpiritModel, ISpiritUIModel> spirit in SpiritsViews)
+                foreach (ICharacterController<ISpiritModel, ISpiritUIModel> spirit in SpiritsViews)
                 {
                     spirit.FaceCamera(battleCamera.transform.rotation, forward);
                 }
-                foreach (ICharacterView<IWitchModel, IWitchUIModel> witch in WitchesViews)
+                foreach (ICharacterController<IWitchModel, IWitchUIModel> witch in WitchesViews)
                 {
                     witch.FaceCamera(battleCamera.transform.rotation, forward);
                 }
@@ -307,11 +308,11 @@ namespace Raincrow.BattleArena.Controller
             {
                 // Create the new spirit
                 ICellUIModel targetCellView = Cells[row, col];
-                IEnumerator<ICharacterView<ISpiritModel, ISpiritUIModel>> createSpirit = _spiritFactory.Create(targetCellView.Transform, objectModel as ISpiritModel);
+                IEnumerator<ICharacterController<ISpiritModel, ISpiritUIModel>> createSpirit = _spiritFactory.Create(targetCellView.Transform, objectModel as ISpiritModel);
                 yield return createSpirit;
 
                 // Add the new spirit
-                ICharacterView<ISpiritModel, ISpiritUIModel> spiritView = createSpirit.Current;
+                ICharacterController<ISpiritModel, ISpiritUIModel> spiritView = createSpirit.Current;
                 _dictSpiritViews.Add(spiritView.Model.Id, spiritView);
 
                 // Set cell transform position to object UI Model position

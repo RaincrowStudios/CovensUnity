@@ -209,7 +209,9 @@ namespace Raincrow.BattleArena.Controller
                 {
                     IsSuccess = true,
                     Target = target,
-                    Caster = caster
+                    Caster = caster,
+                    Spell = castSpellActionRequest.SpellId,
+                    Damage = Random.Range(40, 80)
                 });
                 return battleAction;
             }

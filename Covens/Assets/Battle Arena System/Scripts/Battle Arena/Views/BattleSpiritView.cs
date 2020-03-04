@@ -1,9 +1,11 @@
-﻿using Raincrow.BattleArena.Model;
+﻿using Raincrow.BattleArena.Controllers;
+using Raincrow.BattleArena.Model;
+using System.Collections;
 using UnityEngine;
 
 namespace Raincrow.BattleArena.Views
 {
-    public class BattleSpiritView : MonoBehaviour, ICharacterView<ISpiritModel, ISpiritUIModel>
+    public class BattleSpiritView : MonoBehaviour, ICharacterController<ISpiritModel, ISpiritUIModel>
     {        
         // Serialized variables
         [SerializeField] private Transform _avatarRoot;
@@ -21,6 +23,7 @@ namespace Raincrow.BattleArena.Views
         private static readonly int MainTexPropertyId = Shader.PropertyToID("_MainTex");
         private static readonly int ColorPropertyId = Shader.PropertyToID("_Color");
         private static readonly int AlphaCutoffPropertyId = Shader.PropertyToID("_Cutoff");
+        private static readonly float MinAlphaCutoff = 0.0001f;
 
         // Properties
         public ISpiritModel Model { get; private set; }
@@ -41,17 +44,6 @@ namespace Raincrow.BattleArena.Views
             }
         }
 
-        protected virtual void Update()
-        {
-            if (Model != null)
-            {
-                float lerpTime = 5f;
-                float f = Mathf.InverseLerp(0, lerpTime, Time.time % lerpTime);
-                Model.Energy = Mathf.FloorToInt(Mathf.Lerp(0, Model.BaseEnergy, f));
-                UpdateView();
-            }
-        }
-
         public void Init(ISpiritModel characterModel, ISpiritUIModel characterViewModel)
         {            
             Model = characterModel;
@@ -62,6 +54,8 @@ namespace Raincrow.BattleArena.Views
 
             // Set alignment color
             _alignmentRingRenderer.sharedMaterial = characterViewModel.AlignmentMaterial;
+
+            UpdateView(Model.BaseEnergy, Model.Energy);
         }
 
         public void FaceCamera(Quaternion cameraRotation, Vector3 cameraForward)
@@ -70,17 +64,25 @@ namespace Raincrow.BattleArena.Views
             _avatarRoot.transform.LookAt(worldPosition, cameraForward);
         }
 
-        public void UpdateView()
+        public IEnumerator AddDamage(int damage)
         {
-            int baseEnergy = Model.BaseEnergy;
-            int energy = Model.Energy;
-            float energyNormalized = Mathf.InverseLerp(Mathf.Epsilon, baseEnergy, energy);
-            _damageRingMat.SetFloat(AlphaCutoffPropertyId, 1f - energyNormalized);
+            Model.Energy -= damage;
+            Model.Energy = Mathf.Max(Model.Energy, 0);
+            UpdateView(Model.BaseEnergy, Model.Energy);
+            yield return null;
         }
 
         public Transform GetTransform()
         {
             return transform;
+        }
+
+        public void UpdateView(int baseEnergy, int energy)
+        {
+            float energyNormalized = Mathf.InverseLerp(0f, baseEnergy, energy);
+            _damageRingMat.SetFloat(AlphaCutoffPropertyId, Mathf.Max(energyNormalized, MinAlphaCutoff));
+
+            Debug.LogFormat("Update Energy {0} {1}", baseEnergy, energy);
         }
     }
 }

@@ -1,4 +1,5 @@
-﻿using Raincrow.BattleArena.Model;
+﻿using Raincrow.BattleArena.Controllers;
+using Raincrow.BattleArena.Model;
 using Raincrow.BattleArena.Views;
 using Raincrow.Services;
 using System.Collections.Generic;
@@ -45,10 +46,10 @@ namespace Raincrow.BattleArena.Factory
             }
         }
 
-        public override IEnumerator<ICharacterView<ISpiritModel, ISpiritUIModel>> Create(Transform cellTransform, ISpiritModel model)
+        public override IEnumerator<ICharacterController<ISpiritModel, ISpiritUIModel>> Create(Transform cellTransform, ISpiritModel model)
         {
             // Create character            
-            ICharacterView<ISpiritModel, ISpiritUIModel> characterView = _objectPool.Spawn(_battleSpiritViewPrefab, cellTransform);
+            ICharacterController<ISpiritModel, ISpiritUIModel> characterView = _objectPool.Spawn(_battleSpiritViewPrefab, cellTransform);
             yield return null;
 
             // wait for coroutine

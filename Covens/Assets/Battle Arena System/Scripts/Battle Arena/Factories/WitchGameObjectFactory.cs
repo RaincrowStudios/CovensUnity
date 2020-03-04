@@ -3,6 +3,7 @@ using Raincrow.BattleArena.Model;
 using System.Collections.Generic;
 using UnityEngine;
 using Raincrow.Services;
+using Raincrow.BattleArena.Controllers;
 
 namespace Raincrow.BattleArena.Factory
 {
@@ -47,10 +48,10 @@ namespace Raincrow.BattleArena.Factory
             }
         }
 
-        public override IEnumerator<ICharacterView<IWitchModel, IWitchUIModel>> Create(Transform cellTransform, IWitchModel model)
+        public override IEnumerator<ICharacterController<IWitchModel, IWitchUIModel>> Create(Transform cellTransform, IWitchModel model)
         {
             // Create character            
-            ICharacterView<IWitchModel, IWitchUIModel> characterView = _objectPool.Spawn(_battleWitchViewPrefab, cellTransform);
+            ICharacterController<IWitchModel, IWitchUIModel> characterView = _objectPool.Spawn(_battleWitchViewPrefab, cellTransform);
             yield return null;
 
             // wait for coroutine

@@ -1,4 +1,5 @@
-﻿using Raincrow.BattleArena.Views;
+﻿using Raincrow.BattleArena.Controllers;
+using Raincrow.BattleArena.Views;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -16,8 +17,8 @@ namespace Raincrow.BattleArena.Model
         ICellUIModel[,] Cells { get; }
         int MaxCellsPerRow { get; }
         int MaxCellsPerColumn { get; }
-        ICollection<ICharacterView<ISpiritModel, ISpiritUIModel>> SpiritsViews { get; }
-        ICollection<ICharacterView<IWitchModel, IWitchUIModel>> WitchesViews { get; }
+        ICollection<ICharacterController<ISpiritModel, ISpiritUIModel>> SpiritsViews { get; }
+        ICollection<ICharacterController<IWitchModel, IWitchUIModel>> WitchesViews { get; }
         IEnumerator SpawnObjectOnGrid(IObjectModel objectModel, int row, int col);
         void SetObjectToGrid(IObjectUIModel objectUIModel, IObjectModel objectModel, int row, int col);
         void RemoveObjectFromGrid(IObjectUIModel objectUIModel, IObjectModel objectModel);        
