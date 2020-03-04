@@ -13,26 +13,24 @@ namespace Raincrow.BattleArena.Views
             gameObject.SetActive(false);
         }
 
-        public void Show(float time)
+        public void Show()
         {
             gameObject.SetActive(true);
-            StartCoroutine(StartCountdown(time));
         }
 
-        private IEnumerator StartCountdown(float time)
+        public void UpdateTime(int time)
         {
-            for (float t = time; t > 0; t -= Time.deltaTime)
-            {
-                _textTime.text = Mathf.FloorToInt(t).ToString();
-                yield return new WaitForEndOfFrame();
-            }
+            _textTime.text = time.ToString();
         }
+       
     }
 
     public interface ICountdownView
     {
-        void Show(float time);
+        void Show();
 
         void Hide();
+
+        void UpdateTime(int time);
     }
 }

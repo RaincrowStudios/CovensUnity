@@ -12,6 +12,7 @@ namespace Raincrow.BattleArena.Views
         [SerializeField] private TextMeshProUGUI _textNameSpell;
         [SerializeField] private Image _imageIconSpell;
         [SerializeField] private Button _buttonSpell;
+        [SerializeField] private Button _buttonSpellIngredients;
 
         [Header("Ingredients")]
         [SerializeField] private Image _imageIngredientGem;
@@ -23,17 +24,20 @@ namespace Raincrow.BattleArena.Views
         //Privates variable
         private string _spell;
 
-        System.Action<string> _onClick;
+        System.Action<string> _onClickSpell;
+        System.Action<string> _openIngredients;
 
-        public void Setup(int index, System.Action<string> onClick)
+        public void Setup(int index, System.Action<string> onClickSpell, System.Action<string> openIngredients)
         {
             StopAllCoroutines();
 
             _spell = PlayerManager.GetQuickcastSpell(index);
 
-            _onClick = onClick;
+            _onClickSpell = onClickSpell;
+            _openIngredients = openIngredients;
 
             _buttonSpell.onClick.AddListener(OnClickCastSpell);
+            _buttonSpellIngredients.onClick.AddListener(OpenIngredients);
 
             if (string.IsNullOrEmpty(_spell) == false)
             {
@@ -51,9 +55,24 @@ namespace Raincrow.BattleArena.Views
             _imageIngredientHerb.sprite = requireds.RequiredHerb ? _spriteFilled : _spriteEmpty;
         }
 
+        public void SetInteractable(bool value)
+        {
+            _buttonSpell.interactable = value;
+        }
+
         private void OnClickCastSpell()
         {
-            _onClick(_spell);
+            _onClickSpell(_spell);
+        }
+
+        private void OpenIngredients()
+        {
+            _openIngredients(_spell);
+        }
+
+        public string GetSpellName()
+        {
+            return _spell;
         }
     }
 }

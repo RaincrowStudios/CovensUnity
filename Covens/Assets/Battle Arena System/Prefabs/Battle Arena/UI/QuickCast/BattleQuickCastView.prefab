@@ -2135,7 +2135,7 @@ MonoBehaviour:
   _spellContainer: {fileID: 5683286266049807194}
   _buttonSpellPrefab: {fileID: 2732701065107030642, guid: bd9f72e350ca49e45adb38882a825006,
     type: 3}
-  _moreSpells: {fileID: 0}
+  _buttonSpellAstral: {fileID: 1804619824258545747}
 --- !u!1 &6995602960305057669
 GameObject:
   m_ObjectHideFlags: 0

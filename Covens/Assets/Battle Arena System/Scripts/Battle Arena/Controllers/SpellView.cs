@@ -13,42 +13,44 @@ namespace Raincrow.BattleArena.Views
         [Header("UI")]
         [SerializeField] private LayoutGroup _spellContainer;
         [SerializeField] private SpellSlotView _buttonSpellPrefab;
-        [SerializeField] private Button _moreSpells;
+        [SerializeField] private Button _buttonSpellAstral;
 
+        //Privates variables
         private List<SpellSlotView> _spellButtons = new List<SpellSlotView>();
         private ICharacterModel _target;
 
-        public void Show(System.Action<string> onClickSpell)
+        public void Show(System.Action<string> onClickSpell, System.Action<string> openIngredients)
         {
             int quickcastCount = 4;
             for (int i = _spellButtons.Count; i < quickcastCount; i++)
             {
                 SpellSlotView aux = Instantiate(_buttonSpellPrefab, _spellContainer.transform);
-                aux.Setup(i, onClickSpell);
+                aux.Setup(i, onClickSpell, openIngredients);
                 _spellButtons.Add(aux);
             }
         }
 
-
-        private void OnClickMoreSpells()
+        public void OnOpenIngredients(string spell)
         {
-            if (_target == null)
-                return;
+            _buttonSpellAstral.interactable = false;
 
-            //UISpellcastBook.Open(
-            //    targetData,
-            //    target,
-            //    PlayerDataManager.playerData.UnlockedSpells,
-            //    (spell, ingredients) =>
-            //    {
-            //        Spellcasting.CastSpell(spell, m_Target, ingredients,
-            //            (result) => this._Hide(false),
-            //            () => this._Hide(false)
-            //        );
-            //    },
-            //    () => this._Hide(false),
-            //    () => this._Hide(false)
-            //);
+            foreach(SpellSlotView button in _spellButtons)
+            {
+                if(!button.GetSpellName().Equals(spell))
+                    button.SetInteractable(false);
+                else
+                    button.SetInteractable(true);
+            }
+        }
+
+        public void OnCloseIngredients()
+        {
+            _buttonSpellAstral.interactable = true;
+
+            foreach (SpellSlotView button in _spellButtons)
+            {
+                button.SetInteractable(true);
+            }
         }
     }
 }

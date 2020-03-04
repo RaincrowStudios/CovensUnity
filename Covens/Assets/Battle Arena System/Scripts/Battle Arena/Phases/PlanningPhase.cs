@@ -26,6 +26,9 @@ namespace Raincrow.BattleArena.Phases
         private ICellView[,] _gridView;
         private BattleSlot? _selectedSlot;
         private string _objectId;
+        private CollectableItem _herb;
+        private CollectableItem _tool;
+        private CollectableItem _gem;
 
         // Properties
         public string Name => "Planning Phase";
@@ -55,13 +58,6 @@ namespace Raincrow.BattleArena.Phases
 
         public IEnumerator Enter(IStateMachine stateMachine)
         {
-            _startTime = Time.time;
-
-            _quickCastView.Show(OnClickFly, OnClickSummon, OnClickFlee, OnCastSpell);
-
-            //Start countdown turn
-            _countdownView.Show(_turnModel.PlanningMaxTime);
-
             // Add Click Events
             for (int i = 0; i < _battleModel.Grid.MaxCellsPerRow; i++)
             {
@@ -92,6 +88,13 @@ namespace Raincrow.BattleArena.Phases
 
             IEnumerator showCharacterTurnOrderView = _charactersTurnOrderView.Show(_turnModel.PlanningOrder, _turnModel.MaxActionsAllowed, witches, spirits);
             yield return _coroutineStarter.Invoke(showCharacterTurnOrderView);
+
+            _startTime = Time.time;
+
+            _quickCastView.Show(OnClickFly, OnClickSummon, OnClickFlee, OnCastSpell, OpenInventory);
+
+            //Show countdown turn
+            _countdownView.Show();
         }
 
         private void CheckInput(ICellModel cellModel)
@@ -116,7 +119,12 @@ namespace Raincrow.BattleArena.Phases
 
         public IEnumerator Update(IStateMachine stateMachine)
         {
-            if (Time.time - _startTime > _turnModel.PlanningMaxTime || !HasActionsAvailable())
+            float elapsedTime = Time.time - _startTime;
+            int time = Mathf.FloorToInt(_turnModel.PlanningMaxTime - elapsedTime);
+
+            _countdownView.UpdateTime(time);
+
+            if (elapsedTime > _turnModel.PlanningMaxTime || !HasActionsAvailable())
             {
                 // copy actions to array
                 int numActions = _turnModel.RequestedActions.Count;
@@ -128,13 +136,19 @@ namespace Raincrow.BattleArena.Phases
 
                 yield return stateMachine.ChangeState<ActionResolutionPhase>();
             }
-        }        
+        }
 
         public IEnumerator Exit(IStateMachine stateMachine)
         {
             _quickCastView.Hide();
             _countdownView.Hide();
             _charactersTurnOrderView.Hide();
+
+            if (UIInventory.isOpen)
+            {
+                UIInventory.Instance.Close();
+                OnCloseInventory();
+            }
 
             // Remove Click Events
             for (int i = 0; i < _battleModel.Grid.MaxCellsPerRow; i++)
@@ -161,7 +175,7 @@ namespace Raincrow.BattleArena.Phases
         #region Socket Events
 
         private void OnPlanningPhaseFinished(PlanningPhaseFinishedEventArgs args)
-        {            
+        {
             _coroutineStarter.Invoke(OnPlanningPhaseFinishedCoroutine(args));
         }
 
@@ -183,7 +197,7 @@ namespace Raincrow.BattleArena.Phases
                         actionsResults.AddRange(responseActions);
                         _turnModel.ResponseActions[characterId] = actionsResults;
                     }
-                    
+
                     yield return null;
                 }
             }
@@ -202,7 +216,7 @@ namespace Raincrow.BattleArena.Phases
                 _charactersTurnOrderView.UpdateActionsPoints(_turnModel.RequestedActions.Count);
             }
         }
-        
+
         private void OnCastSpell(string spell)
         {
             if (HasActionsAvailable() && _selectedSlot.HasValue && Spellcasting.CanCast(spell))
@@ -211,11 +225,12 @@ namespace Raincrow.BattleArena.Phases
                 {
                     SpellId = spell,
                     TargetId = _objectId,
-                    Ingredients = new InventoryItemModel[0]
+                    Ingredients = GetIngredients()
                 };
 
                 _turnModel.RequestedActions.Add(cast);
                 _charactersTurnOrderView.UpdateActionsPoints(_turnModel.RequestedActions.Count);
+                OnFinishAddCastRequest(spell);
             }
         }
 
@@ -242,6 +257,236 @@ namespace Raincrow.BattleArena.Phases
             _charactersTurnOrderView.UpdateActionsPoints(_turnModel.RequestedActions.Count);
         }
 
+        private void OpenInventory(string spell)
+        {
+            SpellData selectedSpell = DownloadedAssets.GetSpell(spell);
+
+            SetIngredients(selectedSpell.ingredients.ToArray());
+
+            _countdownView.Hide();
+            _charactersTurnOrderView.SetActive(false);
+
+            _quickCastView.SetOnMenuIngredient(true, spell);
+
+            UIInventory.Instance.Show(OnClickInventoryItem, OnCloseInventory, false, true);
+
+            //lock if necessary
+            UIInventory.Instance.LockIngredients(selectedSpell.ingredients.ToArray(), 0);
+
+            //set the ivnentory with the current ingredients
+            List<CollectableItem> selected = new List<CollectableItem>()
+            {
+                _herb, _tool, _gem
+            };
+            UIInventory.Instance.SetSelected(selected);
+        }
+
+        private void OnClickInventoryItem(UIInventoryWheelItem item)
+        {
+            //just resets if clicking on an empty inventory item
+            if (item.inventoryItemId == null)
+            {
+                //resets the picker
+                item.SetIngredientPicker(0);
+                if (item.type == "herb")
+                    _herb = new CollectableItem();
+                else if (item.type == "tool")
+                    _tool = new CollectableItem();
+                else if (item.type == "gem")
+                    _gem = new CollectableItem();
+                return;
+            }
+
+            //List<string> required = m_SelectedSpell.ingredients == null ? new List<string>() : new List<string>(m_SelectedSpell.ingredients);
+            IngredientData itemData = item.itemData;
+            int maxAmount = Mathf.Min(5, PlayerDataManager.playerData.GetIngredient(item.inventoryItemId));
+
+            if (itemData.Type == IngredientType.herb)
+            {
+                if (string.IsNullOrEmpty(_herb.id))
+                {
+                    //select the ingredient
+                    _herb = new CollectableItem
+                    {
+                        id = item.inventoryItemId,
+                        count = Mathf.Min(1, maxAmount)
+                    };
+                    item.SetIngredientPicker(_herb.count);
+                }
+                else if (_herb.id != item.inventoryItemId)
+                {
+                    //unselect the previous ingredient
+                    _herb = new CollectableItem();
+                    UIInventory.Instance.herbsWheel.ResetPicker();
+                }
+                else
+                {
+                    //increment the selected ingredient
+                    _herb.count = (int)Mathf.Repeat(_herb.count + 1, maxAmount + 1);
+                    _herb.count = Mathf.Clamp(_herb.count, 1, maxAmount);
+                    item.SetIngredientPicker(_herb.count);
+                }
+            }
+            else if (itemData.Type == IngredientType.tool)
+            {
+                if (string.IsNullOrEmpty(_tool.id))
+                {
+                    _tool = new CollectableItem
+                    {
+                        id = item.inventoryItemId,
+                        count = Mathf.Min(1, maxAmount)
+                    };
+                    item.SetIngredientPicker(_tool.count);
+                }
+                else if (_tool.id != item.inventoryItemId)
+                {
+                    _tool = new CollectableItem();
+                    UIInventory.Instance.toolsWheel.ResetPicker();
+                }
+                else
+                {
+                    _tool.count = (int)Mathf.Repeat(_tool.count + 1, maxAmount + 1);
+                    _tool.count = Mathf.Clamp(_tool.count, 1, maxAmount);
+                    item.SetIngredientPicker(_tool.count);
+                }
+            }
+            else if (itemData.Type == IngredientType.gem)
+            {
+                if (string.IsNullOrEmpty(_gem.id))
+                {
+                    _gem = new CollectableItem
+                    {
+                        id = item.inventoryItemId,
+                        count = Mathf.Min(1, maxAmount)
+                    };
+                    item.SetIngredientPicker(_gem.count);
+                }
+                else if (_gem.id != item.inventoryItemId)
+                {
+                    _gem = new CollectableItem();
+                    UIInventory.Instance.gemsWheel.ResetPicker();
+                }
+                else
+                {
+                    _gem.count = (int)Mathf.Repeat(_gem.count + 1, maxAmount + 1);
+                    _gem.count = Mathf.Clamp(_gem.count, 1, maxAmount);
+                    item.SetIngredientPicker(_gem.count);
+                }
+            }
+        }
+
+        private void SetIngredients(string[] ingredients)
+        {
+            _herb.id = _tool.id = _gem.id = null;
+            _herb.count = _tool.count = _gem.count = 0;
+
+            if (ingredients != null)
+            {
+                for (int i = 0; i < ingredients.Length; i++)
+                {
+                    IngredientType ingrType = DownloadedAssets.GetCollectable(ingredients[i]).Type;
+
+                    if (ingrType == IngredientType.herb)
+                    {
+                        _herb = new CollectableItem
+                        {
+                            id = ingredients[i],
+                            count = 1
+                        };
+                    }
+                    else if (ingrType == IngredientType.tool)
+                    {
+                        _tool = new CollectableItem
+                        {
+                            id = ingredients[i],
+                            count = 1
+                        };
+                    }
+                    else if (ingrType == IngredientType.gem)
+                    {
+                        _gem = new CollectableItem
+                        {
+                            id = ingredients[i],
+                            count = 1
+                        };
+                    }
+                }
+            }
+        }
+
+        private void OnCloseInventory()
+        {
+            if (Time.time - _startTime < _turnModel.PlanningMaxTime)
+            {
+                _charactersTurnOrderView.SetActive(true);
+                _quickCastView.SetOnMenuIngredient(false, string.Empty);
+                _countdownView.Show();
+            }
+
+            _gem = new CollectableItem();
+            _herb = new CollectableItem();
+            _tool = new CollectableItem();
+        }
+
+        private InventoryItemModel[] GetIngredients()
+        {
+            int size = Mathf.Clamp(_tool.count, 0, 1) + Mathf.Clamp(_herb.count, 0, 1) + Mathf.Clamp(_gem.count, 0, 1);
+            InventoryItemModel[] ingredients = new InventoryItemModel[size];
+            int index = 0;
+
+            if (_tool.count > 0)
+            {
+                ingredients[index] = new InventoryItemModel()
+                {
+                    Id = _tool.id,
+                    Count = _tool.count
+                };
+                index++;
+            }
+
+            if (_gem.count > 0)
+            {
+                ingredients[index] = new InventoryItemModel()
+                {
+                    Id = _gem.id,
+                    Count = _gem.count
+                };
+                index++;
+            }
+
+            if (_herb.count > 0)
+            {
+                ingredients[index] = new InventoryItemModel()
+                {
+                    Id = _herb.id,
+                    Count = _herb.count
+                };
+            }
+
+            return ingredients;
+        }
+
+        private void OnFinishAddCastRequest(string spell)
+        {
+            if (UIInventory.isOpen)
+            {
+                PlayerDataManager.playerData.SubIngredient(_gem.id, _gem.count);
+                PlayerDataManager.playerData.SubIngredient(_tool.id, _tool.count);
+                PlayerDataManager.playerData.SubIngredient(_herb.id, _herb.count);
+
+                UIInventory.Instance.Close();
+                OnCloseInventory();
+            }
+            else
+            {
+                SpellData selectedSpell = DownloadedAssets.GetSpell(spell);
+
+                foreach (string ingredient in selectedSpell.ingredients)
+                {
+                    PlayerDataManager.playerData.SubIngredient(ingredient, 1);
+                }
+            }
+        }
         #endregion
     }
 }

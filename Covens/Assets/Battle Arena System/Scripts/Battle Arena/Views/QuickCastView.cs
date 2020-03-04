@@ -32,7 +32,7 @@ namespace Raincrow.BattleArena.Views
         private GameObject _currentMenu;
         private bool _isOpen;
 
-        public void Show(UnityAction onClickFly, UnityAction onClickSummon, UnityAction onClickFlee, System.Action<string> onCastSpell)
+        public void Show(UnityAction onClickFly, UnityAction onClickSummon, UnityAction onClickFlee, System.Action<string> onCastSpell, System.Action<string> openIngredients)
         {
             gameObject.SetActive(true);
             _buttonFly.onClick.AddListener(onClickFly);
@@ -40,7 +40,7 @@ namespace Raincrow.BattleArena.Views
             _buttonFlee.onClick.AddListener(onClickFlee);
             _buttonAstral.onClick.AddListener(()=> { onCastSpell("spell_astral"); });
 
-            _spellMenu.Show(onCastSpell);
+            _spellMenu.Show(onCastSpell, openIngredients);
         }
 
         public void Hide()
@@ -123,11 +123,30 @@ namespace Raincrow.BattleArena.Views
             _isOpen = !_isOpen;
             _imageIcon.sprite = _isOpen ? _iconOpen : _iconClose;
         }
+
+        public void SetActive(bool value)
+        {
+            gameObject.SetActive(value);
+        }
+
+        public void SetOnMenuIngredient(bool value, string spell)
+        {
+            if (value)
+                _spellMenu.OnOpenIngredients(spell);
+            else
+                _spellMenu.OnCloseIngredients();
+
+            _buttonFlee.interactable = !value;
+        }
     }
 
     public interface IQuickCastView
     {
-        void Show(UnityAction onClickFly, UnityAction onClickSummon, UnityAction onClickFlee, System.Action<string> onCastSpell);
+        void Show(UnityAction onClickFly, UnityAction onClickSummon, UnityAction onClickFlee, System.Action<string> onCastSpell, System.Action<string> openIngredients);
+        
+        void SetActive(bool value);
+
+        void SetOnMenuIngredient(bool value, string spell);
 
         void Hide();
 

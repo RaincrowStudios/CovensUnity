@@ -253,7 +253,7 @@ PrefabInstance:
         type: 3}
       propertyPath: _gameMasterController
       value: 
-      objectReference: {fileID: 1212060287}
+      objectReference: {fileID: 1212060292}
     - target: {fileID: 7196786638976531525, guid: 61c97baa5215f1647a7ed02e6b0d3ef8,
         type: 3}
       propertyPath: _objectPool
@@ -376,28 +376,18 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 160d10ce54207df46a6fd3a994975be9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
---- !u!1 &1212060286 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 3561526507227420493, guid: 61c97baa5215f1647a7ed02e6b0d3ef8,
+--- !u!114 &1212060292 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 1023886202801595217, guid: 61c97baa5215f1647a7ed02e6b0d3ef8,
     type: 3}
   m_PrefabInstance: {fileID: 640587009}
   m_PrefabAsset: {fileID: 0}
---- !u!114 &1212060287
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1212060286}
+  m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: a074427e41335d846a8dbda0ab2cc5eb, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _sendPlanningPhaseReadyMaxTime: 3
-  _waitForPlanningPhaseReadyMaxTime: 3
-  _sendFinishPlanningPhaseMaxTime: 3
-  _waitForActionResolutionReadyMaxTime: 3
 --- !u!1001 &1260837324
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -612,7 +602,7 @@ MonoBehaviour:
     type: 3}
   m_PrefabInstance: {fileID: 640587009}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1212060286}
+  m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 6e7e65d202e16e947a5b844118b467ad, type: 3}

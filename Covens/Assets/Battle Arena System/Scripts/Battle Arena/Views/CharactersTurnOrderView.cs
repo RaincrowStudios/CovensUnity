@@ -183,6 +183,11 @@ namespace Raincrow.BattleArena.Views
                 actionPointView.SetState(true);
             }
         }
+
+        public void SetActive(bool value)
+        {
+            gameObject.SetActive(value);
+        }
     }
 
     public interface ICharactersTurnOrderView
@@ -192,5 +197,7 @@ namespace Raincrow.BattleArena.Views
         void UpdateActionsPoints(int numActionsUsed);
 
         void Hide();
+
+        void SetActive(bool value);
     }
 }
