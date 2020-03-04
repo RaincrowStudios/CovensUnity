@@ -12,7 +12,6 @@ namespace Raincrow.BattleArena.Views
         [SerializeField] private TextMeshProUGUI _textNameSpell;
         [SerializeField] private Image _imageIconSpell;
         [SerializeField] private Button _buttonSpell;
-        [SerializeField] private Button _buttonSpellIngredients;
 
         [Header("Ingredients")]
         [SerializeField] private Image _imageIngredientGem;
@@ -24,8 +23,13 @@ namespace Raincrow.BattleArena.Views
         //Privates variable
         private string _spell;
 
-        System.Action<string> _onClickSpell;
-        System.Action<string> _openIngredients;
+        private System.Action<string> _onClickSpell;
+        private System.Action<string> _openIngredients;
+        private float _startTimeOnClick = 0.0f;
+        private bool _pointerDown;
+
+        //Const variable
+        private const float TIME_HOLD = 0.5f;
 
         public void Setup(int index, System.Action<string> onClickSpell, System.Action<string> openIngredients)
         {
@@ -35,9 +39,6 @@ namespace Raincrow.BattleArena.Views
 
             _onClickSpell = onClickSpell;
             _openIngredients = openIngredients;
-
-            _buttonSpell.onClick.AddListener(OnClickCastSpell);
-            _buttonSpellIngredients.onClick.AddListener(OpenIngredients);
 
             if (string.IsNullOrEmpty(_spell) == false)
             {
@@ -60,14 +61,33 @@ namespace Raincrow.BattleArena.Views
             _buttonSpell.interactable = value;
         }
 
-        private void OnClickCastSpell()
+        public void OnPointerDonwSpell()
         {
-            _onClickSpell(_spell);
+            _pointerDown = true;
+            StartCoroutine(WaitPointerUpCoroutine());
         }
 
-        private void OpenIngredients()
+        public void OnPointerUpSpell()
         {
-            _openIngredients(_spell);
+            _pointerDown = false;
+        }
+
+        private IEnumerator WaitPointerUpCoroutine()
+        {
+            float time = 0;
+            while (_pointerDown)
+            {
+                yield return 0;
+                time += Time.unscaledDeltaTime;
+
+                if (time > TIME_HOLD)
+                {
+                    _openIngredients(_spell);
+                    yield break;
+                }
+            }
+
+            _onClickSpell(_spell);
         }
 
         public string GetSpellName()
