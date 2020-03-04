@@ -249,7 +249,7 @@ namespace Raincrow.BattleArena.Phases
         {
             if (HasActionsAvailable() && _selectedSlot.HasValue)
             {
-                _summoningView.Open(OnSummon);
+                _summoningView.Open(OnSummon);                
             }
         }
 
@@ -257,6 +257,8 @@ namespace Raincrow.BattleArena.Phases
         {
             _turnModel.RequestedActions.Add(new SummonActionRequestModel() { Position = _selectedSlot.Value, SpiritId = spiritID });
             _charactersTurnOrderView.UpdateActionsPoints(_turnModel.RequestedActions.Count);
+
+            Debug.LogFormat("Summon Spirit {0} to Slot X:{1} Y:{2}", spiritID, _selectedSlot.Value.Row, _selectedSlot.Value.Col);
         }
 
         private void OpenInventory(string spell)

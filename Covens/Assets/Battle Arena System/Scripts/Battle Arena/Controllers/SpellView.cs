@@ -1,7 +1,4 @@
 ﻿using Raincrow.BattleArena.Model;
-using Raincrow.GameEventResponses;
-using Raincrow.Maps;
-using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
@@ -24,9 +21,13 @@ namespace Raincrow.BattleArena.Views
             int quickcastCount = 4;
             for (int i = _spellButtons.Count; i < quickcastCount; i++)
             {
-                SpellSlotView aux = Instantiate(_buttonSpellPrefab, _spellContainer.transform);
-                aux.Setup(i, onClickSpell, openIngredients);
-                _spellButtons.Add(aux);
+                string spell = PlayerManager.GetQuickcastSpell(i);
+                if (!string.IsNullOrWhiteSpace(spell))
+                {
+                    SpellSlotView aux = Instantiate(_buttonSpellPrefab, _spellContainer.transform);
+                    aux.Setup(spell, onClickSpell, openIngredients);
+                    _spellButtons.Add(aux);
+                }
             }
         }
 
@@ -34,9 +35,9 @@ namespace Raincrow.BattleArena.Views
         {
             _buttonSpellAstral.interactable = false;
 
-            foreach(SpellSlotView button in _spellButtons)
+            foreach (SpellSlotView button in _spellButtons)
             {
-                if(!button.GetSpellName().Equals(spell))
+                if (!button.GetSpellName().Equals(spell))
                     button.SetInteractable(false);
                 else
                     button.SetInteractable(true);

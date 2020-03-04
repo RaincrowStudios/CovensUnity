@@ -1,5 +1,7 @@
 ﻿using Raincrow.BattleArena.Controller;
+using Raincrow.BattleArena.Factory;
 using Raincrow.BattleArena.Model;
+using Raincrow.BattleArena.Views;
 using Raincrow.StateMachines;
 using System.Collections;
 using System.Collections.Generic;
@@ -14,6 +16,7 @@ namespace Raincrow.BattleArena.Phases
         private ICoroutineHandler _coroutineStarter;
         private IBattleModel _battleModel;
         private ITurnModel _turnModel;
+        private SpiritGameObjectFactory _spiritFactory;
         private ICellUIModel[,] _gridView = new ICellUIModel[0, 0];
         private IDictionary<string, (IWitchModel, IWitchUIModel)> _witches = new Dictionary<string, (IWitchModel, IWitchUIModel)>(); // holy shit, it works
         private IDictionary<string, (ISpiritModel, ISpiritUIModel)> _spirits = new Dictionary<string, (ISpiritModel, ISpiritUIModel)>(); // holy shit, it works
@@ -21,12 +24,17 @@ namespace Raincrow.BattleArena.Phases
         // Properties
         public string Name => "Action Resolution Phase";
 
-        public ActionResolutionPhase(ICoroutineHandler coroutineStarter, ICellUIModel[,] gridView, IBattleModel battleModel, ITurnModel turnModel)
+        public ActionResolutionPhase(ICoroutineHandler coroutineStarter, 
+                                     ICellUIModel[,] gridView, 
+                                     IBattleModel battleModel, 
+                                     ITurnModel turnModel,
+                                     SpiritGameObjectFactory spiritFactory)
         {
             _coroutineStarter = coroutineStarter;
             _gridView = gridView;
             _battleModel = battleModel;
             _turnModel = turnModel;
+            _spiritFactory = spiritFactory;
         }
 
         public IEnumerator Enter(IStateMachine stateMachine)
@@ -56,17 +64,24 @@ namespace Raincrow.BattleArena.Phases
                 string characterId = key.Key;
                 foreach (IActionResponseModel responseAction in key.Value)
                 {
-                    IEnumerator actionRoutine = default;
-                    Debug.Log(responseAction.Type);
-                    switch (responseAction.Type)
+                    if (responseAction.IsSuccess)
                     {
-                        case ActionResponseType.Move:
-                            MoveActionResponseModel moveAction = responseAction as MoveActionResponseModel;
-                            actionRoutine = Move(characterId, moveAction);
-                            break;
-                    }
+                        IEnumerator actionRoutine = default;
+                        Debug.Log(responseAction.Type);
+                        switch (responseAction.Type)
+                        {
+                            case ActionResponseType.Move:
+                                MoveActionResponseModel moveAction = responseAction as MoveActionResponseModel;
+                                actionRoutine = Move(characterId, moveAction);
+                                break;
+                            case ActionResponseType.Summon:
+                                SummonActionResponseModel summonAction = responseAction as SummonActionResponseModel;
+                                actionRoutine = Summon(characterId, summonAction);
+                                break;
+                        }
 
-                    yield return _coroutineStarter.Invoke(actionRoutine);
+                        yield return _coroutineStarter.Invoke(actionRoutine);
+                    }
                 }
             }
             yield return stateMachine.ChangeState<BanishmentPhase>();
@@ -109,10 +124,21 @@ namespace Raincrow.BattleArena.Phases
 
             // Animation
 
+
             // Set it
             _battleModel.GridUI.SetObjectToGrid(characterUI, character, targetPosition.Row, targetPosition.Col);
 
             Debug.LogFormat("Execute Action Move to Slot X:{0} Y:{1}", targetPosition.Row, targetPosition.Col);
+
+            yield return new WaitForSeconds(1f);
+        }
+
+        private IEnumerator Summon(string characterId, SummonActionResponseModel summonAction)
+        {
+            // Get cell transform
+            BattleSlot targetPosition = summonAction.Position;            
+            ISpiritModel spiritModel = summonAction.Spirit;            
+            yield return _battleModel.GridUI.SpawnObjectOnGrid(spiritModel, targetPosition.Row, targetPosition.Col);
 
             yield return new WaitForSeconds(1f);
         }

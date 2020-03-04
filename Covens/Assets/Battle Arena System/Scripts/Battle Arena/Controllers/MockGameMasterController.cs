@@ -208,6 +208,7 @@ namespace Raincrow.BattleArena.Controller
 
                 battleAction.Results.Add(new CastActionResponseModel()
                 {
+                    IsSuccess = true,
                     Target = target,
                     Caster = caster
                 });
@@ -220,6 +221,7 @@ namespace Raincrow.BattleArena.Controller
 
                 battleAction.Results.Add(new MoveActionResponseModel()
                 {
+                    IsSuccess = true,
                     Position = moveactionRequest.Position
                 });
                 return battleAction;
@@ -228,9 +230,20 @@ namespace Raincrow.BattleArena.Controller
             if (actionRequest.Type == ActionRequestType.Summon)
             {
                 SummonActionRequestModel summonActionRequest = actionRequest as SummonActionRequestModel;
+
+                GenericCharacterObjectServer spiritModel = new GenericCharacterObjectServer()
+                {
+                    ObjectType = ObjectType.Spirit,
+                    Id = System.Guid.NewGuid().ToString(),
+                    Texture = "spirit_moonSnake",
+                    BaseEnergy = 200,
+                    Energy = 80
+                };
+
                 battleAction.Results.Add(new SummonActionResponseModel()
                 {
-                    SpiritId = summonActionRequest.SpiritId,
+                    IsSuccess = true,
+                    Spirit = spiritModel,
                     Position = summonActionRequest.Position
                 });
                 return battleAction;

@@ -93,7 +93,8 @@ namespace Raincrow.BattleArena.Model
     public class SummonActionResponseModel : ActionResponseModel
     {
         public override string Type => ActionResponseType.Summon;
-        public string SpiritId { get; set; }
+        [JsonProperty("spirit")]
+        public GenericCharacterObjectServer Spirit { get; set; }
         [JsonProperty("position")]
         public BattleSlot Position { get; set; }
     }

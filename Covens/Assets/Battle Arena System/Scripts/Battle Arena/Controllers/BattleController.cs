@@ -24,11 +24,13 @@ namespace Raincrow.BattleArena.Controller
         private IGridModel _gridModel;
         private ITurnModel _turnModel;
         private IQuickCastView _quickCastView;
+        private IDictionary<string, ICharacterView<IWitchModel, IWitchUIModel>> _dictWitchesViews = new Dictionary<string, ICharacterView<IWitchModel, IWitchUIModel>>();
+        private IDictionary<string, ICharacterView<ISpiritModel, ISpiritUIModel>> _dictSpiritViews = new Dictionary<string, ICharacterView<ISpiritModel, ISpiritUIModel>>();
 
         // Properties
         public ICellUIModel[,] Cells { get; private set; } = new ICellUIModel[0, 0]; // Grid with all the game objects inserted
-        public IList<ICharacterView<IWitchModel, IWitchUIModel>> WitchesViews { get; private set; } = new List<ICharacterView<IWitchModel, IWitchUIModel>>(); // List with all witches
-        public IList<ICharacterView<ISpiritModel, ISpiritUIModel>> SpiritsViews { get; private set; } = new List<ICharacterView<ISpiritModel, ISpiritUIModel>>(); // List with all spirits
+        public ICollection<ICharacterView<IWitchModel, IWitchUIModel>> WitchesViews => _dictWitchesViews.Values; // List with all witches
+        public ICollection<ICharacterView<ISpiritModel, ISpiritUIModel>> SpiritsViews => _dictSpiritViews.Values; // List with all spirits
         public int MaxCellsPerRow => _gridModel.MaxCellsPerRow;
         public int MaxCellsPerColumn => _gridModel.MaxCellsPerColumn;        
 
@@ -87,8 +89,8 @@ namespace Raincrow.BattleArena.Controller
         private IEnumerator PlaceCharacters(IList<IWitchModel> witches, IList<ISpiritModel> spirits)
         {
             // Initialize list of characters            
-            WitchesViews = new List<ICharacterView<IWitchModel, IWitchUIModel>>();
-            SpiritsViews = new List<ICharacterView<ISpiritModel, ISpiritUIModel>>();
+            //WitchesViews = new List<ICharacterView<IWitchModel, IWitchUIModel>>();
+            //SpiritsViews = new List<ICharacterView<ISpiritModel, ISpiritUIModel>>();
             Camera battleCamera = _serviceLocator.GetBattleCamera();
 
             Dictionary<string, IWitchModel> dictWitches = new Dictionary<string, IWitchModel>();
@@ -120,7 +122,7 @@ namespace Raincrow.BattleArena.Controller
                             // add spirit and init
                             //AbstractCharacterView<ISpiritModel> spiritView = ;
                             //spiritView.Init(spirit, battleCamera);
-                            SpiritsViews.Add(createCharacter.ReturnValue);
+                            _dictSpiritViews.Add(spirit.Id, createCharacter.ReturnValue);
                         }
                         else if (dictWitches.TryGetValue(cell.ObjectId, out IWitchModel witch)) // has a character/item
                         {
@@ -132,7 +134,7 @@ namespace Raincrow.BattleArena.Controller
                             // add a witch and init
                             //AbstractCharacterView<IWitchModel> witchModel = createCharacter.ReturnValue;
                             //witchModel.Init(witch, battleCamera);
-                            WitchesViews.Add(createCharacter.ReturnValue);
+                            _dictWitchesViews.Add(witch.Id, createCharacter.ReturnValue);
                         }
                     }
 
@@ -168,7 +170,7 @@ namespace Raincrow.BattleArena.Controller
                 );
             yield return null;
 
-            ActionResolutionPhase actionResolutionPhase = new ActionResolutionPhase(this, Cells, battleModel, _turnModel);
+            ActionResolutionPhase actionResolutionPhase = new ActionResolutionPhase(this, Cells, battleModel, _turnModel, _spiritFactory);
             yield return null;
 
             BanishmentPhase banishmentPhase = new BanishmentPhase(this);
@@ -283,6 +285,36 @@ namespace Raincrow.BattleArena.Controller
         public void RemoveObjectFromGrid(IObjectUIModel objectUIModel, IObjectModel objectModel)
         {
             _gridModel.RemoveObjectFromGrid(objectModel);
+
+            if (objectModel.ObjectType == ObjectType.Witch)
+            {
+                _dictWitchesViews.Remove(objectModel.Id);
+            }
+            else if (objectModel.ObjectType == ObjectType.Spirit)
+            {
+                _dictSpiritViews.Remove(objectModel.Id);
+            }
+        }
+
+        public IEnumerator SpawnObjectOnGrid(IObjectModel objectModel, int row, int col)
+        {
+            if (objectModel.ObjectType == ObjectType.Spirit)
+            {
+                // Create the new spirit
+                ICellUIModel targetCellView = Cells[row, col];
+                IEnumerator<ICharacterView<ISpiritModel, ISpiritUIModel>> createSpirit = _spiritFactory.Create(targetCellView.Transform, objectModel as ISpiritModel);
+                yield return createSpirit;
+
+                // Add the new spirit
+                ICharacterView<ISpiritModel, ISpiritUIModel> spiritView = createSpirit.Current;
+                _dictSpiritViews.Add(spiritView.Model.Id, spiritView);
+
+                // Set cell transform position to object UI Model position
+                spiritView.UIModel.Transform.position = targetCellView.Transform.position;
+
+                // Add object model in the grid model
+                _gridModel.SetObjectToGrid(spiritView.Model, row, col);
+            }            
         }
 
         #endregion

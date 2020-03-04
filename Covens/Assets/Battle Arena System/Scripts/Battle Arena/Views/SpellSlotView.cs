@@ -31,11 +31,11 @@ namespace Raincrow.BattleArena.Views
         //Const variable
         private const float TIME_HOLD = 0.5f;
 
-        public void Setup(int index, System.Action<string> onClickSpell, System.Action<string> openIngredients)
+        public void Setup(string spell, System.Action<string> onClickSpell, System.Action<string> openIngredients)
         {
             StopAllCoroutines();
 
-            _spell = PlayerManager.GetQuickcastSpell(index);
+            _spell = spell;
 
             _onClickSpell = onClickSpell;
             _openIngredients = openIngredients;
