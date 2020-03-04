@@ -1,7 +1,5 @@
 ﻿using Raincrow.BattleArena.Controller;
-using Raincrow.BattleArena.Factory;
 using Raincrow.BattleArena.Model;
-using Raincrow.BattleArena.Views;
 using Raincrow.StateMachines;
 using System.Collections;
 using System.Collections.Generic;
@@ -11,13 +9,10 @@ namespace Raincrow.BattleArena.Phases
 {
     public class ActionResolutionPhase : IState
     {
-        // Variables
-        private float _startTime = 0f;
+        // Variables        
         private ICoroutineHandler _coroutineStarter;
         private IBattleModel _battleModel;
         private ITurnModel _turnModel;
-        private SpiritGameObjectFactory _spiritFactory;
-        private ICellUIModel[,] _gridView = new ICellUIModel[0, 0];
         private IDictionary<string, (IWitchModel, IWitchUIModel)> _witches = new Dictionary<string, (IWitchModel, IWitchUIModel)>(); // holy shit, it works
         private IDictionary<string, (ISpiritModel, ISpiritUIModel)> _spirits = new Dictionary<string, (ISpiritModel, ISpiritUIModel)>(); // holy shit, it works
 
@@ -25,16 +20,12 @@ namespace Raincrow.BattleArena.Phases
         public string Name => "Action Resolution Phase";
 
         public ActionResolutionPhase(ICoroutineHandler coroutineStarter, 
-                                     ICellUIModel[,] gridView, 
                                      IBattleModel battleModel, 
-                                     ITurnModel turnModel,
-                                     SpiritGameObjectFactory spiritFactory)
+                                     ITurnModel turnModel)
         {
             _coroutineStarter = coroutineStarter;
-            _gridView = gridView;
             _battleModel = battleModel;
             _turnModel = turnModel;
-            _spiritFactory = spiritFactory;
         }
 
         public IEnumerator Enter(IStateMachine stateMachine)
@@ -52,9 +43,6 @@ namespace Raincrow.BattleArena.Phases
                 _spirits.Add(view.Model.Id, (view.Model, view.UIModel));
                 yield return null;
             }
-
-            // TODO: Show Character Turn Order View
-            _startTime = Time.time;
         }
 
         public IEnumerator Update(IStateMachine stateMachine)
