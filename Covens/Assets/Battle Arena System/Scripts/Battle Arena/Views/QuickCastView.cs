@@ -38,20 +38,20 @@ namespace Raincrow.BattleArena.Views
             _buttonFly.onClick.AddListener(onClickFly);
             _buttonSummon.onClick.AddListener(onClickSummon);
             _buttonFlee.onClick.AddListener(onClickFlee);
-            _buttonAstral.onClick.AddListener(()=> { onCastSpell("spell_astral"); });
+            _buttonAstral.onClick.AddListener(() => { onCastSpell("spell_astral"); });
 
             _spellMenu.Show(onCastSpell, openIngredients);
         }
 
         public void Hide()
         {
-            if(_currentMenu != null)
+            if (_currentMenu != null)
             {
                 LeanTween.scaleY(_currentMenu, 0.0f, 0);
                 _currentMenu.SetActive(false);
                 _currentMenu = null;
             }
-   
+
             gameObject.SetActive(false);
             _buttonFly.onClick.RemoveAllListeners();
             _buttonSummon.onClick.RemoveAllListeners();
@@ -76,6 +76,11 @@ namespace Raincrow.BattleArena.Views
 
         private void ChangeMenu(GameObject menu)
         {
+            if (UIInventory.isOpen)
+            {
+                return;
+            }
+
             if (menu == _currentMenu)
             {
                 if (!_isOpen)
@@ -143,7 +148,7 @@ namespace Raincrow.BattleArena.Views
     public interface IQuickCastView
     {
         void Show(UnityAction onClickFly, UnityAction onClickSummon, UnityAction onClickFlee, System.Action<string> onCastSpell, System.Action<string> openIngredients);
-        
+
         void SetActive(bool value);
 
         void SetOnMenuIngredient(bool value, string spell);
