@@ -72,15 +72,15 @@ namespace Raincrow.BattleArena.Model
 
             objectModel.BattleSlot = new BattleSlot()
             {
-                Row = row,
-                Col = col
+                Row = cell.X,
+                Col = cell.Y
             };            
         }
 
         public void RemoveObjectFromGrid(IObjectModel objectModel)
         {
-            int col = objectModel.BattleSlot.Value.Row;
-            int row = objectModel.BattleSlot.Value.Col;
+            int row = objectModel.BattleSlot.Value.Row;
+            int col = objectModel.BattleSlot.Value.Col;            
 
             Cells[row, col].ObjectId = string.Empty;
             objectModel.BattleSlot = null;

@@ -80,7 +80,7 @@ namespace Raincrow.BattleArena.Phases
                                 break;
                         }
 
-                        if(actionRoutine != default)
+                        if (actionRoutine != default)
                         {
                             yield return _coroutineStarter.Invoke(actionRoutine);
                         }
@@ -116,16 +116,19 @@ namespace Raincrow.BattleArena.Phases
                 characterUI = spiritTuple.Item2;
             }
 
-            // Animation
+            if (character.BattleSlot.HasValue)
+            {
+                // Animation
 
-            // Remove it
-            _battleModel.GridUI.RemoveObjectFromGrid(characterUI, character);
+                // Remove it
+                _battleModel.GridUI.RemoveObjectFromGrid(characterUI, character);
 
-            _battleModel.GridUI.RecycleCharacter(characterUI.Transform.gameObject);
+                _battleModel.GridUI.RecycleCharacter(characterUI.Transform.gameObject);
 
-            Debug.LogFormat("Execute Action Flee Character ID: {0}", character.Id);
+                Debug.LogFormat("Execute Action Flee Character ID: {0}", character.Id);
 
-            yield return new WaitForSeconds(1f);
+                yield return new WaitForSeconds(1f);
+            }            
         }
 
         private IEnumerator Banish(string characterId, BanishActionResponseModel banishAction)
@@ -147,13 +150,16 @@ namespace Raincrow.BattleArena.Phases
             // Animation
 
             // Remove it
-            _battleModel.GridUI.RemoveObjectFromGrid(characterUI, character);
+            if (character.BattleSlot.HasValue)
+            {
+                _battleModel.GridUI.RemoveObjectFromGrid(characterUI, character);
 
-            _battleModel.GridUI.RecycleCharacter(characterUI.Transform.gameObject);
+                _battleModel.GridUI.RecycleCharacter(characterUI.Transform.gameObject);
 
-            Debug.LogFormat("Execute Action Flee Character ID: {0}", character.Id);
+                Debug.LogFormat("Execute Action Flee Character ID: {0}", character.Id);
 
-            yield return new WaitForSeconds(1f);
+                yield return new WaitForSeconds(1f);
+            }            
         }
 
         #endregion
