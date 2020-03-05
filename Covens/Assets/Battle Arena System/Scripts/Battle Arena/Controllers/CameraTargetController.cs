@@ -7,19 +7,32 @@ namespace Raincrow.BattleArena.Views
         private Vector3 _origin;
         private Vector3 _bounds;
         private float _height;
+        private int _moveTweenId = int.MinValue;
 
         public void Move(Vector3 movement)
         {
+            LeanTween.cancel(_moveTweenId);
+
             transform.Translate(movement, Space.World);
             transform.position = GetPositionClamped(transform.position);
         }
 
         public void SetBounds(Vector3 worldOrigin, Vector3 worldBounds)
         {
+            LeanTween.cancel(_moveTweenId);
             _height = transform.position.y;
             _origin = worldOrigin;
-            _bounds = worldBounds;            
+            _bounds = worldBounds;
             transform.position = GetPositionClamped(transform.position);
+        }
+
+        public void SetTargetPosition(Vector3 position, float speed)
+        {
+            LeanTween.cancel(_moveTweenId);
+
+            Vector3 targetPosition = GetPositionClamped(position);
+            float distance = Vector3.Distance(transform.position, targetPosition);
+            _moveTweenId = LeanTween.move(gameObject, targetPosition, distance / speed).setEaseLinear().id;
         }
 
         private Vector3 GetPositionClamped(Vector3 position)
@@ -44,5 +57,6 @@ namespace Raincrow.BattleArena.Views
     {
         void SetBounds(Vector3 worldOrigin, Vector3 worldBounds);
         void Move(Vector3 movement);
+        void SetTargetPosition(Vector3 position, float speed);
     }
 }

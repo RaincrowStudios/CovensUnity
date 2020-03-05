@@ -201,8 +201,9 @@ namespace Raincrow.BattleArena.Controller
                 Cells,
                 _serviceLocator.GetCountdownView(),
                 _serviceLocator.GetEnergyView(),
-                _serviceLocator.GetPlayerBadgeView()
-                );
+                _serviceLocator.GetPlayerBadgeView(),
+                _serviceLocator.GetCameraTargetController(),
+                _cameraSpeed);
             yield return null;
 
             ActionResolutionPhase actionResolutionPhase = new ActionResolutionPhase(this, battleModel, _turnModel, _serviceLocator.GetBarEventLogView());
@@ -298,7 +299,10 @@ namespace Raincrow.BattleArena.Controller
                     dragMovement = Vector3.MoveTowards(dragMovement, Vector3.zero, _cameraDecceleration * Time.deltaTime);
                 }
 
-                _cameraTargetController.Move(dragMovement);                
+                if (dragMovement.sqrMagnitude > Mathf.Epsilon)
+                {
+                    _cameraTargetController.Move(dragMovement);
+                }              
             }
         }
 

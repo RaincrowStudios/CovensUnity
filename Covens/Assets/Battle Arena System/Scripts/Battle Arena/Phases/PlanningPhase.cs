@@ -26,6 +26,8 @@ namespace Raincrow.BattleArena.Phases
         private ITurnModel _turnModel;
         private IBattleModel _battleModel;
         private ICellUIModel[,] _gridView;
+        private ICameraTargetController _cameraTargetController;
+        private float _cameraSpeed;
         private BattleSlot? _selectedSlot;
         private string _objectId;
         private CollectableItem _herb;
@@ -45,7 +47,9 @@ namespace Raincrow.BattleArena.Phases
                              ICellUIModel[,] gridView,
                              ICountdownView countdownView,
                              IEnergyView energyView,
-                             IPlayerBadgeView playerBadgeView)
+                             IPlayerBadgeView playerBadgeView,
+                             ICameraTargetController cameraTargetController,
+                             float cameraSpeed)
         {
             _coroutineStarter = coroutineStarter;
             _isPlanningPhaseFinished = null;
@@ -60,6 +64,8 @@ namespace Raincrow.BattleArena.Phases
             _countdownView = countdownView;
             _playerBadgeView = playerBadgeView;
             _energyView = energyView;
+            _cameraTargetController = cameraTargetController;
+            _cameraSpeed = cameraSpeed;
         }
 
         public IEnumerator Enter(IStateMachine stateMachine)
@@ -105,7 +111,7 @@ namespace Raincrow.BattleArena.Phases
 
         private void CheckInput(ICellModel cellModel)
         {
-            if(_selectedSlot != null)
+            if (_selectedSlot != null)
             {
                 ICellUIModel currentCellUI = _gridView[_selectedSlot.Value.Row, _selectedSlot.Value.Col];
                 currentCellUI.SetIsSelected(false);
@@ -113,6 +119,8 @@ namespace Raincrow.BattleArena.Phases
 
             ICellUIModel selectedCellUI = _gridView[cellModel.X, cellModel.Y];
             selectedCellUI.SetIsSelected(true);
+
+            _cameraTargetController.SetTargetPosition(selectedCellUI.Transform.position, _cameraSpeed);
 
             _selectedSlot = new BattleSlot()
             {
@@ -178,7 +186,7 @@ namespace Raincrow.BattleArena.Phases
             _isPlanningPhaseFinished = null;
             _sendFinishPlanningPhase = null;
 
-            if(_selectedSlot != null)
+            if (_selectedSlot != null)
             {
                 ICellUIModel currentCellUI = _gridView[_selectedSlot.Value.Row, _selectedSlot.Value.Col];
                 currentCellUI.SetIsSelected(false);
@@ -259,7 +267,7 @@ namespace Raincrow.BattleArena.Phases
         {
             if (HasActionsAvailable() && _selectedSlot.HasValue)
             {
-                _turnModel.RequestedActions.Add(new MoveActionRequestModel() { Position = _selectedSlot.Value });                
+                _turnModel.RequestedActions.Add(new MoveActionRequestModel() { Position = _selectedSlot.Value });
                 _charactersTurnOrderView.UpdateActionsPoints(_turnModel.RequestedActions.Count);
 
                 Debug.LogFormat("Add Action Move to Slot X:{0} Y:{1}", _selectedSlot.Value.Row, _selectedSlot.Value.Col);
@@ -270,7 +278,7 @@ namespace Raincrow.BattleArena.Phases
         {
             if (HasActionsAvailable() && _selectedSlot.HasValue)
             {
-                _summoningView.Open(OnSummon);                
+                _summoningView.Open(OnSummon);
             }
         }
 
