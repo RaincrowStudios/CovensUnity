@@ -249,10 +249,10 @@ namespace Raincrow.BattleArena.Controller
             // Show Energy View
             _energyView.Show();
             _playerBadgeView.Show();
-
+            
             while (enabled)
             {
-                _energyView.UpdateView(witchModel.Energy, witchModel.BaseEnergy);
+                _energyView.UpdateView(witchModel.Energy, witchModel.BaseEnergy);                
                 yield return null;
             }
 
