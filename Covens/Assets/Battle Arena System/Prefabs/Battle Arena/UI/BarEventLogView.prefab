@@ -140,56 +140,7 @@ MonoBehaviour:
       m_Calls: []
     m_TypeName: UnityEngine.UI.MaskableGraphic+CullStateChangedEvent, UnityEngine.UI,
       Version=1.0.0.0, Culture=neutral, PublicKeyToken=null
-  m_text: 'The <b>Evil Wind</b> cast <b>Arcane Damage</b> on you. <color=#ff0000>1624
-    energy</color><space=10><size=15>[01:12]</size>
-
-    The <b>Evil Wind</b> cast <b>Arcane Damage</b> on you. <color=#ff0000>1624 energy</color><space=10><size=15>[01:12]</size>
-
-    The <b>Evil Wind</b> cast <b>Arcane Damage</b> on you. <color=#ff0000>1624 energy</color><space=10><size=15>[01:12]</size>
-
-    The <b>Evil Wind</b> cast <b>Arcane Damage</b> on you. <color=#ff0000>1624 energy</color><space=10><size=15>[01:12]</size>
-
-    The <b>Evil Wind</b> cast <b>Arcane Damage</b> on you. <color=#ff0000>1624 energy</color><space=10><size=15>[01:12]</size>
-
-    The <b>Evil Wind</b> cast <b>Arcane Damage</b> on you. <color=#ff0000>1624 energy</color><space=10><size=15>[01:12]</size>
-
-    The <b>Evil Wind</b> cast <b>Arcane Damage</b> on you. <color=#ff0000>1624 energy</color><space=10><size=15>[01:12]</size>
-
-    The <b>Evil Wind</b> cast <b>Arcane Damage</b> on you. <color=#ff0000>1624 energy</color><space=10><size=15>[01:12]</size>
-
-    The <b>Evil Wind</b> cast <b>Arcane Damage</b> on you. <color=#ff0000>1624 energy</color><space=10><size=15>[01:12]</size>
-
-    The <b>Evil Wind</b> cast <b>Arcane Damage</b> on you. <color=#ff0000>1624 energy</color><space=10><size=15>[01:12]</size>
-
-    The <b>Evil Wind</b> cast <b>Arcane Damage</b> on you. <color=#ff0000>1624 energy</color><space=10><size=15>[01:12]</size>
-
-    The <b>Evil Wind</b> cast <b>Arcane Damage</b> on you. <color=#ff0000>1624 energy</color><space=10><size=15>[01:12]</size>
-
-    The <b>Evil Wind</b> cast <b>Arcane Damage</b> on you. <color=#ff0000>1624 energy</color><space=10><size=15>[01:12]</size>
-
-    The <b>Evil Wind</b> cast <b>Arcane Damage</b> on you. <color=#ff0000>1624 energy</color><space=10><size=15>[01:12]</size>
-
-    The <b>Evil Wind</b> cast <b>Arcane Damage</b> on you. <color=#ff0000>1624 energy</color><space=10><size=15>[01:12]</size>
-
-    The <b>Evil Wind</b> cast <b>Arcane Damage</b> on you. <color=#ff0000>1624 energy</color><space=10><size=15>[01:12]</size>
-
-    The <b>Evil Wind</b> cast <b>Arcane Damage</b> on you. <color=#ff0000>1624 energy</color><space=10><size=15>[01:12]</size>
-
-    The <b>Evil Wind</b> cast <b>Arcane Damage</b> on you. <color=#ff0000>1624 energy</color><space=10><size=15>[01:12]</size>
-
-    The <b>Evil Wind</b> cast <b>Arcane Damage</b> on you. <color=#ff0000>1624 energy</color><space=10><size=15>[01:12]</size>
-
-    The <b>Evil Wind</b> cast <b>Arcane Damage</b> on you. <color=#ff0000>1624 energy</color><space=10><size=15>[01:12]</size>
-
-    The <b>Evil Wind</b> cast <b>Arcane Damage</b> on you. <color=#ff0000>1624 energy</color><space=10><size=15>[01:12]</size>
-
-    The <b>Evil Wind</b> cast <b>Arcane Damage</b> on you. <color=#ff0000>1624 energy</color><space=10><size=15>[01:12]</size>
-
-    The <b>Evil Wind</b> cast <b>Arcane Damage</b> on you. <color=#ff0000>1624 energy</color><space=10><size=15>[01:12]</size>
-
-    The <b>Evil Wind</b> cast <b>Arcane Damage</b> on you. <color=#ff0000>1624 energy</color><space=10><size=15>[01:12]</size>
-
-    The <b>Evil Wind</b> cast <b>Arcane Damage</b> on you. <color=#ff0000>1624 energy</color><space=10><size=15>[01:12]</size>'
+  m_text: 
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 38350119ae09440479434f932beb604a, type: 2}
   m_sharedMaterial: {fileID: 21238215743915936, guid: 38350119ae09440479434f932beb604a,
