@@ -10,6 +10,7 @@ GameObject:
   m_Component:
   - component: {fileID: 3543581160031026037}
   - component: {fileID: 3543581160031026036}
+  - component: {fileID: 2909580882335506164}
   m_Layer: 0
   m_Name: Battle Camera
   m_TagString: Untagged
@@ -74,3 +75,19 @@ Camera:
   m_OcclusionCulling: 1
   m_StereoConvergence: 10
   m_StereoSeparation: 0.022
+--- !u!114 &2909580882335506164
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3543581160031026038}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e67833944923b1849ac5d354a9d2dd7b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _target: {fileID: 0}
+  _smoothTime: 0.3
+  _cameraHeight: 7.5
+  _cameraDistance: 5
