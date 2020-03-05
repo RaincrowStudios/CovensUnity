@@ -105,6 +105,15 @@ namespace Raincrow.BattleArena.Phases
 
         private void CheckInput(ICellModel cellModel)
         {
+            if(_selectedSlot != null)
+            {
+                ICellUIModel currentCellUI = _gridView[_selectedSlot.Value.Row, _selectedSlot.Value.Col];
+                currentCellUI.SetIsSelected(false);
+            }
+
+            ICellUIModel selectedCellUI = _gridView[cellModel.X, cellModel.Y];
+            selectedCellUI.SetIsSelected(true);
+
             _selectedSlot = new BattleSlot()
             {
                 Row = cellModel.X,
@@ -168,6 +177,12 @@ namespace Raincrow.BattleArena.Phases
 
             _isPlanningPhaseFinished = null;
             _sendFinishPlanningPhase = null;
+
+            if(_selectedSlot != null)
+            {
+                ICellUIModel currentCellUI = _gridView[_selectedSlot.Value.Row, _selectedSlot.Value.Col];
+                currentCellUI.SetIsSelected(false);
+            }
 
             // wait for planning phase finished event
             yield return new WaitUntil(() => _isPlanningPhaseFinished.GetValueOrDefault());

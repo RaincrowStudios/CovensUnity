@@ -27,7 +27,9 @@ namespace Raincrow.BattleArena.Model
 
     public interface ICellUIModel
     {
+        bool IsSelected { get; set; }
         void Show(ICellModel cellModel, Vector2 cellScale);
+        void SetIsSelected(bool value);
         Transform Transform { get; }
         CellClickEvent OnCellClick { get; }
     }

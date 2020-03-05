@@ -137,3 +137,5 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _renderer: {fileID: 1545156458735728162}
+  _defaultMaterial: {fileID: 2100000, guid: 7d5ec06d1794a1a4db1a4e2051f60c7a, type: 2}
+  _selectedMaterial: {fileID: 2100000, guid: dc271c94d45368c4692d55dc9f39410e, type: 2}

@@ -8,6 +8,8 @@ namespace Raincrow.BattleArena.Views
     {
         // Private serialized variables
         [SerializeField] private Renderer _renderer;
+        [SerializeField] private Material _defaultMaterial;
+        [SerializeField] private Material _selectedMaterial;
 
         // Variables
         private ICellModel _cellModel;
@@ -16,6 +18,14 @@ namespace Raincrow.BattleArena.Views
         public CellClickEvent OnCellClick { get; private set; } = new CellClickEvent();
 
         public Transform Transform => transform;
+
+        public bool IsSelected { get; set; }
+
+        public void SetIsSelected(bool value)
+        {
+            IsSelected = value;
+            _renderer.material = IsSelected ? _selectedMaterial : _defaultMaterial;
+        }
 
         public void Show(ICellModel cellModel, Vector2 cellScale)
         {
