@@ -161,7 +161,7 @@ namespace Raincrow.Mocks
             yield return StartCoroutine(loadingView.Show(0.1f, 1f));
 
             BattleController battleController = _serviceLocator.GetBattleController();
-            yield return StartCoroutine(battleController.StartBattle(battleId, gridModel, witchModels, spiritModels, loadingView));            
+            yield return StartCoroutine(battleController.StartBattle(battleId, witchModel.Id, gridModel, witchModels, spiritModels, loadingView));            
             StartCoroutine(loadingView.Hide(1f));
         }
 #endif

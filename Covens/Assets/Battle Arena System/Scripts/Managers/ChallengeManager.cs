@@ -44,21 +44,21 @@ namespace Raincrow.BattleArena.Manager
                         }                        
                     }
 
-                    StartCoroutine(StartBattle(battle.Id, grid, witches, spirits));
+                    StartCoroutine(StartBattle(battle.Id, PlayerDataManager.playerData.account, grid, witches, spirits));
 
                     LoadingOverlay.Hide();
                 }
              );
         }
 
-        private IEnumerator StartBattle(string id, IGridModel grid, IList<IWitchModel> witches, IList<ISpiritModel> spirits)
+        private IEnumerator StartBattle(string id, string playerId, IGridModel grid, IList<IWitchModel> witches, IList<ISpiritModel> spirits)
         {
             ServiceLocator serviceLocator = FindObjectOfType<ServiceLocator>();
             ILoadingView loadingView = serviceLocator.GetLoadingView();
             BattleController battleController = serviceLocator.GetBattleController();
 
             yield return StartCoroutine(loadingView.Show(0f, 1f));
-            yield return StartCoroutine(battleController.StartBattle(id, grid, witches, spirits, loadingView));
+            yield return StartCoroutine(battleController.StartBattle(id, playerId, grid, witches, spirits, loadingView));
             yield return StartCoroutine(loadingView.Hide(1f));
         }
 

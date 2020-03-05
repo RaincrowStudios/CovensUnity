@@ -9,6 +9,7 @@ using UnityEngine;
 using Raincrow.Loading.View;
 using Raincrow.Services;
 using Raincrow.BattleArena.Controllers;
+using System;
 
 namespace Raincrow.BattleArena.Controller
 {
@@ -25,6 +26,7 @@ namespace Raincrow.BattleArena.Controller
         private IGridModel _gridModel;
         private ITurnModel _turnModel;
         private IQuickCastView _quickCastView;
+        private IEnergyView _energyView;
         private IDictionary<string, ICharacterController<IWitchModel, IWitchUIModel>> _dictWitchesViews = new Dictionary<string, ICharacterController<IWitchModel, IWitchUIModel>>();
         private IDictionary<string, ICharacterController<ISpiritModel, ISpiritUIModel>> _dictSpiritViews = new Dictionary<string, ICharacterController<ISpiritModel, ISpiritUIModel>>();
 
@@ -52,14 +54,21 @@ namespace Raincrow.BattleArena.Controller
             {
                 _quickCastView = _serviceLocator.GetQuickCastView();
             }
+
+            if (_energyView == null)
+            {
+                _energyView = _serviceLocator.GetEnergyView();
+            }
         }
 
-        public IEnumerator StartBattle(string battleId, IGridModel gridModel, IList<IWitchModel> witches, IList<ISpiritModel> spirits, ILoadingView loadingView = null)
+        public IEnumerator StartBattle(string battleId, string playerId, IGridModel gridModel, IList<IWitchModel> witches, IList<ISpiritModel> spirits, ILoadingView loadingView = null)
         {
             if (!isActiveAndEnabled)
             {
                 gameObject.SetActive(true);
             }
+
+            _energyView.Show();
 
             _gridModel = gridModel;
 
@@ -77,7 +86,8 @@ namespace Raincrow.BattleArena.Controller
             // Update Loop
             StartCoroutine(UpdateCharacters());
             StartCoroutine(UpdateStateMachine());
-        }
+            StartCoroutine(UpdateEnergyView(playerId));
+        }        
 
         private IEnumerator InstantiateGrid()
         {
@@ -210,11 +220,21 @@ namespace Raincrow.BattleArena.Controller
         }
 
         private IEnumerator UpdateStateMachine()
-        {
+        {            
             while (enabled)
             {
                 // Update state machine
                 yield return StartCoroutine(_stateMachine.UpdateState());
+            }
+        }
+
+        private IEnumerator UpdateEnergyView(string playerId)
+        {
+            IWitchModel witchModel = _dictWitchesViews[playerId].Model;
+            while (enabled)
+            {
+                _energyView.UpdateView(witchModel.Energy, witchModel.BaseEnergy);
+                yield return null;
             }
         }
 
@@ -239,7 +259,8 @@ namespace Raincrow.BattleArena.Controller
             //    Destroy(_cellsTransform.GetChild(i).gameObject);
             //}
             //_grid = new ICellView[0, 0];
-            
+
+            _energyView.Hide();
 
             if (isActiveAndEnabled)
             {
