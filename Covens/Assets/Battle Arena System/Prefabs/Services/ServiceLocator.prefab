@@ -61,6 +61,8 @@ MonoBehaviour:
     type: 3}
   _energyViewPrefab: {fileID: 6937907514979579406, guid: 0d5e30232299f3a44846a9490ccbc3b2,
     type: 3}
+  _barEventLogViewPrefab: {fileID: 6336321357699414485, guid: 90545a07f66fe5b4e95e3a28158349bc,
+    type: 3}
   _playerBadgeViewPrefab: {fileID: 6652799736478505791, guid: ebc3d2c9f1a2cb247a4dee0d23b521a8,
     type: 3}
   _avatarSpriteUtilInstance: {fileID: 0}
@@ -72,5 +74,6 @@ MonoBehaviour:
   _quickCastViewInstance: {fileID: 0}
   _countdownViewInstace: {fileID: 0}
   _energyViewInstance: {fileID: 0}
+  _barEventLogViewInstace: {fileID: 0}
   _playerBadgeViewInstance: {fileID: 0}
   _mainCanvas: {fileID: 0}

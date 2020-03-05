@@ -18,6 +18,7 @@ namespace Raincrow.Services
         [SerializeField] private QuickCastView _quickCastViewPrefab;
         [SerializeField] private CountdownView _countdownViewPrefab;
         [SerializeField] private EnergyView _energyViewPrefab;
+        [SerializeField] private BarEventLogView _barEventLogViewPrefab;
         [SerializeField] private PlayerBadgeView _playerBadgeViewPrefab;
 
         [Header("Service Instances")]
@@ -30,6 +31,7 @@ namespace Raincrow.Services
         [SerializeField] private QuickCastView _quickCastViewInstance;
         [SerializeField] private CountdownView _countdownViewInstace;
         [SerializeField] private EnergyView _energyViewInstance;
+        [SerializeField] private BarEventLogView _barEventLogViewInstace;
         [SerializeField] private PlayerBadgeView _playerBadgeViewInstance;
 
         [Header("UI")]
@@ -132,6 +134,15 @@ namespace Raincrow.Services
                 _countdownViewInstace = GetInstance(_countdownViewPrefab);
             }
             return _countdownViewInstace;
+        }
+
+        public IBarEventLogView GetBarEventLogView()
+        {
+            if (_barEventLogViewInstace == null)
+            {
+                _barEventLogViewInstace = GetInstance(_barEventLogViewPrefab);
+            }
+            return _barEventLogViewInstace;
         }
 
         public Canvas GetMainCanvas()

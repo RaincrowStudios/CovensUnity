@@ -191,10 +191,10 @@ namespace Raincrow.BattleArena.Controller
                 );
             yield return null;
 
-            ActionResolutionPhase actionResolutionPhase = new ActionResolutionPhase(this, battleModel, _turnModel);
+            ActionResolutionPhase actionResolutionPhase = new ActionResolutionPhase(this, battleModel, _turnModel, _serviceLocator.GetBarEventLogView());
             yield return null;
 
-            BanishmentPhase banishmentPhase = new BanishmentPhase(this,battleModel, _turnModel);
+            BanishmentPhase banishmentPhase = new BanishmentPhase(this,battleModel, _turnModel, _serviceLocator.GetBarEventLogView());
             yield return null;
 
             IState[] battlePhases = new IState[4]

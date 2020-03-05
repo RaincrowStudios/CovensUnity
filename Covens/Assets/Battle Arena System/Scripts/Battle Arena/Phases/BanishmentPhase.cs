@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using Raincrow.BattleArena.Controller;
 using Raincrow.BattleArena.Model;
+using Raincrow.BattleArena.Views;
 using Raincrow.StateMachines;
 using UnityEngine;
 
@@ -13,6 +14,7 @@ namespace Raincrow.BattleArena.Phases
         private ICoroutineHandler _coroutineStarter;
         private IBattleModel _battleModel;
         private ITurnModel _turnModel;
+        private IBarEventLogView _barEventLogView;
         private IDictionary<string, (IWitchModel, IWitchUIModel)> _witches = new Dictionary<string, (IWitchModel, IWitchUIModel)>(); // holy shit, it works
         private IDictionary<string, (ISpiritModel, ISpiritUIModel)> _spirits = new Dictionary<string, (ISpiritModel, ISpiritUIModel)>(); // holy shit, it works
         // Properties
@@ -20,12 +22,13 @@ namespace Raincrow.BattleArena.Phases
 
         public BanishmentPhase(ICoroutineHandler coroutineStarter,
                                IBattleModel battleModel,
-                               ITurnModel turnModel
-                               )
+                               ITurnModel turnModel,
+                               IBarEventLogView barEventLogView)
         {
             _coroutineStarter = coroutineStarter;
             _battleModel = battleModel;
             _turnModel = turnModel;
+            _barEventLogView = barEventLogView;
         }
 
         public IEnumerator Enter(IStateMachine stateMachine)
@@ -64,10 +67,16 @@ namespace Raincrow.BattleArena.Phases
                             case ActionResponseType.Flee:
                                 FleeActionResponseModel fleeAction = responseAction as FleeActionResponseModel;
                                 actionRoutine = Flee(characterId, fleeAction);
+
+                                string logFlee = "The <witch>Evil Wind</witch> cast <spell>Arcane Damage</spell> on you. <damage>1624 energy</damage><time>[01:12]</time>";
+                                _barEventLogView.AddLog(logFlee);
                                 break;
                             case ActionResponseType.Banish:
                                 BanishActionResponseModel banishAction = responseAction as BanishActionResponseModel;
                                 actionRoutine = Banish(characterId, banishAction);
+
+                                string logBanish = "The <witch>Evil Wind</witch> cast <spell>Arcane Damage</spell> on you. <damage>1624 energy</damage><time>[01:12]</time>";
+                                _barEventLogView.AddLog(logBanish);
                                 break;
                         }
 

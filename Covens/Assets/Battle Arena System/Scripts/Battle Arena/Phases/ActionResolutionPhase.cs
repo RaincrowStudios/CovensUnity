@@ -1,6 +1,7 @@
 ﻿using Raincrow.BattleArena.Controller;
 using Raincrow.BattleArena.Controllers;
 using Raincrow.BattleArena.Model;
+using Raincrow.BattleArena.Views;
 using Raincrow.StateMachines;
 using System.Collections;
 using System.Collections.Generic;
@@ -14,6 +15,7 @@ namespace Raincrow.BattleArena.Phases
         private ICoroutineHandler _coroutineStarter;
         private IBattleModel _battleModel;
         private ITurnModel _turnModel;
+        private IBarEventLogView _barEventLogView;
         private IDictionary<string, ICharacterController<IWitchModel, IWitchUIModel>> _witches = 
             new Dictionary<string, ICharacterController<IWitchModel, IWitchUIModel>>(); // holy shit, it works
         private IDictionary<string, ICharacterController<ISpiritModel, ISpiritUIModel>> _spirits = 
@@ -24,11 +26,13 @@ namespace Raincrow.BattleArena.Phases
 
         public ActionResolutionPhase(ICoroutineHandler coroutineStarter, 
                                      IBattleModel battleModel, 
-                                     ITurnModel turnModel)
+                                     ITurnModel turnModel,
+                                     IBarEventLogView barEventLogView)
         {
             _coroutineStarter = coroutineStarter;
             _battleModel = battleModel;
             _turnModel = turnModel;
+            _barEventLogView = barEventLogView;
         }
 
         public IEnumerator Enter(IStateMachine stateMachine)
@@ -64,14 +68,23 @@ namespace Raincrow.BattleArena.Phases
                             case ActionResponseType.Move:
                                 MoveActionResponseModel moveAction = responseAction as MoveActionResponseModel;
                                 actionRoutine = Move(characterId, moveAction);
+
+                                string logMove = "The <witch>Evil Wind</witch> cast <spell>Arcane Damage</spell> on you. <damage>1624 energy</damage><time>[01:12]</time>";
+                                _barEventLogView.AddLog(logMove);
                                 break;
                             case ActionResponseType.Summon:
                                 SummonActionResponseModel summonAction = responseAction as SummonActionResponseModel;
                                 actionRoutine = Summon(summonAction);
+
+                                string logSummom = "The <witch>Evil Wind</witch> cast <spell>Arcane Damage</spell> on you. <damage>1624 energy</damage><time>[01:12]</time>";
+                                _barEventLogView.AddLog(logSummom);
                                 break;
                             case ActionResponseType.Cast:
                                 CastActionResponseModel castAction = responseAction as CastActionResponseModel;
                                 actionRoutine = Cast(characterId, castAction);
+
+                                string logCast = "The <witch>Evil Wind</witch> cast <spell>Arcane Damage</spell> on you. <damage>1624 energy</damage><time>[01:12]</time>";
+                                _barEventLogView.AddLog(logCast);
                                 break;
                         }
 
