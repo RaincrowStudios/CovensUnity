@@ -27,6 +27,7 @@ namespace Raincrow.BattleArena.Controller
         private ITurnModel _turnModel;
         private IQuickCastView _quickCastView;
         private IEnergyView _energyView;
+        private IPlayerBadgeView _playerBadgeView;
         private IDictionary<string, ICharacterController<IWitchModel, IWitchUIModel>> _dictWitchesViews = new Dictionary<string, ICharacterController<IWitchModel, IWitchUIModel>>();
         private IDictionary<string, ICharacterController<ISpiritModel, ISpiritUIModel>> _dictSpiritViews = new Dictionary<string, ICharacterController<ISpiritModel, ISpiritUIModel>>();
 
@@ -59,6 +60,11 @@ namespace Raincrow.BattleArena.Controller
             {
                 _energyView = _serviceLocator.GetEnergyView();
             }
+
+            if (_playerBadgeView == null)
+            {
+                _playerBadgeView = _serviceLocator.GetPlayerBadgeView();
+            }
         }
 
         public IEnumerator StartBattle(string battleId, string playerId, IGridModel gridModel, IList<IWitchModel> witches, IList<ISpiritModel> spirits, ILoadingView loadingView = null)
@@ -66,9 +72,7 @@ namespace Raincrow.BattleArena.Controller
             if (!isActiveAndEnabled)
             {
                 gameObject.SetActive(true);
-            }
-
-            _energyView.Show();
+            }            
 
             _gridModel = gridModel;
 
@@ -78,6 +82,10 @@ namespace Raincrow.BattleArena.Controller
             loadingView?.UpdateMessage("Placing characters");
             yield return StartCoroutine(PlaceCharacters(witches, spirits));
 
+            loadingView?.UpdateMessage("Initialize Player Interface");
+            IWitchModel witchModel = _dictWitchesViews[playerId].Model;
+            yield return StartCoroutine(InitializePlayerUI(witchModel));
+
             loadingView?.UpdateMessage("Starting state machine");
             yield return StartCoroutine(StartStateMachine(battleId, _gameMasterController));
 
@@ -86,7 +94,7 @@ namespace Raincrow.BattleArena.Controller
             // Update Loop
             StartCoroutine(UpdateCharacters());
             StartCoroutine(UpdateStateMachine());
-            StartCoroutine(UpdateEnergyView(playerId));
+            StartCoroutine(UpdatePlayerUI(witchModel));
         }        
 
         private IEnumerator InstantiateGrid()
@@ -228,14 +236,25 @@ namespace Raincrow.BattleArena.Controller
             }
         }
 
-        private IEnumerator UpdateEnergyView(string playerId)
+        private IEnumerator InitializePlayerUI(IWitchModel witchModel)
         {
-            IWitchModel witchModel = _dictWitchesViews[playerId].Model;
+            // Show Energy View
+            _energyView.Show();
+
+            // Show Player Badge View
+            yield return StartCoroutine(_playerBadgeView.Show(witchModel));
+        }
+
+        private IEnumerator UpdatePlayerUI(IWitchModel witchModel)
+        {
             while (enabled)
             {
                 _energyView.UpdateView(witchModel.Energy, witchModel.BaseEnergy);
                 yield return null;
             }
+
+            _playerBadgeView.Hide();
+            _energyView.Hide();
         }
 
         public void EndBattle()
@@ -258,9 +277,7 @@ namespace Raincrow.BattleArena.Controller
             //{
             //    Destroy(_cellsTransform.GetChild(i).gameObject);
             //}
-            //_grid = new ICellView[0, 0];
-
-            _energyView.Hide();
+            //_grid = new ICellView[0, 0];            
 
             if (isActiveAndEnabled)
             {

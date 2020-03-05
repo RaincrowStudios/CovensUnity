@@ -30,11 +30,6 @@ namespace Raincrow.BattleArena.Views
             {
                 _serviceLocator = FindObjectOfType<ServiceLocator>();
             }
-        }
-
-        public IEnumerator Show(string[] planningOrder, int maxActionsAllowed, IList<IWitchModel> witchModels, IList<ISpiritModel> spiritModels)
-        {
-            gameObject.SetActive(true);
 
             // Lazy initialization
             if (_spiritPortraitFactory == null)
@@ -51,6 +46,14 @@ namespace Raincrow.BattleArena.Views
             {
                 _objectPool = _serviceLocator.GetObjectPool();
             }
+        }
+
+        public IEnumerator Show(string[] planningOrder, int maxActionsAllowed, IList<IWitchModel> witchModels, IList<ISpiritModel> spiritModels)
+        {
+            gameObject.SetActive(true);
+
+            // Wait for Service Locator to not be null anymore
+            yield return new WaitUntil(() => _serviceLocator != null);
 
             // Clear all arrays
             _dictWitches.Clear();

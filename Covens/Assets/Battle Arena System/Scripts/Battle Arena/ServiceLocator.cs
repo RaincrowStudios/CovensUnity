@@ -18,6 +18,7 @@ namespace Raincrow.Services
         [SerializeField] private QuickCastView _quickCastViewPrefab;
         [SerializeField] private CountdownView _countdownViewPrefab;
         [SerializeField] private EnergyView _energyViewPrefab;
+        [SerializeField] private PlayerBadgeView _playerBadgeViewPrefab;
 
         [Header("Service Instances")]
         [SerializeField] private AvatarSpriteUtil _avatarSpriteUtilInstance; // Avatar Sprite Util Instance
@@ -29,6 +30,7 @@ namespace Raincrow.Services
         [SerializeField] private QuickCastView _quickCastViewInstance;
         [SerializeField] private CountdownView _countdownViewInstace;
         [SerializeField] private EnergyView _energyViewInstance;
+        [SerializeField] private PlayerBadgeView _playerBadgeViewInstance;
 
         [Header("UI")]
         [SerializeField] private Canvas _mainCanvas;
@@ -144,6 +146,15 @@ namespace Raincrow.Services
                 _energyViewInstance = GetInstance(_energyViewPrefab);
             }
             return _energyViewInstance;
+        }
+
+        public IPlayerBadgeView GetPlayerBadgeView()
+        {
+            if (_playerBadgeViewInstance == null)
+            {
+                _playerBadgeViewInstance = GetInstance(_playerBadgeViewPrefab);
+            }
+            return _playerBadgeViewInstance;
         }
 
         private T GetInstance<T>(T prefab, Transform parent = null) where T : Object
