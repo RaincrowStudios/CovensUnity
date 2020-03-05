@@ -19,6 +19,8 @@ namespace Raincrow.BattleArena.Phases
         private IGameMasterController _gameMaster;
         private ICountdownView _countdownView;
         private IQuickCastView _quickCastView;
+        private IEnergyView _energyView;
+        private IPlayerBadgeView _playerBadgeView;
         private ISummoningView _summoningView;
         private ICharactersTurnOrderView _charactersTurnOrderView;
         private ITurnModel _turnModel;
@@ -41,7 +43,9 @@ namespace Raincrow.BattleArena.Phases
                              ITurnModel turnModel,
                              IBattleModel battleModel,
                              ICellUIModel[,] gridView,
-                             ICountdownView countdownView)
+                             ICountdownView countdownView,
+                             IEnergyView energyView,
+                             IPlayerBadgeView playerBadgeView)
         {
             _coroutineStarter = coroutineStarter;
             _isPlanningPhaseFinished = null;
@@ -54,6 +58,8 @@ namespace Raincrow.BattleArena.Phases
             _battleModel = battleModel;
             _gridView = gridView;
             _countdownView = countdownView;
+            _playerBadgeView = playerBadgeView;
+            _energyView = energyView;
         }
 
         public IEnumerator Enter(IStateMachine stateMachine)
@@ -283,6 +289,9 @@ namespace Raincrow.BattleArena.Phases
                 _herb, _tool, _gem
             };
             UIInventory.Instance.SetSelected(selected);
+
+            _playerBadgeView.Hide();
+            _energyView.Hide();
         }
 
         private void OnClickInventoryItem(UIInventoryWheelItem item)
@@ -427,6 +436,8 @@ namespace Raincrow.BattleArena.Phases
                 _countdownView.Show();
             }
 
+            _playerBadgeView.Show();
+            _energyView.Show();
             _quickCastView.SetOnMenuIngredient(false, "");
 
             _gem = new CollectableItem();

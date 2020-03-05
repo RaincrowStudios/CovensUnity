@@ -12,12 +12,7 @@ namespace Raincrow.BattleArena.Views
         public void Show()
         {
             gameObject.SetActive(true);
-        }
-
-        public void Hide()
-        {
-            gameObject.SetActive(false);
-        }
+        }        
 
         public void UpdateView(int energy, int baseEnergy)
         {
@@ -26,12 +21,17 @@ namespace Raincrow.BattleArena.Views
             float energyNormalized = Mathf.InverseLerp(0, baseEnergy, energy);
             _energySlider.value = energyNormalized;
         }
+
+        public void Hide()
+        {
+            gameObject.SetActive(false);
+        }
     }
 
     public interface IEnergyView
     {
-        void Show();
         void UpdateView(int energy, int baseEnergy);
+        void Show();
         void Hide();
     }
 }

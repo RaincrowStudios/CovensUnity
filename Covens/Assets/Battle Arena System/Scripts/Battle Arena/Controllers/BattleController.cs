@@ -185,7 +185,9 @@ namespace Raincrow.BattleArena.Controller
                 _turnModel, 
                 battleModel,
                 Cells,
-                _serviceLocator.GetCountdownView()
+                _serviceLocator.GetCountdownView(),
+                _serviceLocator.GetEnergyView(),
+                _serviceLocator.GetPlayerBadgeView()
                 );
             yield return null;
 
@@ -238,15 +240,16 @@ namespace Raincrow.BattleArena.Controller
 
         private IEnumerator InitializePlayerUI(IWitchModel witchModel)
         {
-            // Show Energy View
-            _energyView.Show();
-
             // Show Player Badge View
-            yield return StartCoroutine(_playerBadgeView.Show(witchModel));
+            yield return StartCoroutine(_playerBadgeView.Init(witchModel));
         }
 
         private IEnumerator UpdatePlayerUI(IWitchModel witchModel)
         {
+            // Show Energy View
+            _energyView.Show();
+            _playerBadgeView.Show();
+
             while (enabled)
             {
                 _energyView.UpdateView(witchModel.Energy, witchModel.BaseEnergy);

@@ -19,8 +19,14 @@ namespace Raincrow.BattleArena.Views
         // Variables        
         private IWitchPortraitFactory _witchPortraitFactory;
 
-        protected virtual void OnEnable()
+        public IEnumerator Init(IWitchModel witchModel)
         {
+            bool isInactive = !isActiveAndEnabled;
+            if (isInactive)
+            {
+                gameObject.SetActive(true);
+            }
+
             if (_serviceLocator == null)
             {
                 _serviceLocator = FindObjectOfType<ServiceLocator>();
@@ -30,20 +36,22 @@ namespace Raincrow.BattleArena.Views
             {
                 _witchPortraitFactory = _serviceLocator.GetWitchPortraitFactory();
             }
-        }
-
-        public IEnumerator Show(IWitchModel witchModel)
-        {
-            gameObject.SetActive(true);
-
-            // Wait for Service Locator to not be null anymore
-            yield return new WaitUntil(() => _serviceLocator != null);
 
             IEnumerator<Sprite> getPortrait = GetPortrait(witchModel);
             yield return getPortrait;
 
             _playerIcon.overrideSprite = getPortrait.Current;
             _playerLevel.text = witchModel.Level.ToString();
+
+            if (isInactive)
+            {
+                gameObject.SetActive(false);
+            }
+        }
+
+        public void Show()
+        {
+            gameObject.SetActive(true);
         }
 
         public void Hide()
@@ -67,7 +75,8 @@ namespace Raincrow.BattleArena.Views
 
     public interface IPlayerBadgeView
     {
-        IEnumerator Show(IWitchModel witchModel);
+        IEnumerator Init(IWitchModel witchModel);
+        void Show();
         void Hide();
     }
 }
