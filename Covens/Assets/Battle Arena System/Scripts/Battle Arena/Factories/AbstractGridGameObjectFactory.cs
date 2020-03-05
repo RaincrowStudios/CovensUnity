@@ -7,6 +7,8 @@ namespace Raincrow.BattleArena.Factory
 {
     public abstract class AbstractGridGameObjectFactory : MonoBehaviour
     {
+        public abstract IGridGameObjectModel GridGameObjectModel { get; }
+
         public abstract IEnumerator<ICellUIModel[,]> Create(IGridModel gridModel);
     }
 }

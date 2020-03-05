@@ -1,5 +1,4 @@
 ﻿using Raincrow.BattleArena.Views;
-using System.Collections.Generic;
 using UnityEngine;
 
 namespace Raincrow.BattleArena.Model
@@ -14,7 +13,7 @@ namespace Raincrow.BattleArena.Model
     }
 
     [System.Serializable]
-    public class GridGameObjectModel
+    public class GridGameObjectModel : IGridGameObjectModel
     {
         // Serializable variables
         [SerializeField] private CellUIController _cellPrefab; // Cell Prefab 
@@ -24,7 +23,7 @@ namespace Raincrow.BattleArena.Model
         // Properties
         public CellUIController CellPrefab { get => _cellPrefab; private set => _cellPrefab = value; }
         public Vector2 Spacing { get => _spacing; private set => _spacing = value; }
-        public Vector2 CellScale { get => _cellScale; set => _cellScale = value; }
+        public Vector2 CellScale { get => _cellScale; private set => _cellScale = value; }
     }
 
     public class GridModel : IGridModel

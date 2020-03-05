@@ -9,7 +9,6 @@ using UnityEngine;
 using Raincrow.Loading.View;
 using Raincrow.Services;
 using Raincrow.BattleArena.Controllers;
-using System;
 
 namespace Raincrow.BattleArena.Controller
 {
@@ -22,16 +21,22 @@ namespace Raincrow.BattleArena.Controller
         [SerializeField] private WitchGameObjectFactory _witchFactory; // Factory class responsible for creating our Witchs   
         [SerializeField] private AbstractGameMasterController _gameMasterController;
 
+        [Header("Camera Movement")]
+        [SerializeField] private float _cameraSpeed = 20f;
+        [SerializeField] private float _cameraDecceleration = 0.15f;
+
         private IStateMachine _stateMachine; // State machine with all phases
         private IGridModel _gridModel;
         private ITurnModel _turnModel;
         private IQuickCastView _quickCastView;
         private IEnergyView _energyView;
         private IPlayerBadgeView _playerBadgeView;
+        private ICameraTargetController _cameraTargetController;
         private IDictionary<string, ICharacterController<IWitchModel, IWitchUIModel>> _dictWitchesViews = new Dictionary<string, ICharacterController<IWitchModel, IWitchUIModel>>();
         private IDictionary<string, ICharacterController<ISpiritModel, ISpiritUIModel>> _dictSpiritViews = new Dictionary<string, ICharacterController<ISpiritModel, ISpiritUIModel>>();
 
         // Properties
+
         public ICellUIModel[,] Cells { get; private set; } = new ICellUIModel[0, 0]; // Grid with all the game objects inserted
         public ICollection<ICharacterController<IWitchModel, IWitchUIModel>> WitchesViews => _dictWitchesViews.Values; // List with all witches
         public ICollection<ICharacterController<ISpiritModel, ISpiritUIModel>> SpiritsViews => _dictSpiritViews.Values; // List with all spirits
@@ -65,6 +70,11 @@ namespace Raincrow.BattleArena.Controller
             {
                 _playerBadgeView = _serviceLocator.GetPlayerBadgeView();
             }
+
+            if (_cameraTargetController == null)
+            {
+                _cameraTargetController = _serviceLocator.GetCameraTargetController();
+            }
         }
 
         public IEnumerator StartBattle(string battleId, string playerId, IGridModel gridModel, IList<IWitchModel> witches, IList<ISpiritModel> spirits, ILoadingView loadingView = null)
@@ -72,12 +82,15 @@ namespace Raincrow.BattleArena.Controller
             if (!isActiveAndEnabled)
             {
                 gameObject.SetActive(true);
-            }            
+            }
 
             _gridModel = gridModel;
 
             loadingView?.UpdateMessage("Instantiang grid");
             yield return StartCoroutine(InstantiateGrid());
+
+            loadingView?.UpdateMessage("Setup Camera");
+            yield return StartCoroutine(SetupCamera());
 
             loadingView?.UpdateMessage("Placing characters");
             yield return StartCoroutine(PlaceCharacters(witches, spirits));
@@ -95,7 +108,8 @@ namespace Raincrow.BattleArena.Controller
             StartCoroutine(UpdateCharacters());
             StartCoroutine(UpdateStateMachine());
             StartCoroutine(UpdatePlayerUI(witchModel));
-        }        
+            StartCoroutine(UpdateCamera());
+        }
 
         private IEnumerator InstantiateGrid()
         {
@@ -181,8 +195,8 @@ namespace Raincrow.BattleArena.Controller
                 _gameMasterController,
                 _quickCastView,
                 _serviceLocator,
-                _serviceLocator.GetCharactersTurnOrderView(), 
-                _turnModel, 
+                _serviceLocator.GetCharactersTurnOrderView(),
+                _turnModel,
                 battleModel,
                 Cells,
                 _serviceLocator.GetCountdownView(),
@@ -194,7 +208,7 @@ namespace Raincrow.BattleArena.Controller
             ActionResolutionPhase actionResolutionPhase = new ActionResolutionPhase(this, battleModel, _turnModel, _serviceLocator.GetBarEventLogView());
             yield return null;
 
-            BanishmentPhase banishmentPhase = new BanishmentPhase(this,battleModel, _turnModel, _serviceLocator.GetBarEventLogView());
+            BanishmentPhase banishmentPhase = new BanishmentPhase(this, battleModel, _turnModel, _serviceLocator.GetBarEventLogView());
             yield return null;
 
             IState[] battlePhases = new IState[4]
@@ -230,7 +244,7 @@ namespace Raincrow.BattleArena.Controller
         }
 
         private IEnumerator UpdateStateMachine()
-        {            
+        {
             while (enabled)
             {
                 // Update state machine
@@ -244,15 +258,59 @@ namespace Raincrow.BattleArena.Controller
             yield return StartCoroutine(_playerBadgeView.Init(witchModel));
         }
 
+        private IEnumerator SetupCamera()
+        {
+            IGridGameObjectModel model = _gridFactory.GridGameObjectModel;
+            Vector2 cellScale = model.CellScale;
+            Vector2 spacing = model.Spacing;
+
+            Vector3 cameraBounds = Vector3.zero;
+
+            // Set X camera bounds
+            cameraBounds.x = (_gridModel.MaxCellsPerColumn - 1) * (cellScale.x * 0.5f);
+            cameraBounds.x += spacing.x * (_gridModel.MaxCellsPerColumn - 1) * 0.5f;
+
+            // Set Y camera bounds
+            cameraBounds.y = 0f;
+
+            // Set Z camera bounds
+            cameraBounds.z = (_gridModel.MaxCellsPerRow - 1) * (cellScale.y * 0.5f);
+            cameraBounds.z += spacing.y * (_gridModel.MaxCellsPerColumn - 1) * 0.5f;
+
+            _cameraTargetController.SetBounds(transform.position, cameraBounds);
+            yield return null;
+        }        
+
+        private IEnumerator UpdateCamera()
+        {
+            Vector3 dragMovement = Vector3.zero;            
+            while (enabled)
+            {
+                yield return new WaitForEndOfFrame();                
+
+                if (Input.GetMouseButton(0))
+                {
+                    dragMovement.x = -Input.GetAxis("Mouse X") * _cameraSpeed * Time.deltaTime;
+                    dragMovement.z = -Input.GetAxis("Mouse Y") * _cameraSpeed * Time.deltaTime;
+                }     
+                else
+                {
+                    dragMovement = Vector3.MoveTowards(dragMovement, Vector3.zero, _cameraDecceleration * Time.deltaTime);
+                }
+
+                _cameraTargetController.Move(dragMovement);                
+            }
+        }
+
         private IEnumerator UpdatePlayerUI(IWitchModel witchModel)
         {
             // Show Energy View
             _energyView.Show();
             _playerBadgeView.Show();
-            
+
             while (enabled)
             {
-                _energyView.UpdateView(witchModel.Energy, witchModel.BaseEnergy);                
+                _energyView.UpdateView(witchModel.Energy, witchModel.BaseEnergy);
                 yield return null;
             }
 
@@ -317,7 +375,7 @@ namespace Raincrow.BattleArena.Controller
         public void SetObjectToGrid(IObjectUIModel objectUIModel, IObjectModel objectModel, int row, int col)
         {
             // Set cell transform position to object UI Model position
-            ICellUIModel cellUIModel = Cells[row, col];            
+            ICellUIModel cellUIModel = Cells[row, col];
             objectUIModel.Transform.position = cellUIModel.Transform.position;
 
             // Add object model in the grid model
@@ -342,10 +400,10 @@ namespace Raincrow.BattleArena.Controller
                 _dictSpiritViews.Remove(objectModel.Id);
             }
         }
-        
+
         public void RecycleCharacter(GameObject character)
         {
-             _serviceLocator.GetObjectPool().Recycle(character);
+            _serviceLocator.GetObjectPool().Recycle(character);
         }
 
         public IEnumerator SpawnObjectOnGrid(IObjectModel objectModel, int row, int col)
@@ -366,7 +424,7 @@ namespace Raincrow.BattleArena.Controller
 
                 // Add object model in the grid model
                 _gridModel.SetObjectToGrid(spiritView.Model, row, col);
-            }            
+            }
         }
 
         #endregion
@@ -391,7 +449,7 @@ namespace Raincrow.BattleArena.Controller
         //public IGameMasterController GameMaster { get; set; }
         public string[] PlanningOrder { get; set; } = new string[0];
         public float PlanningMaxTime { get; set; }
-        public int MaxActionsAllowed { get; set; } 
+        public int MaxActionsAllowed { get; set; }
         public IList<IActionRequestModel> RequestedActions { get; private set; } = new List<IActionRequestModel>();
         public IDictionary<string, IList<IActionResponseModel>> ResponseActions { get; } = new Dictionary<string, IList<IActionResponseModel>>();
 

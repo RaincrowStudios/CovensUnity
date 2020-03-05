@@ -1,5 +1,4 @@
 ﻿using Raincrow.BattleArena.Model;
-using Raincrow.BattleArena.Views;
 using Raincrow.Services;
 using System.Collections.Generic;
 using UnityEngine;
@@ -8,12 +7,16 @@ namespace Raincrow.BattleArena.Factory
 {
     public class GridGameObjectFactory : AbstractGridGameObjectFactory
     {
+        // Serialized Variables
         [SerializeField] private Transform _cellsParent;
         [SerializeField] private GridGameObjectModel _gridGameObjectModel;
         [SerializeField] private ServiceLocator _serviceLocator;
 
-        // private variables
+        // Variables
         private ObjectPool _objectPool;
+
+        // Properties        
+        public override IGridGameObjectModel GridGameObjectModel => _gridGameObjectModel;
 
         protected virtual void OnEnable()
         {

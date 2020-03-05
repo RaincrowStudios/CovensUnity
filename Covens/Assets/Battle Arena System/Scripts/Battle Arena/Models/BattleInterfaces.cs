@@ -12,6 +12,13 @@ namespace Raincrow.BattleArena.Model
         IGridUIModel GridUI { get; }        
     }
 
+    public interface IGridGameObjectModel
+    {
+        CellUIController CellPrefab { get; }
+        Vector2 Spacing { get; }
+        Vector2 CellScale { get; }
+    }
+
     public interface IGridUIModel
     {
         ICellUIModel[,] Cells { get; }

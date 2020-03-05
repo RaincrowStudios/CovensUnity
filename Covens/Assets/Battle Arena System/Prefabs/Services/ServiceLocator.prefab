@@ -65,6 +65,8 @@ MonoBehaviour:
     type: 3}
   _playerBadgeViewPrefab: {fileID: 6652799736478505791, guid: ebc3d2c9f1a2cb247a4dee0d23b521a8,
     type: 3}
+  _cameraTargetControllerPrefab: {fileID: 4649427003463762621, guid: 63429c5884f684c41a6ee13457dee14c,
+    type: 3}
   _avatarSpriteUtilInstance: {fileID: 0}
   _loadingViewInstance: {fileID: 0}
   _battleControllerInstance: {fileID: 0}
@@ -76,4 +78,5 @@ MonoBehaviour:
   _energyViewInstance: {fileID: 0}
   _barEventLogViewInstace: {fileID: 0}
   _playerBadgeViewInstance: {fileID: 0}
+  _cameraTargetControllerInstance: {fileID: 0}
   _mainCanvas: {fileID: 0}
