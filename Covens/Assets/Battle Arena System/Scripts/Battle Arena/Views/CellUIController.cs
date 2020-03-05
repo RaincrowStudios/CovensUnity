@@ -10,6 +10,7 @@ namespace Raincrow.BattleArena.Views
         [SerializeField] private Renderer _renderer;
         [SerializeField] private Material _defaultMaterial;
         [SerializeField] private Material _selectedMaterial;
+        [SerializeField] private BoxCollider _boxCollider;
 
         // Variables
         private ICellModel _cellModel;
@@ -34,6 +35,9 @@ namespace Raincrow.BattleArena.Views
             Vector3 localScale = _renderer.transform.localScale;
             localScale.x = cellScale.x;
             localScale.y = cellScale.y;
+
+            _boxCollider.size = new Vector3(cellScale.x, 0.05f, cellScale.y);
+
             _renderer.transform.localScale = localScale;
         }
 
