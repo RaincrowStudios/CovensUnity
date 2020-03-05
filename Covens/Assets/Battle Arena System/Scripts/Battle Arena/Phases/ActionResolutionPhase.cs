@@ -75,7 +75,10 @@ namespace Raincrow.BattleArena.Phases
                                 break;
                         }
 
-                        yield return _coroutineStarter.Invoke(actionRoutine);
+                        if(actionRoutine != default)
+                        {
+                            yield return _coroutineStarter.Invoke(actionRoutine);
+                        }
                     }
                 }
             }

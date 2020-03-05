@@ -174,7 +174,7 @@ namespace Raincrow.BattleArena.Controller
             ActionResolutionPhase actionResolutionPhase = new ActionResolutionPhase(this, battleModel, _turnModel);
             yield return null;
 
-            BanishmentPhase banishmentPhase = new BanishmentPhase(this);
+            BanishmentPhase banishmentPhase = new BanishmentPhase(this,battleModel, _turnModel);
             yield return null;
 
             IState[] battlePhases = new IState[4]
@@ -300,6 +300,11 @@ namespace Raincrow.BattleArena.Controller
             {
                 _dictSpiritViews.Remove(objectModel.Id);
             }
+        }
+        
+        public void RecycleCharacter(GameObject character)
+        {
+             _serviceLocator.GetObjectPool().Recycle(character);
         }
 
         public IEnumerator SpawnObjectOnGrid(IObjectModel objectModel, int row, int col)

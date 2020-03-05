@@ -82,7 +82,7 @@ namespace Raincrow.BattleArena.Controller
             PlanningPhaseFinishedEventArgs planningPhaseFinishedEvent = new PlanningPhaseFinishedEventArgs
             {
                 Actors = new List<BattleActor> { actor }
-            };      
+            };
 
             _onPlanningPhaseFinished.Invoke(planningPhaseFinishedEvent);
 
@@ -205,14 +205,26 @@ namespace Raincrow.BattleArena.Controller
                     Id = characterId
                 };
 
+                int damage = Random.Range(40, 80);
+
                 battleAction.Results.Add(new CastActionResponseModel()
                 {
                     IsSuccess = true,
                     Target = target,
                     Caster = caster,
                     Spell = castSpellActionRequest.SpellId,
-                    Damage = Random.Range(40, 80)
-                });
+                    Damage = damage
+                }); ;
+
+                if (target.Energy <= damage)
+                {
+                    battleAction.Results.Add(new BanishActionResponseModel()
+                    {
+                        IsSuccess = true,
+                        TargetId = target.Id
+                    });
+                }
+
                 return battleAction;
             }
 
@@ -224,6 +236,15 @@ namespace Raincrow.BattleArena.Controller
                 {
                     IsSuccess = true,
                     Position = moveactionRequest.Position
+                });
+                return battleAction;
+            }
+
+            if (actionRequest.Type == ActionRequestType.Flee)
+            {
+                battleAction.Results.Add(new FleeActionResponseModel()
+                {
+                    IsSuccess = true
                 });
                 return battleAction;
             }
@@ -249,7 +270,6 @@ namespace Raincrow.BattleArena.Controller
                 });
                 return battleAction;
             }
-
 
             battleAction.Results.Add(new FleeActionResponseModel());
             return battleAction;
