@@ -57,6 +57,10 @@ MonoBehaviour:
     type: 3}
   _quickCastViewPrefab: {fileID: 417430506551422047, guid: 98e8afefca54adc4f9f873b05bf5af0b,
     type: 3}
+  _countdownViewPrefab: {fileID: 4770212412967068352, guid: bf3577ad51c76c34ca77eb5beac57dd4,
+    type: 3}
+  _energyViewPrefab: {fileID: 6937907514979579406, guid: 0d5e30232299f3a44846a9490ccbc3b2,
+    type: 3}
   _avatarSpriteUtilInstance: {fileID: 0}
   _loadingViewInstance: {fileID: 0}
   _battleControllerInstance: {fileID: 0}
@@ -64,4 +68,6 @@ MonoBehaviour:
   _objectPoolInstance: {fileID: 0}
   _charactersTurnOrderViewInstance: {fileID: 0}
   _quickCastViewInstance: {fileID: 0}
+  _countdownViewInstace: {fileID: 0}
+  _energyViewInstance: {fileID: 0}
   _mainCanvas: {fileID: 0}

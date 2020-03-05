@@ -17,6 +17,7 @@ namespace Raincrow.Services
         [SerializeField] private CharactersTurnOrderView _charactersTurnOrderViewPrefab;
         [SerializeField] private QuickCastView _quickCastViewPrefab;
         [SerializeField] private CountdownView _countdownViewPrefab;
+        [SerializeField] private EnergyView _energyViewPrefab;
 
         [Header("Service Instances")]
         [SerializeField] private AvatarSpriteUtil _avatarSpriteUtilInstance; // Avatar Sprite Util Instance
@@ -27,6 +28,7 @@ namespace Raincrow.Services
         [SerializeField] private CharactersTurnOrderView _charactersTurnOrderViewInstance;
         [SerializeField] private QuickCastView _quickCastViewInstance;
         [SerializeField] private CountdownView _countdownViewInstace;
+        [SerializeField] private EnergyView _energyViewInstance;
 
         [Header("UI")]
         [SerializeField] private Canvas _mainCanvas;
@@ -135,6 +137,15 @@ namespace Raincrow.Services
             return _mainCanvas;
         }
 
+        public IEnergyView GetEnergyView()
+        {
+            if (_energyViewInstance == null)
+            {
+                _energyViewInstance = GetInstance(_energyViewPrefab);
+            }
+            return _energyViewInstance;
+        }
+
         private T GetInstance<T>(T prefab, Transform parent = null) where T : Object
         {
             T target = FindObjectOfType<T>();
@@ -145,6 +156,7 @@ namespace Raincrow.Services
 
             return Instantiate(prefab, parent);
         }
+
 
         public void Open(System.Action<string> onSummon)
         {
