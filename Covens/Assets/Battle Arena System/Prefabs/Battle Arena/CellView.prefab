@@ -122,7 +122,7 @@ BoxCollider:
   m_IsTrigger: 0
   m_Enabled: 1
   serializedVersion: 2
-  m_Size: {x: 1, y: 0, z: 1}
+  m_Size: {x: 1, y: 0.05, z: 1}
   m_Center: {x: 0, y: 0, z: 0}
 --- !u!114 &6753272869729047748
 MonoBehaviour:
@@ -137,3 +137,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _renderer: {fileID: 1545156458735728162}
+  _defaultMaterial: {fileID: 2100000, guid: 7d5ec06d1794a1a4db1a4e2051f60c7a, type: 2}
+  _selectedMaterial: {fileID: 2100000, guid: dc271c94d45368c4692d55dc9f39410e, type: 2}
+  _boxCollider: {fileID: 8107487652929660503}
