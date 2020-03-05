@@ -15,6 +15,7 @@ namespace Raincrow.BattleArena.Views
         [SerializeField] private Text _playerLevel;
         [SerializeField] private Image _moonPhaseIcon;
         [SerializeField] private ServiceLocator _serviceLocator;
+        [SerializeField] private Sprite[] _moonPhases = new Sprite[0];
 
         // Variables        
         private IWitchPortraitFactory _witchPortraitFactory;
@@ -42,10 +43,60 @@ namespace Raincrow.BattleArena.Views
 
             _playerIcon.overrideSprite = getPortrait.Current;
             _playerLevel.text = witchModel.Level.ToString();
-
+            _moonPhaseIcon.sprite = GetMoonPhase(witchModel.Degree);
             if (isInactive)
             {
                 gameObject.SetActive(false);
+            }
+        }
+
+        private Sprite GetMoonPhase(int alignment)
+        {
+            switch (alignment)
+            {
+                case 0:
+                    return _moonPhases[7];
+                case 1:
+                case 2:
+                    return _moonPhases[7];
+                case 3:
+                case 4:
+                    return _moonPhases[9];
+                case 5:
+                case 6:
+                    return _moonPhases[10];
+                case 7:
+                case 8:
+                    return _moonPhases[11];
+                case 9:
+                case 10:
+                    return _moonPhases[12];
+                case 11:
+                case 12:
+                    return _moonPhases[13];
+                case 13:
+                case 14:
+                    return _moonPhases[14];
+                case -1:
+                case -2:
+                    return _moonPhases[6];
+                case -3:
+                case -4:
+                    return _moonPhases[5];
+                case -5:
+                case -6:
+                    return _moonPhases[4];
+                case -7:
+                case -8:
+                    return _moonPhases[3];
+                case -9:
+                case -10:
+                    return _moonPhases[2];
+                case -11:
+                case -12:
+                    return _moonPhases[1];
+                default:
+                    return _moonPhases[0];
             }
         }
 

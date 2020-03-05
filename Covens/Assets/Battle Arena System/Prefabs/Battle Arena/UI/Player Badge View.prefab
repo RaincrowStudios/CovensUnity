@@ -183,6 +183,23 @@ MonoBehaviour:
   _playerLevel: {fileID: 3690551112574360680}
   _moonPhaseIcon: {fileID: 3690551110986450849}
   _serviceLocator: {fileID: 0}
+  _moonPhases:
+  - {fileID: 21300000, guid: 5d8e002d8c3cf8146a18b3af46cd9c96, type: 3}
+  - {fileID: 21300000, guid: 5d8e002d8c3cf8146a18b3af46cd9c96, type: 3}
+  - {fileID: 21300000, guid: a36c407b24ba5294ca9115e44842815e, type: 3}
+  - {fileID: 21300000, guid: 576cad166c303104d874c892b5bb7c37, type: 3}
+  - {fileID: 21300000, guid: ebfa6add6ebfa8d4a877618bb6d298d7, type: 3}
+  - {fileID: 21300000, guid: 9d3ddf8a5e3994d4db54268cc6a5b313, type: 3}
+  - {fileID: 21300000, guid: 51f0d4d1dfa735b40bb1ee4c0945a2a5, type: 3}
+  - {fileID: 21300000, guid: 6e33dc3a847d16a4a9222c4234d6d247, type: 3}
+  - {fileID: 21300000, guid: f5a1fb1407cdb7843a46a09331e8ff4d, type: 3}
+  - {fileID: 21300000, guid: 84aaf83ba09ea424791ce6a064587b16, type: 3}
+  - {fileID: 21300000, guid: 6466f612aa6046f49aca1a1ea3243f95, type: 3}
+  - {fileID: 21300000, guid: a3fefea75c7929142a3c815a1445e65d, type: 3}
+  - {fileID: 21300000, guid: 012eddbc63c3ba543a7198582efe4775, type: 3}
+  - {fileID: 21300000, guid: 8c0f2ecfb7bb7c146be6fc8ab8cb43f6, type: 3}
+  - {fileID: 21300000, guid: 95e73a2be26fe6c4f9b989123eee8990, type: 3}
+  - {fileID: 21300000, guid: 390ac9b4dd38e344f98d3e40920f5f15, type: 3}
 --- !u!1 &3690551112554573279
 GameObject:
   m_ObjectHideFlags: 0
