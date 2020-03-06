@@ -13,16 +13,22 @@ namespace Raincrow.BattleArena.Phases
         private ICoroutineHandler _coroutineHandler;
         private IEnumerator<bool?> _sendPlanningPhaseReady;
         private bool? _isPlanningPhaseReady;
-        private bool _isBattleOver;
         private AbstractGameMasterController _gameMaster;
         private ITurnModel _turnModel;
         private IBattleModel _battleModel;
+        private IBattleResultModel _battleResultModel;
         private string _playerId;
 
         // Properties
         public string Name => "Initiative Phase";
 
-        public InitiativePhase(ICoroutineHandler coroutineStarter, string playerId, AbstractGameMasterController gameMaster, ITurnModel turnModel, IBattleModel battleModel)
+        public InitiativePhase(
+            ICoroutineHandler coroutineStarter, 
+            string playerId, 
+            AbstractGameMasterController gameMaster, 
+            ITurnModel turnModel, 
+            IBattleModel battleModel,
+            IBattleResultModel battleResultModel)
         {
             _coroutineHandler = coroutineStarter;
             _sendPlanningPhaseReady = null;
@@ -31,13 +37,11 @@ namespace Raincrow.BattleArena.Phases
             _turnModel = turnModel;
             _battleModel = battleModel;
             _playerId = playerId;
+            _battleResultModel = battleResultModel;
         }
 
         public IEnumerator Enter(IStateMachine stateMachine)
         {
-            // Reset Battle Over
-            _isBattleOver = false;
-
             // Reset Turn Model
             _turnModel.Reset();
 
@@ -56,7 +60,7 @@ namespace Raincrow.BattleArena.Phases
             {
                 yield return stateMachine.ChangeState<PlanningPhase>();
             }
-            else if (_isBattleOver)
+            else if (!string.IsNullOrWhiteSpace(_battleResultModel.Type))
             {
                 yield return stateMachine.ChangeState<EndPhase>();
             }
@@ -93,7 +97,9 @@ namespace Raincrow.BattleArena.Phases
 
         private void OnBattleEnd(BattleEndEventArgs args)
         {
-            _isBattleOver = true;
+            _battleResultModel.Ranking = new string[0];
+            _battleResultModel.Reward = new BattleRewardModel();
+            _battleResultModel.Type = args.Type;
         }
 
         #endregion

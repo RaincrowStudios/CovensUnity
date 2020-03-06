@@ -182,6 +182,7 @@ namespace Raincrow.BattleArena.Controller
             // We yield at each allocation to avoid a lot of allocations on a single frame
             _turnModel = new TurnModel();
 
+            IBattleResultModel battleResult = new BattleResultModel();
             IBattleModel battleModel = new BattleModel()
             {
                 Id = battleId,
@@ -189,7 +190,7 @@ namespace Raincrow.BattleArena.Controller
             };
             yield return null;
 
-            InitiativePhase initiativePhase = new InitiativePhase(this, playerId, _gameMasterController, _turnModel, battleModel);
+            InitiativePhase initiativePhase = new InitiativePhase(this, playerId, _gameMasterController, _turnModel, battleModel, battleResult);
             yield return null;
 
             PlanningPhase planningPhase = new PlanningPhase(this,
@@ -213,7 +214,7 @@ namespace Raincrow.BattleArena.Controller
             BanishmentPhase banishmentPhase = new BanishmentPhase(this, battleModel, _turnModel, _serviceLocator.GetBarEventLogView());
             yield return null;
 
-            EndPhase endPhase = new EndPhase();
+            EndPhase endPhase = new EndPhase(battleResult);
 
             IState[] battlePhases = new IState[5]
             {

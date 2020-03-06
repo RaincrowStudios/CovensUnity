@@ -3,6 +3,32 @@ using UnityEngine;
 
 namespace Raincrow.BattleArena.Model
 {
+    public class BattleResultType
+    {
+        public static readonly string PlayerLoses = "playerLoses";
+        public static readonly string PlayerFlees = "playerFlees";
+        public static readonly string PlayerWins = "playerWins";
+    }
+
+    public class BattleResultModel : IBattleResultModel
+    {
+        public string Type { get; set; }
+        public string[] Ranking { get; set; } = new string[0];
+        public IBattleRewardModel Reward { get; set; }
+    }
+
+    public class BattleRewardModel : IBattleRewardModel
+    {
+        public InventoryItemModel[] Tools { get; set; } = new InventoryItemModel[0];
+        public InventoryItemModel[] Herbs { get; set; } = new InventoryItemModel[0];
+        public InventoryItemModel[] Gems { get; set; } = new InventoryItemModel[0];
+        public InventoryItemModel[] Consumables { get; set; } = new InventoryItemModel[0];
+        public int Experience { get; set; }
+        public int GoldCurrency { get; set; }
+        public int SilverCurrency { get; set; }
+        public int Degree { get; set; }
+    }
+
     public class BattleModel : IBattleModel
     {
         public string Id { get; set; }
@@ -73,13 +99,13 @@ namespace Raincrow.BattleArena.Model
             {
                 Row = cell.X,
                 Col = cell.Y
-            };            
+            };
         }
 
         public void RemoveObjectFromGrid(IObjectModel objectModel)
         {
             int row = objectModel.BattleSlot.Value.Row;
-            int col = objectModel.BattleSlot.Value.Col;            
+            int col = objectModel.BattleSlot.Value.Col;
 
             Cells[row, col].ObjectId = string.Empty;
             objectModel.BattleSlot = null;
@@ -114,7 +140,7 @@ namespace Raincrow.BattleArena.Model
                 }
                 return gridModel;
             }
-        }        
+        }
     }
 
     public class CellModel : ICellModel

@@ -5,11 +5,30 @@ using System.Collections.Generic;
 using UnityEngine;
 
 namespace Raincrow.BattleArena.Model
-{    
+{
+    public interface IBattleResultModel
+    {
+        string Type { get; set; }
+        string[] Ranking { get; set; }
+        IBattleRewardModel Reward { get; set; }
+    }
+
+    public interface IBattleRewardModel
+    {
+        InventoryItemModel[] Tools { get; set; }
+        InventoryItemModel[] Herbs { get; set; }
+        InventoryItemModel[] Gems { get; set; }
+        InventoryItemModel[] Consumables { get; set; }
+        int Experience { get; set; }
+        int GoldCurrency { get; set; }
+        int SilverCurrency { get; set; }
+        int Degree { get; set; }
+    }
+
     public interface IBattleModel
     {
         string Id { get; }
-        IGridUIModel GridUI { get; }        
+        IGridUIModel GridUI { get; }
     }
 
     public interface IGridGameObjectModel

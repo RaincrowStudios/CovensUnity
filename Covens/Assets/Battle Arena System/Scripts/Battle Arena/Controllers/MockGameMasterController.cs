@@ -92,7 +92,10 @@ namespace Raincrow.BattleArena.Controller
 
             if (!isPlayerAlive || !isWildSpiritAlive)
             {
-                BattleEndEventArgs battleEndEventArgs = new BattleEndEventArgs();
+                BattleEndEventArgs battleEndEventArgs = new BattleEndEventArgs()
+                {
+                    Type = BattleResultType.PlayerWins
+                };
                 _onBattleEnd.Invoke(battleEndEventArgs);
             }
             else
