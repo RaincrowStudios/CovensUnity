@@ -297,31 +297,6 @@ PrefabInstance:
       propertyPath: _serviceLocator
       value: 
       objectReference: {fileID: 1442890515}
-    - target: {fileID: 3561526507227420495, guid: 61c97baa5215f1647a7ed02e6b0d3ef8,
-        type: 3}
-      propertyPath: _quickCastUI
-      value: 
-      objectReference: {fileID: 6547865450329836963}
-    - target: {fileID: 3561526507227420495, guid: 61c97baa5215f1647a7ed02e6b0d3ef8,
-        type: 3}
-      propertyPath: _quickCastView
-      value: 
-      objectReference: {fileID: 6547865450329836963}
-    - target: {fileID: 3561526507227420495, guid: 61c97baa5215f1647a7ed02e6b0d3ef8,
-        type: 3}
-      propertyPath: _gameMasterController
-      value: 
-      objectReference: {fileID: 1212060292}
-    - target: {fileID: 3561526507227420495, guid: 61c97baa5215f1647a7ed02e6b0d3ef8,
-        type: 3}
-      propertyPath: _cameraSpeed
-      value: 10
-      objectReference: {fileID: 0}
-    - target: {fileID: 3561526507227420495, guid: 61c97baa5215f1647a7ed02e6b0d3ef8,
-        type: 3}
-      propertyPath: _cameraDecceleration
-      value: 1
-      objectReference: {fileID: 0}
     - target: {fileID: 8938269710436315475, guid: 61c97baa5215f1647a7ed02e6b0d3ef8,
         type: 3}
       propertyPath: _serviceLocator
@@ -415,18 +390,6 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 160d10ce54207df46a6fd3a994975be9, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
---- !u!114 &1212060292 stripped
-MonoBehaviour:
-  m_CorrespondingSourceObject: {fileID: 1023886202801595217, guid: 61c97baa5215f1647a7ed02e6b0d3ef8,
-    type: 3}
-  m_PrefabInstance: {fileID: 640587009}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: a074427e41335d846a8dbda0ab2cc5eb, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
 --- !u!1001 &1260837324
