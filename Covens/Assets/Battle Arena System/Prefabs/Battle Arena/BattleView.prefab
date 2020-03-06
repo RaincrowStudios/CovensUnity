@@ -83,6 +83,9 @@ MonoBehaviour:
   _spiritFactory: {fileID: 8938269710436315475}
   _witchFactory: {fileID: 1794520544814550441}
   _gameMasterController: {fileID: 1023886202801595217}
+  _cameraSpeed: 20
+  _cameraDecceleration: 0.15
+  _cameraTargetHeight: 2
 --- !u!114 &7196786638976531525
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -100,7 +103,7 @@ MonoBehaviour:
     _cellPrefab: {fileID: 6753272869729047748, guid: 8a0cadd5128d28e47a4b7668266f42f6,
       type: 3}
     _spacing: {x: 0.1, y: 0.1}
-    _cellScale: {x: 2, y: 2}
+    _cellScale: {x: 1.25, y: 1.25}
   _serviceLocator: {fileID: 0}
 --- !u!114 &8938269710436315475
 MonoBehaviour:

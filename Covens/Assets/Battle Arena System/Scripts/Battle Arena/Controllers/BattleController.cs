@@ -24,6 +24,7 @@ namespace Raincrow.BattleArena.Controller
         [Header("Camera Movement")]
         [SerializeField] private float _cameraSpeed = 20f;
         [SerializeField] private float _cameraDecceleration = 0.15f;
+        [SerializeField] private float _cameraTargetHeight = 1f;
 
         private IStateMachine _stateMachine; // State machine with all phases
         private IGridModel _gridModel;
@@ -278,7 +279,9 @@ namespace Raincrow.BattleArena.Controller
             cameraBounds.z = (_gridModel.MaxCellsPerRow - 1) * (cellScale.y * 0.5f);
             cameraBounds.z += spacing.y * (_gridModel.MaxCellsPerColumn - 1) * 0.5f;
 
-            _cameraTargetController.SetBounds(transform.position, cameraBounds);
+            Vector3 origin = transform.position;
+            origin.y = _cameraTargetHeight;
+            _cameraTargetController.SetBounds(origin, cameraBounds);
             yield return null;
         }        
 

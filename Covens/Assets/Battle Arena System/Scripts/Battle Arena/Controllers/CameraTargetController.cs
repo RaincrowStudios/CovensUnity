@@ -6,7 +6,6 @@ namespace Raincrow.BattleArena.Views
     {
         private Vector3 _origin;
         private Vector3 _bounds;
-        private float _height;
         private int _moveTweenId = int.MinValue;
 
         public void Move(Vector3 movement)
@@ -20,7 +19,6 @@ namespace Raincrow.BattleArena.Views
         public void SetBounds(Vector3 worldOrigin, Vector3 worldBounds)
         {
             LeanTween.cancel(_moveTweenId);
-            _height = transform.position.y;
             _origin = worldOrigin;
             _bounds = worldBounds;
             transform.position = GetPositionClamped(transform.position);
