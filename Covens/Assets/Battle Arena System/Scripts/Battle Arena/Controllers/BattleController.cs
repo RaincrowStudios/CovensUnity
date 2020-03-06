@@ -213,12 +213,15 @@ namespace Raincrow.BattleArena.Controller
             BanishmentPhase banishmentPhase = new BanishmentPhase(this, battleModel, _turnModel, _serviceLocator.GetBarEventLogView());
             yield return null;
 
-            IState[] battlePhases = new IState[4]
+            EndPhase endPhase = new EndPhase();
+
+            IState[] battlePhases = new IState[5]
             {
                 initiativePhase,
                 planningPhase,
                 actionResolutionPhase,
-                banishmentPhase
+                banishmentPhase,
+                endPhase
             };
 
             _stateMachine = new StateMachine(battlePhases);

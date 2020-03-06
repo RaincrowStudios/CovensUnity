@@ -2,10 +2,8 @@
 using Raincrow.BattleArena.Events;
 using Raincrow.BattleArena.Model;
 using Raincrow.StateMachines;
-using System;
 using System.Collections;
 using System.Collections.Generic;
-using UnityEngine;
 
 namespace Raincrow.BattleArena.Phases
 {
@@ -15,6 +13,7 @@ namespace Raincrow.BattleArena.Phases
         private ICoroutineHandler _coroutineHandler;
         private IEnumerator<bool?> _sendPlanningPhaseReady;
         private bool? _isPlanningPhaseReady;
+        private bool _isBattleOver;
         private AbstractGameMasterController _gameMaster;
         private ITurnModel _turnModel;
         private IBattleModel _battleModel;
@@ -27,7 +26,7 @@ namespace Raincrow.BattleArena.Phases
         {
             _coroutineHandler = coroutineStarter;
             _sendPlanningPhaseReady = null;
-            _isPlanningPhaseReady = null;
+            _isPlanningPhaseReady = null;            
             _gameMaster = gameMaster;
             _turnModel = turnModel;
             _battleModel = battleModel;
@@ -36,6 +35,9 @@ namespace Raincrow.BattleArena.Phases
 
         public IEnumerator Enter(IStateMachine stateMachine)
         {
+            // Reset Battle Over
+            _isBattleOver = false;
+
             // Reset Turn Model
             _turnModel.Reset();
 
@@ -53,6 +55,10 @@ namespace Raincrow.BattleArena.Phases
             if (_isPlanningPhaseReady.GetValueOrDefault())
             {
                 yield return stateMachine.ChangeState<PlanningPhase>();
+            }
+            else if (_isBattleOver)
+            {
+                yield return stateMachine.ChangeState<EndPhase>();
             }
         }
 
@@ -87,7 +93,7 @@ namespace Raincrow.BattleArena.Phases
 
         private void OnBattleEnd(BattleEndEventArgs args)
         {
-            Debug.Log("Battle End");
+            _isBattleOver = true;
         }
 
         #endregion
