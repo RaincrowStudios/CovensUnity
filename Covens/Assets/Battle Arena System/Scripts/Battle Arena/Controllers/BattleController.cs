@@ -101,7 +101,7 @@ namespace Raincrow.BattleArena.Controller
             yield return StartCoroutine(InitializePlayerUI(witchModel));
 
             loadingView?.UpdateMessage("Starting state machine");
-            yield return StartCoroutine(StartStateMachine(battleId, _gameMasterController));
+            yield return StartCoroutine(StartStateMachine(battleId, playerId, _gameMasterController));
 
             loadingView?.UpdateMessage("Starting battle");
 
@@ -177,7 +177,7 @@ namespace Raincrow.BattleArena.Controller
             }
         }
 
-        private IEnumerator StartStateMachine(string battleId, IGameMasterController gameMasterController)
+        private IEnumerator StartStateMachine(string battleId, string playerId, IGameMasterController gameMasterController)
         {
             // We yield at each allocation to avoid a lot of allocations on a single frame
             _turnModel = new TurnModel();
@@ -189,7 +189,7 @@ namespace Raincrow.BattleArena.Controller
             };
             yield return null;
 
-            InitiativePhase initiativePhase = new InitiativePhase(this, _gameMasterController, _turnModel, battleModel);
+            InitiativePhase initiativePhase = new InitiativePhase(this, playerId, _gameMasterController, _turnModel, battleModel);
             yield return null;
 
             PlanningPhase planningPhase = new PlanningPhase(this,

@@ -1,6 +1,7 @@
 ﻿using Newtonsoft.Json;
 using Raincrow.BattleArena.Events;
 using Raincrow.BattleArena.Model;
+using System;
 using System.Collections.Generic;
 using UnityEngine.Events;
 
@@ -11,6 +12,7 @@ namespace Raincrow.BattleArena.Controller
         // Variables
         private UnityAction<PlanningPhaseReadyEventArgs> _onPlanningPhaseReady;
         private UnityAction<PlanningPhaseFinishedEventArgs> _onPlanningPhaseFinished;
+        private UnityAction<BattleEndEventArgs> _onBattleEnd;
 
         #region MonoBehaviour
 
@@ -18,14 +20,16 @@ namespace Raincrow.BattleArena.Controller
         {
             PlanningPhaseStartEventHandler.AddListener(OnPlanningPhaseReady);
             PlanningPhaseFinishedEventHandler.AddListener(OnPlanningPhaseFinished);
+            BattleEndEventHandler.AddListener(OnBattleEnd);
             //TurnResolutionEventHandler.AddListener(OnTurnResolution);
             //BattleEndEventHandler.AddListener(OnBattleEnd);
-        }
+        }        
 
         protected virtual void OnDisable()
         {
             PlanningPhaseStartEventHandler.RemoveListener(OnPlanningPhaseReady);
             PlanningPhaseFinishedEventHandler.RemoveListener(OnPlanningPhaseFinished);
+            BattleEndEventHandler.RemoveListener(OnBattleEnd);
             //TurnResolutionEventHandler.RemoveListener(OnTurnResolution);
             //BattleEndEventHandler.RemoveListener(OnBattleEnd);
         }
@@ -34,9 +38,14 @@ namespace Raincrow.BattleArena.Controller
 
         #region IGameMasterController
 
-        public override IEnumerator<bool?> SendPlanningPhaseReady(string battleId, UnityAction<PlanningPhaseReadyEventArgs> onPlanningPhaseReady)
+        public override IEnumerator<bool?> SendPlanningPhaseReady(
+            string battleId, 
+            string playerId,
+            UnityAction<PlanningPhaseReadyEventArgs> onPlanningPhaseReady,
+            UnityAction<BattleEndEventArgs> onBattleEnd)
         {
             _onPlanningPhaseReady = onPlanningPhaseReady;
+            _onBattleEnd = onBattleEnd;
 
             bool responded = false;
             int resultCode = 0;
@@ -95,6 +104,11 @@ namespace Raincrow.BattleArena.Controller
         private void OnPlanningPhaseFinished(PlanningPhaseFinishedEventArgs response)
         {
             _onPlanningPhaseFinished?.Invoke(response);
+        }
+
+        private void OnBattleEnd(BattleEndEventArgs response)
+        {
+            _onBattleEnd?.Invoke(response);
         }
 
         #endregion

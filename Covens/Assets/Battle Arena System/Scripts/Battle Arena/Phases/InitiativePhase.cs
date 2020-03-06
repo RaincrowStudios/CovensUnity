@@ -2,8 +2,10 @@
 using Raincrow.BattleArena.Events;
 using Raincrow.BattleArena.Model;
 using Raincrow.StateMachines;
+using System;
 using System.Collections;
 using System.Collections.Generic;
+using UnityEngine;
 
 namespace Raincrow.BattleArena.Phases
 {
@@ -16,11 +18,12 @@ namespace Raincrow.BattleArena.Phases
         private AbstractGameMasterController _gameMaster;
         private ITurnModel _turnModel;
         private IBattleModel _battleModel;
+        private string _playerId;
 
         // Properties
         public string Name => "Initiative Phase";
 
-        public InitiativePhase(ICoroutineHandler coroutineStarter, AbstractGameMasterController gameMaster, ITurnModel turnModel, IBattleModel battleModel)
+        public InitiativePhase(ICoroutineHandler coroutineStarter, string playerId, AbstractGameMasterController gameMaster, ITurnModel turnModel, IBattleModel battleModel)
         {
             _coroutineHandler = coroutineStarter;
             _sendPlanningPhaseReady = null;
@@ -28,6 +31,7 @@ namespace Raincrow.BattleArena.Phases
             _gameMaster = gameMaster;
             _turnModel = turnModel;
             _battleModel = battleModel;
+            _playerId = playerId;
         }
 
         public IEnumerator Enter(IStateMachine stateMachine)
@@ -36,7 +40,7 @@ namespace Raincrow.BattleArena.Phases
             _turnModel.Reset();
 
             // Create the Send Planning Phase Ready Coroutine
-            _sendPlanningPhaseReady = _gameMaster.SendPlanningPhaseReady(_battleModel.Id, OnPlanningPhaseReady);
+            _sendPlanningPhaseReady = _gameMaster.SendPlanningPhaseReady(_battleModel.Id, _playerId, OnPlanningPhaseReady, OnBattleEnd);
 
             // Start the Send Planning Phase Ready Coroutine
             _coroutineHandler.Invoke(_sendPlanningPhaseReady);            
@@ -78,8 +82,12 @@ namespace Raincrow.BattleArena.Phases
 
             _turnModel.PlanningMaxTime = args.PlanningMaxTime;
             _turnModel.MaxActionsAllowed = args.MaxActionsAllowed;
-
             _isPlanningPhaseReady = true;
+        }
+
+        private void OnBattleEnd(BattleEndEventArgs args)
+        {
+            Debug.Log("Battle End");
         }
 
         #endregion

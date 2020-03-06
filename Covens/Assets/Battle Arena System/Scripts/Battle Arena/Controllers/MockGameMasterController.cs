@@ -18,10 +18,21 @@ namespace Raincrow.BattleArena.Controller
         // Variables
         private UnityAction<PlanningPhaseReadyEventArgs> _onPlanningPhaseReady;
         private UnityAction<PlanningPhaseFinishedEventArgs> _onPlanningPhaseFinished;
+        private UnityAction<BattleEndEventArgs> _onBattleEnd;
+        private IGridUIModel _gridUIModel;
 
-        public override IEnumerator<bool?> SendPlanningPhaseReady(string battleId, UnityAction<PlanningPhaseReadyEventArgs> onPlanningPhaseReady)
+        protected virtual void OnEnable()
+        {
+            if (_gridUIModel == null)
+            {
+                _gridUIModel = GetComponent<IGridUIModel>();
+            }
+        }
+
+        public override IEnumerator<bool?> SendPlanningPhaseReady(string battleId, string playerId, UnityAction<PlanningPhaseReadyEventArgs> onPlanningPhaseReady, UnityAction<BattleEndEventArgs> onBattleEnd)
         {
             _onPlanningPhaseReady = onPlanningPhaseReady;
+            _onBattleEnd = onBattleEnd;
 
             for (float f = 0; f < _sendPlanningPhaseReadyMaxTime; f += Time.deltaTime)
             {
@@ -31,7 +42,7 @@ namespace Raincrow.BattleArena.Controller
             // request came back as 200
             yield return true;
 
-            StartCoroutine(WaitForPlanningPhaseReadyEvent());
+            StartCoroutine(WaitForPlanningPhaseReadyEvent(playerId));
         }
 
         public override IEnumerator<bool?> SendFinishPlanningPhase(string battleId, IActionRequestModel[] actionRequests, UnityAction<PlanningPhaseFinishedEventArgs> onPlanningPhaseFinished)
@@ -48,17 +59,52 @@ namespace Raincrow.BattleArena.Controller
             StartCoroutine(WaitForActionResolutionReadyEvent(actionRequests));
         }
 
-        private IEnumerator WaitForPlanningPhaseReadyEvent()
+        private IEnumerator WaitForPlanningPhaseReadyEvent(string playerId)
         {
-            yield return new WaitForSeconds(_waitForPlanningPhaseReadyMaxTime);
-            PlanningPhaseReadyEventArgs planningPhaseReadyEvent = new PlanningPhaseReadyEventArgs()
-            {
-                MaxActionsAllowed = 3,
-                PlanningMaxTime = 30f,
-                PlanningOrder = new string[2] { "witch1", "spirit1" }
-            };
+            yield return new WaitForSeconds(_waitForPlanningPhaseReadyMaxTime);           
 
-            _onPlanningPhaseReady.Invoke(planningPhaseReadyEvent);
+            bool isPlayerAlive = false;            
+            if (_gridUIModel.WitchesViews.Count > 0)
+            {
+                foreach (var view in _gridUIModel.WitchesViews)
+                {
+                    if (view.Model.Id == playerId && view.Model.Energy > 0)
+                    {
+                        isPlayerAlive = true;
+                        break;
+                    }
+                }
+            }
+
+            bool isWildSpiritAlive = false;
+            if (_gridUIModel.SpiritsViews.Count > 0)
+            {
+                foreach (var view in _gridUIModel.SpiritsViews)
+                {
+                    bool isWildSpirit = string.IsNullOrWhiteSpace(view.Model.OwnerId);
+                    if (isWildSpirit && view.Model.Energy > 0)
+                    {
+                        isWildSpiritAlive = true;
+                        break;
+                    }
+                }
+            }
+
+            if (!isPlayerAlive || !isWildSpiritAlive)
+            {
+                BattleEndEventArgs battleEndEventArgs = new BattleEndEventArgs();
+                _onBattleEnd.Invoke(battleEndEventArgs);
+            }
+            else
+            {
+                PlanningPhaseReadyEventArgs planningPhaseReadyEvent = new PlanningPhaseReadyEventArgs()
+                {
+                    MaxActionsAllowed = 3,
+                    PlanningMaxTime = 30f,
+                    PlanningOrder = new string[2] { "witch1", "spirit1" }
+                };
+                _onPlanningPhaseReady.Invoke(planningPhaseReadyEvent);
+            }
         }
 
         private IEnumerator WaitForActionResolutionReadyEvent(IActionRequestModel[] actionRequests)
