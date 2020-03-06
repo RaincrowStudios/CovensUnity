@@ -13,7 +13,7 @@ namespace Raincrow.Utils
 
         private Vector3 velocity = Vector3.zero;
 
-        protected void Update()
+        protected void LateUpdate()
         {
             // Define a target position above and behind the target transform
             Vector3 targetPosition = _target.TransformPoint(new Vector3(0, _cameraHeight, -_cameraDistance));
