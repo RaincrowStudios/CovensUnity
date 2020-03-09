@@ -114,7 +114,7 @@ namespace Raincrow.BattleArena.Controller
             StartCoroutine(UpdateCharacters());
             StartCoroutine(UpdateStateMachine());
             StartCoroutine(UpdatePlayerUI(witchModel));
-            StartCoroutine(UpdateCamera());
+            //StartCoroutine(UpdateCamera());
         }
 
         private IEnumerator InstantiateGrid()
@@ -209,7 +209,6 @@ namespace Raincrow.BattleArena.Controller
                 _serviceLocator.GetCountdownView(),
                 _serviceLocator.GetEnergyView(),
                 _serviceLocator.GetPlayerBadgeView(),
-                _serviceLocator.GetCameraTargetController(),
                 _cameraSpeed);
             yield return null;
 
@@ -302,29 +301,29 @@ namespace Raincrow.BattleArena.Controller
             yield return null;
         }        
 
-        private IEnumerator UpdateCamera()
-        {
-            Vector3 dragMovement = Vector3.zero;            
-            while (enabled)
-            {
-                yield return new WaitForEndOfFrame();                
+        //private IEnumerator UpdateCamera()
+        //{
+        //    Vector3 dragMovement = Vector3.zero;            
+        //    while (enabled)
+        //    {
+        //        yield return new WaitForEndOfFrame();                
 
-                if (Input.GetMouseButton(0))
-                {
-                    dragMovement.x = -Input.GetAxis("Mouse X") * _cameraSpeed * Time.deltaTime;
-                    dragMovement.z = -Input.GetAxis("Mouse Y") * _cameraSpeed * Time.deltaTime;
-                }     
-                else
-                {
-                    dragMovement = Vector3.MoveTowards(dragMovement, Vector3.zero, _cameraDecceleration * Time.deltaTime);
-                }
+        //        if (Input.GetMouseButton(0))
+        //        {
+        //            dragMovement.x = -Input.GetAxis("Mouse X") * _cameraSpeed * Time.deltaTime;
+        //            dragMovement.z = -Input.GetAxis("Mouse Y") * _cameraSpeed * Time.deltaTime;
+        //        }     
+        //        else
+        //        {
+        //            dragMovement = Vector3.MoveTowards(dragMovement, Vector3.zero, _cameraDecceleration * Time.deltaTime);
+        //        }
 
-                if (dragMovement.sqrMagnitude > Mathf.Epsilon)
-                {
-                    _cameraTargetController.Move(dragMovement);
-                }              
-            }
-        }
+        //        if (dragMovement.sqrMagnitude > Mathf.Epsilon)
+        //        {
+        //            _cameraTargetController.Move(dragMovement);
+        //        }              
+        //    }
+        //}
 
         private IEnumerator UpdatePlayerUI(IWitchModel witchModel)
         {
