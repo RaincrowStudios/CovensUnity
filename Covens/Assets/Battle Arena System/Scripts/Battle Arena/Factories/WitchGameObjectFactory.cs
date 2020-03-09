@@ -52,6 +52,7 @@ namespace Raincrow.BattleArena.Factory
         {
             // Create character            
             ICharacterController<IWitchModel, IWitchUIModel> characterView = _objectPool.Spawn(_battleWitchViewPrefab, cellTransform);
+
             yield return null;
 
             // wait for coroutine

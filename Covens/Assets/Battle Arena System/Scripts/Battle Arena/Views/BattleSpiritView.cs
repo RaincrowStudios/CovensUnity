@@ -80,5 +80,26 @@ namespace Raincrow.BattleArena.Views
 
             Debug.LogFormat("Update Energy {0} {1}", baseEnergy, energy);
         }
+
+        public IEnumerator Move(float time, Vector3 targetPosition, Easings.Functions function)
+        {
+            Vector3 position = transform.position;
+            for (float elapsedTime = 0; elapsedTime < time; elapsedTime += Time.deltaTime)
+            {
+                float t = Easings.Interpolate(elapsedTime, function);
+                transform.position = Vector3.Lerp(position, targetPosition, t);
+                yield return null;
+            }
+        }
+
+        public IEnumerator Summon(float time, Easings.Functions function)
+        {
+            for (float elapsedTime = 0; elapsedTime < time; elapsedTime += Time.deltaTime)
+            {
+                float t = Easings.Interpolate(elapsedTime, function);
+                transform.localScale = Vector3.Lerp(Vector3.zero, Vector3.one, t);
+                yield return null;
+            }
+        }
     }
 }

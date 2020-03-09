@@ -50,6 +50,10 @@ namespace Raincrow.BattleArena.Factory
         {
             // Create character            
             ICharacterController<ISpiritModel, ISpiritUIModel> characterView = _objectPool.Spawn(_battleSpiritViewPrefab, cellTransform);
+
+            // set scale to zero
+            //characterView.Transform.localScale = Vector3.zero;
+
             yield return null;
 
             // wait for coroutine

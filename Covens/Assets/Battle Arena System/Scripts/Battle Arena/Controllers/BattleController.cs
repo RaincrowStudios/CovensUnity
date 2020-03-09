@@ -41,7 +41,7 @@ namespace Raincrow.BattleArena.Controller
         public ICollection<ICharacterController<IWitchModel, IWitchUIModel>> WitchesViews => _dictWitchesViews.Values; // List with all witches
         public ICollection<ICharacterController<ISpiritModel, ISpiritUIModel>> SpiritsViews => _dictSpiritViews.Values; // List with all spirits
         public int MaxCellsPerRow => _gridModel.MaxCellsPerRow;
-        public int MaxCellsPerColumn => _gridModel.MaxCellsPerColumn;        
+        public int MaxCellsPerColumn => _gridModel.MaxCellsPerColumn;
 
         protected virtual void OnEnable()
         {
@@ -278,7 +278,7 @@ namespace Raincrow.BattleArena.Controller
             Vector3 origin = transform.position;
             origin.y = _cameraTargetHeight;
             yield return null;
-        }                
+        }
 
         private IEnumerator UpdatePlayerUI(IWitchModel witchModel)
         {
@@ -384,17 +384,21 @@ namespace Raincrow.BattleArena.Controller
             _serviceLocator.GetObjectPool().Recycle(character);
         }
 
-        public IEnumerator SpawnObjectOnGrid(IObjectModel objectModel, int row, int col)
+        public IEnumerator<ICharacterController> SpawnObjectOnGrid(IObjectModel objectModel, int row, int col)
         {
             if (objectModel.ObjectType == ObjectType.Spirit)
             {
                 // Create the new spirit
                 ICellUIModel targetCellView = Cells[row, col];
-                IEnumerator<ICharacterController<ISpiritModel, ISpiritUIModel>> createSpirit = _spiritFactory.Create(targetCellView.Transform, objectModel as ISpiritModel);
-                yield return createSpirit;
+                IEnumerator<ICharacterController<ISpiritModel, ISpiritUIModel>> enumerator = _spiritFactory.Create(targetCellView.Transform, objectModel as ISpiritModel);
+                Coroutine<ICharacterController<ISpiritModel, ISpiritUIModel>> createSpirit = this.StartCoroutine<ICharacterController<ISpiritModel, ISpiritUIModel>>(enumerator);
+                while (createSpirit.keepWaiting)
+                {
+                    yield return null;
+                }
 
                 // Add the new spirit
-                ICharacterController<ISpiritModel, ISpiritUIModel> spiritView = createSpirit.Current;
+                ICharacterController<ISpiritModel, ISpiritUIModel> spiritView = createSpirit.ReturnValue;
                 _dictSpiritViews.Add(spiritView.Model.Id, spiritView);
 
                 // Set cell transform position to object UI Model position
@@ -402,6 +406,8 @@ namespace Raincrow.BattleArena.Controller
 
                 // Add object model in the grid model
                 _gridModel.SetObjectToGrid(spiritView.Model, row, col);
+
+                yield return createSpirit.ReturnValue;
             }
         }
 

@@ -45,7 +45,7 @@ namespace Raincrow.BattleArena.Model
         int MaxCellsPerColumn { get; }
         ICollection<ICharacterController<ISpiritModel, ISpiritUIModel>> SpiritsViews { get; }
         ICollection<ICharacterController<IWitchModel, IWitchUIModel>> WitchesViews { get; }
-        IEnumerator SpawnObjectOnGrid(IObjectModel objectModel, int row, int col);
+        IEnumerator<ICharacterController> SpawnObjectOnGrid(IObjectModel objectModel, int row, int col);
         void SetObjectToGrid(ICharacterController characterController, IObjectModel objectModel, int row, int col);
         void RemoveObjectFromGrid(ICharacterController characterController, IObjectModel objectModel);
         void RecycleCharacter(GameObject character);
