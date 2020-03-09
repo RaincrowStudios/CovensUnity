@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using Raincrow.BattleArena.Controller;
+using Raincrow.BattleArena.Controllers;
 using Raincrow.BattleArena.Model;
 using Raincrow.BattleArena.Views;
 using Raincrow.StateMachines;
@@ -15,8 +16,8 @@ namespace Raincrow.BattleArena.Phases
         private IBattleModel _battleModel;
         private ITurnModel _turnModel;
         private IBarEventLogView _barEventLogView;
-        private IDictionary<string, (IWitchModel, IWitchUIModel)> _witches = new Dictionary<string, (IWitchModel, IWitchUIModel)>(); // holy shit, it works
-        private IDictionary<string, (ISpiritModel, ISpiritUIModel)> _spirits = new Dictionary<string, (ISpiritModel, ISpiritUIModel)>(); // holy shit, it works
+        private IDictionary<string, ICharacterController<IWitchModel, IWitchUIModel>> _witches = new Dictionary<string, ICharacterController<IWitchModel, IWitchUIModel>>();
+        private IDictionary<string, ICharacterController<ISpiritModel, ISpiritUIModel>> _spirits = new Dictionary<string, ICharacterController<ISpiritModel, ISpiritUIModel>>();
         // Properties
         public string Name => "Banishment Phase";
 
@@ -36,14 +37,14 @@ namespace Raincrow.BattleArena.Phases
             _witches.Clear();
             foreach (var view in _battleModel.GridUI.WitchesViews)
             {
-                _witches.Add(view.Model.Id, (view.Model, view.UIModel));
+                _witches.Add(view.Model.Id, view);
                 yield return null;
             }
 
             _spirits.Clear();
             foreach (var view in _battleModel.GridUI.SpiritsViews)
             {
-                _spirits.Add(view.Model.Id, (view.Model, view.UIModel));
+                _spirits.Add(view.Model.Id, view);
                 yield return null;
             }
 
@@ -102,18 +103,18 @@ namespace Raincrow.BattleArena.Phases
 
         private IEnumerator Flee(string characterId, FleeActionResponseModel fleeAction)
         {
-            ICharacterUIModel characterUI = default;
+            ICharacterController characterView = default;
             ICharacterModel character = default;
 
-            if (_witches.TryGetValue(characterId, out (IWitchModel, IWitchUIModel) witchTuple))
+            if (_witches.TryGetValue(characterId, out var witchView))
             {
-                character = witchTuple.Item1;
-                characterUI = witchTuple.Item2;
+                character = witchView.Model;
+                characterView = witchView;
             }
-            else if (_spirits.TryGetValue(characterId, out (ISpiritModel, ISpiritUIModel) spiritTuple))
+            else if (_spirits.TryGetValue(characterId, out var spiritView))
             {
-                character = spiritTuple.Item1;
-                characterUI = spiritTuple.Item2;
+                character = spiritView.Model;
+                characterView = spiritView;
             }
 
             if (character.BattleSlot.HasValue)
@@ -121,9 +122,9 @@ namespace Raincrow.BattleArena.Phases
                 // Animation
 
                 // Remove it
-                _battleModel.GridUI.RemoveObjectFromGrid(characterUI, character);
+                _battleModel.GridUI.RemoveObjectFromGrid(characterView, character);
 
-                _battleModel.GridUI.RecycleCharacter(characterUI.Transform.gameObject);
+                _battleModel.GridUI.RecycleCharacter(characterView.Transform.gameObject);
 
                 Debug.LogFormat("Execute Action Flee Character ID: {0}", character.Id);
 
@@ -133,18 +134,17 @@ namespace Raincrow.BattleArena.Phases
 
         private IEnumerator Banish(string characterId, BanishActionResponseModel banishAction)
         {
-            ICharacterUIModel characterUI = default;
+            ICharacterController characterView = default;
             ICharacterModel character = default;
-
-            if (_witches.TryGetValue(banishAction.TargetId, out (IWitchModel, IWitchUIModel) witchTuple))
+            if (_witches.TryGetValue(characterId, out var witchView))
             {
-                character = witchTuple.Item1;
-                characterUI = witchTuple.Item2;
+                character = witchView.Model;
+                characterView = witchView;
             }
-            else if (_spirits.TryGetValue(banishAction.TargetId, out (ISpiritModel, ISpiritUIModel) spiritTuple))
+            else if (_spirits.TryGetValue(characterId, out var spiritView))
             {
-                character = spiritTuple.Item1;
-                characterUI = spiritTuple.Item2;
+                character = spiritView.Model;
+                characterView = spiritView;
             }
 
             // Animation
@@ -152,9 +152,9 @@ namespace Raincrow.BattleArena.Phases
             // Remove it
             if (character.BattleSlot.HasValue)
             {
-                _battleModel.GridUI.RemoveObjectFromGrid(characterUI, character);
+                _battleModel.GridUI.RemoveObjectFromGrid(characterView, character);
 
-                _battleModel.GridUI.RecycleCharacter(characterUI.Transform.gameObject);
+                _battleModel.GridUI.RecycleCharacter(characterView.Transform.gameObject);
 
                 Debug.LogFormat("Execute Action Flee Character ID: {0}", character.Id);
 

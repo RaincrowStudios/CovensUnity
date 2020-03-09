@@ -109,17 +109,17 @@ namespace Raincrow.BattleArena.Phases
 
         private IEnumerator Move(string characterId, MoveActionResponseModel moveAction)
         {
-            ICharacterUIModel characterUI = default;
+            ICharacterController characterUI = default;
             ICharacterModel character = default;
             if (_witches.TryGetValue(characterId, out ICharacterController<IWitchModel, IWitchUIModel> witchView))
             {
                 character = witchView.Model;
-                characterUI = witchView.UIModel;
+                characterUI = witchView;
             }
             else if (_spirits.TryGetValue(characterId, out ICharacterController<ISpiritModel, ISpiritUIModel> spiritView))
             {
                 character = spiritView.Model;
-                characterUI = spiritView.UIModel;
+                characterUI = spiritView;
             }
 
             // Get transform of our target Cell

@@ -350,22 +350,22 @@ namespace Raincrow.BattleArena.Controller
 
         #region IGridView
 
-        public void SetObjectToGrid(IObjectUIModel objectUIModel, IObjectModel objectModel, int row, int col)
+        public void SetObjectToGrid(ICharacterController characterController, IObjectModel objectModel, int row, int col)
         {
             // Set cell transform position to object UI Model position
             ICellUIModel cellUIModel = Cells[row, col];
-            objectUIModel.Transform.position = cellUIModel.Transform.position;
+            characterController.Transform.position = cellUIModel.Transform.position;
 
             // Add object model in the grid model
             _gridModel.SetObjectToGrid(objectModel, row, col);
 
             // Get transform of our character
-            Transform characterTransform = objectUIModel.Transform;
+            Transform characterTransform = characterController.Transform;
             ICellUIModel targetCellView = Cells[row, col];
             Transform cellTransform = targetCellView.Transform;
         }
 
-        public void RemoveObjectFromGrid(IObjectUIModel objectUIModel, IObjectModel objectModel)
+        public void RemoveObjectFromGrid(ICharacterController characterController, IObjectModel objectModel)
         {
             _gridModel.RemoveObjectFromGrid(objectModel);
 
@@ -398,7 +398,7 @@ namespace Raincrow.BattleArena.Controller
                 _dictSpiritViews.Add(spiritView.Model.Id, spiritView);
 
                 // Set cell transform position to object UI Model position
-                spiritView.UIModel.Transform.position = targetCellView.Transform.position;
+                spiritView.Transform.position = targetCellView.Transform.position;
 
                 // Add object model in the grid model
                 _gridModel.SetObjectToGrid(spiritView.Model, row, col);

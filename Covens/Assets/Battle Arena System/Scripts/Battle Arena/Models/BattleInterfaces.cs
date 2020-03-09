@@ -46,8 +46,8 @@ namespace Raincrow.BattleArena.Model
         ICollection<ICharacterController<ISpiritModel, ISpiritUIModel>> SpiritsViews { get; }
         ICollection<ICharacterController<IWitchModel, IWitchUIModel>> WitchesViews { get; }
         IEnumerator SpawnObjectOnGrid(IObjectModel objectModel, int row, int col);
-        void SetObjectToGrid(IObjectUIModel objectUIModel, IObjectModel objectModel, int row, int col);
-        void RemoveObjectFromGrid(IObjectUIModel objectUIModel, IObjectModel objectModel);
+        void SetObjectToGrid(ICharacterController characterController, IObjectModel objectModel, int row, int col);
+        void RemoveObjectFromGrid(ICharacterController characterController, IObjectModel objectModel);
         void RecycleCharacter(GameObject character);
     }
 

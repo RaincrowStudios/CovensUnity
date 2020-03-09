@@ -32,14 +32,9 @@ namespace Raincrow.BattleArena.Model
     {
         string OwnerId { get; set; }
         string Texture { get; set; }
-    }    
-
-    public interface IObjectUIModel
-    {
-        Transform Transform { get; }
     }
 
-    public interface ICharacterUIModel : IObjectUIModel
+    public interface ICharacterUIModel
     {
         Texture Texture { get; set; }
         Material AlignmentMaterial { get; set; }        
