@@ -89,5 +89,5 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _target: {fileID: 0}
   _smoothTime: 0
-  _cameraHeight: 1.5
-  _cameraDistance: 2.5
+  _cameraHeight: 5.5
+  _cameraDistance: 5.5

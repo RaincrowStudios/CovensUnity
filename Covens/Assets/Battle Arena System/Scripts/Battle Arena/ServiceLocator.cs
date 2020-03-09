@@ -20,7 +20,6 @@ namespace Raincrow.Services
         [SerializeField] private EnergyView _energyViewPrefab;
         [SerializeField] private BarEventLogView _barEventLogViewPrefab;
         [SerializeField] private PlayerBadgeView _playerBadgeViewPrefab;
-        [SerializeField] private CameraTargetController _cameraTargetControllerPrefab;
 
         [Header("Service Instances")]
         [SerializeField] private AvatarSpriteUtil _avatarSpriteUtilInstance; // Avatar Sprite Util Instance
@@ -34,7 +33,6 @@ namespace Raincrow.Services
         [SerializeField] private EnergyView _energyViewInstance;
         [SerializeField] private BarEventLogView _barEventLogViewInstace;
         [SerializeField] private PlayerBadgeView _playerBadgeViewInstance;
-        [SerializeField] private CameraTargetController _cameraTargetControllerInstance;
 
         [Header("UI")]
         [SerializeField] private Canvas _mainCanvas;
@@ -168,16 +166,7 @@ namespace Raincrow.Services
                 _playerBadgeViewInstance = GetInstance(_playerBadgeViewPrefab);
             }
             return _playerBadgeViewInstance;
-        }
-
-        public ICameraTargetController GetCameraTargetController()
-        {
-            if (_cameraTargetControllerInstance == null)
-            {
-                _cameraTargetControllerInstance = GetInstance(_cameraTargetControllerPrefab);
-            }
-            return _cameraTargetControllerInstance;
-        }
+        }        
 
         private T GetInstance<T>(T prefab, Transform parent = null) where T : Object
         {
