@@ -31,8 +31,9 @@ namespace Raincrow.BattleArena.Controller
         [SerializeField] private float _cameraHeight = 0.45f;
         [SerializeField] private float _timeAnimation = 0.5f;
 
-        [Header("Character Animations")]
+        [Header("Character Animations")]        
         [SerializeField] private AnimParams _moveParams = new AnimParams(1f, Easings.Functions.Linear);
+        [SerializeField] private ParticleSystem _summonAnimPrefab;
         [SerializeField] private AnimParams _summonParams = new AnimParams(1f, Easings.Functions.Linear);
 
         private IStateMachine _stateMachine; // State machine with all phases
@@ -463,14 +464,27 @@ namespace Raincrow.BattleArena.Controller
 
         public IEnumerator Summon(ICharacterController characterController)
         {
+            ObjectPool objPool = _serviceLocator.GetObjectPool();
+
+            // Spawn Particle System
+            Vector3 position = characterController.Transform.position;
+            Quaternion quartenion = _summonAnimPrefab.transform.rotation;
+            ParticleSystem summonParticles = objPool.Spawn(_summonAnimPrefab, position, quartenion);
+            summonParticles.Play();
+
+            // Summon Animation
             yield return characterController.Summon(_summonParams.Time, _summonParams.Function);
+            yield return new WaitUntil(() => summonParticles.isStopped);
+            
+            // Recycle Particle System
+            objPool.Recycle(summonParticles);
         }
 
         public IEnumerator Summon(IList<ICharacterController> characterControllers)
         {
             foreach (var characterController in characterControllers)
             {
-                StartCoroutine(characterController.Summon(_summonParams.Time, _summonParams.Function));
+                StartCoroutine(Summon(characterController));
             }
             yield return new WaitForSeconds(_summonParams.Time);
         }

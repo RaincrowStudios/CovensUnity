@@ -92,8 +92,10 @@ MonoBehaviour:
   _moveParams:
     _time: 0.5
     _function: 3
+  _summonAnimPrefab: {fileID: 325792439671258822, guid: bce16092c0d850544b756b045544d70d,
+    type: 3}
   _summonParams:
-    _time: 0.5
+    _time: 1
     _function: 3
 --- !u!114 &7196786638976531525
 MonoBehaviour:

@@ -44,13 +44,13 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _startupPools:
-  - size: 100
+  - size: 10
     prefab: {fileID: 4145961894182003931, guid: ad0336f45a4e5924da6c29a530712245,
       type: 3}
-  - size: 100
+  - size: 10
     prefab: {fileID: 7862372955884984634, guid: a18a8f148bde0e7489c84b03cac84f89,
       type: 3}
-  - size: 100
+  - size: 50
     prefab: {fileID: 8107487652929660501, guid: 8a0cadd5128d28e47a4b7668266f42f6,
       type: 3}
   - size: 10
@@ -58,5 +58,8 @@ MonoBehaviour:
       type: 3}
   - size: 10
     prefab: {fileID: 4661672224984752376, guid: f6a09c7eee3585c4bbfd96c7a02cf34a,
+      type: 3}
+  - size: 10
+    prefab: {fileID: 8765287028643931212, guid: bce16092c0d850544b756b045544d70d,
       type: 3}
   startupPoolMode: 0
