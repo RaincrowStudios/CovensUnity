@@ -32,6 +32,7 @@ namespace Raincrow.BattleArena.Controller
         private IQuickCastView _quickCastView;
         private IEnergyView _energyView;
         private IPlayerBadgeView _playerBadgeView;
+        private ICameraTargetController _cameraTargetController;
         private IDictionary<string, ICharacterController<IWitchModel, IWitchUIModel>> _dictWitchesViews = new Dictionary<string, ICharacterController<IWitchModel, IWitchUIModel>>();
         private IDictionary<string, ICharacterController<ISpiritModel, ISpiritUIModel>> _dictSpiritViews = new Dictionary<string, ICharacterController<ISpiritModel, ISpiritUIModel>>();
 
@@ -70,6 +71,11 @@ namespace Raincrow.BattleArena.Controller
             {
                 _playerBadgeView = _serviceLocator.GetPlayerBadgeView();
             }
+
+            if (_cameraTargetController == null)
+            {
+                _cameraTargetController = _serviceLocator.GetCameraTargetController();
+            }
         }
 
         public IEnumerator StartBattle(string battleId, string playerId, IGridModel gridModel, IList<IWitchModel> witches, IList<ISpiritModel> spirits, ILoadingView loadingView = null)
@@ -103,6 +109,7 @@ namespace Raincrow.BattleArena.Controller
             StartCoroutine(UpdateCharacters());
             StartCoroutine(UpdateStateMachine());
             StartCoroutine(UpdatePlayerUI(witchModel));
+            StartCoroutine(UpdateCamera());
         }
 
         private IEnumerator InstantiateGrid()
@@ -197,6 +204,7 @@ namespace Raincrow.BattleArena.Controller
                 _serviceLocator.GetCountdownView(),
                 _serviceLocator.GetEnergyView(),
                 _serviceLocator.GetPlayerBadgeView(),
+                _serviceLocator.GetCameraTargetController(),
                 _cameraSpeed);
             yield return null;
 
@@ -277,7 +285,32 @@ namespace Raincrow.BattleArena.Controller
 
             Vector3 origin = transform.position;
             origin.y = _cameraTargetHeight;
+            _cameraTargetController.SetBounds(origin, cameraBounds);
             yield return null;
+        }        
+
+        private IEnumerator UpdateCamera()
+        {
+            Vector3 dragMovement = Vector3.zero;            
+            while (enabled)
+            {
+                yield return new WaitForEndOfFrame();                
+
+                if (Input.GetMouseButton(0))
+                {
+                    dragMovement.x = -Input.GetAxis("Mouse X") * _cameraSpeed * Time.deltaTime;
+                    dragMovement.z = -Input.GetAxis("Mouse Y") * _cameraSpeed * Time.deltaTime;
+                }     
+                else
+                {
+                    dragMovement = Vector3.MoveTowards(dragMovement, Vector3.zero, _cameraDecceleration * Time.deltaTime);
+                }
+
+                if (dragMovement.sqrMagnitude > Mathf.Epsilon)
+                {
+                    _cameraTargetController.Move(dragMovement);
+                }              
+            }
         }
 
         private IEnumerator UpdatePlayerUI(IWitchModel witchModel)
