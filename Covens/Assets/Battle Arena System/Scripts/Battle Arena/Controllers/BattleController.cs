@@ -200,7 +200,7 @@ namespace Raincrow.BattleArena.Controller
             };
             yield return null;
 
-            InitiativePhase initiativePhase = new InitiativePhase(this, playerId, _gameMasterController, _turnModel, battleModel, battleResult, _moveParams);
+            InitiativePhase initiativePhase = new InitiativePhase(this, playerId, _gameMasterController, _turnModel, battleModel, battleResult);
             yield return null;
 
             PlanningPhase planningPhase = new PlanningPhase(this,
@@ -217,7 +217,7 @@ namespace Raincrow.BattleArena.Controller
                 _cameraSpeed);
             yield return null;
 
-            ActionResolutionPhase actionResolutionPhase = new ActionResolutionPhase(this, battleModel, _turnModel, _serviceLocator.GetBarEventLogView(), _summonParams, _moveParams);
+            ActionResolutionPhase actionResolutionPhase = new ActionResolutionPhase(this, battleModel, _turnModel, _serviceLocator.GetBarEventLogView());
             yield return null;
 
             BanishmentPhase banishmentPhase = new BanishmentPhase(this, battleModel, _turnModel, _serviceLocator.GetBarEventLogView());
@@ -460,6 +460,27 @@ namespace Raincrow.BattleArena.Controller
                 yield return createSpirit.ReturnValue;
             }
         }
+
+        public IEnumerator Summon(ICharacterController characterController)
+        {
+            yield return characterController.Summon(_summonParams.Time, _summonParams.Function);
+        }
+
+        public IEnumerator Summon(IList<ICharacterController> characterControllers)
+        {
+            foreach (var characterController in characterControllers)
+            {
+                StartCoroutine(characterController.Summon(_summonParams.Time, _summonParams.Function));
+            }
+            yield return new WaitForSeconds(_summonParams.Time);
+        }
+
+        public IEnumerator Move(ICharacterController characterController, BattleSlot targetBattleSlot)
+        {
+            ICellUIModel model = Cells[targetBattleSlot.Row, targetBattleSlot.Col];
+            Vector3 position = model.Transform.position;
+            yield return characterController.Move(_moveParams.Time, position, _moveParams.Function);
+        }        
 
         #endregion
     }

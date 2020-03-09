@@ -16,8 +16,6 @@ namespace Raincrow.BattleArena.Phases
         private IBattleModel _battleModel;
         private ITurnModel _turnModel;
         private IBarEventLogView _barEventLogView;
-        private IAnimParams _summonParams;
-        private IAnimParams _moveParams;
         private IDictionary<string, ICharacterController<IWitchModel, IWitchUIModel>> _witches =
             new Dictionary<string, ICharacterController<IWitchModel, IWitchUIModel>>(); // holy shit, it works
         private IDictionary<string, ICharacterController<ISpiritModel, ISpiritUIModel>> _spirits =
@@ -29,16 +27,12 @@ namespace Raincrow.BattleArena.Phases
         public ActionResolutionPhase(ICoroutineHandler coroutineStarter,
                                      IBattleModel battleModel,
                                      ITurnModel turnModel,
-                                     IBarEventLogView barEventLogView,
-                                     IAnimParams summonParams,
-                                     IAnimParams moveParams)
+                                     IBarEventLogView barEventLogView)
         {
             _coroutineStarter = coroutineStarter;
             _battleModel = battleModel;
             _turnModel = turnModel;
             _barEventLogView = barEventLogView;
-            _moveParams = moveParams;
-            _summonParams = summonParams;
         }
 
         public IEnumerator Enter(IStateMachine stateMachine)
@@ -130,11 +124,9 @@ namespace Raincrow.BattleArena.Phases
 
             // Get transform of our target Cell
             BattleSlot targetBattleSlot = moveAction.Position;
-            ICellUIModel targetCellView = _battleModel.GridUI.Cells[targetBattleSlot.Row, targetBattleSlot.Col];
-            Vector3 targetPosition = targetCellView.Transform.position;
 
             // Animation
-            yield return characterView.Move(_moveParams.Time, targetPosition, _moveParams.Function);
+            yield return _battleModel.GridUI.Move(characterView, targetBattleSlot);
 
             // Set it
             _battleModel.GridUI.SetObjectToGrid(characterView, character, targetBattleSlot.Row, targetBattleSlot.Col);
@@ -153,8 +145,7 @@ namespace Raincrow.BattleArena.Phases
             yield return spawnObjectOnGrid;
 
             // Animation
-            ICharacterController characterView = spawnObjectOnGrid.ReturnValue;
-            yield return characterView.Summon(_summonParams.Time, _summonParams.Function);
+            yield return _battleModel.GridUI.Summon(spawnObjectOnGrid.ReturnValue);            
 
             Debug.LogFormat("Execute Summon {0} to Slot X:{1} Y:{2}", spiritModel.Id, targetBattleSlot.Row, targetBattleSlot.Col);
         }
