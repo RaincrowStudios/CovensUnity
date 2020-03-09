@@ -103,7 +103,7 @@ namespace Raincrow.BattleArena.Views
             Vector3 position = transform.position;
             for (float elapsedTime = 0; elapsedTime < time; elapsedTime += Time.deltaTime)
             {
-                float t = Easings.Interpolate(elapsedTime, function);
+                float t = Easings.Interpolate(elapsedTime / time, function);
                 transform.position = Vector3.Lerp(position, targetPosition, t);
                 yield return null;
             }
@@ -113,7 +113,7 @@ namespace Raincrow.BattleArena.Views
         {
             for (float elapsedTime = 0; elapsedTime < time; elapsedTime += Time.deltaTime)
             {
-                float t = Easings.Interpolate(elapsedTime, function);
+                float t = Easings.Interpolate(elapsedTime / time, function);
                 transform.localScale = Vector3.Lerp(Vector3.zero, Vector3.one, t);
                 yield return null;
             }

@@ -2,6 +2,12 @@
 
 namespace Raincrow.BattleArena.Model
 {
+    public interface IAnimParams
+    {
+        float Time { get; }
+        Easings.Functions Function { get; }
+    }
+
     public interface ICharacterModel : IObjectModel
     {
         int BaseEnergy { get; set; }

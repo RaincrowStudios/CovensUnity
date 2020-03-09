@@ -21,6 +21,7 @@ namespace Raincrow.BattleArena.Phases
         private IBattleResultModel _battleResultModel;
         private string _playerId;
         private IList<ICharacterController> _summonedCharacters = new List<ICharacterController>();
+        private IAnimParams _moveParams;
 
         // Properties
         public string Name => "Initiative Phase";
@@ -31,7 +32,8 @@ namespace Raincrow.BattleArena.Phases
             AbstractGameMasterController gameMaster,
             ITurnModel turnModel,
             IBattleModel battleModel,
-            IBattleResultModel battleResultModel)
+            IBattleResultModel battleResultModel,
+            IAnimParams moveParams)
         {
             _coroutineHandler = coroutineStarter;
             _sendPlanningPhaseReady = null;
@@ -41,6 +43,7 @@ namespace Raincrow.BattleArena.Phases
             _battleModel = battleModel;
             _playerId = playerId;
             _battleResultModel = battleResultModel;
+            _moveParams = moveParams;
         }
 
         public IEnumerator Enter(IStateMachine stateMachine)
@@ -66,14 +69,13 @@ namespace Raincrow.BattleArena.Phases
             if (_isPlanningPhaseReady.GetValueOrDefault())
             {
                 // Show Summon Animation
-                float summonTime = 1f;
                 foreach (ICharacterController characterController in _summonedCharacters)
                 {
-                    IEnumerator summon = characterController.Summon(summonTime, Easings.Functions.Linear);
+                    IEnumerator summon = characterController.Summon(_moveParams.Time, _moveParams.Function);
                     _coroutineHandler.Invoke(summon);
                 }
                 _turnModel.SummonedCharacters.Clear();
-                yield return new WaitForSeconds(summonTime);
+                yield return new WaitForSeconds(_moveParams.Time);
 
                 // Change to Planning Phase
                 yield return stateMachine.ChangeState<PlanningPhase>();

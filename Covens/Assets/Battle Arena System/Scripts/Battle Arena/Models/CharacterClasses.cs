@@ -53,6 +53,22 @@ namespace Raincrow.BattleArena.Model
         public GameObject CharacterPrefab { get => _characterPrefab; set => _characterPrefab = value; }
     }
 
+    [System.Serializable]
+    public struct AnimParams : IAnimParams
+    {
+        [SerializeField] private float _time;
+        [SerializeField] private Easings.Functions _function;
+
+        public float Time { get => _time; set => _time = value; }
+        public Easings.Functions Function { get => _function; set => _function = value; }
+
+        public AnimParams(float time, Easings.Functions function)
+        {
+            _time = time;
+            _function = function;
+        }
+    }    
+
     //public class CharacterModel : ICharacterModel
     //{
     //    public string Id { get; set; }

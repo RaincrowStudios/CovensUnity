@@ -86,6 +86,15 @@ MonoBehaviour:
   _cameraSpeed: 20
   _cameraDecceleration: 0.15
   _cameraTargetHeight: 2
+  _cameraDistance: 1.15
+  _cameraHeight: 0.45
+  _timeAnimation: 0.5
+  _moveParams:
+    _time: 0.5
+    _function: 3
+  _summonParams:
+    _time: 0.5
+    _function: 3
 --- !u!114 &7196786638976531525
 MonoBehaviour:
   m_ObjectHideFlags: 0

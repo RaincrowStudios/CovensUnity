@@ -31,6 +31,10 @@ namespace Raincrow.BattleArena.Controller
         [SerializeField] private float _cameraHeight = 0.45f;
         [SerializeField] private float _timeAnimation = 0.5f;
 
+        [Header("Character Animations")]
+        [SerializeField] private AnimParams _moveParams = new AnimParams(1f, Easings.Functions.Linear);
+        [SerializeField] private AnimParams _summonParams = new AnimParams(1f, Easings.Functions.Linear);
+
         private IStateMachine _stateMachine; // State machine with all phases
         private IGridModel _gridModel;
         private ITurnModel _turnModel;
@@ -42,7 +46,6 @@ namespace Raincrow.BattleArena.Controller
         private IDictionary<string, ICharacterController<ISpiritModel, ISpiritUIModel>> _dictSpiritViews = new Dictionary<string, ICharacterController<ISpiritModel, ISpiritUIModel>>();
 
         // Properties
-
         public ICellUIModel[,] Cells { get; private set; } = new ICellUIModel[0, 0]; // Grid with all the game objects inserted
         public ICollection<ICharacterController<IWitchModel, IWitchUIModel>> WitchesViews => _dictWitchesViews.Values; // List with all witches
         public ICollection<ICharacterController<ISpiritModel, ISpiritUIModel>> SpiritsViews => _dictSpiritViews.Values; // List with all spirits
@@ -197,7 +200,7 @@ namespace Raincrow.BattleArena.Controller
             };
             yield return null;
 
-            InitiativePhase initiativePhase = new InitiativePhase(this, playerId, _gameMasterController, _turnModel, battleModel, battleResult);
+            InitiativePhase initiativePhase = new InitiativePhase(this, playerId, _gameMasterController, _turnModel, battleModel, battleResult, _moveParams);
             yield return null;
 
             PlanningPhase planningPhase = new PlanningPhase(this,
@@ -214,7 +217,7 @@ namespace Raincrow.BattleArena.Controller
                 _cameraSpeed);
             yield return null;
 
-            ActionResolutionPhase actionResolutionPhase = new ActionResolutionPhase(this, battleModel, _turnModel, _serviceLocator.GetBarEventLogView());
+            ActionResolutionPhase actionResolutionPhase = new ActionResolutionPhase(this, battleModel, _turnModel, _serviceLocator.GetBarEventLogView(), _summonParams, _moveParams);
             yield return null;
 
             BanishmentPhase banishmentPhase = new BanishmentPhase(this, battleModel, _turnModel, _serviceLocator.GetBarEventLogView());
