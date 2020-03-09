@@ -52,6 +52,9 @@ namespace Raincrow.BattleArena.Factory
         {
             // Create character            
             ICharacterController<IWitchModel, IWitchUIModel> characterView = _objectPool.Spawn(_battleWitchViewPrefab, cellTransform);
+            
+            // set scale to zero
+            characterView.Transform.localScale = Vector3.zero;
 
             yield return null;
 

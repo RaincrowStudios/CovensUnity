@@ -186,6 +186,8 @@ namespace Raincrow.BattleArena.Controller
         {
             // We yield at each allocation to avoid a lot of allocations on a single frame
             _turnModel = new TurnModel();
+            _turnModel.SummonedCharacters.AddRange(_dictSpiritViews.Values);
+            _turnModel.SummonedCharacters.AddRange(_dictWitchesViews.Values);
 
             IBattleResultModel battleResult = new BattleResultModel();
             IBattleModel battleModel = new BattleModel()
@@ -467,6 +469,7 @@ namespace Raincrow.BattleArena.Controller
         float PlanningMaxTime { get; set; }
         int MaxActionsAllowed { get; set; }
         IList<IActionRequestModel> RequestedActions { get; }
+        IList<ICharacterController> SummonedCharacters { get; }
         IDictionary<string, IList<IActionResponseModel>> ResponseActions { get; }
         void Reset();
         //BattleSlot SelectedSlot { get; set; }
@@ -480,6 +483,7 @@ namespace Raincrow.BattleArena.Controller
         public float PlanningMaxTime { get; set; }
         public int MaxActionsAllowed { get; set; }
         public IList<IActionRequestModel> RequestedActions { get; private set; } = new List<IActionRequestModel>();
+        public IList<ICharacterController> SummonedCharacters { get; } = new List<ICharacterController>();
         public IDictionary<string, IList<IActionResponseModel>> ResponseActions { get; } = new Dictionary<string, IList<IActionResponseModel>>();
 
         //public BattleSlot SelectedSlot { get; set; }

@@ -52,7 +52,7 @@ namespace Raincrow.BattleArena.Factory
             ICharacterController<ISpiritModel, ISpiritUIModel> characterView = _objectPool.Spawn(_battleSpiritViewPrefab, cellTransform);
 
             // set scale to zero
-            //characterView.Transform.localScale = Vector3.zero;
+            characterView.Transform.localScale = Vector3.zero;
 
             yield return null;
 

@@ -1,9 +1,11 @@
 ﻿using Raincrow.BattleArena.Controller;
+using Raincrow.BattleArena.Controllers;
 using Raincrow.BattleArena.Events;
 using Raincrow.BattleArena.Model;
 using Raincrow.StateMachines;
 using System.Collections;
 using System.Collections.Generic;
+using UnityEngine;
 
 namespace Raincrow.BattleArena.Phases
 {
@@ -18,21 +20,22 @@ namespace Raincrow.BattleArena.Phases
         private IBattleModel _battleModel;
         private IBattleResultModel _battleResultModel;
         private string _playerId;
+        private IList<ICharacterController> _summonedCharacters = new List<ICharacterController>();
 
         // Properties
         public string Name => "Initiative Phase";
 
         public InitiativePhase(
-            ICoroutineHandler coroutineStarter, 
-            string playerId, 
-            AbstractGameMasterController gameMaster, 
-            ITurnModel turnModel, 
+            ICoroutineHandler coroutineStarter,
+            string playerId,
+            AbstractGameMasterController gameMaster,
+            ITurnModel turnModel,
             IBattleModel battleModel,
             IBattleResultModel battleResultModel)
         {
             _coroutineHandler = coroutineStarter;
             _sendPlanningPhaseReady = null;
-            _isPlanningPhaseReady = null;            
+            _isPlanningPhaseReady = null;
             _gameMaster = gameMaster;
             _turnModel = turnModel;
             _battleModel = battleModel;
@@ -42,6 +45,10 @@ namespace Raincrow.BattleArena.Phases
 
         public IEnumerator Enter(IStateMachine stateMachine)
         {
+            // Save Summoned Characters
+            _summonedCharacters = new List<ICharacterController>();
+            _summonedCharacters.AddRange(_turnModel.SummonedCharacters);            
+
             // Reset Turn Model
             _turnModel.Reset();
 
@@ -49,7 +56,7 @@ namespace Raincrow.BattleArena.Phases
             _sendPlanningPhaseReady = _gameMaster.SendPlanningPhaseReady(_battleModel.Id, _playerId, OnPlanningPhaseReady, OnBattleEnd);
 
             // Start the Send Planning Phase Ready Coroutine
-            _coroutineHandler.Invoke(_sendPlanningPhaseReady);            
+            _coroutineHandler.Invoke(_sendPlanningPhaseReady);
 
             yield return null;
         }
@@ -58,6 +65,17 @@ namespace Raincrow.BattleArena.Phases
         {
             if (_isPlanningPhaseReady.GetValueOrDefault())
             {
+                // Show Summon Animation
+                float summonTime = 1f;
+                foreach (ICharacterController characterController in _summonedCharacters)
+                {
+                    IEnumerator summon = characterController.Summon(summonTime, Easings.Functions.Linear);
+                    _coroutineHandler.Invoke(summon);
+                }
+                _turnModel.SummonedCharacters.Clear();
+                yield return new WaitForSeconds(summonTime);
+
+                // Change to Planning Phase
                 yield return stateMachine.ChangeState<PlanningPhase>();
             }
             else if (!string.IsNullOrWhiteSpace(_battleResultModel.Type))
@@ -77,7 +95,7 @@ namespace Raincrow.BattleArena.Phases
             _sendPlanningPhaseReady = null;
             _isPlanningPhaseReady = null;
             yield return null;
-        }
+        }        
 
         #region Socket Events
 
