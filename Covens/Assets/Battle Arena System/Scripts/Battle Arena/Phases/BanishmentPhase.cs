@@ -74,7 +74,7 @@ namespace Raincrow.BattleArena.Phases
                                 break;
                             case ActionResponseType.Banish:
                                 BanishActionResponseModel banishAction = responseAction as BanishActionResponseModel;
-                                actionRoutine = Banish(characterId, banishAction);
+                                actionRoutine = Banish(banishAction.TargetId, banishAction);
 
                                 string logBanish = "The <witch>Evil Wind</witch> cast <spell>Arcane Damage</spell> on you. <damage>1624 energy</damage><time>[01:12]</time>";
                                 _barEventLogView.AddLog(logBanish);

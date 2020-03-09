@@ -67,6 +67,12 @@ MonoBehaviour:
     type: 3}
   _cameraTargetControllerPrefab: {fileID: 4649427003463762621, guid: 63429c5884f684c41a6ee13457dee14c,
     type: 3}
+  _celebratoryViewPrefab: {fileID: 5689654952435033728, guid: a001c18a2371c464d9a5f51364e387b8,
+    type: 3}
+  _debriefViewPrefab: {fileID: 7632098300183261905, guid: 923908aa0ca9a224eacc6abb0caeee8f,
+    type: 3}
+  _smoothCameraFollowPrefab: {fileID: 2909580882335506164, guid: 0251eb9112595734eb75de6863092d3a,
+    type: 3}
   _avatarSpriteUtilInstance: {fileID: 0}
   _loadingViewInstance: {fileID: 0}
   _battleControllerInstance: {fileID: 0}
@@ -79,4 +85,7 @@ MonoBehaviour:
   _barEventLogViewInstace: {fileID: 0}
   _playerBadgeViewInstance: {fileID: 0}
   _cameraTargetControllerInstance: {fileID: 0}
+  _celebratoryViewInstance: {fileID: 0}
+  _debriefViewInstance: {fileID: 0}
+  _smoothCameraFollowInstance: {fileID: 0}
   _mainCanvas: {fileID: 0}

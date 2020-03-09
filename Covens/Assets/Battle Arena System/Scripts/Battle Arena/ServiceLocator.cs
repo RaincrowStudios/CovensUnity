@@ -2,6 +2,7 @@
 using Raincrow.BattleArena.Factory;
 using Raincrow.BattleArena.Views;
 using Raincrow.Loading.View;
+using Raincrow.Utils;
 using UnityEngine;
 
 namespace Raincrow.Services
@@ -21,6 +22,9 @@ namespace Raincrow.Services
         [SerializeField] private BarEventLogView _barEventLogViewPrefab;
         [SerializeField] private PlayerBadgeView _playerBadgeViewPrefab;
         [SerializeField] private CameraTargetController _cameraTargetControllerPrefab;
+        [SerializeField] private CelebratoryView _celebratoryViewPrefab;
+        [SerializeField] private DebriefView _debriefViewPrefab;
+        [SerializeField] private SmoothCameraFollow _smoothCameraFollowPrefab;
 
         [Header("Service Instances")]
         [SerializeField] private AvatarSpriteUtil _avatarSpriteUtilInstance; // Avatar Sprite Util Instance
@@ -35,6 +39,9 @@ namespace Raincrow.Services
         [SerializeField] private BarEventLogView _barEventLogViewInstace;
         [SerializeField] private PlayerBadgeView _playerBadgeViewInstance;
         [SerializeField] private CameraTargetController _cameraTargetControllerInstance;
+        [SerializeField] private CelebratoryView _celebratoryViewInstance;
+        [SerializeField] private DebriefView _debriefViewInstance;
+        [SerializeField] private SmoothCameraFollow _smoothCameraFollowInstance;
 
         [Header("UI")]
         [SerializeField] private Canvas _mainCanvas;
@@ -177,6 +184,33 @@ namespace Raincrow.Services
                 _cameraTargetControllerInstance = GetInstance(_cameraTargetControllerPrefab);
             }
             return _cameraTargetControllerInstance;
+        }
+
+        public ICelebratoryView GetCelebratoryView()
+        {
+            if (_celebratoryViewInstance == null)
+            {
+                _celebratoryViewInstance = GetInstance(_celebratoryViewPrefab);
+            }
+            return _celebratoryViewInstance;
+        }
+
+        public IDebriefView GetDebriefView()
+        {
+            if (_debriefViewInstance == null)
+            {
+                _debriefViewInstance = GetInstance(_debriefViewPrefab);
+            }
+            return _debriefViewInstance;
+        }
+
+        public ISmoothCameraFollow GetSmoothCameraFollow()
+        {
+            if (_smoothCameraFollowInstance == null)
+            {
+                _smoothCameraFollowInstance = GetInstance(_smoothCameraFollowPrefab);
+            }
+            return _smoothCameraFollowInstance;
         }
 
         private T GetInstance<T>(T prefab, Transform parent = null) where T : Object

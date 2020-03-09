@@ -105,6 +105,16 @@ namespace Raincrow.Mocks
             };
             witchModel.Inventory.Equipped.Add(equip);
 
+            SpiritModel witchsSpiritModel = new SpiritModel()
+            {
+                ObjectType = ObjectType.Spirit,
+                Id = "spirit2",
+                Texture = "spirit_dapperSkeleton",
+                OwnerId = "witch1",
+                BaseEnergy = 500,
+                Energy = 300
+            };
+
             SpiritModel spiritModel = new SpiritModel()
             {
                 ObjectType = ObjectType.Spirit,
@@ -122,6 +132,11 @@ namespace Raincrow.Mocks
             //gridModel.Cells[0, 0].ObjectId = witchModel.Id;
             gridModel.SetObjectToGrid(witchModel, 0, 0);
             witchModels.Add(witchModel);
+
+            // add witch's spirit
+            //gridModel.Cells[0, 1].ObjectId = spiritModel.Id;
+            gridModel.SetObjectToGrid(witchsSpiritModel, 4, 2);
+            spiritModels.Add(witchsSpiritModel);
 
             // add spirit
             //gridModel.Cells[4, 4].ObjectId = spiritModel.Id;

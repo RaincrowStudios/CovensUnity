@@ -97,7 +97,7 @@ namespace Raincrow.BattleArena.Phases
 
         private void OnBattleEnd(BattleEndEventArgs args)
         {
-            _battleResultModel.Ranking = new string[0];
+            _battleResultModel.Ranking = args.Ranking;
             _battleResultModel.Reward = new BattleRewardModel();
             _battleResultModel.Type = args.Type;
         }

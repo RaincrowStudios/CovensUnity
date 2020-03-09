@@ -26,6 +26,11 @@ namespace Raincrow.BattleArena.Controller
         [SerializeField] private float _cameraDecceleration = 0.15f;
         [SerializeField] private float _cameraTargetHeight = 1f;
 
+        [Header("Debrief Animation")]
+        [SerializeField] private float _cameraDistance = 1.15f;
+        [SerializeField] private float _cameraHeight = 0.45f;
+        [SerializeField] private float _timeAnimation = 0.5f;
+
         private IStateMachine _stateMachine; // State machine with all phases
         private IGridModel _gridModel;
         private ITurnModel _turnModel;
@@ -214,7 +219,15 @@ namespace Raincrow.BattleArena.Controller
             BanishmentPhase banishmentPhase = new BanishmentPhase(this, battleModel, _turnModel, _serviceLocator.GetBarEventLogView());
             yield return null;
 
-            EndPhase endPhase = new EndPhase(battleResult);
+            DebriefAnimationModel debriefAnimationValues = new DebriefAnimationModel()
+            {
+                CameraDistance = _cameraDistance,
+                CameraHeight = _cameraHeight,
+                CameraSpeed = _cameraSpeed,
+                TimeAnimation = _timeAnimation
+            };
+
+            EndPhase endPhase = new EndPhase(battleResult, _serviceLocator.GetCelebratoryView(), _serviceLocator.GetDebriefView(),this,_cameraTargetController, _serviceLocator.GetSmoothCameraFollow(), battleModel, debriefAnimationValues);
 
             IState[] battlePhases = new IState[5]
             {

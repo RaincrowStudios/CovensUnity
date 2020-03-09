@@ -94,7 +94,8 @@ namespace Raincrow.BattleArena.Controller
             {
                 BattleEndEventArgs battleEndEventArgs = new BattleEndEventArgs()
                 {
-                    Type = BattleResultType.PlayerWins
+                    Type = BattleResultType.PlayerWins,
+                    Ranking = new string[2] { "witch1", "spirit2" }
                 };
                 _onBattleEnd.Invoke(battleEndEventArgs);
             }
@@ -104,7 +105,7 @@ namespace Raincrow.BattleArena.Controller
                 {
                     MaxActionsAllowed = 3,
                     PlanningMaxTime = 30f,
-                    PlanningOrder = new string[2] { "witch1", "spirit1" }
+                    PlanningOrder = new string[3] { "witch1", "spirit1", "spirit2" }
                 };
                 _onPlanningPhaseReady.Invoke(planningPhaseReadyEvent);
             }
