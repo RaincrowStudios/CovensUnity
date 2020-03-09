@@ -26,7 +26,6 @@ namespace Raincrow.BattleArena.Phases
         private ITurnModel _turnModel;
         private IBattleModel _battleModel;
         private ICellUIModel[,] _gridView;
-        private ICameraTargetController _cameraTargetController;
         private float _cameraSpeed;
         private BattleSlot? _selectedSlot;
         private string _objectId;
@@ -48,7 +47,6 @@ namespace Raincrow.BattleArena.Phases
                              ICountdownView countdownView,
                              IEnergyView energyView,
                              IPlayerBadgeView playerBadgeView,
-                             ICameraTargetController cameraTargetController,
                              float cameraSpeed)
         {
             _coroutineStarter = coroutineStarter;
@@ -64,7 +62,6 @@ namespace Raincrow.BattleArena.Phases
             _countdownView = countdownView;
             _playerBadgeView = playerBadgeView;
             _energyView = energyView;
-            _cameraTargetController = cameraTargetController;
             _cameraSpeed = cameraSpeed;
         }
 
@@ -118,9 +115,7 @@ namespace Raincrow.BattleArena.Phases
             }
 
             ICellUIModel selectedCellUI = _gridView[cellModel.X, cellModel.Y];
-            selectedCellUI.SetIsSelected(true);
-
-            _cameraTargetController.SetTargetPosition(selectedCellUI.Transform.position, _cameraSpeed);
+            selectedCellUI.SetIsSelected(true);            
 
             _selectedSlot = new BattleSlot()
             {
