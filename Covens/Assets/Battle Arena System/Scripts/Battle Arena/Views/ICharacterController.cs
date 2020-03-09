@@ -13,7 +13,7 @@ namespace Raincrow.BattleArena.Controllers
 
     public interface ICharacterController
     {
-        Transform GetTransform();        
+        Transform Transform { get; }
         void FaceCamera(Quaternion cameraRotation, Vector3 cameraForward);
         void UpdateView(int baseEnergy, int energy);
         IEnumerator AddDamage(int damage);

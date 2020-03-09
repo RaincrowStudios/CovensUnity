@@ -59,7 +59,7 @@ namespace Raincrow.BattleArena.Factory
                 yield return null;
             }
 
-            ISpiritUIModel spiritViewModel = new SpiritUIModel(characterView.GetTransform())
+            ISpiritUIModel spiritViewModel = new SpiritUIModel(characterView.Transform)
             {
                 Texture = tex.ReturnValue,
                 AlignmentMaterial = _wildAlignmentMaterial

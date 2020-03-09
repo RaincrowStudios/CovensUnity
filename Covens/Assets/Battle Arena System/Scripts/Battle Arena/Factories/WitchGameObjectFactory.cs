@@ -71,7 +71,7 @@ namespace Raincrow.BattleArena.Factory
                 alignmentMaterial = _alignmentShadowMaterial;
             }
 
-            IWitchUIModel witchViewModel = new WitchUIModel(characterView.GetTransform())
+            IWitchUIModel witchViewModel = new WitchUIModel(characterView.Transform)
             {
                 Texture = request.ReturnValue,
                 AlignmentMaterial = alignmentMaterial

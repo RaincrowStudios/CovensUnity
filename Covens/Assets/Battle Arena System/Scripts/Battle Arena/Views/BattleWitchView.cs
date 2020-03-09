@@ -35,6 +35,7 @@ namespace Raincrow.BattleArena.Views
         // Properties
         public IWitchModel Model { get; private set; }
         public IWitchUIModel UIModel { get; private set; }
+        public Transform Transform => transform;
 
         protected virtual void OnEnable()
         {
@@ -87,11 +88,6 @@ namespace Raincrow.BattleArena.Views
             bool isDead = energy <= 0;
             _deathIcon.SetActive(isDead);
             Debug.LogFormat("Update Energy {0} {1}", baseEnergy, energy);                        
-        }
-
-        public Transform GetTransform()
-        {
-            return transform;
         }
 
         public IEnumerator AddDamage(int damage)

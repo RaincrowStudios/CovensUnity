@@ -28,6 +28,7 @@ namespace Raincrow.BattleArena.Views
         // Properties
         public ISpiritModel Model { get; private set; }
         public ISpiritUIModel UIModel { get; private set; }
+        public Transform Transform => transform;
 
         protected virtual void OnEnable()
         {
@@ -70,12 +71,7 @@ namespace Raincrow.BattleArena.Views
             Model.Energy = Mathf.Max(Model.Energy, 0);
             UpdateView(Model.BaseEnergy, Model.Energy);
             yield return null;
-        }
-
-        public Transform GetTransform()
-        {
-            return transform;
-        }
+        }        
 
         public void UpdateView(int baseEnergy, int energy)
         {
