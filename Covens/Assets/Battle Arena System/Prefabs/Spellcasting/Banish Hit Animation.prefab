@@ -10,7 +10,7 @@ GameObject:
   m_Component:
   - component: {fileID: 4638678680538264}
   m_Layer: 24
-  m_Name: HitFX_Aura_Banish
+  m_Name: Banish Hit Animation
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -4767,8 +4767,8 @@ ParticleSystemRenderer:
   m_AutoUVMaxDistance: 0.5
   m_AutoUVMaxAngle: 89
   m_LightmapParameters: {fileID: 0}
-  m_SortingLayerID: 0
-  m_SortingLayer: 0
+  m_SortingLayerID: -463712473
+  m_SortingLayer: 4
   m_SortingOrder: 9
   m_RenderMode: 1
   m_SortMode: 0
@@ -4820,7 +4820,7 @@ Transform:
   m_GameObject: {fileID: 1292482308831644}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 4, y: 4, z: 4}
+  m_LocalScale: {x: 20, y: 20, z: 20}
   m_Children:
   - {fileID: 4687512665932160}
   - {fileID: 4766350116213350}
@@ -9563,8 +9563,8 @@ ParticleSystemRenderer:
   m_AutoUVMaxDistance: 0.5
   m_AutoUVMaxAngle: 89
   m_LightmapParameters: {fileID: 0}
-  m_SortingLayerID: 0
-  m_SortingLayer: 0
+  m_SortingLayerID: -463712473
+  m_SortingLayer: 4
   m_SortingOrder: 9
   m_RenderMode: 0
   m_SortMode: 0

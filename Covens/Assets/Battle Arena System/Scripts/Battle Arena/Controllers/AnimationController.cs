@@ -11,6 +11,16 @@ namespace Raincrow.BattleArena.Controllers
         // Serialized Variables
         [SerializeField] private ServiceLocator _serviceLocator;
 
+        [Header("Flee Animation")]
+        [SerializeField] private float _fleeAnimationTime = 1f;
+        [SerializeField] private Easings.Functions _fleeAnimationFunction = Easings.Functions.Linear;
+
+        [Header("Banish Animation")]
+        [SerializeField] private Transform _banishGlyph;
+        [SerializeField] private Transform _banishAura;
+        [SerializeField] private float _banishAnimationTime = 1f;
+        [SerializeField] private Easings.Functions _banishAnimationFunction = Easings.Functions.Linear;
+
         [Header("Move Animation")]
         [SerializeField] private float _moveAnimationTime = 1f;
         [SerializeField] private Easings.Functions _moveAnimationFunction = Easings.Functions.Linear;
@@ -132,15 +142,22 @@ namespace Raincrow.BattleArena.Controllers
         public IEnumerator Banish(ICharacterController characterController)
         {
             Vector3 position = characterController.Transform.position;
-            Quaternion quartenion = _summonAnimPrefab.transform.rotation;
+            Quaternion quartenion = _summonAnimPrefab.transform.rotation;         
 
-            // Summon Animation
-            for (float elapsedTime = 0; elapsedTime < _summonAnimationTime; elapsedTime += Time.deltaTime)
+            Transform aura = _objectPool.Spawn(_banishAura);
+            aura.position = characterController.Transform.transform.position;
+            aura.localScale = characterController.Transform.transform.lossyScale;
+            aura.gameObject.SetActive(true);
+
+            // Banish Animation
+            for (float elapsedTime = 0; elapsedTime < _banishAnimationTime; elapsedTime += Time.deltaTime)
             {
-                float t = Easings.Interpolate(elapsedTime / _summonAnimationTime, _summonAnimationFunction);
+                float t = Easings.Interpolate(elapsedTime / _banishAnimationTime, _banishAnimationFunction);
                 characterController.Transform.localScale = Vector3.Lerp(Vector3.one, Vector3.zero, t);
                 yield return null;
             }
+            
+            _objectPool.Recycle(aura);
         }
 
         public IEnumerator Flee(ICharacterController characterController)
@@ -148,13 +165,20 @@ namespace Raincrow.BattleArena.Controllers
             Vector3 position = characterController.Transform.position;
             Quaternion quartenion = _summonAnimPrefab.transform.rotation;
 
-            // Summon Animation
-            for (float elapsedTime = 0; elapsedTime < _summonAnimationTime; elapsedTime += Time.deltaTime)
+            Transform aura = _objectPool.Spawn(_banishAura);
+            aura.position = characterController.Transform.transform.position;
+            aura.localScale = characterController.Transform.transform.lossyScale;
+            aura.gameObject.SetActive(true);
+
+            // Flee Animation
+            for (float elapsedTime = 0; elapsedTime < _fleeAnimationTime; elapsedTime += Time.deltaTime)
             {
-                float t = Easings.Interpolate(elapsedTime / _summonAnimationTime, _summonAnimationFunction);
+                float t = Easings.Interpolate(elapsedTime / _fleeAnimationTime, _fleeAnimationFunction);
                 characterController.Transform.localScale = Vector3.Lerp(Vector3.one, Vector3.zero, t);
                 yield return null;
             }
+
+            _objectPool.Recycle(aura);
         }
 
         public IEnumerator CastSpell(int spellDegree, ICharacterController caster, ICharacterController target)

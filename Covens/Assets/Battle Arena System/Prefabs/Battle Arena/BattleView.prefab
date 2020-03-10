@@ -177,6 +177,12 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _serviceLocator: {fileID: 0}
+  _banishGlyph: {fileID: 224649470955447078, guid: fdd15d425252d044fa40a36524e34983,
+    type: 3}
+  _banishAura: {fileID: 4638678680538264, guid: 63226d09f199ca74d81cc982ab2945c0,
+    type: 3}
+  _banishAnimationTime: 3
+  _banishAnimationFunction: 3
   _moveAnimationTime: 0.5
   _moveAnimationFunction: 3
   _summonAnimPrefab: {fileID: 325792439671258822, guid: bce16092c0d850544b756b045544d70d,

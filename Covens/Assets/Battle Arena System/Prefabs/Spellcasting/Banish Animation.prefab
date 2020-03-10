@@ -507,7 +507,7 @@ GameObject:
   m_Component:
   - component: {fileID: 224649470955447078}
   m_Layer: 24
-  m_Name: SpellGlyph_Banish
+  m_Name: Banish Animation
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
