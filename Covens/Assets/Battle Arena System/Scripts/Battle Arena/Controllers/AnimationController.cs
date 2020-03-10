@@ -120,12 +120,13 @@ namespace Raincrow.BattleArena.Controllers
         public IEnumerator Move(ICharacterController characterController, BattleSlot targetBattleSlot)
         {            
             ICellUIModel model = _battleController.Cells[targetBattleSlot.Row, targetBattleSlot.Col];
-            Vector3 position = model.Transform.position;
+            Vector3 startPosition = characterController.Transform.position;
+            Vector3 targetPosition = model.Transform.position;
 
             for (float elapsedTime = 0; elapsedTime < _moveAnimationTime; elapsedTime += Time.deltaTime)
             {
                 float t = Easings.Interpolate(elapsedTime / _moveAnimationTime, _moveAnimationFunction);
-                characterController.Transform.position = Vector3.Lerp(position, position, t);
+                characterController.Transform.position = Vector3.Lerp(startPosition, targetPosition, t);
                 yield return null;
             }
         }
