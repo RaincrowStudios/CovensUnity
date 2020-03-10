@@ -1,6 +1,5 @@
 ﻿using Raincrow.BattleArena.Model;
 using UnityEngine;
-using UnityEngine.Events;
 
 namespace Raincrow.BattleArena.Views
 {
@@ -11,16 +10,11 @@ namespace Raincrow.BattleArena.Views
         [SerializeField] private Material _defaultMaterial;
         [SerializeField] private Material _selectedMaterial;
         [SerializeField] private BoxCollider _boxCollider;
-
-        // Variables
-        private ICellModel _cellModel;
-
+        
         // Properties
-        public CellClickEvent OnCellClick { get; private set; } = new CellClickEvent();
-
         public Transform Transform => transform;
-
         public bool IsSelected { get; set; }
+        public ICellModel CellModel { get; private set; }
 
         public void SetIsSelected(bool value)
         {
@@ -30,7 +24,7 @@ namespace Raincrow.BattleArena.Views
 
         public void Show(ICellModel cellModel, Vector2 cellScale)
         {
-            _cellModel = cellModel;
+            CellModel = cellModel;
 
             Vector3 localScale = _renderer.transform.localScale;
             localScale.x = cellScale.x;
@@ -40,12 +34,5 @@ namespace Raincrow.BattleArena.Views
 
             _renderer.transform.localScale = localScale;
         }
-
-        protected virtual void OnMouseUpAsButton()
-        {
-            OnCellClick?.Invoke(_cellModel);
-        }
     }
-
-    public class CellClickEvent : UnityEvent<ICellModel> { }    
 }

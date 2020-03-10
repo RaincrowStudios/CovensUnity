@@ -221,6 +221,7 @@ namespace Raincrow.BattleArena.Controllers
                 _serviceLocator.GetCountdownView(),
                 _energyView,
                 _playerBadgeView,
+                _serviceLocator.GetInputController(),
                 _cameraSpeed);
             yield return null;
 

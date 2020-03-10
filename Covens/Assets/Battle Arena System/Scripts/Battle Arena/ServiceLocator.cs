@@ -45,6 +45,7 @@ namespace Raincrow.Services
 
         [Header("UI")]
         [SerializeField] private Canvas _mainCanvas;
+        [SerializeField] private InputController _inputController;
 
         public ILoadingView GetLoadingView()
         {
@@ -152,6 +153,11 @@ namespace Raincrow.Services
                 _barEventLogViewInstace = GetInstance(_barEventLogViewPrefab);
             }
             return _barEventLogViewInstace;
+        }
+
+        public IInputController GetInputController()
+        {
+            return _inputController;
         }
 
         public Canvas GetMainCanvas()

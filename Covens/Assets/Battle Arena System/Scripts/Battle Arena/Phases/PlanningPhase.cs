@@ -11,6 +11,9 @@ namespace Raincrow.BattleArena.Phases
 {
     public class PlanningPhase : IState
     {
+        private readonly static string BattleCellLayerName = "BattleCell";
+        private readonly static float MaxRaycastDistance = 3000f;
+
         // Variables
         private float _startTime = 0f;
         private IEnumerator<bool?> _sendFinishPlanningPhase;
@@ -26,12 +29,14 @@ namespace Raincrow.BattleArena.Phases
         private ITurnModel _turnModel;
         private IBattleModel _battleModel;
         private ICellUIModel[,] _gridView;
+        private IInputController _inputController;
         private float _cameraSpeed;
         private BattleSlot? _selectedSlot;
         private string _objectId;
         private CollectableItem _herb;
         private CollectableItem _tool;
         private CollectableItem _gem;
+        private readonly int _battleCellLayer;
 
         // Properties
         public string Name => "Planning Phase";
@@ -47,6 +52,7 @@ namespace Raincrow.BattleArena.Phases
                              ICountdownView countdownView,
                              IEnergyView energyView,
                              IPlayerBadgeView playerBadgeView,
+                             IInputController inputController,
                              float cameraSpeed)
         {
             _coroutineStarter = coroutineStarter;
@@ -63,20 +69,23 @@ namespace Raincrow.BattleArena.Phases
             _playerBadgeView = playerBadgeView;
             _energyView = energyView;
             _cameraSpeed = cameraSpeed;
+            _inputController = inputController;
+
+            _battleCellLayer = LayerMask.GetMask(BattleCellLayerName);
         }
 
         public IEnumerator Enter(IStateMachine stateMachine)
         {
-            // Add Click Events
-            for (int i = 0; i < _battleModel.GridUI.MaxCellsPerRow; i++)
-            {
-                for (int j = 0; j < _battleModel.GridUI.MaxCellsPerColumn; j++)
-                {
-                    ICellUIModel cellView = _gridView[i, j];
-                    cellView.OnCellClick.AddListener(CheckInput);
-                    yield return null;
-                }
-            }
+            //// Add Click Events
+            //for (int i = 0; i < _battleModel.GridUI.MaxCellsPerRow; i++)
+            //{
+            //    for (int j = 0; j < _battleModel.GridUI.MaxCellsPerColumn; j++)
+            //    {
+            //        ICellUIModel cellView = _gridView[i, j];
+            //        cellView.OnCellClick.AddListener(CheckInput);
+            //        yield return null;
+            //    }
+            //}
 
             _selectedSlot = null;
 
@@ -106,7 +115,7 @@ namespace Raincrow.BattleArena.Phases
             _countdownView.Show();
         }
 
-        private void CheckInput(ICellModel cellModel)
+        private void OnClickCell(ICellUIModel cellUIModel)
         {
             if (_selectedSlot != null)
             {
@@ -114,18 +123,17 @@ namespace Raincrow.BattleArena.Phases
                 currentCellUI.SetIsSelected(false);
             }
 
-            ICellUIModel selectedCellUI = _gridView[cellModel.X, cellModel.Y];
-            selectedCellUI.SetIsSelected(true);            
+            cellUIModel.SetIsSelected(true);            
 
             _selectedSlot = new BattleSlot()
             {
-                Row = cellModel.X,
-                Col = cellModel.Y
+                Row = cellUIModel.CellModel.X,
+                Col = cellUIModel.CellModel.Y
             };
 
-            _objectId = cellModel.ObjectId;
+            _objectId = cellUIModel.CellModel.ObjectId;
 
-            if (cellModel.IsEmpty())
+            if (cellUIModel.CellModel.IsEmpty())
             {
                 _quickCastView.OpenActionsMenu();
             }
@@ -154,6 +162,18 @@ namespace Raincrow.BattleArena.Phases
 
                 yield return stateMachine.ChangeState<ActionResolutionPhase>();
             }
+            else if (_inputController.Touch.HasValue) // check input
+            {                
+                Ray touchRay = _inputController.Touch.Value;                
+                if (Physics.Raycast(touchRay, out RaycastHit hitInfo, MaxRaycastDistance, _battleCellLayer))
+                {
+                    ICellUIModel cellUIModel = hitInfo.transform.GetComponent<ICellUIModel>();
+                    if (cellUIModel != null)
+                    {
+                        OnClickCell(cellUIModel);
+                    }
+                }
+            }
         }
 
         public IEnumerator Exit(IStateMachine stateMachine)
@@ -168,15 +188,15 @@ namespace Raincrow.BattleArena.Phases
                 OnCloseInventory();
             }
 
-            // Remove Click Events
-            for (int i = 0; i < _battleModel.GridUI.MaxCellsPerRow; i++)
-            {
-                for (int j = 0; j < _battleModel.GridUI.MaxCellsPerColumn; j++)
-                {
-                    ICellUIModel cellView = _gridView[i, j];
-                    cellView.OnCellClick.RemoveListener(CheckInput);
-                }
-            }
+            //// Remove Click Events
+            //for (int i = 0; i < _battleModel.GridUI.MaxCellsPerRow; i++)
+            //{
+            //    for (int j = 0; j < _battleModel.GridUI.MaxCellsPerColumn; j++)
+            //    {
+            //        ICellUIModel cellView = _gridView[i, j];
+            //        cellView.OnCellClick.RemoveListener(CheckInput);
+            //    }
+            //}
 
             _isPlanningPhaseFinished = null;
             _sendFinishPlanningPhase = null;
