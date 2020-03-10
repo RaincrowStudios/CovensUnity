@@ -73,6 +73,7 @@ namespace Raincrow.BattleArena.Views
         public float CameraDistance;
         public float CameraHeight;
         public float CameraSpeed;
+        public float TargetY;
         public float TimeAnimation;
     }
 }

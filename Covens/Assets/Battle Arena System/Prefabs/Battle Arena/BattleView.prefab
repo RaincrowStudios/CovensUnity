@@ -88,8 +88,8 @@ MonoBehaviour:
   _cameraSpeed: 2000
   _cameraDecceleration: 0.15
   _cameraTargetHeight: 1
-  _cameraDistance: 115
-  _cameraHeight: 45
+  _cameraDistance: 80
+  _cameraHeight: 65
   _timeAnimation: 0.5
 --- !u!114 &7196786638976531525
 MonoBehaviour:
