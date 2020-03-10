@@ -20,8 +20,16 @@ namespace Raincrow.BattleArena.Controllers
         [SerializeField] private float _summonAnimationTime = 1f;
         [SerializeField] private Easings.Functions _summonAnimationFunction = Easings.Functions.Linear;
 
+        [Header("Spell Animation")]
+        [SerializeField] private float _chargeLifecycle = 0.5f;
+        [SerializeField] private float _trailLifecycle = 0.25f;
+        [SerializeField] private float _hitLifecycle = 0.5f;
+        [SerializeField] private Vector3 _chargeScale = new Vector3(20, 20, 20);
+        [SerializeField] private Vector3 _trailScale = new Vector3(15, 15, 15);
+        [SerializeField] private Vector3 _hitScale = new Vector3(20, 20, 20);
+
         [Header("Damage Animation")]
-        [SerializeField] private Easings.Functions _damageAnimationFunction = Easings.Functions.CubicEaseInOut;
+        [SerializeField] private Easings.Functions _damageAnimationFunction = Easings.Functions.CubicEaseInOut;        
         [SerializeField] private float _damageAnimationTime = 2f;
         [SerializeField] private float _damageTextScale = 1f;
         [SerializeField] private float _criticalDamageTextScale = 1.4f;
@@ -42,12 +50,7 @@ namespace Raincrow.BattleArena.Controllers
         [Header("Light Animation Prefabs")]
         [SerializeField] private Transform _lightChargePrefab;
         [SerializeField] private Transform _lightTrailPrefab;
-        [SerializeField] private Transform _lightHitPrefab;        
-
-        [Header("Animation Scales")]
-        [SerializeField] private Vector3 _chargeScale = new Vector3(20, 20, 20);
-        [SerializeField] private Vector3 _trailScale = new Vector3(15, 15, 15);
-        [SerializeField] private Vector3 _hitScale = new Vector3(20, 20, 20);
+        [SerializeField] private Transform _lightHitPrefab;                
 
         // Variables
         private BattleController _battleController;
@@ -181,14 +184,14 @@ namespace Raincrow.BattleArena.Controllers
 
             Vector3 offset = targetTransform.up * 40;
             float distance = Vector3.Distance(casterTransform.position, targetTransform.position);
-            float trailTime = 0.25f;
 
             Vector3 startPosition = casterTransform.position + offset;
             Vector3 targetPosition = targetTransform.position + offset;
 
             //spawn the charge
-            Transform charge = _objectPool.Spawn(chargePrefab, null, casterTransform.position + offset, chargePrefab.transform.rotation);
+            Transform charge = _objectPool.Spawn(chargePrefab, null, casterTransform.position + offset, chargePrefab.transform.rotation);            
             charge.localScale = _chargeScale;
+            StartCoroutine(ScheduleRecycle(_chargeLifecycle, charge));
 
             //just call on complete if the caster is casting on itself
             if (casterTransform != targetTransform)
@@ -211,10 +214,11 @@ namespace Raincrow.BattleArena.Controllers
                 //spawn the trail                        
                 Transform trail = _objectPool.Spawn(trailPrefab, casterTransform.position + offset);
                 trail.localScale = _trailScale;
+                StartCoroutine(ScheduleRecycle(_trailLifecycle, trail));
 
-                for (float time = 0; time < trailTime; time += Time.deltaTime)
+                for (float time = 0; time < _trailLifecycle; time += Time.deltaTime)
                 {
-                    float t = Mathf.InverseLerp(0f, trailTime, time);
+                    float t = Mathf.InverseLerp(0f, _trailLifecycle, time);
                     trail.LookAt(targetTransform);
                     trail.position = path.point(t);
                     yield return null;
@@ -224,6 +228,7 @@ namespace Raincrow.BattleArena.Controllers
                 Transform hitFx = _objectPool.Spawn(hitPrefab, targetTransform.position + offset);
                 hitFx.rotation = Quaternion.LookRotation(casterTransform.position - targetTransform.position);
                 hitFx.localScale = _hitScale;
+                StartCoroutine(ScheduleRecycle(_hitLifecycle, hitFx));
             }
         }
 
@@ -248,6 +253,8 @@ namespace Raincrow.BattleArena.Controllers
         private IEnumerator SpawnDamageText(Transform target, int amount, float fontSize)
         {
             Transform damageFeedback = _objectPool.Spawn(_damageFeedback);
+            StartCoroutine(ScheduleRecycle(_damageAnimationTime, damageFeedback));
+
             TMPro.TextMeshPro damageFeedbackText = damageFeedback.GetComponentInChildren<TMPro.TextMeshPro>();
             damageFeedbackText.color = amount > 0 ? _damageColor : _restoreColor;
             damageFeedbackText.fontSize = fontSize;
@@ -278,7 +285,13 @@ namespace Raincrow.BattleArena.Controllers
                 yield return null;
             }
         }
-    }
+
+        private IEnumerator ScheduleRecycle(float lifecycle, Transform transform)
+        {
+            yield return new WaitForSeconds(lifecycle);
+            _objectPool.Recycle(transform);
+        }
+    }    
 
     public interface IAnimationController
     {
