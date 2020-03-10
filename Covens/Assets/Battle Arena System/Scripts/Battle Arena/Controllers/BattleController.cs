@@ -9,6 +9,7 @@ using UnityEngine;
 using Raincrow.Loading.View;
 using Raincrow.Services;
 using Raincrow.BattleArena.Controllers;
+using System;
 
 namespace Raincrow.BattleArena.Controller
 {
@@ -473,11 +474,29 @@ namespace Raincrow.BattleArena.Controller
             summonParticles.Play();
 
             // Summon Animation
-            yield return characterController.Summon(_summonParams.Time, _summonParams.Function);
+            for (float elapsedTime = 0; elapsedTime < _summonParams.Time; elapsedTime += Time.deltaTime)
+            {
+                float t = Easings.Interpolate(elapsedTime / _summonParams.Time, _summonParams.Function);
+                characterController.Transform.localScale = Vector3.Lerp(Vector3.zero, Vector3.one, t);
+                yield return null;
+            }
             yield return new WaitUntil(() => summonParticles.isStopped);
             
             // Recycle Particle System
             objPool.Recycle(summonParticles);
+        }
+
+        public IEnumerator Move(ICharacterController characterController, BattleSlot targetBattleSlot)
+        {
+            ICellUIModel model = Cells[targetBattleSlot.Row, targetBattleSlot.Col];
+            Vector3 position = model.Transform.position;
+            
+            for (float elapsedTime = 0; elapsedTime < _moveParams.Time; elapsedTime += Time.deltaTime)
+            {
+                float t = Easings.Interpolate(elapsedTime / _moveParams.Time, _moveParams.Function);
+                characterController.Transform.position = Vector3.Lerp(position, position, t);
+                yield return null;
+            }
         }
 
         public IEnumerator Summon(IList<ICharacterController> characterControllers)
@@ -487,13 +506,6 @@ namespace Raincrow.BattleArena.Controller
                 StartCoroutine(Summon(characterController));
             }
             yield return new WaitForSeconds(_summonParams.Time);
-        }
-
-        public IEnumerator Move(ICharacterController characterController, BattleSlot targetBattleSlot)
-        {
-            ICellUIModel model = Cells[targetBattleSlot.Row, targetBattleSlot.Col];
-            Vector3 position = model.Transform.position;
-            yield return characterController.Move(_moveParams.Time, position, _moveParams.Function);
         }        
 
         #endregion
