@@ -155,7 +155,75 @@ namespace Raincrow.BattleArena.Controllers
 
         public IEnumerator CastSpell(int spellDegree, ICharacterController caster, ICharacterController target)
         {
-            yield return SpawnTrail(spellDegree, caster.Transform, target.Transform);
+            Transform casterTransform = caster.Transform;
+            Transform targetTransform = target.Transform;
+            Transform chargePrefab, trailPrefab, hitPrefab;
+
+            if (spellDegree < 0)
+            {
+                chargePrefab = _shadowChargePrefab;
+                trailPrefab = _shadowTrailPrefab;
+                hitPrefab = _shadowHitPrefab;
+            }
+            else if (spellDegree > 0)
+            {
+                chargePrefab = _lightChargePrefab;
+                trailPrefab = _lightTrailPrefab;
+                hitPrefab = _lightHitPrefab;
+            }
+            else
+            {
+                chargePrefab = _grayChargePrefab;
+                trailPrefab = _grayTrailPrefab;
+                hitPrefab = _grayHitPrefab;
+            }
+
+            Vector3 offset = targetTransform.up * 40;
+            float distance = Vector3.Distance(casterTransform.position, targetTransform.position);
+            float trailTime = 0.25f;
+
+            Vector3 startPosition = casterTransform.position + offset;
+            Vector3 targetPosition = targetTransform.position + offset;
+
+            //spawn the charge
+            Transform charge = _objectPool.Spawn(chargePrefab, null, casterTransform.position + offset, chargePrefab.transform.rotation);
+            charge.localScale = _chargeScale;
+
+            //just call on complete if the caster is casting on itself
+            if (casterTransform != targetTransform)
+            {
+                //calculate path
+                LTBezierPath path;
+                Vector3 endcontrol = (startPosition - targetPosition) * Random.Range(0.3f, 0.5f);
+                Vector3 startcontrol = (targetPosition - startPosition) * Random.Range(0.3f, 0.5f);
+
+                startcontrol = Quaternion.Euler(0, Random.Range(-100, 100), Random.Range(-100, 100)) * startcontrol;
+                endcontrol = Quaternion.Euler(0, Random.Range(-45, 45), Random.Range(-45, 45)) * endcontrol;
+
+                path = new LTBezierPath(new Vector3[] {
+                        startPosition, //start point
+                        targetPosition + endcontrol,
+                        startPosition + startcontrol,
+                        targetPosition
+                    });
+
+                //spawn the trail                        
+                Transform trail = _objectPool.Spawn(trailPrefab, casterTransform.position + offset);
+                trail.localScale = _trailScale;
+
+                for (float time = 0; time < trailTime; time += Time.deltaTime)
+                {
+                    float t = Mathf.InverseLerp(0f, trailTime, time);
+                    trail.LookAt(targetTransform);
+                    trail.position = path.point(t);
+                    yield return null;
+                }
+
+                //spawn the hit
+                Transform hitFx = _objectPool.Spawn(hitPrefab, targetTransform.position + offset);
+                hitFx.rotation = Quaternion.LookRotation(casterTransform.position - targetTransform.position);
+                hitFx.localScale = _hitScale;
+            }
         }
 
         public IEnumerator ApplyDamage(ICharacterController target, int damage, bool isCritical)
@@ -174,80 +242,6 @@ namespace Raincrow.BattleArena.Controllers
                 target.UpdateView(target.Model.BaseEnergy, Mathf.FloorToInt(energy));
                 yield return null;
             }            
-        }
-
-        private IEnumerator SpawnTrail(int degree, Transform caster, Transform target)
-        {
-            if (caster != null && target != null)
-            { 
-                Transform chargePrefab, trailPrefab, hitPrefab;
-
-                if (degree < 0)
-                {
-                    chargePrefab = _shadowChargePrefab;
-                    trailPrefab = _shadowTrailPrefab;
-                    hitPrefab = _shadowHitPrefab;
-                }
-                else if (degree > 0)
-                {
-                    chargePrefab = _lightChargePrefab;
-                    trailPrefab = _lightTrailPrefab;
-                    hitPrefab = _lightHitPrefab;
-                }
-                else
-                {
-                    chargePrefab = _grayChargePrefab;
-                    trailPrefab = _grayTrailPrefab;
-                    hitPrefab = _grayHitPrefab;
-                }
-
-                Vector3 offset = target.up * 40;
-                float distance = Vector3.Distance(caster.position, target.position);
-                float trailTime = 0.25f;
-
-                Vector3 startPosition = caster.position + offset;
-                Vector3 targetPosition = target.position + offset;
-
-                //spawn the charge
-                Transform charge = _objectPool.Spawn(chargePrefab, null, caster.position + offset, chargePrefab.transform.rotation);
-                charge.localScale = _chargeScale;
-
-                //just call on complete if the caster is casting on itself
-                if (caster != target)
-                {
-                    //calculate path
-                    LTBezierPath path;
-                    Vector3 endcontrol = (startPosition - targetPosition) * Random.Range(0.3f, 0.5f);
-                    Vector3 startcontrol = (targetPosition - startPosition) * Random.Range(0.3f, 0.5f);
-
-                    startcontrol = Quaternion.Euler(0, Random.Range(-100, 100), Random.Range(-100, 100)) * startcontrol;
-                    endcontrol = Quaternion.Euler(0, Random.Range(-45, 45), Random.Range(-45, 45)) * endcontrol;
-
-                    path = new LTBezierPath(new Vector3[] {
-                        startPosition, //start point
-                        targetPosition + endcontrol,
-                        startPosition + startcontrol,
-                        targetPosition
-                    });
-
-                    //spawn the trail                        
-                    Transform trail = _objectPool.Spawn(trailPrefab, caster.position + offset);
-                    trail.localScale = _trailScale;
-
-                    for (float time = 0; time < trailTime; time += Time.deltaTime)
-                    {
-                        float t = Mathf.InverseLerp(0f, trailTime, time);
-                        trail.LookAt(target);
-                        trail.position = path.point(t);
-                        yield return null;
-                    }
-
-                    //spawn the hit
-                    Transform hitFx = _objectPool.Spawn(hitPrefab, target.position + offset);
-                    hitFx.rotation = Quaternion.LookRotation(caster.position - target.position);
-                    hitFx.localScale = _hitScale;
-                }
-            }
         }
 
         private IEnumerator SpawnDamageText(Transform target, int amount, float fontSize)
