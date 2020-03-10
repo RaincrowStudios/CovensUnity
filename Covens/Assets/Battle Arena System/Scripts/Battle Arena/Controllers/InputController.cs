@@ -35,7 +35,13 @@ namespace Raincrow.BattleArena.Controllers
 
         public void OnDrag(PointerEventData eventData)
         {
-            DragVelocity = _battleCamera.transform.TransformDirection(eventData.delta);
+            Vector3 delta = new Vector3()
+            {
+                x = eventData.delta.x,
+                y = 0f,
+                z = eventData.delta.y,
+            };
+            DragVelocity = delta;//_battleCamera.transform.TransformDirection();
         }
 
         public void OnPointerDown(PointerEventData eventData) { }

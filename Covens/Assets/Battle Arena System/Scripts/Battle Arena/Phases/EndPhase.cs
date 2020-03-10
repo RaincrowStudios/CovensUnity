@@ -120,11 +120,11 @@ namespace Raincrow.BattleArena.Phases
                 if (characterUI != default && character != default)
                 {
                     position.y = _debriefAnimationValues.TargetY;
-                    int idTargetPosition = _cameraTargetController.SetTargetPosition(position, _debriefAnimationValues.CameraSpeed);
+                    //int idTargetPosition = _cameraTargetController.SetTargetPosition(position, _debriefAnimationValues.CameraSpeed);
                     int idCameraDistance = _smoothCameraFollow.SetCameraDistance(_debriefAnimationValues.CameraDistance, _debriefAnimationValues.TimeAnimation);
                     int idCameraHeight = _smoothCameraFollow.SetCameraHeight(_debriefAnimationValues.CameraHeight, _debriefAnimationValues.TimeAnimation);
 
-                    while (LeanTween.isTweening(idTargetPosition) || LeanTween.isTweening(idCameraDistance) || LeanTween.isTweening(idCameraHeight))
+                    while (_cameraTargetController.IsMoving())
                     {
                         yield return new WaitForEndOfFrame();
                     }

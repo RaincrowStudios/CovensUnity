@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿using System.Collections;
+using UnityEngine;
 
 namespace Raincrow.BattleArena.Views
 {
@@ -6,11 +7,16 @@ namespace Raincrow.BattleArena.Views
     {
         private Vector3 _origin;
         private Vector3 _bounds;
-        private int _moveTweenId = int.MinValue;
+        private IEnumerator _moveToTargetPosition;
+        //private int _moveTweenId = int.MinValue;
 
         public void Move(Vector3 movement)
         {
-            LeanTween.cancel(_moveTweenId);
+            //LeanTween.cancel(_moveTweenId);
+            if (_moveToTargetPosition != null)
+            {
+                StopCoroutine(_moveToTargetPosition);
+            }
 
             transform.Translate(movement, Space.World);
             transform.position = GetPositionClamped(transform.position);
@@ -18,22 +24,43 @@ namespace Raincrow.BattleArena.Views
 
         public void SetBounds(Vector3 worldOrigin, Vector3 worldBounds)
         {
-            LeanTween.cancel(_moveTweenId);
+            //LeanTween.cancel(_moveTweenId);
+            if (_moveToTargetPosition != null)
+            {
+                StopCoroutine(_moveToTargetPosition);
+            }
+
             _origin = worldOrigin;
             _bounds = worldBounds;
             transform.position = GetPositionClamped(transform.position);
         }
 
-        public int SetTargetPosition(Vector3 position, float speed)
+        public void SetTargetPosition(Vector3 position, float speed)
         {
-            LeanTween.cancel(_moveTweenId);
+            if (_moveToTargetPosition != null)
+            {
+                StopCoroutine(_moveToTargetPosition);
+            }
 
+            _moveToTargetPosition = MoveToTargetPosition(position, speed);
+            StartCoroutine(_moveToTargetPosition);
+
+        }
+
+        private IEnumerator MoveToTargetPosition(Vector3 position, float speed)
+        {
+            Vector3 startPosition = transform.position;
             Vector3 targetPosition = GetPositionClamped(position);
             float distance = Vector3.Distance(transform.position, targetPosition);
+            float totalTime = distance / speed;
 
-            _moveTweenId = LeanTween.move(gameObject, targetPosition, distance / speed).setEaseLinear().uniqueId;
+            for (float elapsedTime = 0; elapsedTime < totalTime; elapsedTime += Time.deltaTime)
+            {
+                transform.position = Vector3.Lerp(startPosition, targetPosition, elapsedTime / totalTime);
+                yield return null;
+            }
 
-            return _moveTweenId;
+            _moveToTargetPosition = null;
         }
 
         private Vector3 GetPositionClamped(Vector3 position)
@@ -52,12 +79,18 @@ namespace Raincrow.BattleArena.Views
 
             return position;
         }
+
+        public bool IsMoving()
+        {
+            return _moveToTargetPosition != null;
+        }
     }
 
     public interface ICameraTargetController
     {
         void SetBounds(Vector3 worldOrigin, Vector3 worldBounds);
         void Move(Vector3 movement);
-        int SetTargetPosition(Vector3 position, float speed);
+        void SetTargetPosition(Vector3 position, float speed);
+        bool IsMoving();
     }
 }

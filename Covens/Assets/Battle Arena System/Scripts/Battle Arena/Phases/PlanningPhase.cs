@@ -13,6 +13,8 @@ namespace Raincrow.BattleArena.Phases
     {
         private readonly static string BattleCellLayerName = "BattleCell";
         private readonly static float MaxRaycastDistance = 3000f;
+        private readonly static float DragSpeed = 30f;
+        private readonly static float MoveToTargetSpeed = 300f;
 
         // Variables
         private float _startTime = 0f;
@@ -30,6 +32,7 @@ namespace Raincrow.BattleArena.Phases
         private IBattleModel _battleModel;
         private ICellUIModel[,] _gridView;
         private IInputController _inputController;
+        private ICameraTargetController _cameraTargetController;
         private float _cameraSpeed;
         private BattleSlot? _selectedSlot;
         private string _objectId;
@@ -53,6 +56,7 @@ namespace Raincrow.BattleArena.Phases
                              IEnergyView energyView,
                              IPlayerBadgeView playerBadgeView,
                              IInputController inputController,
+                             ICameraTargetController cameraTargetController,
                              float cameraSpeed)
         {
             _coroutineStarter = coroutineStarter;
@@ -70,6 +74,7 @@ namespace Raincrow.BattleArena.Phases
             _energyView = energyView;
             _cameraSpeed = cameraSpeed;
             _inputController = inputController;
+            _cameraTargetController = cameraTargetController;
 
             _battleCellLayer = LayerMask.GetMask(BattleCellLayerName);
         }
@@ -162,16 +167,26 @@ namespace Raincrow.BattleArena.Phases
 
                 yield return stateMachine.ChangeState<ActionResolutionPhase>();
             }
-            else if (_inputController.Touch.HasValue) // check input
-            {                
-                Ray touchRay = _inputController.Touch.Value;                
-                if (Physics.Raycast(touchRay, out RaycastHit hitInfo, MaxRaycastDistance, _battleCellLayer))
+            else
+            {
+                // Touch occured
+                if (_inputController.Touch.HasValue) // check input
                 {
-                    ICellUIModel cellUIModel = hitInfo.transform.GetComponent<ICellUIModel>();
-                    if (cellUIModel != null)
+                    Ray touchRay = _inputController.Touch.Value;
+                    if (Physics.Raycast(touchRay, out RaycastHit hitInfo, MaxRaycastDistance, _battleCellLayer))
                     {
-                        OnClickCell(cellUIModel);
+                        ICellUIModel cellUIModel = hitInfo.transform.GetComponent<ICellUIModel>();
+                        if (cellUIModel != null)
+                        {
+                            OnClickCell(cellUIModel);
+                            _cameraTargetController.SetTargetPosition(cellUIModel.Transform.position, MoveToTargetSpeed);
+                        }
                     }
+                }
+                else if (_inputController.DragVelocity.HasValue)
+                {
+                    Vector3 dragVelocity = -_inputController.DragVelocity.Value * Time.deltaTime * DragSpeed;
+                    _cameraTargetController.Move(dragVelocity);
                 }
             }
         }
