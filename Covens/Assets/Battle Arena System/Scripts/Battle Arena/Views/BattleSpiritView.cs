@@ -29,6 +29,7 @@ namespace Raincrow.BattleArena.Views
         public ISpiritModel Model { get; private set; }
         public ISpiritUIModel UIModel { get; private set; }
         public Transform Transform => transform;
+        public GameObject GameObject => gameObject;
 
         protected virtual void OnEnable()
         {

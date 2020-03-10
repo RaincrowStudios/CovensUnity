@@ -38,6 +38,7 @@ namespace Raincrow.BattleArena.Controllers
         private IEnergyView _energyView;
         private IPlayerBadgeView _playerBadgeView;
         private ICameraTargetController _cameraTargetController;
+        private ObjectPool _objectPool;
         private IDictionary<string, ICharacterController<IWitchModel, IWitchUIModel>> _dictWitchesViews = new Dictionary<string, ICharacterController<IWitchModel, IWitchUIModel>>();
         private IDictionary<string, ICharacterController<ISpiritModel, ISpiritUIModel>> _dictSpiritViews = new Dictionary<string, ICharacterController<ISpiritModel, ISpiritUIModel>>();
 
@@ -79,6 +80,11 @@ namespace Raincrow.BattleArena.Controllers
             if (_cameraTargetController == null)
             {
                 _cameraTargetController = _serviceLocator.GetCameraTargetController();
+            }
+
+            if (_objectPool == null)
+            {
+                _objectPool = _serviceLocator.GetObjectPool();
             }
         }
 
@@ -221,7 +227,7 @@ namespace Raincrow.BattleArena.Controllers
             ActionResolutionPhase actionResolutionPhase = new ActionResolutionPhase(this, battleModel, _turnModel, _serviceLocator.GetBarEventLogView(), _animationController);
             yield return null;
 
-            BanishmentPhase banishmentPhase = new BanishmentPhase(this, battleModel, _turnModel, _serviceLocator.GetBarEventLogView());
+            BanishmentPhase banishmentPhase = new BanishmentPhase(this, battleModel, _turnModel, _serviceLocator.GetBarEventLogView(), _animationController);
             yield return null;
 
             DebriefAnimationModel debriefAnimationValues = new DebriefAnimationModel()
@@ -428,11 +434,8 @@ namespace Raincrow.BattleArena.Controllers
             {
                 _dictSpiritViews.Remove(objectModel.Id);
             }
-        }
 
-        public void RecycleCharacter(GameObject character)
-        {
-            _serviceLocator.GetObjectPool().Recycle(character);
+            _objectPool.Recycle(characterController.GameObject);
         }
 
         public IEnumerator<ICharacterController> SpawnObjectOnGrid(IObjectModel objectModel, int row, int col)

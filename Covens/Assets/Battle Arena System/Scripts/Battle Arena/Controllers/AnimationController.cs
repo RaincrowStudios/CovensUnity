@@ -90,10 +90,40 @@ namespace Raincrow.BattleArena.Controllers
             }
             yield return new WaitForSeconds(_summonAnimationTime);
         }
+
+        public IEnumerator Banish(ICharacterController characterController)
+        {
+            Vector3 position = characterController.Transform.position;
+            Quaternion quartenion = _summonAnimPrefab.transform.rotation;
+
+            // Summon Animation
+            for (float elapsedTime = 0; elapsedTime < _summonAnimationTime; elapsedTime += Time.deltaTime)
+            {
+                float t = Easings.Interpolate(elapsedTime / _summonAnimationTime, _summonAnimationFunction);
+                characterController.Transform.localScale = Vector3.Lerp(Vector3.one, Vector3.zero, t);
+                yield return null;
+            }
+        }
+
+        public IEnumerator Flee(ICharacterController characterController)
+        {
+            Vector3 position = characterController.Transform.position;
+            Quaternion quartenion = _summonAnimPrefab.transform.rotation;
+
+            // Summon Animation
+            for (float elapsedTime = 0; elapsedTime < _summonAnimationTime; elapsedTime += Time.deltaTime)
+            {
+                float t = Easings.Interpolate(elapsedTime / _summonAnimationTime, _summonAnimationFunction);
+                characterController.Transform.localScale = Vector3.Lerp(Vector3.one, Vector3.zero, t);
+                yield return null;
+            }
+        }
     }
 
     public interface IAnimationController
     {
+        IEnumerator Flee(ICharacterController characterController);
+        IEnumerator Banish(ICharacterController characterController);
         IEnumerator Summon(ICharacterController characterController);
         IEnumerator Summon(IList<ICharacterController> characterControllers);
         IEnumerator Move(ICharacterController characterController, BattleSlot targetBattleSlot);

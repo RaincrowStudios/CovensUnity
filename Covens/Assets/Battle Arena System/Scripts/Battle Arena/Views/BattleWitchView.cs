@@ -36,6 +36,7 @@ namespace Raincrow.BattleArena.Views
         public IWitchModel Model { get; private set; }
         public IWitchUIModel UIModel { get; private set; }
         public Transform Transform => transform;
+        public GameObject GameObject => gameObject;
 
         protected virtual void OnEnable()
         {

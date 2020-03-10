@@ -1,7 +1,6 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using Raincrow.BattleArena.Controllers;
-using Raincrow.BattleArena.Controllers;
 using Raincrow.BattleArena.Model;
 using Raincrow.BattleArena.Views;
 using Raincrow.StateMachines;
@@ -16,6 +15,7 @@ namespace Raincrow.BattleArena.Phases
         private IBattleModel _battleModel;
         private ITurnModel _turnModel;
         private IBarEventLogView _barEventLogView;
+        private IAnimationController _animController;
         private IDictionary<string, ICharacterController<IWitchModel, IWitchUIModel>> _witches = new Dictionary<string, ICharacterController<IWitchModel, IWitchUIModel>>();
         private IDictionary<string, ICharacterController<ISpiritModel, ISpiritUIModel>> _spirits = new Dictionary<string, ICharacterController<ISpiritModel, ISpiritUIModel>>();
         // Properties
@@ -24,12 +24,14 @@ namespace Raincrow.BattleArena.Phases
         public BanishmentPhase(ICoroutineHandler coroutineStarter,
                                IBattleModel battleModel,
                                ITurnModel turnModel,
-                               IBarEventLogView barEventLogView)
+                               IBarEventLogView barEventLogView,
+                               IAnimationController animController)
         {
             _coroutineStarter = coroutineStarter;
             _battleModel = battleModel;
             _turnModel = turnModel;
             _barEventLogView = barEventLogView;
+            _animController = animController;
         }
 
         public IEnumerator Enter(IStateMachine stateMachine)
@@ -120,11 +122,10 @@ namespace Raincrow.BattleArena.Phases
             if (character.BattleSlot.HasValue)
             {
                 // Animation
+                yield return _animController.Flee(characterView);
 
                 // Remove it
-                _battleModel.GridUI.RemoveObjectFromGrid(characterView, character);
-
-                _battleModel.GridUI.RecycleCharacter(characterView.Transform.gameObject);
+                _battleModel.GridUI.RemoveObjectFromGrid(characterView, character);                
 
                 Debug.LogFormat("Execute Action Flee Character ID: {0}", character.Id);
 
@@ -152,9 +153,12 @@ namespace Raincrow.BattleArena.Phases
             // Remove it
             if (character.BattleSlot.HasValue)
             {
+                // Animation
+                yield return _animController.Banish(characterView);
+
                 _battleModel.GridUI.RemoveObjectFromGrid(characterView, character);
 
-                _battleModel.GridUI.RecycleCharacter(characterView.Transform.gameObject);
+                //_battleModel.GridUI.RecycleCharacter(characterView.Transform.gameObject);
 
                 Debug.LogFormat("Execute Action Flee Character ID: {0}", character.Id);
 
