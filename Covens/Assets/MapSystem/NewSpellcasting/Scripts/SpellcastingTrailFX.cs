@@ -86,7 +86,7 @@ public class SpellcastingTrailFX : MonoBehaviour
 
                 startcontrol = Quaternion.Euler(0, Random.Range(-100,100), Random.Range(-100, 100)) * startcontrol;
                 endcontrol = Quaternion.Euler(0, Random.Range(-45, 45), Random.Range(-45, 45)) * endcontrol;
-                    
+
                 path = new LTBezierPath(new Vector3[] {
                     startPosition, //start point
                     targetPosition + endcontrol,
@@ -102,6 +102,17 @@ public class SpellcastingTrailFX : MonoBehaviour
 
                 tweenId = LeanTween.value(0, 1, trailTime) //time for casting
                                                            //.setEaseOutExpo()
+                    .setOnStart(() =>
+                    {
+                        if (target == null || caster == null)
+                        {
+                            LeanTween.cancel(tweenId, true);
+                            return;
+                        }
+                        //animate the trail
+                        trail.LookAt(target);
+                        trail.position = path.point(0);// Vector3.Lerp(caster.position + offset, target.position + offset, t);
+                    })
                     .setOnUpdate((float t) =>
                     {
                         if (target == null || caster == null)
