@@ -1,7 +1,7 @@
 ﻿using Raincrow.GameEventResponses;
 using UnityEngine;
 using Raincrow.BattleArena.Model;
-using Raincrow.BattleArena.Controller;
+using Raincrow.BattleArena.Controllers;
 using System.Collections.Generic;
 using Raincrow.Services;
 using Raincrow.Loading.View;

@@ -8,19 +8,18 @@ using System.Collections.Generic;
 using UnityEngine;
 using Raincrow.Loading.View;
 using Raincrow.Services;
-using Raincrow.BattleArena.Controllers;
-using System;
 
-namespace Raincrow.BattleArena.Controller
+namespace Raincrow.BattleArena.Controllers
 {
     public class BattleController : MonoBehaviour, ICoroutineHandler, IGridUIModel
     {
-        //[SerializeField] private Transform _cellsTransform;
+
         [SerializeField] private ServiceLocator _serviceLocator;
         [SerializeField] private AbstractGridGameObjectFactory _gridFactory; // Factory class responsible for creating our Grid        
         [SerializeField] private SpiritGameObjectFactory _spiritFactory; // Factory class responsible for creating our Spirits   
         [SerializeField] private WitchGameObjectFactory _witchFactory; // Factory class responsible for creating our Witchs   
         [SerializeField] private AbstractGameMasterController _gameMasterController;
+        [SerializeField] private AnimationController _animationController;
 
         [Header("Camera Movement")]
         [SerializeField] private float _cameraSpeed = 20f;
@@ -31,11 +30,6 @@ namespace Raincrow.BattleArena.Controller
         [SerializeField] private float _cameraDistance = 1.15f;
         [SerializeField] private float _cameraHeight = 0.45f;
         [SerializeField] private float _timeAnimation = 0.5f;
-
-        [Header("Character Animations")]        
-        [SerializeField] private AnimParams _moveParams = new AnimParams(1f, Easings.Functions.Linear);
-        [SerializeField] private ParticleSystem _summonAnimPrefab;
-        [SerializeField] private AnimParams _summonParams = new AnimParams(1f, Easings.Functions.Linear);
 
         private IStateMachine _stateMachine; // State machine with all phases
         private IGridModel _gridModel;
@@ -202,7 +196,12 @@ namespace Raincrow.BattleArena.Controller
             };
             yield return null;
 
-            InitiativePhase initiativePhase = new InitiativePhase(this, playerId, _gameMasterController, _turnModel, battleModel, battleResult);
+            InitiativePhase initiativePhase = new InitiativePhase(this, 
+                playerId, 
+                _gameMasterController, 
+                _turnModel, battleModel, 
+                battleResult, 
+                _animationController);
             yield return null;
 
             PlanningPhase planningPhase = new PlanningPhase(this,
@@ -214,12 +213,12 @@ namespace Raincrow.BattleArena.Controller
                 battleModel,
                 Cells,
                 _serviceLocator.GetCountdownView(),
-                _serviceLocator.GetEnergyView(),
-                _serviceLocator.GetPlayerBadgeView(),
+                _energyView,
+                _playerBadgeView,
                 _cameraSpeed);
             yield return null;
 
-            ActionResolutionPhase actionResolutionPhase = new ActionResolutionPhase(this, battleModel, _turnModel, _serviceLocator.GetBarEventLogView());
+            ActionResolutionPhase actionResolutionPhase = new ActionResolutionPhase(this, battleModel, _turnModel, _serviceLocator.GetBarEventLogView(), _animationController);
             yield return null;
 
             BanishmentPhase banishmentPhase = new BanishmentPhase(this, battleModel, _turnModel, _serviceLocator.GetBarEventLogView());
@@ -233,7 +232,7 @@ namespace Raincrow.BattleArena.Controller
                 TimeAnimation = _timeAnimation
             };
 
-            EndPhase endPhase = new EndPhase(battleResult, _serviceLocator.GetCelebratoryView(), _serviceLocator.GetDebriefView(),this,_cameraTargetController, _serviceLocator.GetSmoothCameraFollow(), battleModel, debriefAnimationValues);
+            EndPhase endPhase = new EndPhase(battleResult, _serviceLocator.GetCelebratoryView(), _serviceLocator.GetDebriefView(), this, _cameraTargetController, _serviceLocator.GetSmoothCameraFollow(), battleModel, debriefAnimationValues);
 
             IState[] battlePhases = new IState[5]
             {
@@ -306,7 +305,7 @@ namespace Raincrow.BattleArena.Controller
             origin.y = _cameraTargetHeight;
             _cameraTargetController.SetBounds(origin, cameraBounds);
             yield return null;
-        }        
+        }
 
         //private IEnumerator UpdateCamera()
         //{
@@ -462,51 +461,6 @@ namespace Raincrow.BattleArena.Controller
                 yield return createSpirit.ReturnValue;
             }
         }
-
-        public IEnumerator Summon(ICharacterController characterController)
-        {
-            ObjectPool objPool = _serviceLocator.GetObjectPool();
-
-            // Spawn Particle System
-            Vector3 position = characterController.Transform.position;
-            Quaternion quartenion = _summonAnimPrefab.transform.rotation;
-            ParticleSystem summonParticles = objPool.Spawn(_summonAnimPrefab, position, quartenion);
-            summonParticles.Play();
-
-            // Summon Animation
-            for (float elapsedTime = 0; elapsedTime < _summonParams.Time; elapsedTime += Time.deltaTime)
-            {
-                float t = Easings.Interpolate(elapsedTime / _summonParams.Time, _summonParams.Function);
-                characterController.Transform.localScale = Vector3.Lerp(Vector3.zero, Vector3.one, t);
-                yield return null;
-            }
-            yield return new WaitUntil(() => summonParticles.isStopped);
-            
-            // Recycle Particle System
-            objPool.Recycle(summonParticles);
-        }
-
-        public IEnumerator Move(ICharacterController characterController, BattleSlot targetBattleSlot)
-        {
-            ICellUIModel model = Cells[targetBattleSlot.Row, targetBattleSlot.Col];
-            Vector3 position = model.Transform.position;
-            
-            for (float elapsedTime = 0; elapsedTime < _moveParams.Time; elapsedTime += Time.deltaTime)
-            {
-                float t = Easings.Interpolate(elapsedTime / _moveParams.Time, _moveParams.Function);
-                characterController.Transform.position = Vector3.Lerp(position, position, t);
-                yield return null;
-            }
-        }
-
-        public IEnumerator Summon(IList<ICharacterController> characterControllers)
-        {
-            foreach (var characterController in characterControllers)
-            {
-                StartCoroutine(Summon(characterController));
-            }
-            yield return new WaitForSeconds(_summonParams.Time);
-        }        
 
         #endregion
     }

@@ -1,11 +1,9 @@
-﻿using Raincrow.BattleArena.Controller;
-using Raincrow.BattleArena.Controllers;
+﻿using Raincrow.BattleArena.Controllers;
 using Raincrow.BattleArena.Events;
 using Raincrow.BattleArena.Model;
 using Raincrow.StateMachines;
 using System.Collections;
 using System.Collections.Generic;
-using UnityEngine;
 
 namespace Raincrow.BattleArena.Phases
 {
@@ -19,6 +17,7 @@ namespace Raincrow.BattleArena.Phases
         private ITurnModel _turnModel;
         private IBattleModel _battleModel;
         private IBattleResultModel _battleResultModel;
+        private IAnimationController _animController;
         private string _playerId;
         private IList<ICharacterController> _summonedCharacters = new List<ICharacterController>();
 
@@ -31,7 +30,8 @@ namespace Raincrow.BattleArena.Phases
             AbstractGameMasterController gameMaster,
             ITurnModel turnModel,
             IBattleModel battleModel,
-            IBattleResultModel battleResultModel)
+            IBattleResultModel battleResultModel,
+            IAnimationController animController)
         {
             _coroutineHandler = coroutineStarter;
             _sendPlanningPhaseReady = null;
@@ -41,6 +41,7 @@ namespace Raincrow.BattleArena.Phases
             _battleModel = battleModel;
             _playerId = playerId;
             _battleResultModel = battleResultModel;
+            _animController = animController;
         }
 
         public IEnumerator Enter(IStateMachine stateMachine)
@@ -66,7 +67,7 @@ namespace Raincrow.BattleArena.Phases
             if (_isPlanningPhaseReady.GetValueOrDefault())
             {
                 // Show Summon Animation
-                yield return _battleModel.GridUI.Summon(_summonedCharacters);
+                yield return _animController.Summon(_summonedCharacters);
                 _turnModel.SummonedCharacters.Clear();
 
                 // Change to Planning Phase

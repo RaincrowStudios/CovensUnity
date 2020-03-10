@@ -48,10 +48,7 @@ namespace Raincrow.BattleArena.Model
         IEnumerator<ICharacterController> SpawnObjectOnGrid(IObjectModel objectModel, int row, int col);
         void SetObjectToGrid(ICharacterController characterController, IObjectModel objectModel, int row, int col);
         void RemoveObjectFromGrid(ICharacterController characterController, IObjectModel objectModel);
-        void RecycleCharacter(GameObject character);
-        IEnumerator Summon(ICharacterController characterController);
-        IEnumerator Summon(IList<ICharacterController> characterControllers);
-        IEnumerator Move(ICharacterController characterController, BattleSlot targetBattleSlot);
+        void RecycleCharacter(GameObject character);        
     }
 
     public interface ICellUIModel

@@ -44,6 +44,7 @@ GameObject:
   - component: {fileID: 8938269710436315475}
   - component: {fileID: 1794520544814550441}
   - component: {fileID: 1023886202801595217}
+  - component: {fileID: 3827334444051354934}
   m_Layer: 24
   m_Name: BattleView
   m_TagString: Untagged
@@ -83,20 +84,13 @@ MonoBehaviour:
   _spiritFactory: {fileID: 8938269710436315475}
   _witchFactory: {fileID: 1794520544814550441}
   _gameMasterController: {fileID: 1023886202801595217}
+  _animationController: {fileID: 3827334444051354934}
   _cameraSpeed: 20
   _cameraDecceleration: 0.15
   _cameraTargetHeight: 2
   _cameraDistance: 1.15
   _cameraHeight: 0.45
   _timeAnimation: 0.5
-  _moveParams:
-    _time: 0.5
-    _function: 3
-  _summonAnimPrefab: {fileID: 325792439671258822, guid: bce16092c0d850544b756b045544d70d,
-    type: 3}
-  _summonParams:
-    _time: 1
-    _function: 3
 --- !u!114 &7196786638976531525
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -170,3 +164,22 @@ MonoBehaviour:
   _waitForPlanningPhaseReadyMaxTime: 0.5
   _sendFinishPlanningPhaseMaxTime: 0.5
   _waitForActionResolutionReadyMaxTime: 0.5
+--- !u!114 &3827334444051354934
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3561526507227420493}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 80ec8364f9ca2c6489f88bb61e14bb99, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _serviceLocator: {fileID: 0}
+  _moveAnimationTime: 0.5
+  _moveAnimationFunction: 3
+  _summonAnimPrefab: {fileID: 325792439671258822, guid: bce16092c0d850544b756b045544d70d,
+    type: 3}
+  _summonAnimationTime: 0.5
+  _summonAnimationFunction: 3

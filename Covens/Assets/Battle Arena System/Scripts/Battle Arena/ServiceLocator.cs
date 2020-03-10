@@ -1,4 +1,4 @@
-﻿using Raincrow.BattleArena.Controller;
+﻿using Raincrow.BattleArena.Controllers;
 using Raincrow.BattleArena.Factory;
 using Raincrow.BattleArena.Views;
 using Raincrow.Loading.View;

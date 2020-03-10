@@ -1,6 +1,6 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
-using Raincrow.BattleArena.Controller;
+using Raincrow.BattleArena.Controllers;
 using Raincrow.BattleArena.Controllers;
 using Raincrow.BattleArena.Model;
 using Raincrow.BattleArena.Views;

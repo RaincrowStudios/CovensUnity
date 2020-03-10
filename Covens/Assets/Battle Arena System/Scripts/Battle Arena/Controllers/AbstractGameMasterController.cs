@@ -4,7 +4,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Events;
 
-namespace Raincrow.BattleArena.Controller
+namespace Raincrow.BattleArena.Controllers
 {
     public abstract class AbstractGameMasterController : MonoBehaviour, IGameMasterController
     {

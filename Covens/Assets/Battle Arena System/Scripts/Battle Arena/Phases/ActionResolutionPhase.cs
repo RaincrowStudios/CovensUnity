@@ -1,5 +1,4 @@
-﻿using Raincrow.BattleArena.Controller;
-using Raincrow.BattleArena.Controllers;
+﻿using Raincrow.BattleArena.Controllers;
 using Raincrow.BattleArena.Model;
 using Raincrow.BattleArena.Views;
 using Raincrow.StateMachines;
@@ -16,6 +15,7 @@ namespace Raincrow.BattleArena.Phases
         private IBattleModel _battleModel;
         private ITurnModel _turnModel;
         private IBarEventLogView _barEventLogView;
+        private IAnimationController _animController;
         private IDictionary<string, ICharacterController<IWitchModel, IWitchUIModel>> _witches =
             new Dictionary<string, ICharacterController<IWitchModel, IWitchUIModel>>(); // holy shit, it works
         private IDictionary<string, ICharacterController<ISpiritModel, ISpiritUIModel>> _spirits =
@@ -27,12 +27,14 @@ namespace Raincrow.BattleArena.Phases
         public ActionResolutionPhase(ICoroutineHandler coroutineStarter,
                                      IBattleModel battleModel,
                                      ITurnModel turnModel,
-                                     IBarEventLogView barEventLogView)
+                                     IBarEventLogView barEventLogView,
+                                     IAnimationController animController)
         {
             _coroutineStarter = coroutineStarter;
             _battleModel = battleModel;
             _turnModel = turnModel;
             _barEventLogView = barEventLogView;
+            _animController = animController;
         }
 
         public IEnumerator Enter(IStateMachine stateMachine)
@@ -126,7 +128,7 @@ namespace Raincrow.BattleArena.Phases
             BattleSlot targetBattleSlot = moveAction.Position;
 
             // Animation
-            yield return _battleModel.GridUI.Move(characterView, targetBattleSlot);
+            yield return _animController.Move(characterView, targetBattleSlot);
 
             // Set it
             _battleModel.GridUI.SetObjectToGrid(characterView, character, targetBattleSlot.Row, targetBattleSlot.Col);
@@ -145,7 +147,7 @@ namespace Raincrow.BattleArena.Phases
             yield return spawnObjectOnGrid;
 
             // Animation
-            yield return _battleModel.GridUI.Summon(spawnObjectOnGrid.ReturnValue);            
+            yield return _animController.Summon(spawnObjectOnGrid.ReturnValue);            
 
             Debug.LogFormat("Execute Summon {0} to Slot X:{1} Y:{2}", spiritModel.Id, targetBattleSlot.Row, targetBattleSlot.Col);
         }
