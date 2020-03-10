@@ -66,7 +66,7 @@ public static class SpellcastingFX
         SpawnText(target, f, 1);
     }
 
-    public static void SpawnEnergyChange(IMarker target, int amount, float scale)
+    public static void SpawnEnergyChange(Transform target, int amount, float scale)
     {
         if (amount == 0)
             return;
@@ -84,33 +84,43 @@ public static class SpellcastingFX
         );
     }
 
+    public static void SpawnEnergyChange(IMarker target, int amount, float scale)
+    {
+        SpawnEnergyChange(target.AvatarTransform, amount, scale);
+    }
+
     public static void SpawnText(IMarker target, string text, float scale)
     {
         if (target.IsShowingIcon)
             return;
 
+        SpawnText(target.AvatarTransform, text, scale);
+    }
+
+    public static void SpawnText(Transform target, string text, float scale)
+    {
         if (m_PauseTween) return;
         m_TextTweenIds.Clear();
         TextMeshPro textObj = m_TextPopupPool.Spawn(null, 3f).GetComponent<TextMeshPro>();
         textObj.text = text;
         textObj.fontSize = 45 * scale;
-        textObj.transform.localScale = target.AvatarTransform.lossyScale;
-        textObj.transform.rotation = target.AvatarRenderer.transform.rotation;
+        textObj.transform.localScale = target.lossyScale;
+        textObj.transform.rotation = target.transform.rotation;
 
         //animate the text
-        textObj.transform.position = new Vector3(target.AvatarTransform.position.x, target.AvatarTransform.position.y, target.AvatarTransform.position.z) + target.AvatarTransform.up * 20;
+        textObj.transform.position = new Vector3(target.position.x, target.position.y, target.position.z) + target.up * 20;
         var RandomSpacing = new Vector3(Random.Range(-7, 7), Random.Range(20, 24), 0);
         textObj.transform.Translate(RandomSpacing);
         Vector3 startPos = textObj.transform.localPosition;
         Vector3 targetPos = textObj.transform.localPosition + new Vector3(0, Random.Range(8, 11), 0);
 
         m_TextTweenIds.Add(
-            LeanTween.value(0,1,2f)//moveLocalY(textObj.gameObject, textObj.transform.localPosition.y + Random.Range(8, 11), 2f)
+            LeanTween.value(0, 1, 2f)//moveLocalY(textObj.gameObject, textObj.transform.localPosition.y + Random.Range(8, 11), 2f)
                 .setOnUpdate((float t) =>
                 {
                     if (textObj != null)
                     {
-                        textObj.alpha = 1-t;
+                        textObj.alpha = 1 - t;
                         textObj.transform.localPosition = Vector3.Lerp(startPos, targetPos, t);
                     }
                 })

@@ -37,6 +37,8 @@ namespace Raincrow.BattleArena.Views
         public IWitchUIModel UIModel { get; private set; }
         public Transform Transform => transform;
         public GameObject GameObject => gameObject;
+        ICharacterModel ICharacterController.Model => Model;
+        ICharacterUIModel ICharacterController.UIModel => UIModel;
 
         protected virtual void OnEnable()
         {
@@ -91,12 +93,11 @@ namespace Raincrow.BattleArena.Views
             Debug.LogFormat("Update Energy {0} {1}", baseEnergy, energy);                        
         }
 
-        public IEnumerator AddDamage(int damage)
+        public void AddDamage(int damage)
         {
             Model.Energy -= damage;
             Model.Energy = Mathf.Max(Model.Energy, 0);
-            UpdateView(Model.BaseEnergy, Model.Energy);            
-            yield return null;
-        }
+            UpdateView(Model.BaseEnergy, Model.Energy);
+        }        
     }
 }

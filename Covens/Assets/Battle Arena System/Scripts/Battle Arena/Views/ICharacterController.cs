@@ -1,22 +1,23 @@
 ﻿using Raincrow.BattleArena.Model;
-using System.Collections;
 using UnityEngine;
 
 namespace Raincrow.BattleArena.Controllers
 {
     public interface ICharacterController<T, U> : ICharacterController where T : ICharacterModel where U : ICharacterUIModel
     {
-        T Model { get; }
-        U UIModel { get; }
+        new T Model { get; }
+        new U UIModel { get; }
         void Init(T characterModel, U characterViewModel);
     }
 
     public interface ICharacterController
     {
+        ICharacterModel Model { get; }
+        ICharacterUIModel UIModel { get; }
         Transform Transform { get; }
         GameObject GameObject { get; }
         void FaceCamera(Quaternion cameraRotation, Vector3 cameraForward);
         void UpdateView(int baseEnergy, int energy);
-        IEnumerator AddDamage(int damage);        
+        void AddDamage(int damage);        
     }
 }

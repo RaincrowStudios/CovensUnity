@@ -69,8 +69,8 @@ namespace Raincrow.Mocks
                 Degree = 0,
                 Name = "SHADOW THE HEDGEHOG",
                 Level = 1,
-                BaseEnergy = 200,
-                Energy = 80
+                BaseEnergy = 500,
+                Energy = 500
             };
 
             InventoryApparelModel equip = new InventoryApparelModel()
@@ -112,7 +112,7 @@ namespace Raincrow.Mocks
                 Texture = "spirit_dapperSkeleton",
                 OwnerId = "witch1",
                 BaseEnergy = 500,
-                Energy = 300
+                Energy = 500
             };
 
             SpiritModel spiritModel = new SpiritModel()
@@ -120,8 +120,8 @@ namespace Raincrow.Mocks
                 ObjectType = ObjectType.Spirit,
                 Id = "spirit1",
                 Texture = "spirit_moonSnake",
-                BaseEnergy = 200,
-                Energy = 80
+                BaseEnergy = 500,
+                Energy = 500
             };
 
             // Add all characters

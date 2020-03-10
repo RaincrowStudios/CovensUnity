@@ -91,7 +91,9 @@ namespace Raincrow.BattleArena.Model
         [JsonProperty("damage")]
         public int Damage { get; set; }
         [JsonProperty("spell")]
-        public string Spell { get; set; }
+        public string Spell { get; set; }        
+        public int Degree { get; set; }
+        public bool IsCritical { get; set; }
     }
 
     public class SummonActionResponseModel : ActionResponseModel

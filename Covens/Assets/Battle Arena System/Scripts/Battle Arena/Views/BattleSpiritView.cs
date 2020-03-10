@@ -1,6 +1,5 @@
 ﻿using Raincrow.BattleArena.Controllers;
 using Raincrow.BattleArena.Model;
-using System.Collections;
 using UnityEngine;
 
 namespace Raincrow.BattleArena.Views
@@ -30,6 +29,9 @@ namespace Raincrow.BattleArena.Views
         public ISpiritUIModel UIModel { get; private set; }
         public Transform Transform => transform;
         public GameObject GameObject => gameObject;
+
+        ICharacterModel ICharacterController.Model => Model;
+        ICharacterUIModel ICharacterController.UIModel => UIModel;
 
         protected virtual void OnEnable()
         {
@@ -66,12 +68,11 @@ namespace Raincrow.BattleArena.Views
             _avatarRoot.transform.LookAt(worldPosition, cameraForward);
         }
 
-        public IEnumerator AddDamage(int damage)
+        public void AddDamage(int damage)
         {
             Model.Energy -= damage;
             Model.Energy = Mathf.Max(Model.Energy, 0);
             UpdateView(Model.BaseEnergy, Model.Energy);
-            yield return null;
         }        
 
         public void UpdateView(int baseEnergy, int energy)
@@ -80,6 +81,6 @@ namespace Raincrow.BattleArena.Views
             _damageRingMat.SetFloat(AlphaCutoffPropertyId, Mathf.Max(energyNormalized, MinAlphaCutoff));
 
             Debug.LogFormat("Update Energy {0} {1}", baseEnergy, energy);
-        }
+        }        
     }
 }

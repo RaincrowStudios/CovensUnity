@@ -155,12 +155,18 @@ namespace Raincrow.BattleArena.Phases
         private IEnumerator Cast(string characterId, CastActionResponseModel castAction)
         {
             // Get caster
-            var casterView = GetCharacterView(castAction.Caster.Id);
-            var targetView = GetCharacterView(castAction.Target.Id);
+            ICharacterController casterView = GetCharacterView(castAction.Caster.Id);
+            ICharacterController targetView = GetCharacterView(castAction.Target.Id);
+
+            yield return _animController.CastSpell(castAction.Degree, casterView, targetView);
 
             if (castAction.Damage > 0)
             {
-                yield return targetView.AddDamage(castAction.Damage);
+                // Animation
+                float damageAnimTime = 2f;
+                yield return _animController.ApplyDamage(damageAnimTime, targetView, castAction.Damage, castAction.IsCritical);
+
+                targetView.AddDamage(castAction.Damage);
             }
 
             Debug.LogFormat("Execute Cast to {0} and apply {1} damage", castAction.Target.Id, castAction.Damage);

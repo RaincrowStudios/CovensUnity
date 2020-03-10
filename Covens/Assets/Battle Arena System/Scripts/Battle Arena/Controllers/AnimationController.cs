@@ -1,5 +1,6 @@
 ﻿using Raincrow.BattleArena.Model;
 using Raincrow.Services;
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -118,6 +119,34 @@ namespace Raincrow.BattleArena.Controllers
                 yield return null;
             }
         }
+
+        public IEnumerator CastSpell(int spellDegree, ICharacterController caster, ICharacterController target)
+        {
+            bool isCastSpellComplete = false;
+            SpellcastingTrailFX.SpawnTrail(spellDegree, caster.Transform, target.Transform, () =>
+            {
+                isCastSpellComplete = true;
+            });
+            yield return new WaitUntil(() => isCastSpellComplete);
+        }
+
+        public IEnumerator ApplyDamage(float time, ICharacterController target, int damage, bool isCritical)
+        {
+            float textScale = isCritical ? 1.4f : 1f;
+            SpellcastingFX.SpawnEnergyChange(target.Transform, damage, textScale);
+
+            int previousEnergy = target.Model.Energy;
+            int nextEnergy = target.Model.Energy - damage;
+            nextEnergy = Mathf.Max(nextEnergy, 0);
+
+            //Show Damage decreasing over time
+            for (float elapsedTime = 0; elapsedTime < 2f; elapsedTime += Time.deltaTime)
+            {
+                float energy = Mathf.Lerp(previousEnergy, nextEnergy, elapsedTime / 10f);
+                target.UpdateView(target.Model.BaseEnergy, Mathf.FloorToInt(energy));
+                yield return null;
+            }            
+        }
     }
 
     public interface IAnimationController
@@ -127,5 +156,7 @@ namespace Raincrow.BattleArena.Controllers
         IEnumerator Summon(ICharacterController characterController);
         IEnumerator Summon(IList<ICharacterController> characterControllers);
         IEnumerator Move(ICharacterController characterController, BattleSlot targetBattleSlot);
+        IEnumerator CastSpell(int spellDegree, ICharacterController caster, ICharacterController target);
+        IEnumerator ApplyDamage(float time, ICharacterController target, int damage, bool isCritical);
     }
 }
