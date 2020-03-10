@@ -1632,16 +1632,6 @@ PrefabInstance:
       propertyPath: _target
       value: 
       objectReference: {fileID: 3864287949852413214}
-    - target: {fileID: 2909580882335506164, guid: 0251eb9112595734eb75de6863092d3a,
-        type: 3}
-      propertyPath: _cameraHeight
-      value: 5.5
-      objectReference: {fileID: 0}
-    - target: {fileID: 2909580882335506164, guid: 0251eb9112595734eb75de6863092d3a,
-        type: 3}
-      propertyPath: _cameraDistance
-      value: 5.5
-      objectReference: {fileID: 0}
     - target: {fileID: 3543581160031026037, guid: 0251eb9112595734eb75de6863092d3a,
         type: 3}
       propertyPath: m_LocalPosition.x

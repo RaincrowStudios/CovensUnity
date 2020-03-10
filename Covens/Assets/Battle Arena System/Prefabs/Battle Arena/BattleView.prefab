@@ -108,7 +108,7 @@ MonoBehaviour:
     _cellPrefab: {fileID: 6753272869729047748, guid: 8a0cadd5128d28e47a4b7668266f42f6,
       type: 3}
     _spacing: {x: 0.1, y: 0.1}
-    _cellScale: {x: 1.25, y: 1.25}
+    _cellScale: {x: 100, y: 100}
   _serviceLocator: {fileID: 0}
 --- !u!114 &8938269710436315475
 MonoBehaviour:
