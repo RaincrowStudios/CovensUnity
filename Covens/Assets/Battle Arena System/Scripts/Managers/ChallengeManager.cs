@@ -44,7 +44,7 @@ namespace Raincrow.BattleArena.Manager
                         }                        
                     }
 
-                    StartCoroutine(StartBattle(battle.Id, PlayerDataManager.playerData.account, grid, witches, spirits));
+                    StartCoroutine(StartBattle(battle.Id, PlayerDataManager.playerData.instance, grid, witches, spirits));
 
                     LoadingOverlay.Hide();
                 }
