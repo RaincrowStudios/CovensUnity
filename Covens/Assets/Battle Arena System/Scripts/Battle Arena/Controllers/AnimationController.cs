@@ -23,11 +23,12 @@ namespace Raincrow.BattleArena.Controllers
         [Header("Damage Animation")]
         [SerializeField] private float _damageAnimationTime = 2f;
         [SerializeField] private float _damageTextScale = 1f;
-        [SerializeField] private float _criticalDamageTextScale = 1.4f;
+        [SerializeField] private float _criticalDamageTextScale = 1.4f;        
 
         // Variables
         private BattleController _battleController;
         private ObjectPool _objectPool;
+        private Camera _battleCamera;
 
         protected virtual void OnEnable()
         {
@@ -50,6 +51,11 @@ namespace Raincrow.BattleArena.Controllers
             if (_objectPool == null)
             {
                 _objectPool = _serviceLocator.GetObjectPool();
+            }
+
+            if (_battleCamera == null)
+            {
+                _battleCamera = _serviceLocator.GetBattleCamera();
             }
         }
 
@@ -136,8 +142,8 @@ namespace Raincrow.BattleArena.Controllers
 
         public IEnumerator ApplyDamage(ICharacterController target, int damage, bool isCritical)
         {
-            //float textScale = isCritical ? _criticalDamageTextScale : _damageTextScale;
-            //SpellcastingFX.SpawnEnergyChange(target.Transform, damage, textScale);
+            float textScale = isCritical ? _criticalDamageTextScale : _damageTextScale;
+            SpawnDamageText(target.Transform, damage, textScale);
 
             int previousEnergy = target.Model.Energy;
             int nextEnergy = target.Model.Energy - damage;
@@ -161,7 +167,8 @@ namespace Raincrow.BattleArena.Controllers
         IEnumerator Summon(IList<ICharacterController> characterControllers);
         IEnumerator Move(ICharacterController characterController, BattleSlot targetBattleSlot);
         IEnumerator CastSpell(int spellDegree, ICharacterController caster, ICharacterController target);
-        IEnumerator ApplyDamage(ICharacterController target, int damage, bool isCritical);
+        IEnumerator ApplyDamage(ICharacterController target, int damage, bool isCritical);        
         void SpawnTrail(int degree, Transform caster, Transform target, System.Action onStart, System.Action onComplete);
+        void SpawnDamageText(Transform target, int amount, float scale);
     }
 }

@@ -299,68 +299,27 @@ PrefabInstance:
       propertyPath: _serviceLocator
       value: 
       objectReference: {fileID: 1442890515}
-    - target: {fileID: 3561526507227420495, guid: 61c97baa5215f1647a7ed02e6b0d3ef8,
-        type: 3}
-      propertyPath: _cameraTargetHeight
-      value: 1
-      objectReference: {fileID: 0}
     - target: {fileID: 8938269710436315475, guid: 61c97baa5215f1647a7ed02e6b0d3ef8,
         type: 3}
       propertyPath: _serviceLocator
       value: 
       objectReference: {fileID: 1442890515}
-    - target: {fileID: 8938269710436315475, guid: 61c97baa5215f1647a7ed02e6b0d3ef8,
-        type: 3}
-      propertyPath: _objectPool
-      value: 
-      objectReference: {fileID: 719144469}
     - target: {fileID: 1794520544814550441, guid: 61c97baa5215f1647a7ed02e6b0d3ef8,
         type: 3}
       propertyPath: _serviceLocator
       value: 
       objectReference: {fileID: 1442890515}
-    - target: {fileID: 1794520544814550441, guid: 61c97baa5215f1647a7ed02e6b0d3ef8,
-        type: 3}
-      propertyPath: _objectPool
-      value: 
-      objectReference: {fileID: 719144469}
-    - target: {fileID: 1794520544814550441, guid: 61c97baa5215f1647a7ed02e6b0d3ef8,
-        type: 3}
-      propertyPath: _nameplatesRoot
-      value: 
-      objectReference: {fileID: 0}
-    - target: {fileID: 1794520544814550441, guid: 61c97baa5215f1647a7ed02e6b0d3ef8,
-        type: 3}
-      propertyPath: _nameplatesParent
-      value: 
-      objectReference: {fileID: 0}
-    - target: {fileID: 7196786638976531525, guid: 61c97baa5215f1647a7ed02e6b0d3ef8,
-        type: 3}
-      propertyPath: _objectPool
-      value: 
-      objectReference: {fileID: 719144469}
     - target: {fileID: 7196786638976531525, guid: 61c97baa5215f1647a7ed02e6b0d3ef8,
         type: 3}
       propertyPath: _serviceLocator
       value: 
       objectReference: {fileID: 1442890515}
-    - target: {fileID: 1023886202801595217, guid: 61c97baa5215f1647a7ed02e6b0d3ef8,
-        type: 3}
-      propertyPath: _sendPlanningPhaseReadyMaxTime
-      value: 0.5
-      objectReference: {fileID: 0}
-    - target: {fileID: 1023886202801595217, guid: 61c97baa5215f1647a7ed02e6b0d3ef8,
-        type: 3}
-      propertyPath: _waitForPlanningPhaseReadyMaxTime
-      value: 0.5
-      objectReference: {fileID: 0}
     - target: {fileID: 3827334444051354934, guid: 61c97baa5215f1647a7ed02e6b0d3ef8,
         type: 3}
       propertyPath: _serviceLocator
       value: 
       objectReference: {fileID: 1442890515}
-    m_RemovedComponents:
-    - {fileID: 6757284338307450665, guid: 61c97baa5215f1647a7ed02e6b0d3ef8, type: 3}
+    m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 61c97baa5215f1647a7ed02e6b0d3ef8, type: 3}
 --- !u!114 &719144469 stripped
 MonoBehaviour:

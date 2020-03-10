@@ -19,6 +19,11 @@ namespace Raincrow.BattleArena.Controllers
         [SerializeField] private Transform _lightTrailPrefab;
         [SerializeField] private Transform _lightHitPrefab;
 
+        [Header("Damage Text Prefab")]
+        [SerializeField] private Transform _damageFeedback;
+        [SerializeField] private Color _damageColor;
+        [SerializeField] private Color _restoreColor;
+
         [Header("Animation Scales")]
         [SerializeField] private Vector3 _chargeScale = new Vector3(20, 20, 20);
         [SerializeField] private Vector3 _trailScale = new Vector3(15, 15, 15);
@@ -136,6 +141,48 @@ namespace Raincrow.BattleArena.Controllers
                             }).uniqueId;
                     });
             }
+        }
+
+        public void SpawnDamageText(Transform target, int amount, float fontSize)
+        {
+            string color = string.Empty;
+            if (amount > 0)
+            {
+                color = ColorUtility.ToHtmlStringRGB(_damageColor);
+            }
+            else
+            {
+                color = ColorUtility.ToHtmlStringRGB(_restoreColor);
+            }
+
+            TMPro.TextMeshPro damageFeedback = _objectPool.Spawn(_damageFeedback).GetComponentInChildren<TMPro.TextMeshPro>();
+            damageFeedback.text = $"<color=#{color}>{amount}</color>";
+            damageFeedback.fontSize = fontSize;
+            damageFeedback.transform.localScale = target.lossyScale;
+            damageFeedback.transform.rotation = target.transform.rotation;
+
+            //animate the text
+            damageFeedback.transform.position = new Vector3(target.position.x, target.position.y, target.position.z) + target.up * 20;
+            var RandomSpacing = new Vector3(Random.Range(-7, 7), Random.Range(20, 24), 0);
+            damageFeedback.transform.Translate(RandomSpacing);
+            Vector3 startPos = damageFeedback.transform.localPosition;
+            Vector3 targetPos = damageFeedback.transform.localPosition + new Vector3(0, Random.Range(8, 11), 0);
+
+            LeanTween.value(0, 1, 2f)
+                    .setOnUpdate((float t) =>
+                    {
+                        if (damageFeedback != null)
+                        {
+                            damageFeedback.alpha = 1 - t;
+                            damageFeedback.transform.localPosition = Vector3.Lerp(startPos, targetPos, t);
+
+                            // Face Camera
+                            damageFeedback.transform.LookAt(damageFeedback.transform.position + 
+                                        _battleCamera.transform.rotation * Vector3.forward,
+                                        _battleCamera.transform.rotation * Vector3.up);
+                        }                        
+                    })
+                    .setEaseOutCubic();
         }
     }
 }
