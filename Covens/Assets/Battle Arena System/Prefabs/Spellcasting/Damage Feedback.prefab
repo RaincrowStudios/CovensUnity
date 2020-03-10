@@ -42,7 +42,7 @@ GameObject:
   - component: {fileID: 3612349559079160926}
   - component: {fileID: 2636789094997311250}
   m_Layer: 24
-  m_Name: SpellTickDamage
+  m_Name: Damage Feedback
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
