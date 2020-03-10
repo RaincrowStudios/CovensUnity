@@ -21,6 +21,7 @@ namespace Raincrow.BattleArena.Controllers
         [SerializeField] private Easings.Functions _summonAnimationFunction = Easings.Functions.Linear;
 
         [Header("Damage Animation")]
+        [SerializeField] private Easings.Functions _damageAnimationFunction = Easings.Functions.CubicEaseInOut;
         [SerializeField] private float _damageAnimationTime = 2f;
         [SerializeField] private float _damageTextScale = 1f;
         [SerializeField] private float _criticalDamageTextScale = 1.4f;
@@ -246,19 +247,9 @@ namespace Raincrow.BattleArena.Controllers
 
         private IEnumerator SpawnDamageText(Transform target, int amount, float fontSize)
         {
-            string color = string.Empty;
-            if (amount > 0)
-            {
-                color = ColorUtility.ToHtmlStringRGB(_damageColor);
-            }
-            else
-            {
-                color = ColorUtility.ToHtmlStringRGB(_restoreColor);
-            }
-
             Transform damageFeedback = _objectPool.Spawn(_damageFeedback);
             TMPro.TextMeshPro damageFeedbackText = damageFeedback.GetComponentInChildren<TMPro.TextMeshPro>();
-            damageFeedbackText.text = $"<color=#{color}>{amount}</color>";
+            damageFeedbackText.color = amount > 0 ? _damageColor : _restoreColor;
             damageFeedbackText.fontSize = fontSize;
             damageFeedbackText.transform.localScale = target.lossyScale;
             damageFeedbackText.transform.rotation = target.transform.rotation;
@@ -272,7 +263,7 @@ namespace Raincrow.BattleArena.Controllers
 
             for (float time = 0; time < _damageAnimationTime; time += Time.deltaTime)
             {
-                float normalizedTime = Easings.Interpolate(time / _damageAnimationTime, Easings.Functions.CubicEaseOut);
+                float normalizedTime = Easings.Interpolate(time / _damageAnimationTime, _damageAnimationFunction);
                 if (damageFeedbackText != null)
                 {
                     damageFeedbackText.alpha = 1 - normalizedTime;
