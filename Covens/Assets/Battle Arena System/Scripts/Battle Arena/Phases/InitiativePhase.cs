@@ -113,6 +113,7 @@ namespace Raincrow.BattleArena.Phases
             _battleResultModel.Ranking = args.Ranking;
             _battleResultModel.Reward = new BattleRewardModel();
             _battleResultModel.Type = args.Type;
+            _battleResultModel.Reward = args.Reward;
         }
 
         #endregion

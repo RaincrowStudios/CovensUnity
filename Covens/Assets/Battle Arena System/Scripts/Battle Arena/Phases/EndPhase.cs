@@ -20,6 +20,7 @@ namespace Raincrow.BattleArena.Phases
         private ISmoothCameraFollow _smoothCameraFollow;
         private IBattleModel _battleModel;
         private DebriefAnimationModel _debriefAnimationValues;
+        private IRewardsBatttleView _rewardsBatttleView;
 
 
         private IDictionary<string, ICharacterController<IWitchModel, IWitchUIModel>> _witches =
@@ -37,7 +38,8 @@ namespace Raincrow.BattleArena.Phases
                         ICameraTargetController cameraTargetController,
                         ISmoothCameraFollow smoothCameraFollow,
                         IBattleModel battleModel,
-                        DebriefAnimationModel debriefAnimationValues
+                        DebriefAnimationModel debriefAnimationValues,
+                        IRewardsBatttleView rewardsBatttleView
             )
         {
             _battleResult = battleResultModel;
@@ -48,6 +50,7 @@ namespace Raincrow.BattleArena.Phases
             _smoothCameraFollow = smoothCameraFollow;
             _battleModel = battleModel;
             _debriefAnimationValues = debriefAnimationValues;
+            _rewardsBatttleView = rewardsBatttleView;
         }
 
         public IEnumerator Enter(IStateMachine stateMachine)
@@ -73,6 +76,12 @@ namespace Raincrow.BattleArena.Phases
             _celebratoryView.Hide();
 
             yield return _coroutineHandler.Invoke(DebriefPhase());
+
+            yield return _rewardsBatttleView.Show(
+                _battleResult.Type == BattleResultType.PlayerWins ? "You Won!" : "You Lost!",
+                "Battle is over",
+                _battleResult.Reward
+            ).WaitEndScreen();
 
             yield return null;
         }
@@ -110,16 +119,17 @@ namespace Raincrow.BattleArena.Phases
 
                 if (characterUI != default && character != default)
                 {
+                    position.y = _debriefAnimationValues.TargetY;
                     int idTargetPosition = _cameraTargetController.SetTargetPosition(position, _debriefAnimationValues.CameraSpeed);
                     int idCameraDistance = _smoothCameraFollow.SetCameraDistance(_debriefAnimationValues.CameraDistance, _debriefAnimationValues.TimeAnimation);
                     int idCameraHeight = _smoothCameraFollow.SetCameraHeight(_debriefAnimationValues.CameraHeight, _debriefAnimationValues.TimeAnimation);
 
-                    while(LeanTween.isTweening(idTargetPosition) || LeanTween.isTweening(idCameraDistance) || LeanTween.isTweening(idCameraHeight))
+                    while (LeanTween.isTweening(idTargetPosition) || LeanTween.isTweening(idCameraDistance) || LeanTween.isTweening(idCameraHeight))
                     {
                         yield return new WaitForEndOfFrame();
                     }
 
-                    if(character.ObjectType == ObjectType.Witch)
+                    if (character.ObjectType == ObjectType.Witch)
                     {
                         _debriefView.Show(i + 1, 500, "Default", "Default", "Default", "Default");
                     }

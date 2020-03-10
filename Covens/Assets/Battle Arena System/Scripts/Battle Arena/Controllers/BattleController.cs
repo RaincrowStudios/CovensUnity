@@ -30,6 +30,7 @@ namespace Raincrow.BattleArena.Controllers
         [SerializeField] private float _cameraDistance = 1.15f;
         [SerializeField] private float _cameraHeight = 0.45f;
         [SerializeField] private float _timeAnimation = 0.5f;
+        [SerializeField] private float _targetY = 80;
 
         private IStateMachine _stateMachine; // State machine with all phases
         private IGridModel _gridModel;
@@ -236,10 +237,11 @@ namespace Raincrow.BattleArena.Controllers
                 CameraDistance = _cameraDistance,
                 CameraHeight = _cameraHeight,
                 CameraSpeed = _cameraSpeed,
-                TimeAnimation = _timeAnimation
+                TimeAnimation = _timeAnimation,
+                TargetY = _targetY
             };
 
-            EndPhase endPhase = new EndPhase(battleResult, _serviceLocator.GetCelebratoryView(), _serviceLocator.GetDebriefView(), this, _cameraTargetController, _serviceLocator.GetSmoothCameraFollow(), battleModel, debriefAnimationValues);
+            EndPhase endPhase = new EndPhase(battleResult,_serviceLocator.GetCelebratoryView(), _serviceLocator.GetDebriefView(),this,_cameraTargetController, _serviceLocator.GetSmoothCameraFollow(), battleModel, debriefAnimationValues, _serviceLocator.GetRewardsBatttleView());
 
             IState[] battlePhases = new IState[5]
             {

@@ -42,9 +42,9 @@ namespace Raincrow.BattleArena.Views
             float maxX = _bounds.x + _origin.x;
             position.x = Mathf.Clamp(position.x, minX, maxX);
 
-            float minY = _origin.y - _bounds.y;
-            float maxY = _bounds.y + _origin.y;
-            position.y = Mathf.Clamp(position.y, minY, maxY);
+            //float minY = _origin.y - _bounds.y;
+            //float maxY = _bounds.y + _origin.y;
+            //position.y = Mathf.Clamp(position.y, minY, maxY);
 
             float minZ = _origin.z - _bounds.z;
             float maxZ = _bounds.z + _origin.z;
