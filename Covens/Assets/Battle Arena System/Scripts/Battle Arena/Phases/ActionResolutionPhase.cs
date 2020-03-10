@@ -61,39 +61,37 @@ namespace Raincrow.BattleArena.Phases
                 string characterId = key.Key;
                 foreach (IActionResponseModel responseAction in key.Value)
                 {
-                    if (responseAction.IsSuccess)
+                    IEnumerator actionRoutine = default;
+                    switch (responseAction.Type)
                     {
-                        IEnumerator actionRoutine = default;
-                        Debug.Log(responseAction.Type);
-                        switch (responseAction.Type)
-                        {
-                            case ActionResponseType.Move:
-                                MoveActionResponseModel moveAction = responseAction as MoveActionResponseModel;
-                                actionRoutine = Move(characterId, moveAction);
+                        case ActionResponseType.Move:
+                            MoveActionResponseModel moveAction = responseAction as MoveActionResponseModel;
+                            actionRoutine = Move(characterId, moveAction);
 
-                                string logMove = "The <witch>Evil Wind</witch> cast <spell>Arcane Damage</spell> on you. <damage>1624 energy</damage><time>[01:12]</time>";
-                                _barEventLogView.AddLog(logMove);
-                                break;
-                            case ActionResponseType.Summon:
-                                SummonActionResponseModel summonAction = responseAction as SummonActionResponseModel;
-                                actionRoutine = Summon(summonAction);
+                            string logMove = "The <witch>Evil Wind</witch> cast <spell>Arcane Damage</spell> on you. <damage>1624 energy</damage><time>[01:12]</time>";
+                            _barEventLogView.AddLog(logMove);
+                            break;
 
-                                string logSummom = "The <witch>Evil Wind</witch> cast <spell>Arcane Damage</spell> on you. <damage>1624 energy</damage><time>[01:12]</time>";
-                                _barEventLogView.AddLog(logSummom);
-                                break;
-                            case ActionResponseType.Cast:
-                                CastActionResponseModel castAction = responseAction as CastActionResponseModel;
-                                actionRoutine = Cast(characterId, castAction);
+                        case ActionResponseType.Summon:
+                            SummonActionResponseModel summonAction = responseAction as SummonActionResponseModel;
+                            actionRoutine = Summon(summonAction);
 
-                                string logCast = "The <witch>Evil Wind</witch> cast <spell>Arcane Damage</spell> on you. <damage>1624 energy</damage><time>[01:12]</time>";
-                                _barEventLogView.AddLog(logCast);
-                                break;
-                        }
+                            string logSummom = "The <witch>Evil Wind</witch> cast <spell>Arcane Damage</spell> on you. <damage>1624 energy</damage><time>[01:12]</time>";
+                            _barEventLogView.AddLog(logSummom);
+                            break;
 
-                        if (actionRoutine != default)
-                        {
-                            yield return _coroutineStarter.Invoke(actionRoutine);
-                        }
+                        case ActionResponseType.Cast:
+                            CastActionResponseModel castAction = responseAction as CastActionResponseModel;
+                            actionRoutine = Cast(characterId, castAction);
+
+                            string logCast = "The <witch>Evil Wind</witch> cast <spell>Arcane Damage</spell> on you. <damage>1624 energy</damage><time>[01:12]</time>";
+                            _barEventLogView.AddLog(logCast);
+                            break;
+                    }
+
+                    if (actionRoutine != default)
+                    {
+                        yield return _coroutineStarter.Invoke(actionRoutine);
                     }
                 }
             }
@@ -111,65 +109,73 @@ namespace Raincrow.BattleArena.Phases
 
         private IEnumerator Move(string characterId, MoveActionResponseModel moveAction)
         {
-            ICharacterController characterView = default;
-            ICharacterModel character = default;
-            if (_witches.TryGetValue(characterId, out ICharacterController<IWitchModel, IWitchUIModel> witchView))
+            if (moveAction.IsSuccess)
             {
-                character = witchView.Model;
-                characterView = witchView;
-            }
-            else if (_spirits.TryGetValue(characterId, out ICharacterController<ISpiritModel, ISpiritUIModel> spiritView))
-            {
-                character = spiritView.Model;
-                characterView = spiritView;
-            }
+                ICharacterController characterView = default;
+                ICharacterModel character = default;
+                if (_witches.TryGetValue(characterId, out ICharacterController<IWitchModel, IWitchUIModel> witchView))
+                {
+                    character = witchView.Model;
+                    characterView = witchView;
+                }
+                else if (_spirits.TryGetValue(characterId, out ICharacterController<ISpiritModel, ISpiritUIModel> spiritView))
+                {
+                    character = spiritView.Model;
+                    characterView = spiritView;
+                }
 
-            // Get transform of our target Cell
-            BattleSlot targetBattleSlot = moveAction.Position;
+                // Get transform of our target Cell
+                BattleSlot targetBattleSlot = moveAction.Position;
 
-            // Animation
-            yield return _animController.Move(characterView, targetBattleSlot);
+                // Animation
+                yield return _animController.Move(characterView, targetBattleSlot);
 
-            // Set it
-            _battleModel.GridUI.SetObjectToGrid(characterView, character, targetBattleSlot.Row, targetBattleSlot.Col);
+                // Set it
+                _battleModel.GridUI.SetObjectToGrid(characterView, character, targetBattleSlot.Row, targetBattleSlot.Col);
 
-            Debug.LogFormat("Execute Action Move to Slot X:{0} Y:{1}", targetBattleSlot.Row, targetBattleSlot.Col);
+                Debug.LogFormat("Execute Action Move to Slot X:{0} Y:{1}", targetBattleSlot.Row, targetBattleSlot.Col);
+            }            
         }
 
         private IEnumerator Summon(SummonActionResponseModel summonAction)
         {
-            // Get cell transform
-            BattleSlot targetBattleSlot = summonAction.Position;
-            ISpiritModel spiritModel = summonAction.Spirit;
+            if (summonAction.IsSuccess)
+            {
+                // Get cell transform
+                BattleSlot targetBattleSlot = summonAction.Position;
+                ISpiritModel spiritModel = summonAction.Spirit;
 
-            IEnumerator<ICharacterController> enumerator = _battleModel.GridUI.SpawnObjectOnGrid(spiritModel, targetBattleSlot.Row, targetBattleSlot.Col);
-            Coroutine<ICharacterController> spawnObjectOnGrid = _coroutineStarter.Invoke(enumerator);
-            yield return spawnObjectOnGrid;
+                IEnumerator<ICharacterController> enumerator = _battleModel.GridUI.SpawnObjectOnGrid(spiritModel, targetBattleSlot.Row, targetBattleSlot.Col);
+                Coroutine<ICharacterController> spawnObjectOnGrid = _coroutineStarter.Invoke(enumerator);
+                yield return spawnObjectOnGrid;
 
-            // Animation
-            yield return _animController.Summon(spawnObjectOnGrid.ReturnValue);            
+                // Animation
+                yield return _animController.Summon(spawnObjectOnGrid.ReturnValue);
 
-            Debug.LogFormat("Execute Summon {0} to Slot X:{1} Y:{2}", spiritModel.Id, targetBattleSlot.Row, targetBattleSlot.Col);
+                Debug.LogFormat("Execute Summon {0} to Slot X:{1} Y:{2}", spiritModel.Id, targetBattleSlot.Row, targetBattleSlot.Col);
+            }                
         }
 
         private IEnumerator Cast(string characterId, CastActionResponseModel castAction)
         {
             // Get caster
             ICharacterController casterView = GetCharacterView(castAction.Caster.Id);
-            ICharacterController targetView = GetCharacterView(castAction.Target.Id);
+            ICharacterController targetView = GetCharacterView(castAction.Target.Id);            
 
-            yield return _animController.CastSpell(castAction.Degree, casterView, targetView);
-
-            if (castAction.Damage > 0)
+            if (castAction.IsSuccess)
             {
-                // Animation
-                yield return _animController.ApplyDamage(targetView, castAction.Damage, castAction.IsCritical);
+                yield return _animController.CastSpell(castAction.Degree, casterView, targetView);
 
-                targetView.AddDamage(castAction.Damage);
+                if (castAction.Damage > 0)
+                {
+                    // Animation
+                    yield return _animController.ApplyDamage(targetView, castAction.Damage, castAction.IsCritical);
+
+                    targetView.AddDamage(castAction.Damage);
+                }
+
+                Debug.LogFormat("Execute Cast to {0} and apply {1} damage", castAction.Target.Id, castAction.Damage);               
             }
-
-            Debug.LogFormat("Execute Cast to {0} and apply {1} damage", castAction.Target.Id, castAction.Damage);
-            yield return new WaitForSeconds(1f);
         }
 
         private ICharacterController GetCharacterView(string characterId)

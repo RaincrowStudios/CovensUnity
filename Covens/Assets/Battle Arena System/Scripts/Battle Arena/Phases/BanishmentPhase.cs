@@ -55,38 +55,33 @@ namespace Raincrow.BattleArena.Phases
 
         public IEnumerator Update(IStateMachine stateMachine)
         {
-
             foreach (var key in _turnModel.ResponseActions)
             {
                 string characterId = key.Key;
                 foreach (IActionResponseModel responseAction in key.Value)
                 {
-                    if (responseAction.IsSuccess)
+                    IEnumerator actionRoutine = default;
+                    switch (responseAction.Type)
                     {
-                        IEnumerator actionRoutine = default;
-                        Debug.Log(responseAction.Type);
-                        switch (responseAction.Type)
-                        {
-                            case ActionResponseType.Flee:
-                                FleeActionResponseModel fleeAction = responseAction as FleeActionResponseModel;
-                                actionRoutine = Flee(characterId, fleeAction);
+                        case ActionResponseType.Flee:
+                            FleeActionResponseModel fleeAction = responseAction as FleeActionResponseModel;
+                            actionRoutine = Flee(characterId, fleeAction);
 
-                                string logFlee = "The <witch>Evil Wind</witch> cast <spell>Arcane Damage</spell> on you. <damage>1624 energy</damage><time>[01:12]</time>";
-                                _barEventLogView.AddLog(logFlee);
-                                break;
-                            case ActionResponseType.Banish:
-                                BanishActionResponseModel banishAction = responseAction as BanishActionResponseModel;
-                                actionRoutine = Banish(banishAction.TargetId, banishAction);
+                            string logFlee = "The <witch>Evil Wind</witch> cast <spell>Arcane Damage</spell> on you. <damage>1624 energy</damage><time>[01:12]</time>";
+                            _barEventLogView.AddLog(logFlee);
+                            break;
+                        case ActionResponseType.Banish:
+                            BanishActionResponseModel banishAction = responseAction as BanishActionResponseModel;
+                            actionRoutine = Banish(banishAction.TargetId, banishAction);
 
-                                string logBanish = "The <witch>Evil Wind</witch> cast <spell>Arcane Damage</spell> on you. <damage>1624 energy</damage><time>[01:12]</time>";
-                                _barEventLogView.AddLog(logBanish);
-                                break;
-                        }
+                            string logBanish = "The <witch>Evil Wind</witch> cast <spell>Arcane Damage</spell> on you. <damage>1624 energy</damage><time>[01:12]</time>";
+                            _barEventLogView.AddLog(logBanish);
+                            break;
+                    }
 
-                        if (actionRoutine != default)
-                        {
-                            yield return _coroutineStarter.Invoke(actionRoutine);
-                        }
+                    if (actionRoutine != default)
+                    {
+                        yield return _coroutineStarter.Invoke(actionRoutine);
                     }
                 }
             }
@@ -105,65 +100,63 @@ namespace Raincrow.BattleArena.Phases
 
         private IEnumerator Flee(string characterId, FleeActionResponseModel fleeAction)
         {
-            ICharacterController characterView = default;
-            ICharacterModel character = default;
-
-            if (_witches.TryGetValue(characterId, out var witchView))
+            if (fleeAction.IsSuccess)
             {
-                character = witchView.Model;
-                characterView = witchView;
-            }
-            else if (_spirits.TryGetValue(characterId, out var spiritView))
-            {
-                character = spiritView.Model;
-                characterView = spiritView;
-            }
+                ICharacterController characterView = default;
+                ICharacterModel character = default;
 
-            if (character.BattleSlot.HasValue)
-            {
-                // Animation
-                yield return _animController.Flee(characterView);
+                if (_witches.TryGetValue(characterId, out var witchView))
+                {
+                    character = witchView.Model;
+                    characterView = witchView;
+                }
+                else if (_spirits.TryGetValue(characterId, out var spiritView))
+                {
+                    character = spiritView.Model;
+                    characterView = spiritView;
+                }
 
-                // Remove it
-                _battleModel.GridUI.RemoveObjectFromGrid(characterView, character);                
+                if (character.BattleSlot.HasValue)
+                {
+                    // Animation
+                    yield return _animController.Flee(characterView);
 
-                Debug.LogFormat("Execute Action Flee Character ID: {0}", character.Id);
+                    // Remove it
+                    _battleModel.GridUI.RemoveObjectFromGrid(characterView, character);
 
-                yield return new WaitForSeconds(1f);
-            }            
+                    Debug.LogFormat("Execute Action Flee Character ID: {0}", character.Id);
+                }
+            }             
         }
 
         private IEnumerator Banish(string characterId, BanishActionResponseModel banishAction)
         {
-            ICharacterController characterView = default;
-            ICharacterModel character = default;
-            if (_witches.TryGetValue(characterId, out var witchView))
+            if (banishAction.IsSuccess)
             {
-                character = witchView.Model;
-                characterView = witchView;
+                ICharacterController characterView = default;
+                ICharacterModel character = default;
+                if (_witches.TryGetValue(characterId, out var witchView))
+                {
+                    character = witchView.Model;
+                    characterView = witchView;
+                }
+                else if (_spirits.TryGetValue(characterId, out var spiritView))
+                {
+                    character = spiritView.Model;
+                    characterView = spiritView;
+                }
+
+                // Remove it
+                if (character.BattleSlot.HasValue)
+                {
+                    // Animation
+                    yield return _animController.Banish(characterView);
+
+                    _battleModel.GridUI.RemoveObjectFromGrid(characterView, character);
+                    
+                    Debug.LogFormat("Execute Action Flee Character ID: {0}", character.Id);
+                }
             }
-            else if (_spirits.TryGetValue(characterId, out var spiritView))
-            {
-                character = spiritView.Model;
-                characterView = spiritView;
-            }
-
-            // Animation
-
-            // Remove it
-            if (character.BattleSlot.HasValue)
-            {
-                // Animation
-                yield return _animController.Banish(characterView);
-
-                _battleModel.GridUI.RemoveObjectFromGrid(characterView, character);
-
-                //_battleModel.GridUI.RecycleCharacter(characterView.Transform.gameObject);
-
-                Debug.LogFormat("Execute Action Flee Character ID: {0}", character.Id);
-
-                yield return new WaitForSeconds(1f);
-            }            
         }
 
         #endregion

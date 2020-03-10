@@ -280,7 +280,7 @@ namespace Raincrow.BattleArena.Controllers
             StartCoroutine(ScheduleRecycle(_damageAnimationTime, damageFeedback));
 
             TMPro.TextMeshPro damageFeedbackText = damageFeedback.GetComponentInChildren<TMPro.TextMeshPro>();
-            damageFeedbackText.color = amount > 0 ? _damageColor : _restoreColor;
+            damageFeedbackText.color = amount >= 0 ? _damageColor : _restoreColor;
             damageFeedbackText.fontSize = fontSize;
             damageFeedbackText.transform.localScale = target.lossyScale;
             damageFeedbackText.transform.rotation = target.transform.rotation;
