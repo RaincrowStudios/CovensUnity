@@ -61,9 +61,9 @@ namespace Raincrow.BattleArena.Controllers
 
         private IEnumerator WaitForPlanningPhaseReadyEvent(string playerId)
         {
-            yield return new WaitForSeconds(_waitForPlanningPhaseReadyMaxTime);           
+            yield return new WaitForSeconds(_waitForPlanningPhaseReadyMaxTime);
 
-            bool isPlayerAlive = false;            
+            bool isPlayerAlive = false;
             if (_gridUIModel.WitchesViews.Count > 0)
             {
                 foreach (var view in _gridUIModel.WitchesViews)
@@ -92,10 +92,48 @@ namespace Raincrow.BattleArena.Controllers
 
             if (!isPlayerAlive || !isWildSpiritAlive)
             {
+
+                var gem = new object[1]
+                {
+                    new {
+                        Id = "",
+                        Name = "Gema de ouro",
+                        Count = 2
+                    }
+                };
+
+                var tool = new object[1]
+                {
+                    new {
+                        Id = "",
+                        Name = "Pelo de gato",
+                        Count = 1
+                    }
+                };
+
+                var herb = new object[1]
+                {
+                    new {
+                        Id = "",
+                        Name = "Erva do nilo",
+                        Count = 10
+                    }
+                };
+
+                BattleRewardModel rewards = new BattleRewardModel()
+                {
+                    SilverCurrency = 50,
+                    Experience = 200,
+                    Gems = Newtonsoft.Json.JsonConvert.DeserializeObject<InventoryItemModel[]>(Newtonsoft.Json.JsonConvert.SerializeObject(gem)),
+                    Tools = Newtonsoft.Json.JsonConvert.DeserializeObject<InventoryItemModel[]>(Newtonsoft.Json.JsonConvert.SerializeObject(tool)),
+                    Herbs = Newtonsoft.Json.JsonConvert.DeserializeObject<InventoryItemModel[]>(Newtonsoft.Json.JsonConvert.SerializeObject(herb))
+                };
+
                 BattleEndEventArgs battleEndEventArgs = new BattleEndEventArgs()
                 {
                     Type = BattleResultType.PlayerWins,
-                    Ranking = new string[2] { "witch1", "spirit2" }
+                    Ranking = new string[2] { "witch1", "spirit2" },
+                    Reward = rewards
                 };
                 _onBattleEnd.Invoke(battleEndEventArgs);
             }

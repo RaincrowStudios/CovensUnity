@@ -85,11 +85,11 @@ MonoBehaviour:
   _witchFactory: {fileID: 1794520544814550441}
   _gameMasterController: {fileID: 1023886202801595217}
   _animationController: {fileID: 3827334444051354934}
-  _cameraSpeed: 20
+  _cameraSpeed: 2000
   _cameraDecceleration: 0.15
   _cameraTargetHeight: 1
-  _cameraDistance: 1.15
-  _cameraHeight: 0.45
+  _cameraDistance: 115
+  _cameraHeight: 45
   _timeAnimation: 0.5
 --- !u!114 &7196786638976531525
 MonoBehaviour:
@@ -177,6 +177,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _serviceLocator: {fileID: 0}
+  _fleeAnimationTime: 1
+  _fleeAnimationFunction: 0
   _banishGlyph: {fileID: 224649470955447078, guid: fdd15d425252d044fa40a36524e34983,
     type: 3}
   _banishAura: {fileID: 4638678680538264, guid: 63226d09f199ca74d81cc982ab2945c0,

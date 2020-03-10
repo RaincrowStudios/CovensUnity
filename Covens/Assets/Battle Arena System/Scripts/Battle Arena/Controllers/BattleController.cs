@@ -238,7 +238,7 @@ namespace Raincrow.BattleArena.Controllers
                 TimeAnimation = _timeAnimation
             };
 
-            EndPhase endPhase = new EndPhase(battleResult, _serviceLocator.GetCelebratoryView(), _serviceLocator.GetDebriefView(), this, _cameraTargetController, _serviceLocator.GetSmoothCameraFollow(), battleModel, debriefAnimationValues);
+            EndPhase endPhase = new EndPhase(battleResult,_serviceLocator.GetCelebratoryView(), _serviceLocator.GetDebriefView(),this,_cameraTargetController, _serviceLocator.GetSmoothCameraFollow(), battleModel, debriefAnimationValues, _serviceLocator.GetRewardsBatttleView());
 
             IState[] battlePhases = new IState[5]
             {
