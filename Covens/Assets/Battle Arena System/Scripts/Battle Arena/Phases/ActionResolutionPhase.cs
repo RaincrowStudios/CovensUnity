@@ -163,8 +163,7 @@ namespace Raincrow.BattleArena.Phases
             if (castAction.Damage > 0)
             {
                 // Animation
-                float damageAnimTime = 2f;
-                yield return _animController.ApplyDamage(damageAnimTime, targetView, castAction.Damage, castAction.IsCritical);
+                yield return _animController.ApplyDamage(targetView, castAction.Damage, castAction.IsCritical);
 
                 targetView.AddDamage(castAction.Damage);
             }

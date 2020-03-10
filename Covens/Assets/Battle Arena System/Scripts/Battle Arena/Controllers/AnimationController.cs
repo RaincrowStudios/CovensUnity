@@ -22,6 +22,8 @@ namespace Raincrow.BattleArena.Controllers
 
         [Header("Damage Animation")]
         [SerializeField] private float _damageAnimationTime = 2f;
+        [SerializeField] private float _damageTextScale = 1f;
+        [SerializeField] private float _criticalDamageTextScale = 1.4f;
 
         // Variables
         private BattleController _battleController;
@@ -132,9 +134,9 @@ namespace Raincrow.BattleArena.Controllers
             yield return new WaitUntil(() => isCastSpellComplete);
         }
 
-        public IEnumerator ApplyDamage(float time, ICharacterController target, int damage, bool isCritical)
+        public IEnumerator ApplyDamage(ICharacterController target, int damage, bool isCritical)
         {
-            float textScale = isCritical ? 1.4f : 1f;
+            //float textScale = isCritical ? _criticalDamageTextScale : _damageTextScale;
             //SpellcastingFX.SpawnEnergyChange(target.Transform, damage, textScale);
 
             int previousEnergy = target.Model.Energy;
@@ -159,7 +161,7 @@ namespace Raincrow.BattleArena.Controllers
         IEnumerator Summon(IList<ICharacterController> characterControllers);
         IEnumerator Move(ICharacterController characterController, BattleSlot targetBattleSlot);
         IEnumerator CastSpell(int spellDegree, ICharacterController caster, ICharacterController target);
-        IEnumerator ApplyDamage(float time, ICharacterController target, int damage, bool isCritical);
+        IEnumerator ApplyDamage(ICharacterController target, int damage, bool isCritical);
         void SpawnTrail(int degree, Transform caster, Transform target, System.Action onStart, System.Action onComplete);
     }
 }
