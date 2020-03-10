@@ -155,12 +155,7 @@ namespace Raincrow.BattleArena.Controllers
 
         public IEnumerator CastSpell(int spellDegree, ICharacterController caster, ICharacterController target)
         {
-            bool isCastSpellComplete = false;
-            SpawnTrail(spellDegree, caster.Transform, target.Transform, null, () =>
-            {
-                isCastSpellComplete = true;
-            });
-            yield return new WaitUntil(() => isCastSpellComplete);
+            yield return SpawnTrail(spellDegree, caster.Transform, target.Transform);
         }
 
         public IEnumerator ApplyDamage(ICharacterController target, int damage, bool isCritical)
@@ -181,18 +176,10 @@ namespace Raincrow.BattleArena.Controllers
             }            
         }
 
-        public void SpawnTrail(int degree, Transform caster, Transform target, System.Action onStart, System.Action onComplete)
+        private IEnumerator SpawnTrail(int degree, Transform caster, Transform target)
         {
-            if (caster == null || target == null) // || caster.isNull || target.isNull)
-            {
-                LeanTween.value(0, 0, 0.1f)
-                    .setOnStart(onStart)
-                    .setOnComplete(onComplete);
-            }
-            else
-            {
-                LeanTween.value(0, 0, 0.15f).setOnComplete(onStart);
-
+            if (caster != null && target != null)
+            { 
                 Transform chargePrefab, trailPrefab, hitPrefab;
 
                 if (degree < 0)
@@ -226,76 +213,44 @@ namespace Raincrow.BattleArena.Controllers
                 charge.localScale = _chargeScale;
 
                 //just call on complete if the caster is casting on itself
-                if (caster == target)
+                if (caster != target)
                 {
-                    LeanTween.value(0, 0, 0.25f).setOnComplete(onComplete);
-                    return;
-                }
+                    //calculate path
+                    LTBezierPath path;
+                    Vector3 endcontrol = (startPosition - targetPosition) * Random.Range(0.3f, 0.5f);
+                    Vector3 startcontrol = (targetPosition - startPosition) * Random.Range(0.3f, 0.5f);
 
-                LeanTween.value(0, 1, 0.25f)
-                    .setOnComplete(() =>
-                    {
-                        //calculate path
-                        LTBezierPath path;
-                        Vector3 endcontrol = (startPosition - targetPosition) * Random.Range(0.3f, 0.5f);
-                        Vector3 startcontrol = (targetPosition - startPosition) * Random.Range(0.3f, 0.5f);
+                    startcontrol = Quaternion.Euler(0, Random.Range(-100, 100), Random.Range(-100, 100)) * startcontrol;
+                    endcontrol = Quaternion.Euler(0, Random.Range(-45, 45), Random.Range(-45, 45)) * endcontrol;
 
-                        startcontrol = Quaternion.Euler(0, Random.Range(-100, 100), Random.Range(-100, 100)) * startcontrol;
-                        endcontrol = Quaternion.Euler(0, Random.Range(-45, 45), Random.Range(-45, 45)) * endcontrol;
-
-                        path = new LTBezierPath(new Vector3[] {
-                    startPosition, //start point
-                    targetPosition + endcontrol,
-                    startPosition + startcontrol,
-                    targetPosition
-                        });
-
-                        //spawn the trail                        
-                        Transform trail = _objectPool.Spawn(trailPrefab, caster.position + offset);
-                        trail.localScale = _trailScale;
-                        int tweenId = -1;
-
-
-                        tweenId = LeanTween.value(0, 1, trailTime) //time for casting
-                                                                   //.setEaseOutExpo()
-                            .setOnStart(() =>
-                            {
-                                if (target == null || caster == null)
-                                {
-                                    LeanTween.cancel(tweenId, true);
-                                    return;
-                                }
-                                //animate the trail
-                                trail.LookAt(target);
-                                trail.position = path.point(0);// Vector3.Lerp(caster.position + offset, target.position + offset, t);
-                            })
-                            .setOnUpdate((float t) =>
-                            {
-                                if (target == null || caster == null)
-                                {
-                                    LeanTween.cancel(tweenId, true);
-                                    return;
-                                }
-                                //animate the trail
-                                trail.LookAt(target);
-                                trail.position = path.point(t);// Vector3.Lerp(caster.position + offset, target.position + offset, t);
-                            })
-                            .setOnComplete(() =>
-                            {
-                                //spawn the hit
-                                if (caster != null && target != null)
-                                {
-                                    Transform hitFx = _objectPool.Spawn(hitPrefab, target.position + offset);
-                                    hitFx.rotation = Quaternion.LookRotation(caster.position - target.position);
-                                    hitFx.localScale = _hitScale;
-                                }
-                                onComplete?.Invoke();
-                            }).uniqueId;
+                    path = new LTBezierPath(new Vector3[] {
+                        startPosition, //start point
+                        targetPosition + endcontrol,
+                        startPosition + startcontrol,
+                        targetPosition
                     });
+
+                    //spawn the trail                        
+                    Transform trail = _objectPool.Spawn(trailPrefab, caster.position + offset);
+                    trail.localScale = _trailScale;
+
+                    for (float time = 0; time < trailTime; time += Time.deltaTime)
+                    {
+                        float t = Mathf.InverseLerp(0f, trailTime, time);
+                        trail.LookAt(target);
+                        trail.position = path.point(t);
+                        yield return null;
+                    }
+
+                    //spawn the hit
+                    Transform hitFx = _objectPool.Spawn(hitPrefab, target.position + offset);
+                    hitFx.rotation = Quaternion.LookRotation(caster.position - target.position);
+                    hitFx.localScale = _hitScale;
+                }
             }
         }
 
-        public IEnumerator SpawnDamageText(Transform target, int amount, float fontSize)
+        private IEnumerator SpawnDamageText(Transform target, int amount, float fontSize)
         {
             string color = string.Empty;
             if (amount > 0)
@@ -348,8 +303,8 @@ namespace Raincrow.BattleArena.Controllers
         IEnumerator Summon(IList<ICharacterController> characterControllers);
         IEnumerator Move(ICharacterController characterController, BattleSlot targetBattleSlot);
         IEnumerator CastSpell(int spellDegree, ICharacterController caster, ICharacterController target);
-        IEnumerator ApplyDamage(ICharacterController target, int damage, bool isCritical);        
-        void SpawnTrail(int degree, Transform caster, Transform target, System.Action onStart, System.Action onComplete);
-        IEnumerator SpawnDamageText(Transform target, int amount, float scale);
+        IEnumerator ApplyDamage(ICharacterController target, int damage, bool isCritical);
+        //IEnumerator SpawnTrail(int degree, Transform caster, Transform target);
+        //IEnumerator SpawnDamageText(Transform target, int amount, float scale);
     }
 }
