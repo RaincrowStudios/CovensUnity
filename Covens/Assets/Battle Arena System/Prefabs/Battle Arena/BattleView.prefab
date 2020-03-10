@@ -91,6 +91,7 @@ MonoBehaviour:
   _cameraDistance: 80
   _cameraHeight: 65
   _timeAnimation: 0.5
+  _targetY: 80
 --- !u!114 &7196786638976531525
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -107,7 +108,7 @@ MonoBehaviour:
   _gridGameObjectModel:
     _cellPrefab: {fileID: 6753272869729047748, guid: 8a0cadd5128d28e47a4b7668266f42f6,
       type: 3}
-    _spacing: {x: 0.1, y: 0.1}
+    _spacing: {x: 10, y: 10}
     _cellScale: {x: 100, y: 100}
   _serviceLocator: {fileID: 0}
 --- !u!114 &8938269710436315475
