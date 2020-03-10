@@ -1,13 +1,12 @@
 ﻿using Raincrow.BattleArena.Model;
 using Raincrow.Services;
-using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
 namespace Raincrow.BattleArena.Controllers
 {
-    public class AnimationController : MonoBehaviour, IAnimationController
+    public partial class AnimationController : MonoBehaviour, IAnimationController
     {
         // Serialized Variables
         [SerializeField] private ServiceLocator _serviceLocator;
@@ -20,6 +19,9 @@ namespace Raincrow.BattleArena.Controllers
         [SerializeField] private ParticleSystem _summonAnimPrefab;
         [SerializeField] private float _summonAnimationTime = 1f;
         [SerializeField] private Easings.Functions _summonAnimationFunction = Easings.Functions.Linear;
+
+        [Header("Damage Animation")]
+        [SerializeField] private float _damageAnimationTime = 2f;
 
         // Variables
         private BattleController _battleController;
@@ -123,7 +125,7 @@ namespace Raincrow.BattleArena.Controllers
         public IEnumerator CastSpell(int spellDegree, ICharacterController caster, ICharacterController target)
         {
             bool isCastSpellComplete = false;
-            SpellcastingTrailFX.SpawnTrail(spellDegree, caster.Transform, target.Transform, () =>
+            SpawnTrail(spellDegree, caster.Transform, target.Transform, null, () =>
             {
                 isCastSpellComplete = true;
             });
@@ -133,16 +135,16 @@ namespace Raincrow.BattleArena.Controllers
         public IEnumerator ApplyDamage(float time, ICharacterController target, int damage, bool isCritical)
         {
             float textScale = isCritical ? 1.4f : 1f;
-            SpellcastingFX.SpawnEnergyChange(target.Transform, damage, textScale);
+            //SpellcastingFX.SpawnEnergyChange(target.Transform, damage, textScale);
 
             int previousEnergy = target.Model.Energy;
             int nextEnergy = target.Model.Energy - damage;
             nextEnergy = Mathf.Max(nextEnergy, 0);
 
             //Show Damage decreasing over time
-            for (float elapsedTime = 0; elapsedTime < 2f; elapsedTime += Time.deltaTime)
+            for (float elapsedTime = 0; elapsedTime < _damageAnimationTime; elapsedTime += Time.deltaTime)
             {
-                float energy = Mathf.Lerp(previousEnergy, nextEnergy, elapsedTime / 10f);
+                float energy = Mathf.Lerp(previousEnergy, nextEnergy, elapsedTime / _damageAnimationTime);
                 target.UpdateView(target.Model.BaseEnergy, Mathf.FloorToInt(energy));
                 yield return null;
             }            
@@ -158,5 +160,6 @@ namespace Raincrow.BattleArena.Controllers
         IEnumerator Move(ICharacterController characterController, BattleSlot targetBattleSlot);
         IEnumerator CastSpell(int spellDegree, ICharacterController caster, ICharacterController target);
         IEnumerator ApplyDamage(float time, ICharacterController target, int damage, bool isCritical);
+        void SpawnTrail(int degree, Transform caster, Transform target, System.Action onStart, System.Action onComplete);
     }
 }

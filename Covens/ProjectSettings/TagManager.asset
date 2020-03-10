@@ -74,6 +74,9 @@ TagManager:
   - name: Character
     uniqueID: 2567503731
     locked: 0
+  - name: Battle FX
+    uniqueID: 3831254823
+    locked: 0
   - name: UI
     uniqueID: 2159066085
     locked: 0

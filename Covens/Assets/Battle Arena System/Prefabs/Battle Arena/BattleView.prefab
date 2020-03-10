@@ -183,3 +183,24 @@ MonoBehaviour:
     type: 3}
   _summonAnimationTime: 0.5
   _summonAnimationFunction: 3
+  _shadowChargePrefab: {fileID: 3168508551092698746, guid: f018e40781c495d4095ebf766e73c7f5,
+    type: 3}
+  _shadowTrailPrefab: {fileID: 2375159468205616495, guid: 689e39ac7867f0f4d8848a87733e2385,
+    type: 3}
+  _shadowHitPrefab: {fileID: 7028620956769017211, guid: 1752222756e23c9479190434d917c104,
+    type: 3}
+  _grayChargePrefab: {fileID: 7847051234143474167, guid: 3682d30ca7e3d4e478936e7bf8b5b32b,
+    type: 3}
+  _grayTrailPrefab: {fileID: 3548994426269542056, guid: 05ed09038bd07fc4c8d9be7ca549a5f2,
+    type: 3}
+  _grayHitPrefab: {fileID: 7191377541664239796, guid: 7ad26545ee733e1409e98e072c58c3fc,
+    type: 3}
+  _lightChargePrefab: {fileID: 4496201479704495362, guid: 94a1eee1a93dec04495f861a47e65aaf,
+    type: 3}
+  _lightTrailPrefab: {fileID: 191482516618135230, guid: 060bce21d350c304eaa4527aae9aceae,
+    type: 3}
+  _lightHitPrefab: {fileID: 8936806201847523368, guid: 0adfc2a0dd07a3a4fb0904b458df462a,
+    type: 3}
+  _chargeScale: {x: 40, y: 40, z: 40}
+  _trailScale: {x: 10, y: 10, z: 10}
+  _hitScale: {x: 20, y: 20, z: 20}
