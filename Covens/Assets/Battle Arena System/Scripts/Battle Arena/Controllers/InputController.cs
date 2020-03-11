@@ -55,6 +55,11 @@ namespace Raincrow.BattleArena.Controllers
             Touch = null;
         }
 
+        public void SetActive(bool value)
+        {
+            gameObject.SetActive(value);
+        }
+
         #endregion
     }
 
@@ -62,5 +67,6 @@ namespace Raincrow.BattleArena.Controllers
     {
         Ray? Touch { get; } 
         Vector3? DragVelocity { get; }
+        void SetActive(bool value);
     }
 }
