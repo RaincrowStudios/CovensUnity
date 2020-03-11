@@ -14,7 +14,7 @@ namespace Raincrow.BattleArena.Phases
         private readonly static string BattleCellLayerName = "BattleCell";
         private readonly static float MaxRaycastDistance = 3000f;
         private readonly static float DragSpeed = 30f;
-        private readonly static float MoveToTargetSpeed = 300f;
+        private readonly static float MoveToTargetSpeed = 600f;
 
         // Variables
         private float _startTime = 0f;
