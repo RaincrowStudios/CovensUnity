@@ -192,7 +192,8 @@ namespace Raincrow.BattleArena.Phases
                         if (cellUIModel != null)
                         {
                             OnClickCell(cellUIModel);
-                            _cameraTargetController.SetTargetPosition(cellUIModel.Transform.position, _moveSpeed);
+                            IEnumerator moveTo = _cameraTargetController.MoveTo(cellUIModel.Transform.position, _moveSpeed);
+                            _coroutineStarter.Invoke(moveTo);
                         }
                     }
                 }

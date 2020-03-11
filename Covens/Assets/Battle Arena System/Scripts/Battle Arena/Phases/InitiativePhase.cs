@@ -59,7 +59,8 @@ namespace Raincrow.BattleArena.Phases
             _summonedCharacters.AddRange(_turnModel.SummonedCharacters);
 
             // Move camera to center
-            _cameraTargetController.SetTargetPosition(Vector3.zero, _moveSpeed);
+            IEnumerator moveTo = _cameraTargetController.MoveTo(Vector3.zero, _moveSpeed);
+            _coroutineHandler.Invoke(moveTo);
 
             // Reset Turn Model
             _turnModel.Reset();

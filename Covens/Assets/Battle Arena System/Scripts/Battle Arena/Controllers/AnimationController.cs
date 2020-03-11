@@ -1,4 +1,5 @@
 ﻿using Raincrow.BattleArena.Model;
+using Raincrow.BattleArena.Views;
 using Raincrow.Services;
 using System.Collections;
 using System.Collections.Generic;
@@ -66,12 +67,18 @@ namespace Raincrow.BattleArena.Controllers
         private BattleController _battleController;
         private ObjectPool _objectPool;
         private Camera _battleCamera;
+        private ICameraTargetController _cameraTargetController;
 
         protected virtual void OnEnable()
         {
             if (_serviceLocator == null)
             {
                 _serviceLocator = FindObjectOfType<ServiceLocator>();
+            }
+
+            if (_cameraTargetController == null)
+            {
+                _cameraTargetController = _serviceLocator.GetCameraTargetController();
             }
 
             // Could not lazily initialize Service Locator
@@ -97,12 +104,15 @@ namespace Raincrow.BattleArena.Controllers
         }
 
         public IEnumerator Summon(ICharacterController characterController)
-        {
+        {                       
             // Spawn Particle System
             Vector3 position = characterController.Transform.position;
             Quaternion quartenion = _summonAnimPrefab.transform.rotation;
             ParticleSystem summonParticles = _objectPool.Spawn(_summonAnimPrefab, position, quartenion);
             summonParticles.Play();
+
+            // Move Camera
+            StartCoroutine(_cameraTargetController.MoveBy(position, _summonAnimationTime * 0.5f));
 
             // Summon Animation
             for (float elapsedTime = 0; elapsedTime < _summonAnimationTime; elapsedTime += Time.deltaTime)
@@ -123,16 +133,25 @@ namespace Raincrow.BattleArena.Controllers
             Vector3 startPosition = characterController.Transform.position;
             Vector3 targetPosition = model.Transform.position;
 
+            // Move Camera
+            //StartCoroutine(_cameraTargetController.MoveBy(targetPosition, _moveAnimationTime * 0.5f));
+
             for (float elapsedTime = 0; elapsedTime < _moveAnimationTime; elapsedTime += Time.deltaTime)
             {
                 float t = Easings.Interpolate(elapsedTime / _moveAnimationTime, _moveAnimationFunction);
-                characterController.Transform.position = Vector3.Lerp(startPosition, targetPosition, t);
+                Vector3 characterPosition = Vector3.Lerp(startPosition, targetPosition, t);
+                characterController.Transform.position = characterPosition;
+                _cameraTargetController.SetPosition(characterPosition);
+
                 yield return null;
             }
         }
 
         public IEnumerator Summon(IList<ICharacterController> characterControllers)
         {
+            // Move Camera to center
+            StartCoroutine(_cameraTargetController.MoveBy(Vector3.zero, _summonAnimationTime * 0.5f));
+
             foreach (var characterController in characterControllers)
             {
                 StartCoroutine(Summon(characterController));
@@ -149,6 +168,9 @@ namespace Raincrow.BattleArena.Controllers
             aura.position = characterController.Transform.transform.position;
             aura.localScale = characterController.Transform.transform.lossyScale;
             aura.gameObject.SetActive(true);
+
+            // Move Camera
+            StartCoroutine(_cameraTargetController.MoveBy(position, _banishAnimationTime * 0.5f));
 
             // Banish Animation
             for (float elapsedTime = 0; elapsedTime < _banishAnimationTime; elapsedTime += Time.deltaTime)
@@ -170,6 +192,9 @@ namespace Raincrow.BattleArena.Controllers
             aura.position = characterController.Transform.transform.position;
             aura.localScale = characterController.Transform.transform.lossyScale;
             aura.gameObject.SetActive(true);
+
+            // Move Camera
+            StartCoroutine(_cameraTargetController.MoveBy(position, _fleeAnimationTime * 0.5f));
 
             // Flee Animation
             for (float elapsedTime = 0; elapsedTime < _fleeAnimationTime; elapsedTime += Time.deltaTime)
@@ -246,6 +271,8 @@ namespace Raincrow.BattleArena.Controllers
                     float t = Mathf.InverseLerp(0f, _trailLifecycle, time);
                     trail.LookAt(targetTransform);
                     trail.position = path.point(t);
+
+                    _cameraTargetController.SetPosition(trail.position);
                     yield return null;
                 }
 
@@ -254,6 +281,9 @@ namespace Raincrow.BattleArena.Controllers
                 hitFx.rotation = Quaternion.LookRotation(casterTransform.position - targetTransform.position);
                 hitFx.localScale = _hitScale;
                 StartCoroutine(ScheduleRecycle(_hitLifecycle, hitFx));
+
+                // Set camera position
+                _cameraTargetController.SetPosition(targetTransform.position);
             }
         }
 
@@ -264,7 +294,7 @@ namespace Raincrow.BattleArena.Controllers
 
             int previousEnergy = target.Model.Energy;
             int nextEnergy = target.Model.Energy - damage;
-            nextEnergy = Mathf.Max(nextEnergy, 0);
+            nextEnergy = Mathf.Max(nextEnergy, 0);            
 
             //Show Damage decreasing over time
             for (float elapsedTime = 0; elapsedTime < _damageAnimationTime; elapsedTime += Time.deltaTime)

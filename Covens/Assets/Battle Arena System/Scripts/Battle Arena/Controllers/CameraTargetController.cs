@@ -7,27 +7,37 @@ namespace Raincrow.BattleArena.Views
     {
         private Vector3 _origin;
         private Vector3 _bounds;
-        private IEnumerator _moveToTargetPosition;
+        private IEnumerator _moveTo;
         //private int _moveTweenId = int.MinValue;
 
         public void Move(Vector3 movement)
         {
             //LeanTween.cancel(_moveTweenId);
-            if (_moveToTargetPosition != null)
+            if (_moveTo != null)
             {
-                StopCoroutine(_moveToTargetPosition);
+                StopCoroutine(_moveTo);
             }
 
             transform.Translate(movement, Space.World);
             transform.position = GetPositionClamped(transform.position);
         }
 
+        public void SetPosition(Vector3 position)
+        {
+            if (_moveTo != null)
+            {
+                StopCoroutine(_moveTo);
+            }
+
+            transform.position = GetPositionClamped(position);
+        }
+
         public void SetBounds(Vector3 worldOrigin, Vector3 worldBounds)
         {
             //LeanTween.cancel(_moveTweenId);
-            if (_moveToTargetPosition != null)
+            if (_moveTo != null)
             {
-                StopCoroutine(_moveToTargetPosition);
+                StopCoroutine(_moveTo);
             }
 
             _origin = worldOrigin;
@@ -35,32 +45,43 @@ namespace Raincrow.BattleArena.Views
             transform.position = GetPositionClamped(transform.position);
         }
 
-        public void SetTargetPosition(Vector3 position, float speed)
+        public IEnumerator MoveTo(Vector3 position, float speed)
         {
-            if (_moveToTargetPosition != null)
+            if (_moveTo != null)
             {
-                StopCoroutine(_moveToTargetPosition);
+                StopCoroutine(_moveTo);
             }
 
-            _moveToTargetPosition = MoveToTargetPosition(position, speed);
-            StartCoroutine(_moveToTargetPosition);
-
-        }
-
-        private IEnumerator MoveToTargetPosition(Vector3 position, float speed)
-        {
-            Vector3 startPosition = transform.position;
             Vector3 targetPosition = GetPositionClamped(position);
             float distance = Vector3.Distance(transform.position, targetPosition);
             float totalTime = distance / speed;
 
+            _moveTo = InnerMoveTo(targetPosition, totalTime);
+            yield return StartCoroutine(_moveTo);
+        }
+
+        public IEnumerator MoveBy(Vector3 position, float time)
+        {
+            if (_moveTo != null)
+            {
+                StopCoroutine(_moveTo);
+            }
+
+            Vector3 targetPosition = GetPositionClamped(position);
+            _moveTo = InnerMoveTo(targetPosition, time);
+            yield return StartCoroutine(_moveTo);
+        }
+
+        private IEnumerator InnerMoveTo(Vector3 position, float totalTime)
+        {
+            Vector3 startPosition = transform.position;
             for (float elapsedTime = 0; elapsedTime < totalTime; elapsedTime += Time.deltaTime)
             {
-                transform.position = Vector3.Lerp(startPosition, targetPosition, elapsedTime / totalTime);
+                transform.position = Vector3.Lerp(startPosition, position, elapsedTime / totalTime);
                 yield return null;
             }
 
-            _moveToTargetPosition = null;
+            _moveTo = null;
         }
 
         private Vector3 GetPositionClamped(Vector3 position)
@@ -82,7 +103,7 @@ namespace Raincrow.BattleArena.Views
 
         public bool IsMoving()
         {
-            return _moveToTargetPosition != null;
+            return _moveTo != null;
         }
     }
 
@@ -90,7 +111,9 @@ namespace Raincrow.BattleArena.Views
     {
         void SetBounds(Vector3 worldOrigin, Vector3 worldBounds);
         void Move(Vector3 movement);
-        void SetTargetPosition(Vector3 position, float speed);
+        void SetPosition(Vector3 position);
+        IEnumerator MoveTo(Vector3 position, float speed);
+        IEnumerator MoveBy(Vector3 position, float time);
         bool IsMoving();
     }
 }
