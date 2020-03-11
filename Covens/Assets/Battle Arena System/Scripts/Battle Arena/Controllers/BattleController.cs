@@ -22,8 +22,9 @@ namespace Raincrow.BattleArena.Controllers
         [SerializeField] private AnimationController _animationController;
 
         [Header("Camera Movement")]
-        [SerializeField] private float _cameraSpeed = 20f;
-        [SerializeField] private float _cameraDecceleration = 0.15f;
+        [SerializeField] private float _moveSpeed = 20f;
+        [SerializeField] private float _dragSpeed = 20f;
+        [SerializeField] private float _dragDecceleration = 0.15f;
         [SerializeField] private float _cameraTargetHeight = 1f;
 
         [Header("Debrief Animation")]
@@ -203,46 +204,64 @@ namespace Raincrow.BattleArena.Controllers
             };
             yield return null;
 
-            InitiativePhase initiativePhase = new InitiativePhase(this, 
-                playerId, 
-                _gameMasterController, 
-                _turnModel, battleModel, 
-                battleResult, 
-                _animationController);
+            InitiativePhase initiativePhase = new InitiativePhase(this,
+                                                                  playerId,
+                                                                  _gameMasterController,
+                                                                  _turnModel, 
+                                                                  battleModel,
+                                                                  battleResult,
+                                                                  _animationController);
             yield return null;
 
             PlanningPhase planningPhase = new PlanningPhase(this,
-                _gameMasterController,
-                _quickCastView,
-                _serviceLocator,
-                _serviceLocator.GetCharactersTurnOrderView(),
-                _turnModel,
-                battleModel,
-                Cells,
-                _serviceLocator.GetCountdownView(),
-                _energyView,
-                _playerBadgeView,
-                _serviceLocator.GetInputController(),
-                _serviceLocator.GetCameraTargetController(),
-                _cameraSpeed);
+                                                            _gameMasterController,
+                                                            _quickCastView,
+                                                            _serviceLocator,
+                                                            _serviceLocator.GetCharactersTurnOrderView(),
+                                                            _turnModel,
+                                                            battleModel,
+                                                            Cells,
+                                                            _serviceLocator.GetCountdownView(),
+                                                            _energyView,
+                                                            _playerBadgeView,
+                                                            _serviceLocator.GetInputController(),
+                                                            _serviceLocator.GetCameraTargetController(),
+                                                            _moveSpeed,
+                                                            _dragSpeed, 
+                                                            _dragDecceleration);
             yield return null;
 
-            ActionResolutionPhase actionResolutionPhase = new ActionResolutionPhase(this, battleModel, _turnModel, _serviceLocator.GetBarEventLogView(), _animationController);
+            ActionResolutionPhase actionResolutionPhase = new ActionResolutionPhase(this, 
+                                                                                    battleModel, 
+                                                                                    _turnModel, 
+                                                                                    _serviceLocator.GetBarEventLogView(), 
+                                                                                    _animationController);
             yield return null;
 
-            BanishmentPhase banishmentPhase = new BanishmentPhase(this, battleModel, _turnModel, _serviceLocator.GetBarEventLogView(), _animationController);
+            BanishmentPhase banishmentPhase = new BanishmentPhase(this, 
+                                                                  battleModel, 
+                                                                  _turnModel, 
+                                                                  _serviceLocator.GetBarEventLogView(), 
+                                                                  _animationController);
             yield return null;
 
             DebriefAnimationModel debriefAnimationValues = new DebriefAnimationModel()
             {
                 CameraDistance = _cameraDistance,
                 CameraHeight = _cameraHeight,
-                CameraSpeed = _cameraSpeed,
+                CameraSpeed = _dragSpeed,
                 TimeAnimation = _timeAnimation,
                 TargetY = _targetY
             };
 
-            EndPhase endPhase = new EndPhase(battleResult,_serviceLocator.GetCelebratoryView(), _serviceLocator.GetDebriefView(),this,_cameraTargetController, _serviceLocator.GetSmoothCameraFollow(), battleModel, debriefAnimationValues, _serviceLocator.GetRewardsBatttleView());
+            EndPhase endPhase = new EndPhase(battleResult, 
+                                             _serviceLocator.GetCelebratoryView(), 
+                                             _serviceLocator.GetDebriefView(), this, 
+                                             _cameraTargetController, 
+                                             _serviceLocator.GetSmoothCameraFollow(), 
+                                             battleModel, 
+                                             debriefAnimationValues, 
+                                             _serviceLocator.GetRewardsBatttleView());
 
             IState[] battlePhases = new IState[5]
             {

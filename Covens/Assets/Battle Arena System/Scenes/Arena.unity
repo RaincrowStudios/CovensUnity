@@ -1603,7 +1603,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 831d896a630c0bc45bbc0e1b4e45540d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _serviceLocator: {fileID: 0}
+  _serviceLocator: {fileID: 1442890515}
   _maxCellsPerRow: 5
   _maxCellsPerColumn: 5
 --- !u!1001 &582567684973961394
@@ -2106,22 +2106,6 @@ PrefabInstance:
       propertyPath: m_Name
       value: Battle Arena Object Pool
       objectReference: {fileID: 0}
-    - target: {fileID: 4462185829501744796, guid: 6a56930dadb7218499baff096daa51c0,
-        type: 3}
-      propertyPath: _startupPools.Array.size
-      value: 19
-      objectReference: {fileID: 0}
-    - target: {fileID: 4462185829501744796, guid: 6a56930dadb7218499baff096daa51c0,
-        type: 3}
-      propertyPath: _startupPools.Array.data[18].size
-      value: 10
-      objectReference: {fileID: 0}
-    - target: {fileID: 4462185829501744796, guid: 6a56930dadb7218499baff096daa51c0,
-        type: 3}
-      propertyPath: _startupPools.Array.data[18].prefab
-      value: 
-      objectReference: {fileID: 3943033535525590576, guid: dce523191bbf8d246b57a0b983d09a03,
-        type: 3}
     - target: {fileID: 4462185829501744797, guid: 6a56930dadb7218499baff096daa51c0,
         type: 3}
       propertyPath: m_LocalPosition.x
@@ -2245,6 +2229,21 @@ PrefabInstance:
         type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7182136232964059483, guid: a01468c84043f724fb771f2a8cee9029,
+        type: 3}
+      propertyPath: m_LocalScale.x
+      value: 100
+      objectReference: {fileID: 0}
+    - target: {fileID: 7182136232964059483, guid: a01468c84043f724fb771f2a8cee9029,
+        type: 3}
+      propertyPath: m_LocalScale.y
+      value: 100
+      objectReference: {fileID: 0}
+    - target: {fileID: 7182136232964059483, guid: a01468c84043f724fb771f2a8cee9029,
+        type: 3}
+      propertyPath: m_LocalScale.z
+      value: 100
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: a01468c84043f724fb771f2a8cee9029, type: 3}
@@ -2378,17 +2377,17 @@ PrefabInstance:
     - target: {fileID: 6336321357369158573, guid: 90545a07f66fe5b4e95e3a28158349bc,
         type: 3}
       propertyPath: m_AnchorMin.y
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 6336321357369158573, guid: 90545a07f66fe5b4e95e3a28158349bc,
         type: 3}
       propertyPath: m_AnchorMax.y
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 6336321357369158573, guid: 90545a07f66fe5b4e95e3a28158349bc,
         type: 3}
       propertyPath: m_AnchoredPosition.x
-      value: 385
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 6336321357369158573, guid: 90545a07f66fe5b4e95e3a28158349bc,
         type: 3}

@@ -13,8 +13,8 @@ namespace Raincrow.BattleArena.Phases
     {
         private readonly static string BattleCellLayerName = "BattleCell";
         private readonly static float MaxRaycastDistance = 3000f;
-        private readonly static float DragSpeed = 30f;
-        private readonly static float MoveToTargetSpeed = 600f;
+        //private readonly static float DragSpeed = 30f;
+        //private readonly static float MoveToTargetSpeed = 600f;
 
         // Variables
         private float _startTime = 0f;
@@ -33,12 +33,17 @@ namespace Raincrow.BattleArena.Phases
         private ICellUIModel[,] _gridView;
         private IInputController _inputController;
         private ICameraTargetController _cameraTargetController;
-        private float _cameraSpeed;
         private BattleSlot? _selectedSlot;
         private string _objectId;
         private CollectableItem _herb;
         private CollectableItem _tool;
         private CollectableItem _gem;
+        private float _moveSpeed;
+        private float _dragSpeed;
+        private float _dragDecceleration;
+        private Vector3 _dragVelocity;
+
+        // Readonly Variables
         private readonly int _battleCellLayer;
 
         // Properties
@@ -57,7 +62,10 @@ namespace Raincrow.BattleArena.Phases
                              IPlayerBadgeView playerBadgeView,
                              IInputController inputController,
                              ICameraTargetController cameraTargetController,
-                             float cameraSpeed)
+                             float moveSpeed,
+                             float dragSpeed,
+                             float dragDecceleration)
+                             //float cameraSpeed)
         {
             _coroutineStarter = coroutineStarter;
             _isPlanningPhaseFinished = null;
@@ -72,9 +80,12 @@ namespace Raincrow.BattleArena.Phases
             _countdownView = countdownView;
             _playerBadgeView = playerBadgeView;
             _energyView = energyView;
-            _cameraSpeed = cameraSpeed;
+            //_cameraSpeed = cameraSpeed;
             _inputController = inputController;
             _cameraTargetController = cameraTargetController;
+            _moveSpeed = moveSpeed;
+            _dragSpeed = dragSpeed;
+            _dragDecceleration = dragDecceleration;
 
             _battleCellLayer = LayerMask.GetMask(BattleCellLayerName);
         }
@@ -172,6 +183,8 @@ namespace Raincrow.BattleArena.Phases
                 // Touch occured
                 if (_inputController.Touch.HasValue) // check input
                 {
+                    _dragVelocity = Vector3.zero;
+
                     Ray touchRay = _inputController.Touch.Value;
                     if (Physics.Raycast(touchRay, out RaycastHit hitInfo, MaxRaycastDistance, _battleCellLayer))
                     {
@@ -179,20 +192,26 @@ namespace Raincrow.BattleArena.Phases
                         if (cellUIModel != null)
                         {
                             OnClickCell(cellUIModel);
-                            _cameraTargetController.SetTargetPosition(cellUIModel.Transform.position, MoveToTargetSpeed);
+                            _cameraTargetController.SetTargetPosition(cellUIModel.Transform.position, _moveSpeed);
                         }
                     }
                 }
                 else if (_inputController.DragVelocity.HasValue)
                 {
-                    Vector3 dragVelocity = new Vector3
+                    _dragVelocity = new Vector3
                     {
                         x = -_inputController.DragVelocity.Value.x,
                         y = 0,
                         z = -_inputController.DragVelocity.Value.y
                     };
-                    _cameraTargetController.Move(dragVelocity * Time.deltaTime * DragSpeed);
+                    _cameraTargetController.Move(_dragVelocity * Time.deltaTime * _dragSpeed);
                 }
+                else if (_dragVelocity != Vector3.zero)
+                {
+                    // Decay velocity
+                    _dragVelocity = Vector3.MoveTowards(_dragVelocity, Vector3.zero, _dragDecceleration * Time.deltaTime);
+                    _cameraTargetController.Move(_dragVelocity * Time.deltaTime * _dragSpeed);
+                }                
             }
         }
 
