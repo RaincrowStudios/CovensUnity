@@ -1,9 +1,11 @@
 ﻿using Raincrow.BattleArena.Controllers;
 using Raincrow.BattleArena.Events;
 using Raincrow.BattleArena.Model;
+using Raincrow.BattleArena.Views;
 using Raincrow.StateMachines;
 using System.Collections;
 using System.Collections.Generic;
+using UnityEngine;
 
 namespace Raincrow.BattleArena.Phases
 {
@@ -20,6 +22,8 @@ namespace Raincrow.BattleArena.Phases
         private IAnimationController _animController;
         private string _playerId;
         private IList<ICharacterController> _summonedCharacters = new List<ICharacterController>();
+        private ICameraTargetController _cameraTargetController;
+        private float _moveSpeed;
 
         // Properties
         public string Name => "Initiative Phase";
@@ -31,7 +35,9 @@ namespace Raincrow.BattleArena.Phases
             ITurnModel turnModel,
             IBattleModel battleModel,
             IBattleResultModel battleResultModel,
-            IAnimationController animController)
+            IAnimationController animController, 
+            ICameraTargetController cameraTargetController,
+            float moveSpeed)
         {
             _coroutineHandler = coroutineStarter;
             _sendPlanningPhaseReady = null;
@@ -42,13 +48,18 @@ namespace Raincrow.BattleArena.Phases
             _playerId = playerId;
             _battleResultModel = battleResultModel;
             _animController = animController;
+            _cameraTargetController = cameraTargetController;
+            _moveSpeed = moveSpeed;
         }
 
         public IEnumerator Enter(IStateMachine stateMachine)
         {
             // Save Summoned Characters
             _summonedCharacters = new List<ICharacterController>();
-            _summonedCharacters.AddRange(_turnModel.SummonedCharacters);            
+            _summonedCharacters.AddRange(_turnModel.SummonedCharacters);
+
+            // Move camera to center
+            _cameraTargetController.SetTargetPosition(Vector3.zero, _moveSpeed);
 
             // Reset Turn Model
             _turnModel.Reset();

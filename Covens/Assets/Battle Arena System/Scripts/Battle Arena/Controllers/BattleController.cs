@@ -210,7 +210,9 @@ namespace Raincrow.BattleArena.Controllers
                                                                   _turnModel, 
                                                                   battleModel,
                                                                   battleResult,
-                                                                  _animationController);
+                                                                  _animationController,
+                                                                  _cameraTargetController,
+                                                                  _moveSpeed);
             yield return null;
 
             PlanningPhase planningPhase = new PlanningPhase(this,
