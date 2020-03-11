@@ -322,6 +322,8 @@ namespace Raincrow.BattleArena.Phases
 
         private void OpenInventory(string spell)
         {
+            _inputController.SetActive(false);
+
             SpellData selectedSpell = DownloadedAssets.GetSpell(spell);
 
             SetIngredients(selectedSpell.ingredients.ToArray());
@@ -488,7 +490,7 @@ namespace Raincrow.BattleArena.Phases
                 _quickCastView.SetOnMenuIngredient(false, string.Empty);
                 _countdownView.Show();
             }
-
+            _inputController.SetActive(true);
             _playerBadgeView.Show();
             _energyView.Show();
             _quickCastView.SetOnMenuIngredient(false, "");

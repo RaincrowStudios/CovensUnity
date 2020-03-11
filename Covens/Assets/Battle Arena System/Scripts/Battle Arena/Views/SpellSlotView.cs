@@ -27,7 +27,7 @@ namespace Raincrow.BattleArena.Views
         private System.Action<string> _openIngredients;
         private float _startTimeOnClick = 0.0f;
         private bool _pointerDown;
-
+        private int _clickAnimationID;
         //Const variable
         private const float TIME_HOLD = 0.5f;
 
@@ -61,7 +61,7 @@ namespace Raincrow.BattleArena.Views
             _buttonSpell.interactable = value;
         }
 
-        public void OnPointerDonwSpell()
+        public void OnPointerDownSpell()
         {
             if (_buttonSpell.interactable)
             {
