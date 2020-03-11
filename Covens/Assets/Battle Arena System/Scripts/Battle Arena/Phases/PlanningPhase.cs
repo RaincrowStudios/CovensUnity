@@ -123,7 +123,7 @@ namespace Raincrow.BattleArena.Phases
             IEnumerator showCharacterTurnOrderView = _charactersTurnOrderView.Show(_turnModel.PlanningOrder, _turnModel.MaxActionsAllowed, witches, spirits);
             yield return _coroutineStarter.Invoke(showCharacterTurnOrderView);
 
-            _startTime = Time.time;
+            _startTime = Time.realtimeSinceStartup;
 
             _quickCastView.Show(OnClickFly, OnClickSummon, OnClickFlee, OnCastSpell, OpenInventory);
 
@@ -161,7 +161,7 @@ namespace Raincrow.BattleArena.Phases
 
         public IEnumerator Update(IStateMachine stateMachine)
         {
-            float elapsedTime = Time.time - _startTime;
+            float elapsedTime = Time.realtimeSinceStartup - _startTime;
             int time = Mathf.FloorToInt(_turnModel.PlanningMaxTime - elapsedTime);
 
             _countdownView.UpdateTime(time);
