@@ -83,7 +83,7 @@ MonoBehaviour:
   _gridFactory: {fileID: 7196786638976531525}
   _spiritFactory: {fileID: 8938269710436315475}
   _witchFactory: {fileID: 1794520544814550441}
-  _gameMasterController: {fileID: 0}
+  _gameMasterController: {fileID: 6436825671352726332}
   _animationController: {fileID: 3827334444051354934}
   _cameraSpeed: 2000
   _cameraDecceleration: 0.15
