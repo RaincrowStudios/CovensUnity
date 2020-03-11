@@ -1576,7 +1576,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!4 &2111958078
 Transform:
   m_ObjectHideFlags: 0
@@ -1603,7 +1603,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 831d896a630c0bc45bbc0e1b4e45540d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _serviceLocator: {fileID: 1442890515}
+  _serviceLocator: {fileID: 0}
   _maxCellsPerRow: 5
   _maxCellsPerColumn: 5
 --- !u!1001 &582567684973961394
@@ -2378,17 +2378,17 @@ PrefabInstance:
     - target: {fileID: 6336321357369158573, guid: 90545a07f66fe5b4e95e3a28158349bc,
         type: 3}
       propertyPath: m_AnchorMin.y
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 6336321357369158573, guid: 90545a07f66fe5b4e95e3a28158349bc,
         type: 3}
       propertyPath: m_AnchorMax.y
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 6336321357369158573, guid: 90545a07f66fe5b4e95e3a28158349bc,
         type: 3}
       propertyPath: m_AnchoredPosition.x
-      value: 0
+      value: 385
       objectReference: {fileID: 0}
     - target: {fileID: 6336321357369158573, guid: 90545a07f66fe5b4e95e3a28158349bc,
         type: 3}

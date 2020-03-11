@@ -185,8 +185,13 @@ namespace Raincrow.BattleArena.Phases
                 }
                 else if (_inputController.DragVelocity.HasValue)
                 {
-                    Vector3 dragVelocity = -_inputController.DragVelocity.Value * Time.deltaTime * DragSpeed;
-                    _cameraTargetController.Move(dragVelocity);
+                    Vector3 dragVelocity = new Vector3
+                    {
+                        x = -_inputController.DragVelocity.Value.x,
+                        y = 0,
+                        z = -_inputController.DragVelocity.Value.y
+                    };
+                    _cameraTargetController.Move(dragVelocity * Time.deltaTime * DragSpeed);
                 }
             }
         }

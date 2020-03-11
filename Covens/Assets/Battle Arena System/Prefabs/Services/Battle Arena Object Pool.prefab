@@ -95,4 +95,7 @@ MonoBehaviour:
     prefab: {fileID: 1223617493623956, guid: fdd15d425252d044fa40a36524e34983, type: 3}
   - size: 3
     prefab: {fileID: 1083725592308620, guid: 63226d09f199ca74d81cc982ab2945c0, type: 3}
+  - size: 10
+    prefab: {fileID: 3943033535525590576, guid: dce523191bbf8d246b57a0b983d09a03,
+      type: 3}
   startupPoolMode: 0

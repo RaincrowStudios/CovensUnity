@@ -1,17 +1,19 @@
-﻿using Raincrow.BattleArena.Controllers;
+﻿#if ENABLE_MOCK_BATTLE
+using Raincrow.BattleArena.Controllers;
 using Raincrow.BattleArena.Model;
 using Raincrow.Loading.View;
 using Raincrow.Services;
 using System.Collections;
 using System.Collections.Generic;
+#endif
 using UnityEngine;
 
 namespace Raincrow.Mocks
 {
     public class StartBattleMock : MonoBehaviour
     {
-#if !RELEASE
-        
+#if ENABLE_MOCK_BATTLE
+
         [SerializeField] private ServiceLocator _serviceLocator;
         [SerializeField] private int _maxCellsPerRow = 5;
         [SerializeField] private int _maxCellsPerColumn = 5;
