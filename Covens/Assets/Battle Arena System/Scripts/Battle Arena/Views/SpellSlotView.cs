@@ -20,6 +20,10 @@ namespace Raincrow.BattleArena.Views
         [SerializeField] private Sprite _spriteFilled;
         [SerializeField] private Sprite _spriteEmpty;
 
+        [Header("Ingredients")]
+        [SerializeField] private float _timeAnimation;
+        [SerializeField] private float _sizeButtonAnimtion;
+
         //Privates variable
         private string _spell;
 
@@ -27,7 +31,7 @@ namespace Raincrow.BattleArena.Views
         private System.Action<string> _openIngredients;
         private float _startTimeOnClick = 0.0f;
         private bool _pointerDown;
-
+        private int _clickAnimationID;
         //Const variable
         private const float TIME_HOLD = 0.5f;
 
@@ -65,6 +69,8 @@ namespace Raincrow.BattleArena.Views
         {
             if (_buttonSpell.interactable)
             {
+                LeanTween.cancel(_clickAnimationID);
+                _clickAnimationID = LeanTween.scale(gameObject, new Vector3(_sizeButtonAnimtion, _sizeButtonAnimtion, 1), _timeAnimation).uniqueId;
                 _pointerDown = true;
                 StartCoroutine(WaitPointerUpCoroutine());
             }
@@ -74,6 +80,8 @@ namespace Raincrow.BattleArena.Views
         {
             if (_buttonSpell.interactable)
             {
+                LeanTween.cancel(_clickAnimationID);
+                _clickAnimationID = LeanTween.scale(gameObject, Vector3.one, _timeAnimation).uniqueId;
                 _pointerDown = false;
             }
         }
