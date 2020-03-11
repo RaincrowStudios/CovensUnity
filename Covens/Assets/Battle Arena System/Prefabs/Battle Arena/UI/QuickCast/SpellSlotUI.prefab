@@ -12,6 +12,7 @@ GameObject:
   - component: {fileID: 788951348486432297}
   - component: {fileID: 6792951455895380671}
   - component: {fileID: 2732701065107030642}
+  - component: {fileID: 4616142301005767048}
   m_Layer: 26
   m_Name: SpellSlotUI
   m_TagString: Untagged
@@ -89,8 +90,21 @@ MonoBehaviour:
   _imageIngredientHerb: {fileID: 8518296731114101443}
   _spriteFilled: {fileID: 21300000, guid: 6126a9d7f238d6d498de303d9e6c8e43, type: 3}
   _spriteEmpty: {fileID: 21300000, guid: 0dfcd464be08f9b42b9ecd3973ec37af, type: 3}
+--- !u!114 &4616142301005767048
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 788951348486432292}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5973b0f373f57b442914d405a3fcc7c7, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _button: {fileID: 7295151556670864359}
   _timeAnimation: 0.1
-  _sizeButtonAnimtion: 0.95
+  _sizeButtonAnimtion: 0.9
 --- !u!1 &1898540595209920684
 GameObject:
   m_ObjectHideFlags: 0
@@ -754,7 +768,18 @@ MonoBehaviour:
       m_PersistentCalls:
         m_Calls:
         - m_Target: {fileID: 2732701065107030642}
-          m_MethodName: OnPointerDonwSpell
+          m_MethodName: OnPointerDownSpell
+          m_Mode: 1
+          m_Arguments:
+            m_ObjectArgument: {fileID: 0}
+            m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+            m_IntArgument: 0
+            m_FloatArgument: 0
+            m_StringArgument: 
+            m_BoolArgument: 0
+          m_CallState: 2
+        - m_Target: {fileID: 4616142301005767048}
+          m_MethodName: OnPointerDown
           m_Mode: 1
           m_Arguments:
             m_ObjectArgument: {fileID: 0}
@@ -772,6 +797,17 @@ MonoBehaviour:
         m_Calls:
         - m_Target: {fileID: 2732701065107030642}
           m_MethodName: OnPointerUpSpell
+          m_Mode: 1
+          m_Arguments:
+            m_ObjectArgument: {fileID: 0}
+            m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+            m_IntArgument: 0
+            m_FloatArgument: 0
+            m_StringArgument: 
+            m_BoolArgument: 0
+          m_CallState: 2
+        - m_Target: {fileID: 4616142301005767048}
+          m_MethodName: OnPointerUp
           m_Mode: 1
           m_Arguments:
             m_ObjectArgument: {fileID: 0}
