@@ -381,8 +381,8 @@ public class MarkerSpawner : MonoBehaviour
             if(energyToken == null)
             {
                 energyToken = new EnergyToken();
-                energyToken.type = "energy";
                 energyToken.amount = ((CollectableToken)energyMarker.Token).amount;
+                energyToken.type = "energy";
             }
 
             Dictionary<string, object> eventParams = new Dictionary<string, object>

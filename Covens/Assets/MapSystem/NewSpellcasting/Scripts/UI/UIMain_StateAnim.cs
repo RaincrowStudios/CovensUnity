@@ -31,7 +31,7 @@ public class UIMain_StateAnim : MonoBehaviour
     [SerializeField] private RectTransform leftBar;
     [SerializeField] private RectTransform bottomBar;
     [SerializeField] private GameObject[] scaleObjects;
-    [SerializeField] private CanvasGroup[] seasonalUI;
+    //[SerializeField] private CanvasGroup[] seasonalUI;
     [SerializeField] private float time = 1;
     [SerializeField] private LeanTweenType tweenType;
     [SerializeField] private CanvasGroup[] bars;
@@ -208,8 +208,8 @@ public class UIMain_StateAnim : MonoBehaviour
                 worldbossCG.gameObject.SetActive(target.worldboss_alpha > 0);
                 foreach (var item in bars)
                     item.gameObject.SetActive(target.bar_alpha > 0);
-                foreach (var item in seasonalUI)
-                    item.gameObject.SetActive(target.bar_alpha > 0);
+                //foreach (var item in seasonalUI)
+                //item.gameObject.SetActive(target.bar_alpha > 0);
             })
             .setOnUpdate((float t) =>
             {
@@ -222,22 +222,22 @@ public class UIMain_StateAnim : MonoBehaviour
                 float _scale = Mathf.Lerp(scale, target.obj_scale, t);
                 foreach (var item in scaleObjects)
                     item.transform.localScale = new Vector3(_scale, _scale, _scale);
-                
+
                 worldbossCG.alpha = Mathf.Lerp(alpha, target.worldboss_alpha, t);
 
                 float _alpha = Mathf.Lerp(alpha, target.bar_alpha, t);
                 foreach (var item in bars)
                     item.alpha = _alpha;
-                foreach (var item in seasonalUI)
-                    item.alpha = _alpha;
+                //foreach (var item in seasonalUI)
+                //item.alpha = _alpha;
             })
             .setOnComplete(() =>
             {
                 worldbossCG.gameObject.SetActive(worldbossCG.alpha > 0);
                 foreach (var item in bars)
                     item.gameObject.SetActive(item.alpha > 0);
-                foreach (var item in seasonalUI)
-                    item.gameObject.SetActive(item.alpha > 0);
+                //foreach (var item in seasonalUI)
+                //item.gameObject.SetActive(item.alpha > 0);
             })
             .uniqueId;
     }
@@ -259,8 +259,8 @@ public class UIMain_StateAnim : MonoBehaviour
         float _alpha = target.bar_alpha;
         foreach (var item in bars)
             item.alpha = _alpha;
-        foreach (var item in seasonalUI)
-            item.alpha = _alpha;
+        //foreach (var item in seasonalUI)
+        //item.alpha = _alpha;
     }
 
     [ContextMenu("SetState - Map")]
