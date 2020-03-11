@@ -91,7 +91,7 @@ MonoBehaviour:
   _target: {fileID: 0}
   _smoothTime: 0
   _cameraHeight: 350
-  _cameraDistance: 500
+  _cameraDistance: 200
 --- !u!81 &4660181713383410168
 AudioListener:
   m_ObjectHideFlags: 0
