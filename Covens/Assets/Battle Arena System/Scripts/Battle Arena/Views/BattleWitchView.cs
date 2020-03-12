@@ -95,9 +95,15 @@ namespace Raincrow.BattleArena.Views
 
         public void AddDamage(int damage)
         {
-            Model.Energy -= damage;
+            Model.Energy += damage;
             Model.Energy = Mathf.Max(Model.Energy, 0);
             UpdateView(Model.BaseEnergy, Model.Energy);
-        }        
+        }
+
+        public void UpdateEnergy(int energy)
+        {
+            Model.Energy = energy;
+            UpdateView(Model.BaseEnergy, Model.Energy);
+        }
     }
 }

@@ -19,5 +19,6 @@ namespace Raincrow.BattleArena.Controllers
         void FaceCamera(Quaternion cameraRotation, Vector3 cameraForward);
         void UpdateView(int baseEnergy, int energy);
         void AddDamage(int damage);        
+        void UpdateEnergy(int energy);        
     }
 }

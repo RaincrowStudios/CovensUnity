@@ -88,12 +88,31 @@ namespace Raincrow.BattleArena.Model
         public GenericCharacterObjectServer Target { get; set; }
         [JsonProperty("caster")]
         public GenericCharacterObjectServer Caster { get; set; }
-        [JsonProperty("damage")]
-        public int Damage { get; set; }
         [JsonProperty("spell")]
         public string Spell { get; set; }        
         public int Degree { get; set; }
+        [JsonProperty("result")]
+        public CastActionResultModel Result;
+    }
+
+    public class CastActionResultModel : ICastActionResultModel
+    {
+        [JsonProperty("damage")]
+        public int Damage { get; set; }
+        [JsonProperty("isCritical")]
         public bool IsCritical { get; set; }
+        [JsonProperty("xp")]
+        public int XP { get; set; }
+        [JsonProperty("alignment")]
+        public int Alignment { get; set; }
+    }
+
+    public interface ICastActionResultModel
+    {
+        int Damage { get; set; }
+        bool IsCritical { get; set; }
+        int XP { get; set; }
+        int Alignment { get; set; }
     }
 
     public class SummonActionResponseModel : ActionResponseModel

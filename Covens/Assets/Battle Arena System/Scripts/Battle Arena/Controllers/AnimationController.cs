@@ -298,7 +298,7 @@ namespace Raincrow.BattleArena.Controllers
             StartCoroutine(SpawnDamageText(target.Transform, damage, textScale));
 
             int previousEnergy = target.Model.Energy;
-            int nextEnergy = target.Model.Energy - damage;
+            int nextEnergy = target.Model.Energy + damage;
             nextEnergy = Mathf.Max(nextEnergy, 0);            
 
             //Show Damage decreasing over time
@@ -316,7 +316,8 @@ namespace Raincrow.BattleArena.Controllers
             StartCoroutine(ScheduleRecycle(_damageAnimationTime, damageFeedback));
 
             TMPro.TextMeshPro damageFeedbackText = damageFeedback.GetComponentInChildren<TMPro.TextMeshPro>();
-            damageFeedbackText.color = amount >= 0 ? _damageColor : _restoreColor;
+            damageFeedbackText.text = amount < 0 ? amount.ToString() : "+" + amount;
+            damageFeedbackText.color = amount <= 0 ? _damageColor : _restoreColor;
             damageFeedbackText.fontSize = fontSize;
             damageFeedbackText.transform.localScale = target.lossyScale;
             damageFeedbackText.transform.rotation = target.transform.rotation;
