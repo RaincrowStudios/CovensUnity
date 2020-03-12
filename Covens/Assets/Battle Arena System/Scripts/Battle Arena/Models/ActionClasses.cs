@@ -89,8 +89,9 @@ namespace Raincrow.BattleArena.Model
         [JsonProperty("caster")]
         public GenericCharacterObjectServer Caster { get; set; }
         [JsonProperty("spell")]
-        public string Spell { get; set; }        
-        public int Degree { get; set; }
+        public string Spell { get; set; }
+        [JsonProperty("school")]
+        public int School { get; set; }
         [JsonProperty("result")]
         public CastActionResultModel Result;
     }
@@ -98,7 +99,7 @@ namespace Raincrow.BattleArena.Model
     public class CastActionResultModel : ICastActionResultModel
     {
         [JsonProperty("damage")]
-        public int Damage { get; set; }
+        public int EnergyChange { get; set; }
         [JsonProperty("isCritical")]
         public bool IsCritical { get; set; }
         [JsonProperty("xp")]
@@ -109,7 +110,7 @@ namespace Raincrow.BattleArena.Model
 
     public interface ICastActionResultModel
     {
-        int Damage { get; set; }
+        int EnergyChange { get; set; }
         bool IsCritical { get; set; }
         int XP { get; set; }
         int Alignment { get; set; }

@@ -165,11 +165,6 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 4151571229379165949}
     m_Modifications:
-    - target: {fileID: 6550821446159290412, guid: 6ba95dcb4ab72ed4c90192e54b0007ba,
-        type: 3}
-      propertyPath: m_Name
-      value: Health View
-      objectReference: {fileID: 0}
     - target: {fileID: 6550821446159290415, guid: 6ba95dcb4ab72ed4c90192e54b0007ba,
         type: 3}
       propertyPath: m_LocalPosition.x
@@ -239,6 +234,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_LocalScale.y
       value: 100
+      objectReference: {fileID: 0}
+    - target: {fileID: 6550821446159290412, guid: 6ba95dcb4ab72ed4c90192e54b0007ba,
+        type: 3}
+      propertyPath: m_Name
+      value: Health View
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 6ba95dcb4ab72ed4c90192e54b0007ba, type: 3}

@@ -164,22 +164,22 @@ namespace Raincrow.BattleArena.Phases
                 ICharacterController casterView = GetCharacterView(castAction.Caster.Id);
                 ICharacterController targetView = GetCharacterView(castAction.Target.Id);
 
-                yield return _animController.CastSpell(castAction.Degree, casterView, targetView);
+                yield return _animController.CastSpell(castAction.School, casterView, targetView);
 
                 if(castAction.Caster.ObjectType == ObjectType.Witch)
                 {
                     casterView.UpdateEnergy(castAction.Caster.Energy);
                 }
 
-                if (castAction.Result.Damage < 0)
+                if (castAction.Result.EnergyChange < 0)
                 {
                     // Animation
-                    yield return _animController.ApplyDamage(targetView, castAction.Result.Damage, castAction.Result.IsCritical);
+                    yield return _animController.ApplyDamage(targetView, castAction.Result.EnergyChange, castAction.Result.IsCritical);
 
-                    targetView.AddDamage(castAction.Result.Damage);
+                    targetView.AddDamage(castAction.Result.EnergyChange);
                 }
 
-                Debug.LogFormat("Execute Cast to {0} and apply {1} damage", castAction.Target.Id, castAction.Result.Damage);               
+                Debug.LogFormat("Execute Cast to {0} and apply {1} damage", castAction.Target.Id, castAction.Result.EnergyChange);               
             }
         }
 

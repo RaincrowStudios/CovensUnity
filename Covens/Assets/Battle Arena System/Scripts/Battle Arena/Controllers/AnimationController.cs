@@ -134,16 +134,39 @@ namespace Raincrow.BattleArena.Controllers
             Vector3 startPosition = characterController.Transform.position;
             Vector3 targetPosition = model.Transform.position;
 
-            // Move Camera
+            // Move Camera to start position
             yield return StartCoroutine(_cameraTargetController.MoveTo(startPosition, _battleController.CameraSpeed));
 
-            for (float elapsedTime = 0; elapsedTime < _moveAnimationTime; elapsedTime += Time.deltaTime)
+            // Scale down
+            float animationTime = _moveAnimationTime * 0.2f;
+            for (float elapsedTime = 0; elapsedTime < animationTime; elapsedTime += Time.deltaTime)
             {
-                float t = Easings.Interpolate(elapsedTime / _moveAnimationTime, _moveAnimationFunction);
+                float t = Easings.Interpolate(elapsedTime / animationTime, _moveAnimationFunction);
+                characterController.Transform.localScale = Vector3.Lerp(Vector3.one, Vector3.zero, t);
+                yield return null;
+            }
+
+            // Move camera to target position
+            animationTime = _moveAnimationTime * 0.6f;
+            for (float elapsedTime = 0; elapsedTime < animationTime; elapsedTime += Time.deltaTime)
+            {
+                float t = Easings.Interpolate(elapsedTime / animationTime, _moveAnimationFunction);
                 Vector3 characterPosition = Vector3.Lerp(startPosition, targetPosition, t);
-                characterController.Transform.position = characterPosition;
+                //characterController.Transform.position = characterPosition;
                 _cameraTargetController.SetPosition(characterPosition);
 
+                yield return null;
+            }
+
+            // Move Character
+            characterController.Transform.position = targetPosition;
+
+            // Scale up
+            animationTime = _moveAnimationTime * 0.2f;
+            for (float elapsedTime = 0; elapsedTime < animationTime; elapsedTime += Time.deltaTime)
+            {
+                float t = Easings.Interpolate(elapsedTime / animationTime, _moveAnimationFunction);
+                characterController.Transform.localScale = Vector3.Lerp(Vector3.zero, Vector3.one, t);
                 yield return null;
             }
         }
