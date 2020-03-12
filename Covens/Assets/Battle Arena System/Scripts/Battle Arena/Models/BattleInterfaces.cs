@@ -43,6 +43,7 @@ namespace Raincrow.BattleArena.Model
         ICellUIModel[,] Cells { get; }
         int MaxCellsPerRow { get; }
         int MaxCellsPerColumn { get; }
+        float CameraSpeed { get; }
         ICollection<ICharacterController<ISpiritModel, ISpiritUIModel>> SpiritsViews { get; }
         ICollection<ICharacterController<IWitchModel, IWitchUIModel>> WitchesViews { get; }
         IEnumerator<ICharacterController> SpawnObjectOnGrid(IObjectModel objectModel, int row, int col);

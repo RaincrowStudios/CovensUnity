@@ -13,7 +13,6 @@ namespace Raincrow.BattleArena.Controllers
 {
     public class BattleController : MonoBehaviour, ICoroutineHandler, IGridUIModel
     {
-
         [SerializeField] private ServiceLocator _serviceLocator;
         [SerializeField] private AbstractGridGameObjectFactory _gridFactory; // Factory class responsible for creating our Grid        
         [SerializeField] private SpiritGameObjectFactory _spiritFactory; // Factory class responsible for creating our Spirits   
@@ -50,6 +49,7 @@ namespace Raincrow.BattleArena.Controllers
         public ICollection<ICharacterController<ISpiritModel, ISpiritUIModel>> SpiritsViews => _dictSpiritViews.Values; // List with all spirits
         public int MaxCellsPerRow => _gridModel.MaxCellsPerRow;
         public int MaxCellsPerColumn => _gridModel.MaxCellsPerColumn;
+        public float CameraSpeed => _moveSpeed;
 
         protected virtual void OnEnable()
         {

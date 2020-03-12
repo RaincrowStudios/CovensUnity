@@ -236,16 +236,16 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 183075895}
     m_Modifications:
-    - target: {fileID: 3312836188549835813, guid: d2da3b9ef139c0d43bb9aed95578d65b,
-        type: 3}
-      propertyPath: _objectPool
-      value: 
-      objectReference: {fileID: 719144469}
     - target: {fileID: 3124217027057393693, guid: d2da3b9ef139c0d43bb9aed95578d65b,
         type: 3}
       propertyPath: m_Name
       value: RewardsBatttleView
       objectReference: {fileID: 0}
+    - target: {fileID: 3312836188549835813, guid: d2da3b9ef139c0d43bb9aed95578d65b,
+        type: 3}
+      propertyPath: _objectPool
+      value: 
+      objectReference: {fileID: 719144469}
     - target: {fileID: 2900967752184648669, guid: d2da3b9ef139c0d43bb9aed95578d65b,
         type: 3}
       propertyPath: m_LocalPosition.x
@@ -463,6 +463,31 @@ PrefabInstance:
       propertyPath: _serviceLocator
       value: 
       objectReference: {fileID: 1442890515}
+    - target: {fileID: 3827334444051354934, guid: 61c97baa5215f1647a7ed02e6b0d3ef8,
+        type: 3}
+      propertyPath: _fleeAnimationFunction
+      value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 3827334444051354934, guid: 61c97baa5215f1647a7ed02e6b0d3ef8,
+        type: 3}
+      propertyPath: _cameraSpeed
+      value: 500
+      objectReference: {fileID: 0}
+    - target: {fileID: 3827334444051354934, guid: 61c97baa5215f1647a7ed02e6b0d3ef8,
+        type: 3}
+      propertyPath: _trailLifecycle
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 3827334444051354934, guid: 61c97baa5215f1647a7ed02e6b0d3ef8,
+        type: 3}
+      propertyPath: _moveAnimationTime
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 3827334444051354934, guid: 61c97baa5215f1647a7ed02e6b0d3ef8,
+        type: 3}
+      propertyPath: _summonAnimationTime
+      value: 1
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 61c97baa5215f1647a7ed02e6b0d3ef8, type: 3}
 --- !u!114 &719144469 stripped
@@ -1603,7 +1628,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 831d896a630c0bc45bbc0e1b4e45540d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _serviceLocator: {fileID: 1442890515}
+  _serviceLocator: {fileID: 0}
   _maxCellsPerRow: 5
   _maxCellsPerColumn: 5
 --- !u!1001 &582567684973961394
