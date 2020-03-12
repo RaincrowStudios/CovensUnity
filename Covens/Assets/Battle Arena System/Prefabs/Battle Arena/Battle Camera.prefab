@@ -11,7 +11,6 @@ GameObject:
   - component: {fileID: 3543581160031026037}
   - component: {fileID: 3543581160031026036}
   - component: {fileID: 2909580882335506164}
-  - component: {fileID: 4660181713383410168}
   m_Layer: 0
   m_Name: Battle Camera
   m_TagString: Untagged
@@ -92,11 +91,3 @@ MonoBehaviour:
   _smoothTime: 0
   _cameraHeight: 350
   _cameraDistance: 200
---- !u!81 &4660181713383410168
-AudioListener:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 3543581160031026038}
-  m_Enabled: 1
