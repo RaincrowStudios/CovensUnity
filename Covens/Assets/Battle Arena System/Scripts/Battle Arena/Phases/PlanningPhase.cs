@@ -251,9 +251,21 @@ namespace Raincrow.BattleArena.Phases
             yield return new WaitUntil(() => _isPlanningPhaseFinished.GetValueOrDefault());
         }
 
+        private bool CanFlee()
+        {
+            return _turnModel.RequestedActions.Count <= 0;
+        }
+
         private bool HasActionsAvailable()
         {
-            return _turnModel.MaxActionsAllowed > _turnModel.RequestedActions.Count;
+            // Check for flee
+            bool requestedFlee = false;
+            if (_turnModel.RequestedActions.Count == 1)
+            {
+                IActionRequestModel actionRequestModel = _turnModel.RequestedActions[0];
+                requestedFlee = actionRequestModel.Type == ActionRequestType.Flee;
+            }
+            return !requestedFlee && _turnModel.MaxActionsAllowed > _turnModel.RequestedActions.Count;
         }
 
         #region Socket Events
@@ -294,7 +306,7 @@ namespace Raincrow.BattleArena.Phases
 
         private void OnClickFlee()
         {
-            if (HasActionsAvailable() && _selectedSlot.HasValue)
+            if (CanFlee() && _selectedSlot.HasValue)
             {
                 _turnModel.RequestedActions.Add(new FleeActionRequestModel());
                 _charactersTurnOrderView.UpdateActionsPoints(_turnModel.RequestedActions.Count);
