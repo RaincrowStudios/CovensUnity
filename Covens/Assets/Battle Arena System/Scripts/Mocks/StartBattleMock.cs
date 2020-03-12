@@ -25,6 +25,13 @@ namespace Raincrow.Mocks
                 _serviceLocator = FindObjectOfType<ServiceLocator>();
             }
 
+            // Ensure that we'll have an AudioListener
+            AudioListener audioListener = GetComponent<AudioListener>();
+            if (audioListener == null)
+            {
+                gameObject.AddComponent<AudioListener>();
+            }
+
             DownloadManager.DownloadAssets(() =>
             {
                 LoginAPIManager.Login((result, response) =>
@@ -180,6 +187,15 @@ namespace Raincrow.Mocks
             BattleController battleController = _serviceLocator.GetBattleController();
             yield return StartCoroutine(battleController.StartBattle(battleId, witchModel.Id, gridModel, witchModels, spiritModels, loadingView));            
             StartCoroutine(loadingView.Hide(1f));
+        }
+#else
+        protected virtual void OnEnable()
+        {
+            AudioListener audioListener = GetComponent<AudioListener>();
+            if (audioListener != null)
+            {
+                Destroy(audioListener);
+            }
         }
 #endif
     }

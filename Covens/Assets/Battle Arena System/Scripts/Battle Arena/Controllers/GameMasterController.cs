@@ -127,10 +127,10 @@ namespace Raincrow.BattleArena.Controllers
     public class GameMasterController : AbstractGameMasterController
     {
         // Serialized Variables
-        [SerializeField] private float _sendPlanningPhaseReadyMaxTime = 3f;
-        [SerializeField] private float _waitForPlanningPhaseReadyMaxTime = 3f;
-        [SerializeField] private float _sendFinishPlanningPhaseMaxTime = 3f;
-        [SerializeField] private float _waitForActionResolutionReadyMaxTime = 3f;
+        [SerializeField] private float _sendPlanningPhaseReadyMaxTime = 0.5f;
+        [SerializeField] private float _waitForPlanningPhaseReadyMaxTime = 0.5f;
+        [SerializeField] private float _sendFinishPlanningPhaseMaxTime = 0.5f;
+        [SerializeField] private float _waitForActionResolutionReadyMaxTime = 0.5f;
 
         // Variables
         private UnityAction<PlanningPhaseReadyEventArgs> _onPlanningPhaseReady;
@@ -249,8 +249,22 @@ namespace Raincrow.BattleArena.Controllers
                 BattleEndEventArgs battleEndEventArgs = new BattleEndEventArgs()
                 {
                     Type = BattleResultType.PlayerWins,
-                    Ranking = new string[2] { "witch1", "spirit2" },
+                    Ranking = new BattleRankingModel[2],
                     Reward = rewards
+                };
+
+                // Ranking 0
+                battleEndEventArgs.Ranking[0] = new BattleRankingModel
+                {
+                    Id = "witch1",
+                    ObjectType = ObjectType.Witch
+                };
+
+                // Ranking 1
+                battleEndEventArgs.Ranking[1] = new BattleRankingModel
+                {
+                    Id = "spirit1",
+                    ObjectType = ObjectType.Spirit
                 };
                 _onBattleEnd.Invoke(battleEndEventArgs);
             }
@@ -410,16 +424,18 @@ namespace Raincrow.BattleArena.Controllers
                     Id = characterId
                 };
 
-                int damage = Random.Range(40, 80);
-
+                int damage = Random.Range(-20, -40);
                 battleAction.Results.Add(new CastActionResponseModel()
                 {
                     IsSuccess = true,
                     Target = target,
                     Caster = caster,
                     Spell = castSpellActionRequest.SpellId,
-                    Damage = damage
-                }); ;
+                    Result = new CastActionResultModel
+                    {
+                        EnergyChange = damage
+                    }
+                });
 
                 if (target.Energy <= damage)
                 {
