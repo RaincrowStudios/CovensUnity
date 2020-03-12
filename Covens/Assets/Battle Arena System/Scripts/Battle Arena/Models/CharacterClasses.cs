@@ -198,9 +198,9 @@ namespace Raincrow.BattleArena.Model
 
     public struct InventoryItemModel
     {
-        public string Id { get; set; }
+        [JsonProperty("collectible")] public string Id { get; set; }
         public string Name { get; set; }
-        public int Count { get; set; }
+        [JsonProperty("amount")] public int Count { get; set; }
     }
 
     public struct InventoryApparelModel

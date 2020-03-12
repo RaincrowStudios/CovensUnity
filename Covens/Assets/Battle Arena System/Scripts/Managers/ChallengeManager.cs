@@ -61,20 +61,5 @@ namespace Raincrow.BattleArena.Manager
             yield return StartCoroutine(battleController.StartBattle(id, playerId, grid, witches, spirits, loadingView));
             yield return StartCoroutine(loadingView.Hide(1f));
         }
-
-        private void BattleClose()
-        {
-            LoadingOverlay.Show();
-            UIMain.SetActive(true);
-            UIQuickCast.SetActive(true);
-            SceneManager.UnloadScene(SceneManager.Scene.ARENA,
-                null,
-                () =>
-                {
-                    MapsAPI.Instance.HideMap(false);
-                    LoadingOverlay.Hide();
-                }
-             );
-        }
     }
 }

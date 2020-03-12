@@ -14,6 +14,7 @@ namespace Raincrow.BattleArena.Views
         [SerializeField] private TextMeshProUGUI _textTitle;
         [SerializeField] private TextMeshProUGUI _textSubtitle;
         [SerializeField] private CanvasGroup _groupPopup;
+        [SerializeField] private UnityEngine.UI.Button _buttonContinue;
 
         [Header("Icons")]
         [SerializeField] private Sprite _iconGoldCoin;
@@ -36,8 +37,10 @@ namespace Raincrow.BattleArena.Views
 
         IBattleRewardModel _battleReward;
         Coroutine _screenReciveRewards;
-        public IRewardsBatttleView Show(string title, string subtitle, IBattleRewardModel battleReward)
+        public IRewardsBatttleView Show(string title, string subtitle, IBattleRewardModel battleReward, UnityEngine.Events.UnityAction OnClickContinue)
         {
+            _buttonContinue.onClick.AddListener(OnClickContinue);
+
             _textTitle.text = title;
             _textSubtitle.text = subtitle;
 
@@ -78,22 +81,28 @@ namespace Raincrow.BattleArena.Views
                 List<WonRewardView> wonRewards = new List<WonRewardView>();
                 foreach (InventoryItemModel tool in _battleReward.Tools)
                 {
+                    string itemName = LocalizeLookUp.GetCollectableName(tool.Id);
+
                     WonRewardView reward = _objectPool.Spawn(_wonRewardPrefab, _contentRewardsItems.transform, false);
-                    reward.InitVariables(string.Format("{0} {1}x", tool.Name, tool.Count), _iconCrafting);
+                    reward.InitVariables(string.Format("{0} {1}x", itemName, tool.Count), _iconCrafting);
                     wonRewards.Add(reward);
                 }
 
                 foreach (InventoryItemModel gem in _battleReward.Gems)
                 {
+                    string itemName = LocalizeLookUp.GetCollectableName(gem.Id);
+
                     WonRewardView reward = _objectPool.Spawn(_wonRewardPrefab, _contentRewardsItems.transform, false);
-                    reward.InitVariables(string.Format("{0} {1}x", gem.Name, gem.Count), _iconGem);
+                    reward.InitVariables(string.Format("{0} {1}x", itemName, gem.Count), _iconGem);
                     wonRewards.Add(reward);
                 }
 
                 foreach (InventoryItemModel herb in _battleReward.Herbs)
                 {
+                    string itemName = LocalizeLookUp.GetCollectableName(herb.Id);
+                   
                     WonRewardView reward = _objectPool.Spawn(_wonRewardPrefab, _contentRewardsItems.transform, false);
-                    reward.InitVariables(string.Format("{0} {1}x", herb.Name, herb.Count), _iconHerb);
+                    reward.InitVariables(string.Format("{0} {1}x", itemName, herb.Count), _iconHerb);
                     wonRewards.Add(reward);
                 }
 
@@ -113,7 +122,7 @@ namespace Raincrow.BattleArena.Views
 
     public interface IRewardsBatttleView
     {
-        IRewardsBatttleView Show(string title, string subtitle, IBattleRewardModel battleReward);
+        IRewardsBatttleView Show(string title, string subtitle, IBattleRewardModel battleReward, UnityEngine.Events.UnityAction OnClickContinue);
         void Hide();
         Coroutine WaitEndScreen();
     }

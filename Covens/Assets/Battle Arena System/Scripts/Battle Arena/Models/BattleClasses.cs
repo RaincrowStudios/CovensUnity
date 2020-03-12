@@ -1,4 +1,5 @@
-﻿using Raincrow.BattleArena.Views;
+﻿using Newtonsoft.Json;
+using Raincrow.BattleArena.Views;
 using UnityEngine;
 
 namespace Raincrow.BattleArena.Model
@@ -19,17 +20,17 @@ namespace Raincrow.BattleArena.Model
 
     public class BattleRewardModel : IBattleRewardModel
     {
-        public InventoryItemModel[] Tools { get; set; } = new InventoryItemModel[0];
-        public InventoryItemModel[] Herbs { get; set; } = new InventoryItemModel[0];
-        public InventoryItemModel[] Gems { get; set; } = new InventoryItemModel[0];
-        public InventoryItemModel[] Consumables { get; set; } = new InventoryItemModel[0];
-        public int Experience { get; set; }
-        public int GoldCurrency { get; set; }
-        public int SilverCurrency { get; set; }
-        public int Degree { get; set; }
+        [JsonProperty("tools")] public InventoryItemModel[] Tools { get; set; } = new InventoryItemModel[0];
+        [JsonProperty("herbs")] public InventoryItemModel[] Herbs { get; set; } = new InventoryItemModel[0];
+        [JsonProperty("gems")] public InventoryItemModel[] Gems { get; set; } = new InventoryItemModel[0];
+        [JsonProperty("consumables")] public InventoryItemModel[] Consumables { get; set; } = new InventoryItemModel[0];
+        [JsonProperty("xp")] public int Experience { get; set; }
+        [JsonProperty("gold")] public int GoldCurrency { get; set; }
+        [JsonProperty("silver")] public int SilverCurrency { get; set; }
+        [JsonProperty("degree")] public int Degree { get; set; }
     }
 
-        public struct BattleRankingModel
+    public struct BattleRankingModel
     {
         [Newtonsoft.Json.JsonProperty("_id")]
         public string Id { get; set; }
