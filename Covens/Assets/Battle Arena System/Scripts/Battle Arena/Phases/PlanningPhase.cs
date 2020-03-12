@@ -294,7 +294,7 @@ namespace Raincrow.BattleArena.Phases
 
         private void OnClickFlee()
         {
-            if (HasActionsAvailable() && _selectedSlot.HasValue)
+            if (HasActionsAvailable())
             {
                 _turnModel.RequestedActions.Add(new FleeActionRequestModel());
                 _charactersTurnOrderView.UpdateActionsPoints(_turnModel.RequestedActions.Count);
