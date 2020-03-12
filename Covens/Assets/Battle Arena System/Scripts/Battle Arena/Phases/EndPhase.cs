@@ -80,7 +80,8 @@ namespace Raincrow.BattleArena.Phases
             yield return _rewardsBatttleView.Show(
                 _battleResult.Type == BattleResultType.PlayerWins ? "You Won!" : "You Lost!",
                 "Battle is over",
-                _battleResult.Reward
+                _battleResult.Reward,
+                BattleClose
             ).WaitEndScreen();
 
             yield return null;
@@ -122,7 +123,9 @@ namespace Raincrow.BattleArena.Phases
                 if (characterUI != default && character != default)
                 {
                     position.y = _debriefAnimationValues.TargetY;
-                    //int idTargetPosition = _cameraTargetController.SetTargetPosition(position, _debriefAnimationValues.CameraSpeed);
+
+                    _cameraTargetController.MoveTo(position, _debriefAnimationValues.CameraSpeed);
+
                     int idCameraDistance = _smoothCameraFollow.SetCameraDistance(_debriefAnimationValues.CameraDistance, _debriefAnimationValues.TimeAnimation);
                     int idCameraHeight = _smoothCameraFollow.SetCameraHeight(_debriefAnimationValues.CameraHeight, _debriefAnimationValues.TimeAnimation);
 
@@ -157,6 +160,21 @@ namespace Raincrow.BattleArena.Phases
             }
 
             yield return null;
+        }
+
+        private void BattleClose()
+        {
+            LoadingOverlay.Show();
+            UIMain.SetActive(true);
+            UIQuickCast.SetActive(true);
+            SceneManager.UnloadScene(SceneManager.Scene.ARENA,
+                null,
+                () =>
+                {
+                    MapsAPI.Instance.HideMap(false);
+                    LoadingOverlay.Hide();
+                }
+             );
         }
     }
 }
