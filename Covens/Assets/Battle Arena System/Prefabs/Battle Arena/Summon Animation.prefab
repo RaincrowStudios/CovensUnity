@@ -11,7 +11,7 @@ GameObject:
   - component: {fileID: 2089671875616968711}
   - component: {fileID: 2291775599565816509}
   - component: {fileID: 2291315663439759077}
-  m_Layer: 20
+  m_Layer: 24
   m_Name: halo (2)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -4624,7 +4624,7 @@ GameObject:
   - component: {fileID: 4968807944093774141}
   - component: {fileID: 5054409742111962011}
   - component: {fileID: 5053153154187549285}
-  m_Layer: 20
+  m_Layer: 24
   m_Name: holy-rays-center
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -9386,7 +9386,7 @@ GameObject:
   - component: {fileID: 4966164516949053527}
   - component: {fileID: 5055048234877051179}
   - component: {fileID: 5053221520333995583}
-  m_Layer: 20
+  m_Layer: 24
   m_Name: prominence (2)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -14035,7 +14035,7 @@ GameObject:
   - component: {fileID: 2367940892303604064}
   - component: {fileID: 325792439671258822}
   - component: {fileID: 7351489136208277843}
-  m_Layer: 20
+  m_Layer: 24
   m_Name: Summon Animation
   m_TagString: Untagged
   m_Icon: {fileID: 0}
