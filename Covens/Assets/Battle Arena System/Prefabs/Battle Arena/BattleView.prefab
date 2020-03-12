@@ -171,7 +171,7 @@ MonoBehaviour:
     type: 3}
   _banishAnimationTime: 3
   _banishAnimationFunction: 3
-  _moveAnimationTime: 2
+  _moveAnimationTime: 1
   _moveAnimationFunction: 3
   _summonAnimPrefab: {fileID: 325792439671258822, guid: bce16092c0d850544b756b045544d70d,
     type: 3}
