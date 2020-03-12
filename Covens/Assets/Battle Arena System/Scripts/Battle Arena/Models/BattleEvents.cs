@@ -129,10 +129,9 @@ namespace Raincrow.BattleArena.Events
     {
         [JsonProperty("reward")] private BattleRewardModel _reward;
         [JsonProperty("type")] public string Type { get; set; }
-        [JsonProperty("ranking")] public string[] Ranking { get; set; }
+        [JsonProperty("ranking")] public BattleRankingModel[] Ranking { get; set; }
 
         [JsonIgnore] public IBattleRewardModel Reward { get => _reward; set => _reward = value as BattleRewardModel; }
     }
-
     #endregion
 }

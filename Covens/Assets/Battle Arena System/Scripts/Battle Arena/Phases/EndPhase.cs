@@ -104,17 +104,19 @@ namespace Raincrow.BattleArena.Phases
                 ICharacterModel character = default;
                 Vector3 position = Vector3.zero;
 
-                if (_witches.TryGetValue(_battleResult.Ranking[i], out ICharacterController<IWitchModel, IWitchUIModel> witchView))
+                if (_battleResult.Ranking[i].ObjectType == ObjectType.Witch && _witches.TryGetValue(_battleResult.Ranking[i].Id, out ICharacterController<IWitchModel, IWitchUIModel> witchView))
                 {
                     character = witchView.Model;
                     characterUI = witchView.UIModel;
                     position = witchView.Transform.position;
+                    _witches.Remove(_battleResult.Ranking[i].Id);
                 }
-                else if (_spirits.TryGetValue(_battleResult.Ranking[i], out ICharacterController<ISpiritModel, ISpiritUIModel> spiritView))
+                else if (_spirits.TryGetValue(_battleResult.Ranking[i].Id, out ICharacterController<ISpiritModel, ISpiritUIModel> spiritView))
                 {
                     character = spiritView.Model;
                     characterUI = spiritView.UIModel;
                     position = spiritView.Transform.position;
+                    _spirits.Remove(_battleResult.Ranking[i].Id);
                 }
 
                 if (characterUI != default && character != default)

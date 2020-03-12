@@ -9,7 +9,7 @@ namespace Raincrow.BattleArena.Model
     public interface IBattleResultModel
     {
         string Type { get; set; }
-        string[] Ranking { get; set; }
+        BattleRankingModel[] Ranking { get; set; }
         IBattleRewardModel Reward { get; set; }
     }
 

@@ -13,7 +13,7 @@ namespace Raincrow.BattleArena.Model
     public class BattleResultModel : IBattleResultModel
     {
         public string Type { get; set; }
-        public string[] Ranking { get; set; } = new string[0];
+        public BattleRankingModel[] Ranking { get; set; }
         public IBattleRewardModel Reward { get; set; }
     }
 
@@ -27,6 +27,14 @@ namespace Raincrow.BattleArena.Model
         public int GoldCurrency { get; set; }
         public int SilverCurrency { get; set; }
         public int Degree { get; set; }
+    }
+
+        public struct BattleRankingModel
+    {
+        [Newtonsoft.Json.JsonProperty("_id")]
+        public string Id { get; set; }
+        [Newtonsoft.Json.JsonProperty("type")]
+        public string ObjectType { get; set; }
     }
 
     public class BattleModel : IBattleModel
