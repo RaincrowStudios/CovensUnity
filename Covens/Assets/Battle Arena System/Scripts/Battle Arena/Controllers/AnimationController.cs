@@ -141,7 +141,7 @@ namespace Raincrow.BattleArena.Controllers
             Vector3 targetPosition = model.Transform.position;
 
             // Move Camera to start position
-            yield return StartCoroutine(_cameraTargetController.MoveTo(startPosition, _battleController.CameraSpeed));
+            yield return StartCoroutine(_cameraTargetController.MoveTo(startPosition, _battleController.CameraSpeed));            
 
             // Scale down
             float animationTime = _moveAnimationTime * 0.2f;
@@ -151,6 +151,11 @@ namespace Raincrow.BattleArena.Controllers
                 characterController.Transform.localScale = Vector3.Lerp(Vector3.one, Vector3.zero, t);
                 yield return null;
             }
+
+            // Start Particles
+            Quaternion quartenion = _summonAnimPrefab.transform.rotation;
+            ParticleSystem summonParticles = _objectPool.Spawn(_summonAnimPrefab, targetPosition, quartenion);
+            summonParticles.Play();
 
             // Move camera to target position
             animationTime = _moveAnimationTime * 0.6f;
@@ -162,7 +167,7 @@ namespace Raincrow.BattleArena.Controllers
                 _cameraTargetController.SetPosition(characterPosition);
 
                 yield return null;
-            }
+            }            
 
             // Move Character
             characterController.Transform.position = targetPosition;
@@ -175,6 +180,11 @@ namespace Raincrow.BattleArena.Controllers
                 characterController.Transform.localScale = Vector3.Lerp(Vector3.zero, Vector3.one, t);
                 yield return null;
             }
+
+            // Wait Particles
+            yield return new WaitUntil(() => summonParticles.isStopped);
+
+            _objectPool.Recycle(summonParticles);
         }
 
         public IEnumerator Summon(IList<ICharacterController> characterControllers)
