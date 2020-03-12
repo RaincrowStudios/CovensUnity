@@ -106,22 +106,28 @@ namespace Raincrow.BattleArena.Controllers
 
         public IEnumerator Summon(ICharacterController characterController)
         {                       
-            // Spawn Particle System
-            Vector3 position = characterController.Transform.position;
-            Quaternion quartenion = _summonAnimPrefab.transform.rotation;
-            ParticleSystem summonParticles = _objectPool.Spawn(_summonAnimPrefab, position, quartenion);
-            summonParticles.Play();
-
             // Move Camera
-            StartCoroutine(_cameraTargetController.MoveTo(position, _battleController.CameraSpeed));
+            StartCoroutine(_cameraTargetController.MoveTo(characterController.Transform.position, _battleController.CameraSpeed));
 
             // Summon Animation
+            yield return InnerSummon(characterController);            
+        }
+
+        private IEnumerator InnerSummon(ICharacterController characterController)
+        {
+            // Start Particles
+            Quaternion quartenion = _summonAnimPrefab.transform.rotation;
+            ParticleSystem summonParticles = _objectPool.Spawn(_summonAnimPrefab, characterController.Transform.position, quartenion);
+            summonParticles.Play();
+
             for (float elapsedTime = 0; elapsedTime < _summonAnimationTime; elapsedTime += Time.deltaTime)
             {
                 float t = Easings.Interpolate(elapsedTime / _summonAnimationTime, _summonAnimationFunction);
                 characterController.Transform.localScale = Vector3.Lerp(Vector3.zero, Vector3.one, t);
                 yield return null;
             }
+
+            // Wait Particles
             yield return new WaitUntil(() => summonParticles.isStopped);
 
             // Recycle Particle System
@@ -172,13 +178,10 @@ namespace Raincrow.BattleArena.Controllers
         }
 
         public IEnumerator Summon(IList<ICharacterController> characterControllers)
-        {
-            // Move Camera to center
-            yield return StartCoroutine(_cameraTargetController.MoveBy(Vector3.zero, _summonAnimationTime * 0.5f));
-
+        {            
             foreach (var characterController in characterControllers)
             {
-                StartCoroutine(Summon(characterController));
+                StartCoroutine(InnerSummon(characterController));
             }
             yield return new WaitForSeconds(_summonAnimationTime);
         }
