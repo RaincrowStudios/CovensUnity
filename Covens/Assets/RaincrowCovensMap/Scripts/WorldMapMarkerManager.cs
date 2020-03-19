@@ -37,6 +37,7 @@ public class WorldMapMarkerManager : MonoBehaviour
 
         boss = 21,
         loot = 22,
+        battle = 23
     }
 
     [SerializeField] private WorldMapMarker m_MarkerPrefab;
@@ -71,6 +72,7 @@ public class WorldMapMarkerManager : MonoBehaviour
     [SerializeField] private Sprite m_PlaceOfPower2;
     [SerializeField] private Sprite m_PlaceOfPower3;
     [SerializeField] private Sprite m_PlaceOfPower4;
+    [SerializeField] private Sprite _battle;
 
     [Space(2)]
     [SerializeField] private Sprite m_Boss;
@@ -168,6 +170,7 @@ public class WorldMapMarkerManager : MonoBehaviour
 
             m_Boss,
             m_Loot,
+            _battle
         };
 
         m_MarkerColorMap = new Color[]
@@ -200,6 +203,7 @@ public class WorldMapMarkerManager : MonoBehaviour
 
             m_BossColor,
             m_LootColor,
+            m_PopColor, // battle
         };
 
         m_MarkerScaleMap = new float[]
@@ -232,6 +236,7 @@ public class WorldMapMarkerManager : MonoBehaviour
 
             5,
             2.5f,
+            1, // battle
         };
     }
 
@@ -330,7 +335,7 @@ public class WorldMapMarkerManager : MonoBehaviour
                 m_RequestCoroutine = null;
                 if (result == 200)
                 {
-                    List<MarkerItem> markers = JsonConvert.DeserializeObject<List<MarkerItem>>(response);
+                    MarkerItem[] markers = JsonConvert.DeserializeObject<MarkerItem[]>(response);
                     
                     //stop spawning
                     if (m_SpawnCoroutine != null)
@@ -345,7 +350,7 @@ public class WorldMapMarkerManager : MonoBehaviour
                     updateFrom = 0;
 
                     //spawn new markers
-                    m_SpawnCoroutine = StartCoroutine(SpawnCoroutine(markers.ToArray()));
+                    m_SpawnCoroutine = StartCoroutine(SpawnCoroutine(markers));
                 }
                 else
                 {
@@ -386,15 +391,18 @@ public class WorldMapMarkerManager : MonoBehaviour
         {
             for (int i = from; i < to; i++)
             {
-                item = m_MarkerPool.Spawn(MapsAPI.Instance.trackedContainer);
-                item.transform.position = MapsAPI.Instance.GetWorldPosition(markers[i].longitude, markers[i].latitude);
+                if (markers[i] != null)
+                {
+                    item = m_MarkerPool.Spawn(MapsAPI.Instance.trackedContainer);
+                    item.transform.position = MapsAPI.Instance.GetWorldPosition(markers[i].longitude, markers[i].latitude);
 
-                item.farRenderer.color = m_MarkerColorMap[markers[i].type];
-                item.nearRenderer.sprite = m_MarkerSpriteMap[markers[i].type];
-                item.farRenderer.transform.localScale = Vector3.one * m_MarkerScaleMap[markers[i].type];
+                    item.farRenderer.color = m_MarkerColorMap[markers[i].type];
+                    item.nearRenderer.sprite = m_MarkerSpriteMap[markers[i].type];
+                    item.farRenderer.transform.localScale = Vector3.one * m_MarkerScaleMap[markers[i].type];
 
-                m_MarkersList.Add(item);
-                ScaleMarker(item);
+                    m_MarkersList.Add(item);
+                    ScaleMarker(item);
+                }
             }
 
             yield return 0;

@@ -59,7 +59,7 @@ SpriteAtlas:
     - {fileID: 102900000, guid: 19fa35c62a9a83e4d97fbd1c66bbce4d, type: 3}
     - {fileID: 102900000, guid: 48be170108e65e2449aa6ca148606929, type: 3}
     - {fileID: 102900000, guid: 48a645cb931888342a472bfd9decbd28, type: 3}
-    totalSpriteSurfaceArea: 155648
+    totalSpriteSurfaceArea: 122880
     bindAsDefault: 1
   m_MasterAtlas: {fileID: 0}
   m_PackedSprites:
@@ -77,6 +77,7 @@ SpriteAtlas:
   - {fileID: 21300000, guid: 4184d8c76117f2145815a9eb20ec3d53, type: 3}
   - {fileID: 21300000, guid: 8db42c48a804f6742b6dbde2bfd369c6, type: 3}
   - {fileID: 21300000, guid: e4b40da8ce7f7aa428cdcb0f507a12e6, type: 3}
+  - {fileID: 21300000, guid: e5c30bc873deee3459950a1fe3195d05, type: 3}
   - {fileID: 21300000, guid: 3cf30bc9c89f87449860b8c2ef9bba7b, type: 3}
   - {fileID: 21300000, guid: d57a226a311fc574c8e0dac48acca2c2, type: 3}
   - {fileID: 21300000, guid: e960e4aa9e18084489ef7b48650b2bbf, type: 3}
@@ -101,6 +102,7 @@ SpriteAtlas:
   - Gem
   - Warrior
   - Herb
+  - Battle
   - Trickster
   - Forbidden
   - Place of Power
