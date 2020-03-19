@@ -13,7 +13,7 @@ public class UIQuickCast : MonoBehaviour
 {
     [Header("UI")]
     [SerializeField] private LayoutGroup m_SpellContainer;
-    [SerializeField] private UIQuickcastButtonOvermap m_ButtonPrefab;
+    [SerializeField] private UIQuickcastButton m_ButtonPrefab;
     [SerializeField] private Button m_MoreSpells;
     [SerializeField] private Button m_Button;
     [SerializeField] private Canvas m_ContainerCanvas;
@@ -24,12 +24,11 @@ public class UIQuickCast : MonoBehaviour
 
     [Header("others")]
     [SerializeField] private UIQuickCastPicker m_Picker;
-    [SerializeField] private string[] m_ActivedsSpell = new string[3] { "spell_bless", "spell_greaterBless", "spell_resurrection" };
 
     private static UIQuickCast m_Instance;
     private static event System.Action m_OnClose;
 
-    private List<UIQuickcastButtonOvermap> m_Buttons = new List<UIQuickcastButtonOvermap>();
+    private List<UIQuickcastButton> m_Buttons = new List<UIQuickcastButton>();
     private static IMarker m_Target;
     private static CharacterMarkerData m_TargetData;
     
@@ -154,10 +153,11 @@ public class UIQuickCast : MonoBehaviour
 
         IsOpen = true;
 
-        for (int i = m_Buttons.Count; i < m_ActivedsSpell.Length; i++)
+        int quickcastCount = 4;
+        for (int i = m_Buttons.Count; i < quickcastCount; i++)
         {
-            UIQuickcastButtonOvermap aux = Instantiate(m_ButtonPrefab, m_SpellContainer.transform);
-            aux.Setup(m_ActivedsSpell[i], () => OnClickSpell(aux));
+            UIQuickcastButton aux = Instantiate(m_ButtonPrefab, m_SpellContainer.transform);
+            aux.Setup(i, () => OnClickSpell(aux), () => OnHoldSpell(aux));
             aux.Hightlight(false);
             aux.transform.localScale = Vector3.one;
             aux.gameObject.SetActive(true);
@@ -262,12 +262,18 @@ public class UIQuickCast : MonoBehaviour
         m_Target = marker;
         m_TargetData = data;
 
-        foreach (UIQuickcastButtonOvermap item in m_Buttons)
+        foreach (UIQuickcastButton item in m_Buttons)
             item.UpdateCanCast(target, targetData);
     }
 
-    private void OnClickSpell(UIQuickcastButtonOvermap button)
+    private void OnClickSpell(UIQuickcastButton button)
     {
+        if (m_Picker.IsOpen)
+        {
+            OnHoldSpell(button);
+            return;
+        }
+
         if (string.IsNullOrEmpty(button.Spell))
         {
             UIGlobalPopup.ShowPopUp(null, LocalizeLookUp.GetText("quickcast_tap_hold"));//"hold to set a spell");
@@ -284,6 +290,30 @@ public class UIQuickCast : MonoBehaviour
         Spellcasting.CastSpell(spell, target, new List<spellIngredientsData>(),
             (result) => this._Hide(false),
             () => this._Hide(false));
+    }
+
+    private void OnHoldSpell(UIQuickcastButton button)
+    {
+        foreach (UIQuickcastButton _item in m_Buttons)
+        {
+            _item.Hightlight(_item == button);
+        }
+
+        m_Picker.Show(
+            button.Spell,
+            spell =>
+            {
+                PlayerManager.SetQuickcastSpell(button.QuickcastIndex, spell);
+
+                button.Setup(
+                    button.QuickcastIndex,
+                    () => OnClickSpell(button),
+                    () => OnHoldSpell(button));
+
+                button.UpdateCanCast(target, targetData);
+            },
+            () => button.Hightlight(false)
+        );
     }
 
     private void OnClickMoreSpells()
