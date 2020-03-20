@@ -124,7 +124,7 @@ public class Spellcasting
     {
         //silenced
         if (BanishManager.isSilenced)
-            return SpellState.PlayerSilenced;
+            return SpellState.PlayerSilenced;        
 
         //dead
         if (DeathState.IsDead)
@@ -159,7 +159,10 @@ public class Spellcasting
 
             if (target != null)
             {
-                Token token = target.Token;
+                if (target.Token is CharacterToken token && token.insideBattle)
+                {
+                    return SpellState.InvalidTarget;
+                }
 
                 if (target.IsPlayer)
                 {

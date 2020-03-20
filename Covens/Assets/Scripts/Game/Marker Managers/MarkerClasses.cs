@@ -137,9 +137,6 @@ public abstract class CharacterMarkerData : MarkerData
     public virtual int maxEnergy => (2 * baseEnergy);
 
     [JsonIgnore]
-    public virtual bool insideBattle { get; set; }
-
-    [JsonIgnore]
     public virtual MarkerSpawner.MarkerSchool school
     {
         get
@@ -674,8 +671,6 @@ public class SelectWitchData_Map : WitchMarkerData
 
     [JsonIgnore]
     public override bool male => bodyType >= 3;
-    [JsonIgnore]
-    public override bool insideBattle => token.insideBattle;
 
 }
 
@@ -701,8 +696,6 @@ public class SelectSpiritData_Map : SpiritMarkerData
     public override int degree => token.degree;
     [JsonIgnore]
     public override int level => token.level;
-    [JsonIgnore]
-    public override bool insideBattle => token.insideBattle;
     //[JsonIgnore]
     //public override string covenName => coven;
 }
