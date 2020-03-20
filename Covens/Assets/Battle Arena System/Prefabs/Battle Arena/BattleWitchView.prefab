@@ -170,6 +170,11 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 7856794403783820060}
     m_Modifications:
+    - target: {fileID: 6550821446159290412, guid: 6ba95dcb4ab72ed4c90192e54b0007ba,
+        type: 3}
+      propertyPath: m_Name
+      value: Health View
+      objectReference: {fileID: 0}
     - target: {fileID: 6550821446159290415, guid: 6ba95dcb4ab72ed4c90192e54b0007ba,
         type: 3}
       propertyPath: m_LocalPosition.x
@@ -240,11 +245,6 @@ PrefabInstance:
       propertyPath: m_LocalScale.y
       value: 100
       objectReference: {fileID: 0}
-    - target: {fileID: 6550821446159290412, guid: 6ba95dcb4ab72ed4c90192e54b0007ba,
-        type: 3}
-      propertyPath: m_Name
-      value: Health View
-      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 6ba95dcb4ab72ed4c90192e54b0007ba, type: 3}
 --- !u!4 &5883683244073851915 stripped
@@ -272,6 +272,16 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 2484422669062743101}
     m_Modifications:
+    - target: {fileID: 7787436980893801109, guid: 8c8c249e3c4a16d45ac260a115b243c2,
+        type: 3}
+      propertyPath: m_Name
+      value: Nameplate
+      objectReference: {fileID: 0}
+    - target: {fileID: 8677399697308754128, guid: 8c8c249e3c4a16d45ac260a115b243c2,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 4549616007911908408, guid: 8c8c249e3c4a16d45ac260a115b243c2,
         type: 3}
       propertyPath: m_LocalPosition.x
@@ -325,16 +335,6 @@ PrefabInstance:
     - target: {fileID: 4549616007911908408, guid: 8c8c249e3c4a16d45ac260a115b243c2,
         type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 7787436980893801109, guid: 8c8c249e3c4a16d45ac260a115b243c2,
-        type: 3}
-      propertyPath: m_Name
-      value: Nameplate
-      objectReference: {fileID: 0}
-    - target: {fileID: 8677399697308754128, guid: 8c8c249e3c4a16d45ac260a115b243c2,
-        type: 3}
-      propertyPath: m_IsActive
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 5746705809416777784, guid: 8c8c249e3c4a16d45ac260a115b243c2,

@@ -33,6 +33,7 @@ namespace Raincrow.BattleArena.Phases
         private ICellUIModel[,] _gridView;
         private IInputController _inputController;
         private ICameraTargetController _cameraTargetController;
+        private IPopupView _popupView;
         private BattleSlot? _selectedSlot;
         private string _objectId;
         private CollectableItem _herb;
@@ -62,6 +63,7 @@ namespace Raincrow.BattleArena.Phases
                              IPlayerBadgeView playerBadgeView,
                              IInputController inputController,
                              ICameraTargetController cameraTargetController,
+                             IPopupView popupView,
                              float moveSpeed,
                              float dragSpeed,
                              float dragDecceleration)
@@ -83,6 +85,7 @@ namespace Raincrow.BattleArena.Phases
             //_cameraSpeed = cameraSpeed;
             _inputController = inputController;
             _cameraTargetController = cameraTargetController;
+            _popupView = popupView;
             _moveSpeed = moveSpeed;
             _dragSpeed = dragSpeed;
             _dragDecceleration = dragDecceleration;
@@ -228,6 +231,8 @@ namespace Raincrow.BattleArena.Phases
             _countdownView.Hide();
             _charactersTurnOrderView.Hide();
 
+            _coroutineStarter.Invoke(_popupView.Hide());
+
             if (UIInventory.isOpen)
             {
                 UIInventory.Instance.Close();
@@ -314,9 +319,20 @@ namespace Raincrow.BattleArena.Phases
         {
             if (CanFlee())
             {
-                _turnModel.RequestedActions.Add(new FleeActionRequestModel());
-                _charactersTurnOrderView.UpdateActionsPoints(_turnModel.RequestedActions.Count);
+                string message = "Do you want to flee the battle?";
+                _coroutineStarter.Invoke(_popupView.Show(message, OnConfirmFlee, OnCancelFlee));
             }
+        }
+
+        private void OnConfirmFlee()
+        {
+            _turnModel.RequestedActions.Add(new FleeActionRequestModel());
+            _charactersTurnOrderView.UpdateActionsPoints(_turnModel.RequestedActions.Count);
+        }
+
+        private void OnCancelFlee()
+        {
+            _coroutineStarter.Invoke(_popupView.Hide());
         }
 
         private void OnCastSpell(string spell)

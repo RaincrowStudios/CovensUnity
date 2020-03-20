@@ -75,6 +75,8 @@ MonoBehaviour:
     type: 3}
   _rewardsBatttleViewPrefab: {fileID: 3312836188549835813, guid: d2da3b9ef139c0d43bb9aed95578d65b,
     type: 3}
+  _popupViewPrefab: {fileID: 1526088140707712062, guid: 1a77add61448d0348b28459d49ae9b98,
+    type: 3}
   _avatarSpriteUtilInstance: {fileID: 0}
   _loadingViewInstance: {fileID: 0}
   _battleControllerInstance: {fileID: 0}
@@ -91,4 +93,6 @@ MonoBehaviour:
   _debriefViewInstance: {fileID: 0}
   _smoothCameraFollowInstance: {fileID: 0}
   _rewardsBatttleViewInstance: {fileID: 0}
+  _popupViewInstance: {fileID: 0}
   _mainCanvas: {fileID: 0}
+  _inputController: {fileID: 0}

@@ -228,6 +228,7 @@ namespace Raincrow.BattleArena.Controllers
                                                             _playerBadgeView,
                                                             _serviceLocator.GetInputController(),
                                                             _cameraTargetController,
+                                                            _serviceLocator.GetPopupView(),
                                                             _moveSpeed,
                                                             _dragSpeed, 
                                                             _dragDecceleration);
