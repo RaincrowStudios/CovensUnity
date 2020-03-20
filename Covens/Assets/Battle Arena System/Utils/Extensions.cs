@@ -17,7 +17,7 @@ public static class Extensions
             for (int j = 0; j < gameObjects.Length; j++)
             {
                 T target = gameObjects[j].GetComponentInChildren<T>();
-                if (target != default)
+                if (target != null)
                 {
                     return target;
                 }
@@ -39,7 +39,7 @@ public static class Extensions
             for (int j = 0; j < gameObjects.Length; j++)
             {
                 T target = gameObjects[j].GetComponentInChildren<T>();
-                if (target != default)
+                if (target != null)
                 {
                     return target;
                 }

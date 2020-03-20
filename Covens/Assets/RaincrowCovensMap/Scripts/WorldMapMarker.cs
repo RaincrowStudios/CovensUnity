@@ -6,7 +6,7 @@ using UnityEngine;
 public class WorldMapMarker : MonoBehaviour
 {
     [System.Serializable]
-    public struct MarkerItem
+    public class MarkerItem
     {
         [JsonProperty("t")] public int type;
         [JsonProperty("lt")] public float latitude;

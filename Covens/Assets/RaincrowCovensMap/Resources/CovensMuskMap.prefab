@@ -1338,6 +1338,7 @@ MonoBehaviour:
   m_PlaceOfPower2: {fileID: 21300000, guid: e960e4aa9e18084489ef7b48650b2bbf, type: 3}
   m_PlaceOfPower3: {fileID: 21300000, guid: e960e4aa9e18084489ef7b48650b2bbf, type: 3}
   m_PlaceOfPower4: {fileID: 21300000, guid: e960e4aa9e18084489ef7b48650b2bbf, type: 3}
+  _battle: {fileID: 21300000, guid: e5c30bc873deee3459950a1fe3195d05, type: 3}
   m_Boss: {fileID: 21300000, guid: 492241f1d289f154f81387d04dd899a6, type: 3}
   m_Loot: {fileID: 21300000, guid: 6db65262cfd0d4a4e97ef18ecd1d6d7f, type: 3}
   m_WitchColor: {r: 0.5964026, g: 0.027450992, b: 0.8, a: 0.8901961}
