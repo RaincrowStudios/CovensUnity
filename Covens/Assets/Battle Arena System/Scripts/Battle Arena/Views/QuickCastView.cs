@@ -74,6 +74,13 @@ namespace Raincrow.BattleArena.Views
             }
         }
 
+        public void CloseMenus()
+        {
+            _isOpen = false;
+            LeanTween.scaleY(_currentMenu, 0, 0.05f);
+            _imageIcon.sprite = _iconClose;
+        }
+
         private void ChangeMenu(GameObject menu)
         {
             if (UIInventory.isOpen)
@@ -117,14 +124,14 @@ namespace Raincrow.BattleArena.Views
             _imageIcon.sprite = _iconOpen;
         }
 
-        public void OnClickToggle(float time = 0.05f)
+        public void OnClickToggle()
         {
             if (_currentMenu == null)
             {
                 return;
             }
 
-            LeanTween.scaleY(_currentMenu, _isOpen ? 0 : 1, time);
+            LeanTween.scaleY(_currentMenu, _isOpen ? 0 : 1, 0.05f);
             _isOpen = !_isOpen;
             _imageIcon.sprite = _isOpen ? _iconOpen : _iconClose;
         }
@@ -158,5 +165,7 @@ namespace Raincrow.BattleArena.Views
         void OpenSpellMenu();
 
         void OpenActionsMenu();
+
+        void CloseMenus();
     }
 }

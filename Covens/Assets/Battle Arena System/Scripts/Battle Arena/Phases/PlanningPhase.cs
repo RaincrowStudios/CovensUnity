@@ -139,6 +139,12 @@ namespace Raincrow.BattleArena.Phases
                 currentCellUI.SetIsSelected(false);
             }
 
+            if (!string.IsNullOrWhiteSpace(cellUIModel.CellModel.ObjectId) && cellUIModel.CellModel.ObjectId.Equals(PlayerDataManager.playerData.instance))
+            {
+                _quickCastView.CloseMenus();
+                return;
+            }
+
             cellUIModel.SetIsSelected(true);            
 
             _selectedSlot = new BattleSlot()
