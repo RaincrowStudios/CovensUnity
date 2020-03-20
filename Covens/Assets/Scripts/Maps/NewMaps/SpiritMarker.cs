@@ -12,10 +12,17 @@ public class SpiritMarker : CharacterMarker
     public override string Name => spiritData.Name;
 
     public Sprite tierIcon { get { return m_IconRenderer.sprite; } }
+
+    [SerializeField]
+    private SpriteRenderer _battleIcon;
     
     public override void Setup(Token data)
     {
-        spiritData = DownloadedAssets.GetSpirit((data as SpiritToken).spiritId);
+        SpiritToken spiritToken = data as SpiritToken;
+        spiritData = DownloadedAssets.GetSpirit(spiritToken.spiritId);
+
+        bool insideBattle = spiritToken.insideBattle;
+        _battleIcon.gameObject.SetActive(insideBattle);
 
         base.Setup(data);
 

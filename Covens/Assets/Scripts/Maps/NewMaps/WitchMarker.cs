@@ -17,6 +17,7 @@ public class WitchMarker : CharacterMarker
 
     [SerializeField] private SpriteRenderer m_DeathIcon;
     [SerializeField] private SpriteRenderer m_ImmuneIcon;
+    [SerializeField] private SpriteRenderer _battleIcon;
 
     public WitchToken witchToken;
 
@@ -80,6 +81,12 @@ public class WitchMarker : CharacterMarker
             OnDeath();
         else
             OnRevive();
+
+        if (_battleIcon != null)
+        {
+            bool insideBattle = witchToken.insideBattle;
+            _battleIcon.gameObject.SetActive(insideBattle);
+        }        
     }
 
 
