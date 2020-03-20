@@ -86,7 +86,7 @@ public class UIQuickcastButton : MonoBehaviour, IPointerDownHandler, IPointerUpH
     {
         LeanTween.cancel(m_CooldownTweenId);
 
-        if (string.IsNullOrEmpty(Spell))
+        if (string.IsNullOrEmpty(Spell) && !details.insideBattle)
         {
             CastStatus = Spellcasting.SpellState.InvalidSpell;
             Interactable = true;
