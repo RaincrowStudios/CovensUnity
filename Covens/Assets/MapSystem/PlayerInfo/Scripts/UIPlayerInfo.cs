@@ -20,11 +20,13 @@ public class UIPlayerInfo : UIInfoPanel
     [SerializeField] private TextMeshProUGUI m_LevelText;
     [SerializeField] private TextMeshProUGUI m_EnergyText;
     [SerializeField] private TextMeshProUGUI m_CovenText;
+    [SerializeField] private TextMeshProUGUI m_ButtonChallengeText;
 
     [Header("Buttons")]
     [SerializeField] private Button m_CloseButton;
     [SerializeField] private Button m_PlayerButton;
     [SerializeField] private Button m_CovenButton;
+    [SerializeField] private Button m_ChallengeButton;
 
     private static UIPlayerInfo m_Instance;
 
@@ -237,6 +239,9 @@ public class UIPlayerInfo : UIInfoPanel
         WitchToken = null;
         WitchMarkerDetails = null;
 
+        m_ChallengeButton.interactable = false;
+        m_ChallengeButton.onClick.RemoveAllListeners();
+
         //aniamte the ui
         base.Close();
 
@@ -267,6 +272,14 @@ public class UIPlayerInfo : UIInfoPanel
             m_CovenText.text = LocalizeLookUp.GetText("chat_coven").ToUpper() + " <color=black>" + details.coven + "</color>";
         else
             m_CovenText.text = LocalizeLookUp.GetText("chat_screen_no_coven");
+
+        m_ChallengeButton.interactable = details.insideBattle;
+        m_ButtonChallengeText.text = details.insideBattle ? "Join" : "Challenge";
+
+        if (details.insideBattle)
+            m_ChallengeButton.onClick.AddListener(OnClickJoin);
+        else
+            m_ChallengeButton.onClick.AddListener(OnClickChallenge);
     }
 
     private void OnClickClose()
@@ -381,5 +394,16 @@ public class UIPlayerInfo : UIInfoPanel
             return;
 
         m_Instance.m_Canvas.enabled = !hide;
+    }
+
+    private void OnClickChallenge()
+    {
+        BattleArena.ChallengeRequests.Challenge(WitchMarker.witchToken.Id);
+        Close();
+    }
+    private void OnClickJoin()
+    {
+        BattleArena.ChallengeRequests.Join(WitchMarker.witchToken.Id);
+        Close();
     }
 }
