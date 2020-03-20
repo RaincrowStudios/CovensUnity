@@ -74,7 +74,7 @@ public class UIPlayerInfo : UIInfoPanel
         if (m_Instance == null)
             return;
 
-        m_Instance._SetupDetails(data);
+        m_Instance.SetupMarkerDetails(data);
     }
 
     private float m_PreviousMapZoom;
@@ -186,7 +186,7 @@ public class UIPlayerInfo : UIInfoPanel
         OnMapEnergyChange.OnPlayerDead += _OnCharacterDead;
 
         if (WitchMarkerDetails != null)
-            _SetupDetails(WitchMarkerDetails);
+            SetupMarkerDetails(WitchMarkerDetails);
 
         //animate the ui
         Show();
@@ -266,17 +266,17 @@ public class UIPlayerInfo : UIInfoPanel
         OnClose?.Invoke();
     }
 
-    private void _SetupDetails(SelectWitchData_Map details)
+    private void SetupMarkerDetails(SelectWitchData_Map details)
     {
         if (string.IsNullOrEmpty(details.coven) == false)
             m_CovenText.text = LocalizeLookUp.GetText("chat_coven").ToUpper() + " <color=black>" + details.coven + "</color>";
         else
             m_CovenText.text = LocalizeLookUp.GetText("chat_screen_no_coven");
 
-        m_ChallengeButton.interactable = details.insideBattle;
-        m_ButtonChallengeText.text = details.insideBattle ? "Join" : "Challenge";
+        m_ChallengeButton.interactable = details.token.insideBattle;
+        m_ButtonChallengeText.text = details.token.insideBattle ? "Join" : "Challenge";
 
-        if (details.insideBattle)
+        if (details.token.insideBattle)
             m_ChallengeButton.onClick.AddListener(OnClickJoin);
         else
             m_ChallengeButton.onClick.AddListener(OnClickChallenge);
