@@ -24,6 +24,7 @@ public class UIQuickCast : MonoBehaviour
 
     [Header("others")]
     [SerializeField] private UIQuickCastPicker m_Picker;
+    [SerializeField] private List<string> m_AllowedSpells = new List<string>(3) { "spell_bless", "spell_greaterBless", "spell_resurrection" };
 
     private static UIQuickCast m_Instance;
     private static event System.Action m_OnClose;
@@ -31,13 +32,15 @@ public class UIQuickCast : MonoBehaviour
     private List<UIQuickcastButton> m_Buttons = new List<UIQuickcastButton>();
     private static IMarker m_Target;
     private static CharacterMarkerData m_TargetData;
-    
+
     public static bool IsOpen { get; private set; }
     public static IMarker target => m_Target != null ? m_Target : PlayerManager.marker;
     public static CharacterMarkerData targetData => m_TargetData != null ? m_TargetData : PlayerDataManager.playerData;
 
     private int m_AnimTweenId;
     private bool m_WasOpen = false;
+
+
 
     public static void Close()
     {
@@ -51,6 +54,15 @@ public class UIQuickCast : MonoBehaviour
     public static void SetActive(bool value)
     {
         m_Instance?.gameObject.SetActive(value);
+    }
+    public static List<string> GetAllowedSpells()
+    {
+        if (m_Instance == null)
+        {
+            return null;
+        }
+
+        return m_Instance.m_AllowedSpells;
     }
 
     public static void UpdateTarget(IMarker marker, CharacterMarkerData details)
@@ -104,7 +116,7 @@ public class UIQuickCast : MonoBehaviour
         m_ButtonPrefab.gameObject.SetActive(false);
         m_ContainerCanvas.enabled = false;
         m_MoreSpells.onClick.AddListener(OnClickMoreSpells);
-        
+
         m_Button.onClick.AddListener(() =>
         {
             if (IsOpen)
@@ -263,57 +275,63 @@ public class UIQuickCast : MonoBehaviour
         m_TargetData = data;
 
         foreach (UIQuickcastButton item in m_Buttons)
-            item.UpdateCanCast(target, targetData);
+            item.UpdateCanCast(target, targetData, m_AllowedSpells);
     }
 
     private void OnClickSpell(UIQuickcastButton button)
     {
-        if (m_Picker.IsOpen)
+        if (m_AllowedSpells.Contains(button.Spell))
         {
-            OnHoldSpell(button);
-            return;
+            if (m_Picker.IsOpen)
+            {
+                OnHoldSpell(button);
+                return;
+            }
+
+            if (string.IsNullOrEmpty(button.Spell))
+            {
+                UIGlobalPopup.ShowPopUp(null, LocalizeLookUp.GetText("quickcast_tap_hold"));//"hold to set a spell");
+                return;
+            }
+
+            if (button.CastStatus != Spellcasting.SpellState.CanCast)
+                return;
+
+            SpellData spell = DownloadedAssets.GetSpell(button.Spell);
+
+            this._Hide(true);
+
+            Spellcasting.CastSpell(spell, target, new List<spellIngredientsData>(),
+                (result) => this._Hide(false),
+                () => this._Hide(false));
         }
-
-        if (string.IsNullOrEmpty(button.Spell))
-        {
-            UIGlobalPopup.ShowPopUp(null, LocalizeLookUp.GetText("quickcast_tap_hold"));//"hold to set a spell");
-            return;
-        }
-
-        if (button.CastStatus != Spellcasting.SpellState.CanCast)
-            return;
-
-        SpellData spell = DownloadedAssets.GetSpell(button.Spell);
-
-        this._Hide(true);
-
-        Spellcasting.CastSpell(spell, target, new List<spellIngredientsData>(),
-            (result) => this._Hide(false),
-            () => this._Hide(false));
     }
 
     private void OnHoldSpell(UIQuickcastButton button)
     {
-        foreach (UIQuickcastButton _item in m_Buttons)
+        if (m_AllowedSpells.Contains(button.Spell))
         {
-            _item.Hightlight(_item == button);
-        }
-
-        m_Picker.Show(
-            button.Spell,
-            spell =>
+            foreach (UIQuickcastButton _item in m_Buttons)
             {
-                PlayerManager.SetQuickcastSpell(button.QuickcastIndex, spell);
+                _item.Hightlight(_item == button);
+            }
 
-                button.Setup(
-                    button.QuickcastIndex,
-                    () => OnClickSpell(button),
-                    () => OnHoldSpell(button));
+            m_Picker.Show(
+                button.Spell,
+                spell =>
+                {
+                    PlayerManager.SetQuickcastSpell(button.QuickcastIndex, spell);
 
-                button.UpdateCanCast(target, targetData);
-            },
-            () => button.Hightlight(false)
-        );
+                    button.Setup(
+                        button.QuickcastIndex,
+                        () => OnClickSpell(button),
+                        () => OnHoldSpell(button));
+
+                    button.UpdateCanCast(target, targetData, m_AllowedSpells);
+                },
+                () => button.Hightlight(false)
+            );
+        }
     }
 
     private void OnClickMoreSpells()
@@ -324,7 +342,7 @@ public class UIQuickCast : MonoBehaviour
         UIMainScreens.PushEventAnalyticUI(UIMainScreens.Map, UIMainScreens.SpellBook);
 
         this._Hide(true);
-        
+
         UISpellcastBook.Open(
             targetData,
             target,
@@ -347,7 +365,7 @@ public class UIQuickCast : MonoBehaviour
     {
         UpdateTarget(target, targetData);
     }
-    
+
     private void _OnStatusEffectExpired(StatusEffect effect)
     {
         UpdateTarget(target, targetData);
