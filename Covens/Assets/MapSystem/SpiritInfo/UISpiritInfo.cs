@@ -20,6 +20,7 @@ public class UISpiritInfo : UIInfoPanel
     //[SerializeField] private TextMeshProUGUI m_Level;
     [SerializeField] private TextMeshProUGUI m_Energy;
     [SerializeField] private TextMeshProUGUI m_Desc;
+    [SerializeField] private TextMeshProUGUI m_ButtonChallengeText;
 
     [Header("Buttons")]
     [SerializeField] private Button m_InfoButton;
@@ -105,7 +106,6 @@ public class UISpiritInfo : UIInfoPanel
 
         m_CloseButton.onClick.AddListener(OnClickClose);
         m_InfoButton.onClick.AddListener(OnClickInfo);
-        m_ChallengeButton.onClick.AddListener(OnClickChallenge);
         DownloadedAssets.OnWillUnloadAssets += OnWillUnloadAssets;
     }
 
@@ -248,6 +248,7 @@ public class UISpiritInfo : UIInfoPanel
         SpiritToken = null;
         SpiritMarkerDetails = null;
         m_ChallengeButton.interactable = false;
+        m_ChallengeButton.onClick.RemoveAllListeners();
 
         base.Close();
 
@@ -282,6 +283,13 @@ public class UISpiritInfo : UIInfoPanel
         }
 
         m_ChallengeButton.interactable = string.IsNullOrEmpty(details.owner);
+        m_ButtonChallengeText.text = details.insideBattle ? "Join" : "Challenge";
+
+        if (details.insideBattle)
+            m_ChallengeButton.onClick.AddListener(OnClickJoin);
+        else
+            m_ChallengeButton.onClick.AddListener(OnClickChallenge);
+
 
         if (string.IsNullOrEmpty(SpiritMarkerDetails.owner))
         {
@@ -357,6 +365,11 @@ public class UISpiritInfo : UIInfoPanel
     private void OnClickChallenge()
     {
         BattleArena.ChallengeRequests.Challenge(SpiritToken.Id);
+        Close();
+    }
+    private void OnClickJoin()
+    {
+        BattleArena.ChallengeRequests.Join(SpiritToken.Id);
         Close();
     }
 
