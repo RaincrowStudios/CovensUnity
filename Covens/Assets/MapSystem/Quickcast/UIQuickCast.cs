@@ -13,7 +13,7 @@ public class UIQuickCast : MonoBehaviour
 {
     [Header("UI")]
     [SerializeField] private LayoutGroup m_SpellContainer;
-    [SerializeField] private UIQuickcastButtonOvermap m_ButtonPrefab;
+    [SerializeField] private UIQuickcastButton m_ButtonPrefab;
     [SerializeField] private Button m_MoreSpells;
     [SerializeField] private Button m_Button;
     [SerializeField] private Canvas m_ContainerCanvas;
@@ -24,21 +24,23 @@ public class UIQuickCast : MonoBehaviour
 
     [Header("others")]
     [SerializeField] private UIQuickCastPicker m_Picker;
-    [SerializeField] private string[] m_ActivedsSpell = new string[3] { "spell_bless", "spell_greaterBless", "spell_resurrection" };
+    [SerializeField] private List<string> m_AllowedSpells = new List<string>(3) { "spell_bless", "spell_greaterBless", "spell_resurrection" };
 
     private static UIQuickCast m_Instance;
     private static event System.Action m_OnClose;
 
-    private List<UIQuickcastButtonOvermap> m_Buttons = new List<UIQuickcastButtonOvermap>();
+    private List<UIQuickcastButton> m_Buttons = new List<UIQuickcastButton>();
     private static IMarker m_Target;
     private static CharacterMarkerData m_TargetData;
-    
+
     public static bool IsOpen { get; private set; }
     public static IMarker target => m_Target != null ? m_Target : PlayerManager.marker;
     public static CharacterMarkerData targetData => m_TargetData != null ? m_TargetData : PlayerDataManager.playerData;
 
     private int m_AnimTweenId;
     private bool m_WasOpen = false;
+
+
 
     public static void Close()
     {
@@ -52,6 +54,15 @@ public class UIQuickCast : MonoBehaviour
     public static void SetActive(bool value)
     {
         m_Instance?.gameObject.SetActive(value);
+    }
+    public static List<string> GetAllowedSpells()
+    {
+        if (m_Instance == null)
+        {
+            return null;
+        }
+
+        return m_Instance.m_AllowedSpells;
     }
 
     public static void UpdateTarget(IMarker marker, CharacterMarkerData details)
@@ -105,7 +116,7 @@ public class UIQuickCast : MonoBehaviour
         m_ButtonPrefab.gameObject.SetActive(false);
         m_ContainerCanvas.enabled = false;
         m_MoreSpells.onClick.AddListener(OnClickMoreSpells);
-        
+
         m_Button.onClick.AddListener(() =>
         {
             if (IsOpen)
@@ -154,10 +165,11 @@ public class UIQuickCast : MonoBehaviour
 
         IsOpen = true;
 
-        for (int i = m_Buttons.Count; i < m_ActivedsSpell.Length; i++)
+        int quickcastCount = 4;
+        for (int i = m_Buttons.Count; i < quickcastCount; i++)
         {
-            UIQuickcastButtonOvermap aux = Instantiate(m_ButtonPrefab, m_SpellContainer.transform);
-            aux.Setup(m_ActivedsSpell[i], () => OnClickSpell(aux));
+            UIQuickcastButton aux = Instantiate(m_ButtonPrefab, m_SpellContainer.transform);
+            aux.Setup(i, () => OnClickSpell(aux), () => OnHoldSpell(aux));
             aux.Hightlight(false);
             aux.transform.localScale = Vector3.one;
             aux.gameObject.SetActive(true);
@@ -262,28 +274,64 @@ public class UIQuickCast : MonoBehaviour
         m_Target = marker;
         m_TargetData = data;
 
-        foreach (UIQuickcastButtonOvermap item in m_Buttons)
-            item.UpdateCanCast(target, targetData);
+        foreach (UIQuickcastButton item in m_Buttons)
+            item.UpdateCanCast(target, targetData, m_AllowedSpells);
     }
 
-    private void OnClickSpell(UIQuickcastButtonOvermap button)
+    private void OnClickSpell(UIQuickcastButton button)
     {
-        if (string.IsNullOrEmpty(button.Spell))
+        if (m_AllowedSpells.Contains(button.Spell))
         {
-            UIGlobalPopup.ShowPopUp(null, LocalizeLookUp.GetText("quickcast_tap_hold"));//"hold to set a spell");
-            return;
+            if (m_Picker.IsOpen)
+            {
+                OnHoldSpell(button);
+                return;
+            }
+
+            if (string.IsNullOrEmpty(button.Spell))
+            {
+                UIGlobalPopup.ShowPopUp(null, LocalizeLookUp.GetText("quickcast_tap_hold"));//"hold to set a spell");
+                return;
+            }
+
+            if (button.CastStatus != Spellcasting.SpellState.CanCast)
+                return;
+
+            SpellData spell = DownloadedAssets.GetSpell(button.Spell);
+
+            this._Hide(true);
+
+            Spellcasting.CastSpell(spell, target, new List<spellIngredientsData>(),
+                (result) => this._Hide(false),
+                () => this._Hide(false));
         }
+    }
 
-        if (button.CastStatus != Spellcasting.SpellState.CanCast)
-            return;
+    private void OnHoldSpell(UIQuickcastButton button)
+    {
+        if (m_AllowedSpells.Contains(button.Spell))
+        {
+            foreach (UIQuickcastButton _item in m_Buttons)
+            {
+                _item.Hightlight(_item == button);
+            }
 
-        SpellData spell = DownloadedAssets.GetSpell(button.Spell);
+            m_Picker.Show(
+                button.Spell,
+                spell =>
+                {
+                    PlayerManager.SetQuickcastSpell(button.QuickcastIndex, spell);
 
-        this._Hide(true);
+                    button.Setup(
+                        button.QuickcastIndex,
+                        () => OnClickSpell(button),
+                        () => OnHoldSpell(button));
 
-        Spellcasting.CastSpell(spell, target, new List<spellIngredientsData>(),
-            (result) => this._Hide(false),
-            () => this._Hide(false));
+                    button.UpdateCanCast(target, targetData, m_AllowedSpells);
+                },
+                () => button.Hightlight(false)
+            );
+        }
     }
 
     private void OnClickMoreSpells()
@@ -294,7 +342,7 @@ public class UIQuickCast : MonoBehaviour
         UIMainScreens.PushEventAnalyticUI(UIMainScreens.Map, UIMainScreens.SpellBook);
 
         this._Hide(true);
-        
+
         UISpellcastBook.Open(
             targetData,
             target,
@@ -317,7 +365,7 @@ public class UIQuickCast : MonoBehaviour
     {
         UpdateTarget(target, targetData);
     }
-    
+
     private void _OnStatusEffectExpired(StatusEffect effect)
     {
         UpdateTarget(target, targetData);

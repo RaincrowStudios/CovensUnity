@@ -120,8 +120,9 @@ public class UISpellcard : MonoBehaviour// : EnhancedScrollerCellView
     {
         LeanTween.cancel(m_CooldownTweenId);
 
+        bool spellAllowed = UIQuickCast.GetAllowedSpells().Contains(Spell.id);
         Spellcasting.SpellState canCast = Spellcasting.CanCast(Spell, targetMarker, targetData);
-        if (canCast == Spellcasting.SpellState.CanCast)
+        if (canCast == Spellcasting.SpellState.CanCast && spellAllowed)
         {
             m_SpellFrame.gameObject.SetActive(true);
             m_SchoolFrame.gameObject.SetActive(true);

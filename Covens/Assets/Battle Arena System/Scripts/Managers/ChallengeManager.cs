@@ -6,6 +6,7 @@ using System.Collections.Generic;
 using Raincrow.Services;
 using Raincrow.Loading.View;
 using System.Collections;
+using BattleArena;
 
 namespace Raincrow.BattleArena.Manager
 {
@@ -14,6 +15,20 @@ namespace Raincrow.BattleArena.Manager
         void Awake()
         {
             BattleOpenHandler.OnBattleOpen += BattleOpen;
+        }
+
+        void Start()
+        {
+            bool inBattle = false;
+            string battleId = "5e73da9d4c2f3b78dfabf588"; //In really i'm sending a spirit id and initializing a new battle, needs change when finish on backend
+            if (inBattle){
+                UIGlobalPopup.ShowPopUp(()=>ReturnToBattle(battleId), () => { }, "You was in a battle,would you like return?");
+            }
+        }
+
+        private void ReturnToBattle(string battleID)
+        {
+            ChallengeRequests.Challenge(battleID);
         }
 
         private void BattleOpen(BattleObjectServer battle)
