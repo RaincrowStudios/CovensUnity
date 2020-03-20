@@ -22,6 +22,7 @@ public abstract class Token
         { "energy",         MarkerSpawner.MarkerType.ENERGY },
         { "boss",           MarkerSpawner.MarkerType.BOSS },
         { "loot",           MarkerSpawner.MarkerType.LOOT },
+        { "battle",         MarkerSpawner.MarkerType.BATTLE },
     };
 
     public static MarkerSpawner.MarkerType TypeFromString(string type)
@@ -84,6 +85,8 @@ public class CharacterToken : Token
     public virtual int baseEnergy { get; set; }
 
     public virtual List<StatusEffect> effects { get; set; }
+
+    public virtual bool insideBattle { get; set; }
 
     [JsonIgnore]
     public virtual int maxEnergy => (2 * baseEnergy);

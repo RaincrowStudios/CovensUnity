@@ -30,6 +30,7 @@ public class MarkerSpawner : MonoBehaviour
         ENERGY = 12,
         BOSS = 13,
         LOOT = 14,
+        BATTLE = 15,
     }
 
     public enum MarkerSchool
