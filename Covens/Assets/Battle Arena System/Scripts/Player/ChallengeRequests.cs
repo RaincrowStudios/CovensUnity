@@ -27,6 +27,7 @@ namespace BattleArena
 
         public static void Join(string id, System.Action success = null, System.Action error = null)
         {
+            UIMain.Instance.ShowBattleWaitScreen(0.3f, "Waiting for the end turn, to join in the battle");
             APIManager.Instance.Post(
                 "battle/join/" + id, "{}",
                 (response, result) =>
@@ -38,6 +39,7 @@ namespace BattleArena
                     else
                     {
                         UIGlobalPopup.ShowPopUp(() => { }, "Could not connect to the server!");
+                        UIMain.Instance.HideBattleWaitScreen(0.3f);
                         error?.Invoke();
                     }
                 });

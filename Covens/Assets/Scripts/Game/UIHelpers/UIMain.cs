@@ -88,6 +88,7 @@ public class UIMain : MonoBehaviour
     [Header("Screens")]
     [SerializeField] private GameObject m_BookOfShadows;
     [SerializeField] private GameObject m_leaderBoards;
+    [SerializeField] private Raincrow.BattleArena.Views.WaitScreenBattleView m_WaitScreenBattleView;
 
     [Header("FX")]
     [SerializeField] private GameObject m_ChannelingGlow;
@@ -293,6 +294,17 @@ public class UIMain : MonoBehaviour
     public static void SetActive(bool value)
     {
         Instance?.gameObject.SetActive(value);
+    }
+
+    public void ShowBattleWaitScreen(float time, string message)
+    {
+        StartCoroutine(m_WaitScreenBattleView.Show(time));
+        m_WaitScreenBattleView.UpdateMessage(message);
+    }
+
+    public void HideBattleWaitScreen(float time)
+    {
+        StartCoroutine(m_WaitScreenBattleView.Hide(time));
     }
 }
 
