@@ -181,7 +181,7 @@ namespace Raincrow.FTF
         private string GetTribunalDays()
         {
             System.DateTime dtDateTime = new System.DateTime(1970, 1, 1, 0, 0, 0, 0, System.DateTimeKind.Utc);
-            dtDateTime = dtDateTime.AddSeconds(PlayerDataManager.tribunalStamps[PlayerDataManager.tribunal]).ToUniversalTime();
+            dtDateTime = dtDateTime.AddMilliseconds(PlayerDataManager.endOfTribunal);
             var timeSpan = dtDateTime.Subtract(System.DateTime.UtcNow);
             return "<color=#4FD5FF>" + timeSpan.TotalDays.ToString("N0") + "</color>";
         }

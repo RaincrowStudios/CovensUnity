@@ -348,6 +348,7 @@ public static class LoginAPIManager
         public float displayRadius;
         public int tribunal;
         public double daysRemaining;
+        public double[] tribunalStamps;
 
         public string dominion;
         [JsonProperty("topRanking")]
@@ -369,8 +370,7 @@ public static class LoginAPIManager
                  PlayerDataManager.moonData = data.moon;
                  PlayerDataManager.sunData = data.sun;
                  PlayerDataManager.tribunal = data.tribunal;
-                 PlayerDataManager.tribunalDaysRemaining = data.daysRemaining;
-
+                 PlayerDataManager.endOfTribunal = data.daysRemaining;
                  callback?.Invoke(data, null);
              }
              else
