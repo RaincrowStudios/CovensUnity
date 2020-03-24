@@ -30,14 +30,14 @@ public class PlayerDataManager
     public static MoonData moonData;
     public static Sun sunData;
     public static int tribunal;
-    public static double tribunalDaysRemaining;
+    public static double endOfTribunal;
 
     public static int idleTimeOut;
     public static string currentDominion;
     public static int zone = 0;    
     public static int soundTrack = 0;
 
-    public static double[] tribunalStamps => new double[] { 1553040000, 1561075200, 1569196800, 1576972800, 1584662400, 1592697600 };
+    //public static double[] tribunalStamps => new double[] { 1553040000, 1561075200, 1569196800, 1576972800, 1584662400, 1592697600 };
     
     public EnumGender Gender
     {

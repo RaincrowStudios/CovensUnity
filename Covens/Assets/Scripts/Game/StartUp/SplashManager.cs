@@ -396,32 +396,39 @@ public class SplashManager : MonoBehaviour
 
         //setup the UI
 
-        double currentTime = (double)System.DateTimeOffset.UtcNow.ToUnixTimeSeconds();
-        int currentI = 0;
-        for (int i = 0; i < PlayerDataManager.tribunalStamps.Length; i++)
-        {
-            if (PlayerDataManager.tribunalStamps[i] > currentTime)
-            {
-                currentI = --i;
-                break;
-            }
-        }
+        //double currentTime = (double)System.DateTimeOffset.UtcNow.ToUnixTimeSeconds();
+        //int currentI = 0;
+        //for (int i = 0; i < PlayerDataManager.tribunalStamps.Length; i++)
+        //{
+        //    if (PlayerDataManager.tribunalStamps[i] > currentTime)
+        //    {
+        //        currentI = --i;
+        //        break;
+        //    }
+        //}
 
-        PlayerDataManager.tribunal = tribunals[currentI];
+        //PlayerDataManager.tribunal = tribunals[currentI];
 
         //tribunal title
-        if (PlayerDataManager.tribunal == 2)
-            tribunalTitle.text = LocalizeLookUp.GetText("summer_tribunal_upper");
-        else if (PlayerDataManager.tribunal == 1)
-            tribunalTitle.text = LocalizeLookUp.GetText("spring_tribunal_upper");
-        else if (PlayerDataManager.tribunal == 3)
-            tribunalTitle.text = LocalizeLookUp.GetText("autumn_tribunal_upper");
-        else
-            tribunalTitle.text = LocalizeLookUp.GetText("winter_tribunal_upper");
+        switch (PlayerDataManager.tribunal)
+        {
+            case 1:
+                tribunalTitle.text = LocalizeLookUp.GetText("spring_tribunal_upper");                
+                break;
+            case 2:
+                tribunalTitle.text = LocalizeLookUp.GetText("summer_tribunal_upper");
+                break;
+            case 3:
+                tribunalTitle.text = LocalizeLookUp.GetText("autumn_tribunal_upper");
+                break;
+            default:
+                tribunalTitle.text = LocalizeLookUp.GetText("winter_tribunal_upper");
+                break;
+        }
 
         //tribunal timer
         System.DateTime dtDateTime = new System.DateTime(1970, 1, 1, 0, 0, 0, 0, System.DateTimeKind.Utc);
-        dtDateTime = dtDateTime.AddSeconds(PlayerDataManager.tribunalStamps[PlayerDataManager.tribunal]).ToUniversalTime();
+        dtDateTime = dtDateTime.AddMilliseconds(PlayerDataManager.endOfTribunal);
         var timeSpan = dtDateTime.Subtract(System.DateTime.UtcNow);
         tribunalTimer.text = timeSpan.TotalDays.ToString("N0");
 
