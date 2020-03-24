@@ -33,6 +33,7 @@ namespace Raincrow.BattleArena.Manager
 
         private void BattleOpen(BattleObjectServer battle)
         {
+            UIMain.Instance.HideBattleWaitScreen(0.3f);
             LoadingOverlay.Show();
             UIMain.SetActive(false);
             UIQuickCast.SetActive(false);

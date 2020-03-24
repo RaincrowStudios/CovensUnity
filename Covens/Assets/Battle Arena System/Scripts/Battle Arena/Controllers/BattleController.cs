@@ -27,6 +27,7 @@ namespace Raincrow.BattleArena.Controllers
         [SerializeField] private float _cameraTargetHeight = 1f;
 
         [Header("Debrief Animation")]
+        [SerializeField] private float _cameraSpeed = 1000f;
         [SerializeField] private float _cameraDistance = 1.15f;
         [SerializeField] private float _cameraHeight = 0.45f;
         [SerializeField] private float _timeAnimation = 0.5f;
@@ -252,7 +253,7 @@ namespace Raincrow.BattleArena.Controllers
             {
                 CameraDistance = _cameraDistance,
                 CameraHeight = _cameraHeight,
-                CameraSpeed = _dragSpeed,
+                CameraSpeed = _cameraSpeed,
                 TimeAnimation = _timeAnimation,
                 TargetY = _targetY
             };

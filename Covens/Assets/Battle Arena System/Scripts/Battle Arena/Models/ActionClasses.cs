@@ -43,6 +43,7 @@ namespace Raincrow.BattleArena.Model
     {
         [JsonProperty("type")]
         public override string Type => ActionRequestType.Summon;
+        [JsonProperty("spiritId")]
         public string SpiritId { get; set; }
         [JsonProperty("position")]
         public BattleSlot Position { get; set; }

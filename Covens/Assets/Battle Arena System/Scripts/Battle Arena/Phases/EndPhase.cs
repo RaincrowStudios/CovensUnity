@@ -124,10 +124,10 @@ namespace Raincrow.BattleArena.Phases
                 {
                     position.y = _debriefAnimationValues.TargetY;
 
-                    _cameraTargetController.MoveTo(position, _debriefAnimationValues.CameraSpeed);
+                    yield return _coroutineHandler.Invoke(_cameraTargetController.MoveTo(position, _debriefAnimationValues.CameraSpeed));
 
-                    int idCameraDistance = _smoothCameraFollow.SetCameraDistance(_debriefAnimationValues.CameraDistance, _debriefAnimationValues.TimeAnimation);
-                    int idCameraHeight = _smoothCameraFollow.SetCameraHeight(_debriefAnimationValues.CameraHeight, _debriefAnimationValues.TimeAnimation);
+                   _smoothCameraFollow.SetCameraDistance(_debriefAnimationValues.CameraDistance, _debriefAnimationValues.TimeAnimation);
+                   _smoothCameraFollow.SetCameraHeight(_debriefAnimationValues.CameraHeight, _debriefAnimationValues.TimeAnimation);
 
                     while (_cameraTargetController.IsMoving())
                     {
@@ -147,9 +147,9 @@ namespace Raincrow.BattleArena.Phases
 
                     _debriefView.Hide();
 
-                    idCameraDistance = _smoothCameraFollow.ResetCameraDistance(_debriefAnimationValues.TimeAnimation);
-                    idCameraHeight = _smoothCameraFollow.ResetCameraHeight(_debriefAnimationValues.TimeAnimation);
-
+                    int idCameraDistance = _smoothCameraFollow.ResetCameraDistance(_debriefAnimationValues.TimeAnimation);
+                    int idCameraHeight = _smoothCameraFollow.ResetCameraHeight(_debriefAnimationValues.TimeAnimation);
+                    
                     while (LeanTween.isTweening(idCameraDistance) || LeanTween.isTweening(idCameraHeight))
                     {
                         yield return new WaitForEndOfFrame();
