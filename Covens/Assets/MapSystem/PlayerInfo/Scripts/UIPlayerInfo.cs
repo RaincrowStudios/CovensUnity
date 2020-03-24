@@ -274,7 +274,7 @@ public class UIPlayerInfo : UIInfoPanel
             m_CovenText.text = LocalizeLookUp.GetText("chat_screen_no_coven");
 
         m_ChallengeButton.interactable = details.token.insideBattle;
-        m_ButtonChallengeText.text = details.token.insideBattle ? "Join" : "Challenge";
+        m_ButtonChallengeText.text = details.token.insideBattle ? LocalizeLookUp.GetText("button_join") : LocalizeLookUp.GetText("button_challenge");
 
         if (details.token.insideBattle)
             m_ChallengeButton.onClick.AddListener(OnClickJoin);

@@ -19,7 +19,7 @@ namespace BattleArena
                     }
                     else
                     {
-                        UIGlobalPopup.ShowPopUp(() => { }, "It was not possible to challenge");
+                        UIGlobalPopup.ShowPopUp(() => { }, LocalizeLookUp.GetText("battle_error_on_challenge"));
                         error?.Invoke();
                     }
                 });
@@ -27,7 +27,7 @@ namespace BattleArena
 
         public static void Join(string id, System.Action success = null, System.Action error = null)
         {
-            UIMain.Instance.ShowBattleWaitScreen(0.3f, "Waiting for the end turn, to join in the battle");
+            UIMain.Instance.ShowBattleWaitScreen(0.3f, LocalizeLookUp.GetText("battle_wait_join_for_battle"));
             APIManager.Instance.Post(
                 "battle/join/" + id, "{}",
                 (response, result) =>
@@ -38,7 +38,7 @@ namespace BattleArena
                     }
                     else
                     {
-                        UIGlobalPopup.ShowPopUp(() => { }, "Could not connect to the server!");
+                        UIGlobalPopup.ShowPopUp(() => { }, LocalizeLookUp.GetText("battle_error_on_join"));
                         UIMain.Instance.HideBattleWaitScreen(0.3f);
                         error?.Invoke();
                     }

@@ -78,8 +78,8 @@ namespace Raincrow.BattleArena.Phases
             yield return _coroutineHandler.Invoke(DebriefPhase());
 
             yield return _rewardsBatttleView.Show(
-                _battleResult.Type == BattleResultType.PlayerWins ? "You Won!" : "You Lost!",
-                "Battle is over",
+                _battleResult.Type == BattleResultType.PlayerWins ? LocalizeLookUp.GetText("battle_title_win") : LocalizeLookUp.GetText("battle_title_lose"),
+                 LocalizeLookUp.GetText("battle_subtitle_end_battle"),
                 _battleResult.Reward,
                 BattleClose
             ).WaitEndScreen();

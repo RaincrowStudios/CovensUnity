@@ -80,6 +80,30 @@ public class Utilities : MonoBehaviour
         return LocalizeLookUp.GetText(degreeId);
     }
 
+    public static string GetSufixPlace(int place)
+    {
+        int i = Mathf.Abs(place);
+        string sufix = string.Empty;
+        if (i == 0)
+            return string.Empty;
+        switch (i)
+        {
+            case 1:
+                sufix = "st";
+                break;
+            case 2:
+                sufix = "nd";
+                break;
+            case 3:
+                sufix = "rd";
+                break;
+            default:
+                sufix = "th";
+                break;
+        }
+        return sufix;
+    }
+
     public static string GetSchool(int lp)
     {
         string s = string.Empty;

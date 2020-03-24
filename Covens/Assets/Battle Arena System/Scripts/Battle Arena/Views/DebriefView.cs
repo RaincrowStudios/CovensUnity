@@ -20,12 +20,12 @@ namespace Raincrow.BattleArena.Views
         private int _animationID;
         public void Show(int position, int damageDealt, string favoriteSpell, string degree, string summonedSpirit, string defeated)
         {
-            _textRankPosition.text = string.Format("{0}st Place", position.ToString());
-            _textDamageDealt.text = string.Format("Damage Dealt: {0}", damageDealt.ToString());
-            _textFavoriteSpell.text = string.Format("Favorite Spell: {0}", favoriteSpell);
-            _textDegree.text = string.Format("Degree: {0}", degree);
-            _textSummonedSpirit.text = string.Format("Summoned Spirit: {0}", summonedSpirit);
-            _textDefeated.text = string.Format("Defeated: {0}", defeated);
+            _textFavoriteSpell.text = LocalizeLookUp.GetText("spell_favorite") + " " + favoriteSpell;
+            _textRankPosition.text = string.Format("{0}{1} {2}", position.ToString(), Utilities.GetSufixPlace(position), LocalizeLookUp.GetText("battle_ranking_place"));
+            _textDamageDealt.text = string.Format(LocalizeLookUp.GetText("battle_delt_damage"), damageDealt.ToString());
+            _textDegree.text = string.Format(LocalizeLookUp.GetText("battle_degree"), degree);
+            _textSummonedSpirit.text = string.Format(LocalizeLookUp.GetText("battle_summoned_spirit"), summonedSpirit);
+            _textDefeated.text = string.Format(LocalizeLookUp.GetText("battle_defeat"), defeated);
 
             _textFavoriteSpell.gameObject.SetActive(true);
             _textDegree.gameObject.SetActive(true);
@@ -40,8 +40,8 @@ namespace Raincrow.BattleArena.Views
 
         public void Show(int position, int damageDealt)
         {
-            _textRankPosition.text = string.Format("{0}st Place", position.ToString());
-            _textDamageDealt.text = string.Format("Damage Dealt: {0}", damageDealt.ToString());
+            _textRankPosition.text = string.Format("{0}{1} {2}", position.ToString(),Utilities.GetSufixPlace(position), LocalizeLookUp.GetText("battle_ranking_place"));
+            _textDamageDealt.text = string.Format(LocalizeLookUp.GetText("battle_delt_damage"), damageDealt.ToString());
 
             _textFavoriteSpell.gameObject.SetActive(false);
             _textDegree.gameObject.SetActive(false);
