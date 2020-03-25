@@ -41,6 +41,7 @@ public class SplashManager : MonoBehaviour
     [SerializeField] private TextMeshProUGUI hintText;
     [SerializeField] private Image spirit;
     [SerializeField] private TextMeshProUGUI spiritName;
+    [SerializeField] private float _hintsMaxTime = 5f;
 
     [Header("Tribunal")]
     [SerializeField] private CanvasGroup m_TribualScreen;
@@ -61,6 +62,7 @@ public class SplashManager : MonoBehaviour
     private int m_TribunalTweenId;
     private Coroutine m_HintsCoroutine;
     private Coroutine m_TribunalCoroutine;
+   
     public bool IsShowingHints { get; private set; }
 
     void Awake()
@@ -247,17 +249,14 @@ public class SplashManager : MonoBehaviour
 
         //wait for video to be ready to start
         bool videoReady = false;
+        bool videoEnd = false;
         VideoPlayback.OnVideoFirstFrameReady += () => videoReady = true;
-        float maxTimer = 10;
-        while (!videoReady && maxTimer > 0)
-        {
-            maxTimer -= 1;
-            yield return new WaitForSeconds(1);
-        }
+        VideoPlayback.OnEnd += () => videoEnd = true;
+        yield return new WaitUntil( () => videoReady );
 
         VideoPlayback.GetComponent<RawImage>().color = Color.white;
 
-        yield return new WaitForSeconds(splashTime / m_LogoSpeed);
+        yield return new WaitUntil(() => videoEnd);
 
         VideoPlayback.gameObject.SetActive(false);
         onComplete?.Invoke();
@@ -303,7 +302,7 @@ public class SplashManager : MonoBehaviour
     {
         ShowNewHint();
 
-        yield return new WaitForSeconds(1f);
+        yield return new WaitForSeconds(10f);
         onStart?.Invoke();
 
         //wait for the dictionary to be ready to show a proper hint
@@ -434,7 +433,7 @@ public class SplashManager : MonoBehaviour
 
         LeanTween.cancel(m_TribunalTweenId);
         m_TribunalTweenId = LeanTween.alphaCanvas(m_TribualScreen, 1f, 1f).setEaseOutCubic().uniqueId;
-        yield return new WaitForSeconds(1f);
+        yield return new WaitForSeconds(3f);
 
         onShow?.Invoke();
     }

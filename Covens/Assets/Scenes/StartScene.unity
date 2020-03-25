@@ -7368,9 +7368,9 @@ MonoBehaviour:
   Helpcrow: {fileID: 1055399044}
   LoadingImage: {fileID: 784898534}
   progressBar: {fileID: 531886957}
-  logoTime: 1.1
-  splashTime: 6
-  fadeTime: 0.8
+  logoTime: 5
+  splashTime: 15
+  fadeTime: 1
   logos:
   - {fileID: 1638755252}
   - {fileID: 192418544}
