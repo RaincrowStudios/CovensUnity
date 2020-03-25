@@ -208,7 +208,7 @@ namespace Raincrow.BattleArena.Controllers
             InitiativePhase initiativePhase = new InitiativePhase(this,
                                                                   playerId,
                                                                   _gameMasterController,
-                                                                  _turnModel, 
+                                                                  _turnModel,
                                                                   battleModel,
                                                                   battleResult,
                                                                   _animationController,
@@ -231,21 +231,21 @@ namespace Raincrow.BattleArena.Controllers
                                                             _cameraTargetController,
                                                             _serviceLocator.GetPopupView(),
                                                             _moveSpeed,
-                                                            _dragSpeed, 
+                                                            _dragSpeed,
                                                             _dragDecceleration);
             yield return null;
 
-            ActionResolutionPhase actionResolutionPhase = new ActionResolutionPhase(this, 
-                                                                                    battleModel, 
-                                                                                    _turnModel, 
-                                                                                    _serviceLocator.GetBarEventLogView(), 
+            ActionResolutionPhase actionResolutionPhase = new ActionResolutionPhase(this,
+                                                                                    battleModel,
+                                                                                    _turnModel,
+                                                                                    _serviceLocator.GetBarEventLogView(),
                                                                                     _animationController);
             yield return null;
 
-            BanishmentPhase banishmentPhase = new BanishmentPhase(this, 
-                                                                  battleModel, 
-                                                                  _turnModel, 
-                                                                  _serviceLocator.GetBarEventLogView(), 
+            BanishmentPhase banishmentPhase = new BanishmentPhase(this,
+                                                                  battleModel,
+                                                                  _turnModel,
+                                                                  _serviceLocator.GetBarEventLogView(),
                                                                   _animationController);
             yield return null;
 
@@ -258,13 +258,13 @@ namespace Raincrow.BattleArena.Controllers
                 TargetY = _targetY
             };
 
-            EndPhase endPhase = new EndPhase(battleResult, 
-                                             _serviceLocator.GetCelebratoryView(), 
-                                             _serviceLocator.GetDebriefView(), this, 
-                                             _cameraTargetController, 
-                                             _serviceLocator.GetSmoothCameraFollow(), 
-                                             battleModel, 
-                                             debriefAnimationValues, 
+            EndPhase endPhase = new EndPhase(battleResult,
+                                             _serviceLocator.GetCelebratoryView(),
+                                             _serviceLocator.GetDebriefView(), this,
+                                             _cameraTargetController,
+                                             _serviceLocator.GetSmoothCameraFollow(),
+                                             battleModel,
+                                             debriefAnimationValues,
                                              _serviceLocator.GetRewardsBatttleView());
 
             IState[] battlePhases = new IState[5]

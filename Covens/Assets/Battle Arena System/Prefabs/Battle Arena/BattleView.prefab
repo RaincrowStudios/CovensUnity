@@ -89,6 +89,7 @@ MonoBehaviour:
   _dragSpeed: 50
   _dragDecceleration: 50
   _cameraTargetHeight: 1
+  _cameraSpeed: 1000
   _cameraDistance: 80
   _cameraHeight: 65
   _timeAnimation: 0.5
@@ -183,14 +184,19 @@ MonoBehaviour:
   _chargeScale: {x: 40, y: 40, z: 40}
   _trailScale: {x: 10, y: 10, z: 10}
   _hitScale: {x: 20, y: 20, z: 20}
+  _textPopupInstance: {fileID: 224816674225412742, guid: c1a00adc58de38a42b7e4876ba5fb451,
+    type: 3}
+  _textHeight: 150
   _damageAnimationFunction: 6
   _damageAnimationTime: 1
   _damageTextScale: 250
   _criticalDamageTextScale: 350
-  _damageFeedback: {fileID: 3612349559079160926, guid: 0c6ef110d5fb68447a2e975a097620b8,
-    type: 3}
   _damageColor: {r: 1, g: 0.2, b: 0.2, a: 1}
   _restoreColor: {r: 0, g: 1, b: 1, a: 1}
+  _statusAnimationFunction: 6
+  _statusAnimationTime: 1
+  _statusTextScale: 250
+  _statusColor: {r: 1, g: 1, b: 1, a: 1}
   _shadowChargePrefab: {fileID: 3168508551092698746, guid: f018e40781c495d4095ebf766e73c7f5,
     type: 3}
   _shadowTrailPrefab: {fileID: 2375159468205616495, guid: 689e39ac7867f0f4d8848a87733e2385,

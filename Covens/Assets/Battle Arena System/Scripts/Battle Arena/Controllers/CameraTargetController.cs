@@ -15,6 +15,7 @@ namespace Raincrow.BattleArena.Views
             //LeanTween.cancel(_moveTweenId);
             if (_moveTo != null)
             {
+                Debug.Log("Stop move");
                 StopCoroutine(_moveTo);
             }
 
@@ -26,6 +27,7 @@ namespace Raincrow.BattleArena.Views
         {
             if (_moveTo != null)
             {
+                Debug.Log("Stop move");
                 StopCoroutine(_moveTo);
             }
 
@@ -37,6 +39,7 @@ namespace Raincrow.BattleArena.Views
             //LeanTween.cancel(_moveTweenId);
             if (_moveTo != null)
             {
+                Debug.Log("Stop move");
                 StopCoroutine(_moveTo);
             }
 
@@ -49,6 +52,7 @@ namespace Raincrow.BattleArena.Views
         {
             if (_moveTo != null)
             {
+                Debug.Log("Stop move");
                 StopCoroutine(_moveTo);
             }
 
@@ -64,6 +68,7 @@ namespace Raincrow.BattleArena.Views
         {
             if (_moveTo != null)
             {
+                Debug.Log("Stop move");
                 StopCoroutine(_moveTo);
             }
 
@@ -78,9 +83,10 @@ namespace Raincrow.BattleArena.Views
             for (float elapsedTime = 0; elapsedTime < totalTime; elapsedTime += Time.deltaTime)
             {
                 transform.position = Vector3.Lerp(startPosition, position, elapsedTime / totalTime);
+                Debug.LogFormat("MOVE FROM {0} TO {1} - CURRENT {2} - ELAPSED {3} - TOTAL TIME {4}", startPosition, position, transform.position, elapsedTime, totalTime);
                 yield return null;
             }
-
+            transform.position = position;
             _moveTo = null;
         }
 

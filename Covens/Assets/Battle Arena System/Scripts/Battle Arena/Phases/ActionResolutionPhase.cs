@@ -74,7 +74,7 @@ namespace Raincrow.BattleArena.Phases
 
                         case ActionResponseType.Summon:
                             SummonActionResponseModel summonAction = responseAction as SummonActionResponseModel;
-                            actionRoutine = Summon(summonAction);
+                            actionRoutine = Summon(characterId, summonAction);
 
                             string logSummom = "The <witch>Evil Wind</witch> cast <spell>Arcane Damage</spell> on you. <damage>1624 energy</damage><time>[01:12]</time>";
                             _barEventLogView.AddLog(logSummom);
@@ -82,7 +82,7 @@ namespace Raincrow.BattleArena.Phases
 
                         case ActionResponseType.Cast:
                             CastActionResponseModel castAction = responseAction as CastActionResponseModel;
-                            actionRoutine = Cast(characterId, castAction);
+                            actionRoutine = Cast(castAction);
 
                             string logCast = "The <witch>Evil Wind</witch> cast <spell>Arcane Damage</spell> on you. <damage>1624 energy</damage><time>[01:12]</time>";
                             _barEventLogView.AddLog(logCast);
@@ -109,21 +109,21 @@ namespace Raincrow.BattleArena.Phases
 
         private IEnumerator Move(string characterId, MoveActionResponseModel moveAction)
         {
-            if (moveAction.IsSuccess)
+            ICharacterController characterView = default;
+            ICharacterModel character = default;
+            if (_witches.TryGetValue(characterId, out ICharacterController<IWitchModel, IWitchUIModel> witchView))
             {
-                ICharacterController characterView = default;
-                ICharacterModel character = default;
-                if (_witches.TryGetValue(characterId, out ICharacterController<IWitchModel, IWitchUIModel> witchView))
-                {
-                    character = witchView.Model;
-                    characterView = witchView;
-                }
-                else if (_spirits.TryGetValue(characterId, out ICharacterController<ISpiritModel, ISpiritUIModel> spiritView))
-                {
-                    character = spiritView.Model;
-                    characterView = spiritView;
-                }
+                character = witchView.Model;
+                characterView = witchView;
+            }
+            else if (_spirits.TryGetValue(characterId, out ICharacterController<ISpiritModel, ISpiritUIModel> spiritView))
+            {
+                character = spiritView.Model;
+                characterView = spiritView;
+            }
 
+            if (moveAction.IsSuccess)
+            {                
                 // Get transform of our target Cell
                 BattleSlot targetBattleSlot = moveAction.Position;
 
@@ -134,10 +134,15 @@ namespace Raincrow.BattleArena.Phases
                 _battleModel.GridUI.SetObjectToGrid(characterView, character, targetBattleSlot.Row, targetBattleSlot.Col);
 
                 Debug.LogFormat("Execute Action Move to Slot X:{0} Y:{1}", targetBattleSlot.Row, targetBattleSlot.Col);
-            }            
+            }
+            else
+            {
+                // show move failed message
+                yield return _animController.ShowMessage(characterView, "MOVE FAILED!");
+            }
         }
 
-        private IEnumerator Summon(SummonActionResponseModel summonAction)
+        private IEnumerator Summon(string characterId, SummonActionResponseModel summonAction)
         {
             if (summonAction.IsSuccess)
             {
@@ -153,24 +158,28 @@ namespace Raincrow.BattleArena.Phases
                 yield return _animController.Summon(spawnObjectOnGrid.ReturnValue);
 
                 Debug.LogFormat("Execute Summon {0} to Slot X:{1} Y:{2}", spiritModel.Id, targetBattleSlot.Row, targetBattleSlot.Col);
-            }                
+            }
+            else
+            {
+                // show move failed message
+                ICharacterController summonerView = GetCharacterView(characterId);
+                yield return _animController.ShowMessage(summonerView, "SUMMON FAILED!");
+            }
         }
 
-        private IEnumerator Cast(string characterId, CastActionResponseModel castAction)
+        private IEnumerator Cast(CastActionResponseModel castAction)
         {
             // Get caster
+            ICharacterController casterView = GetCharacterView(castAction.Caster.Id);
+            ICharacterController targetView = GetCharacterView(castAction.Target.Id);
+
+            yield return _animController.CastSpell(castAction.School, casterView, targetView);
+
+            casterView.UpdateEnergy(castAction.Caster.Energy);
+            targetView.UpdateEnergy(castAction.Target.Energy);
+
             if (castAction.IsSuccess)
-            {
-                ICharacterController casterView = GetCharacterView(castAction.Caster.Id);
-                ICharacterController targetView = GetCharacterView(castAction.Target.Id);
-
-                yield return _animController.CastSpell(castAction.School, casterView, targetView);
-
-                if(castAction.Caster.ObjectType == ObjectType.Witch)
-                {
-                    casterView.UpdateEnergy(castAction.Caster.Energy);
-                }
-
+            {                
                 if (castAction.Result.EnergyChange < 0)
                 {
                     // Animation
@@ -179,7 +188,12 @@ namespace Raincrow.BattleArena.Phases
                     targetView.AddDamage(castAction.Result.EnergyChange);
                 }
 
-                Debug.LogFormat("Execute Cast to {0} and apply {1} damage", castAction.Target.Id, castAction.Result.EnergyChange);               
+                Debug.LogFormat("Execute Cast to {0} and apply {1} damage", castAction.Target.Id, castAction.Result.EnergyChange);
+            }
+            else
+            {
+                // show cast failed message
+                yield return _animController.ShowMessage(targetView, "CAST FAILED!");
             }
         }
 

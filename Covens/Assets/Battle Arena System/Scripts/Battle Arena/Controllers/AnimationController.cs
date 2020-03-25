@@ -39,14 +39,23 @@ namespace Raincrow.BattleArena.Controllers
         [SerializeField] private Vector3 _trailScale = new Vector3(15, 15, 15);
         [SerializeField] private Vector3 _hitScale = new Vector3(20, 20, 20);
 
+        [Header("Message Prefab")]
+        [SerializeField] private Transform _textPopupInstance;
+        [SerializeField] private float _distFromCenter = 150;
+
         [Header("Damage Animation")]
-        [SerializeField] private Easings.Functions _damageAnimationFunction = Easings.Functions.CubicEaseInOut;        
+        [SerializeField] private Easings.Functions _damageAnimationFunction = Easings.Functions.CubicEaseInOut;
         [SerializeField] private float _damageAnimationTime = 2f;
         [SerializeField] private float _damageTextScale = 1f;
         [SerializeField] private float _criticalDamageTextScale = 1.4f;
-        [SerializeField] private Transform _damageFeedback;
         [SerializeField] private Color _damageColor;
         [SerializeField] private Color _restoreColor;
+
+        [Header("Satus Animation")]
+        [SerializeField] private Easings.Functions _statusAnimationFunction = Easings.Functions.CubicEaseInOut;
+        [SerializeField] private float _statusAnimationTime = 2f;
+        [SerializeField] private float _statusTextScale = 1f;
+        [SerializeField] private Color _statusColor;
 
         [Header("Shadow Animation Prefabs")]
         [SerializeField] private Transform _shadowChargePrefab;
@@ -61,7 +70,7 @@ namespace Raincrow.BattleArena.Controllers
         [Header("Light Animation Prefabs")]
         [SerializeField] private Transform _lightChargePrefab;
         [SerializeField] private Transform _lightTrailPrefab;
-        [SerializeField] private Transform _lightHitPrefab;                
+        [SerializeField] private Transform _lightHitPrefab;
 
         // Variables
         private IGridUIModel _battleController;
@@ -101,16 +110,16 @@ namespace Raincrow.BattleArena.Controllers
             if (_battleCamera == null)
             {
                 _battleCamera = _serviceLocator.GetBattleCamera();
-            }            
+            }
         }
 
         public IEnumerator Summon(ICharacterController characterController)
-        {                       
+        {
             // Move Camera
-            StartCoroutine(_cameraTargetController.MoveTo(characterController.Transform.position, _battleController.CameraSpeed));
+            yield return _cameraTargetController.MoveTo(characterController.Transform.position, _battleController.CameraSpeed);
 
             // Summon Animation
-            yield return InnerSummon(characterController);            
+            yield return InnerSummon(characterController);
         }
 
         private IEnumerator InnerSummon(ICharacterController characterController)
@@ -135,13 +144,13 @@ namespace Raincrow.BattleArena.Controllers
         }
 
         public IEnumerator Move(ICharacterController characterController, BattleSlot targetBattleSlot)
-        {            
+        {
             ICellUIModel model = _battleController.Cells[targetBattleSlot.Row, targetBattleSlot.Col];
             Vector3 startPosition = characterController.Transform.position;
             Vector3 targetPosition = model.Transform.position;
 
             // Move Camera to start position
-            yield return StartCoroutine(_cameraTargetController.MoveTo(startPosition, _battleController.CameraSpeed));            
+            yield return _cameraTargetController.MoveTo(startPosition, _battleController.CameraSpeed);
 
             // Scale down
             float animationTime = _moveAnimationTime * 0.2f;
@@ -167,7 +176,7 @@ namespace Raincrow.BattleArena.Controllers
                 _cameraTargetController.SetPosition(characterPosition);
 
                 yield return null;
-            }            
+            }
 
             // Move Character
             characterController.Transform.position = targetPosition;
@@ -188,7 +197,7 @@ namespace Raincrow.BattleArena.Controllers
         }
 
         public IEnumerator Summon(IList<ICharacterController> characterControllers)
-        {            
+        {
             foreach (var characterController in characterControllers)
             {
                 StartCoroutine(InnerSummon(characterController));
@@ -199,7 +208,7 @@ namespace Raincrow.BattleArena.Controllers
         public IEnumerator Banish(ICharacterController characterController)
         {
             Vector3 position = characterController.Transform.position;
-            Quaternion quartenion = _summonAnimPrefab.transform.rotation;         
+            Quaternion quartenion = _summonAnimPrefab.transform.rotation;
 
             Transform aura = _objectPool.Spawn(_banishAura);
             aura.position = characterController.Transform.transform.position;
@@ -207,7 +216,7 @@ namespace Raincrow.BattleArena.Controllers
             aura.gameObject.SetActive(true);
 
             // Move Camera            
-            yield return StartCoroutine(_cameraTargetController.MoveTo(position, _battleController.CameraSpeed));
+            yield return _cameraTargetController.MoveTo(position, _battleController.CameraSpeed);
 
             // Banish Animation
             for (float elapsedTime = 0; elapsedTime < _banishAnimationTime; elapsedTime += Time.deltaTime)
@@ -216,7 +225,7 @@ namespace Raincrow.BattleArena.Controllers
                 characterController.Transform.localScale = Vector3.Lerp(Vector3.one, Vector3.zero, t);
                 yield return null;
             }
-            
+
             _objectPool.Recycle(aura);
         }
 
@@ -231,7 +240,7 @@ namespace Raincrow.BattleArena.Controllers
             aura.gameObject.SetActive(true);
 
             // Move Camera            
-            yield return StartCoroutine(_cameraTargetController.MoveTo(position, _battleController.CameraSpeed));
+            yield return _cameraTargetController.MoveTo(position, _battleController.CameraSpeed);
 
             // Flee Animation
             for (float elapsedTime = 0; elapsedTime < _fleeAnimationTime; elapsedTime += Time.deltaTime)
@@ -250,7 +259,7 @@ namespace Raincrow.BattleArena.Controllers
             Transform targetTransform = target.Transform;
 
             // Move Camera            
-            yield return StartCoroutine(_cameraTargetController.MoveTo(casterTransform.position, _battleController.CameraSpeed));
+            yield return _cameraTargetController.MoveTo(casterTransform.position, _battleController.CameraSpeed);
 
             Transform chargePrefab, trailPrefab, hitPrefab;
 
@@ -280,7 +289,7 @@ namespace Raincrow.BattleArena.Controllers
             Vector3 targetPosition = targetTransform.position + offset;
 
             //spawn the charge
-            Transform charge = _objectPool.Spawn(chargePrefab, null, casterTransform.position + offset, chargePrefab.transform.rotation);            
+            Transform charge = _objectPool.Spawn(chargePrefab, null, casterTransform.position + offset, chargePrefab.transform.rotation);
             charge.localScale = _chargeScale;
             StartCoroutine(ScheduleRecycle(_chargeLifecycle, charge));
 
@@ -328,14 +337,24 @@ namespace Raincrow.BattleArena.Controllers
             }
         }
 
+        public IEnumerator ShowMessage(ICharacterController target, string message)
+        {
+            // Move Camera            
+            yield return _cameraTargetController.MoveTo(target.Transform.position, _battleController.CameraSpeed);
+            yield return SpawnText(target.Transform, message, _damageTextScale, _statusColor, _statusAnimationTime, _statusAnimationFunction);
+        }
+
         public IEnumerator ApplyDamage(ICharacterController target, int damage, bool isCritical)
         {
-            float textScale = isCritical ? _criticalDamageTextScale : _damageTextScale;
-            StartCoroutine(SpawnDamageText(target.Transform, damage, textScale));
+            float fontSize = isCritical ? _criticalDamageTextScale : _damageTextScale;
+
+            string text = damage < 0 ? damage.ToString() : "+" + damage;
+            Color fontColor = damage <= 0 ? _damageColor : _restoreColor;
+            StartCoroutine(SpawnText(target.Transform, text, fontSize, fontColor, _damageAnimationTime, _damageAnimationFunction));
 
             int previousEnergy = target.Model.Energy;
             int nextEnergy = target.Model.Energy + damage;
-            nextEnergy = Mathf.Max(nextEnergy, 0);            
+            nextEnergy = Mathf.Max(nextEnergy, 0);
 
             //Show Damage decreasing over time
             for (float elapsedTime = 0; elapsedTime < _damageAnimationTime; elapsedTime += Time.deltaTime)
@@ -343,38 +362,39 @@ namespace Raincrow.BattleArena.Controllers
                 float energy = Mathf.Lerp(previousEnergy, nextEnergy, elapsedTime / _damageAnimationTime);
                 target.UpdateView(target.Model.BaseEnergy, Mathf.FloorToInt(energy));
                 yield return null;
-            }            
+            }
         }
 
-        private IEnumerator SpawnDamageText(Transform target, int amount, float fontSize)
+        private IEnumerator SpawnText(Transform target, string text, float fontSize, Color fontColor, float animationTime, Easings.Functions animationFunction)
         {
-            Transform damageFeedback = _objectPool.Spawn(_damageFeedback);
-            StartCoroutine(ScheduleRecycle(_damageAnimationTime, damageFeedback));
+            Vector3 randomSpacing = new Vector3(Random.Range(-7, 7), Random.Range(20, 24), 0);
+            Transform textPopupInstance = _objectPool.Spawn(_textPopupInstance);
+            StartCoroutine(ScheduleRecycle(animationTime, textPopupInstance));
 
-            TMPro.TextMeshPro damageFeedbackText = damageFeedback.GetComponentInChildren<TMPro.TextMeshPro>();
-            damageFeedbackText.text = amount < 0 ? amount.ToString() : "+" + amount;
-            damageFeedbackText.color = amount <= 0 ? _damageColor : _restoreColor;
-            damageFeedbackText.fontSize = fontSize;
-            damageFeedbackText.transform.localScale = target.lossyScale;
-            damageFeedbackText.transform.rotation = target.transform.rotation;
+            TMPro.TextMeshPro feedbackText = textPopupInstance.GetComponentInChildren<TMPro.TextMeshPro>();
+            feedbackText.text = text;
+            feedbackText.color = fontColor;
+            feedbackText.fontSize = fontSize;
+            feedbackText.transform.localScale = target.lossyScale;
+            feedbackText.transform.rotation = target.transform.rotation;
 
             //animate the text
-            damageFeedbackText.transform.position = new Vector3(target.position.x, target.position.y, target.position.z) + target.up * 20;
-            Vector3 randomSpacing = new Vector3(Random.Range(-7, 7), Random.Range(20, 24), 0);
-            damageFeedbackText.transform.Translate(randomSpacing);
-            Vector3 startPos = damageFeedbackText.transform.localPosition;
-            Vector3 targetPos = damageFeedbackText.transform.localPosition + new Vector3(0, Random.Range(8, 11), 0);
+            feedbackText.transform.position = new Vector3(target.position.x, target.position.y, target.position.z) + target.up * _distFromCenter;
 
-            for (float time = 0; time < _damageAnimationTime; time += Time.deltaTime)
+            feedbackText.transform.Translate(randomSpacing);
+            Vector3 startPos = feedbackText.transform.localPosition;
+            Vector3 targetPos = feedbackText.transform.localPosition + new Vector3(0, Random.Range(8, 11), 0);
+
+            for (float time = 0; time < animationTime; time += Time.deltaTime)
             {
-                float normalizedTime = Easings.Interpolate(time / _damageAnimationTime, _damageAnimationFunction);
-                if (damageFeedbackText != null)
+                float normalizedTime = Easings.Interpolate(time / animationTime, animationFunction);
+                if (feedbackText != null)
                 {
-                    damageFeedbackText.alpha = 1 - normalizedTime;
-                    damageFeedbackText.transform.localPosition = Vector3.Lerp(startPos, targetPos, normalizedTime);
+                    feedbackText.alpha = 1 - normalizedTime;
+                    feedbackText.transform.localPosition = Vector3.Lerp(startPos, targetPos, normalizedTime);
 
                     // Face Camera
-                    damageFeedbackText.transform.LookAt(damageFeedbackText.transform.position +
+                    feedbackText.transform.LookAt(feedbackText.transform.position +
                                 _battleCamera.transform.rotation * Vector3.forward,
                                 _battleCamera.transform.rotation * Vector3.up);
                 }
@@ -388,7 +408,7 @@ namespace Raincrow.BattleArena.Controllers
             yield return new WaitForSeconds(lifecycle);
             _objectPool.Recycle(transform);
         }
-    }    
+    }
 
     public interface IAnimationController
     {
@@ -399,6 +419,7 @@ namespace Raincrow.BattleArena.Controllers
         IEnumerator Move(ICharacterController characterController, BattleSlot targetBattleSlot);
         IEnumerator CastSpell(int spellDegree, ICharacterController caster, ICharacterController target);
         IEnumerator ApplyDamage(ICharacterController target, int damage, bool isCritical);
+        IEnumerator ShowMessage(ICharacterController target, string message);
         //IEnumerator SpawnTrail(int degree, Transform caster, Transform target);
         //IEnumerator SpawnDamageText(Transform target, int amount, float scale);
     }
