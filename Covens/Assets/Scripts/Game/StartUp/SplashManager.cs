@@ -41,7 +41,7 @@ public class SplashManager : MonoBehaviour
     [SerializeField] private TextMeshProUGUI hintText;
     [SerializeField] private Image spirit;
     [SerializeField] private TextMeshProUGUI spiritName;
-    [SerializeField] private float _hintsMaxTime = 5f;
+    [SerializeField] private float _hintsMaxTime = 3f;
 
     [Header("Tribunal")]
     [SerializeField] private CanvasGroup m_TribualScreen;
@@ -62,7 +62,8 @@ public class SplashManager : MonoBehaviour
     private int m_TribunalTweenId;
     private Coroutine m_HintsCoroutine;
     private Coroutine m_TribunalCoroutine;
-   
+    private float _showingHintsStartTime = 0f;
+
     public bool IsShowingHints { get; private set; }
 
     void Awake()
@@ -265,6 +266,7 @@ public class SplashManager : MonoBehaviour
     public void ShowHints(System.Action onStart)
     {
         IsShowingHints = true;
+        _showingHintsStartTime = Time.realtimeSinceStartup;
 
         if (m_HintsCoroutine != null)
             StopCoroutine(m_HintsCoroutine);
@@ -390,6 +392,11 @@ public class SplashManager : MonoBehaviour
 
     private IEnumerator TribunalCoroutine(System.Action onShow)
     {
+        if (IsShowingHints)
+        {
+            yield return new WaitUntil(() => Time.realtimeSinceStartup - _showingHintsStartTime > _hintsMaxTime);
+        }
+
         m_TribualScreen.alpha = 0;
         m_TribualScreen.gameObject.SetActive(true);
 

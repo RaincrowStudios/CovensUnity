@@ -7388,6 +7388,7 @@ MonoBehaviour:
   hintText: {fileID: 1048582309}
   spirit: {fileID: 2022258087}
   spiritName: {fileID: 389367957}
+  _hintsMaxTime: 3
   m_TribualScreen: {fileID: 1095823297}
   tribunalTimer: {fileID: 749044009}
   tribunalTitle: {fileID: 331377366}
