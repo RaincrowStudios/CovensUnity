@@ -283,7 +283,7 @@ public class UISpiritInfo : UIInfoPanel
         }
 
         m_ChallengeButton.interactable = string.IsNullOrEmpty(details.owner);
-        m_ButtonChallengeText.text = details.token.insideBattle ? "Join" : "Challenge";
+        m_ButtonChallengeText.text = details.token.insideBattle ? LocalizeLookUp.GetText("button_join") : LocalizeLookUp.GetText("button_challenge");
 
         if (details.token.insideBattle)
             m_ChallengeButton.onClick.AddListener(OnClickJoin);

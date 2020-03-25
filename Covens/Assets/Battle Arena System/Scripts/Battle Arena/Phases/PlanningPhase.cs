@@ -319,7 +319,7 @@ namespace Raincrow.BattleArena.Phases
         {
             if (CanFlee())
             {
-                string message = "Do you want to flee the battle?";
+                string message = LocalizeLookUp.GetText("battle_flee_request");
                 _coroutineStarter.Invoke(_popupView.Show(message, OnConfirmFlee, OnCancelFlee));
             }
         }

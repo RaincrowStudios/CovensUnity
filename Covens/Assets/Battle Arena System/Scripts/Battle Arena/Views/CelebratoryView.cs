@@ -23,7 +23,7 @@ namespace Raincrow.BattleArena.Views {
 
         public void Show(bool victory)
         {
-            _textResult.text = victory ? "Victory" : "Defeat";
+            _textResult.text = victory ? LocalizeLookUp.GetText("battle_victory") : LocalizeLookUp.GetText("battle_defeat");
             _textResult.color = victory ? Color.white : Color.red;
             _backgroundaSideBar.color = victory ? Color.white : Utilities.Red;
 
