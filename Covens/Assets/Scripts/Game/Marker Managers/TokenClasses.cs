@@ -87,6 +87,7 @@ public class CharacterToken : Token
     public virtual List<StatusEffect> effects { get; set; }
 
     public virtual bool insideBattle { get; set; }
+    public virtual string battleId { get; set; }
 
     [JsonIgnore]
     public virtual int maxEnergy => (2 * baseEnergy);

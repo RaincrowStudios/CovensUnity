@@ -369,7 +369,7 @@ public class UISpiritInfo : UIInfoPanel
     }
     private void OnClickJoin()
     {
-        BattleArena.ChallengeRequests.Join(SpiritToken.Id);
+        BattleArena.ChallengeRequests.Join(SpiritToken.battleId);
         Close();
     }
 

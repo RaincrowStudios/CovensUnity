@@ -403,7 +403,7 @@ public class UIPlayerInfo : UIInfoPanel
     }
     private void OnClickJoin()
     {
-        BattleArena.ChallengeRequests.Join(WitchMarker.witchToken.Id);
+        BattleArena.ChallengeRequests.Join(WitchMarker.witchToken.battleId);
         Close();
     }
 }
