@@ -173,6 +173,8 @@ namespace Raincrow.BattleArena.Phases
                 {
                     MapsAPI.Instance.HideMap(false);
                     LoadingOverlay.Hide();
+                    
+                    MarkerManagerAPI.GetMarkers(PlayerDataManager.playerData.longitude, PlayerDataManager.playerData.latitude, null, false, false, false);
                 }
              );
         }
