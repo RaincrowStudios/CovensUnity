@@ -309,29 +309,26 @@ public class UIQuickCast : MonoBehaviour
 
     private void OnHoldSpell(UIQuickcastButton button)
     {
-        if (m_AllowedSpells.Contains(button.Spell))
+        foreach (UIQuickcastButton _item in m_Buttons)
         {
-            foreach (UIQuickcastButton _item in m_Buttons)
-            {
-                _item.Hightlight(_item == button);
-            }
-
-            m_Picker.Show(
-                button.Spell,
-                spell =>
-                {
-                    PlayerManager.SetQuickcastSpell(button.QuickcastIndex, spell);
-
-                    button.Setup(
-                        button.QuickcastIndex,
-                        () => OnClickSpell(button),
-                        () => OnHoldSpell(button));
-
-                    button.UpdateCanCast(target, targetData, m_AllowedSpells);
-                },
-                () => button.Hightlight(false)
-            );
+            _item.Hightlight(_item == button);
         }
+
+        m_Picker.Show(
+            button.Spell,
+            spell =>
+            {
+                PlayerManager.SetQuickcastSpell(button.QuickcastIndex, spell);
+
+                button.Setup(
+                    button.QuickcastIndex,
+                    () => OnClickSpell(button),
+                    () => OnHoldSpell(button));
+
+                button.UpdateCanCast(target, targetData, m_AllowedSpells);
+            },
+            () => button.Hightlight(false)
+        );
     }
 
     private void OnClickMoreSpells()
