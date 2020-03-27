@@ -22,13 +22,18 @@ namespace Raincrow.BattleArena.Manager
             bool inBattle = PlayerDataManager.playerData.insideBattle;
             string battleId = PlayerDataManager.playerData.battleId;
             if (inBattle){
-                UIGlobalPopup.ShowPopUp(()=>ReturnToBattle(battleId), () => { }, LocalizeLookUp.GetText("battle_text_return"));
+                UIGlobalPopup.ShowPopUp(()=>ReturnToBattle(battleId), () => LeaveBattle(battleId), LocalizeLookUp.GetText("battle_text_return"));
             }
         }
 
         private void ReturnToBattle(string battleID)
         {
             ChallengeRequests.Join(battleID);
+        }
+
+        private void LeaveBattle(string battleID)
+        {
+            ChallengeRequests.Leave(battleID);
         }
 
         private void BattleOpen(BattleObjectServer battle)

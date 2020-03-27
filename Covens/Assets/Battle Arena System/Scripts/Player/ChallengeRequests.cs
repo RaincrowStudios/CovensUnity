@@ -44,6 +44,23 @@ namespace BattleArena
                     }
                 });
         }
+
+        public static void Leave(string id, System.Action success = null, System.Action error = null)
+        {
+            APIManager.Instance.Post(
+                "battle/leave" + id, "{}",
+                (response, result) =>
+                {
+                    if (result == 200)
+                    {
+                        success?.Invoke();
+                    }
+                    else
+                    {
+                        error?.Invoke();
+                    }
+                });
+        }
     }
 }
 
