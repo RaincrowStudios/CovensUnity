@@ -308,6 +308,9 @@ public class PlayerData : WitchMarkerData
     public string placeOfPower;
     public bool insidePlaceOfPower;
 
+    public bool insideBattle;
+    public string battleId;
+
     public int silver;
     public int gold;
 

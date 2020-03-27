@@ -19,8 +19,8 @@ namespace Raincrow.BattleArena.Manager
 
         void Start()
         {
-            bool inBattle = false;
-            string battleId = "5e73da9d4c2f3b78dfabf588"; //In really i'm sending a spirit id and initializing a new battle, needs change when finish on backend
+            bool inBattle = PlayerDataManager.playerData.insideBattle;
+            string battleId = PlayerDataManager.playerData.battleId;
             if (inBattle){
                 UIGlobalPopup.ShowPopUp(()=>ReturnToBattle(battleId), () => { }, LocalizeLookUp.GetText("battle_text_return"));
             }
@@ -28,7 +28,7 @@ namespace Raincrow.BattleArena.Manager
 
         private void ReturnToBattle(string battleID)
         {
-            ChallengeRequests.Challenge(battleID);
+            ChallengeRequests.Join(battleID);
         }
 
         private void BattleOpen(BattleObjectServer battle)
