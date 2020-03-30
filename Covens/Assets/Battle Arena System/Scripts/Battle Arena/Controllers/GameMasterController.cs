@@ -12,12 +12,14 @@ namespace Raincrow.BattleArena.Controllers
         // Variables
         private UnityAction<PlanningPhaseReadyEventArgs> _onPlanningPhaseReady;
         private UnityAction<PlanningPhaseFinishedEventArgs> _onPlanningPhaseFinished;
+        private UnityAction<AddParticipantsEventArgs> _onAddParticipants;
         private UnityAction<BattleEndEventArgs> _onBattleEnd;
 
         #region MonoBehaviour
 
         protected virtual void OnEnable()
         {
+            AddParticipantsEventHandler.AddListener(OnAddParticipants);
             PlanningPhaseStartEventHandler.AddListener(OnPlanningPhaseReady);
             PlanningPhaseFinishedEventHandler.AddListener(OnPlanningPhaseFinished);
             BattleEndEventHandler.AddListener(OnBattleEnd);
@@ -27,6 +29,7 @@ namespace Raincrow.BattleArena.Controllers
 
         protected virtual void OnDisable()
         {
+            AddParticipantsEventHandler.RemoveListener(OnAddParticipants);
             PlanningPhaseStartEventHandler.RemoveListener(OnPlanningPhaseReady);
             PlanningPhaseFinishedEventHandler.RemoveListener(OnPlanningPhaseFinished);
             BattleEndEventHandler.RemoveListener(OnBattleEnd);
@@ -42,9 +45,11 @@ namespace Raincrow.BattleArena.Controllers
             string battleId,
             string playerId,
             UnityAction<PlanningPhaseReadyEventArgs> onPlanningPhaseReady,
+            UnityAction<AddParticipantsEventArgs> addParticipants,
             UnityAction<BattleEndEventArgs> onBattleEnd)
         {
             _onPlanningPhaseReady = onPlanningPhaseReady;
+            _onAddParticipants = addParticipants;
             _onBattleEnd = onBattleEnd;
 
             bool responded = false;
@@ -109,6 +114,11 @@ namespace Raincrow.BattleArena.Controllers
         private void OnBattleEnd(BattleEndEventArgs response)
         {
             _onBattleEnd?.Invoke(response);
+        }
+
+        private void OnAddParticipants(AddParticipantsEventArgs response)
+        {
+            _onAddParticipants?.Invoke(response);
         }
 
         #endregion

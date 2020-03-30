@@ -56,9 +56,17 @@ namespace Raincrow.BattleArena.Views
 
         public IEnumerator Hide(float fadeTime)
         {
-            StopCoroutine(_fadeRoutine);
-            _fadeRoutine = FadeRoutine(fadeTime, 1f, 0f);
-            yield return StartCoroutine(_fadeRoutine);
+            if (_fadeRoutine != null)
+            {
+                StopCoroutine(_fadeRoutine);
+            }
+
+            if (isActiveAndEnabled)
+            {
+                _fadeRoutine = FadeRoutine(fadeTime, 1f, 0f);
+                yield return StartCoroutine(_fadeRoutine);
+
+            }
             gameObject.SetActive(false);
 
             // Cleanup

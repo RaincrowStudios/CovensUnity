@@ -527,6 +527,7 @@ namespace Raincrow.BattleArena.Controllers
         int MaxActionsAllowed { get; set; }
         IList<IActionRequestModel> RequestedActions { get; }
         IList<ICharacterController> StartingCharacters { get; }
+        IList<ICharacterModel> NewCharacters { get; }
         IDictionary<string, IList<IActionResponseModel>> ResponseActions { get; }
         void Reset();
         //BattleSlot SelectedSlot { get; set; }
@@ -541,6 +542,7 @@ namespace Raincrow.BattleArena.Controllers
         public int MaxActionsAllowed { get; set; }
         public IList<IActionRequestModel> RequestedActions { get; private set; } = new List<IActionRequestModel>();
         public IList<ICharacterController> StartingCharacters { get; } = new List<ICharacterController>();
+        public IList<ICharacterModel> NewCharacters { get; } = new List<ICharacterModel>();
         public IDictionary<string, IList<IActionResponseModel>> ResponseActions { get; } = new Dictionary<string, IList<IActionResponseModel>>();
 
         //public BattleSlot SelectedSlot { get; set; }

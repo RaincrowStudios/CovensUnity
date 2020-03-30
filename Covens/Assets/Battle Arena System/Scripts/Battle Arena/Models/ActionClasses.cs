@@ -67,7 +67,7 @@ namespace Raincrow.BattleArena.Model
         public const string Summon = "battle.summon";
         public const string Move = "battle.move";
         public const string Flee = "battle.flee";
-        public const string Join = "battle.join";
+        //public const string Join = "battle.join";
     }
 
     public class BanishActionResponseModel : ActionResponseModel
@@ -76,14 +76,14 @@ namespace Raincrow.BattleArena.Model
         public string TargetId { get; set; }
     }
 
-    public class JoinActionResponseModel : ActionResponseModel
-    {
-        public override string Type => ActionResponseType.Join;
-        [JsonProperty("object")]
-        public GenericCharacterObjectServer Object { get; set; }
-        [JsonProperty("position")]
-        public BattleSlot Position { get; set; }
-    }
+    //public class JoinActionResponseModel : ActionResponseModel
+    //{
+    //    public override string Type => ActionResponseType.Join;
+    //    [JsonProperty("object")]
+    //    public GenericCharacterObjectServer Object { get; set; }
+    //    [JsonProperty("position")]
+    //    public BattleSlot Position { get; set; }
+    //}
 
     public class MoveActionResponseModel : ActionResponseModel
     {

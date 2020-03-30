@@ -8,6 +8,34 @@ namespace Raincrow.BattleArena.Events
 {
     #region Event Handlers
 
+    public class AddParticipantsEventHandler : IGameEventHandler
+    {
+        // AddParticipantsEvent
+        private static AddParticipantsEvent Response = new AddParticipantsEvent();
+
+        public string EventName => "battle.add.participants";
+
+        public void HandleResponse(string json)
+        {
+            AddParticipantsEventArgs data = JsonConvert.DeserializeObject<AddParticipantsEventArgs>(json);
+            Response?.Invoke(data);
+        }
+
+        public static void AddListener(UnityAction<AddParticipantsEventArgs> addParticipants)
+        {
+            if (Response == null)
+            {
+                Response = new AddParticipantsEvent();
+            }
+            Response.AddListener(addParticipants);
+        }
+
+        public static void RemoveListener(UnityAction<AddParticipantsEventArgs> addParticipants)
+        {
+            Response?.RemoveListener(addParticipants);
+        }
+    }
+
     public class PlanningPhaseStartEventHandler : IGameEventHandler
     {
         // PlanningPhaseStartEvent        
@@ -98,6 +126,8 @@ namespace Raincrow.BattleArena.Events
 
     #region Events
 
+    public class AddParticipantsEvent : UnityEvent<AddParticipantsEventArgs> { }
+
     public class BattleEndEvent : UnityEvent<BattleEndEventArgs> { }
 
     public class PlanningPhaseStartEvent : UnityEvent<PlanningPhaseReadyEventArgs> { }
@@ -107,6 +137,12 @@ namespace Raincrow.BattleArena.Events
     #endregion
 
     #region Responses
+
+    public struct AddParticipantsEventArgs
+    {
+        [JsonProperty("battleId")] public string BattleId { get; set; }
+        [JsonProperty("participants")] public List<GenericCharacterObjectServer> Participants { get; set; }
+    }
 
     public struct PlanningPhaseReadyEventArgs
     {

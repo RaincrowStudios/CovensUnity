@@ -3,6 +3,7 @@ using Raincrow.BattleArena.Events;
 using Raincrow.BattleArena.Model;
 using Raincrow.BattleArena.Views;
 using Raincrow.StateMachines;
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -21,7 +22,7 @@ namespace Raincrow.BattleArena.Phases
         private IBattleResultModel _battleResultModel;
         private IAnimationController _animController;
         private string _playerId;
-        //private IList<ICharacterController> _summonedCharacters = new List<ICharacterController>();
+        private IList<ICharacterController> _summonedCharacters = new List<ICharacterController>();
         private ICameraTargetController _cameraTargetController;
         private float _moveSpeed;
 
@@ -55,63 +56,58 @@ namespace Raincrow.BattleArena.Phases
         public IEnumerator Enter(IStateMachine stateMachine)
         {
             // Save Summoned Characters
-            //_summonedCharacters = GetSummonedCharacters();
+            _summonedCharacters.Clear();
+            _summonedCharacters.AddRange(_turnModel.StartingCharacters);
 
             // Move camera to center
             IEnumerator moveTo = _cameraTargetController.MoveTo(Vector3.zero, _moveSpeed);
             yield return _coroutineHandler.Invoke(moveTo);
 
-            // Show Summon Animation
-            yield return _coroutineHandler.Invoke(SummonCharacters());
+            // Add New Characters
+            Coroutine<IList<ICharacterController>> addNewCharacters = _coroutineHandler.Invoke(AddNewCharacters());
+            yield return addNewCharacters;
+
+            _summonedCharacters.AddRange(addNewCharacters.ReturnValue);
 
             // Reset Turn Model
             _turnModel.Reset();
 
             // Create the Send Planning Phase Ready Coroutine
-            _sendPlanningPhaseReady = _gameMaster.SendPlanningPhaseReady(_battleModel.Id, _playerId, OnPlanningPhaseReady, OnBattleEnd);
+            _sendPlanningPhaseReady = _gameMaster.SendPlanningPhaseReady(_battleModel.Id, _playerId, OnPlanningPhaseReady, OnAddParticipants, OnBattleEnd);
 
             // Start the Send Planning Phase Ready Coroutine
             _coroutineHandler.Invoke(_sendPlanningPhaseReady);
 
             yield return null;
-        }
+        }        
 
-        private IEnumerator SummonCharacters()
+        private IEnumerator<IList<ICharacterController>> AddNewCharacters()
         {
-            IList<ICharacterController> summonedCharacters = new List<ICharacterController>();
-            foreach (IList<IActionResponseModel> responses in _turnModel.ResponseActions.Values)
+            IList<ICharacterController> newCharacters = new List<ICharacterController>();
+            foreach (ICharacterModel character in _turnModel.NewCharacters)
             {
-                foreach (IActionResponseModel response in responses)
+                BattleSlot characterPos = character.BattleSlot.Value;
+                IEnumerator<ICharacterController> enumerator = _battleModel.GridUI.SpawnObjectOnGrid(character, characterPos.Row, characterPos.Col);
+                Coroutine<ICharacterController> spawnObjectOnGrid = _coroutineHandler.Invoke(enumerator);
+                while (spawnObjectOnGrid.keepWaiting)
                 {
-                    if (response.Type == ActionResponseType.Join)
-                    {
-                        JoinActionResponseModel joinAction = response as JoinActionResponseModel;
-                        if (joinAction.IsSuccess)
-                        {
-                            IObjectModel objectModel = joinAction.Object;
-
-                            IEnumerator<ICharacterController> enumerator = _battleModel.GridUI.SpawnObjectOnGrid(objectModel, joinAction.Position.Row, joinAction.Position.Col);
-                            Coroutine<ICharacterController> spawnObjectOnGrid = _coroutineHandler.Invoke(enumerator);
-                            yield return spawnObjectOnGrid;
-
-                            summonedCharacters.Add(spawnObjectOnGrid.ReturnValue);
-                        }
-
-                    }
+                    yield return null;
                 }
+
+                newCharacters.Add(spawnObjectOnGrid.ReturnValue);
             }
-
-            // Add Starting characters
-            summonedCharacters.AddRange(_turnModel.StartingCharacters);
-            _turnModel.StartingCharacters.Clear();
-
-            yield return _animController.Summon(summonedCharacters);
+            yield return newCharacters;
         }
 
         public IEnumerator Update(IStateMachine stateMachine)
         {
             if (_isPlanningPhaseReady.GetValueOrDefault())
             {
+                // Show Summon Animation
+                yield return _animController.Summon(_summonedCharacters);
+                _turnModel.StartingCharacters.Clear();
+                _turnModel.NewCharacters.Clear();
+
                 // Change to Planning Phase
                 yield return stateMachine.ChangeState<PlanningPhase>();
             }
@@ -156,6 +152,11 @@ namespace Raincrow.BattleArena.Phases
             _battleResultModel.Reward = new BattleRewardModel();
             _battleResultModel.Type = args.Type;
             _battleResultModel.Reward = args.Reward;
+        }
+
+        private void OnAddParticipants(AddParticipantsEventArgs args)
+        {
+            _turnModel.NewCharacters.AddRange(args.Participants);
         }
 
         #endregion
