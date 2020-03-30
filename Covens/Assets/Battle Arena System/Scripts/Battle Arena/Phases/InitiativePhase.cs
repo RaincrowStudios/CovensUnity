@@ -21,7 +21,7 @@ namespace Raincrow.BattleArena.Phases
         private IBattleResultModel _battleResultModel;
         private IAnimationController _animController;
         private string _playerId;
-        private IList<ICharacterController> _startingCharacters = new List<ICharacterController>();
+        //private IList<ICharacterController> _summonedCharacters = new List<ICharacterController>();
         private ICameraTargetController _cameraTargetController;
         private float _moveSpeed;
 
@@ -55,12 +55,14 @@ namespace Raincrow.BattleArena.Phases
         public IEnumerator Enter(IStateMachine stateMachine)
         {
             // Save Summoned Characters
-            _startingCharacters = new List<ICharacterController>();
-            _startingCharacters.AddRange(_turnModel.StartingCharacters);
+            //_summonedCharacters = GetSummonedCharacters();
 
             // Move camera to center
             IEnumerator moveTo = _cameraTargetController.MoveTo(Vector3.zero, _moveSpeed);
-            _coroutineHandler.Invoke(moveTo);
+            yield return _coroutineHandler.Invoke(moveTo);
+
+            // Show Summon Animation
+            yield return _coroutineHandler.Invoke(SummonCharacters());
 
             // Reset Turn Model
             _turnModel.Reset();
@@ -74,14 +76,42 @@ namespace Raincrow.BattleArena.Phases
             yield return null;
         }
 
+        private IEnumerator SummonCharacters()
+        {
+            IList<ICharacterController> summonedCharacters = new List<ICharacterController>();
+            foreach (IList<IActionResponseModel> responses in _turnModel.ResponseActions.Values)
+            {
+                foreach (IActionResponseModel response in responses)
+                {
+                    if (response.Type == ActionResponseType.Join)
+                    {
+                        JoinActionResponseModel joinAction = response as JoinActionResponseModel;
+                        if (joinAction.IsSuccess)
+                        {
+                            IObjectModel objectModel = joinAction.Object;
+
+                            IEnumerator<ICharacterController> enumerator = _battleModel.GridUI.SpawnObjectOnGrid(objectModel, joinAction.Position.Row, joinAction.Position.Col);
+                            Coroutine<ICharacterController> spawnObjectOnGrid = _coroutineHandler.Invoke(enumerator);
+                            yield return spawnObjectOnGrid;
+
+                            summonedCharacters.Add(spawnObjectOnGrid.ReturnValue);
+                        }
+
+                    }
+                }
+            }
+
+            // Add Starting characters
+            summonedCharacters.AddRange(_turnModel.StartingCharacters);
+            _turnModel.StartingCharacters.Clear();
+
+            yield return _animController.Summon(summonedCharacters);
+        }
+
         public IEnumerator Update(IStateMachine stateMachine)
         {
             if (_isPlanningPhaseReady.GetValueOrDefault())
             {
-                // Show Summon Animation
-                yield return _animController.Summon(_startingCharacters);
-                _turnModel.StartingCharacters.Clear();
-
                 // Change to Planning Phase
                 yield return stateMachine.ChangeState<PlanningPhase>();
             }

@@ -490,6 +490,29 @@ namespace Raincrow.BattleArena.Controllers
 
                 yield return createSpirit.ReturnValue;
             }
+            else if (objectModel.ObjectType == ObjectType.Witch)
+            {
+                // Create the new witch
+                ICellUIModel targetCellView = Cells[row, col];
+                IEnumerator<ICharacterController<IWitchModel, IWitchUIModel>> enumerator = _witchFactory.Create(targetCellView.Transform, objectModel as IWitchModel);
+                Coroutine<ICharacterController<IWitchModel, IWitchUIModel>> createWitch = this.StartCoroutine<ICharacterController<IWitchModel, IWitchUIModel>>(enumerator);
+                while (createWitch.keepWaiting)
+                {
+                    yield return null;
+                }
+
+                // Add the new witch
+                ICharacterController<IWitchModel, IWitchUIModel> witchView = createWitch.ReturnValue;
+                _dictWitchesViews.Add(witchView.Model.Id, witchView);
+
+                // Set cell transform position to object UI Model position
+                witchView.Transform.position = targetCellView.Transform.position;
+
+                // Add object model in the grid model
+                _gridModel.SetObjectToGrid(witchView.Model, row, col);
+
+                yield return createWitch.ReturnValue;
+            }
         }
 
         #endregion

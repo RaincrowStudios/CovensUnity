@@ -292,6 +292,65 @@ namespace Raincrow.BattleArena.Controllers
                 actionResults.Add(ConvertActionRequestToResult(characterId, actionRequest));
             }
 
+            // Mock Witch
+            {
+                BattleAction battleAction = new BattleAction();
+
+                // Create characters
+                GenericCharacterObjectServer witch = new GenericCharacterObjectServer()
+                {
+                    Id = "witch2",
+                    ObjectType = ObjectType.Witch,
+                    Degree = 0,
+                    Name = "SABRINA THE TEENAGE WITCH",
+                    Level = 2,
+                    BaseEnergy = 500,
+                    Energy = 500
+                };
+
+                InventoryApparelModel equip = new InventoryApparelModel()
+                {
+                    Id = "cosmetic_f_A_B",
+                    Position = InventoryApparelPosition.BaseBody,
+                    Assets = new string[1] { "f_A_B" }
+                };
+                witch.Inventory.Equipped.Add(equip);
+
+                equip = new InventoryApparelModel()
+                {
+                    Id = "cosmetic_f_E_B",
+                    Position = InventoryApparelPosition.BaseBody,
+                    Assets = new string[1] { "f_E_B" }
+                };
+                witch.Inventory.Equipped.Add(equip);
+
+                equip = new InventoryApparelModel()
+                {
+                    Id = "cosmetic_f_O_B",
+                    Position = InventoryApparelPosition.BaseBody,
+                    Assets = new string[1] { "f_O_B" }
+                };
+                witch.Inventory.Equipped.Add(equip);
+
+                equip = new InventoryApparelModel()
+                {
+                    Id = "cosmetic_m_A_H",
+                    Position = InventoryApparelPosition.BaseBody,
+                    Assets = new string[2] { "m_A_H_Relaxed", "m_A_H_Censer" }
+                };
+                witch.Inventory.Equipped.Add(equip);
+
+                JoinActionResponseModel joinAction = new JoinActionResponseModel
+                {
+                    IsSuccess = true,
+                    Object = witch,
+                    Position = new BattleSlot() { Row = 2, Col = 2 }
+                };
+
+                battleAction.Results.Add(joinAction);
+                actionResults.Add(battleAction);
+            }
+
             BattleActor actor = new BattleActor()
             {
                 Id = characterId,
@@ -437,14 +496,14 @@ namespace Raincrow.BattleArena.Controllers
                     }
                 });
 
-                if (target.Energy <= damage)
-                {
-                    battleAction.Results.Add(new BanishActionResponseModel()
-                    {
-                        IsSuccess = true,
-                        TargetId = target.Id
-                    });
-                }
+                //if (target.Energy <= damage)
+                //{
+                //    battleAction.Results.Add(new BanishActionResponseModel()
+                //    {
+                //        IsSuccess = true,
+                //        TargetId = target.Id
+                //    });
+                //}
 
                 return battleAction;
             }
@@ -492,7 +551,7 @@ namespace Raincrow.BattleArena.Controllers
                 return battleAction;
             }
 
-            battleAction.Results.Add(new FleeActionResponseModel());
+            //battleAction.Results.Add(new FleeActionResponseModel());
             return battleAction;
         }
     }
