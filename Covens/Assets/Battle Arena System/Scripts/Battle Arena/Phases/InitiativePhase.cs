@@ -21,7 +21,7 @@ namespace Raincrow.BattleArena.Phases
         private IBattleResultModel _battleResultModel;
         private IAnimationController _animController;
         private string _playerId;
-        private IList<ICharacterController> _summonedCharacters = new List<ICharacterController>();
+        private IList<ICharacterController> _startingCharacters = new List<ICharacterController>();
         private ICameraTargetController _cameraTargetController;
         private float _moveSpeed;
 
@@ -55,8 +55,8 @@ namespace Raincrow.BattleArena.Phases
         public IEnumerator Enter(IStateMachine stateMachine)
         {
             // Save Summoned Characters
-            _summonedCharacters = new List<ICharacterController>();
-            _summonedCharacters.AddRange(_turnModel.SummonedCharacters);
+            _startingCharacters = new List<ICharacterController>();
+            _startingCharacters.AddRange(_turnModel.StartingCharacters);
 
             // Move camera to center
             IEnumerator moveTo = _cameraTargetController.MoveTo(Vector3.zero, _moveSpeed);
@@ -79,8 +79,8 @@ namespace Raincrow.BattleArena.Phases
             if (_isPlanningPhaseReady.GetValueOrDefault())
             {
                 // Show Summon Animation
-                yield return _animController.Summon(_summonedCharacters);
-                _turnModel.SummonedCharacters.Clear();
+                yield return _animController.Summon(_startingCharacters);
+                _turnModel.StartingCharacters.Clear();
 
                 // Change to Planning Phase
                 yield return stateMachine.ChangeState<PlanningPhase>();
