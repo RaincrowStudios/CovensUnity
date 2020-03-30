@@ -51,7 +51,7 @@ PlayerSettings:
   m_StereoRenderingPath: 0
   m_ActiveColorSpace: 0
   m_MTRendering: 1
-  m_StackTraceTypes: 010000000100000001000000010000000100000001000000
+  m_StackTraceTypes: 000000000000000000000000000000000000000001000000
   iosShowActivityIndicatorOnLoading: -1
   androidShowActivityIndicatorOnLoading: 2
   displayResolutionDialog: 1
@@ -174,7 +174,7 @@ PlayerSettings:
   buildNumber:
     Standalone: 681
     iPhone: 4304
-  AndroidBundleVersionCode: 4304
+  AndroidBundleVersionCode: 4306
   AndroidMinSdkVersion: 16
   AndroidTargetSdkVersion: 0
   AndroidPreferredInstallLocation: 1
@@ -264,7 +264,7 @@ PlayerSettings:
   clonedFromGUID: 00000000000000000000000000000000
   templatePackageId: 
   templateDefaultScene: 
-  AndroidTargetArchitectures: 2
+  AndroidTargetArchitectures: 3
   AndroidSplashScreenScale: 0
   androidSplashScreen: {fileID: 0}
   AndroidKeystoreName: '{inproject}: user.keystore'
@@ -745,7 +745,7 @@ PlayerSettings:
   scriptingDefineSymbols:
     1: DDNA_IOS_PUSH_NOTIFICATIONS_REMOVED
     4: DDNA_IOS_PUSH_NOTIFICATIONS_REMOVED
-    7: DDNA_IOS_PUSH_NOTIFICATIONS_REMOVED
+    7: DDNA_IOS_PUSH_NOTIFICATIONS_REMOVED;PRODUCTION
     13: CROSS_PLATFORM_INPUT
     14: CROSS_PLATFORM_INPUT;MOBILE_INPUT
     17: MOBILE_INPUT
