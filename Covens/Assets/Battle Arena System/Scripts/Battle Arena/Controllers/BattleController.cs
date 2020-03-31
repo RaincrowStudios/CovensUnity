@@ -157,7 +157,7 @@ namespace Raincrow.BattleArena.Controllers
                 for (int j = 0; j < _gridModel.MaxCellsPerColumn; j++)
                 {
                     ICellModel cell = _gridModel.Cells[i, j];
-                    if (!string.IsNullOrEmpty(cell.ObjectId))
+                    if (cell != null && !string.IsNullOrEmpty(cell.ObjectId))
                     {
                         if (dictSpirits.TryGetValue(cell.ObjectId, out ISpiritModel spirit)) // has a character/item
                         {
