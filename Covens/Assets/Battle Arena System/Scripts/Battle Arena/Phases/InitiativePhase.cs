@@ -86,15 +86,18 @@ namespace Raincrow.BattleArena.Phases
             IList<ICharacterController> newCharacters = new List<ICharacterController>();
             foreach (ICharacterModel character in _turnModel.NewCharacters)
             {
-                BattleSlot characterPos = character.BattleSlot.Value;
-                IEnumerator<ICharacterController> enumerator = _battleModel.GridUI.SpawnObjectOnGrid(character, characterPos.Row, characterPos.Col);
-                Coroutine<ICharacterController> spawnObjectOnGrid = _coroutineHandler.Invoke(enumerator);
-                while (spawnObjectOnGrid.keepWaiting)
+                if (character.BattleSlot.HasValue)
                 {
-                    yield return null;
-                }
+                    BattleSlot characterPos = character.BattleSlot.Value;
+                    IEnumerator<ICharacterController> enumerator = _battleModel.GridUI.SpawnObjectOnGrid(character, characterPos.Row, characterPos.Col);
+                    Coroutine<ICharacterController> spawnObjectOnGrid = _coroutineHandler.Invoke(enumerator);
+                    while (spawnObjectOnGrid.keepWaiting)
+                    {
+                        yield return null;
+                    }
 
-                newCharacters.Add(spawnObjectOnGrid.ReturnValue);
+                    newCharacters.Add(spawnObjectOnGrid.ReturnValue);
+                }
             }
             yield return newCharacters;
         }
