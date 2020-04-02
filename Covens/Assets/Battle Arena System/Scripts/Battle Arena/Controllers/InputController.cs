@@ -4,7 +4,7 @@ using UnityEngine.EventSystems;
 
 namespace Raincrow.BattleArena.Controllers
 {
-    public class InputController : MonoBehaviour, IInputController, IDragHandler, IPointerUpHandler, IPointerDownHandler
+    public class InputController : MonoBehaviour, IInputController, IDragHandler, IPointerUpHandler
     {
         // Serialized Variables
         [SerializeField] private ServiceLocator _serviceLocator;
@@ -45,9 +45,8 @@ namespace Raincrow.BattleArena.Controllers
             Vector3? endWorldDrag = ScreenPointToWorldPointInRectangle(_rectTransform, endScreenDrag, eventData.pressEventCamera);
 
             DragVelocity = endWorldDrag - startWorldDrag;
+            Debug.LogFormat("Dragging {0}:", DragVelocity);
         }
-
-        public void OnPointerDown(PointerEventData eventData) { }
 
         public void OnPointerUp(PointerEventData eventData)
         {
@@ -62,6 +61,10 @@ namespace Raincrow.BattleArena.Controllers
         protected virtual void LateUpdate()
         {
             Touch = null;
+            if (DragVelocity.HasValue)
+            {
+                DragVelocity = Vector2.zero;
+            }
         }
 
         public void SetActive(bool value)
