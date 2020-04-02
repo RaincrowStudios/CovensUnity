@@ -163,6 +163,7 @@ namespace Raincrow.BattleArena.Views
             for (int i = 0; i < numActions; i++)
             {
                 ActionPointView actionPointView = _objectPool.Spawn(_actionPointViewPrefab, _actionsRoot, false);
+                actionPointView.SetState(true);
                 _actionsPoints.Add(actionPointView);
                 yield return new WaitForSeconds(0.1f);
             }
