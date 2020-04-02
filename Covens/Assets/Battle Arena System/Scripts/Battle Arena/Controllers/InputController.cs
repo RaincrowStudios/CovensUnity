@@ -4,7 +4,7 @@ using UnityEngine.EventSystems;
 
 namespace Raincrow.BattleArena.Controllers
 {
-    public class InputController : MonoBehaviour, IInputController, IDragHandler, IPointerUpHandler
+    public class InputController : MonoBehaviour, IInputController, IDragHandler, IPointerUpHandler, IEndDragHandler, IPointerDownHandler
     {
         // Serialized Variables
         [SerializeField] private ServiceLocator _serviceLocator;
@@ -54,7 +54,15 @@ namespace Raincrow.BattleArena.Controllers
             {                
                 Touch = _battleCamera.ScreenPointToRay(eventData.position);
             }
+        }
 
+        public void OnPointerDown(PointerEventData eventData)
+        {
+
+        }
+
+        public void OnEndDrag(PointerEventData eventData)
+        {
             DragVelocity = null;
         }
 
