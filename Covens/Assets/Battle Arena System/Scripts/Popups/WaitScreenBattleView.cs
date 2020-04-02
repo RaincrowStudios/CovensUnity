@@ -39,13 +39,14 @@ namespace Raincrow.BattleArena.Views
             }
         }
 
-        private IEnumerator FadeRoutine(float fadeTime, float alphaSource, float alphaDest)
+        private IEnumerator FadeRoutine(float fadeTime, float alphaSource, float alphaDest, bool active = true)
         {
             for (float f = 0; f < fadeTime; f += Time.deltaTime)
             {
                 _rootCanvas.alpha = Mathf.Lerp(alphaSource, alphaDest, f / fadeTime);
                 yield return null;
             }
+            gameObject.SetActive(active);
             _rootCanvas.alpha = alphaDest;
         }
 
@@ -63,11 +64,10 @@ namespace Raincrow.BattleArena.Views
 
             if (isActiveAndEnabled)
             {
-                _fadeRoutine = FadeRoutine(fadeTime, 1f, 0f);
+                _fadeRoutine = FadeRoutine(fadeTime, 1f, 0f,false);
                 yield return StartCoroutine(_fadeRoutine);
 
             }
-            gameObject.SetActive(false);
 
             // Cleanup
             _loadingText = string.Empty;
