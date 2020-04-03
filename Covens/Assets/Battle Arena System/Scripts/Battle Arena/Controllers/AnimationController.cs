@@ -129,7 +129,7 @@ namespace Raincrow.BattleArena.Controllers
             ParticleSystem summonParticles = _objectPool.Spawn(_summonAnimPrefab, characterController.Transform.position, quartenion);
             summonParticles.Play();
 
-            for (float elapsedTime = 0; elapsedTime < _summonAnimationTime; elapsedTime += Time.deltaTime)
+            for (float elapsedTime = 0; elapsedTime < _summonAnimationTime; elapsedTime = Mathf.MoveTowards(elapsedTime, _summonAnimationTime, Time.deltaTime))
             {
                 float t = Easings.Interpolate(elapsedTime / _summonAnimationTime, _summonAnimationFunction);
                 characterController.Transform.localScale = Vector3.Lerp(Vector3.zero, Vector3.one, t);
@@ -154,7 +154,7 @@ namespace Raincrow.BattleArena.Controllers
 
             // Scale down
             float animationTime = _moveAnimationTime * 0.2f;
-            for (float elapsedTime = 0; elapsedTime < animationTime; elapsedTime += Time.deltaTime)
+            for (float elapsedTime = 0; elapsedTime < animationTime; elapsedTime = Mathf.MoveTowards(elapsedTime, animationTime, Time.deltaTime))
             {
                 float t = Easings.Interpolate(elapsedTime / animationTime, _moveAnimationFunction);
                 characterController.Transform.localScale = Vector3.Lerp(Vector3.one, Vector3.zero, t);
@@ -168,7 +168,7 @@ namespace Raincrow.BattleArena.Controllers
 
             // Move camera to target position
             animationTime = _moveAnimationTime * 0.6f;
-            for (float elapsedTime = 0; elapsedTime < animationTime; elapsedTime += Time.deltaTime)
+            for (float elapsedTime = 0; elapsedTime < animationTime; elapsedTime = Mathf.MoveTowards(elapsedTime, animationTime, Time.deltaTime))
             {
                 float t = Easings.Interpolate(elapsedTime / animationTime, _moveAnimationFunction);
                 Vector3 characterPosition = Vector3.Lerp(startPosition, targetPosition, t);
@@ -183,7 +183,7 @@ namespace Raincrow.BattleArena.Controllers
 
             // Scale up
             animationTime = _moveAnimationTime * 0.2f;
-            for (float elapsedTime = 0; elapsedTime < animationTime; elapsedTime += Time.deltaTime)
+            for (float elapsedTime = 0; elapsedTime < animationTime; elapsedTime = Mathf.MoveTowards(elapsedTime, animationTime, Time.deltaTime))
             {
                 float t = Easings.Interpolate(elapsedTime / animationTime, _moveAnimationFunction);
                 characterController.Transform.localScale = Vector3.Lerp(Vector3.zero, Vector3.one, t);
@@ -219,7 +219,7 @@ namespace Raincrow.BattleArena.Controllers
             yield return _cameraTargetController.MoveTo(position, _battleController.CameraSpeed);
 
             // Banish Animation
-            for (float elapsedTime = 0; elapsedTime < _banishAnimationTime; elapsedTime += Time.deltaTime)
+            for (float elapsedTime = 0; elapsedTime < _banishAnimationTime; elapsedTime = Mathf.MoveTowards(elapsedTime, _banishAnimationTime, Time.deltaTime))
             {
                 float t = Easings.Interpolate(elapsedTime / _banishAnimationTime, _banishAnimationFunction);
                 characterController.Transform.localScale = Vector3.Lerp(Vector3.one, Vector3.zero, t);
@@ -243,7 +243,7 @@ namespace Raincrow.BattleArena.Controllers
             yield return _cameraTargetController.MoveTo(position, _battleController.CameraSpeed);
 
             // Flee Animation
-            for (float elapsedTime = 0; elapsedTime < _fleeAnimationTime; elapsedTime += Time.deltaTime)
+            for (float elapsedTime = 0; elapsedTime < _fleeAnimationTime; elapsedTime = Mathf.MoveTowards(elapsedTime, _fleeAnimationTime, Time.deltaTime))
             {
                 float t = Easings.Interpolate(elapsedTime / _fleeAnimationTime, _fleeAnimationFunction);
                 characterController.Transform.localScale = Vector3.Lerp(Vector3.one, Vector3.zero, t);
@@ -316,7 +316,7 @@ namespace Raincrow.BattleArena.Controllers
                 trail.localScale = _trailScale;
                 StartCoroutine(ScheduleRecycle(_trailLifecycle, trail));
 
-                for (float time = 0; time < _trailLifecycle; time += Time.deltaTime)
+                for (float time = 0; time < _trailLifecycle; time = Mathf.MoveTowards(time, _trailLifecycle, Time.deltaTime))
                 {
                     float t = Mathf.InverseLerp(0f, _trailLifecycle, time);
                     trail.LookAt(targetTransform);
@@ -357,7 +357,7 @@ namespace Raincrow.BattleArena.Controllers
             nextEnergy = Mathf.Max(nextEnergy, 0);
 
             //Show Damage decreasing over time
-            for (float elapsedTime = 0; elapsedTime < _damageAnimationTime; elapsedTime += Time.deltaTime)
+            for (float elapsedTime = 0; elapsedTime <= _damageAnimationTime; elapsedTime = Mathf.MoveTowards(elapsedTime, _damageAnimationTime, Time.deltaTime))
             {
                 float energy = Mathf.Lerp(previousEnergy, nextEnergy, elapsedTime / _damageAnimationTime);
                 target.UpdateView(target.Model.BaseEnergy, Mathf.FloorToInt(energy));
@@ -385,7 +385,7 @@ namespace Raincrow.BattleArena.Controllers
             Vector3 startPos = feedbackText.transform.localPosition;
             Vector3 targetPos = feedbackText.transform.localPosition + new Vector3(0, Random.Range(8, 11), 0);
 
-            for (float time = 0; time < animationTime; time += Time.deltaTime)
+            for (float time = 0; time < animationTime; time = Mathf.MoveTowards(time, animationTime, Time.deltaTime))
             {
                 float normalizedTime = Easings.Interpolate(time / animationTime, animationFunction);
                 if (feedbackText != null)
