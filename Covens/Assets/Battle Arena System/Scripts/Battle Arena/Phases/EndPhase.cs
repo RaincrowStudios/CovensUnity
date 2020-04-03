@@ -77,6 +77,22 @@ namespace Raincrow.BattleArena.Phases
 
             yield return _coroutineHandler.Invoke(DebriefPhase());
 
+            //Give ingredients reawrds
+            foreach (InventoryItemModel tool in _battleResult.Reward.Tools)
+            {
+                PlayerDataManager.playerData.AddIngredient(tool.Id, tool.Count);
+            }
+
+            foreach (InventoryItemModel herb in _battleResult.Reward.Herbs)
+            {
+                PlayerDataManager.playerData.AddIngredient(herb.Id, herb.Count);
+            }
+
+            foreach (InventoryItemModel gem in _battleResult.Reward.Gems)
+            {
+                PlayerDataManager.playerData.AddIngredient(gem.Id, gem.Count);
+            }
+
             yield return _rewardsBatttleView.Show(
                 _battleResult.Type == BattleResultType.PlayerWins ? LocalizeLookUp.GetText("battle_title_win") : LocalizeLookUp.GetText("battle_title_lose"),
                  LocalizeLookUp.GetText("battle_subtitle_end_battle"),
