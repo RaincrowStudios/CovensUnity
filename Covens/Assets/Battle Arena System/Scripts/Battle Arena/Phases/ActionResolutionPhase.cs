@@ -173,10 +173,7 @@ namespace Raincrow.BattleArena.Phases
             ICharacterController casterView = GetCharacterView(castAction.Caster.Id);
             ICharacterController targetView = GetCharacterView(castAction.Target.Id);
 
-            yield return _animController.CastSpell(castAction.School, casterView, targetView);
-
-            casterView.UpdateEnergy(castAction.Caster.Energy);
-            targetView.UpdateEnergy(castAction.Target.Energy);
+            yield return _animController.CastSpell(castAction.School, casterView, targetView);            
 
             if (castAction.IsSuccess)
             {                
@@ -195,6 +192,9 @@ namespace Raincrow.BattleArena.Phases
                 // show cast failed message
                 yield return _animController.ShowMessage(targetView, "CAST FAILED!");
             }
+
+            casterView.UpdateEnergy(castAction.Caster.Energy);
+            targetView.UpdateEnergy(castAction.Target.Energy);
         }
 
         private ICharacterController GetCharacterView(string characterId)
