@@ -357,7 +357,7 @@ namespace Raincrow.BattleArena.Controllers
             nextEnergy = Mathf.Max(nextEnergy, 0);
 
             //Show Damage decreasing over time
-            for (float elapsedTime = 0; elapsedTime <= _damageAnimationTime; elapsedTime = Mathf.MoveTowards(elapsedTime, _damageAnimationTime, Time.deltaTime))
+            for (float elapsedTime = 0; elapsedTime < _damageAnimationTime; elapsedTime = Mathf.MoveTowards(elapsedTime, _damageAnimationTime, Time.deltaTime))
             {
                 float energy = Mathf.Lerp(previousEnergy, nextEnergy, elapsedTime / _damageAnimationTime);
                 target.UpdateView(target.Model.BaseEnergy, Mathf.FloorToInt(energy));
