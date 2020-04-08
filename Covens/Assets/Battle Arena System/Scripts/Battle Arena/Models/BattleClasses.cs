@@ -30,7 +30,7 @@ namespace Raincrow.BattleArena.Model
         [JsonProperty("degree")] public int Degree { get; set; }
     }
 
-    public struct BattleRankingModel
+    public class BattleRankingModel
     {
         [Newtonsoft.Json.JsonProperty("_id")]
         public string Id { get; set; }
