@@ -201,9 +201,9 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 255703031}
-        m_MethodName: SetActive
-        m_Mode: 6
+      - m_Target: {fileID: 1310174783}
+        m_MethodName: CloseDeathMessage
+        m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
           m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
@@ -104598,16 +104598,6 @@ PrefabInstance:
       propertyPath: m_Pivot.y
       value: 0.5
       objectReference: {fileID: 0}
-    - target: {fileID: 8639767915316120399, guid: c8d74d8f062777d488ca0981651d141e,
-        type: 3}
-      propertyPath: m_Alpha
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 8639767915316120399, guid: c8d74d8f062777d488ca0981651d141e,
-        type: 3}
-      propertyPath: m_Interactable
-      value: 0
-      objectReference: {fileID: 0}
     - target: {fileID: 8639767915316120396, guid: c8d74d8f062777d488ca0981651d141e,
         type: 3}
       propertyPath: _rootCanvas
@@ -104618,6 +104608,16 @@ PrefabInstance:
       propertyPath: _loadingTextMesh
       value: 
       objectReference: {fileID: 8639767915419964846}
+    - target: {fileID: 8639767915316120399, guid: c8d74d8f062777d488ca0981651d141e,
+        type: 3}
+      propertyPath: m_Alpha
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8639767915316120399, guid: c8d74d8f062777d488ca0981651d141e,
+        type: 3}
+      propertyPath: m_Interactable
+      value: 0
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: c8d74d8f062777d488ca0981651d141e, type: 3}
 --- !u!114 &8639767915419964846 stripped

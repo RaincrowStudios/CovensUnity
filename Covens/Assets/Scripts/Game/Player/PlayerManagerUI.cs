@@ -268,6 +268,12 @@ public class PlayerManagerUI : UIAnimationManager
         xpText.text = PlayerDataManager.playerData.xp.ToString() + "/" + PlayerDataManager.playerData.xpToLevelUp.ToString();
     }
 
+    public void CloseDeathMessage()
+    {
+        DeathReason.SetActive(false);
+        LowEnergyPopup.Show();
+    }
+
     void SetupAlignmentPhase()
     {
         var lp = PlayerDataManager.playerData.degree;
