@@ -313,6 +313,7 @@ public class AvatarSpriteUtil : MonoBehaviour, IWitchAvatarFactory, ISpiritAvata
         root.transform.position = new Vector3(-1000, 0, 0);
         root.gameObject.SetActive(true);
         characterView.gameObject.SetActive(true);
+        m_PortraitArenaBackground.enabled = false;
 
         characterView.InitCharacter(properties.equips, true, () =>
         {
