@@ -88,8 +88,10 @@ namespace Raincrow.BattleArena.Phases
             {
                 if (character.BattleSlot.HasValue)
                 {
+                    // check if character is already in the grid
+                    IGridUIModel gridUIModel = _battleModel.GridUI;
                     BattleSlot characterPos = character.BattleSlot.Value;
-                    IEnumerator<ICharacterController> enumerator = _battleModel.GridUI.SpawnObjectOnGrid(character, characterPos.Row, characterPos.Col);
+                    IEnumerator<ICharacterController> enumerator = gridUIModel.SpawnObjectOnGrid(character, characterPos.Row, characterPos.Col);
                     Coroutine<ICharacterController> spawnObjectOnGrid = _coroutineHandler.Invoke(enumerator);
                     while (spawnObjectOnGrid.keepWaiting)
                     {

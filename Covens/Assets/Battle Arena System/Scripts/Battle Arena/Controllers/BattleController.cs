@@ -467,7 +467,7 @@ namespace Raincrow.BattleArena.Controllers
 
         public IEnumerator<ICharacterController> SpawnObjectOnGrid(IObjectModel objectModel, int row, int col)
         {
-            if (objectModel.ObjectType == ObjectType.Spirit)
+            if (objectModel.ObjectType == ObjectType.Spirit && !_dictSpiritViews.ContainsKey(objectModel.Id))
             {
                 // Create the new spirit
                 ICellUIModel targetCellView = Cells[row, col];
@@ -490,7 +490,7 @@ namespace Raincrow.BattleArena.Controllers
 
                 yield return createSpirit.ReturnValue;
             }
-            else if (objectModel.ObjectType == ObjectType.Witch)
+            else if (objectModel.ObjectType == ObjectType.Witch && !_dictWitchesViews.ContainsKey(objectModel.Id))
             {
                 // Create the new witch
                 ICellUIModel targetCellView = Cells[row, col];
