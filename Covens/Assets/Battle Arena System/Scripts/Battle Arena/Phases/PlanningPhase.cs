@@ -144,8 +144,11 @@ namespace Raincrow.BattleArena.Phases
 
             if (!string.IsNullOrWhiteSpace(cellUIModel.CellModel.ObjectId) && cellUIModel.CellModel.ObjectId.Equals(PlayerDataManager.playerData.instance))
             {
-                _quickCastView.CloseMenus();
-                return;
+                _quickCastView.OnClickYourself();
+            }
+            else
+            {
+                _quickCastView.ActiveAllButtons();
             }
 
             cellUIModel.SetIsSelected(true);            

@@ -2,6 +2,7 @@
 using UnityEngine;
 using TMPro;
 using UnityEngine.Events;
+using System.Collections.Generic;
 
 namespace Raincrow.BattleArena.Views
 {
@@ -146,9 +147,19 @@ namespace Raincrow.BattleArena.Views
             if (value)
                 _spellMenu.OnOpenIngredients(spell);
             else
-                _spellMenu.OnCloseIngredients();
+                _spellMenu.ActiveAllButtons();
 
             _buttonFlee.interactable = !value;
+        }
+
+        public void OnClickYourself()
+        {
+            _spellMenu.OnClickYourself();
+        }
+
+        public void ActiveAllButtons()
+        {
+            _spellMenu.ActiveAllButtons();
         }
     }
 
@@ -167,5 +178,9 @@ namespace Raincrow.BattleArena.Views
         void OpenActionsMenu();
 
         void CloseMenus();
+
+        void OnClickYourself();
+
+        void ActiveAllButtons();
     }
 }
