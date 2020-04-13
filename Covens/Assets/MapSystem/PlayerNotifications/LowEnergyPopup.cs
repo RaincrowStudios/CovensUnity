@@ -17,13 +17,15 @@ public class LowEnergyPopup : MonoBehaviour
     [SerializeField] private CanvasGroup thisCG;
 
     private System.Action m_OnEnergyRestored;
+    private static bool HasShownDeathMessage = false;
 
     public static void Show(System.Action onRestored = null)
     {
-        if (LowEnergyPopup.Instance == null)
+        if (Instance == null && !HasShownDeathMessage)
         {
             Utilities.InstantiateObject(Resources.Load<GameObject>("UILowEnergyPopUp"), null);
             Instance.m_OnEnergyRestored = onRestored;
+            HasShownDeathMessage = true;
         }
     }
 
