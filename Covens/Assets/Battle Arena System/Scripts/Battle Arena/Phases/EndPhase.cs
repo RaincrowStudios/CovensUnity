@@ -78,19 +78,28 @@ namespace Raincrow.BattleArena.Phases
             yield return _coroutineHandler.Invoke(DebriefPhase());
 
             //Give ingredients reawrds
-            foreach (InventoryItemModel tool in _battleResult.Reward.Tools)
+            if (_battleResult.Reward.Tools != null)
             {
-                PlayerDataManager.playerData.AddIngredient(tool.Id, tool.Count);
+                foreach (InventoryItemModel tool in _battleResult.Reward.Tools)
+                {
+                    PlayerDataManager.playerData.AddIngredient(tool.Id, tool.Count);
+                }
             }
 
-            foreach (InventoryItemModel herb in _battleResult.Reward.Herbs)
+            if (_battleResult.Reward.Herbs != null)
             {
-                PlayerDataManager.playerData.AddIngredient(herb.Id, herb.Count);
+                foreach (InventoryItemModel herb in _battleResult.Reward.Herbs)
+                {
+                    PlayerDataManager.playerData.AddIngredient(herb.Id, herb.Count);
+                }
             }
 
-            foreach (InventoryItemModel gem in _battleResult.Reward.Gems)
+            if (_battleResult.Reward.Herbs != null)
             {
-                PlayerDataManager.playerData.AddIngredient(gem.Id, gem.Count);
+                foreach (InventoryItemModel gem in _battleResult.Reward.Herbs)
+                {
+                    PlayerDataManager.playerData.AddIngredient(gem.Id, gem.Count);
+                }
             }
 
             yield return _rewardsBatttleView.Show(
