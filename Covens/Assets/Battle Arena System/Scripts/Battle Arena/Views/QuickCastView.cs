@@ -157,9 +157,9 @@ namespace Raincrow.BattleArena.Views
             _spellMenu.OnClickYourself();
         }
 
-        public void ActiveAllButtons()
+        public void OnClickEnemy()
         {
-            _spellMenu.ActiveAllButtons();
+            _spellMenu.OnClickEnemy();
         }
     }
 
@@ -181,6 +181,6 @@ namespace Raincrow.BattleArena.Views
 
         void OnClickYourself();
 
-        void ActiveAllButtons();
+        void OnClickEnemy();
     }
 }

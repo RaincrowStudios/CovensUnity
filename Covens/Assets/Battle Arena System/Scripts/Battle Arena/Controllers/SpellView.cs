@@ -15,8 +15,6 @@ namespace Raincrow.BattleArena.Views
         //Privates variables
         private List<SpellSlotView> _spellButtons = new List<SpellSlotView>();
         private ICharacterModel _target;
-        private List<string> _allowedSpells = new List<string>(3) { "spell_bless", "spell_greaterBless", "spell_resurrection" };
-
         public void Show(System.Action<string> onClickSpell, System.Action<string> openIngredients)
         {
             int quickcastCount = 4;
@@ -51,10 +49,18 @@ namespace Raincrow.BattleArena.Views
 
             foreach (SpellSlotView button in _spellButtons)
             {
-                if (_allowedSpells.Contains(button.GetSpellName()))
-                    button.SetInteractable(true);
-                else
-                    button.SetInteractable(false);
+                SpellData spell = DownloadedAssets.GetSpell(button.GetSpellName());
+                button.SetInteractable(spell.target == SpellData.Target.SELF || spell.target == SpellData.Target.ANY);
+            }
+        }
+        public void OnClickEnemy()
+        {
+            _buttonSpellAstral.interactable = true;
+
+            foreach (SpellSlotView button in _spellButtons)
+            {
+                SpellData spell = DownloadedAssets.GetSpell(button.GetSpellName());
+                button.SetInteractable(spell.target == SpellData.Target.OTHER || spell.target == SpellData.Target.ANY);
             }
         }
 
