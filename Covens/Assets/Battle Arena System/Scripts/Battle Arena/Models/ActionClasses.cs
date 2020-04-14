@@ -73,7 +73,11 @@ namespace Raincrow.BattleArena.Model
     public class BanishActionResponseModel : ActionResponseModel
     {
         public override string Type => ActionResponseType.Banish;
-        public string TargetId { get; set; }
+        [JsonProperty("target")]
+        public GenericCharacterObjectServer Target { get; set; }
+        [JsonProperty("killedBy")]
+        public GenericCharacterObjectServer KilledBy { get; set; }
+
     }
 
     //public class JoinActionResponseModel : ActionResponseModel

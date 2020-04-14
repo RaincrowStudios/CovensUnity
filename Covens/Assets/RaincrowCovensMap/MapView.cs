@@ -15,6 +15,7 @@ public class MapView : MonoBehaviour
 
     public static event System.Action<WorldBossMarker> OnEnterBossArea;
     public static event System.Action OnLeaveBossArea;
+    private static bool HasShownLowEnergyPopup;
 
     private void Awake()
     {
@@ -102,7 +103,11 @@ public class MapView : MonoBehaviour
     [ContextMenu("_OnPlayerVulnerable")]
     private void _OnPlayerVulnerable()
     {
-        LowEnergyPopup.Show();
+        if (!HasShownLowEnergyPopup)
+        {
+            LowEnergyPopup.Show();
+            HasShownLowEnergyPopup = true;
+        }
     }
 
     private void _OnMapTokenAdd(IMarker marker)

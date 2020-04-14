@@ -72,10 +72,13 @@ namespace Raincrow.BattleArena.Phases
                             break;
                         case ActionResponseType.Banish:
                             BanishActionResponseModel banishAction = responseAction as BanishActionResponseModel;
-                            actionRoutine = Banish(banishAction.TargetId, banishAction);
+                            if (banishAction.Target != null)
+                            {
+                                actionRoutine = Banish(banishAction.Target.Id, banishAction);
 
-                            string logBanish = "The <witch>Evil Wind</witch> cast <spell>Arcane Damage</spell> on you. <damage>1624 energy</damage><time>[01:12]</time>";
-                            _barEventLogView.AddLog(logBanish);
+                                string logBanish = "The <witch>Evil Wind</witch> cast <spell>Arcane Damage</spell> on you. <damage>1624 energy</damage><time>[01:12]</time>";
+                                _barEventLogView.AddLog(logBanish);
+                            }
                             break;
                     }
 
@@ -153,7 +156,7 @@ namespace Raincrow.BattleArena.Phases
                     yield return _animController.Banish(characterView);
 
                     _battleModel.GridUI.RemoveObjectFromGrid(characterView, character);
-                    
+
                     Debug.LogFormat("Execute Action Flee Character ID: {0}", character.Id);
                 }
             }

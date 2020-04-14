@@ -28,20 +28,27 @@ namespace Raincrow.BattleArena.Converters
         {
             JObject jo = JObject.Load(reader);
             string actionResponseType = jo["event"].Value<string>();
+            IActionResponseModel response;
             switch (actionResponseType)
             {
                 case ActionResponseType.Cast:
-                    return JsonConvert.DeserializeObject<CastActionResponseModel>(jo.ToString(), SpecifiedSubclassConversion);
-                case ActionResponseType.Move:
-                    return JsonConvert.DeserializeObject<MoveActionResponseModel>(jo.ToString(), SpecifiedSubclassConversion);
+                    response = JsonConvert.DeserializeObject<CastActionResponseModel>(jo.ToString(), SpecifiedSubclassConversion);
+                    return response;
                 case ActionResponseType.Summon:
-                    return JsonConvert.DeserializeObject<SummonActionResponseModel>(jo.ToString(), SpecifiedSubclassConversion);
+                    response = JsonConvert.DeserializeObject<SummonActionResponseModel>(jo.ToString(), SpecifiedSubclassConversion);
+                    return response;
                 case ActionResponseType.Flee:
-                    return JsonConvert.DeserializeObject<FleeActionResponseModel>(jo.ToString(), SpecifiedSubclassConversion);
+                    response = JsonConvert.DeserializeObject<FleeActionResponseModel>(jo.ToString(), SpecifiedSubclassConversion);
+                    return response;
                 case ActionResponseType.Banish:
-                    return JsonConvert.DeserializeObject<BanishActionResponseModel>(jo.ToString(), SpecifiedSubclassConversion);
+                    response = JsonConvert.DeserializeObject<BanishActionResponseModel>(jo.ToString(), SpecifiedSubclassConversion);
+                    response.IsSuccess = true;
+                    return response;
+                case ActionResponseType.Move:
+                    response = JsonConvert.DeserializeObject<MoveActionResponseModel>(jo.ToString(), SpecifiedSubclassConversion);
+                    return response;
             }
-            throw new System.NotImplementedException();
+            throw new System.ArgumentException("Invalid action response type!");
         }
 
         public override bool CanWrite => false;
