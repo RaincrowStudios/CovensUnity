@@ -148,7 +148,7 @@ namespace Raincrow.BattleArena.Phases
             }
             else
             {
-                _quickCastView.ActiveAllButtons();
+                _quickCastView.OnClickEnemy();
             }
 
             cellUIModel.SetIsSelected(true);            
