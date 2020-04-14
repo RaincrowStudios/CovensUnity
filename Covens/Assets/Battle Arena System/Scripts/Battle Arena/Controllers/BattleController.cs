@@ -159,7 +159,7 @@ namespace Raincrow.BattleArena.Controllers
                     ICellModel cell = _gridModel.Cells[i, j];
                     if (cell != null && !string.IsNullOrEmpty(cell.ObjectId))
                     {
-                        if (dictSpirits.TryGetValue(cell.ObjectId, out ISpiritModel spirit)) // has a character/item
+                        if (dictSpirits.TryGetValue(cell.ObjectId, out ISpiritModel spirit) && !_dictSpiritViews.ContainsKey(spirit.Id)) // has a character/item
                         {
                             ICellUIModel cellView = Cells[i, j];
                             Coroutine<ICharacterController<ISpiritModel, ISpiritUIModel>> createCharacter =
@@ -171,7 +171,7 @@ namespace Raincrow.BattleArena.Controllers
                             //spiritView.Init(spirit, battleCamera);
                             _dictSpiritViews.Add(spirit.Id, createCharacter.ReturnValue);
                         }
-                        else if (dictWitches.TryGetValue(cell.ObjectId, out IWitchModel witch)) // has a character/item
+                        else if (dictWitches.TryGetValue(cell.ObjectId, out IWitchModel witch) && !_dictWitchesViews.ContainsKey(witch.Id)) // has a character/item
                         {
                             ICellUIModel cellView = Cells[i, j];
                             Coroutine<ICharacterController<IWitchModel, IWitchUIModel>> createCharacter =
@@ -467,7 +467,7 @@ namespace Raincrow.BattleArena.Controllers
 
         public IEnumerator<ICharacterController> SpawnObjectOnGrid(IObjectModel objectModel, int row, int col)
         {
-            if (objectModel.ObjectType == ObjectType.Spirit)
+e            if (objectModel.ObjectType == ObjectType.Spirit)
             {
                 // Create the new spirit
                 ICellUIModel targetCellView = Cells[row, col];
