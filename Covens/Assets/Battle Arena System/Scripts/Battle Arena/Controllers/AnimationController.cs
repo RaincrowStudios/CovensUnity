@@ -253,13 +253,17 @@ namespace Raincrow.BattleArena.Controllers
             _objectPool.Recycle(aura);
         }
 
-        public IEnumerator CastSpell(int spellDegree, ICharacterController caster, ICharacterController target)
+        public IEnumerator CastSpell(string spellName, int spellDegree, ICharacterController caster, ICharacterController target)
         {
             Transform casterTransform = caster.Transform;
             Transform targetTransform = target.Transform;
 
             // Move Camera            
             yield return _cameraTargetController.MoveTo(casterTransform.position, _battleController.CameraSpeed);
+
+            // Show spell name
+            //yield return StartCoroutine(ShowMessage(caster, spellName));
+            StartCoroutine(SpawnText(casterTransform, spellName, _damageTextScale, _statusColor, _statusAnimationTime, _statusAnimationFunction));
 
             Transform chargePrefab, trailPrefab, hitPrefab;
 
@@ -283,7 +287,7 @@ namespace Raincrow.BattleArena.Controllers
             }
 
             Vector3 offset = targetTransform.up * 40;
-            float distance = Vector3.Distance(casterTransform.position, targetTransform.position);
+            //float distance = Vector3.Distance(casterTransform.position, targetTransform.position);
 
             Vector3 startPosition = casterTransform.position + offset;
             Vector3 targetPosition = targetTransform.position + offset;
@@ -417,7 +421,7 @@ namespace Raincrow.BattleArena.Controllers
         IEnumerator Summon(ICharacterController characterController);
         IEnumerator Summon(IList<ICharacterController> characterControllers);
         IEnumerator Move(ICharacterController characterController, BattleSlot targetBattleSlot);
-        IEnumerator CastSpell(int spellDegree, ICharacterController caster, ICharacterController target);
+        IEnumerator CastSpell(string spellName, int spellDegree, ICharacterController caster, ICharacterController target);
         IEnumerator ApplyDamage(ICharacterController target, int damage, bool isCritical);
         IEnumerator ShowMessage(ICharacterController target, string message);
         //IEnumerator SpawnTrail(int degree, Transform caster, Transform target);

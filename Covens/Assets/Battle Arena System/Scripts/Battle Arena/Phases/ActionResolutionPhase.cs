@@ -173,7 +173,8 @@ namespace Raincrow.BattleArena.Phases
             ICharacterController casterView = GetCharacterView(castAction.Caster.Id);
             ICharacterController targetView = GetCharacterView(castAction.Target.Id);
 
-            yield return _animController.CastSpell(castAction.School, casterView, targetView);            
+            string spellName = LocalizeLookUp.GetSpellName(castAction.Spell);
+            yield return _animController.CastSpell(spellName, castAction.School, casterView, targetView);            
 
             if (castAction.IsSuccess)
             {                
