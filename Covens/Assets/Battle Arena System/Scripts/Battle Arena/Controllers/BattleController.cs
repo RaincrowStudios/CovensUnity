@@ -467,7 +467,7 @@ namespace Raincrow.BattleArena.Controllers
 
         public IEnumerator<ICharacterController> SpawnObjectOnGrid(IObjectModel objectModel, int row, int col)
         {
-e            if (objectModel.ObjectType == ObjectType.Spirit)
+            if (objectModel.ObjectType == ObjectType.Spirit)
             {
                 // Create the new spirit
                 ICellUIModel targetCellView = Cells[row, col];
