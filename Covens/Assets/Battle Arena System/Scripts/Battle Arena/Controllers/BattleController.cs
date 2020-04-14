@@ -515,6 +515,20 @@ namespace Raincrow.BattleArena.Controllers
             }
         }
 
+        public bool HasCharacter(string id)
+        {
+            if (_dictWitchesViews.ContainsKey(id))
+            {
+                return true;
+            }
+
+            if (_dictSpiritViews.ContainsKey(id))
+            {
+                return true;
+            }
+            return false;
+        }
+
         #endregion
     }
 

@@ -159,7 +159,15 @@ namespace Raincrow.BattleArena.Phases
 
         private void OnAddParticipants(AddParticipantsEventArgs args)
         {
-            _turnModel.NewCharacters.AddRange(args.Participants);
+            List<GenericCharacterObjectServer> newCharacters = new List<GenericCharacterObjectServer>();
+            foreach (var character in args.Participants)
+            {
+                if (!_battleModel.GridUI.HasCharacter(character.Id))
+                {
+                    newCharacters.Add(character);
+                }
+            }
+            _turnModel.NewCharacters.AddRange(newCharacters);
         }
 
         #endregion

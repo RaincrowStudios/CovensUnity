@@ -50,6 +50,7 @@ namespace Raincrow.BattleArena.Model
         void SetObjectToGrid(ICharacterController characterController, IObjectModel objectModel, int row, int col);
         void RemoveObjectFromGrid(ICharacterController characterController, IObjectModel objectModel);
         //void RecycleCharacter(GameObject character);       
+        bool HasCharacter(string id);
     }
 
     public interface ICellUIModel
