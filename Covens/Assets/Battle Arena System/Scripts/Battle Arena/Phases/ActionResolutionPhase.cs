@@ -16,6 +16,7 @@ namespace Raincrow.BattleArena.Phases
         private ITurnModel _turnModel;
         private IBarEventLogView _barEventLogView;
         private IAnimationController _animController;
+        private string _playerId;
         private IDictionary<string, ICharacterController<IWitchModel, IWitchUIModel>> _witches =
             new Dictionary<string, ICharacterController<IWitchModel, IWitchUIModel>>(); // holy shit, it works
         private IDictionary<string, ICharacterController<ISpiritModel, ISpiritUIModel>> _spirits =
@@ -26,12 +27,14 @@ namespace Raincrow.BattleArena.Phases
 
         public ActionResolutionPhase(ICoroutineHandler coroutineStarter,
                                      IBattleModel battleModel,
+                                     string playerModel,
                                      ITurnModel turnModel,
                                      IBarEventLogView barEventLogView,
                                      IAnimationController animController)
         {
             _coroutineStarter = coroutineStarter;
             _battleModel = battleModel;
+            _playerId = playerModel;
             _turnModel = turnModel;
             _barEventLogView = barEventLogView;
             _animController = animController;
@@ -184,6 +187,11 @@ namespace Raincrow.BattleArena.Phases
                     yield return _animController.ApplyDamage(targetView, castAction.Result.EnergyChange, castAction.Result.IsCritical);
 
                     targetView.AddDamage(castAction.Result.EnergyChange);
+                }
+
+                if (castAction.Result.Cooldown != null && casterView.Model.Id == _playerId)
+                {
+                    _battleModel.AddCooldown(castAction.Spell, castAction.Result.Cooldown.Value);
                 }
 
                 Debug.LogFormat("Execute Cast to {0} and apply {1} damage", castAction.Target.Id, castAction.Result.EnergyChange);

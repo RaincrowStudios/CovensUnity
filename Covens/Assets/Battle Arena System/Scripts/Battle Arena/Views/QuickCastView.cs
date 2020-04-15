@@ -3,6 +3,7 @@ using UnityEngine;
 using TMPro;
 using UnityEngine.Events;
 using System.Collections.Generic;
+using Raincrow.BattleArena.Model;
 
 namespace Raincrow.BattleArena.Views
 {
@@ -33,7 +34,7 @@ namespace Raincrow.BattleArena.Views
         private GameObject _currentMenu;
         private bool _isOpen;
 
-        public void Show(UnityAction onClickFly, UnityAction onClickSummon, UnityAction onClickFlee, System.Action<string> onCastSpell, System.Action<string> openIngredients)
+        public void Show(IBattleModel battleModel, UnityAction onClickFly, UnityAction onClickSummon, UnityAction onClickFlee, System.Action<string> onCastSpell, System.Action<string> openIngredients)
         {
             gameObject.SetActive(true);
             _buttonFly.onClick.AddListener(onClickFly);
@@ -41,7 +42,7 @@ namespace Raincrow.BattleArena.Views
             _buttonFlee.onClick.AddListener(onClickFlee);
             _buttonAstral.onClick.AddListener(() => { onCastSpell("spell_astral"); });
 
-            _spellMenu.Show(onCastSpell, openIngredients);
+            _spellMenu.Show(battleModel, onCastSpell, openIngredients);
         }
 
         public void Hide()
@@ -165,7 +166,7 @@ namespace Raincrow.BattleArena.Views
 
     public interface IQuickCastView
     {
-        void Show(UnityAction onClickFly, UnityAction onClickSummon, UnityAction onClickFlee, System.Action<string> onCastSpell, System.Action<string> openIngredients);
+        void Show(IBattleModel battleModel, UnityAction onClickFly, UnityAction onClickSummon, UnityAction onClickFlee, System.Action<string> onCastSpell, System.Action<string> openIngredients);
 
         void SetActive(bool value);
 

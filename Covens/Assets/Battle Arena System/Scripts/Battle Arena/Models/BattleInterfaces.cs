@@ -29,6 +29,9 @@ namespace Raincrow.BattleArena.Model
     {
         string Id { get; }
         IGridUIModel GridUI { get; }
+        void UpdateCooldowns();
+        int GetCooldown(string spellId);
+        void AddCooldown(string spellId, int maxCooldown);
     }
 
     public interface IGridGameObjectModel

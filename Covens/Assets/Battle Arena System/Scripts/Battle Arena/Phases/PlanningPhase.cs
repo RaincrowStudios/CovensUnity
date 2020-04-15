@@ -128,7 +128,7 @@ namespace Raincrow.BattleArena.Phases
 
             _startTime = Time.realtimeSinceStartup;
 
-            _quickCastView.Show(OnClickFly, OnClickSummon, OnClickFlee, OnCastSpell, OpenInventory);
+            _quickCastView.Show(_battleModel, OnClickFly, OnClickSummon, OnClickFlee, OnCastSpell, OpenInventory);
 
             //Show countdown turn
             _countdownView.Show();

@@ -1,5 +1,6 @@
 ﻿using Newtonsoft.Json;
 using Raincrow.BattleArena.Views;
+using System.Collections.Generic;
 using UnityEngine;
 
 namespace Raincrow.BattleArena.Model
@@ -40,11 +41,52 @@ namespace Raincrow.BattleArena.Model
 
     public class BattleModel : IBattleModel
     {
+        // Properties
         public string Id { get; set; }
         public IGridUIModel GridUI { get; set; }
-        public string[] PlanningOrder { get; set; }
-        public float PlanningMaxTime { get; set; }
-        public int MaxActionsAllowed { get; set; }
+
+        // Private
+        private IDictionary<string, int> _spellCooldowns = new Dictionary<string, int>();
+
+        // Methods
+        public void UpdateCooldowns()
+        {
+            IDictionary<string, int> spellCooldownsCopy = new Dictionary<string, int>();
+            foreach (var cooldown in _spellCooldowns)
+            {
+                int expiresOnTurns = cooldown.Value - 1;
+                if (expiresOnTurns > 0)
+                {
+                    spellCooldownsCopy.Add(cooldown.Key, expiresOnTurns);
+                }
+            }
+
+            _spellCooldowns = new Dictionary<string, int>(spellCooldownsCopy);
+        }
+
+        public int GetCooldown(string spellId)
+        {
+            if (_spellCooldowns.TryGetValue(spellId, out int cooldown))
+            {
+                return cooldown;
+            }
+            return 0;
+        }
+
+        public void AddCooldown(string spellId, int maxCooldown)
+        {
+            if (maxCooldown > 0)
+            {
+                if (!_spellCooldowns.ContainsKey(spellId))
+                {
+                    _spellCooldowns.Add(spellId, maxCooldown);
+                }
+                else
+                {
+                    _spellCooldowns[spellId] = maxCooldown;
+                }
+            }
+        }
     }
 
     [System.Serializable]
