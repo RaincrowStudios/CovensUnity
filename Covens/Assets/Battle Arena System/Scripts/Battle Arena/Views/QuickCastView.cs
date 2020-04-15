@@ -147,7 +147,7 @@ namespace Raincrow.BattleArena.Views
             if (value)
                 _spellMenu.OnOpenIngredients(spell);
             else
-                _spellMenu.ActiveAllButtons();
+                _spellMenu.ActivateAllButtons();
 
             _buttonFlee.interactable = !value;
         }

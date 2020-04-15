@@ -193,6 +193,8 @@ public class SpellData
     public int cost;
     //public int xp;
     public int level;
+    public int cooldownBattle;
+    public int maxCooldownBattle;
 
     public List<string> ingredients;
     public Target target;

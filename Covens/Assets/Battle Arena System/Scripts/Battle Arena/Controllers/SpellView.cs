@@ -7,6 +7,7 @@ namespace Raincrow.BattleArena.Views
 {
     public class SpellView : MonoBehaviour
     {
+        // Serialized Fields
         [Header("UI")]
         [SerializeField] private LayoutGroup _spellContainer;
         [SerializeField] private SpellSlotView _buttonSpellPrefab;
@@ -14,7 +15,7 @@ namespace Raincrow.BattleArena.Views
 
         //Privates variables
         private List<SpellSlotView> _spellButtons = new List<SpellSlotView>();
-        private ICharacterModel _target;
+
         public void Show(System.Action<string> onClickSpell, System.Action<string> openIngredients)
         {
             int quickcastCount = 4;
@@ -36,10 +37,14 @@ namespace Raincrow.BattleArena.Views
 
             foreach (SpellSlotView button in _spellButtons)
             {
-                if (!button.GetSpellName().Equals(spell))
+                if (!string.Equals(button.GetSpellName(), spell))
+                {
                     button.SetInteractable(false);
+                }
                 else
+                {
                     button.SetInteractable(true);
+                }
             }
         }
 
@@ -50,7 +55,10 @@ namespace Raincrow.BattleArena.Views
             foreach (SpellSlotView button in _spellButtons)
             {
                 SpellData spell = DownloadedAssets.GetSpell(button.GetSpellName());
-                button.SetInteractable(spell.target == SpellData.Target.SELF || spell.target == SpellData.Target.ANY);
+                bool isValidTarget = spell.target == SpellData.Target.SELF || spell.target == SpellData.Target.ANY;
+                bool isInCooldown = spell.cooldownBattle > 0 && spell.maxCooldownBattle > 0;
+                button.SetInteractable(isValidTarget && !isInCooldown);
+                button.SetCooldown(spell.cooldownBattle, spell.maxCooldownBattle);
             }
         }
         public void OnClickEnemy()
@@ -60,17 +68,24 @@ namespace Raincrow.BattleArena.Views
             foreach (SpellSlotView button in _spellButtons)
             {
                 SpellData spell = DownloadedAssets.GetSpell(button.GetSpellName());
-                button.SetInteractable(spell.target == SpellData.Target.OTHER || spell.target == SpellData.Target.ANY);
+                bool isValidTarget = spell.target == SpellData.Target.OTHER || spell.target == SpellData.Target.ANY;
+                bool isInCooldown = spell.cooldownBattle > 0 && spell.maxCooldownBattle > 0;
+                button.SetInteractable(isValidTarget && !isInCooldown);
+                button.SetCooldown(spell.cooldownBattle, spell.maxCooldownBattle);
             }
         }
 
-        public void ActiveAllButtons()
+        public void ActivateAllButtons()
         {
             _buttonSpellAstral.interactable = true;
 
             foreach (SpellSlotView button in _spellButtons)
             {
-                button.SetInteractable(true);
+                SpellData spell = DownloadedAssets.GetSpell(button.GetSpellName());
+                bool isValidTarget = spell.target == SpellData.Target.OTHER || spell.target == SpellData.Target.ANY;
+                bool isInCooldown = spell.cooldownBattle > 0 && spell.maxCooldownBattle > 0;
+                button.SetInteractable(isValidTarget && !isInCooldown);
+                button.SetCooldown(spell.cooldownBattle, spell.maxCooldownBattle);
             }
         }
     }

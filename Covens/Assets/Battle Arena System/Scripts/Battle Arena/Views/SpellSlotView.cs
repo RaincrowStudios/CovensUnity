@@ -1,5 +1,4 @@
 ﻿using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
@@ -12,6 +11,7 @@ namespace Raincrow.BattleArena.Views
         [SerializeField] private TextMeshProUGUI _textNameSpell;
         [SerializeField] private Image _imageIconSpell;
         [SerializeField] private Button _buttonSpell;
+        [SerializeField] private Image _spellCooldown;
 
         [Header("Ingredients")]
         [SerializeField] private Image _imageIngredientGem;
@@ -48,17 +48,32 @@ namespace Raincrow.BattleArena.Views
                     _imageIconSpell.sprite = spr;
                 });
             }
+            ResponseRequireIngredients required = Spellcasting.RequireIngredients(_spell);
+            _imageIngredientGem.sprite = required.RequiredGem ? _spriteFilled : _spriteEmpty;
+            _imageIngredientTool.sprite = required.RequiredTool ? _spriteFilled : _spriteEmpty;
+            _imageIngredientHerb.sprite = required.RequiredHerb ? _spriteFilled : _spriteEmpty;
 
-            ResponseRequireIngredients requireds = Spellcasting.RequireIngredients(_spell);
-
-            _imageIngredientGem.sprite = requireds.RequiredGem ? _spriteFilled : _spriteEmpty;
-            _imageIngredientTool.sprite = requireds.RequiredTool ? _spriteFilled : _spriteEmpty;
-            _imageIngredientHerb.sprite = requireds.RequiredHerb ? _spriteFilled : _spriteEmpty;
+            _spellCooldown.fillAmount = 0f;
         }
 
         public void SetInteractable(bool value)
         {
             _buttonSpell.interactable = value;
+        }
+
+        public void SetCooldown(int cooldown, int maxCooldown)
+        {
+            if (cooldown > 0 && maxCooldown > 0)
+            {
+                _spellCooldown.gameObject.SetActive(true);
+                float normalizedCooldown = cooldown / (float)maxCooldown;
+                _spellCooldown.fillAmount = normalizedCooldown;
+            }
+            else
+            {
+                _spellCooldown.gameObject.SetActive(false);
+                _spellCooldown.fillAmount = 0f;
+            }
         }
 
         public void OnPointerDownSpell()
