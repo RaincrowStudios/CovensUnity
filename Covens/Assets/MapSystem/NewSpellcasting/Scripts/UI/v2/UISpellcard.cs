@@ -119,10 +119,10 @@ public class UISpellcard : MonoBehaviour// : EnhancedScrollerCellView
     public void UpdateCancast(CharacterMarkerData targetData, IMarker targetMarker)
     {
         LeanTween.cancel(m_CooldownTweenId);
+        SpellData spell = DownloadedAssets.GetSpell(Spell.id);
 
-        bool spellAllowed = UIQuickCast.GetAllowedSpells().Contains(Spell.id);
         Spellcasting.SpellState canCast = Spellcasting.CanCast(Spell, targetMarker, targetData);
-        if (canCast == Spellcasting.SpellState.CanCast && spellAllowed)
+        if (canCast == Spellcasting.SpellState.CanCast && spell.beneficial)
         {
             m_SpellFrame.gameObject.SetActive(true);
             m_SchoolFrame.gameObject.SetActive(true);
