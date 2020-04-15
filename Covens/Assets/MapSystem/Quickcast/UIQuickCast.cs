@@ -24,7 +24,6 @@ public class UIQuickCast : MonoBehaviour
 
     [Header("others")]
     [SerializeField] private UIQuickCastPicker m_Picker;
-    [SerializeField] private List<string> m_AllowedSpells = new List<string>(3) { "spell_bless", "spell_greaterBless", "spell_resurrection" };
 
     private static UIQuickCast m_Instance;
     private static event System.Action m_OnClose;
@@ -54,15 +53,6 @@ public class UIQuickCast : MonoBehaviour
     public static void SetActive(bool value)
     {
         m_Instance?.gameObject.SetActive(value);
-    }
-    public static List<string> GetAllowedSpells()
-    {
-        if (m_Instance == null)
-        {
-            return null;
-        }
-
-        return m_Instance.m_AllowedSpells;
     }
 
     public static void UpdateTarget(IMarker marker, CharacterMarkerData details)
@@ -275,12 +265,14 @@ public class UIQuickCast : MonoBehaviour
         m_TargetData = data;
 
         foreach (UIQuickcastButton item in m_Buttons)
-            item.UpdateCanCast(target, targetData, m_AllowedSpells);
+            item.UpdateCanCast(target, targetData);
     }
 
     private void OnClickSpell(UIQuickcastButton button)
     {
-        if (m_AllowedSpells.Contains(button.Spell))
+        SpellData spell = DownloadedAssets.GetSpell(button.Spell);
+        
+        if (spell.beneficial)
         {
             if (m_Picker.IsOpen)
             {
@@ -296,8 +288,6 @@ public class UIQuickCast : MonoBehaviour
 
             if (button.CastStatus != Spellcasting.SpellState.CanCast)
                 return;
-
-            SpellData spell = DownloadedAssets.GetSpell(button.Spell);
 
             this._Hide(true);
 
@@ -325,7 +315,7 @@ public class UIQuickCast : MonoBehaviour
                     () => OnClickSpell(button),
                     () => OnHoldSpell(button));
 
-                button.UpdateCanCast(target, targetData, m_AllowedSpells);
+                button.UpdateCanCast(target, targetData);
             },
             () => button.Hightlight(false)
         );

@@ -200,6 +200,7 @@ public class SpellData
     public Target target;
     public int align;
     public bool pop;
+    public bool beneficial;
     public bool hidden;
     public float cooldown;
 

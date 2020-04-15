@@ -82,7 +82,7 @@ public class UIQuickcastButton : MonoBehaviour, IPointerDownHandler, IPointerUpH
         }
     }
 
-    public void UpdateCanCast(IMarker marker, CharacterMarkerData details, List<string> allowedSpells)
+    public void UpdateCanCast(IMarker marker, CharacterMarkerData details)
     {
         LeanTween.cancel(m_CooldownTweenId);
 
@@ -102,7 +102,7 @@ public class UIQuickcastButton : MonoBehaviour, IPointerDownHandler, IPointerUpH
 
             m_CooldownTweenId = LeanTween.value(cd.Value.Remaining / cd.Value.total, 0, cd.Value.Remaining)
                 .setOnUpdate((float t) => SetFillAmount(t))
-                .setOnComplete(() => UpdateCanCast(marker, details, allowedSpells))
+                .setOnComplete(() => UpdateCanCast(marker, details))
                 .uniqueId;
         }
         else if (marker == null || details == null)
@@ -113,8 +113,9 @@ public class UIQuickcastButton : MonoBehaviour, IPointerDownHandler, IPointerUpH
         }
         else
         {
+            SpellData spell = DownloadedAssets.GetSpell(Spell);
             CastStatus = Spellcasting.CanCast(Spell, marker, details);
-            Interactable = CastStatus == Spellcasting.SpellState.CanCast && allowedSpells.Contains(Spell);
+            Interactable = CastStatus == Spellcasting.SpellState.CanCast && spell.beneficial;
             SetFillAmount(0);
         }
     }
