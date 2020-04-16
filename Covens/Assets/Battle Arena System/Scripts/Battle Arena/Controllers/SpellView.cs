@@ -28,7 +28,10 @@ namespace Raincrow.BattleArena.Views
                 if (!string.IsNullOrWhiteSpace(spell))
                 {
                     SpellSlotView aux = Instantiate(_buttonSpellPrefab, _spellContainer.transform);
-                    aux.Setup(spell, onClickSpell, openIngredients);
+
+                    SpellData data = DownloadedAssets.GetSpell(spell);
+                    int maxCooldown = data.cooldownTurns;
+                    aux.Setup(spell, maxCooldown, onClickSpell, openIngredients);
                     _spellButtons.Add(aux);
                 }
             }
