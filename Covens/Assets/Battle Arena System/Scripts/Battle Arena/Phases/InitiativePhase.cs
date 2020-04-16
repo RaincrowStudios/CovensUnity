@@ -55,9 +55,6 @@ namespace Raincrow.BattleArena.Phases
 
         public IEnumerator Enter(IStateMachine stateMachine)
         {
-            // update cooldowns
-            _battleModel.UpdateCooldowns();
-
             // Save Summoned Characters
             _summonedCharacters.Clear();
             _summonedCharacters.AddRange(_turnModel.StartingCharacters);

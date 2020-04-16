@@ -67,7 +67,7 @@ namespace Raincrow.BattleArena.Phases
                              float moveSpeed,
                              float dragSpeed,
                              float dragDecceleration)
-                             //float cameraSpeed)
+        //float cameraSpeed)
         {
             _coroutineStarter = coroutineStarter;
             _isPlanningPhaseFinished = null;
@@ -151,7 +151,7 @@ namespace Raincrow.BattleArena.Phases
                 _quickCastView.OnClickEnemy();
             }
 
-            cellUIModel.SetIsSelected(true);            
+            cellUIModel.SetIsSelected(true);
 
             _selectedSlot = new BattleSlot()
             {
@@ -224,12 +224,15 @@ namespace Raincrow.BattleArena.Phases
                     // Decay velocity
                     _dragVelocity = Vector3.MoveTowards(_dragVelocity, Vector3.zero, _dragDecceleration * Time.deltaTime);
                     _cameraTargetController.Move(_dragVelocity * Time.deltaTime * _dragSpeed);
-                }                
+                }
             }
         }
 
         public IEnumerator Exit(IStateMachine stateMachine)
         {
+            // update cooldowns
+            _battleModel.UpdateCooldowns();
+
             _quickCastView.Hide();
             _countdownView.Hide();
             _charactersTurnOrderView.Hide();

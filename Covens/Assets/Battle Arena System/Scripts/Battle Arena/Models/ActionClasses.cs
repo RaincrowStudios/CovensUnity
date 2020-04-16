@@ -107,6 +107,8 @@ namespace Raincrow.BattleArena.Model
         public string Spell { get; set; }
         [JsonProperty("school")]
         public int School { get; set; }
+        [JsonProperty("cooldown")]
+        public int Cooldown { get; set; }
         [JsonProperty("result")]
         public CastActionResultModel Result;
     }
@@ -121,14 +123,6 @@ namespace Raincrow.BattleArena.Model
         public int XP { get; set; }
         [JsonProperty("alignment")]
         public int Alignment { get; set; }
-        [JsonProperty("appliedEffect")]
-        public SpellCooldown Cooldown { get; set; }
-    }
-
-    public class SpellCooldown
-    {
-        [JsonProperty("expiresOnTurn")]
-        public int Value { get; set; }
     }
 
     public interface ICastActionResultModel

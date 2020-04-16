@@ -189,9 +189,9 @@ namespace Raincrow.BattleArena.Phases
                     targetView.AddDamage(castAction.Result.EnergyChange);
                 }
 
-                if (castAction.Result.Cooldown != null && casterView.Model.Id == _playerId)
+                if (castAction.Cooldown > 0 && casterView.Model.Id == _playerId)
                 {
-                    _battleModel.AddCooldown(castAction.Spell, castAction.Result.Cooldown.Value);
+                    _battleModel.AddCooldown(castAction.Spell, castAction.Cooldown);
                 }
 
                 Debug.LogFormat("Execute Cast to {0} and apply {1} damage", castAction.Target.Id, castAction.Result.EnergyChange);
