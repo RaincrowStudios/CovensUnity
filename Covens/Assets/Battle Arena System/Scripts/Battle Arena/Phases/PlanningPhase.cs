@@ -230,6 +230,9 @@ namespace Raincrow.BattleArena.Phases
 
         public IEnumerator Exit(IStateMachine stateMachine)
         {
+            // update cooldowns
+            _battleModel.UpdateCooldowns();
+
             _quickCastView.Hide();
             _countdownView.Hide();
             _charactersTurnOrderView.Hide();

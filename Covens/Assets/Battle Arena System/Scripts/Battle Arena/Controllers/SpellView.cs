@@ -58,13 +58,13 @@ namespace Raincrow.BattleArena.Views
             foreach (SpellSlotView button in _spellButtons)
             {
                 string spellId = button.GetSpellName();
-                int spellMaxCooldown = _battleModel.GetCooldown(spellId);
+                int spellCooldownTurn = _battleModel.GetCooldown(spellId);
                 SpellData spell = DownloadedAssets.GetSpell(spellId);
                 bool isValidTarget = spell.target == SpellData.Target.SELF || spell.target == SpellData.Target.ANY;
-                bool isInCooldown = spellMaxCooldown > 0 && spell.cooldownTurns > 0;
+                bool isInCooldown = spellCooldownTurn > 0 && spell.cooldownTurns > 0;
 
                 button.SetInteractable(isValidTarget && !isInCooldown);
-                button.SetCooldown(spellMaxCooldown, spell.cooldownTurns);
+                button.SetCooldown(spellCooldownTurn, spell.cooldownTurns);
             }
         }
         public void OnClickEnemy()
@@ -75,12 +75,12 @@ namespace Raincrow.BattleArena.Views
             {
                 string spellId = button.GetSpellName();
                 SpellData spell = DownloadedAssets.GetSpell(spellId);
-                int spellMaxCooldown = _battleModel.GetCooldown(spellId);
+                int spellCooldownTurn = _battleModel.GetCooldown(spellId);
                 bool isValidTarget = spell.target == SpellData.Target.OTHER || spell.target == SpellData.Target.ANY;
-                bool isInCooldown = spellMaxCooldown > 0 && spell.cooldownTurns > 0;
+                bool isInCooldown = spellCooldownTurn > 0 && spell.cooldownTurns > 0;
 
                 button.SetInteractable(isValidTarget && !isInCooldown);
-                button.SetCooldown(spellMaxCooldown, spell.cooldownTurns);
+                button.SetCooldown(spellCooldownTurn, spell.cooldownTurns);
             }
         }
 
@@ -92,12 +92,12 @@ namespace Raincrow.BattleArena.Views
             {
                 string spellId = button.GetSpellName();
                 SpellData spell = DownloadedAssets.GetSpell(spellId);
-                int spellMaxCooldown = _battleModel.GetCooldown(spellId);
+                int spellCooldownTurn = _battleModel.GetCooldown(spellId);
                 bool isValidTarget = spell.target == SpellData.Target.OTHER || spell.target == SpellData.Target.ANY;
-                bool isInCooldown = spellMaxCooldown > 0 && spell.cooldownTurns > 0;
+                bool isInCooldown = spellCooldownTurn > 0 && spell.cooldownTurns > 0;
 
                 button.SetInteractable(isValidTarget && !isInCooldown);
-                button.SetCooldown(spellMaxCooldown, spell.cooldownTurns);
+                button.SetCooldown(spellCooldownTurn, spell.cooldownTurns);
             }
         }
     }

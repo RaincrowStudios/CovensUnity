@@ -55,7 +55,7 @@ namespace Raincrow.BattleArena.Model
             foreach (var cooldown in _spellCooldowns)
             {
                 int expiresOnTurns = cooldown.Value - 1;
-                if (expiresOnTurns > 0)
+                if (expiresOnTurns >= 0)
                 {
                     spellCooldownsCopy.Add(cooldown.Key, expiresOnTurns);
                 }
@@ -75,16 +75,13 @@ namespace Raincrow.BattleArena.Model
 
         public void AddCooldown(string spellId, int maxCooldown)
         {
-            if (maxCooldown > 0)
+            if (!_spellCooldowns.ContainsKey(spellId))
             {
-                if (!_spellCooldowns.ContainsKey(spellId))
-                {
-                    _spellCooldowns.Add(spellId, maxCooldown);
-                }
-                else
-                {
-                    _spellCooldowns[spellId] = maxCooldown;
-                }
+                _spellCooldowns.Add(spellId, maxCooldown);
+            }
+            else
+            {
+                _spellCooldowns[spellId] = maxCooldown;
             }
         }
     }
