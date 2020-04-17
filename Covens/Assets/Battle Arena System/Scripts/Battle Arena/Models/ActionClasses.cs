@@ -107,6 +107,8 @@ namespace Raincrow.BattleArena.Model
         public string Spell { get; set; }
         [JsonProperty("school")]
         public int School { get; set; }
+        [JsonProperty("spellCost")]
+        public int SpellCost { get; set; }
         [JsonProperty("cooldown")]
         public int Cooldown { get; set; }
         [JsonProperty("result")]

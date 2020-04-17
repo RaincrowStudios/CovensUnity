@@ -188,6 +188,8 @@ namespace Raincrow.BattleArena.Phases
             {                
                 if (castAction.Result.EnergyChange != 0)
                 {
+                    casterView.AddDamage(-castAction.SpellCost);
+
                     // Animation
                     yield return _animController.ApplyDamage(targetView, castAction.Result.EnergyChange, castAction.Result.IsCritical);
 
