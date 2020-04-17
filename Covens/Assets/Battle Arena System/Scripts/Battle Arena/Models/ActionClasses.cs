@@ -140,6 +140,8 @@ namespace Raincrow.BattleArena.Model
         public GenericCharacterObjectServer Spirit { get; set; }
         [JsonProperty("position")]
         public BattleSlot Position { get; set; }
+        [JsonProperty("summoningEnergy")]
+        public int SummoningEnergy { get; set; }
     }
 
     public class FleeActionResponseModel : ActionResponseModel
