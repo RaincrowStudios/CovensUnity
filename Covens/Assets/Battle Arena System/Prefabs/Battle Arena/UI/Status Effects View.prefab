@@ -325,7 +325,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _serviceLocator: {fileID: 0}
-  _statusEffectViewPrefab: {fileID: 8133124373710972711, guid: 2c99e55ebf68eb2409b6df62a9999e43,
+  _statusEffectViewPrefab: {fileID: 5739969527815435547, guid: 2c99e55ebf68eb2409b6df62a9999e43,
     type: 3}
 --- !u!1 &3241997505218776557
 GameObject:
