@@ -32,6 +32,17 @@ namespace Raincrow.BattleArena.Model
         void UpdateCooldowns();
         int GetCooldown(string spellId);
         void AddCooldown(string spellId, int maxCooldown);
+        void UpdateStatusEffects();
+        IStatusEffect GetStatusEffect(string spellId);
+        IList<IStatusEffect> GetStatusEffects();
+        void AddStatusEffect(string spellId, int maxStatusEffect);
+    }
+
+    public interface IStatusEffect
+    {
+        string SpellId { get; }
+        int Duration { get; set; }
+        int MaxDuration { get; }
     }
 
     public interface IGridGameObjectModel

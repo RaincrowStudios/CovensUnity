@@ -1,6 +1,7 @@
 ﻿using Newtonsoft.Json;
 using Raincrow.BattleArena.Views;
 using System.Collections.Generic;
+using System.Data;
 using UnityEngine;
 
 namespace Raincrow.BattleArena.Model
@@ -39,6 +40,22 @@ namespace Raincrow.BattleArena.Model
         public string ObjectType { get; set; }
     }
 
+    public class StatusEffect : IStatusEffect
+    {
+        public string SpellId { get; private set; }
+
+        public int Duration { get; set; }
+
+        public int MaxDuration { get; private set; }
+
+        public StatusEffect(string spellId, int maxDuration)
+        {
+            SpellId = spellId;
+            MaxDuration = maxDuration;
+            Duration = MaxDuration;
+        }
+    }
+
     public class BattleModel : IBattleModel
     {
         // Properties
@@ -47,6 +64,7 @@ namespace Raincrow.BattleArena.Model
 
         // Private
         private IDictionary<string, int> _spellCooldowns = new Dictionary<string, int>();
+        private IDictionary<string, IStatusEffect> _statusEffects = new Dictionary<string, IStatusEffect>();
 
         // Methods
         public void UpdateCooldowns()
@@ -83,6 +101,50 @@ namespace Raincrow.BattleArena.Model
             {
                 _spellCooldowns[spellId] = maxCooldown;
             }
+        }
+
+        public void UpdateStatusEffects()
+        {
+            IDictionary<string, IStatusEffect> statusEffectsCopy = new Dictionary<string, IStatusEffect>();
+            foreach (var statusEffect in _statusEffects.Values)
+            {
+                int duration = statusEffect.Duration - 1;
+                if (duration >= 0)
+                {
+                    statusEffect.Duration = duration;
+                    statusEffectsCopy.Add(statusEffect.SpellId, statusEffect);
+                }
+            }
+
+            _statusEffects = new Dictionary<string, IStatusEffect>(statusEffectsCopy);
+        }
+
+        public IStatusEffect GetStatusEffect(string spellId)
+        {
+            if (_statusEffects.TryGetValue(spellId, out IStatusEffect statusEffect))
+            {
+                return statusEffect;
+            }
+            return default;
+        }
+
+        public void AddStatusEffect(string spellId, int maxStatusEffect)
+        {
+            IStatusEffect statusEffect = new StatusEffect(spellId, maxStatusEffect);
+            if (!_statusEffects.ContainsKey(spellId))
+            {
+                _statusEffects.Add(spellId, statusEffect);
+            }
+            else
+            {
+                _statusEffects[spellId] = statusEffect;
+            }
+        }
+
+        public IList<IStatusEffect> GetStatusEffects()
+        {
+            IList<IStatusEffect> statusEffects = new List<IStatusEffect>(_statusEffects.Values);
+            return statusEffects;
         }
     }
 

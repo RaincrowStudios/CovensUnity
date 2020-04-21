@@ -100,4 +100,7 @@ MonoBehaviour:
       type: 3}
   - size: 10
     prefab: {fileID: 1007947318313680, guid: c1a00adc58de38a42b7e4876ba5fb451, type: 3}
+  - size: 10
+    prefab: {fileID: 8133124373710972711, guid: 2c99e55ebf68eb2409b6df62a9999e43,
+      type: 3}
   startupPoolMode: 0

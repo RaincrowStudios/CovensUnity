@@ -33,6 +33,7 @@ namespace Raincrow.BattleArena.Phases
         private ICellUIModel[,] _gridView;
         private IInputController _inputController;
         private ICameraTargetController _cameraTargetController;
+        private IStatusEffectsView _statusEffectsView;
         private IPopupView _popupView;
         private BattleSlot? _selectedSlot;
         private string _objectId;
@@ -63,6 +64,7 @@ namespace Raincrow.BattleArena.Phases
                              IPlayerBadgeView playerBadgeView,
                              IInputController inputController,
                              ICameraTargetController cameraTargetController,
+                             IStatusEffectsView playerConditionsView,
                              IPopupView popupView,
                              float moveSpeed,
                              float dragSpeed,
@@ -85,6 +87,7 @@ namespace Raincrow.BattleArena.Phases
             //_cameraSpeed = cameraSpeed;
             _inputController = inputController;
             _cameraTargetController = cameraTargetController;
+            _statusEffectsView = playerConditionsView;
             _popupView = popupView;
             _moveSpeed = moveSpeed;
             _dragSpeed = dragSpeed;
@@ -95,16 +98,8 @@ namespace Raincrow.BattleArena.Phases
 
         public IEnumerator Enter(IStateMachine stateMachine)
         {
-            //// Add Click Events
-            //for (int i = 0; i < _battleModel.GridUI.MaxCellsPerRow; i++)
-            //{
-            //    for (int j = 0; j < _battleModel.GridUI.MaxCellsPerColumn; j++)
-            //    {
-            //        ICellUIModel cellView = _gridView[i, j];
-            //        cellView.OnCellClick.AddListener(CheckInput);
-            //        yield return null;
-            //    }
-            //}
+            IList<IStatusEffect> statusEffects = _battleModel.GetStatusEffects();
+            _statusEffectsView.UpdateView(statusEffects);
 
             _selectedSlot = null;
 
@@ -232,6 +227,11 @@ namespace Raincrow.BattleArena.Phases
         {
             // update cooldowns
             _battleModel.UpdateCooldowns();
+            _battleModel.UpdateStatusEffects();
+
+            // Update status effects view
+            IList<IStatusEffect> statusEffects = _battleModel.GetStatusEffects();
+            _statusEffectsView.UpdateView(statusEffects);
 
             _quickCastView.Hide();
             _countdownView.Hide();
@@ -244,16 +244,6 @@ namespace Raincrow.BattleArena.Phases
                 UIInventory.Instance.Close();
                 OnCloseInventory();
             }
-
-            //// Remove Click Events
-            //for (int i = 0; i < _battleModel.GridUI.MaxCellsPerRow; i++)
-            //{
-            //    for (int j = 0; j < _battleModel.GridUI.MaxCellsPerColumn; j++)
-            //    {
-            //        ICellUIModel cellView = _gridView[i, j];
-            //        cellView.OnCellClick.RemoveListener(CheckInput);
-            //    }
-            //}
 
             _isPlanningPhaseFinished = null;
             _sendFinishPlanningPhase = null;

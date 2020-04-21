@@ -27,6 +27,7 @@ namespace Raincrow.Services
         [SerializeField] private SmoothCameraFollow _smoothCameraFollowPrefab;
         [SerializeField] private RewardsBatttleView _rewardsBatttleViewPrefab;
         [SerializeField] private PopupView _popupViewPrefab;
+        [SerializeField] private StatusEffectsView _statusEffectsViewPrefab;
 
         [Header("Service Instances")]
         [SerializeField] private AvatarSpriteUtil _avatarSpriteUtilInstance; // Avatar Sprite Util Instance
@@ -46,6 +47,7 @@ namespace Raincrow.Services
         [SerializeField] private SmoothCameraFollow _smoothCameraFollowInstance;
         [SerializeField] private RewardsBatttleView _rewardsBatttleViewInstance;
         [SerializeField] private PopupView _popupViewInstance;
+        [SerializeField] private StatusEffectsView _statusEffectsViewInstance;
 
         [Header("UI")]
         [SerializeField] private Canvas _mainCanvas;
@@ -239,6 +241,15 @@ namespace Raincrow.Services
                 _popupViewInstance = GetInstance(_popupViewPrefab, _mainCanvas.transform);
             }
             return _popupViewInstance;
+        }
+
+        public IStatusEffectsView GetStatusEffectsView()
+        {
+            if (_statusEffectsViewInstance == null)
+            {
+                _statusEffectsViewInstance = GetInstance(_statusEffectsViewPrefab, _mainCanvas.transform);
+            }
+            return _statusEffectsViewInstance;
         }
 
         private T GetInstance<T>(T prefab, Transform parent = null) where T : Object
