@@ -107,6 +107,8 @@ namespace Raincrow.BattleArena.Model
         public string Spell { get; set; }
         [JsonProperty("school")]
         public int School { get; set; }
+        [JsonProperty("spellCost")]
+        public int SpellCost { get; set; }
         [JsonProperty("cooldown")]
         public int Cooldown { get; set; }
         [JsonProperty("result")]
@@ -140,6 +142,8 @@ namespace Raincrow.BattleArena.Model
         public GenericCharacterObjectServer Spirit { get; set; }
         [JsonProperty("position")]
         public BattleSlot Position { get; set; }
+        [JsonProperty("summoningEnergy")]
+        public int SummoningEnergy { get; set; }
     }
 
     public class FleeActionResponseModel : ActionResponseModel

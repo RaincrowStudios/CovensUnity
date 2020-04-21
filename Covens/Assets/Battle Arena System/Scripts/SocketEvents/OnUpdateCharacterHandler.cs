@@ -37,7 +37,12 @@ namespace Raincrow.GameEventResponses
 
             OnMapEnergyChange.ForceEvent(PlayerManager.marker, PlayerDataManager.playerData.energy);
 
-            PlayerManagerUI.Instance.UpdateEnergy();
+            if (PlayerManagerUI.Instance)
+            {
+                PlayerManagerUI.Instance.UpdateEnergy();
+                PlayerManagerUI.Instance.setupXP();
+                PlayerManagerUI.Instance.UpdateDrachs();
+            }
         }
     }
 
