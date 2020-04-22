@@ -51,7 +51,7 @@ namespace Raincrow.BattleArena.Model
         [SerializeField] private GameObject _characterPrefab; // Character Prefab
 
         public GameObject CharacterPrefab { get => _characterPrefab; set => _characterPrefab = value; }
-    }  
+    }
 
     //public class CharacterModel : ICharacterModel
     //{
@@ -135,6 +135,49 @@ namespace Raincrow.BattleArena.Model
             }
             return Utilities.Blue;
         }
+
+        public IList<IStatusEffect> StatusEffects { get; private set; } = new List<IStatusEffect>();
+
+        public void AddStatusEffect(string spellId, int maxDuration)
+        {
+            IStatusEffect newStatusEffect = new Raincrow.BattleArena.Model.StatusEffect(spellId, maxDuration);
+
+            bool addedStatusEffect = false;
+            for (int i = StatusEffects.Count - 1; i >= 0; i--)
+            {
+                IStatusEffect statusEffect = StatusEffects[i];
+                if (statusEffect.SpellId == newStatusEffect.SpellId)
+                {
+                    StatusEffects[i] = newStatusEffect;
+                    addedStatusEffect = true;
+                    break;
+                }
+            }
+
+            if (!addedStatusEffect)
+            {
+                StatusEffects.Add(newStatusEffect);
+            }
+        }
+
+        public IStatusEffect GetStatusEffect(string spellId)
+        {
+            for (int i = StatusEffects.Count - 1; i >= 0; i--)
+            {
+                IStatusEffect statusEffect = StatusEffects[i];
+                if (statusEffect.SpellId == spellId)
+                {
+                    return statusEffect;
+
+                }
+            }
+            return default;
+        }
+
+        public void UpdateStatusEffects()
+        {
+            
+        }
     }
 
     public class SpiritModel : ISpiritModel, ICloneable<ISpiritModel>
@@ -175,6 +218,49 @@ namespace Raincrow.BattleArena.Model
         public Color GetAlignmentColor()
         {
             return Color.white;
+        }
+
+        public IList<IStatusEffect> StatusEffects { get; private set; } = new List<IStatusEffect>();
+
+        public void AddStatusEffect(string spellId, int maxDuration)
+        {
+            IStatusEffect newStatusEffect = new Raincrow.BattleArena.Model.StatusEffect(spellId, maxDuration);
+
+            bool addedStatusEffect = false;
+            for (int i = StatusEffects.Count - 1; i >= 0; i--)
+            {
+                IStatusEffect statusEffect = StatusEffects[i];
+                if (statusEffect.SpellId == newStatusEffect.SpellId)
+                {
+                    StatusEffects[i] = newStatusEffect;
+                    addedStatusEffect = true;
+                    break;
+                }
+            }
+
+            if (!addedStatusEffect)
+            {
+                StatusEffects.Add(newStatusEffect);
+            }
+        }
+
+        public IStatusEffect GetStatusEffect(string spellId)
+        {
+            for (int i = StatusEffects.Count - 1; i >= 0; i--)
+            {
+                IStatusEffect statusEffect = StatusEffects[i];
+                if (statusEffect.SpellId == spellId)
+                {
+                    return statusEffect;
+
+                }
+            }
+            return default;
+        }
+
+        public void UpdateStatusEffects()
+        {
+            
         }
     }
 

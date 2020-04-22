@@ -1,4 +1,6 @@
-﻿using UnityEngine;
+﻿using System.Collections;
+using System.Collections.Generic;
+using UnityEngine;
 
 namespace Raincrow.BattleArena.Model
 {
@@ -8,7 +10,10 @@ namespace Raincrow.BattleArena.Model
         int Energy { get; set; }
         int Power { get; set; }
         int Resilience { get; set; }
-
+        IList<IStatusEffect> StatusEffects { get; }
+        void UpdateStatusEffects();
+        void AddStatusEffect(string spellId, int maxDuration);
+        IStatusEffect GetStatusEffect(string spellId);
         Color GetAlignmentColor();
     }
 

@@ -32,10 +32,6 @@ namespace Raincrow.BattleArena.Model
         void UpdateCooldowns();
         int GetCooldown(string spellId);
         void AddCooldown(string spellId, int maxCooldown);
-        void UpdateStatusEffects();
-        IStatusEffect GetStatusEffect(string spellId);
-        IList<IStatusEffect> GetStatusEffects();
-        void AddStatusEffect(string spellId, int maxStatusEffect);
     }
 
     public interface IStatusEffect
@@ -60,11 +56,13 @@ namespace Raincrow.BattleArena.Model
         float CameraSpeed { get; }
         ICollection<ICharacterController<ISpiritModel, ISpiritUIModel>> SpiritsViews { get; }
         ICollection<ICharacterController<IWitchModel, IWitchUIModel>> WitchesViews { get; }
+        ICharacterController GetCharacter(string id);
         IEnumerator<ICharacterController> SpawnObjectOnGrid(IObjectModel objectModel, int row, int col);
         void SetObjectToGrid(ICharacterController characterController, IObjectModel objectModel, int row, int col);
         void RemoveObjectFromGrid(ICharacterController characterController, IObjectModel objectModel);
         //void RecycleCharacter(GameObject character);       
         bool HasCharacter(string id);
+        void UpdateStatusEffects();
     }
 
     public interface ICellUIModel
