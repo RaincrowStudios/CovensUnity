@@ -67,6 +67,19 @@ public class GenericCharacterObjectServer : ISpiritModel, IWitchModel
 
     public Color GetAlignmentColor()
     {
-        return Color.clear;
+        if(ObjectType == Raincrow.BattleArena.Model.ObjectType.Spirit)
+        {
+            return Color.white;
+        }
+
+        if (Degree > 0)
+        {
+            return Utilities.Orange;
+        }
+        else if (Degree < 0)
+        {
+            return Utilities.Purple;
+        }
+        return Utilities.Blue;
     }
 }
