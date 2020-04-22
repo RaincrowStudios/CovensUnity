@@ -13,7 +13,7 @@ namespace Raincrow.BattleArena.Controllers
     public interface ICharacterController
     {
         ICharacterModel Model { get; }
-        ICharacterUIModel UIModel { get; }
+        ICharacterUIModel UIModel { get; }        
         Transform Transform { get; }
         GameObject GameObject { get; }
         void FaceCamera(Quaternion cameraRotation, Vector3 cameraForward);

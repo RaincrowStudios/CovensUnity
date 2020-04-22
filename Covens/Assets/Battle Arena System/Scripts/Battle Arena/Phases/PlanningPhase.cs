@@ -64,7 +64,7 @@ namespace Raincrow.BattleArena.Phases
                              IPlayerBadgeView playerBadgeView,
                              IInputController inputController,
                              ICameraTargetController cameraTargetController,
-                             IStatusEffectsView playerConditionsView,
+                             IStatusEffectsView statusEffectsView,
                              IPopupView popupView,
                              float moveSpeed,
                              float dragSpeed,
@@ -87,7 +87,7 @@ namespace Raincrow.BattleArena.Phases
             //_cameraSpeed = cameraSpeed;
             _inputController = inputController;
             _cameraTargetController = cameraTargetController;
-            _statusEffectsView = playerConditionsView;
+            _statusEffectsView = statusEffectsView;
             _popupView = popupView;
             _moveSpeed = moveSpeed;
             _dragSpeed = dragSpeed;
@@ -98,8 +98,10 @@ namespace Raincrow.BattleArena.Phases
 
         public IEnumerator Enter(IStateMachine stateMachine)
         {
-            IList<IStatusEffect> statusEffects = _battleModel.GetStatusEffects();
-            _statusEffectsView.UpdateView(statusEffects);
+            //IList<IStatusEffect> statusEffects = _battleModel.GetStatusEffects();
+            //_statusEffectsView.UpdateView(statusEffects);
+
+            _statusEffectsView.Hide();
 
             _selectedSlot = null;
 
@@ -131,6 +133,8 @@ namespace Raincrow.BattleArena.Phases
 
         private void OnClickCell(ICellUIModel cellUIModel)
         {
+            _statusEffectsView.Hide();
+
             if (_selectedSlot != null)
             {
                 ICellUIModel currentCellUI = _gridView[_selectedSlot.Value.Row, _selectedSlot.Value.Col];
@@ -163,6 +167,13 @@ namespace Raincrow.BattleArena.Phases
             else
             {
                 _quickCastView.OpenSpellMenu();
+
+                ICharacterController character = _battleModel.GridUI.GetCharacter(_objectId);
+                if (character != default && character.Model != default)
+                {
+                    IList<IStatusEffect> statusEffects = character.Model.StatusEffects;
+                    _statusEffectsView.Show(statusEffects);
+                }
             }
         }
 
@@ -227,11 +238,14 @@ namespace Raincrow.BattleArena.Phases
         {
             // update cooldowns
             _battleModel.UpdateCooldowns();
-            _battleModel.UpdateStatusEffects();
+            _battleModel.GridUI.UpdateStatusEffects();
+
+            _statusEffectsView.Hide();
+            //_battleModel.UpdateStatusEffects();
 
             // Update status effects view
-            IList<IStatusEffect> statusEffects = _battleModel.GetStatusEffects();
-            _statusEffectsView.UpdateView(statusEffects);
+            //IList<IStatusEffect> statusEffects = _battleModel.GetStatusEffects();
+            //_statusEffectsView.UpdateView(statusEffects);
 
             _quickCastView.Hide();
             _countdownView.Hide();

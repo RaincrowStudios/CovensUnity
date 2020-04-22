@@ -16,7 +16,6 @@ namespace Raincrow.BattleArena.Phases
         private ITurnModel _turnModel;
         private IBarEventLogView _barEventLogView;
         private IAnimationController _animController;
-        private IStatusEffectsView _statusEffectsView;
         private string _playerId;
         private IDictionary<string, ICharacterController<IWitchModel, IWitchUIModel>> _witches =
             new Dictionary<string, ICharacterController<IWitchModel, IWitchUIModel>>(); // holy shit, it works
@@ -31,8 +30,7 @@ namespace Raincrow.BattleArena.Phases
                                      string playerModel,
                                      ITurnModel turnModel,
                                      IBarEventLogView barEventLogView,
-                                     IAnimationController animController, 
-                                     IStatusEffectsView statusEffectsView)
+                                     IAnimationController animController)
         {
             _coroutineStarter = coroutineStarter;
             _battleModel = battleModel;
@@ -40,7 +38,6 @@ namespace Raincrow.BattleArena.Phases
             _turnModel = turnModel;
             _barEventLogView = barEventLogView;
             _animController = animController;
-            _statusEffectsView = statusEffectsView;
         }
 
         public IEnumerator Enter(IStateMachine stateMachine)
@@ -205,14 +202,8 @@ namespace Raincrow.BattleArena.Phases
                     {
                         _battleModel.AddCooldown(castAction.Spell, castAction.Cooldown);
                     }
-                    else if (targetView.Model.Id == _playerId)
-                    {
-                        _battleModel.AddStatusEffect(castAction.Spell, castAction.Cooldown);
 
-                        // Update View
-                        IList<IStatusEffect> statusEffects = _battleModel.GetStatusEffects();
-                        _statusEffectsView.UpdateView(statusEffects);
-                    }
+                    targetView.Model.AddStatusEffect(castAction.Spell, castAction.Cooldown);
                 }
 
                 Debug.LogFormat("Execute Cast to {0} and apply {1} damage", castAction.Target.Id, castAction.Result.EnergyChange);

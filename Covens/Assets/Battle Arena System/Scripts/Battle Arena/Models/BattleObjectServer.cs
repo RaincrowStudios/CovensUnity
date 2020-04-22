@@ -1,5 +1,6 @@
 ﻿using Newtonsoft.Json;
 using Raincrow.BattleArena.Model;
+using System.Collections.Generic;
 using UnityEngine;
 using CharacterInfo = Raincrow.BattleArena.Model.CharacterInfo;
 
@@ -15,7 +16,8 @@ public class BattleObjectServer
 }
 
 [System.Serializable]
-public class GridObjectServer {
+public class GridObjectServer
+{
 
     public int MaxCellsPerLine { set; get; }
 
@@ -44,6 +46,7 @@ public class CellObjectServer : ICellModel
 [System.Serializable]
 public class GenericCharacterObjectServer : ISpiritModel, IWitchModel
 {
+    // Properties
     [JsonProperty("_id")] public string Id { get; set; }
     [JsonProperty("type")] public string ObjectType { get; set; }
     public string Name { get; set; }
@@ -81,5 +84,60 @@ public class GenericCharacterObjectServer : ISpiritModel, IWitchModel
             return Utilities.Purple;
         }
         return Utilities.Blue;
+    }
+
+    public IList<IStatusEffect> StatusEffects { get; private set; } = new List<IStatusEffect>();
+
+    public void AddStatusEffect(string spellId, int maxDuration)
+    {
+        IStatusEffect newStatusEffect = new Raincrow.BattleArena.Model.StatusEffect(spellId, maxDuration);
+
+        bool addedStatusEffect = false;
+        for (int i = StatusEffects.Count - 1; i >= 0; i--)
+        {
+            IStatusEffect statusEffect = StatusEffects[i];
+            if (statusEffect.SpellId == newStatusEffect.SpellId)
+            {
+                StatusEffects[i] = newStatusEffect;
+                addedStatusEffect = true;
+                break;
+            }
+        }
+
+        if (!addedStatusEffect)
+        {
+            StatusEffects.Add(newStatusEffect);
+        }
+    }
+
+    public IStatusEffect GetStatusEffect(string spellId)
+    {
+        for (int i = StatusEffects.Count - 1; i >= 0; i--)
+        {
+            IStatusEffect statusEffect = StatusEffects[i];
+            if (statusEffect.SpellId == spellId)
+            {
+                return statusEffect;
+
+            }
+        }
+        return default;
+    }
+
+    public void UpdateStatusEffects()
+    {
+        IList<IStatusEffect> statusEffectsCopy = new List<IStatusEffect>();
+        for (int i = StatusEffects.Count - 1; i >= 0; i--)
+        {
+            IStatusEffect statusEffect = StatusEffects[i];
+            int duration = statusEffect.Duration - 1;
+            if (duration > 0)
+            {
+                statusEffect.Duration = duration;
+                statusEffectsCopy.Add(statusEffect);
+            }
+        }
+
+        StatusEffects = new List<IStatusEffect>(statusEffectsCopy);
     }
 }

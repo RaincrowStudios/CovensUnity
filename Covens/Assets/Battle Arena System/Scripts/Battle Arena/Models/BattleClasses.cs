@@ -103,49 +103,49 @@ namespace Raincrow.BattleArena.Model
             }
         }
 
-        public void UpdateStatusEffects()
-        {
-            IDictionary<string, IStatusEffect> statusEffectsCopy = new Dictionary<string, IStatusEffect>();
-            foreach (var statusEffect in _statusEffects.Values)
-            {
-                int duration = statusEffect.Duration - 1;
-                if (duration >= 0)
-                {
-                    statusEffect.Duration = duration;
-                    statusEffectsCopy.Add(statusEffect.SpellId, statusEffect);
-                }
-            }
+        //public void UpdateStatusEffects()
+        //{
+        //    IDictionary<string, IStatusEffect> statusEffectsCopy = new Dictionary<string, IStatusEffect>();
+        //    foreach (var statusEffect in _statusEffects.Values)
+        //    {
+        //        int duration = statusEffect.Duration - 1;
+        //        if (duration >= 0)
+        //        {
+        //            statusEffect.Duration = duration;
+        //            statusEffectsCopy.Add(statusEffect.SpellId, statusEffect);
+        //        }
+        //    }
 
-            _statusEffects = new Dictionary<string, IStatusEffect>(statusEffectsCopy);
-        }
+        //    _statusEffects = new Dictionary<string, IStatusEffect>(statusEffectsCopy);
+        //}
 
-        public IStatusEffect GetStatusEffect(string spellId)
-        {
-            if (_statusEffects.TryGetValue(spellId, out IStatusEffect statusEffect))
-            {
-                return statusEffect;
-            }
-            return default;
-        }
+        //public IStatusEffect GetStatusEffect(string spellId)
+        //{
+        //    if (_statusEffects.TryGetValue(spellId, out IStatusEffect statusEffect))
+        //    {
+        //        return statusEffect;
+        //    }
+        //    return default;
+        //}
 
-        public void AddStatusEffect(string spellId, int maxStatusEffect)
-        {
-            IStatusEffect statusEffect = new StatusEffect(spellId, maxStatusEffect);
-            if (!_statusEffects.ContainsKey(spellId))
-            {
-                _statusEffects.Add(spellId, statusEffect);
-            }
-            else
-            {
-                _statusEffects[spellId] = statusEffect;
-            }
-        }
+        //public void AddStatusEffect(string spellId, int maxStatusEffect)
+        //{
+        //    IStatusEffect statusEffect = new StatusEffect(spellId, maxStatusEffect);
+        //    if (!_statusEffects.ContainsKey(spellId))
+        //    {
+        //        _statusEffects.Add(spellId, statusEffect);
+        //    }
+        //    else
+        //    {
+        //        _statusEffects[spellId] = statusEffect;
+        //    }
+        //}
 
-        public IList<IStatusEffect> GetStatusEffects()
-        {
-            IList<IStatusEffect> statusEffects = new List<IStatusEffect>(_statusEffects.Values);
-            return statusEffects;
-        }
+        //public IList<IStatusEffect> GetStatusEffects()
+        //{
+        //    IList<IStatusEffect> statusEffects = new List<IStatusEffect>(_statusEffects.Values);
+        //    return statusEffects;
+        //}
     }
 
     [System.Serializable]

@@ -241,8 +241,7 @@ namespace Raincrow.BattleArena.Controllers
                                                                                     playerId,
                                                                                     _turnModel,
                                                                                     _serviceLocator.GetBarEventLogView(),
-                                                                                    _animationController,
-                                                                                    _serviceLocator.GetStatusEffectsView());
+                                                                                    _animationController);
             yield return null;
 
             BanishmentPhase banishmentPhase = new BanishmentPhase(this,
@@ -530,6 +529,41 @@ namespace Raincrow.BattleArena.Controllers
                 return true;
             }
             return false;
+        }
+
+        public ICharacterController GetCharacter(string id)
+        {
+            foreach (ICharacterController witch in WitchesViews)
+            {
+                if (witch.Model.Id == id)
+                {
+                    return witch;
+                }
+            }
+
+            foreach (ICharacterController spirit in SpiritsViews)
+            {
+                if (spirit.Model.Id == id)
+                {
+                    return spirit;
+                }
+            }
+            return default;
+        }
+
+        public void UpdateStatusEffects()
+        {
+            // witches
+            foreach (var witch in WitchesViews)
+            {
+                witch.Model.UpdateStatusEffects();
+            }
+
+            // spirits
+            foreach (var spirit in SpiritsViews)
+            {
+                spirit.Model.UpdateStatusEffects();
+            }
         }
 
         #endregion
