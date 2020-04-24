@@ -398,11 +398,13 @@ public class UIPlayerInfo : UIInfoPanel
 
     private void OnClickChallenge()
     {
+        LoadingOverlay.Show();
         BattleArena.ChallengeRequests.Challenge(WitchMarker.witchToken.Id);
         Close();
     }
     private void OnClickJoin()
     {
+        LoadingOverlay.Show();
         BattleArena.ChallengeRequests.Join(WitchMarker.witchToken.battleId);
         Close();
     }

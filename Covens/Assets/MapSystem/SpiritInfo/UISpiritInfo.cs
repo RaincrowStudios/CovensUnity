@@ -364,11 +364,13 @@ public class UISpiritInfo : UIInfoPanel
 
     private void OnClickChallenge()
     {
+        LoadingOverlay.Show();
         BattleArena.ChallengeRequests.Challenge(SpiritToken.Id);
         Close();
     }
     private void OnClickJoin()
     {
+        LoadingOverlay.Show();
         BattleArena.ChallengeRequests.Join(SpiritToken.battleId);
         Close();
     }
