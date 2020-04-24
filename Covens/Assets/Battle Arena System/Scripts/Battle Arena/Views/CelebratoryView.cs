@@ -4,14 +4,15 @@ using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
 
-namespace Raincrow.BattleArena.Views {
+namespace Raincrow.BattleArena.Views
+{
     public class CelebratoryView : MonoBehaviour, ICelebratoryView
     {
         [Header("UI")]
         [SerializeField] private Image _backgroundaAlpha;
         [SerializeField] private Image _backgroundaSideBar;
         [SerializeField] private CanvasGroup _celebratoryUI;
-        
+
         [Header("Result UI")]
         [SerializeField] private TextMeshProUGUI _textResult;
         [SerializeField] private Image[] _sideGlows;
@@ -44,9 +45,17 @@ namespace Raincrow.BattleArena.Views {
 
         private void AnimationIn()
         {
+            if (_backgroundaAlpha == null)
+            {
+                return;
+            }
+
             LeanTween.value(0f, 0.1f, _animationTime).setOnUpdate((value) =>
             {
-                _backgroundaAlpha.color = new Vector4(0, 0, 0, value);
+                if (_backgroundaAlpha != null)
+                {
+                    _backgroundaAlpha.color = new Vector4(0, 0, 0, value);
+                }
             });
 
             LeanTween.alphaCanvas(_celebratoryUI, 1f, _animationTime);
@@ -56,9 +65,13 @@ namespace Raincrow.BattleArena.Views {
 
         private void AnimationOut()
         {
+
             LeanTween.value(0.1f, 0f, _animationTime).setOnUpdate((value) =>
             {
-                _backgroundaAlpha.color = new Vector4(0, 0, 0, value);
+                if (_backgroundaAlpha != null)
+                {
+                    _backgroundaAlpha.color = new Vector4(0, 0, 0, value);
+                }
             });
 
             LeanTween.alphaCanvas(_celebratoryUI, 0f, _animationTime);
@@ -67,7 +80,8 @@ namespace Raincrow.BattleArena.Views {
         }
     }
 
-    public interface ICelebratoryView {
+    public interface ICelebratoryView
+    {
         void Show(bool victory);
         void Hide();
     }
