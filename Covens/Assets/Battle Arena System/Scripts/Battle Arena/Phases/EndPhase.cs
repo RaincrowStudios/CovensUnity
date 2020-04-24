@@ -78,36 +78,43 @@ namespace Raincrow.BattleArena.Phases
             yield return _coroutineHandler.Invoke(DebriefPhase());
 
             //Give ingredients reawrds
-            if (_battleResult.Reward.Tools != null)
+            if (_battleResult.Reward != null)
             {
-                foreach (InventoryItemModel tool in _battleResult.Reward.Tools)
+                if (_battleResult.Reward.Tools != null)
                 {
-                    PlayerDataManager.playerData.AddIngredient(tool.Id, tool.Count);
+                    foreach (InventoryItemModel tool in _battleResult.Reward.Tools)
+                    {
+                        PlayerDataManager.playerData.AddIngredient(tool.Id, tool.Count);
+                    }
                 }
-            }
 
-            if (_battleResult.Reward.Herbs != null)
+                if (_battleResult.Reward.Herbs != null)
+                {
+                    foreach (InventoryItemModel herb in _battleResult.Reward.Herbs)
+                    {
+                        PlayerDataManager.playerData.AddIngredient(herb.Id, herb.Count);
+                    }
+                }
+
+                if (_battleResult.Reward.Herbs != null)
+                {
+                    foreach (InventoryItemModel gem in _battleResult.Reward.Herbs)
+                    {
+                        PlayerDataManager.playerData.AddIngredient(gem.Id, gem.Count);
+                    }
+                }
+
+                yield return _rewardsBatttleView.Show(
+                    _battleResult.Type == BattleResultType.PlayerWins ? LocalizeLookUp.GetText("battle_title_win") : LocalizeLookUp.GetText("battle_title_lose"),
+                     LocalizeLookUp.GetText("battle_subtitle_end_battle"),
+                    _battleResult.Reward,
+                    BattleClose
+                ).WaitEndScreen();
+            }
+            else
             {
-                foreach (InventoryItemModel herb in _battleResult.Reward.Herbs)
-                {
-                    PlayerDataManager.playerData.AddIngredient(herb.Id, herb.Count);
-                }
+                BattleClose();
             }
-
-            if (_battleResult.Reward.Herbs != null)
-            {
-                foreach (InventoryItemModel gem in _battleResult.Reward.Herbs)
-                {
-                    PlayerDataManager.playerData.AddIngredient(gem.Id, gem.Count);
-                }
-            }
-
-            yield return _rewardsBatttleView.Show(
-                _battleResult.Type == BattleResultType.PlayerWins ? LocalizeLookUp.GetText("battle_title_win") : LocalizeLookUp.GetText("battle_title_lose"),
-                 LocalizeLookUp.GetText("battle_subtitle_end_battle"),
-                _battleResult.Reward,
-                BattleClose
-            ).WaitEndScreen();
 
             yield return null;
         }
