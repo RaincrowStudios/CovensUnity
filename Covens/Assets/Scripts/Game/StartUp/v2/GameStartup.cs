@@ -362,14 +362,7 @@ public class GameStartup : MonoBehaviour
             //{
                 UIDominionSplash.Instance.Show(() =>
                 {
-                    if (Raincrow.FTF.FirstTapManager.IsFirstTime("nextpoplaunch"))
-                    {
-                        Raincrow.FTF.FirstTapManager.Show("nextpoplaunch", BlessingManager.CheckDailyBlessing);
-                    }
-                    else
-                    {
-                        BlessingManager.CheckDailyBlessing();
-                    }
+                    BlessingManager.CheckDailyBlessing();
 
                     ReviewPopupController.Init();
                 });
