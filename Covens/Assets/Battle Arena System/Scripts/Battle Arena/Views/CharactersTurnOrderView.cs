@@ -103,22 +103,21 @@ namespace Raincrow.BattleArena.Views
 
                 if (_dictWitches.TryGetValue(characterID, out IWitchModel witch))
                 {
-                    alignmentColor = witch.GetAlignmentColor();
                     coroutine = this.StartCoroutine<Sprite>(GetWitchPortraitAvatar(witch));
                     while (coroutine.keepWaiting)
                     {
                         yield return null;
                     }
-
+                    alignmentColor = witch.GetAlignmentColor();
                 }
                 else if (_dictSpirits.TryGetValue(characterID, out ISpiritModel spirit))
                 {
-                    alignmentColor = spirit.GetAlignmentColor();
                     coroutine = this.StartCoroutine<Sprite>(GetSpiritPortraitAvatar(spirit));
                     while (coroutine.keepWaiting)
                     {
                         yield return null;
                     }
+                    alignmentColor = spirit.GetAlignmentColor();
                 }
 
                 if (coroutine != null && coroutine.ReturnValue != null)
