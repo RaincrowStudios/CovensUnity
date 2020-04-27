@@ -19,7 +19,7 @@ namespace BattleArena
                     }
                     else
                     {
-                        UIGlobalPopup.ShowPopUp(() => { }, LocalizeLookUp.GetText("battle_error_on_challenge"));
+                        UIGlobalPopup.ShowPopUp(() => { }, LocalizeLookUp.GetText("battle_challenge_error_"+ response.ToString()));
                         error?.Invoke();
                     }
                 });
@@ -38,7 +38,7 @@ namespace BattleArena
                     }
                     else
                     {
-                        UIGlobalPopup.ShowPopUp(() => { }, LocalizeLookUp.GetText("battle_error_on_join"));
+                        UIGlobalPopup.ShowPopUp(() => { }, LocalizeLookUp.GetText("battle_join_error_" + response.ToString()));
                         UIMain.Instance.HideBattleWaitScreen(0.3f);
                         error?.Invoke();
                     }
