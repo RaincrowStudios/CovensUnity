@@ -70,7 +70,7 @@ namespace Raincrow.BattleArena.Views
                 button.SetCooldown(spellCooldownTurn, spell.cooldownTurns);
             }
         }
-        public void OnClickEnemy()
+        public void OnClickEnemy(string objectType)
         {
             _buttonSpellAstral.interactable = true;
 
@@ -79,10 +79,27 @@ namespace Raincrow.BattleArena.Views
                 string spellId = button.GetSpellName();
                 SpellData spell = DownloadedAssets.GetSpell(spellId);
                 int spellCooldownTurn = _battleModel.GetCooldown(spellId);
-                bool isValidTarget = spell.target == SpellData.Target.OTHER || spell.target == SpellData.Target.ANY;
+
+                bool isValidTarget = false;
                 bool isInCooldown = spellCooldownTurn > 0 && spell.cooldownTurns > 0;
 
+                if (string.Equals(objectType,ObjectType.Spirit))
+                {
+                    isValidTarget = spell.target == SpellData.Target.OTHER || spell.target == SpellData.Target.ANY;
+                } else
+                {
+                    if(string.Equals(BattleType.PvE, _battleModel.BattleType)){
+                        _buttonSpellAstral.interactable = false;
+                        isValidTarget = spell.beneficial && (spell.target == SpellData.Target.OTHER || spell.target == SpellData.Target.ANY);
+                    }
+                    else
+                    {
+                        isValidTarget = spell.target == SpellData.Target.OTHER || spell.target == SpellData.Target.ANY;
+                    }
+                }
+
                 button.SetInteractable(isValidTarget && !isInCooldown);
+
                 button.SetCooldown(spellCooldownTurn, spell.cooldownTurns);
             }
         }

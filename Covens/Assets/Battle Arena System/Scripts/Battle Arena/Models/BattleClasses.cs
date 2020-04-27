@@ -13,6 +13,12 @@ namespace Raincrow.BattleArena.Model
         public static readonly string PlayerWins = "playerWins";
     }
 
+    public static class BattleType
+    {
+        public static readonly string PvP = "PvP";
+        public static readonly string PvE = "PvE";
+    }
+
     public class BattleResultModel : IBattleResultModel
     {
         public string Type { get; set; }
@@ -61,6 +67,7 @@ namespace Raincrow.BattleArena.Model
         // Properties
         public string Id { get; set; }
         public IGridUIModel GridUI { get; set; }
+        public string BattleType { get; set; }
 
         // Private
         private IDictionary<string, int> _spellCooldowns = new Dictionary<string, int>();

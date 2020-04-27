@@ -91,7 +91,7 @@ namespace Raincrow.BattleArena.Controllers
             }
         }
 
-        public IEnumerator StartBattle(string battleId, string playerId, IGridModel gridModel, IList<IWitchModel> witches, IList<ISpiritModel> spirits, ILoadingView loadingView = null)
+        public IEnumerator StartBattle(string battleId, string playerId, IGridModel gridModel, IList<IWitchModel> witches, IList<ISpiritModel> spirits, string battleType, ILoadingView loadingView = null)
         {
             if (!isActiveAndEnabled)
             {
@@ -114,7 +114,7 @@ namespace Raincrow.BattleArena.Controllers
             yield return StartCoroutine(InitializePlayerUI(witchModel));
 
             loadingView?.UpdateMessage("Starting state machine");
-            yield return StartCoroutine(StartStateMachine(battleId, playerId, _gameMasterController));
+            yield return StartCoroutine(StartStateMachine(battleId, playerId, _gameMasterController, battleType));
 
             loadingView?.UpdateMessage("Starting battle");
 
@@ -190,7 +190,7 @@ namespace Raincrow.BattleArena.Controllers
             }
         }
 
-        private IEnumerator StartStateMachine(string battleId, string playerId, IGameMasterController gameMasterController)
+        private IEnumerator StartStateMachine(string battleId, string playerId, IGameMasterController gameMasterController, string battleType)
         {
             // We yield at each allocation to avoid a lot of allocations on a single frame
             _turnModel = new TurnModel();
@@ -201,6 +201,7 @@ namespace Raincrow.BattleArena.Controllers
             IBattleModel battleModel = new BattleModel()
             {
                 Id = battleId,
+                BattleType = battleType,
                 GridUI = this
             };
             yield return null;
