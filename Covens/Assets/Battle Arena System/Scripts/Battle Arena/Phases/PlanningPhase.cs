@@ -33,7 +33,8 @@ namespace Raincrow.BattleArena.Phases
         private ICellUIModel[,] _gridView;
         private IInputController _inputController;
         private ICameraTargetController _cameraTargetController;
-        private IStatusEffectsView _statusEffectsView;
+        private IStatusEffectsView _playerStatusEffectsView;
+        private IStatusEffectsView _enemyStatusEffectsView;
         private IPopupView _popupView;
         private BattleSlot? _selectedSlot;
         private string _objectId;
@@ -44,6 +45,7 @@ namespace Raincrow.BattleArena.Phases
         private float _dragSpeed;
         private float _dragDecceleration;
         private Vector3 _dragVelocity;
+        private string _playerId;
 
         // Readonly Variables
         private readonly int _battleCellLayer;
@@ -64,7 +66,9 @@ namespace Raincrow.BattleArena.Phases
                              IPlayerBadgeView playerBadgeView,
                              IInputController inputController,
                              ICameraTargetController cameraTargetController,
-                             IStatusEffectsView statusEffectsView,
+                             IStatusEffectsView playerStatusEffectsView,
+                             IStatusEffectsView enemyStatusEffectsView,
+                             string playerId,
                              IPopupView popupView,
                              float moveSpeed,
                              float dragSpeed,
@@ -87,7 +91,9 @@ namespace Raincrow.BattleArena.Phases
             //_cameraSpeed = cameraSpeed;
             _inputController = inputController;
             _cameraTargetController = cameraTargetController;
-            _statusEffectsView = statusEffectsView;
+            _playerStatusEffectsView = playerStatusEffectsView;
+            _enemyStatusEffectsView = enemyStatusEffectsView;
+            _playerId = playerId;
             _popupView = popupView;
             _moveSpeed = moveSpeed;
             _dragSpeed = dragSpeed;
@@ -101,7 +107,8 @@ namespace Raincrow.BattleArena.Phases
             //IList<IStatusEffect> statusEffects = _battleModel.GetStatusEffects();
             //_statusEffectsView.UpdateView(statusEffects);
 
-            _statusEffectsView.Hide();
+            _coroutineStarter.Invoke(_playerStatusEffectsView.Hide());
+            _coroutineStarter.Invoke(_enemyStatusEffectsView.Hide());
 
             _selectedSlot = null;
 
@@ -133,7 +140,8 @@ namespace Raincrow.BattleArena.Phases
 
         private void OnClickCell(ICellUIModel cellUIModel)
         {
-            _statusEffectsView.Hide();
+            _coroutineStarter.Invoke(_enemyStatusEffectsView.Hide());
+            _coroutineStarter.Invoke(_playerStatusEffectsView.Hide());
 
             if (_selectedSlot != null)
             {
@@ -172,7 +180,15 @@ namespace Raincrow.BattleArena.Phases
                 if (character != default && character.Model != default)
                 {
                     IList<IStatusEffect> statusEffects = character.Model.StatusEffects;
-                    _statusEffectsView.Show(statusEffects);
+                    if (character.Model.Id == _playerId)
+                    {
+                        _coroutineStarter.Invoke(_playerStatusEffectsView.Show(statusEffects));
+
+                    }
+                    else
+                    {
+                        _coroutineStarter.Invoke(_enemyStatusEffectsView.Show(statusEffects));
+                    }
                 }
             }
         }
@@ -240,7 +256,8 @@ namespace Raincrow.BattleArena.Phases
             _battleModel.UpdateCooldowns();
             _battleModel.GridUI.UpdateStatusEffects();
 
-            _statusEffectsView.Hide();
+            _coroutineStarter.Invoke(_playerStatusEffectsView.Hide());
+            _coroutineStarter.Invoke(_enemyStatusEffectsView.Hide());
             //_battleModel.UpdateStatusEffects();
 
             // Update status effects view

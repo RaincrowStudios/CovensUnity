@@ -27,7 +27,8 @@ namespace Raincrow.Services
         [SerializeField] private SmoothCameraFollow _smoothCameraFollowPrefab;
         [SerializeField] private RewardsBatttleView _rewardsBatttleViewPrefab;
         [SerializeField] private PopupView _popupViewPrefab;
-        [SerializeField] private StatusEffectsView _statusEffectsViewPrefab;
+        [SerializeField] private StatusEffectsView _playerStatusEffectsViewPrefab;
+        [SerializeField] private StatusEffectsView _enemyStatusEffectsViewPrefab;
 
         [Header("Service Instances")]
         [SerializeField] private AvatarSpriteUtil _avatarSpriteUtilInstance; // Avatar Sprite Util Instance
@@ -47,7 +48,8 @@ namespace Raincrow.Services
         [SerializeField] private SmoothCameraFollow _smoothCameraFollowInstance;
         [SerializeField] private RewardsBatttleView _rewardsBatttleViewInstance;
         [SerializeField] private PopupView _popupViewInstance;
-        [SerializeField] private StatusEffectsView _statusEffectsViewInstance;
+        [SerializeField] private StatusEffectsView _playerStatusEffectsViewInstance;
+        [SerializeField] private StatusEffectsView _enemyStatusEffectsViewInstance;
 
         [Header("UI")]
         [SerializeField] private Canvas _mainCanvas;
@@ -243,13 +245,22 @@ namespace Raincrow.Services
             return _popupViewInstance;
         }
 
-        public IStatusEffectsView GetStatusEffectsView()
+        public IStatusEffectsView GetPlayerStatusEffectsView()
         {
-            if (_statusEffectsViewInstance == null)
+            if (_playerStatusEffectsViewInstance == null)
             {
-                _statusEffectsViewInstance = GetInstance(_statusEffectsViewPrefab, _mainCanvas.transform);
+                _playerStatusEffectsViewInstance = GetInstance(_playerStatusEffectsViewPrefab, _mainCanvas.transform);
             }
-            return _statusEffectsViewInstance;
+            return _playerStatusEffectsViewInstance;
+        }
+
+        public IStatusEffectsView GetEnemyStatusEffectsView()
+        {
+            if (_enemyStatusEffectsViewInstance == null)
+            {
+                _enemyStatusEffectsViewInstance = GetInstance(_enemyStatusEffectsViewPrefab, _mainCanvas.transform);
+            }
+            return _enemyStatusEffectsViewInstance;
         }
 
         private T GetInstance<T>(T prefab, Transform parent = null) where T : Object

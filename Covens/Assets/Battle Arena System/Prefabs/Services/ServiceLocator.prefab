@@ -77,7 +77,9 @@ MonoBehaviour:
     type: 3}
   _popupViewPrefab: {fileID: 1526088140707712062, guid: 1a77add61448d0348b28459d49ae9b98,
     type: 3}
-  _statusEffectsViewPrefab: {fileID: 811605243724768990, guid: 1f37db903dfa9dd47b941f5e730e0859,
+  _playerStatusEffectsViewPrefab: {fileID: 811605243724768990, guid: 1f37db903dfa9dd47b941f5e730e0859,
+    type: 3}
+  _enemyStatusEffectsViewPrefab: {fileID: 811605243724768990, guid: 086534e4f1bc75744858dac3b2c974a8,
     type: 3}
   _avatarSpriteUtilInstance: {fileID: 0}
   _loadingViewInstance: {fileID: 0}
@@ -96,6 +98,7 @@ MonoBehaviour:
   _smoothCameraFollowInstance: {fileID: 0}
   _rewardsBatttleViewInstance: {fileID: 0}
   _popupViewInstance: {fileID: 0}
-  _statusEffectsViewInstance: {fileID: 0}
+  _playerStatusEffectsViewInstance: {fileID: 0}
+  _enemyStatusEffectsViewInstance: {fileID: 0}
   _mainCanvas: {fileID: 0}
   _inputController: {fileID: 0}
