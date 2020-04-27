@@ -115,9 +115,12 @@ namespace Raincrow.BattleArena.Views
             {
                 LeanTween.scaleY(_currentMenu, 0.0f, TimeToToggle).setOnComplete(() =>
                 {
-                    _currentMenu.SetActive(false);
-                    LeanTween.scaleY(menu, 1.0f, TimeToToggle);
-                    _currentMenu = menu;
+                    if (_currentMenu != null)
+                    {
+                        _currentMenu.SetActive(false);
+                        LeanTween.scaleY(menu, 1.0f, TimeToToggle);
+                        _currentMenu = menu;
+                    }
                 });
             }
 
@@ -158,9 +161,9 @@ namespace Raincrow.BattleArena.Views
             _spellMenu.OnClickYourself();
         }
 
-        public void OnClickEnemy()
+        public void OnClickEnemy(string objectType)
         {
-            _spellMenu.OnClickEnemy();
+            _spellMenu.OnClickEnemy(objectType);
         }
     }
 
@@ -182,6 +185,6 @@ namespace Raincrow.BattleArena.Views
 
         void OnClickYourself();
 
-        void OnClickEnemy();
+        void OnClickEnemy(string objectType);
     }
 }

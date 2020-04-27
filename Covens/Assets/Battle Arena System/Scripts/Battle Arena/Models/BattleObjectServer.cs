@@ -9,6 +9,8 @@ public class BattleObjectServer
 {
     [JsonProperty("_id")]
     public string Id { get; set; }
+    [JsonProperty("type")]
+    public string type { get; set; }
     [JsonProperty("participants")]
     public GenericCharacterObjectServer[] Participants { get; set; }
     [JsonProperty("grid")]

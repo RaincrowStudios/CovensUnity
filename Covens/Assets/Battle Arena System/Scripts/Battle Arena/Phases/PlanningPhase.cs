@@ -155,7 +155,10 @@ namespace Raincrow.BattleArena.Phases
             }
             else
             {
-                _quickCastView.OnClickEnemy();
+                ICharacterController character = _battleModel.GridUI.GetCharacter(cellUIModel.CellModel.ObjectId);
+                string objectType = character == null ? string.Empty : character.Model.ObjectType;
+
+                _quickCastView.OnClickEnemy(objectType);
             }
 
             cellUIModel.SetIsSelected(true);
