@@ -38,10 +38,13 @@ namespace Raincrow.BattleArena.Views
 
         public IEnumerator Show(IList<IStatusEffect> statusEffects)
         {
-            Vector2 position = _rectTransform.anchoredPosition;
-            
             _objectPool.RecycleAll(_statusEffectViewPrefab);
-            for (float elapsedTime = 0f; elapsedTime <= _showAnimationTime; elapsedTime = Mathf.MoveTowards(elapsedTime, _showAnimationTime + Mathf.Epsilon, Time.deltaTime))
+
+            Vector2 position = _rectTransform.anchoredPosition;
+            float posXNormal = Mathf.InverseLerp(_startPositionX, _endPositionX, _rectTransform.anchoredPosition.x);
+            for (float elapsedTime = Mathf.Lerp(0f, _showAnimationTime, posXNormal); 
+                 elapsedTime <= _showAnimationTime; 
+                 elapsedTime = Mathf.MoveTowards(elapsedTime, _showAnimationTime + Mathf.Epsilon, Time.deltaTime))
             {
                 float t = Easings.Interpolate(elapsedTime / _showAnimationTime, _showAnimationType);
                 position.x = Mathf.Lerp(_startPositionX, _endPositionX, t);
@@ -65,7 +68,10 @@ namespace Raincrow.BattleArena.Views
             _objectPool.RecycleAll(_statusEffectViewPrefab);
 
             Vector2 position = _rectTransform.anchoredPosition;
-            for (float elapsedTime = 0f; elapsedTime <= _showAnimationTime; elapsedTime = Mathf.MoveTowards(elapsedTime, _showAnimationTime + Mathf.Epsilon, Time.deltaTime))
+            float posXNormal = Mathf.InverseLerp(_endPositionX, _startPositionX, _rectTransform.anchoredPosition.x);
+            for (float elapsedTime = Mathf.Lerp(0f, _showAnimationTime, posXNormal);
+                 elapsedTime <= _showAnimationTime;
+                 elapsedTime = Mathf.MoveTowards(elapsedTime, _showAnimationTime + Mathf.Epsilon, Time.deltaTime))
             {
                 float t = Easings.Interpolate(elapsedTime / _showAnimationTime, _showAnimationType);
                 position.x = Mathf.Lerp(_endPositionX, _startPositionX, t);
