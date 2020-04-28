@@ -90,7 +90,7 @@ namespace Raincrow.BattleArena.Views
 
             bool isDead = energy <= 0;
             _deathIcon.SetActive(isDead);
-            Debug.LogFormat("Update Energy {0} {1}", baseEnergy, energy);                        
+            //Debug.LogFormat("Update Energy {0} {1}", baseEnergy, energy);                        
         }
 
         public void AddDamage(int damage)

@@ -51,7 +51,13 @@ namespace Raincrow.BattleArena.Controllers
         [SerializeField] private Color _damageColor;
         [SerializeField] private Color _restoreColor;
 
-        [Header("Satus Animation")]
+        [Header("Block Animation")]
+        [SerializeField] private Easings.Functions _blockAnimationFunction = Easings.Functions.CubicEaseInOut;
+        [SerializeField] private float _blockAnimationTime = 0.5f;
+        [SerializeField] private float _blockTextScale = 1f;
+        [SerializeField] private Color _blockColor;
+
+        [Header("Status Animation")]
         [SerializeField] private Easings.Functions _statusAnimationFunction = Easings.Functions.CubicEaseInOut;
         [SerializeField] private float _statusAnimationTime = 2f;
         [SerializeField] private float _statusTextScale = 1f;
@@ -348,8 +354,14 @@ namespace Raincrow.BattleArena.Controllers
             yield return SpawnText(target.Transform, message, _damageTextScale, _statusColor, _statusAnimationTime, _statusAnimationFunction);
         }
 
-        public IEnumerator ApplyDamage(ICharacterController target, int damage, bool isCritical)
+        public IEnumerator ApplyDamage(ICharacterController target, int damage, bool isCritical = false, bool isBlocked = false)
         {
+            if (isBlocked)
+            {
+                Debug.Log("BLOCKED");
+                yield return SpawnText(target.Transform, "BLOCKED!", _blockTextScale, _blockColor, _blockAnimationTime, _blockAnimationFunction);
+            }
+
             float fontSize = isCritical ? _criticalDamageTextScale : _damageTextScale;
 
             string text = damage < 0 ? damage.ToString() : "+" + damage;
@@ -422,9 +434,7 @@ namespace Raincrow.BattleArena.Controllers
         IEnumerator Summon(IList<ICharacterController> characterControllers);
         IEnumerator Move(ICharacterController characterController, BattleSlot targetBattleSlot);
         IEnumerator CastSpell(string spellName, int spellDegree, ICharacterController caster, ICharacterController target);
-        IEnumerator ApplyDamage(ICharacterController target, int damage, bool isCritical);
+        IEnumerator ApplyDamage(ICharacterController target, int damage, bool isCritical = false, bool isBlocked = false);
         IEnumerator ShowMessage(ICharacterController target, string message);
-        //IEnumerator SpawnTrail(int degree, Transform caster, Transform target);
-        //IEnumerator SpawnDamageText(Transform target, int amount, float scale);
     }
 }

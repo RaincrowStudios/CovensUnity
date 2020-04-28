@@ -186,13 +186,17 @@ MonoBehaviour:
   _hitScale: {x: 20, y: 20, z: 20}
   _textPopupInstance: {fileID: 224816674225412742, guid: c1a00adc58de38a42b7e4876ba5fb451,
     type: 3}
-  _textHeight: 150
+  _distFromCenter: 150
   _damageAnimationFunction: 6
   _damageAnimationTime: 1
   _damageTextScale: 250
   _criticalDamageTextScale: 350
   _damageColor: {r: 1, g: 0.2, b: 0.2, a: 1}
   _restoreColor: {r: 0, g: 1, b: 1, a: 1}
+  _blockAnimationFunction: 6
+  _blockAnimationTime: 0.5
+  _blockTextScale: 250
+  _blockColor: {r: 1, g: 1, b: 1, a: 1}
   _statusAnimationFunction: 6
   _statusAnimationTime: 1
   _statusTextScale: 250
@@ -227,7 +231,3 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3f08d2e9e0ef4ca42aa5259d7caff7f7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _sendPlanningPhaseReadyMaxTime: 0.5
-  _waitForPlanningPhaseReadyMaxTime: 0.5
-  _sendFinishPlanningPhaseMaxTime: 0.5
-  _waitForActionResolutionReadyMaxTime: 0.5

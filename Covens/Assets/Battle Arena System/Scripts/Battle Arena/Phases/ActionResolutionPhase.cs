@@ -191,7 +191,7 @@ namespace Raincrow.BattleArena.Phases
                     casterView.AddDamage(-castAction.SpellCost);
 
                     // Animation
-                    yield return _animController.ApplyDamage(targetView, castAction.Result.EnergyChange, castAction.Result.IsCritical);
+                    yield return _animController.ApplyDamage(targetView, castAction.Result.EnergyChange, castAction.Result.IsCritical, castAction.CastBlocked);
 
                     targetView.AddDamage(castAction.Result.EnergyChange);
                 }
@@ -206,7 +206,12 @@ namespace Raincrow.BattleArena.Phases
                     targetView.Model.AddStatusEffect(castAction.Spell, castAction.Cooldown);
                 }
 
-                Debug.LogFormat("Execute Cast to {0} and apply {1} damage", castAction.Target.Id, castAction.Result.EnergyChange);
+                //if (castAction.CastBlocked)
+                //{
+                //    yield return _animController.ShowMessage(targetView, "BLOCKED!");
+                //}
+
+                //Debug.LogFormat("Execute Cast to {0} and apply {1} damage", castAction.Target.Id, castAction.Result.EnergyChange);
             }
             else
             {

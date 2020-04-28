@@ -86,7 +86,7 @@ namespace Raincrow.BattleArena.Views
             float energyNormalized = Mathf.InverseLerp(0f, baseEnergy, energy);
             _damageRingMat.SetFloat(AlphaCutoffPropertyId, Mathf.Max(energyNormalized, MinAlphaCutoff));
 
-            Debug.LogFormat("Update Energy {0} {1}", baseEnergy, energy);
+            //Debug.LogFormat("Update Energy {0} {1}", baseEnergy, energy);
         }        
     }
 }
