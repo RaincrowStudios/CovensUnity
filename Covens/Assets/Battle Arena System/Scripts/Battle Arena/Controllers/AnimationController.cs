@@ -358,8 +358,8 @@ namespace Raincrow.BattleArena.Controllers
         {
             if (isBlocked)
             {
-                Debug.Log("BLOCKED");
-                yield return SpawnText(target.Transform, "BLOCKED!", _blockTextScale, _blockColor, _blockAnimationTime, _blockAnimationFunction);
+                string blockStatus = LocalizeLookUp.GetText("block_status");
+                yield return SpawnText(target.Transform, blockStatus, _blockTextScale, _blockColor, _blockAnimationTime, _blockAnimationFunction);
             }
 
             float fontSize = isCritical ? _criticalDamageTextScale : _damageTextScale;

@@ -141,7 +141,8 @@ namespace Raincrow.BattleArena.Phases
             else
             {
                 // show move failed message
-                yield return _animController.ShowMessage(characterView, "MOVE FAILED!");
+                string moveFailed = LocalizeLookUp.GetText("MOVE_FAILED");
+                yield return _animController.ShowMessage(characterView, moveFailed);
             }
         }
 
@@ -171,7 +172,8 @@ namespace Raincrow.BattleArena.Phases
             {
                 // show move failed message
                 ICharacterController summonerView = GetCharacterView(characterId);
-                yield return _animController.ShowMessage(summonerView, "SUMMON FAILED!");
+                string summonFailed = LocalizeLookUp.GetText("SUMMON_FAILED");
+                yield return _animController.ShowMessage(summonerView, summonFailed);
             }
         }
 
@@ -216,7 +218,8 @@ namespace Raincrow.BattleArena.Phases
             else
             {
                 // show cast failed message
-                yield return _animController.ShowMessage(targetView, "CAST FAILED!");
+                string castFailed = LocalizeLookUp.GetText("CAST_FAILED");
+                yield return _animController.ShowMessage(targetView, castFailed);
             }
 
             casterView.UpdateEnergy(castAction.Caster.Energy);
