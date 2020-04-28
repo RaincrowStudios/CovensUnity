@@ -56,7 +56,7 @@ namespace Raincrow.BattleArena.Views
 
         public void OnClickYourself()
         {
-            _buttonSpellAstral.interactable = false;
+            _buttonSpellAstral.interactable = true;
 
             foreach (SpellSlotView button in _spellButtons)
             {
@@ -72,7 +72,7 @@ namespace Raincrow.BattleArena.Views
         }
         public void OnClickEnemy(string objectType)
         {
-            _buttonSpellAstral.interactable = true;
+            _buttonSpellAstral.interactable = false;
 
             foreach (SpellSlotView button in _spellButtons)
             {
@@ -89,7 +89,6 @@ namespace Raincrow.BattleArena.Views
                 } else
                 {
                     if(string.Equals(BattleType.PvE, _battleModel.BattleType)){
-                        _buttonSpellAstral.interactable = false;
                         isValidTarget = spell.beneficial && (spell.target == SpellData.Target.OTHER || spell.target == SpellData.Target.ANY);
                     }
                     else
