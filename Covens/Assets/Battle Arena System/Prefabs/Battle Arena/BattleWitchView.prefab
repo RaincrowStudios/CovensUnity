@@ -272,15 +272,15 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 2484422669062743101}
     m_Modifications:
-    - target: {fileID: 8677399697308754128, guid: 8c8c249e3c4a16d45ac260a115b243c2,
-        type: 3}
-      propertyPath: m_IsActive
-      value: 0
-      objectReference: {fileID: 0}
     - target: {fileID: 7787436980893801109, guid: 8c8c249e3c4a16d45ac260a115b243c2,
         type: 3}
       propertyPath: m_Name
       value: Nameplate
+      objectReference: {fileID: 0}
+    - target: {fileID: 8677399697308754128, guid: 8c8c249e3c4a16d45ac260a115b243c2,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 4549616007911908408, guid: 8c8c249e3c4a16d45ac260a115b243c2,
         type: 3}
