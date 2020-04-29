@@ -204,8 +204,11 @@ namespace Raincrow.BattleArena.Phases
                     {
                         _battleModel.AddCooldown(castAction.Spell, castAction.Cooldown);
                     }
+                }
 
-                    targetView.Model.AddStatusEffect(castAction.Spell, castAction.Cooldown);
+                if (castAction.ExpiresOnTurn > 0)
+                {
+                    targetView.Model.AddStatusEffect(castAction.Spell, castAction.ExpiresOnTurn);
                 }
 
                 //if (castAction.CastBlocked)
