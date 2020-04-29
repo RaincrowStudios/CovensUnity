@@ -52,7 +52,7 @@ namespace Raincrow.BattleArena.Model
         [JsonProperty("special")]
         public override bool Special => true;
         [JsonProperty("spellId")]
-        public string SpellId => "";
+        public string SpellId => "spell_astral";
         [JsonProperty("targetId")]
         public string TargetId { get; set; }
         [JsonProperty("ingredients")]
