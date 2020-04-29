@@ -54,9 +54,9 @@ namespace Raincrow.BattleArena.Views
             }
         }
 
-        public void OnClickYourself()
+        public void OnClickYourself(bool canUseAstral)
         {
-            _buttonSpellAstral.interactable = true;
+            _buttonSpellAstral.interactable = canUseAstral;
 
             foreach (SpellSlotView button in _spellButtons)
             {

@@ -9,6 +9,7 @@ namespace Raincrow.BattleArena.Model
     {
         public const string Move = "move";
         public const string Cast = "cast";
+        public const string CastAstral = "castAstral";
         public const string Summon = "summon";
         public const string Flee = "flee";
     }
@@ -37,6 +38,16 @@ namespace Raincrow.BattleArena.Model
         public string TargetId { get; set; }
         [JsonProperty("ingredients")]
         public InventoryItemModel[] Ingredients { get; set; }
+    }
+
+    public class CastAstralActionRequestModel : ActionRequestModel
+    {
+        [JsonProperty("type")]
+        public override string Type => ActionRequestType.CastAstral;
+        [JsonProperty("spellId")]
+        public string SpellId { get; set; }
+        [JsonProperty("targetId")]
+        public string TargetId { get; set; }
     }
 
     public class SummonActionRequestModel : ActionRequestModel

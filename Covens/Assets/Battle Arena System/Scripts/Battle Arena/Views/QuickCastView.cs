@@ -34,13 +34,13 @@ namespace Raincrow.BattleArena.Views
         private GameObject _currentMenu;
         private bool _isOpen;
 
-        public void Show(IBattleModel battleModel, UnityAction onClickFly, UnityAction onClickSummon, UnityAction onClickFlee, System.Action<string> onCastSpell, System.Action<string> openIngredients)
+        public void Show(IBattleModel battleModel, UnityAction onClickFly, UnityAction onClickSummon, UnityAction onClickFlee, System.Action<string> onCastSpell, UnityAction onCastSpellAstral, System.Action<string> openIngredients)
         {
             gameObject.SetActive(true);
             _buttonFly.onClick.AddListener(onClickFly);
             _buttonSummon.onClick.AddListener(onClickSummon);
             _buttonFlee.onClick.AddListener(onClickFlee);
-            _buttonAstral.onClick.AddListener(() => { onCastSpell("spell_astral"); });
+            _buttonAstral.onClick.AddListener(onCastSpellAstral);
 
             _spellMenu.Show(battleModel, onCastSpell, openIngredients);
         }
@@ -156,9 +156,9 @@ namespace Raincrow.BattleArena.Views
             _buttonFlee.interactable = !value;
         }
 
-        public void OnClickYourself()
+        public void OnClickYourself(bool canUseAstral)
         {
-            _spellMenu.OnClickYourself();
+            _spellMenu.OnClickYourself(canUseAstral);
         }
 
         public void OnClickEnemy(string objectType)
@@ -169,7 +169,7 @@ namespace Raincrow.BattleArena.Views
 
     public interface IQuickCastView
     {
-        void Show(IBattleModel battleModel, UnityAction onClickFly, UnityAction onClickSummon, UnityAction onClickFlee, System.Action<string> onCastSpell, System.Action<string> openIngredients);
+        void Show(IBattleModel battleModel, UnityAction onClickFly, UnityAction onClickSummon, UnityAction onClickFlee, System.Action<string> onCastSpell, UnityAction onCastSpellAstral, System.Action<string> openIngredients);
 
         void SetActive(bool value);
 
@@ -183,7 +183,7 @@ namespace Raincrow.BattleArena.Views
 
         void CloseMenus();
 
-        void OnClickYourself();
+        void OnClickYourself(bool canUseAstral);
 
         void OnClickEnemy(string objectType);
     }

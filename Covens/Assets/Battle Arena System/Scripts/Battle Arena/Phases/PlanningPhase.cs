@@ -132,7 +132,7 @@ namespace Raincrow.BattleArena.Phases
 
             _startTime = Time.realtimeSinceStartup;
 
-            _quickCastView.Show(_battleModel, OnClickFly, OnClickSummon, OnClickFlee, OnCastSpell, OpenInventory);
+            _quickCastView.Show(_battleModel, OnClickFly, OnClickSummon, OnClickFlee, OnCastSpell, OnCastSpellAstral, OpenInventory);
 
             //Show countdown turn
             _countdownView.Show();
@@ -151,7 +151,7 @@ namespace Raincrow.BattleArena.Phases
 
             if (!string.IsNullOrWhiteSpace(cellUIModel.CellModel.ObjectId) && cellUIModel.CellModel.ObjectId.Equals(PlayerDataManager.playerData.instance))
             {
-                _quickCastView.OnClickYourself();
+                _quickCastView.OnClickYourself(CanUseSpecialAction());
             }
             else
             {
@@ -292,7 +292,7 @@ namespace Raincrow.BattleArena.Phases
             yield return new WaitUntil(() => _isPlanningPhaseFinished.GetValueOrDefault());
         }
 
-        private bool CanFlee()
+        private bool CanUseSpecialAction()
         {
             return _turnModel.RequestedActions.Count <= 0;
         }
@@ -304,7 +304,7 @@ namespace Raincrow.BattleArena.Phases
             if (_turnModel.RequestedActions.Count == 1)
             {
                 IActionRequestModel actionRequestModel = _turnModel.RequestedActions[0];
-                requestedFlee = actionRequestModel.Type == ActionRequestType.Flee;
+                requestedFlee = actionRequestModel.Type == ActionRequestType.Flee || actionRequestModel.Type == ActionRequestType.CastAstral;
             }
             return !requestedFlee && _turnModel.MaxActionsAllowed > _turnModel.RequestedActions.Count;
         }
@@ -347,7 +347,7 @@ namespace Raincrow.BattleArena.Phases
 
         private void OnClickFlee()
         {
-            if (CanFlee())
+            if (CanUseSpecialAction())
             {
                 string message = LocalizeLookUp.GetText("battle_flee_request");
                 _coroutineStarter.Invoke(_popupView.Show(message, OnConfirmFlee, OnCancelFlee));
@@ -379,6 +379,22 @@ namespace Raincrow.BattleArena.Phases
                 _turnModel.RequestedActions.Add(cast);
                 _charactersTurnOrderView.UpdateActionsPoints(_turnModel.RequestedActions.Count);
                 OnFinishAddCastRequest(spell);
+            }
+        }
+
+        private void OnCastSpellAstral()
+        {
+            if (CanUseSpecialAction() && HasActionsAvailable() && _selectedSlot.HasValue && Spellcasting.CanCast("spell_astral"))
+            {
+                CastAstralActionRequestModel cast = new CastAstralActionRequestModel()
+                {
+                    SpellId = "spell_astral",
+                    TargetId = _objectId
+                };
+
+                _turnModel.RequestedActions.Add(cast);
+                _charactersTurnOrderView.UpdateActionsPoints(_turnModel.RequestedActions.Count);
+                OnFinishAddCastRequest("spell_astral");
             }
         }
 
