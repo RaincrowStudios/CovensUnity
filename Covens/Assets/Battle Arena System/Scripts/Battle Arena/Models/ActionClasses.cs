@@ -9,7 +9,6 @@ namespace Raincrow.BattleArena.Model
     {
         public const string Move = "move";
         public const string Cast = "cast";
-        public const string CastAstral = "castAstral";
         public const string Summon = "summon";
         public const string Flee = "flee";
     }
@@ -18,12 +17,16 @@ namespace Raincrow.BattleArena.Model
     {
         [JsonProperty("type")]
         public override string Type => ActionRequestType.Flee;
+        [JsonProperty("special")]
+        public override bool Special => true;
     }
 
     public class MoveActionRequestModel : ActionRequestModel
     {
         [JsonProperty("type")]
         public override string Type => ActionRequestType.Move;
+        [JsonProperty("special")]
+        public override bool Special => false;
         [JsonProperty("position")]
         public BattleSlot Position { get; set; }
     }
@@ -32,6 +35,8 @@ namespace Raincrow.BattleArena.Model
     {
         [JsonProperty("type")]
         public override string Type => ActionRequestType.Cast;
+        [JsonProperty("special")]
+        public override bool Special => false;
         [JsonProperty("spellId")]
         public string SpellId { get; set; }
         [JsonProperty("targetId")]
@@ -43,17 +48,23 @@ namespace Raincrow.BattleArena.Model
     public class CastAstralActionRequestModel : ActionRequestModel
     {
         [JsonProperty("type")]
-        public override string Type => ActionRequestType.CastAstral;
+        public override string Type => ActionRequestType.Cast;
+        [JsonProperty("special")]
+        public override bool Special => true;
         [JsonProperty("spellId")]
-        public string SpellId { get; set; }
+        public string SpellId => "";
         [JsonProperty("targetId")]
         public string TargetId { get; set; }
+        [JsonProperty("ingredients")]
+        public InventoryItemModel[] Ingredients => new InventoryItemModel[0];
     }
 
     public class SummonActionRequestModel : ActionRequestModel
     {
         [JsonProperty("type")]
         public override string Type => ActionRequestType.Summon;
+        [JsonProperty("special")]
+        public override bool Special => false;
         [JsonProperty("spiritId")]
         public string SpiritId { get; set; }
         [JsonProperty("position")]
@@ -64,11 +75,13 @@ namespace Raincrow.BattleArena.Model
     public abstract class ActionRequestModel : IActionRequestModel
     {
         public abstract string Type { get; }
+        public abstract bool Special { get; }
     }
 
     public interface IActionRequestModel
     {
         string Type { get; }
+        bool Special { get; }
     }
 
     public class ActionResponseType

@@ -300,13 +300,13 @@ namespace Raincrow.BattleArena.Phases
         private bool HasActionsAvailable()
         {
             // Check for flee
-            bool requestedFlee = false;
+            bool requestedSpecial = false;
             if (_turnModel.RequestedActions.Count == 1)
             {
                 IActionRequestModel actionRequestModel = _turnModel.RequestedActions[0];
-                requestedFlee = actionRequestModel.Type == ActionRequestType.Flee || actionRequestModel.Type == ActionRequestType.CastAstral;
+                requestedSpecial = actionRequestModel.Special;
             }
-            return !requestedFlee && _turnModel.MaxActionsAllowed > _turnModel.RequestedActions.Count;
+            return !requestedSpecial && _turnModel.MaxActionsAllowed > _turnModel.RequestedActions.Count;
         }
 
         #region Socket Events
@@ -388,7 +388,6 @@ namespace Raincrow.BattleArena.Phases
             {
                 CastAstralActionRequestModel cast = new CastAstralActionRequestModel()
                 {
-                    SpellId = "spell_astral",
                     TargetId = _objectId
                 };
 
