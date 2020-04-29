@@ -135,8 +135,6 @@ namespace Raincrow.BattleArena.Model
         public int SpellCost { get; set; }
         [JsonProperty("castBlocked")]
         public bool CastBlocked { get; set; }
-        [JsonProperty("expiresOnTurn")]
-        public int ExpiresOnTurn { get; set; }
         [JsonProperty("cooldown")]
         public int Cooldown { get; set; }
         [JsonProperty("result")]
@@ -153,6 +151,8 @@ namespace Raincrow.BattleArena.Model
         public int XP { get; set; }
         [JsonProperty("alignment")]
         public int Alignment { get; set; }
+        [JsonProperty("expiresOnTurn")]
+        public int ExpiresOnTurn { get; set; }
     }
 
     public interface ICastActionResultModel
