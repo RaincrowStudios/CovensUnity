@@ -904,7 +904,7 @@ GameObject:
   - component: {fileID: 5322835891159543365}
   - component: {fileID: 3204214368978198427}
   m_Layer: 26
-  m_Name: Spell Cooldown Background
+  m_Name: Astral Cloak Cooldown Background
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1054,7 +1054,7 @@ GameObject:
   - component: {fileID: 6256012382301352933}
   - component: {fileID: 8845946162939954523}
   m_Layer: 26
-  m_Name: Spell Cooldown Fill Sprite
+  m_Name: Astral Cloak Cooldown Fill Sprite
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1407,7 +1407,7 @@ GameObject:
   - component: {fileID: 8183512161897882897}
   - component: {fileID: 4134410672552593193}
   m_Layer: 26
-  m_Name: Spell Cooldown Value
+  m_Name: Astral Cloak Cooldown Value
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -2360,7 +2360,7 @@ GameObject:
   m_Component:
   - component: {fileID: 3936342969257711433}
   m_Layer: 26
-  m_Name: Spell Cooldown
+  m_Name: Astral Cloak Cooldown
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -2616,6 +2616,7 @@ MonoBehaviour:
   _spellContainer: {fileID: 5683286266049807194}
   _buttonSpellPrefab: {fileID: 2732701065107030642, guid: bd9f72e350ca49e45adb38882a825006,
     type: 3}
+  _astralCloakAnimView: {fileID: 7972116629386696458}
   _buttonSpellAstral: {fileID: 1804619824258545747}
 --- !u!1 &6995602960305057669
 GameObject:
