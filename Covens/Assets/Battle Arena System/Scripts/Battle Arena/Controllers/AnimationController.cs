@@ -67,16 +67,20 @@ namespace Raincrow.BattleArena.Controllers
         [SerializeField] private Transform _shadowChargePrefab;
         [SerializeField] private Transform _shadowTrailPrefab;
         [SerializeField] private Transform _shadowHitPrefab;
+        [SerializeField] private Transform _shadowAstralEffect;
 
         [Header("Gray Animation Prefabs")]
         [SerializeField] private Transform _grayChargePrefab;
         [SerializeField] private Transform _grayTrailPrefab;
         [SerializeField] private Transform _grayHitPrefab;
+        [SerializeField] private Transform _grayAstralEffect;
 
         [Header("Light Animation Prefabs")]
         [SerializeField] private Transform _lightChargePrefab;
         [SerializeField] private Transform _lightTrailPrefab;
         [SerializeField] private Transform _lightHitPrefab;
+        [SerializeField] private Transform _lightAstralEffect;
+
 
         // Variables
         private IGridUIModel _battleController;
@@ -347,6 +351,34 @@ namespace Raincrow.BattleArena.Controllers
             }
         }
 
+        public IEnumerator ActiveEffectSpellAstral(int spellDegree, ICharacterController target)
+        {
+            Transform targetTransform = target.Transform;
+
+            // Move Camera            
+            yield return _cameraTargetController.MoveTo(targetTransform.position, _battleController.CameraSpeed);
+
+            Transform astralEffectPrefab;
+
+            if (spellDegree < 0)
+            {
+                astralEffectPrefab = _shadowAstralEffect;
+            }
+            else if (spellDegree > 0)
+            {
+                astralEffectPrefab = _lightAstralEffect;
+            }
+            else
+            {
+                astralEffectPrefab = _grayAstralEffect;
+            }
+
+            //spawn the charge
+            Transform astralEffect = _objectPool.Spawn(astralEffectPrefab, null, targetTransform.position, astralEffectPrefab.transform.rotation);
+            Transform newParent = target.Transform.Find("Avatar Renderer Root/Avatar Renderer");
+            astralEffect.SetParent(newParent);
+        }
+
         public IEnumerator ShowMessage(ICharacterController target, string message)
         {
             // Move Camera            
@@ -434,6 +466,7 @@ namespace Raincrow.BattleArena.Controllers
         IEnumerator Summon(IList<ICharacterController> characterControllers);
         IEnumerator Move(ICharacterController characterController, BattleSlot targetBattleSlot);
         IEnumerator CastSpell(string spellName, int spellDegree, ICharacterController caster, ICharacterController target);
+        IEnumerator ActiveEffectSpellAstral(int spellDegree, ICharacterController target);
         IEnumerator ApplyDamage(ICharacterController target, int damage, bool isCritical = false, bool isBlocked = false);
         IEnumerator ShowMessage(ICharacterController target, string message);
     }

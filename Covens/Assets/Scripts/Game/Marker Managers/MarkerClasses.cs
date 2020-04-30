@@ -25,6 +25,7 @@ public class StatusEffect
 
     public string spell;
     public float duration;
+    public int durationTurn;
     public bool buff;
     public Modifier modifiers;
     public int stack;

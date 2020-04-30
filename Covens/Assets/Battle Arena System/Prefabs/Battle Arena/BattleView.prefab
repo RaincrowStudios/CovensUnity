@@ -207,17 +207,23 @@ MonoBehaviour:
     type: 3}
   _shadowHitPrefab: {fileID: 7028620956769017211, guid: 1752222756e23c9479190434d917c104,
     type: 3}
+  _shadowAstralEffect: {fileID: 2190917207312966946, guid: f19f432ac09652547954db456260cc44,
+    type: 3}
   _grayChargePrefab: {fileID: 7847051234143474167, guid: 3682d30ca7e3d4e478936e7bf8b5b32b,
     type: 3}
   _grayTrailPrefab: {fileID: 3548994426269542056, guid: 05ed09038bd07fc4c8d9be7ca549a5f2,
     type: 3}
   _grayHitPrefab: {fileID: 7191377541664239796, guid: 7ad26545ee733e1409e98e072c58c3fc,
     type: 3}
+  _grayAstralEffect: {fileID: 2592543483314701710, guid: ff188daf61386bc4495db6aa7847881d,
+    type: 3}
   _lightChargePrefab: {fileID: 4496201479704495362, guid: 94a1eee1a93dec04495f861a47e65aaf,
     type: 3}
   _lightTrailPrefab: {fileID: 191482516618135230, guid: 060bce21d350c304eaa4527aae9aceae,
     type: 3}
   _lightHitPrefab: {fileID: 8936806201847523368, guid: 0adfc2a0dd07a3a4fb0904b458df462a,
+    type: 3}
+  _lightAstralEffect: {fileID: 9078177861177840424, guid: 9fa6c4a8d96d8044c908325931999fe5,
     type: 3}
 --- !u!114 &6436825671352726332
 MonoBehaviour:

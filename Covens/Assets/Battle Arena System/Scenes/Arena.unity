@@ -608,11 +608,6 @@ PrefabInstance:
       propertyPath: m_Name
       value: BattleView
       objectReference: {fileID: 0}
-    - target: {fileID: 3561526507227420493, guid: 61c97baa5215f1647a7ed02e6b0d3ef8,
-        type: 3}
-      propertyPath: m_IsActive
-      value: 1
-      objectReference: {fileID: 0}
     - target: {fileID: 3561526507227420495, guid: 61c97baa5215f1647a7ed02e6b0d3ef8,
         type: 3}
       propertyPath: _serviceLocator
@@ -638,31 +633,6 @@ PrefabInstance:
       propertyPath: _serviceLocator
       value: 
       objectReference: {fileID: 1442890515}
-    - target: {fileID: 3827334444051354934, guid: 61c97baa5215f1647a7ed02e6b0d3ef8,
-        type: 3}
-      propertyPath: _statusColor.r
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 3827334444051354934, guid: 61c97baa5215f1647a7ed02e6b0d3ef8,
-        type: 3}
-      propertyPath: _statusColor.g
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 3827334444051354934, guid: 61c97baa5215f1647a7ed02e6b0d3ef8,
-        type: 3}
-      propertyPath: _statusColor.b
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 3827334444051354934, guid: 61c97baa5215f1647a7ed02e6b0d3ef8,
-        type: 3}
-      propertyPath: _statusColor.a
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 3827334444051354934, guid: 61c97baa5215f1647a7ed02e6b0d3ef8,
-        type: 3}
-      propertyPath: _blockTextScale
-      value: 250
-      objectReference: {fileID: 0}
     - target: {fileID: 3561526507227420494, guid: 61c97baa5215f1647a7ed02e6b0d3ef8,
         type: 3}
       propertyPath: m_LocalPosition.x

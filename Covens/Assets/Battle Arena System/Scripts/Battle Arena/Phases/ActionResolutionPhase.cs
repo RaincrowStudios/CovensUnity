@@ -126,7 +126,7 @@ namespace Raincrow.BattleArena.Phases
             }
 
             if (moveAction.IsSuccess)
-            {                
+            {
                 // Get transform of our target Cell
                 BattleSlot targetBattleSlot = moveAction.Position;
 
@@ -184,10 +184,13 @@ namespace Raincrow.BattleArena.Phases
             ICharacterController targetView = GetCharacterView(castAction.Target.Id);
 
             string spellName = LocalizeLookUp.GetSpellName(castAction.Spell);
-            yield return _animController.CastSpell(spellName, castAction.School, casterView, targetView);            
+
+
+            yield return _animController.CastSpell(spellName, castAction.School, casterView, targetView);
+
 
             if (castAction.IsSuccess)
-            {                
+            {
                 if (castAction.Result.EnergyChange != 0)
                 {
                     casterView.AddDamage(-castAction.SpellCost);
@@ -209,6 +212,11 @@ namespace Raincrow.BattleArena.Phases
                 if (castAction.Result.AppliedEffect != null && castAction.Result.AppliedEffect.ExpiresOnTurn > 0)
                 {
                     targetView.Model.AddStatusEffect(castAction.Spell, castAction.Result.AppliedEffect.ExpiresOnTurn);
+                }
+
+                if (string.Equals("spell_astral", castAction.Spell))
+                {
+                    yield return _animController.ActiveEffectSpellAstral(castAction.School, targetView);
                 }
 
                 //if (castAction.CastBlocked)
