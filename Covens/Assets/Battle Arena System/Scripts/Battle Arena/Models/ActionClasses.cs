@@ -151,8 +151,8 @@ namespace Raincrow.BattleArena.Model
         public int XP { get; set; }
         [JsonProperty("alignment")]
         public int Alignment { get; set; }
-        [JsonProperty("expiresOnTurn")]
-        public int ExpiresOnTurn { get; set; }
+        [JsonProperty("appliedEffect")]
+        public AppliedEffect AppliedEffect { get; set; }
     }
 
     public interface ICastActionResultModel
@@ -161,6 +161,13 @@ namespace Raincrow.BattleArena.Model
         bool IsCritical { get; set; }
         int XP { get; set; }
         int Alignment { get; set; }
+        AppliedEffect AppliedEffect { get; set; }
+    }
+
+    public class AppliedEffect
+    {
+        [JsonProperty("expiresOnTurn")]
+       public int ExpiresOnTurn { get; set; }
     }
 
     public class SummonActionResponseModel : ActionResponseModel

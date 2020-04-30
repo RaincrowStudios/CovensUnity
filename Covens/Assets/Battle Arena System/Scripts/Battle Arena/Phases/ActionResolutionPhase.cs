@@ -206,9 +206,9 @@ namespace Raincrow.BattleArena.Phases
                     }
                 }
 
-                if (castAction.Result.ExpiresOnTurn > 0)
+                if (castAction.Result.AppliedEffect != null && castAction.Result.AppliedEffect.ExpiresOnTurn > 0)
                 {
-                    targetView.Model.AddStatusEffect(castAction.Spell, castAction.Result.ExpiresOnTurn);
+                    targetView.Model.AddStatusEffect(castAction.Spell, castAction.Result.AppliedEffect.ExpiresOnTurn);
                 }
 
                 //if (castAction.CastBlocked)
