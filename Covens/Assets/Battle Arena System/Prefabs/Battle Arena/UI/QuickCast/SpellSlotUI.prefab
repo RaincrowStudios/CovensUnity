@@ -85,9 +85,6 @@ MonoBehaviour:
   _textNameSpell: {fileID: 8082795492162092283}
   _imageIconSpell: {fileID: 2855516580334550294}
   _buttonSpell: {fileID: 7295151556670864359}
-  _spellCooldownFillImage: {fileID: 591409258673441394}
-  _spellCooldown: {fileID: 4604973608511642863}
-  _spellCooldownValue: {fileID: 5446653114915178496}
   _imageIngredientGem: {fileID: 6303421118411299580}
   _imageIngredientTool: {fileID: 598637012760050943}
   _imageIngredientHerb: {fileID: 8518296731114101443}
@@ -108,6 +105,9 @@ MonoBehaviour:
   _button: {fileID: 7295151556670864359}
   _timeAnimation: 0.1
   _sizeButtonAnimtion: 0.9
+  _spellCooldownFillImage: {fileID: 591409258673441394}
+  _spellCooldown: {fileID: 4604973608511642863}
+  _spellCooldownValue: {fileID: 5446653114915178496}
 --- !u!1 &1511706264282342111
 GameObject:
   m_ObjectHideFlags: 0

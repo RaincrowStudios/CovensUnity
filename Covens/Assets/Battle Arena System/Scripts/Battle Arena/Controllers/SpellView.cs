@@ -29,9 +29,10 @@ namespace Raincrow.BattleArena.Views
                 {
                     SpellSlotView aux = Instantiate(_buttonSpellPrefab, _spellContainer.transform);
 
-                    SpellData data = DownloadedAssets.GetSpell(spell);
-                    int maxCooldown = data.cooldownTurns;
-                    aux.Setup(spell, maxCooldown, onClickSpell, openIngredients);
+                    //SpellData data = DownloadedAssets.GetSpell(spell);
+                    //int maxCooldown = data.cooldownTurns;
+                    //aux.Setup(spell, maxCooldown, onClickSpell, openIngredients);
+                    aux.Setup(spell, onClickSpell, openIngredients);
                     _spellButtons.Add(aux);
                 }
             }
@@ -67,7 +68,7 @@ namespace Raincrow.BattleArena.Views
                 bool isInCooldown = spellCooldownTurn > 0 && spell.cooldownTurns > 0;
 
                 button.SetInteractable(isValidTarget && !isInCooldown);
-                button.SetCooldown(spellCooldownTurn, spell.cooldownTurns);
+                //button.SetCooldown(spellCooldownTurn, spell.cooldownTurns);
             }
         }
         public void OnClickEnemy(string objectType)
@@ -99,7 +100,7 @@ namespace Raincrow.BattleArena.Views
 
                 button.SetInteractable(isValidTarget && !isInCooldown);
 
-                button.SetCooldown(spellCooldownTurn, spell.cooldownTurns);
+                //button.SetCooldown(spellCooldownTurn, spell.cooldownTurns);
             }
         }
 
@@ -116,7 +117,7 @@ namespace Raincrow.BattleArena.Views
                 bool isInCooldown = spellCooldownTurn > 0 && spell.cooldownTurns > 0;
 
                 button.SetInteractable(isValidTarget && !isInCooldown);
-                button.SetCooldown(spellCooldownTurn, spell.cooldownTurns);
+                //button.SetCooldown(spellCooldownTurn, spell.cooldownTurns);
             }
         }
     }

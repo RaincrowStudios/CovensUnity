@@ -11,9 +11,6 @@ namespace Raincrow.BattleArena.Views
         [SerializeField] private TextMeshProUGUI _textNameSpell;
         [SerializeField] private Image _imageIconSpell;
         [SerializeField] private Button _buttonSpell;
-        [SerializeField] private Image _spellCooldownFillImage;
-        [SerializeField] private GameObject _spellCooldown;
-        [SerializeField] private TextMeshProUGUI _spellCooldownValue;
 
         [Header("Ingredients")]
         [SerializeField] private Image _imageIngredientGem;
@@ -33,7 +30,7 @@ namespace Raincrow.BattleArena.Views
         //Const variable
         private const float TIME_HOLD = 0.5f;
 
-        public void Setup(string spell, int maxCooldown, System.Action<string> onClickSpell, System.Action<string> openIngredients)
+        public void Setup(string spell, System.Action<string> onClickSpell, System.Action<string> openIngredients)
         {
             StopAllCoroutines();
 
@@ -55,7 +52,7 @@ namespace Raincrow.BattleArena.Views
             _imageIngredientTool.sprite = required.RequiredTool ? _spriteFilled : _spriteEmpty;
             _imageIngredientHerb.sprite = required.RequiredHerb ? _spriteFilled : _spriteEmpty;
 
-            SetCooldown(0, maxCooldown);
+            //SetCooldown(0, maxCooldown);
         }
 
         public void SetInteractable(bool value)
@@ -63,24 +60,7 @@ namespace Raincrow.BattleArena.Views
             _buttonSpell.interactable = value;
         }
 
-        public void SetCooldown(int cooldown, int maxCooldown)
-        {
-            if (cooldown > 0)
-            {
-                _spellCooldownFillImage.gameObject.SetActive(true);
-                float normalizedCooldown = cooldown / (float)maxCooldown;
-                _spellCooldownFillImage.fillAmount = normalizedCooldown;
-
-            }
-            else
-            {
-                _spellCooldownFillImage.gameObject.SetActive(false);
-                _spellCooldownFillImage.fillAmount = 0f;
-            }
-
-            _spellCooldown.SetActive(maxCooldown > 0);
-            _spellCooldownValue.text = maxCooldown.ToString();
-        }
+        
 
         public void OnPointerDownSpell()
         {

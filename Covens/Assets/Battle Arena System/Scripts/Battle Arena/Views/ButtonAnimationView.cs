@@ -1,6 +1,8 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
+using TMPro;
 using UnityEngine;
+using UnityEngine.UI;
 
 namespace Raincrow.BattleArena.Views
 {
@@ -12,6 +14,9 @@ namespace Raincrow.BattleArena.Views
         [Header("Animation")]
         [SerializeField] private float _timeAnimation = 0.1f;
         [SerializeField] private float _sizeButtonAnimtion = 0.9f;
+        [SerializeField] private Image _spellCooldownFillImage;
+        [SerializeField] private GameObject _spellCooldown;
+        [SerializeField] private TextMeshProUGUI _spellCooldownValue;
 
         private int _clickAnimationID;
 
@@ -33,5 +38,23 @@ namespace Raincrow.BattleArena.Views
             }
         }
 
+        public void SetCooldown(int cooldown, int maxCooldown)
+        {
+            if (cooldown > 0)
+            {
+                _spellCooldownFillImage.gameObject.SetActive(true);
+                float normalizedCooldown = cooldown / (float)maxCooldown;
+                _spellCooldownFillImage.fillAmount = normalizedCooldown;
+
+            }
+            else
+            {
+                _spellCooldownFillImage.gameObject.SetActive(false);
+                _spellCooldownFillImage.fillAmount = 0f;
+            }
+
+            _spellCooldown.SetActive(maxCooldown > 0);
+            _spellCooldownValue.text = maxCooldown.ToString();
+        }
     }
 }
