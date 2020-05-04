@@ -137,7 +137,7 @@ namespace Raincrow.BattleArena.Model
         }
 
         public IList<IStatusEffect> StatusEffects { get; private set; } = new List<IStatusEffect>();
-
+        public IList<IParticleEffect> ParticlesEffects { get; private set; } = new List<IParticleEffect>();
         public void AddStatusEffect(string spellId, int maxDuration)
         {
             IStatusEffect newStatusEffect = new Raincrow.BattleArena.Model.StatusEffect(spellId, maxDuration);
@@ -174,9 +174,51 @@ namespace Raincrow.BattleArena.Model
             return default;
         }
 
+        public IParticleEffect GetParticleEffect(string spellId)
+        {
+            for (int i = ParticlesEffects.Count - 1; i >= 0; i--)
+            {
+                IParticleEffect particleEffect = ParticlesEffects[i];
+                if (particleEffect.SpellId == spellId)
+                {
+                    return particleEffect;
+
+                }
+            }
+            return default;
+        }
+
         public void UpdateStatusEffects()
         {
-            
+
+        }
+
+
+        public void AddParticleEffect(string spellId, int maxDuration, IParticleEffectView particleInstance)
+        {
+            IParticleEffect newParticleEffect = new Raincrow.BattleArena.Model.ParticleEffect(spellId, maxDuration, particleInstance);
+
+            bool addedParticleEffect = false;
+            for (int i = ParticlesEffects.Count - 1; i >= 0; i--)
+            {
+                IParticleEffect particleEffect = ParticlesEffects[i];
+                if (particleEffect.SpellId == newParticleEffect.SpellId)
+                {
+                    ParticlesEffects[i] = newParticleEffect;
+                    addedParticleEffect = true;
+                    break;
+                }
+            }
+
+            if (!addedParticleEffect)
+            {
+                ParticlesEffects.Add(newParticleEffect);
+            }
+        }
+
+        public void UpdateParticlesEffects()
+        {
+
         }
     }
 
@@ -222,6 +264,8 @@ namespace Raincrow.BattleArena.Model
 
         public IList<IStatusEffect> StatusEffects { get; private set; } = new List<IStatusEffect>();
 
+        public IList<IParticleEffect> ParticlesEffects { get; private set; } = new List<IParticleEffect>();
+
         public void AddStatusEffect(string spellId, int maxDuration)
         {
             IStatusEffect newStatusEffect = new Raincrow.BattleArena.Model.StatusEffect(spellId, maxDuration);
@@ -260,7 +304,48 @@ namespace Raincrow.BattleArena.Model
 
         public void UpdateStatusEffects()
         {
-            
+
+        }
+
+        public void AddParticleEffect(string spellId, int maxDuration, IParticleEffectView particleInstance)
+        {
+            IParticleEffect newParticleEffect = new Raincrow.BattleArena.Model.ParticleEffect(spellId, maxDuration, particleInstance);
+
+            bool addedParticleEffect = false;
+            for (int i = ParticlesEffects.Count - 1; i >= 0; i--)
+            {
+                IParticleEffect particleEffect = ParticlesEffects[i];
+                if (particleEffect.SpellId == newParticleEffect.SpellId)
+                {
+                    ParticlesEffects[i] = newParticleEffect;
+                    addedParticleEffect = true;
+                    break;
+                }
+            }
+
+            if (!addedParticleEffect)
+            {
+                ParticlesEffects.Add(newParticleEffect);
+            }
+        }
+
+        public IParticleEffect GetParticleEffect(string spellId)
+        {
+            for (int i = ParticlesEffects.Count - 1; i >= 0; i--)
+            {
+                IParticleEffect particleEffect = ParticlesEffects[i];
+                if (particleEffect.SpellId == spellId)
+                {
+                    return particleEffect;
+
+                }
+            }
+            return default;
+        }
+
+        public void UpdateParticlesEffects()
+        {
+
         }
     }
 

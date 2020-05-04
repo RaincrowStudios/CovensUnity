@@ -42,6 +42,14 @@ namespace Raincrow.BattleArena.Model
         int MaxDuration { get; }
     }
 
+    public interface IParticleEffect
+    {
+        string SpellId { get; }
+        int Duration { get; set; }
+        int MaxDuration { get; }
+        IParticleEffectView Particle { get; }
+    }
+
     public interface IGridGameObjectModel
     {
         CellUIController CellPrefab { get; }
@@ -64,6 +72,7 @@ namespace Raincrow.BattleArena.Model
         //void RecycleCharacter(GameObject character);       
         bool HasCharacter(string id);
         void UpdateStatusEffects();
+        void UpdateParticlesEffects();
     }
 
     public interface ICellUIModel

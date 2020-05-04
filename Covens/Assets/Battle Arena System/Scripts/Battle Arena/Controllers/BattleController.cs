@@ -569,6 +569,21 @@ namespace Raincrow.BattleArena.Controllers
             }
         }
 
+        public void UpdateParticlesEffects()
+        {
+            // witches
+            foreach (var witch in WitchesViews)
+            {
+                witch.Model.UpdateParticlesEffects();
+            }
+
+            // spirits
+            foreach (var spirit in SpiritsViews)
+            {
+                spirit.Model.UpdateParticlesEffects();
+            }
+        }
+
         #endregion
     }
 

@@ -11,9 +11,13 @@ namespace Raincrow.BattleArena.Model
         int Power { get; set; }
         int Resilience { get; set; }
         IList<IStatusEffect> StatusEffects { get; }
+        IList<IParticleEffect> ParticlesEffects { get; }
         void UpdateStatusEffects();
+        void UpdateParticlesEffects();
         void AddStatusEffect(string spellId, int maxDuration);
+        void AddParticleEffect(string spellId, int maxDuration, IParticleEffectView particleInstance);
         IStatusEffect GetStatusEffect(string spellId);
+        IParticleEffect GetParticleEffect(string spellId);
         Color GetAlignmentColor();
     }
 

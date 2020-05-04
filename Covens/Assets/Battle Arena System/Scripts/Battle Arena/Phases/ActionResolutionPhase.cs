@@ -216,7 +216,13 @@ namespace Raincrow.BattleArena.Phases
 
                 if (string.Equals("spell_astral", castAction.Spell))
                 {
-                    yield return _animController.ActiveEffectSpellAstral(castAction.School, targetView);
+                    IEnumerator animationEffectSpellAstral;
+                    yield return animationEffectSpellAstral= _animController.ActiveEffectSpellAstral(castAction.School, targetView);
+
+                    IParticleEffectView particleEffectView = (IParticleEffectView)animationEffectSpellAstral.Current;
+                    
+                    targetView.Model.AddParticleEffect(castAction.Spell, castAction.Result.AppliedEffect.ExpiresOnTurn, particleEffectView);
+                    
                 }
 
                 //if (castAction.CastBlocked)

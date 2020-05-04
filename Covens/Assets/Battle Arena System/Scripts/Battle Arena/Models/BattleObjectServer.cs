@@ -72,7 +72,7 @@ public class GenericCharacterObjectServer : ISpiritModel, IWitchModel
 
     public Color GetAlignmentColor()
     {
-        if(ObjectType == Raincrow.BattleArena.Model.ObjectType.Spirit)
+        if (ObjectType == Raincrow.BattleArena.Model.ObjectType.Spirit)
         {
             return Color.white;
         }
@@ -89,7 +89,7 @@ public class GenericCharacterObjectServer : ISpiritModel, IWitchModel
     }
 
     public IList<IStatusEffect> StatusEffects { get; private set; } = new List<IStatusEffect>();
-
+    public IList<IParticleEffect> ParticlesEffects { get; private set; } = new List<IParticleEffect>();
     public void AddStatusEffect(string spellId, int maxDuration)
     {
         IStatusEffect newStatusEffect = new Raincrow.BattleArena.Model.StatusEffect(spellId, maxDuration);
@@ -141,5 +141,62 @@ public class GenericCharacterObjectServer : ISpiritModel, IWitchModel
         }
 
         StatusEffects = new List<IStatusEffect>(statusEffectsCopy);
+    }
+
+    public void AddParticleEffect(string spellId, int maxDuration, IParticleEffectView particleInstance)
+    {
+        IParticleEffect newParticleEffect = new Raincrow.BattleArena.Model.ParticleEffect(spellId, maxDuration, particleInstance);
+
+        bool addedParticleEffect = false;
+        for (int i = ParticlesEffects.Count - 1; i >= 0; i--)
+        {
+            IParticleEffect particleEffect = ParticlesEffects[i];
+            if (particleEffect.SpellId == newParticleEffect.SpellId)
+            {
+                ParticlesEffects[i] = newParticleEffect;
+                addedParticleEffect = true;
+                break;
+            }
+        }
+
+        if (!addedParticleEffect)
+        {
+            ParticlesEffects.Add(newParticleEffect);
+        }
+    }
+
+    public IParticleEffect GetParticleEffect(string spellId)
+    {
+        for (int i = ParticlesEffects.Count - 1; i >= 0; i--)
+        {
+            IParticleEffect particleEffect = ParticlesEffects[i];
+            if (particleEffect.SpellId == spellId)
+            {
+                return particleEffect;
+
+            }
+        }
+        return default;
+    }
+
+    public void UpdateParticlesEffects()
+    {
+        IList<IParticleEffect> particleEffectsCopy = new List<IParticleEffect>();
+        for (int i = ParticlesEffects.Count - 1; i >= 0; i--)
+        {
+            IParticleEffect particleEffect = ParticlesEffects[i];
+            int duration = particleEffect.Duration - 1;
+            if (duration > 0)
+            {
+                particleEffect.Duration = duration;
+                particleEffectsCopy.Add(particleEffect);
+            }
+            else
+            {
+                particleEffect.Particle.DestroyEffect();
+            }
+        }
+
+        ParticlesEffects = new List<IParticleEffect>(particleEffectsCopy);
     }
 }

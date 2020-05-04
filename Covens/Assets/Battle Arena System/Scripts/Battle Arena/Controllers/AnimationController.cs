@@ -67,19 +67,19 @@ namespace Raincrow.BattleArena.Controllers
         [SerializeField] private Transform _shadowChargePrefab;
         [SerializeField] private Transform _shadowTrailPrefab;
         [SerializeField] private Transform _shadowHitPrefab;
-        [SerializeField] private Transform _shadowAstralEffect;
+        [SerializeField] private ParticleEffectView _shadowAstralEffect;
 
         [Header("Gray Animation Prefabs")]
         [SerializeField] private Transform _grayChargePrefab;
         [SerializeField] private Transform _grayTrailPrefab;
         [SerializeField] private Transform _grayHitPrefab;
-        [SerializeField] private Transform _grayAstralEffect;
+        [SerializeField] private ParticleEffectView _grayAstralEffect;
 
         [Header("Light Animation Prefabs")]
         [SerializeField] private Transform _lightChargePrefab;
         [SerializeField] private Transform _lightTrailPrefab;
         [SerializeField] private Transform _lightHitPrefab;
-        [SerializeField] private Transform _lightAstralEffect;
+        [SerializeField] private ParticleEffectView _lightAstralEffect;
 
 
         // Variables
@@ -358,7 +358,7 @@ namespace Raincrow.BattleArena.Controllers
             // Move Camera            
             yield return _cameraTargetController.MoveTo(targetTransform.position, _battleController.CameraSpeed);
 
-            Transform astralEffectPrefab;
+            ParticleEffectView astralEffectPrefab;
 
             if (spellDegree < 0)
             {
@@ -374,9 +374,14 @@ namespace Raincrow.BattleArena.Controllers
             }
 
             //spawn the charge
-            Transform astralEffect = _objectPool.Spawn(astralEffectPrefab, null, targetTransform.position, astralEffectPrefab.transform.rotation);
+            IParticleEffectView astralEffect = _objectPool.Spawn(astralEffectPrefab, null, targetTransform.position, astralEffectPrefab.Transform.rotation);
+
+            yield return astralEffect.ShowEffect();
+
             Transform newParent = target.Transform.Find("Avatar Renderer Root/Avatar Renderer");
-            astralEffect.SetParent(newParent);
+            astralEffect.Transform.SetParent(newParent);
+
+            yield return astralEffect;
         }
 
         public IEnumerator ShowMessage(ICharacterController target, string message)

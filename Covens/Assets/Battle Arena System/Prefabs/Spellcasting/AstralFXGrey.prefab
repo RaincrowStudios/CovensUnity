@@ -4764,6 +4764,7 @@ GameObject:
   - component: {fileID: 2592543483314701710}
   - component: {fileID: 409311196627050010}
   - component: {fileID: 1150405033250703556}
+  - component: {fileID: 7530350937102948063}
   m_Layer: 28
   m_Name: AstralFXGrey
   m_TagString: Untagged
@@ -4780,7 +4781,7 @@ Transform:
   m_GameObject: {fileID: 1624590228371520137}
   m_LocalRotation: {x: -0.7071068, y: -0, z: -0, w: 0.7071068}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 9.6, y: 9.6, z: 9.6}
+  m_LocalScale: {x: 9.6, y: 0, z: 9.6}
   m_Children:
   - {fileID: 8507900190856977730}
   - {fileID: 3085247406999573784}
@@ -9569,6 +9570,20 @@ ParticleSystem:
         m_PostInfinity: 2
         m_RotationOrder: 4
     vectorLabel1_3: W
+--- !u!114 &7530350937102948063
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1624590228371520137}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 91b13857290a8134b992a865406af43a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _normalYScale: 9.6
+  _timeAnimation: 0.5
 --- !u!1 &1864054520805582557
 GameObject:
   m_ObjectHideFlags: 0

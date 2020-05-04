@@ -62,6 +62,26 @@ namespace Raincrow.BattleArena.Model
         }
     }
 
+
+    public class ParticleEffect : IParticleEffect
+    {
+        public string SpellId { get; private set; }
+
+        public int Duration { get; set; }
+
+        public int MaxDuration { get; private set; }
+
+        public IParticleEffectView Particle { get; private set; }
+
+        public ParticleEffect(string spellId, int maxDuration, IParticleEffectView particle)
+        {
+            SpellId = spellId;
+            MaxDuration = maxDuration;
+            Duration = MaxDuration;
+            Particle = particle;
+        }
+    }
+
     public class BattleModel : IBattleModel
     {
         // Properties

@@ -259,6 +259,9 @@ namespace Raincrow.BattleArena.Phases
             _battleModel.UpdateCooldowns();
             _battleModel.GridUI.UpdateStatusEffects();
 
+            // update effects
+            _battleModel.GridUI.UpdateParticlesEffects();
+
             _coroutineStarter.Invoke(_playerStatusEffectsView.Hide());
             _coroutineStarter.Invoke(_enemyStatusEffectsView.Hide());
             //_battleModel.UpdateStatusEffects();
