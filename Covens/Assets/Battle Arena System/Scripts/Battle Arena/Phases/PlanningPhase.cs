@@ -138,6 +138,19 @@ namespace Raincrow.BattleArena.Phases
             _countdownView.Show();
         }
 
+        private void OnClickOut()
+        {
+            if (_selectedSlot != null)
+            {
+                ICellUIModel currentCellUI = _gridView[_selectedSlot.Value.Row, _selectedSlot.Value.Col];
+                currentCellUI.SetIsSelected(false);
+
+                _selectedSlot = null;
+
+                _quickCastView.CloseMenus();
+            }
+        }
+
         private void OnClickCell(ICellUIModel cellUIModel)
         {
             _coroutineStarter.Invoke(_enemyStatusEffectsView.Hide());
@@ -232,6 +245,11 @@ namespace Raincrow.BattleArena.Phases
                             IEnumerator moveTo = _cameraTargetController.MoveTo(cellUIModel.Transform.position, _moveSpeed);
                             _coroutineStarter.Invoke(moveTo);
                         }
+                    }
+                    else
+                    {
+                        OnClickOut();
+
                     }
                 }
                 else if (_inputController.DragVelocity.HasValue)
