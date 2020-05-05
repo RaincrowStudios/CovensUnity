@@ -330,7 +330,7 @@ MonoBehaviour:
   _statusEffectRoot: {fileID: 3241997503839316454}
   _startPositionX: 0
   _endPositionX: -200
-  _showAnimationTime: 1
+  _showAnimationTime: 0.2
   _showAnimationType: 0
 --- !u!1 &3241997505218776557
 GameObject:
