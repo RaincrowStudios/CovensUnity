@@ -16,6 +16,7 @@ namespace Raincrow.BattleArena.Phases
         private ITurnModel _turnModel;
         private IBarEventLogView _barEventLogView;
         private IAnimationController _animController;
+        private IPlayerBadgeView _playerBadgeView;
         private string _playerId;
         private IDictionary<string, ICharacterController<IWitchModel, IWitchUIModel>> _witches =
             new Dictionary<string, ICharacterController<IWitchModel, IWitchUIModel>>(); // holy shit, it works
@@ -30,7 +31,8 @@ namespace Raincrow.BattleArena.Phases
                                      string playerModel,
                                      ITurnModel turnModel,
                                      IBarEventLogView barEventLogView,
-                                     IAnimationController animController)
+                                     IAnimationController animController,
+                                     IPlayerBadgeView playerBadgeView)
         {
             _coroutineStarter = coroutineStarter;
             _battleModel = battleModel;
@@ -38,6 +40,7 @@ namespace Raincrow.BattleArena.Phases
             _turnModel = turnModel;
             _barEventLogView = barEventLogView;
             _animController = animController;
+            _playerBadgeView = playerBadgeView;
         }
 
         public IEnumerator Enter(IStateMachine stateMachine)
@@ -166,6 +169,8 @@ namespace Raincrow.BattleArena.Phases
                 // Animation
                 yield return _animController.Summon(spawnObjectOnGrid.ReturnValue);
 
+
+
                 Debug.LogFormat("Execute Summon {0} to Slot X:{1} Y:{2}", spiritModel.Id, targetBattleSlot.Row, targetBattleSlot.Col);
             }
             else
@@ -212,17 +217,29 @@ namespace Raincrow.BattleArena.Phases
                 if (castAction.Result.AppliedEffect != null && castAction.Result.AppliedEffect.ExpiresOnTurn > 0)
                 {
                     targetView.Model.AddStatusEffect(castAction.Spell, castAction.Result.AppliedEffect.ExpiresOnTurn);
+
+                }
+
+                if (casterView.Model.Id == _playerId)
+                {
+                    ICharacterController character = _battleModel.GridUI.GetCharacter(_playerId);
+                    if (character != default && character.Model != default)
+                    {
+                        IList<IStatusEffect> statusEffects = character.Model.StatusEffects;
+
+                        _playerBadgeView.UpdateConditions(statusEffects.Count);
+                    }
                 }
 
                 if (string.Equals("spell_astral", castAction.Spell))
                 {
                     IEnumerator animationEffectSpellAstral;
-                    yield return animationEffectSpellAstral= _animController.ActiveEffectSpellAstral(castAction.School, targetView);
+                    yield return animationEffectSpellAstral = _animController.ActiveEffectSpellAstral(castAction.School, targetView);
 
                     IParticleEffectView particleEffectView = (IParticleEffectView)animationEffectSpellAstral.Current;
-                    
+
                     targetView.Model.AddParticleEffect(castAction.Spell, castAction.Result.AppliedEffect.ExpiresOnTurn, particleEffectView);
-                    
+
                 }
 
                 //if (castAction.CastBlocked)

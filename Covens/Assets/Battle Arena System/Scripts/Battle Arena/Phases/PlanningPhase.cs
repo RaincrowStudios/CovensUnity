@@ -134,6 +134,14 @@ namespace Raincrow.BattleArena.Phases
 
             _quickCastView.Show(_battleModel, OnClickFly, OnClickSummon, OnClickFlee, OnCastSpell, OnCastSpellAstral, OpenInventory);
 
+            ICharacterController character = _battleModel.GridUI.GetCharacter(_playerId);
+            if (character != default && character.Model != default)
+            {
+                IList<IStatusEffect> statusEffects = character.Model.StatusEffects;
+
+                _playerBadgeView.UpdateConditions(statusEffects.Count);
+            }
+
             //Show countdown turn
             _countdownView.Show();
         }

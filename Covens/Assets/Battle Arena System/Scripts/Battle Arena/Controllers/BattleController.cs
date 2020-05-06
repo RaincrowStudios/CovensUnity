@@ -244,7 +244,8 @@ namespace Raincrow.BattleArena.Controllers
                                                                                     playerId,
                                                                                     _turnModel,
                                                                                     _serviceLocator.GetBarEventLogView(),
-                                                                                    _animationController);
+                                                                                    _animationController,
+                                                                                    _playerBadgeView);
             yield return null;
 
             BanishmentPhase banishmentPhase = new BanishmentPhase(this,

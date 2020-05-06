@@ -22,6 +22,7 @@ namespace Raincrow.BattleArena.Views
         // Private variable
         private ObjectPool _objectPool;
         private RectTransform _rectTransform;
+        private bool isOpen;
 
         protected virtual void OnEnable()
         {
@@ -40,17 +41,9 @@ namespace Raincrow.BattleArena.Views
         {
             _objectPool.RecycleAll(_statusEffectViewPrefab);
 
+            isOpen = true;
+
             Vector2 position = _rectTransform.anchoredPosition;
-            float posXNormal = Mathf.InverseLerp(_startPositionX, _endPositionX, _rectTransform.anchoredPosition.x);
-            for (float elapsedTime = Mathf.Lerp(0f, _showAnimationTime, posXNormal); 
-                 elapsedTime <= _showAnimationTime; 
-                 elapsedTime = Mathf.MoveTowards(elapsedTime, _showAnimationTime + Mathf.Epsilon, Time.deltaTime))
-            {
-                float t = Easings.Interpolate(elapsedTime / _showAnimationTime, _showAnimationType);
-                position.x = Mathf.Lerp(_startPositionX, _endPositionX, t);
-                _rectTransform.anchoredPosition = position;
-                yield return null;
-            }
 
             foreach (var statusEffect in statusEffects)
             {
@@ -61,23 +54,35 @@ namespace Raincrow.BattleArena.Views
                 float maxDuration = statusEffect.MaxDuration;
                 statusEffectView.DurationNormalized = duration / maxDuration;
             }
+
+            LTDescr openingAnimation = LeanTween.value(position.x, _endPositionX, _showAnimationTime).setOnUpdate((float positionX) => {
+                position.x = positionX;
+                _rectTransform.anchoredPosition = position;
+            });
+
+            yield return new WaitForSeconds(_showAnimationTime);
         }
 
         public IEnumerator Hide()
         {
             _objectPool.RecycleAll(_statusEffectViewPrefab);
 
+            isOpen = false;
+
+
             Vector2 position = _rectTransform.anchoredPosition;
-            float posXNormal = Mathf.InverseLerp(_endPositionX, _startPositionX, _rectTransform.anchoredPosition.x);
-            for (float elapsedTime = Mathf.Lerp(0f, _showAnimationTime, posXNormal);
-                 elapsedTime <= _showAnimationTime;
-                 elapsedTime = Mathf.MoveTowards(elapsedTime, _showAnimationTime + Mathf.Epsilon, Time.deltaTime))
-            {
-                float t = Easings.Interpolate(elapsedTime / _showAnimationTime, _showAnimationType);
-                position.x = Mathf.Lerp(_endPositionX, _startPositionX, t);
+
+            LTDescr openingAnimation = LeanTween.value(position.x, _startPositionX, _showAnimationTime).setOnUpdate((float positionX) => {
+                position.x = positionX;
                 _rectTransform.anchoredPosition = position;
-                yield return null;
-            }
+            });
+
+            yield return new WaitForSeconds(_showAnimationTime);
+        }
+
+        public bool IsOpen()
+        {
+            return isOpen;
         }
     }
 
@@ -85,5 +90,6 @@ namespace Raincrow.BattleArena.Views
     {
         IEnumerator Show(IList<IStatusEffect> statusEffects);
         IEnumerator Hide();
+        bool IsOpen();
     }
 }
