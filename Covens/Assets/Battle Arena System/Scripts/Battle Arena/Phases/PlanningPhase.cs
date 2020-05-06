@@ -147,6 +147,8 @@ namespace Raincrow.BattleArena.Phases
 
                 _selectedSlot = null;
 
+                _coroutineStarter.Invoke(_playerStatusEffectsView.Hide());
+                _coroutineStarter.Invoke(_enemyStatusEffectsView.Hide());
                 _quickCastView.CloseMenus();
             }
         }
