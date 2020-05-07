@@ -28,7 +28,7 @@ namespace Raincrow.BattleArena.Views
 
         private IEnumerator FadeCanvas(float start, float end)
         {
-            for (float elapsedTime = 0, fadeTime = 1f; elapsedTime < fadeTime; elapsedTime += Time.deltaTime)
+            for (float elapsedTime = 0, fadeTime = 0.25f; elapsedTime < fadeTime; elapsedTime += Time.deltaTime)
             {
                 _canvasGroup.alpha = Mathf.Lerp(start, end, elapsedTime / fadeTime);
                 yield return null;
