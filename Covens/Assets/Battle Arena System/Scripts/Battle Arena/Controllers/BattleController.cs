@@ -271,7 +271,12 @@ namespace Raincrow.BattleArena.Controllers
                                              _serviceLocator.GetSmoothCameraFollow(),
                                              battleModel,
                                              debriefAnimationValues,
-                                             _serviceLocator.GetRewardsBatttleView());
+                                             _serviceLocator.GetRewardsBatttleView(),
+                                             _playerBadgeView,
+                                             _energyView,
+                                             _serviceLocator.GetBarEventLogView(),
+                                             _serviceLocator.GetButtonExitDebriefView()
+                                             );
 
             IState[] battlePhases = new IState[5]
             {

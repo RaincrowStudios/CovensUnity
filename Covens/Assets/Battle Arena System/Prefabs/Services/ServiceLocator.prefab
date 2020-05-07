@@ -81,6 +81,8 @@ MonoBehaviour:
     type: 3}
   _enemyStatusEffectsViewPrefab: {fileID: 811605243724768990, guid: 086534e4f1bc75744858dac3b2c974a8,
     type: 3}
+  _buttonExitDebriefViewPrefab: {fileID: 2059905652072396541, guid: 30c638590c4fd7f47afa4e240580c0a2,
+    type: 3}
   _avatarSpriteUtilInstance: {fileID: 0}
   _loadingViewInstance: {fileID: 0}
   _battleControllerInstance: {fileID: 0}
@@ -100,5 +102,6 @@ MonoBehaviour:
   _popupViewInstance: {fileID: 0}
   _playerStatusEffectsViewInstance: {fileID: 0}
   _enemyStatusEffectsViewInstance: {fileID: 0}
+  _buttonExitDebriefViewInstance: {fileID: 0}
   _mainCanvas: {fileID: 0}
   _inputController: {fileID: 0}

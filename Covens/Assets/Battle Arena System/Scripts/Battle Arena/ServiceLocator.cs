@@ -29,6 +29,7 @@ namespace Raincrow.Services
         [SerializeField] private PopupView _popupViewPrefab;
         [SerializeField] private StatusEffectsView _playerStatusEffectsViewPrefab;
         [SerializeField] private StatusEffectsView _enemyStatusEffectsViewPrefab;
+        [SerializeField] private ButtonExitDebriefView _buttonExitDebriefViewPrefab;
 
         [Header("Service Instances")]
         [SerializeField] private AvatarSpriteUtil _avatarSpriteUtilInstance; // Avatar Sprite Util Instance
@@ -50,6 +51,7 @@ namespace Raincrow.Services
         [SerializeField] private PopupView _popupViewInstance;
         [SerializeField] private StatusEffectsView _playerStatusEffectsViewInstance;
         [SerializeField] private StatusEffectsView _enemyStatusEffectsViewInstance;
+        [SerializeField] private ButtonExitDebriefView _buttonExitDebriefViewInstance;
 
         [Header("UI")]
         [SerializeField] private Canvas _mainCanvas;
@@ -261,6 +263,15 @@ namespace Raincrow.Services
                 _enemyStatusEffectsViewInstance = GetInstance(_enemyStatusEffectsViewPrefab, _mainCanvas.transform);
             }
             return _enemyStatusEffectsViewInstance;
+        }
+
+        public IButtonExitDebriefView GetButtonExitDebriefView()
+        {
+            if (_buttonExitDebriefViewInstance == null)
+            {
+                _buttonExitDebriefViewInstance = GetInstance(_buttonExitDebriefViewPrefab, _mainCanvas.transform);
+            }
+            return _buttonExitDebriefViewInstance;
         }
 
         private T GetInstance<T>(T prefab, Transform parent = null) where T : Object

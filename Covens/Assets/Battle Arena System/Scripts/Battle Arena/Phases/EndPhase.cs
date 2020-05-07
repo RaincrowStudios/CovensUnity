@@ -21,6 +21,10 @@ namespace Raincrow.BattleArena.Phases
         private IBattleModel _battleModel;
         private DebriefAnimationModel _debriefAnimationValues;
         private IRewardsBatttleView _rewardsBatttleView;
+        private IPlayerBadgeView _playerBadgeView;
+        private IEnergyView _energyView;
+        private IBarEventLogView _barEventLogView;
+        private IButtonExitDebriefView _buttonExitDebriefView;
 
 
         private IDictionary<string, ICharacterController<IWitchModel, IWitchUIModel>> _witches =
@@ -39,8 +43,12 @@ namespace Raincrow.BattleArena.Phases
                         ISmoothCameraFollow smoothCameraFollow,
                         IBattleModel battleModel,
                         DebriefAnimationModel debriefAnimationValues,
-                        IRewardsBatttleView rewardsBatttleView
-            )
+                        IRewardsBatttleView rewardsBatttleView,
+                        IPlayerBadgeView playerBadgeView,
+                        IEnergyView energyView,
+                        IBarEventLogView barEventLogView,
+                        IButtonExitDebriefView buttonExitDebriefView
+                        )
         {
             _battleResult = battleResultModel;
             _celebratoryView = celebratoryView;
@@ -51,6 +59,10 @@ namespace Raincrow.BattleArena.Phases
             _battleModel = battleModel;
             _debriefAnimationValues = debriefAnimationValues;
             _rewardsBatttleView = rewardsBatttleView;
+            _playerBadgeView = playerBadgeView;
+            _energyView = energyView;
+            _barEventLogView = barEventLogView;
+            _buttonExitDebriefView = buttonExitDebriefView;
         }
 
         public IEnumerator Enter(IStateMachine stateMachine)
@@ -69,11 +81,17 @@ namespace Raincrow.BattleArena.Phases
                 yield return null;
             }
 
+            _playerBadgeView.Hide();
+            _energyView.Hide();
+            _barEventLogView.Hide();
+
             _celebratoryView.Show(_battleResult.Type == BattleResultType.PlayerWins);
 
             yield return new WaitForSeconds(5f);
 
             _celebratoryView.Hide();
+
+            _buttonExitDebriefView.Show(BattleClose);
 
             yield return _coroutineHandler.Invoke(DebriefPhase());
 
@@ -104,6 +122,8 @@ namespace Raincrow.BattleArena.Phases
                     }
                 }
 
+                _buttonExitDebriefView.Hide();
+                
                 yield return _rewardsBatttleView.Show(
                     _battleResult.Type == BattleResultType.PlayerWins ? LocalizeLookUp.GetText("battle_title_win") : LocalizeLookUp.GetText("battle_title_lose"),
                      LocalizeLookUp.GetText("battle_subtitle_end_battle"),
@@ -158,8 +178,8 @@ namespace Raincrow.BattleArena.Phases
 
                     yield return _coroutineHandler.Invoke(_cameraTargetController.MoveTo(position, _debriefAnimationValues.CameraSpeed));
 
-                   _smoothCameraFollow.SetCameraDistance(_debriefAnimationValues.CameraDistance, _debriefAnimationValues.TimeAnimation);
-                   _smoothCameraFollow.SetCameraHeight(_debriefAnimationValues.CameraHeight, _debriefAnimationValues.TimeAnimation);
+                    _smoothCameraFollow.SetCameraDistance(_debriefAnimationValues.CameraDistance, _debriefAnimationValues.TimeAnimation);
+                    _smoothCameraFollow.SetCameraHeight(_debriefAnimationValues.CameraHeight, _debriefAnimationValues.TimeAnimation);
 
                     while (_cameraTargetController.IsMoving())
                     {
@@ -181,7 +201,7 @@ namespace Raincrow.BattleArena.Phases
 
                     int idCameraDistance = _smoothCameraFollow.ResetCameraDistance(_debriefAnimationValues.TimeAnimation);
                     int idCameraHeight = _smoothCameraFollow.ResetCameraHeight(_debriefAnimationValues.TimeAnimation);
-                    
+
                     while (LeanTween.isTweening(idCameraDistance) || LeanTween.isTweening(idCameraHeight))
                     {
                         yield return new WaitForEndOfFrame();
@@ -205,7 +225,7 @@ namespace Raincrow.BattleArena.Phases
                 {
                     MapsAPI.Instance.HideMap(false);
                     LoadingOverlay.Hide();
-                    
+
                     MarkerManagerAPI.GetMarkers(PlayerDataManager.playerData.longitude, PlayerDataManager.playerData.latitude, null, false, false, false);
                 }
              );
