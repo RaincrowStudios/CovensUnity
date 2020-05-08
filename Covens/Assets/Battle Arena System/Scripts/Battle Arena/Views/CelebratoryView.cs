@@ -10,7 +10,8 @@ namespace Raincrow.BattleArena.Views
     {
         [Header("UI")]
         [SerializeField] private Image _backgroundaAlpha;
-        [SerializeField] private Image _backgroundaSideBar;
+        [SerializeField] private Image _backgroundaSideBar1;
+        [SerializeField] private Image _backgroundaSideBar2;
         [SerializeField] private CanvasGroup _celebratoryUI;
 
         [Header("Result UI")]
@@ -26,7 +27,7 @@ namespace Raincrow.BattleArena.Views
         {
             _textResult.text = victory ? LocalizeLookUp.GetText("battle_victory") : LocalizeLookUp.GetText("battle_defeat");
             _textResult.color = victory ? Color.white : Color.red;
-            _backgroundaSideBar.color = victory ? Color.white : Utilities.Red;
+            _backgroundaSideBar2.color = _backgroundaSideBar1.color = victory ? Color.white : Utilities.Red;
 
             foreach (Image sg in _sideGlows)
             {
