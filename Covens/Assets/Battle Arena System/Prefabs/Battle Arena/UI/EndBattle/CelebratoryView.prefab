@@ -251,7 +251,6 @@ GameObject:
   - component: {fileID: 6139364142525293724}
   - component: {fileID: 1666719331051082983}
   - component: {fileID: 7914985751040634360}
-  - component: {fileID: 8156091973136794626}
   m_Layer: 5
   m_Name: TextResult
   m_TagString: Untagged
@@ -271,7 +270,7 @@ RectTransform:
   m_LocalScale: {x: 1.0000317, y: 1.000031, z: 1.000031}
   m_Children: []
   m_Father: {fileID: 4079397065674662265}
-  m_RootOrder: 0
+  m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
@@ -399,22 +398,6 @@ MonoBehaviour:
   - {fileID: 0}
   m_baseMaterial: {fileID: 0}
   m_maskOffset: {x: 0, y: 0, z: 0, w: 0}
---- !u!114 &8156091973136794626
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2547682492916324501}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 64a59a015644a4f44b632497e81f3cc7, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  prefix: 
-  id: garden_immunity
-  suffix: 
-  toUpper: 0
 --- !u!1 &3518578150683038485
 GameObject:
   m_ObjectHideFlags: 0
@@ -448,7 +431,7 @@ RectTransform:
   - {fileID: 827989856099206442}
   - {fileID: 7913095175703098870}
   m_Father: {fileID: 4079397065674662265}
-  m_RootOrder: 1
+  m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0.5}
   m_AnchorMax: {x: 1, y: 0.5}
@@ -533,8 +516,8 @@ RectTransform:
   m_LocalPosition: {x: 0, y: 0, z: -0.000041031024}
   m_LocalScale: {x: 0.86249846, y: 0.862499, z: 0.862499}
   m_Children:
-  - {fileID: 6139364142525293724}
   - {fileID: 8487310043418669206}
+  - {fileID: 6139364142525293724}
   - {fileID: 6864437838038306058}
   - {fileID: 3624193943037203366}
   m_Father: {fileID: 3194988249697119462}
@@ -947,13 +930,11 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _backgroundaAlpha: {fileID: 7722019093467615591}
-  _backgroundaSideBar1: {fileID: 3205357318277229649}
-  _backgroundaSideBar2: {fileID: 5262674489303641095}
   _celebratoryUI: {fileID: 1611838160570372946}
   _textResult: {fileID: 7914985751040634360}
   _sideGlows:
-  - {fileID: 0}
-  - {fileID: 0}
+  - {fileID: 3205357318277229649}
+  - {fileID: 5262674489303641095}
   _finalPositionAnimationY: 300
   _startPositionAnimationY: 230
   _animationTime: 0.5
