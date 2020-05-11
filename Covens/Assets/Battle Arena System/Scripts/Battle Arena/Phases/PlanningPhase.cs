@@ -46,7 +46,8 @@ namespace Raincrow.BattleArena.Phases
         private float _dragDecceleration;
         private Vector3 _dragVelocity;
         private string _playerId;
-
+        private bool _canChangeToResolution = false;
+        private bool _waitingResolution = false;
         // Readonly Variables
         private readonly int _battleCellLayer;
 
@@ -111,6 +112,9 @@ namespace Raincrow.BattleArena.Phases
             _coroutineStarter.Invoke(_enemyStatusEffectsView.Hide());
 
             _selectedSlot = null;
+
+            _canChangeToResolution = false;
+            _waitingResolution = false;
 
             // Show Character Turn Order View
             IList<IWitchModel> witches = new List<IWitchModel>();
@@ -224,9 +228,18 @@ namespace Raincrow.BattleArena.Phases
             float elapsedTime = Time.realtimeSinceStartup - _startTime;
             int time = Mathf.FloorToInt(_turnModel.PlanningMaxTime - elapsedTime);
 
-            _countdownView.UpdateTime(time);
+            if(time >= 0)
+            {
+                _countdownView.UpdateTime(time);
+            }
+            else if(!_waitingResolution)
+            {
+                _quickCastView.Hide();
+                _countdownView.Hide();
+                _charactersTurnOrderView.Hide();
+            }
 
-            if (elapsedTime > _turnModel.PlanningMaxTime || !HasActionsAvailable())
+            if ((elapsedTime > _turnModel.PlanningMaxTime || !HasActionsAvailable()) && !_canChangeToResolution && !_waitingResolution)
             {
                 // copy actions to array
                 int numActions = _turnModel.RequestedActions.Count;
@@ -236,10 +249,19 @@ namespace Raincrow.BattleArena.Phases
                 _sendFinishPlanningPhase = _gameMaster.SendFinishPlanningPhase(_battleModel.Id, actions, OnPlanningPhaseFinished);
                 _coroutineStarter.Invoke(_sendFinishPlanningPhase);
 
-                yield return stateMachine.ChangeState<ActionResolutionPhase>();
+                _waitingResolution = true;
+
+                _quickCastView.Hide();
             }
             else
             {
+                if (_waitingResolution && _canChangeToResolution)
+                {
+                    _canChangeToResolution = false;
+                    _waitingResolution = false;
+                    yield return stateMachine.ChangeState<ActionResolutionPhase>();
+                }
+
                 // Touch occured
                 if (_inputController.Touch.HasValue) // check input
                 {
@@ -344,6 +366,7 @@ namespace Raincrow.BattleArena.Phases
 
         private void OnPlanningPhaseFinished(PlanningPhaseFinishedEventArgs args)
         {
+            _canChangeToResolution = true;
             _coroutineStarter.Invoke(OnPlanningPhaseFinishedCoroutine(args));
         }
 
