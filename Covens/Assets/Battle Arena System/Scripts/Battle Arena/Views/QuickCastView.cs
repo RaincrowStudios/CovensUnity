@@ -133,7 +133,9 @@ namespace Raincrow.BattleArena.Views
         {
             if (_currentMenu == null)
             {
-                return;
+                _currentMenu = _spellMenu.gameObject;
+                _spellMenu.OnClickYourself(true);
+                _currentMenu.SetActive(true);
             }
 
             LeanTween.scaleY(_currentMenu, _isOpen ? 0 : 1, 0.05f);

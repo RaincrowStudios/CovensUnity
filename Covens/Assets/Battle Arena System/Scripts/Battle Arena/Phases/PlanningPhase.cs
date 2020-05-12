@@ -111,7 +111,8 @@ namespace Raincrow.BattleArena.Phases
             _coroutineStarter.Invoke(_playerStatusEffectsView.Hide());
             _coroutineStarter.Invoke(_enemyStatusEffectsView.Hide());
 
-            _selectedSlot = null;
+
+            _selectedSlot = GetPlayerSlot();
 
             _canChangeToResolution = false;
             _waitingResolution = false;
@@ -157,7 +158,7 @@ namespace Raincrow.BattleArena.Phases
                 ICellUIModel currentCellUI = _gridView[_selectedSlot.Value.Row, _selectedSlot.Value.Col];
                 currentCellUI.SetIsSelected(false);
 
-                _selectedSlot = null;
+                _selectedSlot = GetPlayerSlot();
 
                 _coroutineStarter.Invoke(_playerStatusEffectsView.Hide());
                 _coroutineStarter.Invoke(_enemyStatusEffectsView.Hide());
@@ -228,13 +229,13 @@ namespace Raincrow.BattleArena.Phases
             float elapsedTime = Time.realtimeSinceStartup - _startTime;
             int time = Mathf.FloorToInt(_turnModel.PlanningMaxTime - elapsedTime);
 
-            if(time >= 0)
+            if (time >= 0)
             {
                 _countdownView.UpdateTime(time);
             }
-            else if(!_waitingResolution)
+            else if (!_waitingResolution)
             {
-               _coroutineStarter.Invoke(CloseQuickCast());
+                _coroutineStarter.Invoke(CloseQuickCast());
                 _countdownView.Hide();
                 _charactersTurnOrderView.Hide();
             }
@@ -251,7 +252,7 @@ namespace Raincrow.BattleArena.Phases
 
                 _waitingResolution = true;
 
-               _coroutineStarter.Invoke(CloseQuickCast());
+                _coroutineStarter.Invoke(CloseQuickCast());
             }
             else
             {
@@ -320,7 +321,7 @@ namespace Raincrow.BattleArena.Phases
             //IList<IStatusEffect> statusEffects = _battleModel.GetStatusEffects();
             //_statusEffectsView.UpdateView(statusEffects);
 
-           _coroutineStarter.Invoke(CloseQuickCast());
+            _coroutineStarter.Invoke(CloseQuickCast());
 
             _countdownView.Hide();
 
@@ -725,6 +726,24 @@ namespace Raincrow.BattleArena.Phases
                     PlayerDataManager.playerData.SubIngredient(ingredient, 1);
                 }
             }
+        }
+
+        private BattleSlot GetPlayerSlot()
+        {
+
+            for (int x = 0; x < _battleModel.GridUI.MaxCellsPerColumn; x++)
+            {
+                for (int y = 0; y < _battleModel.GridUI.MaxCellsPerRow; y++)
+                {
+                    string id = _battleModel.GridUI.Cells[x, y].CellModel.ObjectId;
+                    if (!id.IsNullOrWhiteSpace() && id.Equals(_playerId))
+                    {
+                        return new BattleSlot { Col = x, Row = y };
+                    }
+                }
+            }
+
+            return new BattleSlot();
         }
         #endregion
     }
