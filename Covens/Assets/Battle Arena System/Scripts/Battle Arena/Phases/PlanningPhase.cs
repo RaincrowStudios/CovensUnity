@@ -234,7 +234,7 @@ namespace Raincrow.BattleArena.Phases
             }
             else if(!_waitingResolution)
             {
-                _quickCastView.Hide();
+               _coroutineStarter.Invoke(CloseQuickCast());
                 _countdownView.Hide();
                 _charactersTurnOrderView.Hide();
             }
@@ -251,7 +251,7 @@ namespace Raincrow.BattleArena.Phases
 
                 _waitingResolution = true;
 
-                _quickCastView.Hide();
+               _coroutineStarter.Invoke(CloseQuickCast());
             }
             else
             {
@@ -312,16 +312,18 @@ namespace Raincrow.BattleArena.Phases
             // update effects
             _battleModel.GridUI.UpdateParticlesEffects();
 
-            _coroutineStarter.Invoke(_playerStatusEffectsView.Hide());
-            _coroutineStarter.Invoke(_enemyStatusEffectsView.Hide());
+            //_coroutineStarter.Invoke(_playerStatusEffectsView.Hide());
+            //_coroutineStarter.Invoke(_enemyStatusEffectsView.Hide());
             //_battleModel.UpdateStatusEffects();
 
             // Update status effects view
             //IList<IStatusEffect> statusEffects = _battleModel.GetStatusEffects();
             //_statusEffectsView.UpdateView(statusEffects);
 
-            _quickCastView.Hide();
+           _coroutineStarter.Invoke(CloseQuickCast());
+
             _countdownView.Hide();
+
             _charactersTurnOrderView.Hide();
 
             _coroutineStarter.Invoke(_popupView.Hide());
@@ -656,6 +658,13 @@ namespace Raincrow.BattleArena.Phases
             _gem = new CollectableItem();
             _herb = new CollectableItem();
             _tool = new CollectableItem();
+        }
+
+        private IEnumerator CloseQuickCast()
+        {
+            yield return _coroutineStarter.Invoke(_playerStatusEffectsView.Hide());
+            yield return _coroutineStarter.Invoke(_enemyStatusEffectsView.Hide());
+            _quickCastView.Hide();
         }
 
         private InventoryItemModel[] GetIngredients()
