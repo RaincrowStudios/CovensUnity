@@ -156,7 +156,7 @@ namespace Raincrow.BattleArena.Controllers
             }
         }
 
-        public override IEnumerator<bool?> SendPlanningPhaseReady(string battleId, string playerId, UnityAction<PlanningPhaseReadyEventArgs> onPlanningPhaseReady, UnityAction<BattleEndEventArgs> onBattleEnd)
+        public override IEnumerator<bool?> SendPlanningPhaseReady(string battleId, string playerId, UnityAction<PlanningPhaseReadyEventArgs> onPlanningPhaseReady, UnityAction<AddParticipantsEventArgs> addParticipants, UnityAction<BattleEndEventArgs> onBattleEnd)
         {
             _onPlanningPhaseReady = onPlanningPhaseReady;
             _onBattleEnd = onBattleEnd;
@@ -350,14 +350,14 @@ namespace Raincrow.BattleArena.Controllers
                 };
                 witch.Inventory.Equipped.Add(equip);
 
-                JoinActionResponseModel joinAction = new JoinActionResponseModel
-                {
-                    IsSuccess = true,
-                    Object = witch,
-                    Position = new BattleSlot() { Row = 2, Col = 2 }
-                };
+                //JoinActionResponseModel joinAction = new JoinActionResponseModel
+                //{
+                //    IsSuccess = true,
+                //    Object = witch,
+                //    Position = new BattleSlot() { Row = 2, Col = 2 }
+                //};
 
-                battleAction.Results.Add(joinAction);
+                //battleAction.Results.Add(joinAction);
                 actionResults.Add(battleAction);
             }
 
