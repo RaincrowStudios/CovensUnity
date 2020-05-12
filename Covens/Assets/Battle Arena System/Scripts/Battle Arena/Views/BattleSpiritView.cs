@@ -5,18 +5,18 @@ using UnityEngine;
 namespace Raincrow.BattleArena.Views
 {
     public class BattleSpiritView : MonoBehaviour, ICharacterController<ISpiritModel, ISpiritUIModel>
-    {        
+    {
         // Serialized variables
         [SerializeField] private Transform _avatarRoot;
         [SerializeField] protected Renderer _avatarRenderer;
 
         [Header("Health")]
-        [SerializeField] private Renderer _damageRingRenderer;
-        [SerializeField] private Renderer _alignmentRingRenderer;
+        [SerializeField] private SpriteRenderer _energyRing;
 
         // private variables
         private Material _avatarMat;
-        private Material _damageRingMat;
+
+        private int _energyRingTweenId;
 
         // Static readonlies
         private static readonly int MainTexPropertyId = Shader.PropertyToID("_MainTex");
@@ -40,16 +40,10 @@ namespace Raincrow.BattleArena.Views
                 _avatarMat = new Material(_avatarRenderer.sharedMaterial);
                 _avatarRenderer.material = _avatarMat;
             }
-
-            if (_damageRingMat == null)
-            {
-                _damageRingMat = new Material(_damageRingRenderer.sharedMaterial);
-                _damageRingRenderer.material = _damageRingMat;
-            }
         }
 
         public void Init(ISpiritModel characterModel, ISpiritUIModel characterViewModel)
-        {            
+        {
             Model = characterModel;
             UIModel = characterViewModel;
 
@@ -57,7 +51,7 @@ namespace Raincrow.BattleArena.Views
             _avatarMat.SetTexture(MainTexPropertyId, characterViewModel.Texture);
 
             // Set alignment color
-            _alignmentRingRenderer.sharedMaterial = characterViewModel.AlignmentMaterial;
+            _energyRing.color = characterModel.GetAlignmentColor();
 
             UpdateView(Model.BaseEnergy, Model.Energy);
         }
@@ -83,10 +77,17 @@ namespace Raincrow.BattleArena.Views
 
         public void UpdateView(int baseEnergy, int energy)
         {
-            float energyNormalized = Mathf.InverseLerp(0f, baseEnergy, energy);
-            _damageRingMat.SetFloat(AlphaCutoffPropertyId, Mathf.Max(energyNormalized, MinAlphaCutoff));
+
+            LeanTween.cancel(_energyRingTweenId);
+
+            float energyFill = ((float)energy) / baseEnergy;
+
+            _energyRingTweenId = LeanTween.alpha(_energyRing.gameObject, energyFill, 0.3f).uniqueId;
+
+            //float energyNormalized = Mathf.InverseLerp(0f, baseEnergy, energy);
+            //_damageRingMat.SetFloat(AlphaCutoffPropertyId, Mathf.Max(energyNormalized, MinAlphaCutoff));
 
             //Debug.LogFormat("Update Energy {0} {1}", baseEnergy, energy);
-        }        
+        }
     }
 }
