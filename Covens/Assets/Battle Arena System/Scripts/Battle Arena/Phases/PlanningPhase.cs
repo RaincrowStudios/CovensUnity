@@ -137,7 +137,7 @@ namespace Raincrow.BattleArena.Phases
 
             _startTime = Time.realtimeSinceStartup;
 
-            _quickCastView.Show(_battleModel, OnClickFly, OnClickSummon, OnClickFlee, OnCastSpell, OnCastSpellAstral, OpenInventory);
+            _quickCastView.Show(_battleModel, OnClickFly, OnClickSummon, OnClickFlee, OnCastSpell, OnCastSpellAstral, OpenInventory, _turnModel);
 
             ICharacterController character = _battleModel.GridUI.GetCharacter(_playerId);
             if (character != default && character.Model != default)

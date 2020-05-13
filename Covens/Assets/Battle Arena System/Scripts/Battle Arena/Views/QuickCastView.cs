@@ -4,6 +4,7 @@ using TMPro;
 using UnityEngine.Events;
 using System.Collections.Generic;
 using Raincrow.BattleArena.Model;
+using Raincrow.BattleArena.Controllers;
 
 namespace Raincrow.BattleArena.Views
 {
@@ -34,7 +35,9 @@ namespace Raincrow.BattleArena.Views
         private GameObject _currentMenu;
         private bool _isOpen;
 
-        public void Show(IBattleModel battleModel, UnityAction onClickFly, UnityAction onClickSummon, UnityAction onClickFlee, System.Action<string> onCastSpell, UnityAction onCastSpellAstral, System.Action<string> openIngredients)
+        ITurnModel _turnModel;
+
+        public void Show(IBattleModel battleModel, UnityAction onClickFly, UnityAction onClickSummon, UnityAction onClickFlee, System.Action<string> onCastSpell, UnityAction onCastSpellAstral, System.Action<string> openIngredients, ITurnModel turnModel)
         {
             gameObject.SetActive(true);
             _buttonFly.onClick.AddListener(onClickFly);
@@ -43,6 +46,8 @@ namespace Raincrow.BattleArena.Views
             _buttonAstral.onClick.AddListener(onCastSpellAstral);
 
             _spellMenu.Show(battleModel, onCastSpell, openIngredients);
+
+            _turnModel = turnModel;
         }
 
         public void Hide()
@@ -134,8 +139,9 @@ namespace Raincrow.BattleArena.Views
             if (_currentMenu == null)
             {
                 _currentMenu = _spellMenu.gameObject;
-                _spellMenu.OnClickYourself(true);
+                _spellMenu.OnClickYourself(_turnModel.RequestedActions.Count <= 0);
                 _currentMenu.SetActive(true);
+                _isOpen = false;
             }
 
             LeanTween.scaleY(_currentMenu, _isOpen ? 0 : 1, 0.05f);
@@ -171,7 +177,7 @@ namespace Raincrow.BattleArena.Views
 
     public interface IQuickCastView
     {
-        void Show(IBattleModel battleModel, UnityAction onClickFly, UnityAction onClickSummon, UnityAction onClickFlee, System.Action<string> onCastSpell, UnityAction onCastSpellAstral, System.Action<string> openIngredients);
+        void Show(IBattleModel battleModel, UnityAction onClickFly, UnityAction onClickSummon, UnityAction onClickFlee, System.Action<string> onCastSpell, UnityAction onCastSpellAstral, System.Action<string> openIngredients, ITurnModel turnModel);
 
         void SetActive(bool value);
 
