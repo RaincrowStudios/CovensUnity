@@ -101,6 +101,7 @@ public class UIDominionSplash : MonoBehaviour
         LeanTween.alphaCanvas(m_CanvasGroup, 0, 1f).setEaseOutCubic().setOnComplete(() =>
         {
             m_Canvas.enabled = false;
+            UIMain.Instance.ActionsAfterSplash();
             Destroy(this.gameObject, 10);
         });
     }

@@ -93,6 +93,9 @@ public class UIMain : MonoBehaviour
     [SerializeField] private GameObject m_ChannelingGlow;
     [SerializeField] private TextPanel m_EnergyTextPanel;
 
+    [Header("Others")]
+    [SerializeField] private PopupNewElixir m_PopupNewElixir;
+
     private bool m_ChanneledFX;
     
     private void Awake()
@@ -287,6 +290,17 @@ public class UIMain : MonoBehaviour
             m_EnergyTextPanel.m_Title.text = LocalizeLookUp.GetText("lt_none");
             m_EnergyTextPanel.m_Content.text = " ";
             m_EnergyTextPanel.Show(false);
+        }
+    }
+
+    public void ActionsAfterSplash()
+    {
+        string version = Application.version;
+
+        if (version.Equals("290") && DownloadManager.GetFirstTimeOpenAfterUpdate(version))
+        {
+            m_PopupNewElixir.Show();
+            DownloadManager.SetFalseToFirstTimeOpenAfterUpdate(version);
         }
     }
 }

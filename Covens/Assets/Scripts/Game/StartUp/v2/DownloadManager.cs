@@ -106,6 +106,16 @@ public class DownloadManager : MonoBehaviour
     {
         PlayerPrefs.SetInt("IsOpeningGameFirstTime", 0);
     }
+    
+    public static bool GetFirstTimeOpenAfterUpdate(string version)
+    {
+        int value = PlayerPrefs.GetInt("IsOpeningGameFirstTimeAfterUpdate"+version, 1);
+        return value == 1;
+    }
+    public static void SetFalseToFirstTimeOpenAfterUpdate(string version)
+    {
+        PlayerPrefs.SetInt("IsOpeningGameFirstTimeAfterUpdate"+version,0);
+    }
 
     public static void DownloadAssets(System.Action downloadComplete)
     {

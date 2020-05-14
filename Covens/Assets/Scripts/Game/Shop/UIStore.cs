@@ -112,6 +112,14 @@ public class UIStore : MonoBehaviour
             OpenStore(() => m_Instance.SetScreen(Screen.CURRENCY));
     }
 
+    public static void OpenCharmsStore()
+    {
+        if (IsOpen)
+            m_Instance.SetScreen(Screen.CHARMS);
+        else
+            OpenStore(() => m_Instance.SetScreen(Screen.CHARMS));
+    }
+
     public static void UpdateDrachs()
     {
         if (m_Instance == null)
