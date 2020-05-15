@@ -419,7 +419,7 @@ public class PlayerData : WitchMarkerData
         m_AllSpells = new List<SpellData>();
         foreach (var spell in dictionary)
         {
-            if (!spell.hidden)
+            if (!spell.hidden && !spell.id.Contains("elixir"))
                 m_AllSpells.Add(spell);
         }
         m_AllSpells.Sort(new System.Comparison<SpellData>((a, b) => a.Name.CompareTo(b.Name)));
