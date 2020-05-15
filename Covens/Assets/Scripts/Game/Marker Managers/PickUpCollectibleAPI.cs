@@ -15,6 +15,12 @@ public static class PickUpCollectibleAPI
         string type = marker.Token.type;
         string collectable = marker.collectableToken.collectible;
         int amount = marker.collectableToken.amount;
+
+        if (PlayerDataManager.playerData.HaveEffect("elixir_gathering"))
+        {
+            amount *= 2;
+        }
+
         MarkerSpawner.MarkerType eType = marker.Token.Type;
 
         marker.Interactable = false;
@@ -57,7 +63,7 @@ public static class PickUpCollectibleAPI
                     color = "<color=#FF0000>";
                 }
                 string msg = LocalizeLookUp.GetText("add_to_inventory")
-                    .Replace("{{count}}", marker.collectableToken.amount.ToString())
+                    .Replace("{{count}}", amount.ToString())
                     .Replace("{{item}}", color + LocalizeLookUp.GetCollectableName(marker.collectableToken.collectible) + "</color>");
 
 

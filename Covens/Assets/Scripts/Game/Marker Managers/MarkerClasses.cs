@@ -631,6 +631,19 @@ public class PlayerData : WitchMarkerData
             PlayerManagerUI.Instance.UpdateDrachs();
         UIStore.UpdateDrachs();
     }
+
+    public bool HaveEffect(string id)
+    {
+        foreach(StatusEffect effect in effects)
+        {
+            if (effect.spell.Equals(id))
+            {
+                return true;
+            }
+        }
+
+        return false;
+    }
 }
 
 //map select
