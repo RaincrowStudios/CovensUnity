@@ -419,7 +419,7 @@ public class UIStoreItem : MonoBehaviour
         m_SilverIcon.enabled = m_SilverCost.gameObject.activeSelf;
 
         m_GoldCost.gameObject.SetActive(item.gold > 0);
-        m_GoldIcon.enabled = m_SilverCost.gameObject.activeSelf;
+        m_GoldIcon.enabled = m_GoldCost.gameObject.activeSelf;
 
         m_CostOr.gameObject.SetActive(item.silver > 0 && item.gold > 0);
         m_BuyText.text = item.silver == 0 && item.gold == 0 ? LocalizeLookUp.GetText("store_claim").ToUpper() : LocalizeLookUp.GetText("store_buy_upper");
