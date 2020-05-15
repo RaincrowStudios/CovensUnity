@@ -188,7 +188,7 @@ public class DownloadedAssets : MonoBehaviour
         string type = "";
         if (id.Contains("spirit"))
             type = "spirit";
-        else if (id == "attack" || id.Contains("spell") || id == "elixir_xp" || id == "elixir_degree")
+        else if (id == "attack" || id.Contains("spell") || id.Contains("elixir"))
             type = "spell";
         else if (!isIcon)
             type = "apparel";
