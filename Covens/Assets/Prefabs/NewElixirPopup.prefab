@@ -717,7 +717,7 @@ GameObject:
   - component: {fileID: 6655300725893708049}
   - component: {fileID: 1974620225898896372}
   - component: {fileID: 2562836958490074159}
-  - component: {fileID: 3556049918498639843}
+  - component: {fileID: 4201392577165595315}
   m_Layer: 5
   m_Name: TitleMain
   m_TagString: Untagged
@@ -867,7 +867,7 @@ MonoBehaviour:
   - {fileID: 0}
   m_baseMaterial: {fileID: 0}
   m_maskOffset: {x: 0, y: 0, z: 0, w: 0}
---- !u!114 &3556049918498639843
+--- !u!114 &4201392577165595315
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -876,10 +876,13 @@ MonoBehaviour:
   m_GameObject: {fileID: 2708417168279077535}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: de78e290652276b41812bb0a11fc44ae, type: 3}
+  m_Script: {fileID: 11500000, guid: 64a59a015644a4f44b632497e81f3cc7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_Key: popup_new_elixir_subtitle
+  prefix: 
+  id: popup_new_elixir_subtitle
+  suffix: 
+  toUpper: 0
 --- !u!1 &2789239476051461773
 GameObject:
   m_ObjectHideFlags: 0
@@ -891,7 +894,7 @@ GameObject:
   - component: {fileID: 2937240078135595296}
   - component: {fileID: 5650814065165274434}
   - component: {fileID: 8328087825828787676}
-  - component: {fileID: 2996069052820236887}
+  - component: {fileID: 3127643995816858383}
   m_Layer: 5
   m_Name: NewText
   m_TagString: Untagged
@@ -1039,7 +1042,7 @@ MonoBehaviour:
   - {fileID: 0}
   m_baseMaterial: {fileID: 0}
   m_maskOffset: {x: 0, y: 0, z: 0, w: 0}
---- !u!114 &2996069052820236887
+--- !u!114 &3127643995816858383
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -1048,10 +1051,13 @@ MonoBehaviour:
   m_GameObject: {fileID: 2789239476051461773}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: de78e290652276b41812bb0a11fc44ae, type: 3}
+  m_Script: {fileID: 11500000, guid: 64a59a015644a4f44b632497e81f3cc7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_Key: text_new
+  prefix: 
+  id: text_new
+  suffix: 
+  toUpper: 0
 --- !u!1 &2869827512989717385
 GameObject:
   m_ObjectHideFlags: 0
@@ -1765,7 +1771,7 @@ GameObject:
   - component: {fileID: 608343218764323477}
   - component: {fileID: 107617212320878404}
   - component: {fileID: 6394426390872442322}
-  - component: {fileID: 7673384934367295731}
+  - component: {fileID: 4431617823581482143}
   m_Layer: 5
   m_Name: TextButton
   m_TagString: Untagged
@@ -1952,7 +1958,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   scale: 0.7
   frequency: 0.5
---- !u!114 &7673384934367295731
+--- !u!114 &4431617823581482143
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -1961,10 +1967,13 @@ MonoBehaviour:
   m_GameObject: {fileID: 5574458351647872956}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: de78e290652276b41812bb0a11fc44ae, type: 3}
+  m_Script: {fileID: 11500000, guid: 64a59a015644a4f44b632497e81f3cc7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_Key: popup_new_elixir_button
+  prefix: 
+  id: popup_new_elixir_button
+  suffix: 
+  toUpper: 0
 --- !u!1 &5900563053160013947
 GameObject:
   m_ObjectHideFlags: 0
@@ -2239,7 +2248,7 @@ GameObject:
   - component: {fileID: 1872516011668607850}
   - component: {fileID: 3973875218475639424}
   - component: {fileID: 2349509048720850797}
-  - component: {fileID: 620158557223039399}
+  - component: {fileID: 8865680417079312669}
   m_Layer: 5
   m_Name: TitleTop
   m_TagString: Untagged
@@ -2387,7 +2396,7 @@ MonoBehaviour:
   - {fileID: 0}
   m_baseMaterial: {fileID: 0}
   m_maskOffset: {x: 0, y: 0, z: 0, w: 0}
---- !u!114 &620158557223039399
+--- !u!114 &8865680417079312669
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -2396,10 +2405,13 @@ MonoBehaviour:
   m_GameObject: {fileID: 7114488037533715483}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: de78e290652276b41812bb0a11fc44ae, type: 3}
+  m_Script: {fileID: 11500000, guid: 64a59a015644a4f44b632497e81f3cc7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_Key: popup_new_elixir_title
+  prefix: 
+  id: popup_new_elixir_title
+  suffix: 
+  toUpper: 0
 --- !u!1 &7145571805342198768
 GameObject:
   m_ObjectHideFlags: 0
