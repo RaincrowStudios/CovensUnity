@@ -71,6 +71,10 @@ public class UIPlayerConditions : MonoBehaviour
 
         //animate the panel
         LeanTween.cancel(m_TweenId, true);
+
+        //despawn active condition items
+        m_ItemPool.DespawnAll();
+
         m_TweenId = LeanTween.value(m_CanvasGroup.alpha, 1, 1f)
             .setEaseOutCubic()
             .setOnUpdate((float t) =>
@@ -114,8 +118,8 @@ public class UIPlayerConditions : MonoBehaviour
                 //disable to stop layouts
                 m_Container.gameObject.SetActive(false);
 
-                //despawn active condition items
-                m_ItemPool.DespawnAll();
+                ////despawn active condition items
+                //m_ItemPool.DespawnAll();
 
                 m_Canvas.enabled = false;
             })
