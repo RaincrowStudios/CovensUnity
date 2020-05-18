@@ -495,6 +495,8 @@ public class DownloadManager : MonoBehaviour
             PlayerDataManager.forbiddenValue = data.forbiddenValue;
             MoonManager.LunarEffeciency = data.lunarEfficiency;
 
+            DownloadedAssets.elixirDictData = data.Elixirs;
+
             DownloadedAssets.spellDictData = data.Spells;
             DownloadedAssets.spellDictData["attack"] = new SpellData
             {

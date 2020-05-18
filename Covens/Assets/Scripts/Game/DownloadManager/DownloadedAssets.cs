@@ -54,6 +54,7 @@ public class DownloadedAssets : MonoBehaviour
     }
     
     public static Dictionary<string, SpellData> spellDictData = new Dictionary<string, SpellData>();
+    public static Dictionary<string, ElixirData> elixirDictData = new Dictionary<string, ElixirData>();
     public static Dictionary<string, SpiritData> spiritDict = new Dictionary<string, SpiritData>();
     public static Dictionary<string, ConditionData> conditionsDict = new Dictionary<string, ConditionData>();
     public static Dictionary<string, IngredientData> ingredientDict = new Dictionary<string, IngredientData>();
@@ -188,13 +189,16 @@ public class DownloadedAssets : MonoBehaviour
         string type = "";
         if (id.Contains("spirit"))
             type = "spirit";
-        else if (id == "attack" || id.Contains("spell") || id.Contains("elixir"))
+        else if (id == "attack" || id.Contains("spell"))
             type = "spell";
+        else if (id.Contains("elixir"))
+            type = "elixir";
         else if (!isIcon)
             type = "apparel";
         else if (isIcon)
-            type = "icon";
-            
+            type = "icon";        
+
+
         if (type == "spell")
         {
             SpellData spell = GetSpell(id);
@@ -202,6 +206,14 @@ public class DownloadedAssets : MonoBehaviour
                 id = "0";
             else
                 id = spell.glyph.ToString();
+        }
+        else if (type == "elixir")
+        {
+            ElixirData elixir = GetElixir(id);
+            if (elixir == null)
+                id = "1";
+            else
+                id = elixir.glyph.ToString();
         }
 
         System.Action<Sprite> onComplete = (spr) =>
@@ -310,6 +322,8 @@ public class DownloadedAssets : MonoBehaviour
             currentKey = "apparel";
         else if (assetKey.Contains("icon"))
             currentKey = "icon";
+        else if (assetKey.Contains("elixir"))
+            currentKey = "elixir";
 
         if (assetBundleDirectory.ContainsKey(currentKey))
         {
@@ -339,6 +353,22 @@ public class DownloadedAssets : MonoBehaviour
         else
         {
             Debug.LogError($"Spell \"{id}\" not found.");
+            return null;
+        }
+    }
+
+    public static ElixirData GetElixir(string id)
+    {
+        if (id == null)
+            id = "elixir_power";
+
+        if (elixirDictData.ContainsKey(id))
+        {
+            return elixirDictData[id];
+        }
+        else
+        {
+            Debug.LogError($"Elixir \"{id}\" not found.");
             return null;
         }
     }

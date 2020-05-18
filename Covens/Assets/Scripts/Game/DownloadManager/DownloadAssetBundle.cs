@@ -94,6 +94,9 @@ public class GameSettingsData
     [JsonProperty("placeOfPower")]
     public PlaceOfPowerSettings PlaceOfPower;
 
+    [JsonProperty("elixirs")]
+    public Dictionary<string, ElixirData> Elixirs;
+
     [JsonProperty("spells")]
     public Dictionary<string, SpellData> Spells;
 

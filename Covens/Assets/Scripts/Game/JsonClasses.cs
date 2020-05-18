@@ -220,7 +220,12 @@ public class SpellData
     public string Lore => LocalizeLookUp.GetSpellLore(id);
 }
 
-
+public class ElixirData
+{  
+    [DefaultValue("")]
+    public string id;
+    public int glyph;
+}
 public class Equipped
 {
     public string hat { get; set; }
