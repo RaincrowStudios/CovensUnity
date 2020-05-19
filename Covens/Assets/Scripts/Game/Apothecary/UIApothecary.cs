@@ -280,6 +280,8 @@ public class UIApothecary : MonoBehaviour
             characterToken.effects.Add(effect);
 
             PlayerConditionManager.OnPlayerApplyStatusEffect?.Invoke(effect);
+
+            PlayerManager.marker.OnApplyStatusEffect(effect);
         }
         else
         {

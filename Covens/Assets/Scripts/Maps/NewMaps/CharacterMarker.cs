@@ -2,6 +2,7 @@
 using System.Collections;
 using Raincrow.Maps;
 using TMPro;
+using System.Collections.Generic;
 
 public abstract class CharacterMarker : MuskMarker
 {
@@ -24,7 +25,7 @@ public abstract class CharacterMarker : MuskMarker
     [Space]
     [SerializeField] protected TextMeshPro m_DisplayName;
     [SerializeField] protected TextMeshPro m_Level;
-    
+
     public override Transform AvatarTransform
     {
         get
@@ -45,6 +46,9 @@ public abstract class CharacterMarker : MuskMarker
     private Transform m_CovenBuffFX;
     private Transform m_ChannelingFX;
 
+    //Elixirs effects
+    private Dictionary<string, Transform> m_ElixirsEffect = new Dictionary<string, Transform>();
+
     protected abstract void SetupIcon();
     protected abstract void SetupAvatar();
 
@@ -60,10 +64,10 @@ public abstract class CharacterMarker : MuskMarker
 
         IsShowingAvatar = false;
         IsShowingIcon = false;
-        
+
         //m_IconRenderer.sprite = null;
         //m_AvatarRenderer.sprite = null;
-        
+
         if (characterToken.effects != null)
         {
             foreach (var effect in characterToken.effects)
@@ -113,14 +117,14 @@ public abstract class CharacterMarker : MuskMarker
 
         IsShowingAvatar = false;
         IsShowingIcon = false;
-        
+
         m_AvatarRenderer.sprite = null;
         m_IconRenderer.sprite = null;
 
         m_Animator.SetBool("avatar", IsShowingAvatar);
         m_Animator.SetBool("icon", IsShowingIcon);
     }
-    
+
     protected void UpdateAnimationState()
     {
         if (Token == null)
@@ -128,7 +132,7 @@ public abstract class CharacterMarker : MuskMarker
 
         bool dead = characterToken.energy <= 0 || characterToken.state == "dead";
         bool immune = MarkerSpawner.IsTargetImmune(characterToken);
-                
+
         m_Animator.SetBool(DEAD_STATE_ID, dead);
         m_Animator.SetBool(IMMUNE_STATE_ID, immune);
     }
@@ -150,6 +154,19 @@ public abstract class CharacterMarker : MuskMarker
             {
                 if (m_SealFX == null)
                     m_SealFX = fx = StatusEffectFX.SpawnSealFX();
+            }
+            else if (effect.spell.Contains("elixir"))
+            {
+                if (!m_ElixirsEffect.ContainsKey(effect.spell))
+                {
+                    SimplePool<Transform> elixirEffect = StatusEffectFX.GetElixirEffect(effect.spell);
+
+                    if (elixirEffect != null)
+                    {
+                        fx = StatusEffectFX.Spawn(elixirEffect);
+                        m_ElixirsEffect.Add(effect.spell, fx);
+                    }
+                }
             }
         }
 
@@ -193,7 +210,7 @@ public abstract class CharacterMarker : MuskMarker
         base.OnExpireStatusEffect(effect);
 
         DespawnFX(effect.spell);
-        
+
         //if (effect.HasStatus(SpellData.CHANNELING_STATUS) || effect.HasStatus(SpellData.CHANNELED_STATUS))
         //{
         //    if (m_ChannelingFX != null)
@@ -238,8 +255,23 @@ public abstract class CharacterMarker : MuskMarker
                 m_ChannelingFX = null;
             }
         }
+        else if (id.Contains("elixir"))
+        {
+            if (m_ElixirsEffect.ContainsKey(id))
+            {
+                SimplePool<Transform> elixirEffect = StatusEffectFX.GetElixirEffect(id);
+
+                if (elixirEffect != null)
+                {
+                    Transform effect = m_ElixirsEffect[id];
+
+                    elixirEffect.Despawn(effect);
+                    m_ElixirsEffect.Remove(id);
+                }
+            }
+        }
     }
-    
+
     public override void UpdateEnergy(float time = 1f)
     {
         LeanTween.cancel(m_EnergyRingTweenId);
@@ -248,7 +280,7 @@ public abstract class CharacterMarker : MuskMarker
         m_EnergyFill /= (Token as CharacterToken).baseEnergy;
 
         if (time == 0)
-            m_EnergyRing.color = new Color(1,1,1, m_EnergyFill);
+            m_EnergyRing.color = new Color(1, 1, 1, m_EnergyFill);
         else
             m_EnergyRingTweenId = LeanTween.alpha(m_EnergyRing.gameObject, m_EnergyFill, time).uniqueId;
     }
