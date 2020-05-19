@@ -269,6 +269,10 @@ public class UIApothecary : MonoBehaviour
             );
 
             StatusEffect effect = JsonConvert.DeserializeObject<StatusEffect>(response);
+
+            CharacterToken characterToken = PlayerManager.marker.Token as CharacterToken;
+            characterToken.effects.Add(effect);
+
             PlayerConditionManager.OnPlayerApplyStatusEffect?.Invoke(effect);
         }
         else
