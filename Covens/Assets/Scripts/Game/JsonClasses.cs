@@ -98,6 +98,7 @@ public class Item
 {
     public int count { get; set; }
     public string id { get; set; }
+    public string spell { get; set; }
 }
 
 public struct CollectableItem
@@ -126,11 +127,13 @@ public struct ConsumableItem
     [JsonProperty("consumable")]
     public string id;
     public int amount;
+    public string spell;
 
-    public ConsumableItem(string id, int count)
+    public ConsumableItem(string id, int count, string spell)
     {
         this.id = id;
         this.amount = count;
+        this.spell = spell;
     }
 }
 

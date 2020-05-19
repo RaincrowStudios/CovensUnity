@@ -238,6 +238,12 @@ public class UIApothecary : MonoBehaviour
     {
         m_pConsumeButton.interactable = false;
 
+        if (PlayerDataManager.playerData.HaveEffect(Items[m_pWheel.SelectedIndex].Consumable.spell))
+        {
+            UIGlobalPopup.ShowError(() => { }, LocalizeLookUp.GetText("consumed_error_elixir"));
+            return;
+        }
+
         UIGlobalPopup.ShowPopUp(
             confirmAction: (System.Action)(() =>
             {

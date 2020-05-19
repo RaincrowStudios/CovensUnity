@@ -553,7 +553,8 @@ public class PlayerData : WitchMarkerData
                     m_Inventory.consumables.Add(new Item
                     {
                         id = item.id,
-                        count = item.amount
+                        count = item.amount,
+                        spell = item.spell
                     });
                 }
             }
