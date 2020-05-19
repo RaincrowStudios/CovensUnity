@@ -386,7 +386,7 @@ public class UIStoreItem : MonoBehaviour
         SetupButton(
             item, 
             consumable, 
-            LocalizeLookUp.GetStoreTitle(item.id) + $" ({LocalizeLookUp.GetText("store_gear_owned_upper")}: {(amount == 0 ? LocalizeLookUp.GetText("lt_none") : amount.ToString())})",
+            LocalizeLookUp.GetStoreTitle(item.id) + "\n <color=#8A8A8A>" + $" ({LocalizeLookUp.GetText("store_gear_owned_upper")}: {(amount == 0 ? LocalizeLookUp.GetText("lt_none") : amount.ToString())})</color>",
             StoreManagerAPI.TYPE_ELIXIRS);
 
     }
