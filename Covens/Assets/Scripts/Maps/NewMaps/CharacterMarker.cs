@@ -165,6 +165,7 @@ public abstract class CharacterMarker : MuskMarker
                     {
                         fx = StatusEffectFX.Spawn(elixirEffect);
                         m_ElixirsEffect.Add(effect.spell, fx);
+                        UpdateElixirsEffect();
                     }
                 }
             }
@@ -267,9 +268,28 @@ public abstract class CharacterMarker : MuskMarker
 
                     elixirEffect.Despawn(effect);
                     m_ElixirsEffect.Remove(id);
+                    UpdateElixirsEffect();
                 }
             }
         }
+    }
+
+    private void UpdateElixirsEffect()
+    {
+        bool multiple = m_ElixirsEffect.Count > 2;
+        int i = 0;
+        foreach (Transform effect in m_ElixirsEffect.Values)
+        {
+            ElixirEffectsView eev = effect.GetComponent<ElixirEffectsView>();
+
+            if(eev != null)
+            {
+                eev.UpdateEffect(i, multiple);
+            }
+
+            i++;
+        }
+        
     }
 
     public override void UpdateEnergy(float time = 1f)

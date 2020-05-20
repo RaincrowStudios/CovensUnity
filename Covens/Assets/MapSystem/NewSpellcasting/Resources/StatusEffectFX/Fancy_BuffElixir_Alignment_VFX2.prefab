@@ -27,11 +27,11 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 3498512392598718534}
   m_LocalRotation: {x: 0.55072594, y: -0.4435103, z: 0.44351107, w: 0.5507246}
-  m_LocalPosition: {x: 0, y: -0.2, z: 0}
-  m_LocalScale: {x: 0.5718952, y: 0.5718962, z: 0.5718962}
+  m_LocalPosition: {x: 0, y: -0.46999997, z: 0}
+  m_LocalScale: {x: 4.003268, y: 4.0032754, z: 4.0032754}
   m_Children: []
-  m_Father: {fileID: 8033499292925846635}
-  m_RootOrder: 0
+  m_Father: {fileID: 7824019334830580966}
+  m_RootOrder: 3
   m_LocalEulerAnglesHint: {x: 90, y: 0, z: 0}
 --- !u!198 &3623310015873690490
 ParticleSystem:
@@ -4802,12 +4802,12 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 5139005421239183843}
-  m_LocalRotation: {x: -0.7071068, y: 0, z: 0, w: 0.7071068}
-  m_LocalPosition: {x: 0, y: -0.004, z: 0.01}
-  m_LocalScale: {x: 1.2, y: 1.2, z: 1.2}
+  m_LocalRotation: {x: -0.7071068, y: -0, z: -0, w: 0.7071068}
+  m_LocalPosition: {x: 0, y: 0.902, z: 0.07}
+  m_LocalScale: {x: 8.400001, y: 8.400004, z: 8.400004}
   m_Children: []
-  m_Father: {fileID: 8033499292925846635}
-  m_RootOrder: 2
+  m_Father: {fileID: 7824019334830580966}
+  m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: -90, y: 0, z: 0}
 --- !u!198 &4386415610564275765
 ParticleSystem:
@@ -9539,6 +9539,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 7824019334830580966}
+  - component: {fileID: 6350032721850408717}
   m_Layer: 20
   m_Name: Fancy_BuffElixir_Alignment_VFX2
   m_TagString: Untagged
@@ -9558,9 +9559,31 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 8033499292925846635}
+  - {fileID: 2987790760843299495}
+  - {fileID: 1974601911036083402}
+  - {fileID: 3496605095935379718}
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &6350032721850408717
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5544882244624833364}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8e52d5edfc5feb943bcb3a5140f9f24f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _shadowEffect: {fileID: 5139005421239183843}
+  _runeEffect: {fileID: 9021837363805146500}
+  _raysEffect: {fileID: 3623310015873690490}
+  _maxParticlesNormal: 25
+  _colorNormal: {r: 0.5137255, g: 0.9137255, b: 0.43529412, a: 1}
+  _maxParticlesReduced: 10
+  _colorReduced: {r: 1, g: 1, b: 1, a: 1}
 --- !u!1 &7214999105271020515
 GameObject:
   m_ObjectHideFlags: 0
@@ -9589,10 +9612,7 @@ Transform:
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: 0.93, z: 0}
   m_LocalScale: {x: 7, y: 7, z: 7}
-  m_Children:
-  - {fileID: 3496605095935379718}
-  - {fileID: 1974601911036083402}
-  - {fileID: 2987790760843299495}
+  m_Children: []
   m_Father: {fileID: 7824019334830580966}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -14343,11 +14363,11 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 7294958474602904173}
   m_LocalRotation: {x: -0.7071068, y: -0, z: -0, w: 0.7071068}
-  m_LocalPosition: {x: 0, y: -0.62142855, z: 0}
-  m_LocalScale: {x: 0.5, y: 0.5, z: 0.5}
+  m_LocalPosition: {x: 0, y: -3.4199998, z: 0}
+  m_LocalScale: {x: 3.5, y: 3.500002, z: 3.500002}
   m_Children: []
-  m_Father: {fileID: 8033499292925846635}
-  m_RootOrder: 1
+  m_Father: {fileID: 7824019334830580966}
+  m_RootOrder: 2
   m_LocalEulerAnglesHint: {x: -90, y: 0, z: 0}
 --- !u!198 &5865579433957434848
 ParticleSystem:
