@@ -143,30 +143,27 @@ public abstract class CharacterMarker : MuskMarker
 
         Transform fx = null;
 
-        if (effect.stack == effect.stackable)
+        if (effect.spell == "spell_hex")
         {
-            if (effect.spell == "spell_hex")
+            if (m_HexFX == null)
+                m_HexFX = fx = StatusEffectFX.SpawnHexFX();
+        }
+        else if (effect.spell == "spell_seal")
+        {
+            if (m_SealFX == null)
+                m_SealFX = fx = StatusEffectFX.SpawnSealFX();
+        }
+        else if (effect.spell.Contains("elixir"))
+        {
+            if (!m_ElixirsEffect.ContainsKey(effect.spell))
             {
-                if (m_HexFX == null)
-                    m_HexFX = fx = StatusEffectFX.SpawnHexFX();
-            }
-            else if (effect.spell == "spell_seal")
-            {
-                if (m_SealFX == null)
-                    m_SealFX = fx = StatusEffectFX.SpawnSealFX();
-            }
-            else if (effect.spell.Contains("elixir"))
-            {
-                if (!m_ElixirsEffect.ContainsKey(effect.spell))
-                {
-                    SimplePool<Transform> elixirEffect = StatusEffectFX.GetElixirEffect(effect.spell);
+                SimplePool<Transform> elixirEffect = StatusEffectFX.GetElixirEffect(effect.spell);
 
-                    if (elixirEffect != null)
-                    {
-                        fx = StatusEffectFX.Spawn(elixirEffect);
-                        m_ElixirsEffect.Add(effect.spell, fx);
-                        UpdateElixirsEffect();
-                    }
+                if (elixirEffect != null)
+                {
+                    fx = StatusEffectFX.Spawn(elixirEffect);
+                    m_ElixirsEffect.Add(effect.spell, fx);
+                    UpdateElixirsEffect();
                 }
             }
         }
@@ -282,14 +279,14 @@ public abstract class CharacterMarker : MuskMarker
         {
             ElixirEffectsView eev = effect.GetComponent<ElixirEffectsView>();
 
-            if(eev != null)
+            if (eev != null)
             {
                 eev.UpdateEffect(i, multiple);
             }
 
             i++;
         }
-        
+
     }
 
     public override void UpdateEnergy(float time = 1f)
