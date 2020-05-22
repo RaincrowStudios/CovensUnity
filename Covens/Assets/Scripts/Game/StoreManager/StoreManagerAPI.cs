@@ -38,12 +38,36 @@ namespace Raincrow.Store
             Debug.LogError("store item not found for \"" + id + "\"");
             return 0;
         }
+
+        public string GetConsumableIdBySpellId(string id)
+        {
+            foreach (StoreItem item in Consumables)
+            {
+                if (item.spellId.Equals(id))
+                    return item.id;
+            }
+
+            return "";
+        }
+
+        public string GetSpellIdByConsumableId(string id)
+        {
+            foreach (StoreItem item in Consumables)
+            {
+                if (item.id.Equals(id))
+                    return item.spellId;
+            }
+
+            return "";
+        }
     }
 
     public struct StoreItem
     {
         [DefaultValue("")]
         public string id;
+        [DefaultValue("")]
+        public string spellId;
         public double unlockOn;
         [DefaultValue("")]
         public string tooltip;
@@ -162,8 +186,7 @@ namespace Raincrow.Store
                 return new PackData();
             }
         }
-
-
+               
         public static void Purchase(string id, string type, string currency, System.Action<string> callback)
         {
             Purchase(id, type, currency, null, callback);

@@ -12,7 +12,7 @@ GameObject:
   - component: {fileID: 7771667267516008301}
   - component: {fileID: 2472353911922803558}
   m_Layer: 5
-  m_Name: ELIXIRHOLDER (2)
+  m_Name: ElixirHolder
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -63,7 +63,9 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Sprite: {fileID: 21300000, guid: 9b5b8f2c8e590ef4a99d23a3f37d9e97, type: 3}
+    m_TypeName: UnityEngine.UI.MaskableGraphic+CullStateChangedEvent, UnityEngine.UI,
+      Version=1.0.0.0, Culture=neutral, PublicKeyToken=null
+  m_Sprite: {fileID: 21300000, guid: 94584c268e87b8f459eb72e5aede71a3, type: 3}
   m_Type: 0
   m_PreserveAspect: 0
   m_FillCenter: 1
@@ -85,7 +87,7 @@ GameObject:
   - component: {fileID: 5152292248701253674}
   - component: {fileID: 1759495090619121866}
   m_Layer: 5
-  m_Name: Image
+  m_Name: Icon
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -136,7 +138,9 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Sprite: {fileID: 21300000, guid: b54b1067e0e2dea458b8da5fe9be44f7, type: 3}
+    m_TypeName: UnityEngine.UI.MaskableGraphic+CullStateChangedEvent, UnityEngine.UI,
+      Version=1.0.0.0, Culture=neutral, PublicKeyToken=null
+  m_Sprite: {fileID: 21300000, guid: 3ad0dcf7030fba044adbe111675b15fe, type: 3}
   m_Type: 0
   m_PreserveAspect: 0
   m_FillCenter: 1
@@ -160,7 +164,7 @@ GameObject:
   - component: {fileID: 1333873531499419185}
   - component: {fileID: 8284678735553795223}
   m_Layer: 5
-  m_Name: Image (4)
+  m_Name: Glow
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -211,7 +215,9 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Sprite: {fileID: 21300000, guid: eb6a44a56a436814a9064360f13f03c6, type: 3}
+    m_TypeName: UnityEngine.UI.MaskableGraphic+CullStateChangedEvent, UnityEngine.UI,
+      Version=1.0.0.0, Culture=neutral, PublicKeyToken=null
+  m_Sprite: {fileID: 21300000, guid: 0533c0e10cafbe9408e3cdd9919443da, type: 3}
   m_Type: 0
   m_PreserveAspect: 0
   m_FillCenter: 1
@@ -255,8 +261,9 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 3294502111350221936}
+  - component: {fileID: 2069276366299341190}
   m_Layer: 5
-  m_Name: Elixir (1)
+  m_Name: ElixirAlignment
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -283,6 +290,21 @@ RectTransform:
   m_AnchoredPosition: {x: -10, y: -18}
   m_SizeDelta: {x: 100, y: 100}
   m_Pivot: {x: 0.5, y: 0.5}
+--- !u!114 &2069276366299341190
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2366658741416471984}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 63fa3cafd79d9634985edc298ae0babe, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _elixirId: elixir_alignment
+  _elixirIcon: {fileID: 6601240664652958257}
+  _elixirGlow: {fileID: 996265809908654804}
 --- !u!1 &2511196238920941164
 GameObject:
   m_ObjectHideFlags: 0
@@ -292,8 +314,9 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 8606363389757210185}
+  - component: {fileID: 2910474899043096437}
   m_Layer: 5
-  m_Name: Elixir (3)
+  m_Name: ElixirGathering
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -320,6 +343,21 @@ RectTransform:
   m_AnchoredPosition: {x: 255, y: -18}
   m_SizeDelta: {x: 100, y: 100}
   m_Pivot: {x: 0.5, y: 0.5}
+--- !u!114 &2910474899043096437
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2511196238920941164}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 63fa3cafd79d9634985edc298ae0babe, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _elixirId: elixir_gathering
+  _elixirIcon: {fileID: 6641757424460638640}
+  _elixirGlow: {fileID: 6066855626111038908}
 --- !u!1 &2941828804690948613
 GameObject:
   m_ObjectHideFlags: 0
@@ -332,7 +370,7 @@ GameObject:
   - component: {fileID: 5576232689417014309}
   - component: {fileID: 6601240664652958257}
   m_Layer: 5
-  m_Name: Image
+  m_Name: Icon
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -378,12 +416,14 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
-  m_Color: {r: 0.3962264, g: 0.3962264, b: 0.3962264, a: 1}
+  m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_RaycastTarget: 1
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Sprite: {fileID: 21300000, guid: b3ebdb065a4e94f4596e1a83d1cbf62f, type: 3}
+    m_TypeName: UnityEngine.UI.MaskableGraphic+CullStateChangedEvent, UnityEngine.UI,
+      Version=1.0.0.0, Culture=neutral, PublicKeyToken=null
+  m_Sprite: {fileID: 21300000, guid: ee51a6b98c9204d4982a3460198f4de0, type: 3}
   m_Type: 0
   m_PreserveAspect: 0
   m_FillCenter: 1
@@ -456,6 +496,8 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
+    m_TypeName: UnityEngine.UI.MaskableGraphic+CullStateChangedEvent, UnityEngine.UI,
+      Version=1.0.0.0, Culture=neutral, PublicKeyToken=null
   m_Sprite: {fileID: 21300000, guid: 61d144e0eb05e5a428837cc3ce53cbac, type: 3}
   m_Type: 1
   m_PreserveAspect: 0
@@ -475,8 +517,9 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 5117468800169495864}
+  - component: {fileID: 5972092797410646999}
   m_Layer: 5
-  m_Name: Elixir (5)
+  m_Name: ElixirResilience
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -503,6 +546,21 @@ RectTransform:
   m_AnchoredPosition: {x: -276, y: -18.00001}
   m_SizeDelta: {x: 100, y: 100}
   m_Pivot: {x: 0.5, y: 0.5}
+--- !u!114 &5972092797410646999
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4022387748613262816}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 63fa3cafd79d9634985edc298ae0babe, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _elixirId: elixir_resilience
+  _elixirIcon: {fileID: 5546012803268179626}
+  _elixirGlow: {fileID: 8356552471477509795}
 --- !u!1 &4098038588736447261
 GameObject:
   m_ObjectHideFlags: 0
@@ -515,7 +573,7 @@ GameObject:
   - component: {fileID: 8670872960660608856}
   - component: {fileID: 6641757424460638640}
   m_Layer: 5
-  m_Name: Image
+  m_Name: Icon
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -561,12 +619,14 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
-  m_Color: {r: 0.3962264, g: 0.3962264, b: 0.3962264, a: 1}
+  m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_RaycastTarget: 1
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Sprite: {fileID: 21300000, guid: ff63464640532ec4faab5ea354840515, type: 3}
+    m_TypeName: UnityEngine.UI.MaskableGraphic+CullStateChangedEvent, UnityEngine.UI,
+      Version=1.0.0.0, Culture=neutral, PublicKeyToken=null
+  m_Sprite: {fileID: 21300000, guid: b41ec41f520407b43931cd44cbac1eff, type: 3}
   m_Type: 0
   m_PreserveAspect: 0
   m_FillCenter: 1
@@ -590,12 +650,12 @@ GameObject:
   - component: {fileID: 6748900651390948047}
   - component: {fileID: 3370619744593652465}
   m_Layer: 5
-  m_Name: Image (3)
+  m_Name: Glow
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!224 &284955907694495272
 RectTransform:
   m_ObjectHideFlags: 0
@@ -641,7 +701,9 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Sprite: {fileID: 21300000, guid: eb6a44a56a436814a9064360f13f03c6, type: 3}
+    m_TypeName: UnityEngine.UI.MaskableGraphic+CullStateChangedEvent, UnityEngine.UI,
+      Version=1.0.0.0, Culture=neutral, PublicKeyToken=null
+  m_Sprite: {fileID: 21300000, guid: 0533c0e10cafbe9408e3cdd9919443da, type: 3}
   m_Type: 0
   m_PreserveAspect: 0
   m_FillCenter: 1
@@ -690,7 +752,7 @@ GameObject:
   - component: {fileID: 83215319844543120}
   - component: {fileID: 4324886219376688982}
   m_Layer: 5
-  m_Name: Image (2)
+  m_Name: Glow
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -741,7 +803,9 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Sprite: {fileID: 21300000, guid: eb6a44a56a436814a9064360f13f03c6, type: 3}
+    m_TypeName: UnityEngine.UI.MaskableGraphic+CullStateChangedEvent, UnityEngine.UI,
+      Version=1.0.0.0, Culture=neutral, PublicKeyToken=null
+  m_Sprite: {fileID: 21300000, guid: 0533c0e10cafbe9408e3cdd9919443da, type: 3}
   m_Type: 0
   m_PreserveAspect: 0
   m_FillCenter: 1
@@ -788,7 +852,7 @@ GameObject:
   - component: {fileID: 1236833889316462891}
   - component: {fileID: 5546012803268179626}
   m_Layer: 5
-  m_Name: Image
+  m_Name: Icon
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -834,12 +898,14 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
-  m_Color: {r: 0.3962264, g: 0.3962264, b: 0.3962264, a: 1}
+  m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_RaycastTarget: 1
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Sprite: {fileID: 21300000, guid: 5d588c5dc61f9734eb7fa6336292aeca, type: 3}
+    m_TypeName: UnityEngine.UI.MaskableGraphic+CullStateChangedEvent, UnityEngine.UI,
+      Version=1.0.0.0, Culture=neutral, PublicKeyToken=null
+  m_Sprite: {fileID: 21300000, guid: dc1811daf4295724ea142d0ede955ccb, type: 3}
   m_Type: 0
   m_PreserveAspect: 0
   m_FillCenter: 1
@@ -859,8 +925,9 @@ GameObject:
   m_Component:
   - component: {fileID: 2155847629077607906}
   - component: {fileID: 3339050209455368872}
+  - component: {fileID: 5228055721931986684}
   m_Layer: 5
-  m_Name: ELIXIRHOLDER for Main UI
+  m_Name: ElixirHolderUI
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -900,6 +967,25 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 5988818372629292430}
   m_CullTransparentMesh: 0
+--- !u!114 &5228055721931986684
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5988818372629292430}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 15b3de52f0bfbc942a2b47b213a813e0, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _elixirsUI:
+  - {fileID: 2910474899043096437}
+  - {fileID: 3732155002096055296}
+  - {fileID: 5972092797410646999}
+  - {fileID: 1355488181568098044}
+  - {fileID: 2069276366299341190}
+  _opaqueColor: {r: 0.39607844, g: 0.39607844, b: 0.39607844, a: 1}
 --- !u!1 &6930446943486912561
 GameObject:
   m_ObjectHideFlags: 0
@@ -914,12 +1000,12 @@ GameObject:
   - component: {fileID: 9040563686647350304}
   - component: {fileID: 9037234050987114040}
   m_Layer: 5
-  m_Name: Image (1)
+  m_Name: Glow
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!224 &2401144522038113197
 RectTransform:
   m_ObjectHideFlags: 0
@@ -965,7 +1051,9 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Sprite: {fileID: 21300000, guid: eb6a44a56a436814a9064360f13f03c6, type: 3}
+    m_TypeName: UnityEngine.UI.MaskableGraphic+CullStateChangedEvent, UnityEngine.UI,
+      Version=1.0.0.0, Culture=neutral, PublicKeyToken=null
+  m_Sprite: {fileID: 21300000, guid: 0533c0e10cafbe9408e3cdd9919443da, type: 3}
   m_Type: 0
   m_PreserveAspect: 0
   m_FillCenter: 1
@@ -1009,8 +1097,9 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1044912053576792624}
+  - component: {fileID: 3732155002096055296}
   m_Layer: 5
-  m_Name: Elixir (2)
+  m_Name: ElixirExperience
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1037,6 +1126,21 @@ RectTransform:
   m_AnchoredPosition: {x: 122, y: -18}
   m_SizeDelta: {x: 100, y: 100}
   m_Pivot: {x: 0.5, y: 0.5}
+--- !u!114 &3732155002096055296
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8090278698408453403}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 63fa3cafd79d9634985edc298ae0babe, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _elixirId: elixir_xp
+  _elixirIcon: {fileID: 1759495090619121866}
+  _elixirGlow: {fileID: 4629954243024766682}
 --- !u!1 &8222290049800311120
 GameObject:
   m_ObjectHideFlags: 0
@@ -1049,7 +1153,7 @@ GameObject:
   - component: {fileID: 3115614032982441810}
   - component: {fileID: 5840543261763796791}
   m_Layer: 5
-  m_Name: Image
+  m_Name: Icon
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1100,7 +1204,9 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Sprite: {fileID: 21300000, guid: 372a0c1b49256784295e26011fbc7c59, type: 3}
+    m_TypeName: UnityEngine.UI.MaskableGraphic+CullStateChangedEvent, UnityEngine.UI,
+      Version=1.0.0.0, Culture=neutral, PublicKeyToken=null
+  m_Sprite: {fileID: 21300000, guid: 51442637c202e384fb0ffaf01c7ec800, type: 3}
   m_Type: 0
   m_PreserveAspect: 0
   m_FillCenter: 1
@@ -1119,8 +1225,9 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 8473805111460891877}
+  - component: {fileID: 1355488181568098044}
   m_Layer: 5
-  m_Name: Elixir (4)
+  m_Name: ElixirPower
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1147,6 +1254,21 @@ RectTransform:
   m_AnchoredPosition: {x: -143, y: -18.00001}
   m_SizeDelta: {x: 100, y: 100}
   m_Pivot: {x: 0.5, y: 0.5}
+--- !u!114 &1355488181568098044
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8292333952315930811}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 63fa3cafd79d9634985edc298ae0babe, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _elixirId: elixir_power
+  _elixirIcon: {fileID: 5840543261763796791}
+  _elixirGlow: {fileID: 1955041567748278952}
 --- !u!1 &8793828032370968796
 GameObject:
   m_ObjectHideFlags: 0
@@ -1161,12 +1283,12 @@ GameObject:
   - component: {fileID: 6492279774538585372}
   - component: {fileID: 4108894904118776211}
   m_Layer: 5
-  m_Name: Image (5)
+  m_Name: Glow
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!224 &1976829085765393125
 RectTransform:
   m_ObjectHideFlags: 0
@@ -1212,7 +1334,9 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Sprite: {fileID: 21300000, guid: eb6a44a56a436814a9064360f13f03c6, type: 3}
+    m_TypeName: UnityEngine.UI.MaskableGraphic+CullStateChangedEvent, UnityEngine.UI,
+      Version=1.0.0.0, Culture=neutral, PublicKeyToken=null
+  m_Sprite: {fileID: 21300000, guid: 0533c0e10cafbe9408e3cdd9919443da, type: 3}
   m_Type: 0
   m_PreserveAspect: 0
   m_FillCenter: 1

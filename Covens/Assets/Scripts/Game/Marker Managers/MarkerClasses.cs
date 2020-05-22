@@ -33,7 +33,7 @@ public class StatusEffect
 
     private int m_ExpireTimerId;
     private System.Action m_OnExpire;
-    
+
     public void ScheduleExpiration(System.Action onExpire)
     {
         LeanTween.cancel(m_ExpireTimerId, false);
@@ -54,7 +54,7 @@ public class StatusEffect
 
     public void Expire()
     {
-        LeanTween.cancel(m_ExpireTimerId);        
+        LeanTween.cancel(m_ExpireTimerId);
         m_OnExpire?.Invoke();
     }
 
@@ -562,7 +562,7 @@ public class PlayerData : WitchMarkerData
             return m_Inventory;
         }
     }
-    
+
     [JsonIgnore]
     public List<SpellData> Spells => m_AllSpells;
 
@@ -581,7 +581,7 @@ public class PlayerData : WitchMarkerData
 
             if (degree < 0)
                 return PlayerDataManager.alignmentPerDegree[absDegree] * -1;
-            
+
             return PlayerDataManager.alignmentPerDegree[absDegree - 1];
         }
     }
@@ -595,7 +595,7 @@ public class PlayerData : WitchMarkerData
 
             if (degree < 0)
                 return PlayerDataManager.alignmentPerDegree[absDegree - 1] * -1;
-            
+
             return PlayerDataManager.alignmentPerDegree[absDegree];
         }
     }
@@ -605,10 +605,10 @@ public class PlayerData : WitchMarkerData
 
     [JsonIgnore]
     public override string coven => covenInfo.name;
-    
+
     public long ApplyExpBuffs(long expAmount)
     {
-       return expAmount + (long)(expAmount * GetAptitude(effects) * 0.01);
+        return expAmount + (long)(expAmount * GetAptitude(effects) * 0.01);
     }
 
     public void UpdateExp(ulong exp, double timestamp)
@@ -635,7 +635,7 @@ public class PlayerData : WitchMarkerData
 
     public bool HaveEffect(string id)
     {
-        foreach(StatusEffect effect in effects)
+        foreach (StatusEffect effect in effects)
         {
             if (effect.spell.Equals(id))
             {
@@ -644,6 +644,19 @@ public class PlayerData : WitchMarkerData
         }
 
         return false;
+    }
+
+    public StatusEffect GetEffectById(string id)
+    {
+        foreach (StatusEffect effect in effects)
+        {
+            if (effect.spell.Equals(id))
+            {
+                return effect;
+            }
+        }
+
+        return null;
     }
 }
 

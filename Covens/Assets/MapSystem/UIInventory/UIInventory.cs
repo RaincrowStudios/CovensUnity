@@ -15,8 +15,8 @@ public class UIInventory : MonoBehaviour
 
     [Header("Buttons")]
     [SerializeField] private Button m_CloseButton;
-    [SerializeField] private Button m_ApothecaryButton;
-    [SerializeField] private GameObject m_EmptyApothecary;
+    //[SerializeField] private Button m_ApothecaryButton;
+    //[SerializeField] private GameObject m_EmptyApothecary;
 
     public CanvasGroup inventoryCG;
     private static UIInventory m_Instance;
@@ -58,7 +58,7 @@ public class UIInventory : MonoBehaviour
         m_Canvas.enabled = false;
         m_InputRaycaster.enabled = false;
         m_CloseButton.onClick.AddListener(OnClickClose);
-        m_ApothecaryButton.onClick.AddListener(OnClickApothecary);
+        //m_ApothecaryButton.onClick.AddListener(OnClickApothecary);
 
         DownloadedAssets.OnWillUnloadAssets += OnWillUnloadAssets;
     }
@@ -86,24 +86,24 @@ public class UIInventory : MonoBehaviour
         m_ToolsWheel.LockIngredient(null, 0);
         m_GemsWheel.LockIngredient(null, 0);
 
-        m_ApothecaryButton.gameObject.SetActive(showApothecary && PlayerDataManager.playerData.energy != 0);
+        //m_ApothecaryButton.gameObject.SetActive(showApothecary && PlayerDataManager.playerData.energy != 0);
 
-        if (m_ApothecaryButton.gameObject.activeSelf)
-        {
-            bool hasPotions = false;
+        //if (m_ApothecaryButton.gameObject.activeSelf)
+        //{
+        //    bool hasPotions = false;
 
-            for (int i = 0; i < PlayerDataManager.playerData.inventory.consumables.Count; i++)
-            {
-                if (PlayerDataManager.playerData.inventory.consumables[i].count > 0)
-                {
-                    hasPotions = true;
-                    break;
-                }
-            }
+        //    for (int i = 0; i < PlayerDataManager.playerData.inventory.consumables.Count; i++)
+        //    {
+        //        if (PlayerDataManager.playerData.inventory.consumables[i].count > 0)
+        //        {
+        //            hasPotions = true;
+        //            break;
+        //        }
+        //    }
 
-            m_ApothecaryButton.interactable = hasPotions;
-            m_EmptyApothecary.gameObject.SetActive(hasPotions == false);
-        }
+        //    m_ApothecaryButton.interactable = hasPotions;
+        //    m_EmptyApothecary.gameObject.SetActive(hasPotions == false);
+        //}
 
         m_CloseButton.gameObject.SetActive(enableCloseButton);
 
