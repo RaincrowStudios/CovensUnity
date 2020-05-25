@@ -77,7 +77,7 @@ public class ElixirManagementUI : MonoBehaviour
             storeItem,
             StoreManagerAPI.TYPE_ELIXIRS,
             LocalizeLookUp.GetStoreTitle(storeItem.id),
-            LocalizeLookUp.GetStoreDesc(storeItem.id) + $" ({LocalizeLookUp.GetText("store_gear_owned_upper")}: {(amount == 0 ? LocalizeLookUp.GetText("lt_none") : amount.ToString())})",
+            LocalizeLookUp.GetStoreDesc(storeItem.id) + "\n" + $" ({LocalizeLookUp.GetText("store_gear_owned_upper")}: {(amount == 0 ? LocalizeLookUp.GetText("lt_none") : amount.ToString())})",
             elixirIcon,
             null,
             (error) =>

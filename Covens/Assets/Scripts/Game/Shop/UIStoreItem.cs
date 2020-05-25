@@ -388,7 +388,7 @@ public class UIStoreItem : MonoBehaviour
             consumable, 
             LocalizeLookUp.GetStoreTitle(item.id),
             StoreManagerAPI.TYPE_ELIXIRS,
-            $" ({LocalizeLookUp.GetText("store_gear_owned_upper")}: {(amount == 0 ? LocalizeLookUp.GetText("lt_none") : amount.ToString())})"
+            "\n" + $" ({LocalizeLookUp.GetText("store_gear_owned_upper")}: {(amount == 0 ? LocalizeLookUp.GetText("lt_none") : amount.ToString())})"
             );
 
     }

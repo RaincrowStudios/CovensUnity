@@ -498,7 +498,7 @@ public class UIStore : MonoBehaviour
     private void SetupCharms()
     {
         SetHeaderButtons(0);
-        SetHeaderText(LocalizeLookUp.GetText("store_charms"));
+        SetHeaderText(LocalizeLookUp.GetText("bos_elixir"));
         m_StoreWindow.SetupCharms(StoreManagerAPI.StoreData.Consumables);
     }
 

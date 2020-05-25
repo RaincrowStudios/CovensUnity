@@ -7311,7 +7311,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   prefix: 
-  id: store_charms
+  id: bos_elixir
   suffix: 
   toUpper: 0
 --- !u!114 &825174317
