@@ -21,8 +21,8 @@ public static class StatusEffectFX
     //Elixirs effects
 
     private static Dictionary<string, SimplePool<Transform>> m_BuffElixirs = new Dictionary<string, SimplePool<Transform>>() {
-        {"elixir_degree",new SimplePool<Transform>("StatusEffectFX/Fancy_BuffElixir_Alignment_VFX2")},
-        {"elixir_xp",new SimplePool<Transform>("StatusEffectFX/Fancy_BuffElixir_Experience_VFX2")},
+        {"elixir_alignment",new SimplePool<Transform>("StatusEffectFX/Fancy_BuffElixir_Alignment_VFX2")},
+        {"elixir_double_xp",new SimplePool<Transform>("StatusEffectFX/Fancy_BuffElixir_Experience_VFX2")},
         {"elixir_gathering",new SimplePool<Transform>("StatusEffectFX/Fancy_BuffElixir_Gathering_VFX2")},
         {"elixir_power",new SimplePool<Transform>("StatusEffectFX/Fancy_BuffElixir_Power_VFX2")},
         {"elixir_resilience",new SimplePool<Transform>("StatusEffectFX/Fancy_BuffElixir_Resilience_VFX2")}

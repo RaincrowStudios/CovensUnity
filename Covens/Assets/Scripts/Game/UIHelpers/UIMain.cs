@@ -95,6 +95,7 @@ public class UIMain : MonoBehaviour
 
     [Header("Others")]
     [SerializeField] private PopupNewElixir m_PopupNewElixir;
+    [SerializeField] private ElixirHolderUI m_ElixirHolderUI;
 
     private bool m_ChanneledFX;
     
@@ -302,6 +303,11 @@ public class UIMain : MonoBehaviour
             m_PopupNewElixir.Show();
             DownloadManager.SetFalseToFirstTimeOpenAfterUpdate(version);
         }
+    }
+
+    public void UpdateElixirHolder()
+    {
+        m_ElixirHolderUI.UpdateElixirsStatus();
     }
 }
 

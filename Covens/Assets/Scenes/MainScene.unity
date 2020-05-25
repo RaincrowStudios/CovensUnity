@@ -66985,6 +66985,7 @@ MonoBehaviour:
     m_Panel: {fileID: 1243587739}
     m_CanvasGroup: {fileID: 1243587740}
   m_PopupNewElixir: {fileID: 14490960}
+  m_ElixirHolderUI: {fileID: 855650474268222920}
 --- !u!224 &1310174782
 RectTransform:
   m_ObjectHideFlags: 0

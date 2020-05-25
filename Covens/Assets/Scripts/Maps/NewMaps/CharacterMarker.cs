@@ -257,6 +257,11 @@ public abstract class CharacterMarker : MuskMarker
         {
             if (m_ElixirsEffect.ContainsKey(id))
             {
+                if (characterToken.instance.Equals(PlayerDataManager.playerData.instance))
+                {
+                    UIMain.Instance.UpdateElixirHolder();
+                }
+
                 SimplePool<Transform> elixirEffect = StatusEffectFX.GetElixirEffect(id);
 
                 if (elixirEffect != null)
