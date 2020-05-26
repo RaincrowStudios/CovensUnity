@@ -3,6 +3,8 @@ using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
 using Raincrow;
+using Raincrow.Maps;
+using System.Collections.Generic;
 
 public class TeamPlayerView : MonoBehaviour
 {
@@ -42,11 +44,11 @@ public class TeamPlayerView : MonoBehaviour
     private System.Action m_OnCoven;
     private System.Action m_OnClose;
 
-    public static void Show(WitchMarkerData data, System.Action onFly = null, System.Action onCoven = null, System.Action onClose = null)
+    public static void Show(WitchMarkerData data, List<StatusEffect> effects = null, System.Action onFly = null, System.Action onCoven = null, System.Action onClose = null)
     {
         if (m_Instance != null)
         {
-            m_Instance._Show(data, onFly, onCoven, onClose);
+            m_Instance._Show(data, effects, onFly, onCoven, onClose);
         }
         else
         {
@@ -54,7 +56,7 @@ public class TeamPlayerView : MonoBehaviour
                 SceneManager.Scene.PLAYER_DESC,
                 UnityEngine.SceneManagement.LoadSceneMode.Additive,
                 null,
-                () => m_Instance._Show(data, onFly, onCoven, onClose)
+                () => m_Instance._Show(data, effects, onFly, onCoven, onClose)
             );
         }
     }
@@ -84,7 +86,7 @@ public class TeamPlayerView : MonoBehaviour
         SceneManager.UnloadScene(SceneManager.Scene.PLAYER_DESC, null, null);
     }
 
-    private void _Show(WitchMarkerData data, System.Action onFly = null, System.Action onCoven = null, System.Action onClose = null)
+    private void _Show(WitchMarkerData data, List<StatusEffect> effects, System.Action onFly = null, System.Action onCoven = null, System.Action onClose = null)
     {
         inviteToCoven.onClick.RemoveAllListeners();
         inviteToCoven.onClick.AddListener(() =>
@@ -126,8 +128,8 @@ public class TeamPlayerView : MonoBehaviour
         _dominionRank.text = LocalizeLookUp.GetText("lt_dominion_rank") + " " + data.dominionRank;
         _worldRank.text = LocalizeLookUp.GetText("lt_world_rank") + " " + data.worldRank;
         _coven.text = (string.IsNullOrEmpty(data.coven) ? LocalizeLookUp.GetText("lt_coven_none") : LocalizeLookUp.GetText("lt_coven") + " " + data.coven);
-        _power.text = LocalizeLookUp.GetText("generic_power") + ": " + data.GetPower(null);
-        _resilience.text = LocalizeLookUp.GetText("generic_resilience") + ": " + data.GetResilience(null);
+        _power.text = LocalizeLookUp.GetText("generic_power") + ": " + data.GetPower(effects);
+        _resilience.text = LocalizeLookUp.GetText("generic_resilience") + ": " + data.GetResilience(effects);
         _energy.text = LocalizeLookUp.GetText("lt_energy") + " " + data.energy.ToString() + "/" + data.baseEnergy.ToString();
 
         m_OnFly = onFly;
@@ -229,7 +231,7 @@ public class TeamPlayerView : MonoBehaviour
                 if (result == 200)
                 {
                     WitchMarkerData data = JsonConvert.DeserializeObject<WitchMarkerData>(response);
-                    Show(data, onFlyTo);
+                    Show(data, data.effects, onFlyTo);
                     callback?.Invoke(data, null);
                 }
                 else

@@ -126,7 +126,6 @@ public abstract class CharacterMarkerData : MarkerData
 
     [JsonProperty("resilience")]
     public virtual int baseResilience { get; set; }
-
     public virtual string covenId { get; set; }
     public virtual string coven { get; set; }
 
@@ -210,7 +209,7 @@ public class WitchMarkerData : CharacterMarkerData
     public virtual float longitude { get; set; }
     public virtual int worldRank { get; set; }
     public virtual int dominionRank { get; set; }
-
+    public virtual List<StatusEffect> effects { get; set; }
     public virtual List<EquippedApparel> equipped { get; set; }
 
     [JsonIgnore]
