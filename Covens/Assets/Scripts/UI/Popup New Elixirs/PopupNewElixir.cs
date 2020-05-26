@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using Raincrow.FTF;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
@@ -31,7 +32,7 @@ public class PopupNewElixir : MonoBehaviour
 
     public void Show()
     {
-        _buttonClose.onClick.AddListener(Hide);
+        _buttonClose.onClick.AddListener(()=>Hide(true));
         _buttonShop.onClick.AddListener(OnClickOpenShop);
 
         _madameFortunaInitialPosition = _madameFortuna.position;
@@ -49,7 +50,7 @@ public class PopupNewElixir : MonoBehaviour
         _madameFortunaAnimationId = LeanTween.moveX(_madameFortuna.gameObject, _madameFortunaInitialPosition.x, _madameAnimationTime).setDelay(_madameAnimationDelay).uniqueId;
     }
 
-    private void Hide()
+    private void Hide(bool onClick)
     {
         if (_closing)
         {
@@ -66,15 +67,22 @@ public class PopupNewElixir : MonoBehaviour
         LeanTween.moveX(_madameFortuna.gameObject, _madameFortunaInitialPosition.x * 3, _madameAnimationTime);
         LeanTween.alphaCanvas(_container, 0, _alphaContainerTime).setOnComplete(() =>
         {
-            _closing = true;
+            _closing = false;
+
+            if (onClick && FirstTapManager.IsFirstTime("elixirs"))
+                FirstTapManager.Show("elixirs", null);
+
             gameObject.SetActive(false);
         });
     }
 
     private void OnClickOpenShop()
     {
-        UIStore.OpenCharmsStore();
-        Hide();
+        UIStore.OpenCharmsStore(()=> {
+            if (FirstTapManager.IsFirstTime("elixirs"))
+                FirstTapManager.Show("elixirs", null);
+        });
+        Hide(false);
     }
 
     // Update is called once per frame

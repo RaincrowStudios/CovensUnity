@@ -229,5 +229,26 @@
 		]
 	},
 	"greyhand": {},
-	"tier": {}
+	"tier": {},
+	"elixirs": {
+		"highlight": {
+			"show": true,
+			"anchorMin": [
+				0.0,
+				0.0
+			],
+			"anchorMax": [
+				0.0,
+				0.0
+			],
+			"position": [
+				2015,
+				258
+			],
+			"size": [
+				1018.2,
+				389.65
+			]
+		}
+	}
 }
