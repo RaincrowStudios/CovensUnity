@@ -16,6 +16,7 @@ public class UIMarkerPointer : MonoBehaviour
     [SerializeField] private RectTransform m_PointerTransform;
     [SerializeField] private RectTransform m_PointerArrow;
     [SerializeField] private Image m_Portrait;
+    [SerializeField] private Image o_PointerGlow;
 
     [Space()]
     [SerializeField] private CanvasGroup m_PhysicalCenter;
@@ -35,18 +36,30 @@ public class UIMarkerPointer : MonoBehaviour
         m_PointerCavnasGroup.alpha = 0;
         m_PhysicalCenter.alpha = 0;
         m_Portrait.gameObject.SetActive(true);
+        if (PlayerDataManager.playerData.degree > 0)
+        {
+            o_PointerGlow.color = Utilities.Orange;
+        }
+        else if (PlayerDataManager.playerData.degree < 0)
+        {
+            o_PointerGlow.color = Utilities.Purple;
+        }
+        else
+        {
+            o_PointerGlow.color = new Color(0f, 172f, 255f, 255f);
+        }
     }
 
     private IEnumerator Start()
     {
         while (MapsAPI.Instance.IsInitialized == false)
             yield return null;
-        
+
         while (m_Target == null)
             yield return null;
 
         m_Enabled = true;
-        
+
         MapsAPI.Instance.OnCameraUpdate += OnMapUpdate;
     }
 
@@ -147,7 +160,7 @@ public class UIMarkerPointer : MonoBehaviour
             .setOnComplete(() => m_PointerTransform.gameObject.SetActive(false))
             .uniqueId;
     }
-    
+
     public void ShowPhysicalMarker(bool show)
     {
         if (m_ShowingPhysical == show)
