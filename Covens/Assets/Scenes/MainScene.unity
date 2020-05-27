@@ -66425,7 +66425,7 @@ MonoBehaviour:
   m_MapView:
     leftBar_pos: {x: 130, y: 0}
     bottomBar_pos: {x: 292, y: 50}
-    elixirs_pos: {x: 724, y: -496}
+    elixirs_pos: {x: -556, y: 224}
     energy_offMin: {x: 585, y: 0}
     quickcast_pos: {x: 308, y: 200}
     worldboss_pos: {x: 1000, y: -520}
@@ -66435,7 +66435,7 @@ MonoBehaviour:
   m_MapView_Select:
     leftBar_pos: {x: -150, y: 0}
     bottomBar_pos: {x: 292, y: -160}
-    elixirs_pos: {x: 724, y: -859}
+    elixirs_pos: {x: -556, y: -168}
     energy_offMin: {x: -433, y: 0}
     quickcast_pos: {x: 30, y: 40}
     worldboss_pos: {x: 1000, y: -520}
@@ -103992,7 +103992,7 @@ PrefabInstance:
     - target: {fileID: 2155847629077607906, guid: d8be0b452eb02d946a6ef802913edd59,
         type: 3}
       propertyPath: m_AnchoredPosition.y
-      value: 224
+      value: -168
       objectReference: {fileID: 0}
     - target: {fileID: 2155847629077607906, guid: d8be0b452eb02d946a6ef802913edd59,
         type: 3}
