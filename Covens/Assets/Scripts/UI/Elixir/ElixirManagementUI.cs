@@ -93,7 +93,7 @@ public class ElixirManagementUI : MonoBehaviour
                         elixirIcon,
                         null);
 
-                    _dicElixirStoreUI[storeItem.id].UpdateElixirs(GetAmountElixir(storeItem.id));
+                    _dicElixirStoreUI[storeItem.id].UpdateElixirs(1);
                 }
                 else
                 {
@@ -150,7 +150,7 @@ public class ElixirManagementUI : MonoBehaviour
 
             PlayerManager.marker.OnApplyStatusEffect(effect);
 
-            _dicElixirStoreUI[consumableId].UpdateElixirs(GetAmountElixir(consumableId) - 1);
+            _dicElixirStoreUI[consumableId].UpdateElixirs(-1);
             _dicElixirStoreUI[consumableId].UpdateTimer(PlayerDataManager.playerData.GetEffectById(effect.spell).expiresOn);
             _elixirHolderUI.UpdateElixirsStatus();
         }

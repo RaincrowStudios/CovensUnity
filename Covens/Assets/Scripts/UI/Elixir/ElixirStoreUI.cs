@@ -21,6 +21,7 @@ public class ElixirStoreUI : MonoBehaviour
     [SerializeField] private GameObject _timeToExpireObject;
     [SerializeField] private TextMeshProUGUI _timeToExpireText;
 
+    int amountElixir;
     public void Setup(ElixirDataStore data, System.Action<string, string, Button> OnClickConsume, System.Action<Raincrow.Store.StoreItem, int, Sprite> OnClickPurcharse)
     {
         _nameText.text = data.ElixirName;
@@ -29,6 +30,7 @@ public class ElixirStoreUI : MonoBehaviour
         _currencyImage.sprite = data.IconCurrency;
 
         _ownText.text = LocalizeLookUp.GetText("store_you_own").Replace("{{amount}}", data.OwnedAmount.ToString());
+        amountElixir = data.OwnedAmount;
 
         _buttonConsume.interactable = data.OwnedAmount != 0;
         _timeToExpireObject.SetActive(data.ExpiresOn > 0);
@@ -43,7 +45,7 @@ public class ElixirStoreUI : MonoBehaviour
         };
 
         _buttonPurchase.onClick.AddListener(() =>
-            OnClickPurcharse(storeItem, data.OwnedAmount, data.IconElixir)
+            OnClickPurcharse(storeItem, amountElixir, data.IconElixir)
         ); ;
 
         UpdateTimer(data.ExpiresOn);
@@ -51,8 +53,14 @@ public class ElixirStoreUI : MonoBehaviour
 
     public void UpdateElixirs(int amount)
     {
-        _ownText.text = LocalizeLookUp.GetText("store_you_own").Replace("{{amount}}", amount.ToString());
-        _buttonConsume.interactable = amount != 0;
+        amountElixir += amount;
+        _ownText.text = LocalizeLookUp.GetText("store_you_own").Replace("{{amount}}", amountElixir.ToString());
+        _buttonConsume.interactable = amountElixir != 0;
+    }
+
+    public int GetAmount()
+    {
+        return amountElixir;
     }
 
     public void UpdateTimer(double expiresOn)
