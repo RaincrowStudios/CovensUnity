@@ -51,9 +51,16 @@ public class ElixirStoreUI : MonoBehaviour
         UpdateTimer(data.ExpiresOn);
     }
 
-    public void UpdateElixirs(int amount)
+    public void IncreaseAmountElixirs(int amount)
     {
         amountElixir += amount;
+        _ownText.text = LocalizeLookUp.GetText("store_you_own").Replace("{{amount}}", amountElixir.ToString());
+        _buttonConsume.interactable = amountElixir != 0;
+    }
+
+    public void UpdateElixirs(int amount)
+    {
+        amountElixir = amount;
         _ownText.text = LocalizeLookUp.GetText("store_you_own").Replace("{{amount}}", amountElixir.ToString());
         _buttonConsume.interactable = amountElixir != 0;
     }
