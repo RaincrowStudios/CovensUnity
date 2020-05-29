@@ -115,7 +115,7 @@ namespace Raincrow.BattleArena.Factory
 
     public interface IWitchPortraitFactory
     {
-        IEnumerator<SpriteRequest> CreateIWitchPortrait(IWitchModel witchModel);
+        IEnumerator<SpriteRequest> CreateIWitchPortrait(IWitchModel witchModel, bool backgroundWhite = true);
     }
 
     public struct TextureRequest

@@ -83,7 +83,7 @@ namespace Raincrow.BattleArena.Views
 
         private IEnumerator<Sprite> GetPortrait(IWitchModel witchModel)
         {
-            IEnumerator<SpriteRequest> enumerator = _witchPortraitFactory.CreateIWitchPortrait(witchModel);
+            IEnumerator<SpriteRequest> enumerator = _witchPortraitFactory.CreateIWitchPortrait(witchModel, false);
             Coroutine<SpriteRequest> coroutine = this.StartCoroutine<SpriteRequest>(enumerator);
             while (coroutine.keepWaiting)
             {

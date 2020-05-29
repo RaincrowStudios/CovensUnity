@@ -547,7 +547,7 @@ public class AvatarSpriteUtil : MonoBehaviour, IWitchAvatarFactory, ISpiritAvata
         yield return request;
     }
 
-    public IEnumerator<SpriteRequest> CreateIWitchPortrait(IWitchModel witchModel)
+    public IEnumerator<SpriteRequest> CreateIWitchPortrait(IWitchModel witchModel, bool backgroundWhite = true)
     {
         bool isMale = (witchModel.Info.Gender == CharacterGender.Male);
 
@@ -579,7 +579,7 @@ public class AvatarSpriteUtil : MonoBehaviour, IWitchAvatarFactory, ISpiritAvata
             callback = callback,
             size = new Vector2(256f / 2, 256f / 2),
             pivot = new Vector2(0.5f, 0.5f),
-            type = Type.ArenaPortrait
+            type = backgroundWhite ? Type.ArenaPortrait : Type.WardrobePortrait
         };
 
         m_GenQueue.Add(prop);
