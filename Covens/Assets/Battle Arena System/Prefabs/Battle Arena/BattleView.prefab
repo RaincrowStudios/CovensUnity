@@ -89,6 +89,8 @@ MonoBehaviour:
   _dragSpeed: 25
   _dragDecceleration: 65
   _cameraTargetHeight: 1
+  _zoomFocus: 225
+  _zoomDecceleration: 0.0015
   _cameraSpeed: 1000
   _cameraDistance: 80
   _cameraHeight: 65
@@ -237,3 +239,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3f08d2e9e0ef4ca42aa5259d7caff7f7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _sendPlanningPhaseReadyMaxTime: 0.5
+  _waitForPlanningPhaseReadyMaxTime: 0.5
+  _sendFinishPlanningPhaseMaxTime: 0.5
+  _waitForActionResolutionReadyMaxTime: 0.5

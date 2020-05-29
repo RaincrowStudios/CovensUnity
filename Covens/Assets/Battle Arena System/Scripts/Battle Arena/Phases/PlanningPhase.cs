@@ -3,6 +3,7 @@ using Raincrow.BattleArena.Events;
 using Raincrow.BattleArena.Model;
 using Raincrow.BattleArena.Views;
 using Raincrow.StateMachines;
+using Raincrow.Utils;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -33,6 +34,7 @@ namespace Raincrow.BattleArena.Phases
         private ICellUIModel[,] _gridView;
         private IInputController _inputController;
         private ICameraTargetController _cameraTargetController;
+        private ISmoothCameraFollow _smoothCameraFollow;
         private IStatusEffectsView _playerStatusEffectsView;
         private IStatusEffectsView _enemyStatusEffectsView;
         private IPopupView _popupView;
@@ -44,10 +46,13 @@ namespace Raincrow.BattleArena.Phases
         private float _moveSpeed;
         private float _dragSpeed;
         private float _dragDecceleration;
+        private float _zoomDecceleration;
         private Vector3 _dragVelocity;
+        private float _zoomVelcity = 0;
         private string _playerId;
         private bool _canChangeToResolution = false;
         private bool _waitingResolution = false;
+        private float _zoomFocus = 0;
         // Readonly Variables
         private readonly int _battleCellLayer;
 
@@ -67,13 +72,16 @@ namespace Raincrow.BattleArena.Phases
                              IPlayerBadgeView playerBadgeView,
                              IInputController inputController,
                              ICameraTargetController cameraTargetController,
+                             ISmoothCameraFollow smoothCameraFollow,
                              IStatusEffectsView playerStatusEffectsView,
                              IStatusEffectsView enemyStatusEffectsView,
                              string playerId,
                              IPopupView popupView,
                              float moveSpeed,
                              float dragSpeed,
-                             float dragDecceleration)
+                             float dragDecceleration,
+                             float zoomFocus,
+                             float zoomDecceleration)
         //float cameraSpeed)
         {
             _coroutineStarter = coroutineStarter;
@@ -92,6 +100,7 @@ namespace Raincrow.BattleArena.Phases
             //_cameraSpeed = cameraSpeed;
             _inputController = inputController;
             _cameraTargetController = cameraTargetController;
+            _smoothCameraFollow = smoothCameraFollow;
             _playerStatusEffectsView = playerStatusEffectsView;
             _enemyStatusEffectsView = enemyStatusEffectsView;
             _playerId = playerId;
@@ -99,6 +108,8 @@ namespace Raincrow.BattleArena.Phases
             _moveSpeed = moveSpeed;
             _dragSpeed = dragSpeed;
             _dragDecceleration = dragDecceleration;
+            _zoomDecceleration = zoomDecceleration;
+            _zoomFocus = zoomFocus;
 
             _battleCellLayer = LayerMask.GetMask(BattleCellLayerName);
         }
@@ -157,6 +168,8 @@ namespace Raincrow.BattleArena.Phases
             {
                 ICellUIModel currentCellUI = _gridView[_selectedSlot.Value.Row, _selectedSlot.Value.Col];
                 currentCellUI.SetIsSelected(false);
+
+                _smoothCameraFollow.ResetCameraHeight(_moveSpeed);
 
                 _selectedSlot = GetPlayerSlot();
 
@@ -264,7 +277,7 @@ namespace Raincrow.BattleArena.Phases
                 }
 
                 // Touch occured
-                if (_inputController.Touch.HasValue) // check input
+                if (_inputController.Touch.HasValue && Input.touchCount < 2) // check input
                 {
                     _dragVelocity = Vector3.zero;
 
@@ -274,15 +287,28 @@ namespace Raincrow.BattleArena.Phases
                         ICellUIModel cellUIModel = hitInfo.transform.GetComponent<ICellUIModel>();
                         if (cellUIModel != null)
                         {
-                            OnClickCell(cellUIModel);
                             IEnumerator moveTo = _cameraTargetController.MoveTo(cellUIModel.Transform.position, _moveSpeed);
+                            if (!cellUIModel.CellModel.ObjectId.IsNullOrWhiteSpace())
+                            {
+                                _smoothCameraFollow.SetCameraHeight(_zoomFocus, _moveSpeed);
+                            }
+                            else
+                            {
+                                ICellUIModel currentCellUI = _gridView[_selectedSlot.Value.Row, _selectedSlot.Value.Col];
+                                if (!currentCellUI.CellModel.ObjectId.IsNullOrWhiteSpace())
+                                {
+                                    _smoothCameraFollow.ResetCameraHeight(_moveSpeed);
+                                }
+                            }
+
+                            OnClickCell(cellUIModel);
+
                             _coroutineStarter.Invoke(moveTo);
                         }
                     }
                     else
                     {
                         OnClickOut();
-
                     }
                 }
                 else if (_inputController.DragVelocity.HasValue)
@@ -301,6 +327,17 @@ namespace Raincrow.BattleArena.Phases
                     _dragVelocity = Vector3.MoveTowards(_dragVelocity, Vector3.zero, _dragDecceleration * Time.deltaTime);
                     _cameraTargetController.Move(_dragVelocity * Time.deltaTime * _dragSpeed);
                 }
+
+                if (_inputController.ZoomVelocity != 0)
+                {
+                    _zoomVelcity = _inputController.ZoomVelocity;
+                    _smoothCameraFollow.SetCameraZoom(_zoomVelcity);
+                }
+                else if (_zoomVelcity != 0)
+                {
+                    _zoomVelcity = Mathf.MoveTowards(_zoomVelcity, 0, _zoomDecceleration * Time.deltaTime);
+                    _smoothCameraFollow.SetCameraZoom(_inputController.ZoomVelocity);
+                }
             }
         }
 
@@ -312,6 +349,8 @@ namespace Raincrow.BattleArena.Phases
 
             // update effects
             _battleModel.GridUI.UpdateParticlesEffects();
+
+            _smoothCameraFollow.ResetCameraHeight(_moveSpeed);
 
             //_coroutineStarter.Invoke(_playerStatusEffectsView.Hide());
             //_coroutineStarter.Invoke(_enemyStatusEffectsView.Hide());

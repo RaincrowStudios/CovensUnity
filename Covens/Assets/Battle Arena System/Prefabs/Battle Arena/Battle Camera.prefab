@@ -90,4 +90,6 @@ MonoBehaviour:
   _target: {fileID: 0}
   _smoothTime: 0
   _cameraHeight: 350
+  _cameraMaxHeight: 550
+  _cameraMinHeight: 150
   _cameraDistance: 200

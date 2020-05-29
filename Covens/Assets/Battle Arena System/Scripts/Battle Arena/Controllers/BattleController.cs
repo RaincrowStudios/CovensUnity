@@ -25,6 +25,8 @@ namespace Raincrow.BattleArena.Controllers
         [SerializeField] private float _dragSpeed = 20f;
         [SerializeField] private float _dragDecceleration = 0.15f;
         [SerializeField] private float _cameraTargetHeight = 1f;
+        [SerializeField] private float _zoomFocus = 500f;
+        [SerializeField] private float _zoomDecceleration = 0.0015f;
 
         [Header("Debrief Animation")]
         [SerializeField] private float _cameraSpeed = 1000f;
@@ -230,13 +232,16 @@ namespace Raincrow.BattleArena.Controllers
                                                             _playerBadgeView,
                                                             _serviceLocator.GetInputController(),
                                                             _cameraTargetController,
+                                                            _serviceLocator.GetSmoothCameraFollow(),
                                                             _serviceLocator.GetPlayerStatusEffectsView(),
                                                             _serviceLocator.GetEnemyStatusEffectsView(),
                                                             playerId,
                                                             _serviceLocator.GetPopupView(),
                                                             _moveSpeed,
                                                             _dragSpeed,
-                                                            _dragDecceleration);
+                                                            _dragDecceleration,
+                                                            _zoomFocus,
+                                                            _zoomDecceleration);
             yield return null;
 
             ActionResolutionPhase actionResolutionPhase = new ActionResolutionPhase(this,
