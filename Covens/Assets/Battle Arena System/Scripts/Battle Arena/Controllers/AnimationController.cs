@@ -378,7 +378,7 @@ namespace Raincrow.BattleArena.Controllers
 
             yield return astralEffect.ShowEffect();
 
-            Transform newParent = target.Transform.Find("Avatar Renderer Root/Avatar Renderer");
+            Transform newParent = target.Transform.Find("Avatar Renderer Root");
             astralEffect.Transform.SetParent(newParent);
 
             yield return astralEffect;
