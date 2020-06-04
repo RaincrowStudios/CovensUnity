@@ -238,6 +238,12 @@ public class UIApothecary : MonoBehaviour
     {
         m_pConsumeButton.interactable = false;
 
+        if (PlayerDataManager.playerData.HaveEffect(Items[m_pWheel.SelectedIndex].Consumable.spell))
+        {
+            UIGlobalPopup.ShowError(() => { }, LocalizeLookUp.GetText("consumed_error_elixir"));
+            return;
+        }
+
         UIGlobalPopup.ShowPopUp(
             confirmAction: (System.Action)(() =>
             {
@@ -269,7 +275,13 @@ public class UIApothecary : MonoBehaviour
             );
 
             StatusEffect effect = JsonConvert.DeserializeObject<StatusEffect>(response);
+
+            CharacterToken characterToken = PlayerManager.marker.Token as CharacterToken;
+            characterToken.effects.Add(effect);
+
             PlayerConditionManager.OnPlayerApplyStatusEffect?.Invoke(effect);
+
+            PlayerManager.marker.OnApplyStatusEffect(effect);
         }
         else
         {

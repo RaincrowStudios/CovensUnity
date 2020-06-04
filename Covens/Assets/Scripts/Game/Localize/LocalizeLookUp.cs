@@ -90,6 +90,7 @@ public class LocalizeLookUp : MonoBehaviour
 
     //condition
     public static string GetConditionDesc(string id) => GetText(id + "_condition");
+    public static string GetConditionName(string id) => GetText(id + "_name");
 
     //Store
     public static string GetStoreTitle(string id) => GetText(id + "_title");

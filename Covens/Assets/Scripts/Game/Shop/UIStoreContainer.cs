@@ -231,7 +231,7 @@ public class UIStoreContainer : MonoBehaviour
             };
         }
 
-        bool singleRow = items.Count < 6;
+        bool singleRow = items.Count < 6 && !(data[0] is ConsumableData);
         int count = 0;
         m_Container.pivot = new Vector2(items.Count <= 6 ? 0.5f : 0f, 0.5f);
 

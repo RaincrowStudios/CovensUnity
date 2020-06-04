@@ -386,8 +386,10 @@ public class UIStoreItem : MonoBehaviour
         SetupButton(
             item, 
             consumable, 
-            LocalizeLookUp.GetStoreTitle(item.id) + $" ({LocalizeLookUp.GetText("store_gear_owned_upper")}: {(amount == 0 ? LocalizeLookUp.GetText("lt_none") : amount.ToString())})",
-            StoreManagerAPI.TYPE_ELIXIRS);
+            LocalizeLookUp.GetStoreTitle(item.id),
+            StoreManagerAPI.TYPE_ELIXIRS,
+            "\n" + $" ({LocalizeLookUp.GetText("store_gear_owned_upper")}: {(amount == 0 ? LocalizeLookUp.GetText("lt_none") : amount.ToString())})"
+            );
 
     }
 
@@ -419,7 +421,7 @@ public class UIStoreItem : MonoBehaviour
         m_SilverIcon.enabled = m_SilverCost.gameObject.activeSelf;
 
         m_GoldCost.gameObject.SetActive(item.gold > 0);
-        m_GoldIcon.enabled = m_SilverCost.gameObject.activeSelf;
+        m_GoldIcon.enabled = m_GoldCost.gameObject.activeSelf;
 
         m_CostOr.gameObject.SetActive(item.silver > 0 && item.gold > 0);
         m_BuyText.text = item.silver == 0 && item.gold == 0 ? LocalizeLookUp.GetText("store_claim").ToUpper() : LocalizeLookUp.GetText("store_buy_upper");
@@ -430,7 +432,7 @@ public class UIStoreItem : MonoBehaviour
         m_CostLayout.enabled = false;
     }
 
-    private void SetupButton(StoreItem item, object data, string title, string type)
+    private void SetupButton(StoreItem item, object data, string title, string type, string description = "")
     {
         m_BuyIcon.overrideSprite = m_RedSprite;
         m_BuyButton.onClick.RemoveAllListeners();
@@ -441,7 +443,7 @@ public class UIStoreItem : MonoBehaviour
                 item,
                 type,
                 title,
-                LocalizeLookUp.GetStoreDesc(item.id),
+                LocalizeLookUp.GetStoreDesc(item.id) + description,
                 m_ItemIcon.overrideSprite,
                 null,
                 (error) =>

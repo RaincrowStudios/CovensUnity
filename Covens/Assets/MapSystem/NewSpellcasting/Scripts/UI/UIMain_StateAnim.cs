@@ -10,6 +10,7 @@ public class UIMain_StateAnim : MonoBehaviour
     {
         public Vector2 leftBar_pos;
         public Vector2 bottomBar_pos;
+        public Vector2 elixirs_pos;
         public Vector2 energy_offMin;
         public Vector2 quickcast_pos;
         public Vector2 worldboss_pos;
@@ -37,6 +38,7 @@ public class UIMain_StateAnim : MonoBehaviour
     [SerializeField] private CanvasGroup[] bars;
     [SerializeField] private RectTransform energy;
     [SerializeField] private RectTransform quickCast;
+    [SerializeField] private RectTransform elixirs;
     [Space]
     [SerializeField] private RectTransform worldboss;
     [SerializeField] private CanvasGroup worldbossCG;
@@ -196,6 +198,7 @@ public class UIMain_StateAnim : MonoBehaviour
         Vector2 bottombar_pos = bottomBar.anchoredPosition;
         Vector2 energy_offMin = energy.offsetMin; ;
         Vector2 quickcast_pos = quickCast.anchoredPosition;
+        Vector2 elixirs_pos = elixirs.anchoredPosition;
         Vector2 worldboss_pos = worldboss.anchoredPosition;
 
         float scale = scaleObjects[0].transform.localScale.x;
@@ -214,6 +217,7 @@ public class UIMain_StateAnim : MonoBehaviour
             .setOnUpdate((float t) =>
             {
                 leftBar.anchoredPosition = Vector2.Lerp(leftbar_pos, target.leftBar_pos, t);
+                elixirs.anchoredPosition = Vector2.Lerp(elixirs_pos, target.elixirs_pos, t);
                 bottomBar.anchoredPosition = Vector2.Lerp(bottombar_pos, target.bottomBar_pos, t);
                 energy.offsetMin = Vector2.Lerp(energy_offMin, target.energy_offMin, t);
                 quickCast.anchoredPosition = Vector2.Lerp(quickcast_pos, target.quickcast_pos, t);
@@ -247,6 +251,7 @@ public class UIMain_StateAnim : MonoBehaviour
     {
         leftBar.anchoredPosition = target.leftBar_pos;
         bottomBar.anchoredPosition = target.bottomBar_pos;
+        elixirs.anchoredPosition = target.elixirs_pos;
         energy.offsetMin = target.energy_offMin;
         quickCast.anchoredPosition = target.quickcast_pos;
         worldboss.anchoredPosition = target.worldboss_pos;

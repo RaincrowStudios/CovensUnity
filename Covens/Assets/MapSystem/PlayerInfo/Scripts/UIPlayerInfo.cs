@@ -298,7 +298,7 @@ public class UIPlayerInfo : UIInfoPanel
 
     private void OnClickPlayer()
     {
-        TeamPlayerView.Show(WitchMarkerDetails);
+        TeamPlayerView.Show(WitchMarkerDetails, UIPlayerInfo.WitchToken.effects);
     }
 
 

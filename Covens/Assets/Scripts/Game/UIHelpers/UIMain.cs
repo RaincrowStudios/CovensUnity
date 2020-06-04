@@ -94,6 +94,9 @@ public class UIMain : MonoBehaviour
     [SerializeField] private GameObject m_ChannelingGlow;
     [SerializeField] private TextPanel m_EnergyTextPanel;
 
+    [Header("Others")]
+    [SerializeField] private ElixirHolderUI m_ElixirHolderUI;
+
     private bool m_ChanneledFX;
     
     private void Awake()
@@ -305,6 +308,33 @@ public class UIMain : MonoBehaviour
     public void HideBattleWaitScreen(float time)
     {
         StartCoroutine(m_WaitScreenBattleView.Hide(time));
+    }
+
+    public void ActionsAfterSplash()
+    {
+        //string version = Application.version;
+
+        bool inBattle = PlayerDataManager.playerData.insideBattle;
+        string battleId = PlayerDataManager.playerData.battleId;
+        if (inBattle)
+        {
+            UIGlobalPopup.ShowPopUp(() => ReturnToBattle(battleId), () => LeaveBattle(battleId), LocalizeLookUp.GetText("battle_text_return"));
+        }
+    }
+
+    private void ReturnToBattle(string battleID)
+    {
+        BattleArena.ChallengeRequests.Join(battleID);
+    }
+
+    private void LeaveBattle(string battleID)
+    {
+        BattleArena.ChallengeRequests.Leave(battleID);
+    }
+
+    public void UpdateElixirHolder()
+    {
+        m_ElixirHolderUI.UpdateElixirsStatus();
     }
 }
 

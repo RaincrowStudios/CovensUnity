@@ -106,6 +106,16 @@ public class DownloadManager : MonoBehaviour
     {
         PlayerPrefs.SetInt("IsOpeningGameFirstTime", 0);
     }
+    
+    public static bool GetFirstTimeOpenAfterUpdate(string version)
+    {
+        int value = PlayerPrefs.GetInt("IsOpeningGameFirstTimeAfterUpdate"+version, 1);
+        return value == 1;
+    }
+    public static void SetFalseToFirstTimeOpenAfterUpdate(string version)
+    {
+        PlayerPrefs.SetInt("IsOpeningGameFirstTimeAfterUpdate"+version,0);
+    }
 
     public static void DownloadAssets(System.Action downloadComplete)
     {
@@ -484,6 +494,8 @@ public class DownloadManager : MonoBehaviour
             PlayerDataManager.baseEnergyPerLevel = data.baseEnergy;
             PlayerDataManager.forbiddenValue = data.forbiddenValue;
             MoonManager.LunarEffeciency = data.lunarEfficiency;
+
+            DownloadedAssets.elixirDictData = data.Elixirs;
 
             DownloadedAssets.spellDictData = data.Spells;
             DownloadedAssets.spellDictData["attack"] = new SpellData

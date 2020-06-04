@@ -34,7 +34,7 @@ public class StatusEffect
 
     private int m_ExpireTimerId;
     private System.Action m_OnExpire;
-    
+
     public void ScheduleExpiration(System.Action onExpire)
     {
         LeanTween.cancel(m_ExpireTimerId, false);
@@ -55,7 +55,7 @@ public class StatusEffect
 
     public void Expire()
     {
-        LeanTween.cancel(m_ExpireTimerId);        
+        LeanTween.cancel(m_ExpireTimerId);
         m_OnExpire?.Invoke();
     }
 
@@ -127,7 +127,6 @@ public abstract class CharacterMarkerData : MarkerData
 
     [JsonProperty("resilience")]
     public virtual int baseResilience { get; set; }
-
     public virtual string covenId { get; set; }
     public virtual string coven { get; set; }
 
@@ -211,7 +210,7 @@ public class WitchMarkerData : CharacterMarkerData
     public virtual float longitude { get; set; }
     public virtual int worldRank { get; set; }
     public virtual int dominionRank { get; set; }
-
+    public virtual List<StatusEffect> effects { get; set; }
     public virtual List<EquippedApparel> equipped { get; set; }
 
     [JsonIgnore]
@@ -557,7 +556,8 @@ public class PlayerData : WitchMarkerData
                     m_Inventory.consumables.Add(new Item
                     {
                         id = item.id,
-                        count = item.amount
+                        count = item.amount,
+                        spell = item.spell
                     });
                 }
             }
@@ -565,7 +565,7 @@ public class PlayerData : WitchMarkerData
             return m_Inventory;
         }
     }
-    
+
     [JsonIgnore]
     public List<SpellData> Spells => m_AllSpells;
 
@@ -584,7 +584,7 @@ public class PlayerData : WitchMarkerData
 
             if (degree < 0)
                 return PlayerDataManager.alignmentPerDegree[absDegree] * -1;
-            
+
             return PlayerDataManager.alignmentPerDegree[absDegree - 1];
         }
     }
@@ -598,7 +598,7 @@ public class PlayerData : WitchMarkerData
 
             if (degree < 0)
                 return PlayerDataManager.alignmentPerDegree[absDegree - 1] * -1;
-            
+
             return PlayerDataManager.alignmentPerDegree[absDegree];
         }
     }
@@ -608,10 +608,10 @@ public class PlayerData : WitchMarkerData
 
     [JsonIgnore]
     public override string coven => covenInfo.name;
-    
+
     public long ApplyExpBuffs(long expAmount)
     {
-       return expAmount + (long)(expAmount * GetAptitude(effects) * 0.01);
+        return expAmount + (long)(expAmount * GetAptitude(effects) * 0.01);
     }
 
     public void UpdateExp(ulong exp, double timestamp)
@@ -634,6 +634,32 @@ public class PlayerData : WitchMarkerData
         if (PlayerManagerUI.Instance)
             PlayerManagerUI.Instance.UpdateDrachs();
         UIStore.UpdateDrachs();
+    }
+
+    public bool HaveEffect(string id)
+    {
+        foreach (StatusEffect effect in effects)
+        {
+            if (effect.spell.Equals(id))
+            {
+                return true;
+            }
+        }
+
+        return false;
+    }
+
+    public StatusEffect GetEffectById(string id)
+    {
+        foreach (StatusEffect effect in effects)
+        {
+            if (effect.spell.Equals(id))
+            {
+                return effect;
+            }
+        }
+
+        return null;
     }
 }
 

@@ -53,7 +53,8 @@ public class UIStore : MonoBehaviour
     private int m_MainTweenId;
     private int m_ScreenTweenId;
     private int m_DrachsTweenId;
-    private string[] m_Screens = {"", UIMainScreens.StoreHome, UIMainScreens.StoreCosmetics, UIMainScreens.StoreStyles, UIMainScreens.StoreCurrencies , UIMainScreens.StoreIngredients, UIMainScreens .StoreCharms};
+    private string[] m_Screens = { "", UIMainScreens.StoreHome, UIMainScreens.StoreCosmetics, UIMainScreens.StoreStyles, UIMainScreens.StoreCurrencies, UIMainScreens.StoreIngredients, UIMainScreens.StoreCharms };
+    private System.Action onClose;
 
     private static UIStore m_Instance;
 
@@ -63,6 +64,7 @@ public class UIStore : MonoBehaviour
     {
         if (m_Instance != null)
         {
+            m_Instance.onClose = null;
             m_Instance.m_Fortuna.SetActive(showFortuna);
             m_Instance.Open();
             onLoad?.Invoke();
@@ -110,6 +112,14 @@ public class UIStore : MonoBehaviour
             m_Instance.SetScreen(Screen.CURRENCY);
         else
             OpenStore(() => m_Instance.SetScreen(Screen.CURRENCY));
+    }
+
+    public static void OpenCharmsStore(System.Action onClose = null)
+    {
+        if (IsOpen)
+            m_Instance.SetScreen(Screen.CHARMS, onClose);
+        else
+            OpenStore(() => m_Instance.SetScreen(Screen.CHARMS, onClose));
     }
 
     public static void UpdateDrachs()
@@ -203,7 +213,7 @@ public class UIStore : MonoBehaviour
             return;
 
         UIMainScreens.PushEventAnalyticUI(m_Screens[(int)m_CurrentScreen], UIMainScreens.Map);
-        
+
         BackButtonListener.RemoveCloseAction();
 
         LeanTween.cancel(m_MainTweenId);
@@ -222,12 +232,16 @@ public class UIStore : MonoBehaviour
             })
             .setEaseOutCubic()
             .uniqueId;
+
+        onClose?.Invoke();
     }
 
-    public void SetScreen(Screen screen)
+    public void SetScreen(Screen screen, System.Action onClose = null)
     {
         if (screen == m_CurrentScreen)
             return;
+        if (this.onClose == null)
+            this.onClose = onClose;
 
         if (m_CurrentScreen != Screen.NONE)
         {
@@ -464,7 +478,7 @@ public class UIStore : MonoBehaviour
             0,
             () => SetScreen(Screen.COSMETICS),
             () => SetScreen(Screen.STYLES));
-        
+
         m_StoreWindow.SetupCosmetics(StoreManagerAPI.StoreData.Cosmetics);
     }
 
@@ -490,7 +504,7 @@ public class UIStore : MonoBehaviour
     private void SetupCharms()
     {
         SetHeaderButtons(0);
-        SetHeaderText(LocalizeLookUp.GetText("store_charms"));
+        SetHeaderText(LocalizeLookUp.GetText("bos_elixir"));
         m_StoreWindow.SetupCharms(StoreManagerAPI.StoreData.Consumables);
     }
 
@@ -521,7 +535,7 @@ public class UIStore : MonoBehaviour
     }
 
     private void OnPurchaseComplete(string id, string type, string currency, int price)
-    {        
+    {
         Dictionary<string, object> eventParams = new Dictionary<string, object>
         {
             { "clientVersion", Application.version },
@@ -534,7 +548,7 @@ public class UIStore : MonoBehaviour
             eventParams.Add("silverDrach", price);
             eventParams.Add("goldDrach", 0);
         }
-        else 
+        else
         {
             eventParams.Add("silverDrach", 0);
             eventParams.Add("goldDrach", price);
