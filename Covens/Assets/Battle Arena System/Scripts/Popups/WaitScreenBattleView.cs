@@ -55,7 +55,12 @@ namespace Raincrow.BattleArena.Views
             _loadingText = message;
         }
 
-        public IEnumerator Hide(float fadeTime)
+        public void Hide(float fadeTime)
+        {
+            StartCoroutine(HideCoroutine(fadeTime));
+        }
+
+        private IEnumerator HideCoroutine(float fadeTime)
         {
             if (_fadeRoutine != null)
             {

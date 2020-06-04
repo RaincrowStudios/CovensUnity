@@ -19,7 +19,6 @@ namespace Raincrow.BattleArena.Manager
 
         private void BattleOpen(BattleObjectServer battle)
         {
-            UIMain.Instance.HideBattleWaitScreen(0.3f);
             UIMain.SetActive(false);
             UIQuickCast.SetActive(false);
 
@@ -48,6 +47,7 @@ namespace Raincrow.BattleArena.Manager
                     StartCoroutine(StartBattle(battle.Id, PlayerDataManager.playerData.instance, grid, witches, spirits, battle.type));
 
                     LoadingOverlay.Hide();
+                    UIMain.Instance.HideBattleWaitScreen(0.3f);
                 }
              );
         }

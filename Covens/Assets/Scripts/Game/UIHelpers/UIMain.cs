@@ -307,7 +307,7 @@ public class UIMain : MonoBehaviour
 
     public void HideBattleWaitScreen(float time)
     {
-        StartCoroutine(m_WaitScreenBattleView.Hide(time));
+        m_WaitScreenBattleView.Hide(time);
     }
 
     public void ActionsAfterSplash()
