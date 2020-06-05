@@ -36,17 +36,21 @@ public class UIMarkerPointer : MonoBehaviour
         m_PointerCavnasGroup.alpha = 0;
         m_PhysicalCenter.alpha = 0;
         m_Portrait.gameObject.SetActive(true);
-        if (PlayerDataManager.playerData.degree > 0)
+
+        if (o_PointerGlow != null)
         {
-            o_PointerGlow.color = Utilities.Orange;
-        }
-        else if (PlayerDataManager.playerData.degree < 0)
-        {
-            o_PointerGlow.color = Utilities.Purple;
-        }
-        else
-        {
-            o_PointerGlow.color = new Color(0f, 172f, 255f, 255f);
+            if (PlayerDataManager.playerData.degree > 0)
+            {
+                o_PointerGlow.color = Utilities.Orange;
+            }
+            else if (PlayerDataManager.playerData.degree < 0)
+            {
+                o_PointerGlow.color = Utilities.Purple;
+            }
+            else
+            {
+                o_PointerGlow.color = new Color(0f, 172f, 255f, 255f);
+            }
         }
     }
 
