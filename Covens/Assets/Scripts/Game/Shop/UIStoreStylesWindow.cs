@@ -125,7 +125,7 @@ public class UIStoreStylesWindow : MonoBehaviour
         if (cosmetic.assets.white.Count > 0)        cosmetic.apparelType = (ApparelType.White);
         
         m_Apparel.InitCharacter(new List<EquippedApparel>());
-        m_Apparel.EquipApparel(cosmetic);
+        m_Apparel.EquipApparel(cosmetic, true);
 
         m_Title.text = LocalizeLookUp.GetStoreTitle(item.id);
         m_Description.text = LocalizeLookUp.GetStorePurchaseTitle(item.id);
