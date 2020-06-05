@@ -155,6 +155,9 @@ public class UIStoreStylesWindow : MonoBehaviour
             m_SilverText.color = PlayerDataManager.playerData.silver >= item.silver ? Color.white * 0.8f : Color.red;
             m_GoldText.color = PlayerDataManager.playerData.gold >= item.gold ? new Color(1, 0.6f, 0) : Color.red;
 
+            m_SilverButton.gameObject.SetActive(item.silver > 0);
+            m_GoldButton.gameObject.SetActive(item.gold > 0);
+
             m_SilverButton.onClick.AddListener(() => Purchase(item, "silver"));
             m_GoldButton.onClick.AddListener(() => Purchase(item, "gold"));
         }
