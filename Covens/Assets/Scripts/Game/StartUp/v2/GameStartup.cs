@@ -7,6 +7,8 @@ using UnityEngine.CrashReportHandler;
 
 public class GameStartup : MonoBehaviour
 {
+    [SerializeField] private CheckConnection _checkConnection;
+
     private int m_CurrentFileIndex;
     private float m_CurrentFileSize;
     private int m_FilesAmount;
@@ -110,7 +112,11 @@ public class GameStartup : MonoBehaviour
 
         //show the initial logos
         m_LogosReady = false;
-        SplashManager.Instance.ShowLogos(() => StartCoroutine(OnSplashLogosFinished()));
+
+        _checkConnection.CheckInternetConnection(() =>
+        {
+            SplashManager.Instance.ShowLogos(() => StartCoroutine(OnSplashLogosFinished()));
+        });
     }
 
     private void OnServerError(int responseCode, string response)
@@ -360,12 +366,12 @@ public class GameStartup : MonoBehaviour
             //}
             //else
             //{
-                UIDominionSplash.Instance.Show(() =>
-                {
-                    BlessingManager.CheckDailyBlessing();
+            UIDominionSplash.Instance.Show(() =>
+            {
+                BlessingManager.CheckDailyBlessing();
 
-                    ReviewPopupController.Init();
-                });
+                ReviewPopupController.Init();
+            });
             //}
         }
     }
@@ -376,5 +382,5 @@ public class GameStartup : MonoBehaviour
 
         SocketClient.Instance.InitiateSocketConnection();
         ChatManager.InitChat();
-    }    
+    }
 }

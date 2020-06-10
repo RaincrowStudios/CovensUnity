@@ -24,6 +24,10 @@ public class SplashManager : MonoBehaviour
     [SerializeField] private CanvasGroup[] logos;
     [SerializeField] private MediaPlayerCtrl VideoPlayback;
 
+    [Header("Logo Raincrow")]
+    [SerializeField] private MediaPlayerCtrl VideoPlayerRaincrow;
+    [SerializeField] private Vector2 OriginalDimesion = new Vector2(500,884);
+
     [Header("Download")]
     [SerializeField] private CanvasGroup m_DownloadScreen;
     [SerializeField] private TextMeshProUGUI downloadingTitle;
@@ -207,9 +211,15 @@ public class SplashManager : MonoBehaviour
         System.Action<int> showLogo = (idx) => { };
         showLogo = (idx) =>
         {
-            if (idx >= logos.Length)
+            if (idx == logos.Length + 1)
             {
                 StartCoroutine(CovenLogoCoroutine(onComplete));
+                return;
+            }
+
+            if (idx == logos.Length)
+            {
+                StartCoroutine(RaincrowLogoCoroutine(()=> showLogo(idx + 1)));                
                 return;
             }
 
@@ -260,6 +270,39 @@ public class SplashManager : MonoBehaviour
         yield return new WaitUntil(() => videoEnd);
 
         VideoPlayback.gameObject.SetActive(false);
+        onComplete?.Invoke();
+    }
+
+    private IEnumerator RaincrowLogoCoroutine(System.Action onComplete)
+    {
+#if (UNITY_EDITOR_LINUX || UNITY_STANDALONE_LINUX)
+        onComplete?.Invoke();
+        yield break;
+#endif
+
+        RectTransform playerRect = VideoPlayerRaincrow.GetComponent<RectTransform>();
+        float ar = OriginalDimesion.x / OriginalDimesion.y;
+        float newWidth = ar * playerRect.rect.height;
+        playerRect.sizeDelta = new Vector2(newWidth, 0);
+
+        VideoPlayerRaincrow.gameObject.SetActive(true);
+        VideoPlayerRaincrow.Load("logo.mp4");
+        //if (!VideoPlayerRaincrow.m_bAutoPlay)
+        //    VideoPlayback.Play();
+        VideoPlayerRaincrow.SetSpeed(m_LogoSpeed);
+
+        //wait for video to be ready to start
+        bool videoReady = false;
+        bool videoEnd = false;
+        VideoPlayerRaincrow.OnVideoFirstFrameReady += () => videoReady = true;
+        VideoPlayerRaincrow.OnEnd += () => videoEnd = true;
+        yield return new WaitUntil(() => videoReady);
+
+        VideoPlayerRaincrow.GetComponent<RawImage>().color = Color.white;
+
+        yield return new WaitUntil(() => videoEnd);
+
+        VideoPlayerRaincrow.gameObject.SetActive(false);
         onComplete?.Invoke();
     }
 

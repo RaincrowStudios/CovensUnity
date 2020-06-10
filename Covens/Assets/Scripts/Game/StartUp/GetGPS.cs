@@ -38,6 +38,7 @@ public class GetGPS : MonoBehaviour
     }
 
     public Button continueToPermission;
+    public Button declineToPermission;
     private LocationServiceStatus m_LastStatus = LocationServiceStatus.Stopped;
 
     public static event System.Action<LocationServiceStatus> statusChanged;
@@ -137,6 +138,10 @@ public class GetGPS : MonoBehaviour
                 askUserGPSPermission.SetActive(false);
                 hasAskedPermission = 1;
                 UnityEngine.Android.Permission.RequestUserPermission(UnityEngine.Android.Permission.FineLocation);
+            });
+
+            declineToPermission.onClick.AddListener(() => {
+                Application.Quit();
             });
 
             goToAppSettingsBtn.onClick.AddListener(() =>
