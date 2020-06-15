@@ -124,7 +124,7 @@ public class ApparelView : MonoBehaviour
         }
     }
     
-    public void EquipApparel(CosmeticData data)
+    public void EquipApparel(CosmeticData data, bool isMannequin = false)
     {
         //unequip conflicts
         List<string> conflicts = new List<string>();
@@ -191,7 +191,7 @@ public class ApparelView : MonoBehaviour
         }
 
         //load the new visuals
-        LoadVisuals(equip, () => mannequin.gameObject.SetActive(false));
+        LoadVisuals(equip, () => mannequin.gameObject.SetActive(false), isMannequin);
     }
 
     public void UnequipApparel(string position)
@@ -240,18 +240,28 @@ public class ApparelView : MonoBehaviour
         }
     }
 
-    private void LoadVisuals(EquippedApparel apparel, System.Action callback)
+    private void LoadVisuals(EquippedApparel apparel, System.Action callback, bool isMannequin = false)
     {
         if (apparel.position == "style")
         {
             string assetId = "";
-            string[] races = new string[] { "A_", "E_", "O_", "A_", "E_", "O_" };
-            string race = races[PlayerDataManager.playerData.bodyType];
-            assetId = apparel.id.Replace("cosmetic_", "").Replace("_S_", "_S_" + race);
-            if (m_IsCenser)
-                assetId += "_Censer";
+           
+            if (isMannequin)
+            {
+                assetId = apparel.id.Replace("cosmetic_", "").Replace("_S_", "_S_M_");
+            }
             else
-                assetId += "_Relaxed";
+            {
+                string[] races = new string[] { "A_", "E_", "O_", "A_", "E_", "O_" };
+                string race = races[PlayerDataManager.playerData.bodyType];
+                assetId = apparel.id.Replace("cosmetic_", "").Replace("_S_", "_S_" + race);
+
+
+                if (m_IsCenser)
+                    assetId += "_Censer";
+                else
+                    assetId += "_Relaxed";
+            }
 
             //load the style sprite
             Image img = ApparelDict["style"][0];
