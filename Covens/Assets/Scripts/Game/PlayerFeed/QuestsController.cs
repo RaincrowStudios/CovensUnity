@@ -109,34 +109,20 @@ public static class QuestsController
         });
     }
 
-    public static void ClaimRewards(System.Action<DailyRewards, string> callback)
+    public static void ClaimRewards(System.Action<DailyQuestRewards, string> callback)
     {
         APIManager.Instance.Get("dailies/reward",
             (string result, int response) =>
             {
                 if (response == 200)
                 {
-                    DailyRewards rewards = JsonConvert.DeserializeObject<DailyRewards>(result);
-
-                    PlayerDataManager.playerData.quest.completed = true;
-                    PlayerDataManager.playerData.silver += rewards.silver;
-                    PlayerDataManager.playerData.gold += rewards.gold;
-                    OnMapEnergyChange.ForceEvent(PlayerManager.marker, PlayerDataManager.playerData.energy + rewards.energy);
-
-                    if (rewards.effect != null)
-                        MarkerSpawner.ApplyStatusEffect(PlayerDataManager.playerData.instance, PlayerDataManager.playerData.instance, rewards.effect);
-
-                    if (PlayerDataManager.Instance != null)
-                    {
-                        PlayerManagerUI.Instance.UpdateDrachs();
-                    }
-
+                    DailyQuestRewards rewards = JsonConvert.DeserializeObject<DailyQuestRewards>(result);
                     callback?.Invoke(rewards, null);
                     OnCollectDailyRewards?.Invoke();
                 }
                 else
                 {
-                    callback?.Invoke(new DailyRewards(), APIManager.ParseError(result));
+                    callback?.Invoke(new DailyQuestRewards(), APIManager.ParseError(result));
                 }
             });
     }

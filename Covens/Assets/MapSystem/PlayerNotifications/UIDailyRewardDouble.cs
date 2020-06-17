@@ -1,0 +1,236 @@
+﻿using System.Collections;
+using System.Collections.Generic;
+using UnityEngine;
+using UnityEngine.UI;
+using TMPro;
+using static Raincrow.GameEventResponses.LevelUpHandler;
+using Newtonsoft.Json;
+
+public class UIDailyRewardDouble : MonoBehaviour
+{
+    [SerializeField] private CanvasGroup _canvasGroup;
+    [SerializeField] private Button _closeButton;
+    [SerializeField] private LayoutGroup _rewardContainer;
+    [SerializeField] private UIDailyRewardDoubleReward _rewardPrefab;
+    [Header("Double")]
+    [SerializeField] private Image _iconDrach;
+    [SerializeField] private TextMeshProUGUI _textPrice;
+    [SerializeField] private Button _buttonBuyDouble;
+
+    [Header("Sprites")]
+    [SerializeField] private Sprite _spriteGolden;
+    [SerializeField] private Sprite _spriteSilver;
+    [SerializeField] private Sprite _spriteXP;
+    [SerializeField] private Sprite _spriteEnergy;
+    [SerializeField] private Sprite _spriteIngredient;
+    [SerializeField] private Sprite _spriteElixir;
+
+    private Color _noColor = new Vector4(0, 0, 0, 0);
+    private List<UIDailyRewardDoubleReward> rewardItems;
+    private DailyQuestRewards dailyQuestRewards;
+    private void Awake()
+    {
+        _buttonBuyDouble.onClick.AddListener(OnClickDoubleReward);
+        _closeButton.onClick.AddListener(Close);
+        _canvasGroup.alpha = 0;
+        _closeButton.interactable = false;
+        _rewardPrefab.gameObject.SetActive(false);
+    }
+
+    public void Show(DailyQuestRewards data)
+    {
+        SoundManagerOneShot.Instance.PlayReward();
+        PlayerDataManager.playerData.quest.completed = true;
+
+        SpawnRewards(data.rewards);
+        dailyQuestRewards = data;
+
+        LeanTween.value(0, 0, 0).setDelay(1f).setOnComplete(() => _closeButton.interactable = true);
+
+        LeanTween.alphaCanvas(_canvasGroup, 1, 0.7f)
+            .setEaseOutCubic();
+
+        BackButtonListener.AddCloseAction(Close);
+    }
+
+    private void SpawnRewards(DailyRewards[] data)
+    {
+        List<UIDailyRewardDoubleReward> rewardItems = new List<UIDailyRewardDoubleReward>();
+
+        foreach (DailyRewards reward in data)
+        {
+            switch (reward.type)
+            {
+                case DailyRewards.DailyRewardsType.gold:
+
+                    UIDailyRewardDoubleReward goldReward = Instantiate(_rewardPrefab, _rewardContainer.transform);
+
+                    string textGold = "+{0} " + LocalizeLookUp.GetText("store_gold");
+                    goldReward.Setup(textGold, reward.amount, _noColor, _spriteGolden);
+
+                    PlayerDataManager.playerData.gold += reward.amount;
+                    if (PlayerDataManager.Instance != null)
+                    {
+                        PlayerManagerUI.Instance.UpdateDrachs();
+                    }
+
+                    rewardItems.Add(goldReward);
+                    break;
+                case DailyRewards.DailyRewardsType.silver:
+                    UIDailyRewardDoubleReward silverReward = Instantiate(_rewardPrefab, _rewardContainer.transform);
+
+                    string textSilver = "+{0} " + LocalizeLookUp.GetText("store_silver");
+                    silverReward.Setup(textSilver, reward.amount,_noColor, _spriteSilver);
+
+                    PlayerDataManager.playerData.silver += reward.amount;
+                    if (PlayerDataManager.Instance != null)
+                    {
+                        PlayerManagerUI.Instance.UpdateDrachs();
+                    }
+
+                    rewardItems.Add(silverReward);
+                    break;
+                case DailyRewards.DailyRewardsType.energy:
+                    UIDailyRewardDoubleReward energyReward = Instantiate(_rewardPrefab, _rewardContainer.transform);
+                    OnMapEnergyChange.ForceEvent(PlayerManager.marker, PlayerDataManager.playerData.energy + reward.amount);
+
+                    string textEnergy = "+{0} " + LocalizeLookUp.GetText("cast_energy");
+                    energyReward.Setup(textEnergy, reward.amount, Utilities.Blue, _spriteEnergy);
+
+                    if (PlayerDataManager.Instance != null)
+                    {
+                        PlayerManagerUI.Instance.UpdateDrachs();
+                    }
+
+                    rewardItems.Add(energyReward);
+                    break;
+                case DailyRewards.DailyRewardsType.xp:
+                    UIDailyRewardDoubleReward xpReward = Instantiate(_rewardPrefab, _rewardContainer.transform);
+
+                    string textXP = "+{0} XP";
+                    xpReward.Setup(textXP, reward.amount, _noColor, _spriteXP);
+
+                    if (PlayerDataManager.Instance != null)
+                    {
+                        PlayerManagerUI.Instance.UpdateDrachs();
+                    }
+
+                    rewardItems.Add(xpReward);
+                    break;
+                case DailyRewards.DailyRewardsType.ingredients:
+                    UIDailyRewardDoubleReward ingredientReward = Instantiate(_rewardPrefab, _rewardContainer.transform);
+
+                    string textIngredient = "+{0} " + LocalizeLookUp.GetText("store_ingredients");
+                    ingredientReward.Setup(textIngredient, reward.amount,_noColor, _spriteIngredient);
+
+                    rewardItems.Add(ingredientReward);
+                    break;
+                case DailyRewards.DailyRewardsType.consumables:
+
+                    UIDailyRewardDoubleReward ingredientElixir = Instantiate(_rewardPrefab, _rewardContainer.transform);
+
+                    DownloadedAssets.GetSprite(
+                        reward.item,
+                        spr =>
+                        {
+                            ingredientElixir.UpdateIcon(spr);
+                        },
+                        true
+                    );
+
+                    string textElixir = "+{0} " + LocalizeLookUp.GetStoreTitle(reward.item);
+                    ingredientElixir.Setup(textElixir, reward.amount,Utilities.GetElixirColor(reward.item), _spriteIngredient);
+
+                    rewardItems.Add(ingredientElixir);
+
+                    break;
+                case DailyRewards.DailyRewardsType.effect:
+                    MarkerSpawner.ApplyStatusEffect(PlayerDataManager.playerData.instance, PlayerDataManager.playerData.instance, reward.effect);
+                    break;
+
+            }
+        }
+        
+        this.rewardItems = rewardItems;
+    }
+
+    private void OnClickDoubleReward()
+    {
+        bool isGold = dailyQuestRewards.gold > 0;
+        int price = isGold ? dailyQuestRewards.gold : dailyQuestRewards.silver;
+
+        string text = "Do you really want to use {0} Drach {1} to duplicate your rewards?";
+        string finalText = string.Format(text, price, LocalizeLookUp.GetText(isGold ? "store_gold" : "store_silver"));
+        UIGlobalPopup.ShowPopUp(RequestDuplicate, null, finalText);
+       
+    }
+
+    private void RequestDuplicate()
+    {
+        APIManager.Instance.Get("doublereward",
+          (string result, int response) =>
+          {
+                if (response == 200)
+                {
+                      DuplicatedRewards();
+                }
+                else
+                {
+                    APIManager.ParseError(result);
+                }
+        });
+    }
+
+    private void DuplicatedRewards() {
+        foreach (UIDailyRewardDoubleReward reward in rewardItems)
+        {
+            reward.DoubleItem();
+        }
+
+        foreach (DailyRewards reward in dailyQuestRewards.rewards)
+        {
+            switch (reward.type)
+            {
+                case DailyRewards.DailyRewardsType.gold:
+
+                    PlayerDataManager.playerData.gold += reward.amount;
+                    if (PlayerDataManager.Instance != null)
+                    {
+                        PlayerManagerUI.Instance.UpdateDrachs();
+                    }
+                    break;
+                case DailyRewards.DailyRewardsType.silver:
+                    PlayerDataManager.playerData.silver += reward.amount;
+                    if (PlayerDataManager.Instance != null)
+                    {
+                        PlayerManagerUI.Instance.UpdateDrachs();
+                    }
+                    break;
+                case DailyRewards.DailyRewardsType.energy:
+                    OnMapEnergyChange.ForceEvent(PlayerManager.marker, PlayerDataManager.playerData.energy + reward.amount);
+                    break;
+                case DailyRewards.DailyRewardsType.xp:
+                    break;
+                case DailyRewards.DailyRewardsType.ingredients:
+                    break;
+                case DailyRewards.DailyRewardsType.consumables:
+                    break;
+            }
+        }
+    }
+
+    private void Close()
+    {
+        BackButtonListener.RemoveCloseAction();
+
+        _closeButton.interactable = false;
+
+        LeanTween.alphaCanvas(_canvasGroup, 0, 0.4f)
+            .setEaseOutCubic()
+            .setOnComplete(() =>
+            {
+                gameObject.SetActive(false);
+                Destroy(this.gameObject);
+            });
+    }
+}

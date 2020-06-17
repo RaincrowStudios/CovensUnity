@@ -37,11 +37,31 @@ public class AnalyticsSession
     public string SessionId { get; set; }
 }
 
+
+public struct DailyQuestRewards {
+    public int gold;
+    public int silver;
+    [JsonProperty("reward")]
+    public DailyRewards[] rewards;
+}
+
 public struct DailyRewards
 {
-    public int silver;
-    public int energy;
-    public int gold;
+    public enum DailyRewardsType
+    {
+        gold,
+        silver,
+        energy,
+        effect,
+        consumables,
+        xp,
+        ingredients
+    }
+
+    public DailyRewardsType type;
+    public int amount;
+    public int rarity;
+    public string item;
     public StatusEffect effect;
 }
 

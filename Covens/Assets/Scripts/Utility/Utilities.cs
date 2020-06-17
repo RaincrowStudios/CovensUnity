@@ -15,6 +15,14 @@ public class Utilities : MonoBehaviour
     public static readonly Color Green = Color.green;
     public static readonly Color Blue = new Color(0, 0.67588235f, 1, 1);
     public static readonly Color Purple = new Color(0.6980f, 0, 1, 1);
+
+    // ElixirsColors
+    public static readonly Color ColorElixirGathering   = new Color(0.8405917f, 0.5137255f, 1f, 1f);
+    public static readonly Color ColorElixirExperience  = new Color(0.5137255f, 0.9365185f, 1f, 1f);
+    public static readonly Color ColorElixirResilience  = new Color(0.2055041f, 0f, 0.972549f, 1f);
+    public static readonly Color ColorElixirPower       = new Color(0.9716981f, 0f, 0.01864812f, 1f);
+    public static readonly Color ColorElixirAlignment   = new Color(0.5237805f, 1f, 0.514151f, 1f);
+
     public static readonly float ChannelSpeed = .15f;
     public static readonly int BaseBuff = 10;
     public static readonly DateTime UnixStartTime = new DateTime(1970, 1, 1, 0, 0, 0, 0, System.DateTimeKind.Utc);
@@ -112,6 +120,25 @@ public class Utilities : MonoBehaviour
         {
             return Blue; //"GREY WITCH";
         }
+    }
+
+    public static Color GetElixirColor(string id)
+    {
+        switch (id)
+        {
+            case "consumable_bottleGathering":
+                return ColorElixirGathering;
+            case "consumable_bottleAlignment":
+                return ColorElixirAlignment;
+            case "consumable_bottlePower":
+                return ColorElixirPower;
+            case "consumable_bottleXp":
+                return ColorElixirExperience;
+            case "consumable_bottleResilience":
+                return ColorElixirResilience;
+        }
+
+        return new Vector4(0, 0, 0, 0);
     }
 
     public static string GetSchoolCoven(long lp)

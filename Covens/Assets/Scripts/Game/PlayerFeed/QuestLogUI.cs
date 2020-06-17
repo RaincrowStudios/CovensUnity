@@ -26,8 +26,6 @@ public class QuestLogUI : UIAnimationManager
     public GameObject gathSpellLine;
     public GameObject spellExpLine;
 
-    public GameObject claimFX;
-    public CanvasGroup claimLoadingFx;
     public GameObject openChest;
     public GameObject closedChest;
 
@@ -45,6 +43,7 @@ public class QuestLogUI : UIAnimationManager
     public Text title;
     public Text subTitle;
     public Text Desc;
+    public UIDailyRewardDouble uIDailyReward;
 
     bool isQuest = true;
 
@@ -93,7 +92,6 @@ public class QuestLogUI : UIAnimationManager
         m_CloseButton.onClick.AddListener(Hide);
         buttonTapChest.onClick.AddListener(OnClickClaimChest);
 
-        claimLoadingFx.gameObject.SetActive(false);
         eventLogLoading.alpha = 0;
     }
 
@@ -227,13 +225,16 @@ public class QuestLogUI : UIAnimationManager
         questCG.alpha = 1;
         logCG.alpha = .4f;
 
-        LoadingOverlay.Show();
-        LoadingOverlay.Hide();
+        LeanTween.alphaCanvas(eventLogLoading, 1f, 0.5f).setEaseOutCubic();
         QuestsController.GetQuests((error) =>
         {
+            LeanTween.alphaCanvas(eventLogLoading, 0, 0.5f).setEaseOutCubic();
+
             if (string.IsNullOrEmpty(error))
             {
                 SetupQuest();
+                openChest.SetActive(true);
+                closedChest.SetActive(false);
             }
             else
             {
@@ -270,7 +271,6 @@ public class QuestLogUI : UIAnimationManager
             {
                 openChest.SetActive(false);
                 closedChest.SetActive(true);
-                claimFX.SetActive(true);
                 bottomInfo.text = LocalizeLookUp.GetText("daily_tap_chest");//"Tap the chest to claim rewards";
                 buttonTapChest.gameObject.SetActive(true);
             }
@@ -278,7 +278,6 @@ public class QuestLogUI : UIAnimationManager
             {
                 openChest.SetActive(true);
                 closedChest.SetActive(false);
-                claimFX.SetActive(false);
                 StartCoroutine(NewQuestTimer());
                 buttonTapChest.gameObject.SetActive(false);
             }
@@ -287,42 +286,41 @@ public class QuestLogUI : UIAnimationManager
         {
             openChest.SetActive(false);
             closedChest.SetActive(true);
-            claimFX.SetActive(false);
             StartCoroutine(NewQuestTimer());
             buttonTapChest.gameObject.SetActive(false);
         }
     }
 
-    IEnumerator ShowRewards(DailyRewards reward)
-    {
-        SoundManagerOneShot.Instance.PlayReward();
-        if (reward.silver != 0)
-        {
-            rewardSilver.gameObject.SetActive(true);
-            rewardSilver.text = "+" + reward.silver.ToString() + " " + LocalizeLookUp.GetText("store_silver");//" Silver!";
-        }
+    //IEnumerator ShowRewards(DailyRewards reward)
+    //{
+    //    SoundManagerOneShot.Instance.PlayReward();
+    //    if (reward.silver != 0)
+    //    {
+    //        rewardSilver.gameObject.SetActive(true);
+    //        rewardSilver.text = "+" + reward.silver.ToString() + " " + LocalizeLookUp.GetText("store_silver");//" Silver!";
+    //    }
 
-        yield return new WaitForSeconds(1f);
-        if (reward.gold != 0)
-        {
-            rewardGold.gameObject.SetActive(true);
-            rewardGold.text = "+" + reward.gold.ToString() + " " + LocalizeLookUp.GetText("store_gold");//Gold!";
-        }
+    //    yield return new WaitForSeconds(1f);
+    //    if (reward.gold != 0)
+    //    {
+    //        rewardGold.gameObject.SetActive(true);
+    //        rewardGold.text = "+" + reward.gold.ToString() + " " + LocalizeLookUp.GetText("store_gold");//Gold!";
+    //    }
 
-        yield return new WaitForSeconds(1.8f);
-        if (reward.energy != 0)
-        {
-            rewardEnergy.gameObject.SetActive(true);
-            rewardEnergy.text = "+" + reward.energy.ToString() + " " + LocalizeLookUp.GetText("card_witch_energy");//Energy!";
-        }
+    //    yield return new WaitForSeconds(1.8f);
+    //    if (reward.energy != 0)
+    //    {
+    //        rewardEnergy.gameObject.SetActive(true);
+    //        rewardEnergy.text = "+" + reward.energy.ToString() + " " + LocalizeLookUp.GetText("card_witch_energy");//Energy!";
+    //    }
 
-        openChest.SetActive(true);
-        closedChest.SetActive(false);
-        claimFX.SetActive(false);
-        PlayerManagerUI.Instance.UpdateDrachs();
-        PlayerManagerUI.Instance.UpdateEnergy();
-        StartCoroutine(NewQuestTimer());
-    }
+    //    openChest.SetActive(true);
+    //    closedChest.SetActive(false);
+    //    claimFX.SetActive(false);
+    //    PlayerManagerUI.Instance.UpdateDrachs();
+    //    PlayerManagerUI.Instance.UpdateEnergy();
+    //    StartCoroutine(NewQuestTimer());
+    //}
 
     IEnumerator NewQuestTimer()
     {
@@ -338,19 +336,18 @@ public class QuestLogUI : UIAnimationManager
         if (PlayerDataManager.playerData.quest.completed)
             return;
 
-        claimLoadingFx.alpha = 0;
-        claimLoadingFx.gameObject.SetActive(true);
-        LeanTween.alphaCanvas(claimLoadingFx, 0.7f, 0.25f).setEaseOutCubic();
+        LoadingOverlay.Show();
 
         QuestsController.ClaimRewards((rewards, error) =>
         {
-            LeanTween.alphaCanvas(claimLoadingFx, 0f, 2)
-                .setEaseOutCubic()
-                .setOnComplete(() => claimLoadingFx.gameObject.SetActive(false));
+
+            LoadingOverlay.Hide();
 
             if (string.IsNullOrEmpty(error))
             {
-                StartCoroutine(ShowRewards(rewards));
+                UIDailyRewardDouble tempUiDailyReward = Instantiate(uIDailyReward);
+                tempUiDailyReward.Show(rewards);
+                //StartCoroutine(ShowRewards(rewards));
             }
             else
             {
