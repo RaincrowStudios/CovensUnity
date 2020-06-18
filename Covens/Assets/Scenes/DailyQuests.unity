@@ -4055,6 +4055,7 @@ MonoBehaviour:
   rewardGold: {fileID: 114326294119044008}
   rewardSilver: {fileID: 114741733137626800}
   buttonTapChest: {fileID: 114576454158848012}
+  claimFX: {fileID: 1542672172577522}
   bottomInfo: {fileID: 114277969335625592}
   LS: {fileID: 114220044116210748}
   DescObject: {fileID: 1434663314105624}

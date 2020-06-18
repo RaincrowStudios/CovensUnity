@@ -33,6 +33,7 @@ public class QuestLogUI : UIAnimationManager
     public Text rewardGold;
     public Text rewardSilver;
     public Button buttonTapChest;
+    public GameObject claimFX;
 
     public Text bottomInfo;
 
@@ -269,6 +270,7 @@ public class QuestLogUI : UIAnimationManager
             {
                 openChest.SetActive(false);
                 closedChest.SetActive(true);
+                claimFX.SetActive(true);
                 bottomInfo.text = LocalizeLookUp.GetText("daily_tap_chest");//"Tap the chest to claim rewards";
                 buttonTapChest.gameObject.SetActive(true);
             }
@@ -277,6 +279,7 @@ public class QuestLogUI : UIAnimationManager
                 openChest.SetActive(true);
                 closedChest.SetActive(false);
                 StartCoroutine(NewQuestTimer());
+                claimFX.SetActive(true);
                 buttonTapChest.gameObject.SetActive(false);
             }
         }
@@ -286,6 +289,7 @@ public class QuestLogUI : UIAnimationManager
             closedChest.SetActive(true);
             StartCoroutine(NewQuestTimer());
             buttonTapChest.gameObject.SetActive(false);
+            claimFX.SetActive(false);
         }
     }
 
@@ -348,7 +352,8 @@ public class QuestLogUI : UIAnimationManager
 
                 openChest.SetActive(true);
                 closedChest.SetActive(false);
-                
+                buttonTapChest.gameObject.SetActive(false);
+
                 StartCoroutine(NewQuestTimer());
                 //StartCoroutine(ShowRewards(rewards));
             }
