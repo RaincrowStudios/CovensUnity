@@ -32,10 +32,10 @@ RectTransform:
   m_Father: {fileID: 1250822781390235371}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0.5, y: 0.5}
-  m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 0, y: 0.000045776367}
-  m_SizeDelta: {x: 230, y: 230}
+  m_AnchorMin: {x: 0, y: 0}
+  m_AnchorMax: {x: 1, y: 1}
+  m_AnchoredPosition: {x: 0, y: 0.0000038146973}
+  m_SizeDelta: {x: 130, y: 130}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &7318510592765785985
 CanvasRenderer:
@@ -182,10 +182,10 @@ RectTransform:
   m_Father: {fileID: 1250822781390235371}
   m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 1, y: 0}
-  m_AnchorMax: {x: 1, y: 0}
-  m_AnchoredPosition: {x: 0.00004196167, y: -0.000011444092}
-  m_SizeDelta: {x: 100, y: 100}
+  m_AnchorMin: {x: 0, y: 0}
+  m_AnchorMax: {x: 1, y: 1}
+  m_AnchoredPosition: {x: 0, y: 0}
+  m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: 1, y: 0}
 --- !u!222 &6068367729811365243
 CanvasRenderer:
@@ -281,7 +281,7 @@ MonoBehaviour:
   _textItemName: {fileID: 7233868568536878107}
   _iconItem: {fileID: 7804536358255258370}
   _flareEffect: {fileID: 3829608323189670575}
-  _bandge2X: {fileID: 9103446968503755691}
+  _bandge2X: {fileID: 3780568858687147378}
 --- !u!225 &2763595622353326546
 CanvasGroup:
   m_ObjectHideFlags: 0
@@ -622,8 +622,8 @@ MonoBehaviour:
   m_outlineColor:
     serializedVersion: 2
     rgba: 4278190080
-  m_fontSize: 60
-  m_fontSizeBase: 60
+  m_fontSize: 50
+  m_fontSizeBase: 50
   m_fontWeight: 400
   m_enableAutoSizing: 0
   m_fontSizeMin: 18
@@ -696,6 +696,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1250822781390235371}
   - component: {fileID: 4567661505199636465}
+  - component: {fileID: 3780568858687147378}
   m_Layer: 5
   m_Name: Bandge2X
   m_TagString: Untagged
@@ -722,8 +723,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 1, y: 0}
   m_AnchorMax: {x: 1, y: 0}
-  m_AnchoredPosition: {x: -40, y: 50}
-  m_SizeDelta: {x: 100, y: 100}
+  m_AnchoredPosition: {x: -35, y: 40}
+  m_SizeDelta: {x: 85, y: 85}
   m_Pivot: {x: 1, y: 0}
 --- !u!222 &4567661505199636465
 CanvasRenderer:
@@ -733,3 +734,15 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 9103446968503755691}
   m_CullTransparentMesh: 0
+--- !u!225 &3780568858687147378
+CanvasGroup:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 9103446968503755691}
+  m_Enabled: 1
+  m_Alpha: 0
+  m_Interactable: 1
+  m_BlocksRaycasts: 1
+  m_IgnoreParentGroups: 0

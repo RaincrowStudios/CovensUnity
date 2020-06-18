@@ -42,6 +42,10 @@ public class UIDailyRewardDouble : MonoBehaviour
         SoundManagerOneShot.Instance.PlayReward();
         PlayerDataManager.playerData.quest.completed = true;
 
+        bool isGold = data.gold > 0;
+        _textPrice.text = isGold ? data.gold.ToString() : data.silver.ToString();
+        _iconDrach.sprite = isGold ? _spriteGolden : _spriteSilver;
+
         SpawnRewards(data.rewards);
         dailyQuestRewards = data;
 
@@ -80,7 +84,7 @@ public class UIDailyRewardDouble : MonoBehaviour
                     UIDailyRewardDoubleReward silverReward = Instantiate(_rewardPrefab, _rewardContainer.transform);
 
                     string textSilver = "+{0} " + LocalizeLookUp.GetText("store_silver");
-                    silverReward.Setup(textSilver, reward.amount,_noColor, _spriteSilver);
+                    silverReward.Setup(textSilver, reward.amount, _noColor, _spriteSilver);
 
                     PlayerDataManager.playerData.silver += reward.amount;
                     if (PlayerDataManager.Instance != null)
@@ -110,18 +114,13 @@ public class UIDailyRewardDouble : MonoBehaviour
                     string textXP = "+{0} XP";
                     xpReward.Setup(textXP, reward.amount, _noColor, _spriteXP);
 
-                    if (PlayerDataManager.Instance != null)
-                    {
-                        PlayerManagerUI.Instance.UpdateDrachs();
-                    }
-
                     rewardItems.Add(xpReward);
                     break;
                 case DailyRewards.DailyRewardsType.ingredients:
                     UIDailyRewardDoubleReward ingredientReward = Instantiate(_rewardPrefab, _rewardContainer.transform);
 
                     string textIngredient = "+{0} " + LocalizeLookUp.GetText("store_ingredients");
-                    ingredientReward.Setup(textIngredient, reward.amount,_noColor, _spriteIngredient);
+                    ingredientReward.Setup(textIngredient, reward.amount, _noColor, _spriteIngredient);
 
                     rewardItems.Add(ingredientReward);
                     break;
@@ -139,7 +138,7 @@ public class UIDailyRewardDouble : MonoBehaviour
                     );
 
                     string textElixir = "+{0} " + LocalizeLookUp.GetStoreTitle(reward.item);
-                    ingredientElixir.Setup(textElixir, reward.amount,Utilities.GetElixirColor(reward.item), _spriteIngredient);
+                    ingredientElixir.Setup(textElixir, reward.amount, Utilities.GetElixirColor(reward.item), _spriteIngredient);
 
                     rewardItems.Add(ingredientElixir);
 
@@ -150,7 +149,7 @@ public class UIDailyRewardDouble : MonoBehaviour
 
             }
         }
-        
+
         this.rewardItems = rewardItems;
     }
 
@@ -159,29 +158,40 @@ public class UIDailyRewardDouble : MonoBehaviour
         bool isGold = dailyQuestRewards.gold > 0;
         int price = isGold ? dailyQuestRewards.gold : dailyQuestRewards.silver;
 
-        string text = "Do you really want to use {0} Drach {1} to duplicate your rewards?";
+        if ((isGold && PlayerDataManager.playerData.gold < price) || (!isGold && PlayerDataManager.playerData.silver < price))
+        {
+            UIGlobalPopup.ShowError(null, isGold ? LocalizeLookUp.GetText("store_not_enough_gold") : LocalizeLookUp.GetText("store_not_enough_silver"));
+            return;
+        }
+
+        string text = LocalizeLookUp.GetText("popup_double_quest_confirm_double");
         string finalText = string.Format(text, price, LocalizeLookUp.GetText(isGold ? "store_gold" : "store_silver"));
         UIGlobalPopup.ShowPopUp(RequestDuplicate, null, finalText);
-       
+
     }
 
     private void RequestDuplicate()
     {
-        APIManager.Instance.Get("doublereward",
+        LoadingOverlay.Show();
+        APIManager.Instance.Get("dailies/doublereward",
           (string result, int response) =>
           {
-                if (response == 200)
-                {
-                      DuplicatedRewards();
-                }
-                else
-                {
-                    APIManager.ParseError(result);
-                }
-        });
+              LoadingOverlay.Hide();
+
+              if (response == 200)
+              {
+                  DuplicatedRewards();
+                  _buttonBuyDouble.gameObject.SetActive(false);
+              }
+              else
+              {
+                  APIManager.ParseError(result);
+              }
+          });
     }
 
-    private void DuplicatedRewards() {
+    private void DuplicatedRewards()
+    {
         foreach (UIDailyRewardDoubleReward reward in rewardItems)
         {
             reward.DoubleItem();
