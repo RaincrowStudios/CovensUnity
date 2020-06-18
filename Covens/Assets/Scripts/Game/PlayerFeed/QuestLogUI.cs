@@ -233,6 +233,8 @@ public class QuestLogUI : UIAnimationManager
             if (string.IsNullOrEmpty(error))
             {
                 SetupQuest();
+                openChest.SetActive(true);
+                closedChest.SetActive(false);
             }
             else
             {
@@ -345,11 +347,6 @@ public class QuestLogUI : UIAnimationManager
             {
                 UIDailyRewardDouble tempUiDailyReward = Instantiate(uIDailyReward);
                 tempUiDailyReward.Show(rewards);
-
-                openChest.SetActive(true);
-                closedChest.SetActive(false);
-                
-                StartCoroutine(NewQuestTimer());
                 //StartCoroutine(ShowRewards(rewards));
             }
             else
