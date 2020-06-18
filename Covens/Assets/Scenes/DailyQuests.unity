@@ -1725,7 +1725,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!1 &1575631600070842
 GameObject:
   m_ObjectHideFlags: 0
@@ -4049,8 +4049,6 @@ MonoBehaviour:
   expGathLine: {fileID: 1905476516787000}
   gathSpellLine: {fileID: 1036744797743888}
   spellExpLine: {fileID: 1190877833810908}
-  claimFX: {fileID: 1542672172577522}
-  claimLoadingFx: {fileID: 1274629901}
   openChest: {fileID: 1177463388750556}
   closedChest: {fileID: 1886942206352312}
   rewardEnergy: {fileID: 114701180885161122}
