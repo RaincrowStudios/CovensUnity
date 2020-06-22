@@ -192,6 +192,21 @@ public class UIDailyRewardDouble : MonoBehaviour
 
     private void DuplicatedRewards()
     {
+
+        if(dailyQuestRewards.gold > 0)
+        {
+            PlayerDataManager.playerData.gold -= dailyQuestRewards.gold;
+        }
+        else
+        {
+            PlayerDataManager.playerData.silver -= dailyQuestRewards.silver;
+        }
+
+        if (PlayerDataManager.Instance != null)
+        {
+            PlayerManagerUI.Instance.UpdateDrachs();
+        }
+
         foreach (UIDailyRewardDoubleReward reward in rewardItems)
         {
             reward.DoubleItem();
