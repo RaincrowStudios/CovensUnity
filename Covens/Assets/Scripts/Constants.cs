@@ -96,14 +96,14 @@ public class CovenConstants : MonoBehaviour
             }
             else if (UnityEditor.EditorPrefs.GetString("ws") == "Dev")
             {
-                return "http://192.168.15.12:8084/socket.io/?";
+                return "ws://192.168.15.12:8084/socket.io/?";
             }
             else
             {
                 return "https://staging-comms-server.raincrow.pw/socket.io/";
             }
 #elif DEV
-                return "http://192.168.15.12:8084/socket.io/?";
+                return "ws://192.168.15.12:8084/socket.io/?";
 #elif PRODUCTION
                 return "https://comms-server.raincrow.pw/socket.io/";
 #else
