@@ -42,7 +42,7 @@ public struct DailyQuestRewards {
     public int gold;
     public int silver;
     [JsonProperty("reward")]
-    public DailyRewards[] rewards;
+    public List<DailyRewards> rewards;
 }
 
 public struct DailyRewards

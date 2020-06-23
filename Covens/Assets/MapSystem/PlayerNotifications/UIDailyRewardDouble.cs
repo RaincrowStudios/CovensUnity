@@ -57,7 +57,7 @@ public class UIDailyRewardDouble : MonoBehaviour
         BackButtonListener.AddCloseAction(Close);
     }
 
-    private void SpawnRewards(DailyRewards[] data)
+    private void SpawnRewards(List<DailyRewards> data)
     {
         List<UIDailyRewardDoubleReward> rewardItems = new List<UIDailyRewardDoubleReward>();
 
