@@ -467,6 +467,13 @@ public class PlayerData : WitchMarkerData
             m_ToolsDict[id] = Mathf.Max(0, amount);
     }
 
+    public void UpdateIngredients(Dictionary<string, int> gems, Dictionary<string, int> herbs, Dictionary<string, int> tools)
+    {
+        m_GemsDict = gems;
+        m_HerbsDict = herbs;
+        m_ToolsDict = tools;
+    }
+
     public void AddIngredient(string id, int amount)
     {
         if (string.IsNullOrEmpty(id))
