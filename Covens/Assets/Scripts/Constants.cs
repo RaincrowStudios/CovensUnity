@@ -53,14 +53,14 @@ public class CovenConstants : MonoBehaviour
             }
             else if (UnityEditor.EditorPrefs.GetString("game") == "Dev")
             {
-                return "http://192.168.0.160:9000/api/";
+                return "http://192.168.15.12:9000/api/";
             }
             else
             {
                 return "https://staging-game-server.raincrow.pw/api/";
             }
 #elif DEV
-            return "http://192.168.0.160:9000/api/";
+            return "http://192.168.15.12:9000/api/";
 #elif PRODUCTION
            return "https://game-server.raincrow.pw/api/";
 #else
@@ -96,14 +96,14 @@ public class CovenConstants : MonoBehaviour
             }
             else if (UnityEditor.EditorPrefs.GetString("ws") == "Dev")
             {
-                return "http://192.168.0.160:8084/socket.io/?";
+                return "http://192.168.15.12:8084/socket.io/?";
             }
             else
             {
                 return "https://staging-comms-server.raincrow.pw/socket.io/";
             }
 #elif DEV
-                return "http://192.168.0.160:8084/socket.io/?";
+                return "http://192.168.15.12:8084/socket.io/?";
 #elif PRODUCTION
                 return "https://comms-server.raincrow.pw/socket.io/";
 #else
@@ -148,14 +148,14 @@ public class CovenConstants : MonoBehaviour
             }
             else if (UnityEditor.EditorPrefs.GetString("chat") == "Dev")
             {
-                return "http://192.168.0.160:8083/socket.io/";
+                return "http://192.168.15.12:8083/socket.io/";
             }
             else
             {
                 return "https://staging-chat-server.raincrow.pw/socket.io/";
             }
 #elif DEV
-                return "http://192.168.0.160:8083/socket.io/";
+                return "http://192.168.15.12:8083/socket.io/";
 #elif PRODUCTION
             return "https://chat-server.raincrow.pw/socket.io/";
 #else
@@ -179,14 +179,14 @@ public class CovenConstants : MonoBehaviour
             }
             else if (UnityEditor.EditorPrefs.GetString("map") == "Dev")
             {
-                return "http://192.168.0.160:8081/";
+                return "http://192.168.15.12:8081/";
             }
             else
             {
                 return "https://staging-map-server.raincrow.pw/";
             }
 #elif DEV
-                return "http://192.168.0.160:8081/";
+                return "http://192.168.15.12:8081/";
 #elif PRODUCTION
             return "https://map-server.raincrow.pw/";
 #else
