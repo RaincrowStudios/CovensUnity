@@ -101,6 +101,7 @@ public class UIDailyRewardDouble : MonoBehaviour
                 case DailyRewards.DailyRewardsType.ingredients:
                     UIDailyRewardDoubleReward ingredientReward = Instantiate(_rewardPrefab, _rewardContainer.transform);
 
+                    string rarity = "\n" + LocalizeLookUp.GetText("rarity_num").Replace("{{Rarity}}", reward.rarity.ToString()) + rarity;
                     string textIngredient = "+{0} " + LocalizeLookUp.GetText("store_ingredients");
                     ingredientReward.Setup(textIngredient, reward.amount, _noColor, _spriteIngredient);
 
