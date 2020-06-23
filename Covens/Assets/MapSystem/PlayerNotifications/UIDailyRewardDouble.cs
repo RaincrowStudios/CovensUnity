@@ -72,12 +72,6 @@ public class UIDailyRewardDouble : MonoBehaviour
                     string textGold = "+{0} " + LocalizeLookUp.GetText("store_gold");
                     goldReward.Setup(textGold, reward.amount, _noColor, _spriteGolden);
 
-                    PlayerDataManager.playerData.gold += reward.amount;
-                    if (PlayerDataManager.Instance != null)
-                    {
-                        PlayerManagerUI.Instance.UpdateDrachs();
-                    }
-
                     rewardItems.Add(goldReward);
                     break;
                 case DailyRewards.DailyRewardsType.silver:
@@ -86,25 +80,13 @@ public class UIDailyRewardDouble : MonoBehaviour
                     string textSilver = "+{0} " + LocalizeLookUp.GetText("store_silver");
                     silverReward.Setup(textSilver, reward.amount, _noColor, _spriteSilver);
 
-                    PlayerDataManager.playerData.silver += reward.amount;
-                    if (PlayerDataManager.Instance != null)
-                    {
-                        PlayerManagerUI.Instance.UpdateDrachs();
-                    }
-
                     rewardItems.Add(silverReward);
                     break;
                 case DailyRewards.DailyRewardsType.energy:
                     UIDailyRewardDoubleReward energyReward = Instantiate(_rewardPrefab, _rewardContainer.transform);
-                    OnMapEnergyChange.ForceEvent(PlayerManager.marker, PlayerDataManager.playerData.energy + reward.amount);
 
                     string textEnergy = "+{0} " + LocalizeLookUp.GetText("cast_energy");
                     energyReward.Setup(textEnergy, reward.amount, Utilities.Blue, _spriteEnergy);
-
-                    if (PlayerDataManager.Instance != null)
-                    {
-                        PlayerManagerUI.Instance.UpdateDrachs();
-                    }
 
                     rewardItems.Add(energyReward);
                     break;
@@ -210,37 +192,6 @@ public class UIDailyRewardDouble : MonoBehaviour
         foreach (UIDailyRewardDoubleReward reward in rewardItems)
         {
             reward.DoubleItem();
-        }
-
-        foreach (DailyRewards reward in dailyQuestRewards.rewards)
-        {
-            switch (reward.type)
-            {
-                case DailyRewards.DailyRewardsType.gold:
-
-                    PlayerDataManager.playerData.gold += reward.amount;
-                    if (PlayerDataManager.Instance != null)
-                    {
-                        PlayerManagerUI.Instance.UpdateDrachs();
-                    }
-                    break;
-                case DailyRewards.DailyRewardsType.silver:
-                    PlayerDataManager.playerData.silver += reward.amount;
-                    if (PlayerDataManager.Instance != null)
-                    {
-                        PlayerManagerUI.Instance.UpdateDrachs();
-                    }
-                    break;
-                case DailyRewards.DailyRewardsType.energy:
-                    OnMapEnergyChange.ForceEvent(PlayerManager.marker, PlayerDataManager.playerData.energy + reward.amount);
-                    break;
-                case DailyRewards.DailyRewardsType.xp:
-                    break;
-                case DailyRewards.DailyRewardsType.ingredients:
-                    break;
-                case DailyRewards.DailyRewardsType.consumables:
-                    break;
-            }
         }
     }
 
