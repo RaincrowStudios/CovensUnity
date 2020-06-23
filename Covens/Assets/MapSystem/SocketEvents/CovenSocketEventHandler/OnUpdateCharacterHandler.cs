@@ -35,8 +35,9 @@ namespace Raincrow.GameEventResponses
             PlayerDataManager.playerData.level = updateCharacterArgs.Level; // Level
             PlayerDataManager.playerData.alignment = updateCharacterArgs.Alignment; // Alignment
 
-            
-            StoreManagerAPI.StoreData.Consumables = updateCharacterArgs.Consumables; //Consumables
+
+            //Update Consumables
+            PlayerDataManager.playerData.UpdateConsumables(updateCharacterArgs.Consumables);
 
             //Update ingredients inventory
             PlayerDataManager.playerData.UpdateIngredients(updateCharacterArgs.Gems, updateCharacterArgs.Herbs, updateCharacterArgs.Tools);
@@ -66,7 +67,7 @@ namespace Raincrow.GameEventResponses
         [JsonProperty("level")] public int Level { get; set; }
         [JsonProperty("degree")] public int Degree { get; set; }
         [JsonProperty("alignment")] public long Alignment { get; set; }
-        [JsonProperty("consumables")] public List<StoreItem> Consumables { get; set; }
+        [JsonProperty("consumables")] public List<ConsumableItem> Consumables { get; set; }
         [JsonProperty("herbs")] public List<CollectableItem> Herbs { get; set; }
         [JsonProperty("tools")] public List<CollectableItem> Tools { get; set; }
         [JsonProperty("gems")] public List<CollectableItem> Gems { get; set; }

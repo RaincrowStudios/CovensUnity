@@ -475,6 +475,11 @@ public class PlayerData : WitchMarkerData
         Setup();
     }
 
+    public void UpdateConsumables(List<ConsumableItem> consumables)
+    {
+        m_Consumables = consumables;
+    }
+
     public void AddIngredient(string id, int amount)
     {
         if (string.IsNullOrEmpty(id))
