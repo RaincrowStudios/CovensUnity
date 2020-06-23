@@ -175,8 +175,10 @@ public class ElixirManagementUI : MonoBehaviour
                     _dicElixirStoreUI[item.id].UpdateTimer(statusEffect.expiresOn);
                 }
             }
-
-            _dicElixirStoreUI[item.id].UpdateElixirs(GetAmountElixir(item.id));
+            if (_dicElixirStoreUI.ContainsKey(item.id))
+            {
+                _dicElixirStoreUI[item.id].UpdateElixirs(GetAmountElixir(item.id));
+            }
         }
     }
 
