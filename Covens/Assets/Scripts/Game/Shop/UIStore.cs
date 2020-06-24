@@ -103,15 +103,12 @@ public class UIStore : MonoBehaviour
         m_Instance.SetScreen(Screen.INGREDIENTS);
     }
 
-    public static void OpenSilverStore()
+    public static void OpenSilverStore(System.Action onClose = null)
     {
-        if (m_Instance == null)
-            return;
-
-        if (IsOpen)
-            m_Instance.SetScreen(Screen.CURRENCY);
+         if (IsOpen)
+            m_Instance.SetScreen(Screen.CURRENCY, onClose);
         else
-            OpenStore(() => m_Instance.SetScreen(Screen.CURRENCY));
+            OpenStore(() => m_Instance.SetScreen(Screen.CURRENCY, onClose));
     }
 
     public static void OpenCharmsStore(System.Action onClose = null)

@@ -13,9 +13,16 @@ public class UIDailyRewardDouble : MonoBehaviour
     [SerializeField] private LayoutGroup _rewardContainer;
     [SerializeField] private UIDailyRewardDoubleReward _rewardPrefab;
     [Header("Double")]
+    [SerializeField] private GameObject _buttonDouble;
     [SerializeField] private Image _iconDrach;
     [SerializeField] private TextMeshProUGUI _textPrice;
     [SerializeField] private Button _buttonBuyDouble;
+
+    [Header("No enogth money")]
+    [SerializeField] private GameObject _buttonNoMoney;
+    [SerializeField] private Button _buttonOpenStore;
+    [SerializeField] private TextMeshProUGUI _textMissingPrice;
+    [SerializeField] private Image _iconMissingDrach;
 
     [Header("Sprites")]
     [SerializeField] private Sprite _spriteGolden;
@@ -43,8 +50,22 @@ public class UIDailyRewardDouble : MonoBehaviour
         PlayerDataManager.playerData.quest.completed = true;
 
         bool isGold = data.gold > 0;
-        _textPrice.text = isGold ? data.gold.ToString() : data.silver.ToString();
+        int price = isGold ? data.gold : data.silver;
+        
+        _textPrice.text = isGold ? price.ToString() : price.ToString();
         _iconDrach.sprite = isGold ? _spriteGolden : _spriteSilver;
+
+
+        if ((isGold && PlayerDataManager.playerData.gold < price) || (!isGold && PlayerDataManager.playerData.silver < price))
+        {
+            _textMissingPrice.text = isGold ? price.ToString() : price.ToString();
+            _iconMissingDrach.sprite = isGold ? _spriteGolden : _spriteSilver;
+
+            _buttonOpenStore.onClick.AddListener(OnClickOpenShop);
+
+            _buttonDouble.SetActive(false);
+            _buttonNoMoney.SetActive(true);
+        }
 
         SpawnRewards(data.rewards);
         dailyQuestRewards = data;
@@ -196,6 +217,32 @@ public class UIDailyRewardDouble : MonoBehaviour
         }
     }
 
+    private void OnClickOpenShop()
+    {
+        UIStore.OpenSilverStore(()=>
+        {
+            SetActive(true);
+
+            bool isGold = dailyQuestRewards.gold > 0;
+            int price = isGold ? dailyQuestRewards.gold : dailyQuestRewards.silver;
+            if ((isGold && PlayerDataManager.playerData.gold < price) ||(!isGold && PlayerDataManager.playerData.silver < price))
+            {
+                _buttonNoMoney.SetActive(true);
+                _buttonDouble.SetActive(false);
+            }
+            else
+            {
+                _buttonDouble.SetActive(true);
+                _buttonNoMoney.SetActive(false);
+            }
+        });
+        SetActive(false);
+    }
+
+    private void SetActive(bool active)
+    {
+        gameObject.SetActive(active);
+    }
     private void Close()
     {
         BackButtonListener.RemoveCloseAction();
