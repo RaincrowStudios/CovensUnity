@@ -47790,10 +47790,10 @@ MonoBehaviour:
   spirit: {fileID: 2022258087}
   spiritName: {fileID: 389367957}
   _hintsMaxTime: 3
-  m_TribualScreen_Spring: {fileID: 0}
-  m_TribualScreen_Summer: {fileID: 0}
-  m_TribualScreen_Fall: {fileID: 0}
-  m_TribualScreen_Winter: {fileID: 0}
+  m_TribualScreen_Spring: {fileID: 1095823301}
+  m_TribualScreen_Summer: {fileID: 1560248116}
+  m_TribualScreen_Fall: {fileID: 1371146770}
+  m_TribualScreen_Winter: {fileID: 291971970}
   OutdatedBuild: {fileID: 269838113}
   playstoreIcon: {fileID: 1030872524}
   appleIcon: {fileID: 12765520}
