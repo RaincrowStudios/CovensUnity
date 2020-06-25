@@ -16,7 +16,7 @@ namespace Raincrow.GameEventResponses
             public string daily;
             public int count;
             public bool completed;
-            public int silver;
+            public int xp;
             public double timestamp;
         }
 
@@ -44,7 +44,7 @@ namespace Raincrow.GameEventResponses
                     break;
             }
 
-            if (data.silver != 0)
+            if (data.xp != 0)
             {
                 System.Collections.Generic.Dictionary<string, object> eventParams = new System.Collections.Generic.Dictionary<string, object>
                 {
@@ -55,18 +55,18 @@ namespace Raincrow.GameEventResponses
                 // Track quest finished.
                 OktAnalyticsManager.PushEvent(CovensAnalyticsEvents.DailyQuest, eventParams);
 
-                PlayerDataManager.playerData.silver += data.silver;
-                PlayerManagerUI.Instance.UpdateDrachs();
+                PlayerDataManager.playerData.xp += System.Convert.ToUInt64(data.xp);
+                PlayerManagerUI.Instance.setupXP();
             }
 
-            ShowNotification(data.daily, data.silver, data.count);
+            ShowNotification(data.daily, data.xp, data.count);
         }
 
-        public static void ShowNotification(string quest, int silver, int count)
+        public static void ShowNotification(string quest, int xp, int count)
         {
             string message = null;
 
-            if (silver == 0)
+            if (xp == 0)
             {
                 if (quest == "gather")
                 {
@@ -88,17 +88,17 @@ namespace Raincrow.GameEventResponses
                 if (quest == "gather")
                 {
                     message = LocalizeLookUp.GetText("daily_completed_gather") + "\n" +
-                        "+ " + silver.ToString() + " " + LocalizeLookUp.GetText("store_silver");
+                        "+ " + xp.ToString() + " XP";
                 }
                 else if (quest == "spellcraft")
                 {
                     message = LocalizeLookUp.GetText("daily_completed_spellcraft") + "\n" +
-                        "+ " + silver.ToString() + " " + LocalizeLookUp.GetText("store_silver");
+                        "+ " + xp.ToString() + " XP";
                 }
                 else
                 {
                     message = LocalizeLookUp.GetText("daily_completed_explore") + "\n" +
-                        "+ " + silver.ToString() + " " + LocalizeLookUp.GetText("store_silver");
+                        "+ " + xp.ToString() + " XP";
                 }
             }
 
