@@ -34,6 +34,9 @@ public class UIDailyRewardDoubleReward : MonoBehaviour
 
     public void DoubleItem()
     {       
+        SoundManagerOneShot.Instance.PlayReward();
+        SoundManagerOneShot.Instance.IngredientAdded();
+        SoundManagerOneShot.Instance.SummonRiser();
         _textItemName.text = string.Format(textTitle, amount*2);
         _bandge2X.gameObject.SetActive(true);
         LeanTween.alphaCanvas(_bandge2X,1, 1);

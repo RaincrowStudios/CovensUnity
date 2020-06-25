@@ -348,6 +348,7 @@ public class QuestLogUI : UIAnimationManager
             if (string.IsNullOrEmpty(error))
             {
                 UIDailyRewardDouble tempUiDailyReward = Instantiate(uIDailyReward);
+                SoundManagerOneShot.Instance.PlayReward();
                 tempUiDailyReward.Show(rewards);
 
                 openChest.SetActive(true);
@@ -382,6 +383,7 @@ public class QuestLogUI : UIAnimationManager
             completeText.text = "( 0/1 )";
         }
         descAnim.Play("up");
+        SoundManagerOneShot.Instance.PlayWhisper();
         Desc.fontSize = 68;
     }
 
@@ -413,6 +415,7 @@ public class QuestLogUI : UIAnimationManager
         completeText.text = "( " + progress.count + "/" + gather.amount.ToString() + " )";
 
         descAnim.Play("up");
+        SoundManagerOneShot.Instance.PlayWhisper();
         Desc.fontSize = 75;
     }
 
@@ -499,6 +502,7 @@ public class QuestLogUI : UIAnimationManager
         title.text = LocalizeLookUp.GetText("daily_spell");//"Spellcraft";
         completeText.text = "( " + progress.count + "/" + spellcraft.amount.ToString() + " )";
         descAnim.Play("up");
+        SoundManagerOneShot.Instance.PlayWhisper();
     }
 
     public void HideInfo()
