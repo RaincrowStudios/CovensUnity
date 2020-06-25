@@ -28,6 +28,7 @@ public class PlayerManagerUI : UIAnimationManager
     public Sprite[] LunarPhase;
     public Slider xpSlider;
     public TextMeshProUGUI xpText;
+    public TextMeshProUGUI xpMaxText;
     
     public CanvasGroup curDominion;
 
@@ -247,15 +248,16 @@ public class PlayerManagerUI : UIAnimationManager
 
     public void setupXP()
     {
+        xpMaxText.text = "/" + PlayerDataManager.playerData.xpToLevelUp;
         xpSlider.maxValue = PlayerDataManager.playerData.xpToLevelUp;
-        var iXPValue = (float)Int32.Parse(xpSlider.value);
+        var iXPValue = (float)Int32.Parse(xpText.text);
         var fXPValue = (float)PlayerDataManager.playerData.xp;
-        LeanTween.value(iXPValue, fXPValue, 1f).setOnUpdate((float f)) =>
+        LeanTween.value(iXPValue, fXPValue, 1f).setOnUpdate((float f) =>
         {
-            f = (int)f;
-            xpText.text = f.ToString() + "/" + PlayerDataManager.playerData.xpToLevelUp.ToString();
+            f = Mathf.Floor(f);
+            xpText.text = f.ToString("F0");
         }).setEaseOutQuad();
-        //xpSlider.value = PlayerDataManager.playerData.xp;
+        xpSlider.value = PlayerDataManager.playerData.xp;
         //xpText.text = PlayerDataManager.playerData.xp.ToString() + "/" + PlayerDataManager.playerData.xpToLevelUp.ToString();
     }
 
