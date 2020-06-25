@@ -243,29 +243,20 @@ public class PlayerManagerUI : UIAnimationManager
             }
         }).setEaseInOutQuad();
 
-        //     Energy.text = pData.energy.ToString() + "/" + pData.baseEnergy;
-        //     EnergySlider.maxValue = pData.baseEnergy;
-        //     EnergySlider.value = pData.energy;
-        //     overFlowEn.SetActive(false);
-
-        //  }
-        //  else
-        //  {
-        //      overFlowEn.SetActive(true);
-        //      EnergySlider.maxValue = pData.baseEnergy;
-        //      EnergySlider.value = pData.baseEnergy;
-        //      Energy.text = "<b>" + pData.energy.ToString() + "</b>/" + pData.baseEnergy;
-        //  }
-
-
-
     }
 
     public void setupXP()
     {
         xpSlider.maxValue = PlayerDataManager.playerData.xpToLevelUp;
-        xpSlider.value = PlayerDataManager.playerData.xp;
-        xpText.text = PlayerDataManager.playerData.xp.ToString() + "/" + PlayerDataManager.playerData.xpToLevelUp.ToString();
+        var iXPValue = (float)Int32.Parse(xpSlider.value);
+        var fXPValue = (float)PlayerDataManager.playerData.xp;
+        LeanTween.value(iXPValue, fXPValue, 1f).setOnUpdate((float f)) =>
+        {
+            f = (int)f;
+            xpText.text = f.ToString() + "/" + PlayerDataManager.playerData.xpToLevelUp.ToString();
+        }).setEaseOutQuad();
+        //xpSlider.value = PlayerDataManager.playerData.xp;
+        //xpText.text = PlayerDataManager.playerData.xp.ToString() + "/" + PlayerDataManager.playerData.xpToLevelUp.ToString();
     }
 
     void SetupAlignmentPhase()
