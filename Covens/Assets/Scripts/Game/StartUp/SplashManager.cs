@@ -45,13 +45,10 @@ public class SplashManager : MonoBehaviour
 
     [Header("Tribunal")]
     //[SerializeField] private CanvasGroup m_TribualScreen;
-    [SerializeField] private CanvasGroup m_TribualScreen_Spring;
-    [SerializeField] private CanvasGroup m_TribualScreen_Summer;
-    [SerializeField] private CanvasGroup m_TribualScreen_Fall;
-    [SerializeField] private CanvasGroup m_TribualScreen_Winter;
-
-    [SerializeField] private TextMeshProUGUI tribunalTimer;
-    [SerializeField] private TextMeshProUGUI tribunalTitle;
+    [SerializeField] private TribunalScreen m_TribualScreen_Spring;
+    [SerializeField] private TribunalScreen m_TribualScreen_Summer;
+    [SerializeField] private TribunalScreen m_TribualScreen_Fall;
+    [SerializeField] private TribunalScreen m_TribualScreen_Winter;
 
     [Header("Outdated build")]
     [SerializeField] private GameObject OutdatedBuild;
@@ -64,10 +61,6 @@ public class SplashManager : MonoBehaviour
     private float m_LogoSpeed = 1;
     private int m_SliderTweenId;
     private int m_HintTweenId;
-    private int m_TribunalTweenId1;
-    private int m_TribunalTweenId2;
-    private int m_TribunalTweenId3;
-    private int m_TribunalTweenId4;
     private Coroutine m_HintsCoroutine;
     private Coroutine m_TribunalCoroutine;
     private float _showingHintsStartTime = 0f;
@@ -130,10 +123,11 @@ public class SplashManager : MonoBehaviour
     {
         LeanTween.cancel(m_HintTweenId);
         LeanTween.cancel(m_SliderTweenId);
-        LeanTween.cancel(m_TribunalTweenId1);
-        LeanTween.cancel(m_TribunalTweenId2);
-        LeanTween.cancel(m_TribunalTweenId3);
-        LeanTween.cancel(m_TribunalTweenId4);
+
+        m_TribualScreen_Spring.CancelAnimation();
+        m_TribualScreen_Summer.CancelAnimation();
+        m_TribualScreen_Fall.CancelAnimation();
+        m_TribualScreen_Winter.CancelAnimation();
 
         StopAllCoroutines();
     }
@@ -401,15 +395,10 @@ public class SplashManager : MonoBehaviour
 
     public void HideTribunal(System.Action onComplete)
     {
-        LeanTween.cancel(m_TribunalTweenId1);
-        LeanTween.cancel(m_TribunalTweenId2);
-        LeanTween.cancel(m_TribunalTweenId3);
-        LeanTween.cancel(m_TribunalTweenId4);
-        //m_TribunalTweenId = LeanTween.alphaCanvas(m_TribualScreen, 0f, 1f).setEaseOutCubic().setOnComplete(onComplete).uniqueId;
-        m_TribunalTweenId1 = LeanTween.alphaCanvas(m_TribualScreen_Spring, 0f, 1f).setEaseOutCubic().setOnComplete(onComplete).uniqueId;
-        m_TribunalTweenId2 = LeanTween.alphaCanvas(m_TribualScreen_Summer, 0f, 1f).setEaseOutCubic().setOnComplete(onComplete).uniqueId;
-        m_TribunalTweenId3 = LeanTween.alphaCanvas(m_TribualScreen_Fall, 0f, 1f).setEaseOutCubic().setOnComplete(onComplete).uniqueId;
-        m_TribunalTweenId4 = LeanTween.alphaCanvas(m_TribualScreen_Winter, 0f, 1f).setEaseOutCubic().setOnComplete(onComplete).uniqueId;
+        m_TribualScreen_Spring.Hide(onComplete);
+        m_TribualScreen_Summer.Hide(onComplete);
+        m_TribualScreen_Fall.Hide(onComplete);
+        m_TribualScreen_Winter.Hide(onComplete);
     }
 
     private IEnumerator TribunalCoroutine(System.Action onShow)
@@ -443,37 +432,20 @@ public class SplashManager : MonoBehaviour
         System.DateTime dtDateTime = new System.DateTime(1970, 1, 1, 0, 0, 0, 0, System.DateTimeKind.Utc);
         dtDateTime = dtDateTime.AddMilliseconds(PlayerDataManager.endOfTribunal);
         var timeSpan = dtDateTime.Subtract(System.DateTime.UtcNow);
-        tribunalTimer.text = timeSpan.TotalDays.ToString("N0");
         //tribunal title
         switch (PlayerDataManager.tribunal)
         {
             case 1:
-                tribunalTitle.text = LocalizeLookUp.GetText("spring_tribunal_upper");
-                m_TribualScreen_Spring.alpha = 0;
-                m_TribualScreen_Spring.gameObject.SetActive(true);
-                LeanTween.cancel(m_TribunalTweenId1);
-                m_TribunalTweenId1 = LeanTween.alphaCanvas(m_TribualScreen_Spring, 1f, 1f).setEaseOutCubic().uniqueId;
+                m_TribualScreen_Spring.Setup(LocalizeLookUp.GetText("spring_tribunal_upper"), timeSpan.TotalDays.ToString("N0"));
                 break;
             case 2:
-                tribunalTitle.text = LocalizeLookUp.GetText("summer_tribunal_upper");
-                m_TribualScreen_Summer.alpha = 0;
-                m_TribualScreen_Summer.gameObject.SetActive(true);
-                LeanTween.cancel(m_TribunalTweenId2);
-                m_TribunalTweenId2 = LeanTween.alphaCanvas(m_TribualScreen_Summer, 1f, 1f).setEaseOutCubic().uniqueId;
+                m_TribualScreen_Summer.Setup(LocalizeLookUp.GetText("summer_tribunal_upper"), timeSpan.TotalDays.ToString("N0"));
                 break;
             case 3:
-                tribunalTitle.text = LocalizeLookUp.GetText("autumn_tribunal_upper");
-                m_TribualScreen_Fall.alpha = 0;
-                m_TribualScreen_Fall.gameObject.SetActive(true);
-                LeanTween.cancel(m_TribunalTweenId3);
-                m_TribunalTweenId3 = LeanTween.alphaCanvas(m_TribualScreen_Fall, 1f, 1f).setEaseOutCubic().uniqueId;
+                m_TribualScreen_Fall.Setup(LocalizeLookUp.GetText("autumn_tribunal_upper"), timeSpan.TotalDays.ToString("N0"));
                 break;
             default:
-                tribunalTitle.text = LocalizeLookUp.GetText("winter_tribunal_upper");
-                m_TribualScreen_Winter.alpha = 0;
-                m_TribualScreen_Winter.gameObject.SetActive(true);
-                LeanTween.cancel(m_TribunalTweenId4);
-                m_TribunalTweenId4 = LeanTween.alphaCanvas(m_TribualScreen_Winter, 1f, 1f).setEaseOutCubic().uniqueId;
+                m_TribualScreen_Winter.Setup(LocalizeLookUp.GetText("winter_tribunal_upper"), timeSpan.TotalDays.ToString("N0"));
                 break;
         }
         /*
