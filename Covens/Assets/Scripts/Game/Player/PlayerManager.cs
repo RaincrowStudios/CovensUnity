@@ -212,8 +212,7 @@ public class PlayerManager : MonoBehaviour
 
         FlightVisuals.Instance.StartFlight();
 
-        Debug.Log("TODO: ENABLE FLYSFX");
-        //FlySFX.Instance.fly();
+        FlySFX.Instance.fly();
 
         onStartFlight?.Invoke();
     }
@@ -226,8 +225,7 @@ public class PlayerManager : MonoBehaviour
 
         System.Action finishFlight = () =>
         {
-            Debug.Log("TODO: DISABLE FLY SFX");
-            //FlySFX.Instance.EndFly();
+            FlySFX.Instance.EndFly();
 
             onFinishFlight?.Invoke();
         };
