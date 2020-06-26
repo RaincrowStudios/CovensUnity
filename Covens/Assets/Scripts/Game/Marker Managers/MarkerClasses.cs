@@ -628,11 +628,14 @@ public class PlayerData : WitchMarkerData
         if (timestamp < lastExpUpdate)
             return;
 
+        ulong oldXP = PlayerDataManager.playerData.xp;
+        PlayerDataManager.playerData.xp = xp;
+
         xp = exp;
         lastExpUpdate = timestamp;
 
         if (PlayerManagerUI.Instance)
-            PlayerManagerUI.Instance.setupXP();
+            PlayerManagerUI.Instance.setupXP(oldXP);
     }
 
     public void AddCurrency(int silver, int gold)

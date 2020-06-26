@@ -55,8 +55,9 @@ namespace Raincrow.GameEventResponses
                 // Track quest finished.
                 OktAnalyticsManager.PushEvent(CovensAnalyticsEvents.DailyQuest, eventParams);
 
+                ulong oldXP = PlayerDataManager.playerData.xp;
                 PlayerDataManager.playerData.xp += System.Convert.ToUInt64(data.xp);
-                PlayerManagerUI.Instance.setupXP();
+                PlayerManagerUI.Instance.setupXP(oldXP);
             }
 
             ShowNotification(data.daily, data.xp, data.count);

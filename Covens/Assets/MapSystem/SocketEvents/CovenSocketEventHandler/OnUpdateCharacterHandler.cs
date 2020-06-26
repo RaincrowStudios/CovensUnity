@@ -14,6 +14,7 @@ namespace Raincrow.GameEventResponses
             UpdateCharacterArgs updateCharacterArgs = JsonConvert.DeserializeObject<UpdateCharacterArgs>(json);
 
             // Experience
+            ulong oldXP = PlayerDataManager.playerData.xp;
             PlayerDataManager.playerData.xp = updateCharacterArgs.Experience;
 
             // Energy
@@ -47,7 +48,7 @@ namespace Raincrow.GameEventResponses
             if (PlayerManagerUI.Instance)
             {
                 PlayerManagerUI.Instance.UpdateEnergy();
-                PlayerManagerUI.Instance.setupXP();
+                PlayerManagerUI.Instance.setupXP(oldXP);
                 PlayerManagerUI.Instance.UpdateDrachs();
             }
         }
