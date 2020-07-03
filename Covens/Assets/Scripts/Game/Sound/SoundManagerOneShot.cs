@@ -81,9 +81,11 @@ public class SoundManagerOneShot : MonoBehaviour
 
     AudioSource AS;
 
+    private Coroutine _loopCoroutine;
+
     void Awake()
     {
-        if(m_Instance != null)
+        if (m_Instance != null)
         {
             Destroy(this.gameObject);
             return;
@@ -171,6 +173,25 @@ public class SoundManagerOneShot : MonoBehaviour
         ASBG.Play();
         ASBG.volume = 0.7f;
         BGnum = i;
+        _loopCoroutine = StartCoroutine(LoopBG(i));
+    }
+
+    private IEnumerator LoopBG(int i)
+    {
+        if (_loopCoroutine != null)
+        {
+            StopCoroutine(_loopCoroutine);
+        }
+
+        i = Mathf.Clamp(i, 0, soundsBG.Length - 1);
+
+        while (true)
+        {
+            AudioClip audio = soundsBG[i];
+            yield return new WaitForSeconds(audio.length);
+            ASBG.Play();
+            //i = Random.Range(0, soundsBG.Length);
+        }
     }
 
     public void FadeOutBGTrack()

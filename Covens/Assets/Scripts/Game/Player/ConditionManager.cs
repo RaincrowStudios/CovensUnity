@@ -30,6 +30,11 @@ public static class PlayerConditionManager
     {
         string debug = statusEffect.spell + " added";
 
+        if (statusEffect.spell.Contains("elixir"))
+        {
+            UIMain.Instance.UpdateElixirHolder();
+        }
+
         if (statusEffect.modifiers.status != null)
         {
             debug += "\n\t";

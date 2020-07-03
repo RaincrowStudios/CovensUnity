@@ -471,6 +471,19 @@ public class PlayerData : WitchMarkerData
             m_ToolsDict[id] = Mathf.Max(0, amount);
     }
 
+    public void UpdateIngredients(List<CollectableItem> gems, List<CollectableItem> herbs, List<CollectableItem> tools)
+    {
+        m_Gems = gems;
+        m_Herbs = herbs;
+        m_Tools = tools;
+        Setup();
+    }
+
+    public void UpdateConsumables(List<ConsumableItem> consumables)
+    {
+        m_Consumables = consumables;
+    }
+
     public void AddIngredient(string id, int amount)
     {
         if (string.IsNullOrEmpty(id))
@@ -619,11 +632,14 @@ public class PlayerData : WitchMarkerData
         if (timestamp < lastExpUpdate)
             return;
 
+        ulong oldXP = PlayerDataManager.playerData.xp;
+        PlayerDataManager.playerData.xp = xp;
+
         xp = exp;
         lastExpUpdate = timestamp;
 
         if (PlayerManagerUI.Instance)
-            PlayerManagerUI.Instance.setupXP();
+            PlayerManagerUI.Instance.setupXP(oldXP);
     }
 
     public void AddCurrency(int silver, int gold)

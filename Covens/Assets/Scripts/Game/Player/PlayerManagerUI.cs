@@ -28,7 +28,7 @@ public class PlayerManagerUI : UIAnimationManager
     public Sprite[] LunarPhase;
     public Slider xpSlider;
     public TextMeshProUGUI xpText;
-    
+
     public CanvasGroup curDominion;
 
     public GameObject DeathReason;
@@ -39,7 +39,7 @@ public class PlayerManagerUI : UIAnimationManager
     [SerializeField] private UIMarkerPointer m_PlayerPositionPointer;
     //[SerializeField] private GameObject m_SilverGlimmer;
     //[SerializeField] private GameObject m_GoldGlimmer;
- 
+
     private bool isDay = true;
     private bool cancheck = true;
 
@@ -48,7 +48,8 @@ public class PlayerManagerUI : UIAnimationManager
     private float m_LastGoldValue;
 
     private int m_CurrenciesTweenId;
-    
+
+    private Coroutine animationXP;
     void Awake()
     {
         Instance = this;
@@ -64,7 +65,7 @@ public class PlayerManagerUI : UIAnimationManager
 
         physicalForm.SetActive(false);
         spiritForm.SetActive(false);
-        
+
         Raincrow.GameEventResponses.CharacterDeathHandler.OnPlayerDeath += CharacterDeathHandler_OnPlayerDeath;
     }
 
@@ -120,7 +121,7 @@ public class PlayerManagerUI : UIAnimationManager
 
         while (PlayerManager.marker == null)
             yield return null;
-        
+
 
         PlayerManager.onFinishFlight += CheckPhysicalForm;
 
@@ -129,7 +130,7 @@ public class PlayerManagerUI : UIAnimationManager
         m_LastGoldValue = PlayerDataManager.playerData.gold;
         m_LastSilverValue = PlayerDataManager.playerData.silver;
 
-        Level.text = PlayerDataManager.playerData.level.ToString();        
+        Level.text = PlayerDataManager.playerData.level.ToString();
         SetupAlignmentPhase();
         setupXP();
         SetupEnergy();
@@ -243,29 +244,41 @@ public class PlayerManagerUI : UIAnimationManager
             }
         }).setEaseInOutQuad();
 
-        //     Energy.text = pData.energy.ToString() + "/" + pData.baseEnergy;
-        //     EnergySlider.maxValue = pData.baseEnergy;
-        //     EnergySlider.value = pData.energy;
-        //     overFlowEn.SetActive(false);
-
-        //  }
-        //  else
-        //  {
-        //      overFlowEn.SetActive(true);
-        //      EnergySlider.maxValue = pData.baseEnergy;
-        //      EnergySlider.value = pData.baseEnergy;
-        //      Energy.text = "<b>" + pData.energy.ToString() + "</b>/" + pData.baseEnergy;
-        //  }
-
-
-
     }
 
-    public void setupXP()
+    public void setupXP(ulong oldXP = 0)
     {
+        if (oldXP.Equals(0))
+        {
+            oldXP = PlayerDataManager.playerData.xp;
+        }
+        
         xpSlider.maxValue = PlayerDataManager.playerData.xpToLevelUp;
         xpSlider.value = PlayerDataManager.playerData.xp;
-        xpText.text = PlayerDataManager.playerData.xp.ToString() + "/" + PlayerDataManager.playerData.xpToLevelUp.ToString();
+
+        if(animationXP != null)
+        {
+            StopCoroutine(animationXP);
+        }
+
+        animationXP = StartCoroutine(AnimationValueXP(oldXP));
+    }
+
+    private IEnumerator AnimationValueXP(ulong oldXP)
+    {
+        string formatXp = "{0}/{1}";
+
+        float leght = PlayerDataManager.playerData.xp - oldXP;
+        leght = leght.Equals(0) ? 1 : leght;
+        float time = 0.1f/ leght;
+        for (ulong xp = oldXP; xp < PlayerDataManager.playerData.xp; xp++)
+        {
+            xp = xp > PlayerDataManager.playerData.xp ? PlayerDataManager.playerData.xp : xp;
+            xpText.text = string.Format(formatXp, xp.ToString(), PlayerDataManager.playerData.xpToLevelUp.ToString());
+            yield return new WaitForSeconds(time);
+        }
+
+        xpText.text = string.Format(formatXp, PlayerDataManager.playerData.xp.ToString(), PlayerDataManager.playerData.xpToLevelUp.ToString());
     }
 
     public void CloseDeathMessage()
