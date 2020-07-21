@@ -14,7 +14,7 @@ using Raincrow.Store;
 
 public static class DownloadAssetBundle
 {
-    public static string baseURL = "https://storage.googleapis.com/raincrow-covens/";
+    public static string baseURL = "https://covens.sfo2.digitaloceanspaces.com/";
     public static bool isDictLoaded = false;
 }
 

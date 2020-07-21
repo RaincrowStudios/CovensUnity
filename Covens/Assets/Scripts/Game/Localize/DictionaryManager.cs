@@ -35,7 +35,7 @@ public class DictionaryManager
     {
         get
         {
-            string url = "https://storage.googleapis.com/raincrow-covens/dictionary/";
+            string url = "https://covens.sfo2.digitaloceanspaces.com/dictionary/";
 
 #if UNITY_EDITOR
             switch (UnityEditor.EditorPrefs.GetString("game"))
