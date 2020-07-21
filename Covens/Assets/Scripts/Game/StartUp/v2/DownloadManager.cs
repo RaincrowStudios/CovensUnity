@@ -24,7 +24,7 @@ public class DownloadManager : MonoBehaviour
         public bool maintenance;
     }
 
-    private const string downloadUrl = "https://storage.googleapis.com/raincrow-covens/";
+    private const string downloadUrl = "https://covens.sfo2.digitaloceanspaces.com/";
 
     /// <summary>
     /// name

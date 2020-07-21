@@ -131,13 +131,13 @@ public class HandleServerDown : MonoBehaviour
         runTimer = true;
         progress.gameObject.SetActive(true);
         loading.SetActive(false);
-        UnityWebRequest webRequest = UnityWebRequest.Head("https://storage.googleapis.com/raincrow-covens/SpeedTest.rar");
+        UnityWebRequest webRequest = UnityWebRequest.Head("https://covens.sfo2.digitaloceanspaces.com/SpeedTest.rar");
         yield return webRequest.SendWebRequest();
         progress.value = webRequest.downloadProgress;
         progress.gameObject.SetActive(false);
         subText.gameObject.SetActive(true);
         runTimer = false;
-        internetSpeed = (3.92f / timeElapsed);
+        internetSpeed = (2.4f / timeElapsed);
         subText.text = (internetSpeed).ToString("F2") + " Mbps";
 
         if (webRequest.isHttpError || webRequest.isNetworkError)
